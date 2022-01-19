@@ -25,6 +25,7 @@ namespace UltimateCustomRun
         public const string PluginName = "UltimateCustomRun";
         public const string PluginVersion = "1.0.0";
 
+        // I dont know how to make the configs autogenerate :pain:
 
         // Global
         public static ConfigEntry<float> GlobalCritDamageMultiplier { get; set; }
@@ -124,6 +125,10 @@ namespace UltimateCustomRun
         public static ConfigEntry<float> HooksExplosionProcCoefficient { get; set; }
         public static ConfigEntry<float> HooksExplosionRadius { get; set; }
 
+        public static ConfigEntry<int> StridesCharges { get; set; }
+        public static ConfigEntry<float> StridesCooldown { get; set; }
+        public static ConfigEntry<float> StridesDuration { get; set; }
+        public static ConfigEntry<float> StridesHealingPercent { get; set; }
         public void Awake()
         {
             // Global
@@ -220,6 +225,12 @@ namespace UltimateCustomRun
             HooksExplosionProcCoefficient = Config.Bind<float>(":: Items :::: Lunars ::", "Hooks of Heresy Explosion Proc Coefficient", (float)1f, "Decimal. The Proc Coefficient of Hooks of Heresy's Explosion, Vanilla is 1");
             HooksExplosionRadius = Config.Bind<float>(":: Items :::: Lunars ::", "Hooks of Heresy Explosion Radius", (float)14f, "The Radius of Hooks of Heresy's Explosion, Vanilla is 14");
             HooksExplosionDamage = Config.Bind<float>(":: Items :::: Lunars ::", "Hooks of Heresy Explosion Damage", (float)7f, "Decimal. The Damage of Hooks of Heresy's Explosion, Vanilla is 7.");
+
+            StridesCharges = Config.Bind<int>(":: Items :::: Lunars ::", "Strides of Heresy Charges", (int)1, "The amount of Charges of Strides of Heresy, Vanilla is 1");
+            StridesCooldown = Config.Bind<float>(":: Items :::: Lunars ::", "Strides of Heresy Cooldown", (float)6f, "The Cooldown of Strides of Heresy, Vanilla is 6");
+            StridesDuration = Config.Bind<float>(":: Items :::: Lunars ::", "Strides of Heresy Duration", (float)3, "The Duration of Strides of Heresy, Vanilla is 3");
+            StridesHealingPercent = Config.Bind<float>(":: Items :::: Lunars ::", "Strides of Heresy Healing Per Tick", (float)0.013, "Decimal. The Healing Per Tick of Charges of Strides of Heresy, Vanilla is 0.013");
+
             ChangeDescriptions();
 
             // Global
@@ -230,71 +241,70 @@ namespace UltimateCustomRun
 
             // Whites
 
-            IL.RoR2.HealthComponent.TakeDamage += AprDamageChange;
+            IL.RoR2.HealthComponent.TakeDamage += ArmorPiercingRounds.ChangeDamage;
 
-            RecalculateStatsAPI.GetStatCoefficients += BackupMagCDRAdd;
+            RecalculateStatsAPI.GetStatCoefficients += BackupMag.AddBehavior;
 
-            IL.RoR2.CharacterBody.RecalculateStats += BisonSteakChangeHealth;
+            IL.RoR2.CharacterBody.RecalculateStats += BisonSteak.ChangeHealth;
             if (BisonSteakLevelHealth.Value == true)
             {
-                RecalculateStatsAPI.GetStatCoefficients += BisonSteakLevelHealthAdd;
+                RecalculateStatsAPI.GetStatCoefficients += BisonSteak.AddBehavior;
             }
 
-            IL.RoR2.CharacterBody.MushroomItemBehavior.FixedUpdate += BungusIntervalAndHealingPercentChange;
-            IL.RoR2.CharacterBody.MushroomItemBehavior.FixedUpdate += BungusRadiusChange;
+            IL.RoR2.CharacterBody.MushroomItemBehavior.FixedUpdate += BustlingFungus.ChangeRadius;
+            IL.RoR2.CharacterBody.MushroomItemBehavior.FixedUpdate += BustlingFungus.ChangeHealing;
 
-            IL.RoR2.HealthComponent.TakeDamage += CrowbarDamageChange;
-            IL.RoR2.HealthComponent.TakeDamage += CrowbarThresholdChange;
+            IL.RoR2.HealthComponent.TakeDamage += Crowbar.ChangeDamage;
+            IL.RoR2.HealthComponent.TakeDamage += Crowbar.ChangeThreshold;
 
-            IL.RoR2.GlobalEventManager.OnInteractionBegin += FireworksStackChange;
-            FireworksChanges();
+            IL.RoR2.GlobalEventManager.OnInteractionBegin += Fireworks.ChangeCount;
+            Fireworks.Changes();
 
-            IL.RoR2.HealthComponent.TakeDamage += FocusCrystalDamageChange;
-            IL.RoR2.HealthComponent.TakeDamage += FocusCrystalRangeChange;
-            FocusCrystalRangeVisualChange();
+            IL.RoR2.HealthComponent.TakeDamage += FocusCrystal.ChangeDamage;
+            IL.RoR2.HealthComponent.TakeDamage += FocusCrystal.ChangeRadius;
+            FocusCrystal.ChangeVisual();
 
-            IL.RoR2.CharacterBody.RecalculateStats += LensMakersGlassesChangeCrit;
+            IL.RoR2.CharacterBody.RecalculateStats += LensMakersGlasses.ChangeCrit;
 
             //IncreaseMonsterToothHealing();
 
-            RecalculateStatsAPI.GetStatCoefficients += RapArmorAdd;
-            IL.RoR2.HealthComponent.TakeDamage += RapFlatDmgDecreaseChange;
-            IL.RoR2.HealthComponent.TakeDamage += RapFlatDmgMinimumChange;
+            RecalculateStatsAPI.GetStatCoefficients += RepulsionArmorPlate.AddBehavior;
+            IL.RoR2.HealthComponent.TakeDamage += RepulsionArmorPlate.ChangeReduction;
+            IL.RoR2.HealthComponent.TakeDamage += RepulsionArmorPlate.ChangeMinimum;
 
-            StickyBombChanges();
-            IL.RoR2.GlobalEventManager.OnHitEnemy += StickyBombChanceChange;
-            // IL.RoR2.SetStateOnHurt.OnTakeDamageServer += StunGrenadeHyperbolicToLinear;
+            StickyBomb.Changes();
+            IL.RoR2.GlobalEventManager.OnHitEnemy += StickyBomb.ChangeChance;
+            // IL.RoR2.SetStateOnHurt.OnTakeDamageServer += StunGrenade.ChangeBehavior;
 
-            RecalculateStatsAPI.GetStatCoefficients += TougherTimesArmorAdd;
-            IL.RoR2.HealthComponent.TakeDamage += TougherTimesBlockChanceChange;
+            RecalculateStatsAPI.GetStatCoefficients += TougherTimes.AddBehavior;
+            IL.RoR2.HealthComponent.TakeDamage += TougherTimes.ChangeBlock;
 
-            RecalculateStatsAPI.GetStatCoefficients += WarbannerDamageAdd;
-            IL.RoR2.TeleporterInteraction.ChargingState.OnEnter += WarbannerRadiusChangeTP;
-            IL.RoR2.Items.WardOnLevelManager.OnCharacterLevelUp += WarbannerRadiusChange;
+            RecalculateStatsAPI.GetStatCoefficients += Warbanner.AddBehavior;
+            IL.RoR2.TeleporterInteraction.ChargingState.OnEnter += Warbanner.ChangeRadiusTP;
+            IL.RoR2.Items.WardOnLevelManager.OnCharacterLevelUp += Warbanner.ChangeRadius;
 
             // Greens
 
-            RecalculateStatsAPI.GetStatCoefficients += InfusionBaseHealthAdd;
+            RecalculateStatsAPI.GetStatCoefficients += Infusion.BehaviorAddFlatHealth;
             if (InfusionScaling.Value == true)
             {
-                IL.RoR2.GlobalEventManager.OnCharacterDeath += InfusionChange;
+                IL.RoR2.GlobalEventManager.OnCharacterDeath += Infusion.ChangeBehavior;
             }
-            RecalculateStatsAPI.GetStatCoefficients += InfusionPercentHealthAdd;
+            RecalculateStatsAPI.GetStatCoefficients += Infusion.BehaviorAddPercentHealth;
 
             //IL.RoR2.GlobalEventManager.OnHitEnemy += KjaroChange;
             //IL.RoR2.GlobalEventManager.OnHitEnemy += RunaldChange;
 
             if (ReplaceRoseBucklerSprintWithHpThreshold.Value == true)
             {
-                IL.RoR2.CharacterBody.RecalculateStats += RoseBucklerConditionChange;
-                RoseBucklerHpThresholdCheckYesThisIsHorribleAndInsaneCryAboutIt();
+                IL.RoR2.CharacterBody.RecalculateStats += RoseBuckler.ChangeBehavior;
+                RoseBuckler.Insanity();
             }
-            IL.RoR2.CharacterBody.RecalculateStats += RoseBucklerArmorChange;
-            RecalculateStatsAPI.GetStatCoefficients += RoseBucklerUnconditionalArmorAdd;
+            IL.RoR2.CharacterBody.RecalculateStats += RoseBuckler.ChangeArmor;
+            RecalculateStatsAPI.GetStatCoefficients += RoseBuckler.AddBehavior;
 
             // Lunars
 
-            VisionsChanges();
         }
 
         public static string d(float f)
@@ -367,564 +377,6 @@ namespace UltimateCustomRun
                 self.goldReward = (uint)Mathf.CeilToInt(Mathf.Pow(self.goldReward, GoldRewardExponent.Value) / Mathf.Pow(GoldRewardDivisorBase.Value, Run.instance.stageClearCount / GoldRewardStageClearCountDivisor.Value));
                 orig(self, damageReport);
             };
-        }
-
-        // Whites
-
-        private void AprDamageChange(ILContext il)
-        {
-            ILCursor c = new ILCursor(il);
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcR4(1),
-                x => x.MatchLdcR4(0.2f)
-            );
-            c.Index += 1;
-            c.Next.Operand = AprDamage.Value;
-        }
-        private void BackupMagCDRAdd(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
-        {
-            if (sender.inventory)
-            {
-                var stack = sender.inventory.GetItemCount(RoR2Content.Items.SecondarySkillMagazine);
-                if (stack > 0)
-                {
-                    args.secondaryCooldownMultAdd -= BackupMagCDR.Value * stack;
-                }
-            }
-        }
-
-        private void BisonSteakChangeHealth(ILContext il)
-        {
-            ILCursor c = new ILCursor(il);
-            c.GotoNext(MoveType.Before,
-                x => x.MatchConvR4(),
-                x => x.MatchLdcR4(25f)
-            );
-            c.Index += 1;
-            c.Next.Operand = BisonSteakHealth.Value;
-        }
-
-        private void BisonSteakLevelHealthAdd(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
-        {
-            if (sender.inventory)
-            {
-                var stack = sender.inventory.GetItemCount(RoR2Content.Items.FlatHealth);
-                if (stack > 0)
-                {
-                    args.baseHealthAdd += sender.levelMaxHealth * stack;
-                }
-            }
-        }
-
-        private void BungusRadiusChange(ILContext il)
-        {
-            ILCursor c = new ILCursor(il);
-            c.GotoNext(MoveType.Before,
-                x => x.MatchCallOrCallvirt<CharacterBody>("get_radius"),
-                x => x.MatchLdcR4(1.5f),
-                x => x.MatchAdd(),
-                x => x.MatchLdcR4(1.5f)
-            );
-            c.Index += 1;
-            c.Next.Operand = BungusRadius.Value;
-            c.Next.Operand = BungusRadiusStack.Value;
-        }
-
-        private void BungusIntervalAndHealingPercentChange(ILContext il)
-        {
-            ILCursor c = new ILCursor(il);
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcR4(0.25f),
-                x => x.MatchStfld<HealingWard>("interval"),
-                x => x.MatchLdloc(out _),
-                x => x.MatchLdcR4(0.045f),
-                x => x.MatchLdcR4(0.0225f)
-            );
-            c.Next.Operand = BungusInterval.Value;
-            c.Index += 3;
-            c.Next.Operand = BungusHealingPercent.Value;
-            c.Index += 1;
-            c.Next.Operand = BungusHealingPercentStack.Value;
-        }
-
-        private void CrowbarDamageChange(ILContext il)
-        {
-            ILCursor c = new ILCursor(il);
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcR4(1f),
-                x => x.MatchLdcR4(0.75f)
-            );
-            c.Index += 1;
-            c.Next.Operand = CrowbarDamage.Value;
-        }
-        private void CrowbarThresholdChange(ILContext il)
-        {
-            ILCursor c = new ILCursor(il);
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdarg(0),
-                x => x.MatchCallOrCallvirt<HealthComponent>("get_fullCombinedHealth"),
-                x => x.MatchLdcR4(0.9f)
-            );
-            c.Index += 2;
-            c.Next.Operand = CrowbarThreshold.Value;
-        }
-
-        private void FireworksStackChange(ILContext il)
-        {
-            ILCursor c = new ILCursor(il);
-            //c.GotoNext(MoveType.Before,
-            //x => x.MatchLdcI4(4),
-            //x => x.MatchLdloc(out _),
-            //x => x.MatchLdcI4(4)
-            c.GotoNext(x => x.MatchStfld<RoR2.FireworkLauncher>("remaining")
-
-            );
-            //c.Next.Operand = FireworksCount.Value;
-            //c.Index += 2;
-            //c.Next.Operand = FireworksCountStack.Value;
-            c.EmitDelegate<Func<int, int>>((val) =>
-            {
-                return FireworksCount.Value + ((val - 4) / 4) * FireworksCountStack.Value;
-            });
-
-        }
-
-        private void FireworksChanges()
-        {
-            var furrywork = Resources.Load<GameObject>("prefabs/projectiles/FireworkProjectile");
-            var croppa = furrywork.GetComponent<ProjectileImpactExplosion>();
-            var croppa2 = furrywork.GetComponent<ProjectileController>();
-            croppa.blastDamageCoefficient = FireworksDamage.Value / 3f;
-            croppa2.procCoefficient = FireworksProcCo.Value;
-        }
-        private void FocusCrystalDamageChange(ILContext il)
-        {
-            ILCursor c = new ILCursor(il);
-            c.GotoNext(MoveType.Before,
-                x => x.MatchStfld<DamageInfo>("damageColorIndex"),
-                x => x.MatchLdloc(out _),
-                x => x.MatchLdcR4(1f),
-                x => x.MatchLdloc(out _),
-                x => x.MatchConvR4(),
-                x => x.MatchLdcR4(0.2f)
-            );
-            c.Index += 5;
-            c.Next.Operand = FocusCrystalDamage.Value;
-        }
-        private void FocusCrystalRangeChange(ILContext il)
-        {
-            ILCursor c = new ILCursor(il);
-            c.GotoNext(MoveType.Before,
-                x => x.MatchCallOrCallvirt<UnityEngine.Vector3>("get_sqrMagnitude"),
-                x => x.MatchLdcR4(169f)
-            );
-            c.Index += 1;
-            c.Next.Operand = FocusCrystalRange.Value * FocusCrystalRange.Value;
-        }
-        private void FocusCrystalRangeVisualChange()
-        {
-            var focus = Resources.Load<GameObject>("Prefabs/NetworkedObjects/NearbyDamageBonusIndicator");
-            float actualRange = FocusCrystalRange.Value / 13;
-            focus.transform.localScale = new Vector3(actualRange, actualRange, actualRange);
-        }
-        private void LensMakersGlassesChangeCrit(ILContext il)
-        {
-            ILCursor c = new ILCursor(il);
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdfld<CharacterBody>("levelCrit")
-            );
-            c.Index += 8;
-            c.Next.Operand = LensMakersCrit.Value;
-        }
-
-        //private void IncreaseMonsterToothHealing()
-        //{
-        //    var MonsterTooth = Resources.Load<GameObject>("Prefabs/NetworkedObjects/HealPack");
-        //    HealthPickup cic = MonsterTooth.GetComponentInChildren<HealthPickup>();
-        //    cic.flatHealing = MonsterToothFlatHealing.Value;
-        //    cic.fractionalHealing = MonsterToothPercentHealing.Value;
-        //}
-
-        private void RapArmorAdd(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
-        {
-            if (sender.inventory)
-            {
-                var stack = sender.inventory.GetItemCount(RoR2Content.Items.ArmorPlate);
-                if (stack > 0)
-                {
-                    args.armorAdd += RapArmor.Value * stack;
-                }
-            }
-        }
-
-        private void RapFlatDmgDecreaseChange(ILContext il)
-        {
-            ILCursor c = new ILCursor(il);
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcR4(1),
-                x => x.MatchLdloc(out _),
-                x => x.MatchLdcR4(5)
-            );
-            c.Index += 2;
-            c.Next.Operand = RapFlatDmgDecrease.Value;
-        }
-
-        private void RapFlatDmgMinimumChange(ILContext il)
-        {
-            ILCursor c = new ILCursor(il);
-            c.GotoNext(MoveType.Before,
-                //x => x.MatchLdflda<HealthComponent>("itemCounts"),
-                //x => x.MatchLdfld<HealthComponent>("armorPlate"),
-                x => x.MatchLdcI4(0),
-                x => x.MatchBle(out _),
-                x => x.MatchLdcR4(1)
-            );
-            c.Index += 2;
-            c.Next.Operand = RapMinimumDmgTaken.Value;
-        }
-        private void StickyBombChanges()
-        {
-            var nowthatssticky = Resources.Load<GameObject>("prefabs/projectiles/stickybomb");
-            var s = nowthatssticky.GetComponent<ProjectileImpactExplosion>();
-            s.blastDamageCoefficient = StickyBombDamage.Value / 1.8f;
-            s.blastRadius = StickyBombRadius.Value;
-            s.lifetime = StickyBombDelay.Value;
-            if (StickyBombFalloff.Value)
-            {
-                s.falloffModel = BlastAttack.FalloffModel.SweetSpot;
-            }
-            else
-            {
-                s.falloffModel = BlastAttack.FalloffModel.None;
-            }
-        }
-        private void StickyBombChanceChange(ILContext il)
-        {
-            ILCursor c = new ILCursor(il);
-            c.GotoNext(MoveType.Before,
-                x => x.MatchBle(out _),
-                x => x.MatchLdcR4(5)
-            );
-            c.Index += 1;
-            c.Next.Operand = StickyBombChance.Value;
-        }
-        private void StunGrenadeHyperbolicToLinear(ILContext il)
-        {
-            // yeah i have no clue
-            ILCursor c = new ILCursor(il);
-            c.GotoNext(MoveType.Before,
-                x => x.MatchCallOrCallvirt(typeof(RoR2.Util), "ConvertAmplificationPercentageIntoReductionPercentage"),
-                x => x.MatchLdloc(out _),
-                x => x.MatchCallOrCallvirt(typeof(RoR2.Util), "CheckRoll"),
-                x => x.MatchBrfalse(out _),
-                x => x.MatchLdstr("Prefabs/Effects/ImpactEffects/ImpactStunGrenade")
-            );
-            //c.EmitDelegate<Func<>>() => { return };
-
-        }
-
-        private void TougherTimesArmorAdd(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
-        {
-            if (sender.inventory)
-            {
-                var stack = sender.inventory.GetItemCount(RoR2Content.Items.Bear);
-                if (stack > 0)
-                {
-                    args.armorAdd += TougherTimesArmor.Value * stack;
-                }
-            }
-        }
-        private void TougherTimesBlockChanceChange(ILContext il)
-        {
-            ILCursor c = new ILCursor(il);
-            c.GotoNext(MoveType.Before,
-                 x => x.MatchLdcI4(0),
-                 x => x.Match(OpCodes.Ble_S),
-                 x => x.MatchLdcR4(15f)
-            );
-            c.Index += 2;
-            c.Next.Operand = TougherTimesBlockChance.Value;
-        }
-        private void WarbannerDamageAdd(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
-        {
-            if (sender.inventory)
-            {
-                var stack = sender.inventory.GetItemCount(RoR2Content.Items.WardOnLevel);
-                if (sender.HasBuff(RoR2Content.Buffs.Warbanner.buffIndex))
-                {
-                    args.baseDamageAdd += WarbannerDamage.Value * stack;
-                }
-            }
-        }
-        private void WarbannerRadiusChange(ILContext il)
-        {
-            ILCursor c = new ILCursor(il);
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcR4(8),
-                x => x.MatchLdcR4(8)
-            );
-            c.Next.Operand = WarbannerRadius.Value;
-            c.Index += 1;
-            c.Next.Operand = WarbannerRadiusStack.Value;
-        }
-        private void WarbannerRadiusChangeTP(ILContext il)
-        {
-            ILCursor c = new ILCursor(il);
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcR4(8),
-                x => x.MatchLdcR4(8)
-            );
-            c.Next.Operand = WarbannerRadius.Value;
-            c.Index += 1;
-            c.Next.Operand = WarbannerRadiusStack.Value;
-        }
-
-        // Greens
-
-        private void InfusionBaseHealthAdd(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
-        {
-            if (sender.inventory)
-            {
-                var stack = sender.inventory.GetItemCount(RoR2Content.Items.Infusion);
-                if (stack > 0)
-                {
-                    args.baseHealthAdd += InfusionBaseHealth.Value * stack;
-                }
-            }
-        }
-
-        private void InfusionPercentHealthAdd(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
-        {
-            if (sender.inventory)
-            {
-                var stack = sender.inventory.GetItemCount(RoR2Content.Items.Infusion);
-                if (stack > 0)
-                {
-                    args.healthMultAdd += InfusionPercentHealth.Value * stack;
-                }
-            }
-        }
-
-        private void RunaldChange(ILContext il)
-        {
-            ILCursor c = new ILCursor(il);
-
-            int itemCountLocation = 51;
-            int totalDamageMultiplierLocation = 56;
-
-            c.GotoNext(MoveType.After,
-                x => x.MatchLdsfld("RoR2.RoR2Content/Items", "IceRing"),
-                x => x.MatchCallOrCallvirt<Inventory>(nameof(Inventory.GetItemCount)),
-                x => x.MatchStloc(out itemCountLocation)
-                );
-
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcR4(3f),
-                x => x.MatchLdloc(itemCountLocation),
-                x => x.MatchConvR4(),
-                x => x.MatchMul(),
-                x => x.MatchStloc(out totalDamageMultiplierLocation)
-                );
-            c.Remove();
-            c.Emit(OpCodes.Ldc_R4, RunaldTotalDamage.Value);
-
-            c.GotoNext(MoveType.After,
-                x => x.MatchLdloc(totalDamageMultiplierLocation),
-                x => x.MatchCallOrCallvirt(out _)
-                );
-            c.Emit(OpCodes.Ldloc_0);
-            c.EmitDelegate<Func<float, CharacterBody, float>>((damage, self) =>
-            {
-                float dam = self.baseDamage * RunaldBaseDamage.Value;
-
-                return damage + dam;
-            });
-        }
-
-        private void KjaroChange(ILContext il)
-        {
-            ILCursor c = new ILCursor(il);
-
-            int itemCountLocation = 51;
-            int totalDamageMultiplierLocation = 56;
-
-            c.GotoNext(MoveType.After,
-                x => x.MatchLdsfld("RoR2.RoR2Content/Items", "FireRing"),
-                x => x.MatchCallOrCallvirt<Inventory>(nameof(Inventory.GetItemCount)),
-                x => x.MatchStloc(out itemCountLocation)
-                );
-
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcR4(2.5f),
-                x => x.MatchLdloc(itemCountLocation),
-                x => x.MatchConvR4(),
-                x => x.MatchMul(),
-                x => x.MatchStloc(out totalDamageMultiplierLocation)
-                );
-            c.Remove();
-            c.Emit(OpCodes.Ldc_R4, KjaroTotalDamage);
-
-            c.GotoNext(MoveType.After,
-                x => x.MatchLdloc(totalDamageMultiplierLocation),
-                x => x.MatchCallOrCallvirt(out _)
-                );
-            c.Emit(OpCodes.Ldloc_0);
-            c.EmitDelegate<Func<float, CharacterBody, float>>((damage, self) =>
-            {
-                float dam = self.baseDamage * KjaroBaseDamage.Value;
-
-                return damage + dam;
-            });
-        }
-
-        private void InfusionChange(ILContext il)
-        {
-            ILCursor c = new ILCursor(il);
-
-            int bodyLoc = 17;
-            int countLoc = 33;
-            int capLoc = 47;
-
-            c.GotoNext(MoveType.After,
-                x => x.MatchLdsfld("RoR2.RoR2Content/Items", "Infusion"),
-                x => x.MatchCallOrCallvirt<RoR2.Inventory>(nameof(RoR2.Inventory.GetItemCount)),
-                x => x.MatchStloc(out countLoc)
-                );
-            c.GotoNext(MoveType.Before,
-                x => x.MatchStloc(out capLoc)
-                );
-            c.Emit(OpCodes.Ldloc, countLoc);
-            c.Emit(OpCodes.Ldloc, 13);
-            c.EmitDelegate<Func<int, int, RoR2.CharacterBody, int>>((currentInfusionCap, infusionCount, body) =>
-            {
-                float newInfusionCap = 100 * infusionCount;
-
-                if (body != null)
-                {
-                    float levelBonus = 1 + 0.3f * (body.level - 1);
-
-                    newInfusionCap = InfusionBaseCap.Value * levelBonus * infusionCount;
-                }
-
-                return (int)newInfusionCap;
-            });
-        }
-
-        private void RoseBucklerConditionChange(ILContext il)
-        {
-            ILCursor c = new ILCursor(il);
-            c.GotoNext(MoveType.Before,
-                x => x.MatchCallOrCallvirt(typeof(CharacterBody).GetPropertyGetter(nameof(CharacterBody.isSprinting)))
-            );
-            c.GotoNext(MoveType.Before,
-                x => x.MatchCallOrCallvirt(typeof(CharacterBody).GetPropertyGetter(nameof(CharacterBody.isSprinting)))
-            );
-            c.GotoNext(MoveType.After,
-                x => x.MatchCallOrCallvirt(typeof(CharacterBody).GetPropertyGetter(nameof(CharacterBody.isSprinting)))
-            );
-            c.Emit(OpCodes.Ldarg_0);
-            c.EmitDelegate<Func<bool, CharacterBody, bool>>((sprinting,body) => { return body.healthComponent.combinedHealthFraction < RoseBucklerThreshold.Value; });
-        }
-        private void RoseBucklerArmorChange(ILContext il)
-        {
-            ILCursor c = new ILCursor(il);
-            c.GotoNext(MoveType.Before,
-                x => x.MatchCallOrCallvirt<RoR2.CharacterBody>("get_armor"),
-                x => x.MatchLdloc(out _),
-                x => x.MatchLdcI4(30)
-            );
-            c.Index += 3;
-            c.EmitDelegate<Func<int, int>>((sdfgsdfhgsghdfv) =>
-            { 
-                return RoseBucklerArmor.Value;
-            });
-        }
-
-        private void RoseBucklerVisualChange(ILContext il)
-        {
-            ILCursor c = new ILCursor(il);
-            c.GotoNext(MoveType.Before,
-                x => x.MatchCallOrCallvirt<RoR2.CharacterBody>("get_isSprinting"),
-                x => x.MatchBrfalse(out _),
-                x => x.MatchLdarg(0),
-                x => x.MatchCallOrCallvirt<RoR2.CharacterBody>("get_inventory"),
-                x => x.MatchLdsfld<RoR2.ItemDef>("")
-            );
-        }
-
-        private void RoseBucklerHpThresholdCheckYesThisIsHorribleAndInsaneCryAboutIt()
-        {
-            On.RoR2.HealthComponent.TakeDamage += (On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo) =>
-            {
-                float health = self.body.inventory.GetItemCount(RoR2Content.Items.SprintArmor) > 0 ? self.combinedHealthFraction : 0f;
-                orig(self, damageInfo);
-                if (health >= RoseBucklerThreshold.Value && self.combinedHealthFraction < RoseBucklerThreshold.Value)
-                {
-                    self.body.statsDirty = true;
-                }
-
-            };
-            On.RoR2.HealthComponent.Heal += (On.RoR2.HealthComponent.orig_Heal orig, HealthComponent self, float amount, ProcChainMask procChainMask, bool nonRegen) =>
-            {
-                float health = self.body.inventory.GetItemCount(RoR2Content.Items.SprintArmor) > 0 ? self.combinedHealthFraction : 1f;
-                float ret = orig(self, amount, procChainMask, nonRegen);
-                if (health < RoseBucklerThreshold.Value && self.combinedHealthFraction >= RoseBucklerThreshold.Value)
-                {
-                    self.body.statsDirty = true;
-                }
-                return ret;
-            };
-        }
-
-        private void RoseBucklerUnconditionalArmorAdd(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
-        {
-            if (sender.inventory)
-            {
-                var stack = sender.inventory.GetItemCount(RoR2Content.Items.SprintArmor);
-                if (stack > 0)
-                {
-                    args.armorAdd += RoseBucklerArmorAlways.Value * stack;
-                }
-            }
-        }
-
-        // Lunars
-
-        private void VisionsChanges()
-        {
-            var vs = Resources.Load<SkillDef>("skilldefs/lunarreplacements/lunarprimaryreplacement");
-            vs.baseMaxStock = VisionsCharges.Value;
-            vs.baseRechargeInterval = VisionsCooldown.Value;
-            vs.rechargeStock = VisionsCharges.Value;
-            var vp = Resources.Load<GameObject>("prefabs/projectiles/lunarneedleprojectile").GetComponent<ProjectileController>();
-            vp.procCoefficient = VisionsInitialProcCoefficient.Value;
-            On.EntityStates.GlobalSkills.LunarNeedle.FireLunarNeedle.OnEnter += (orig,self) =>
-            {
-                EntityStates.GlobalSkills.LunarNeedle.FireLunarNeedle.damageCoefficient = VisionsInitialHitDamage.Value;
-                orig(self);
-            };
-        }
-
-        private void HooksChanges()
-        {
-            var hs = Resources.Load<SkillDef>("skilldefs/lunarreplacements/lunarsecondaryreplacement");
-            hs.baseMaxStock = HooksCharges.Value;
-            hs.baseRechargeInterval = HooksCooldown.Value;
-            hs.rechargeStock = HooksCharges.Value;
-            var he1 = Resources.Load<GameObject>("prefabs/projectiles/lunarsecondaryprojectile").GetComponent<ProjectileController>();
-            var he2 = Resources.Load<GameObject>("prefabs/projectiles/lunarsecondaryprojectile").GetComponent<ProjectileExplosion>();
-            he1.procCoefficient = HooksExplosionProcCoefficient.Value;
-            he2.blastRadius = HooksExplosionRadius.Value;
-            var hs2 = Resources.Load<GameObject>("prefabs/projectiles/lunarsecondaryprojectile").GetComponent<ProjectileDotZone>();
-            hs2.overlapProcCoefficient = HooksProcCoefficient.Value;
-        }
-        private void StridesChanges()
-        {
-            var ss = Resources.Load<SkillDef>("skilldefs/lunarreplacements/lunarutilityreplacement");
-            ss.baseMaxStock = StridesCharges.Value;
-            ss.baseRechargeInterval = StridesCooldown.Value;
-            ss.rechargeStock = StridesCharges.Value;
-            On.EntityStates.GlobalSkills.
         }
 
         private void ChangeDescriptions()
