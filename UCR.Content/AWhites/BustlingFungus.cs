@@ -14,8 +14,9 @@ namespace UltimateCustomRun
                 x => x.MatchAdd(),
                 x => x.MatchLdcR4(1.5f)
             );
-            c.Index += 1;
+            c.Index += 2;
             c.Next.Operand = Main.BungusRadius.Value;
+            c.Index += 2;
             c.Next.Operand = Main.BungusRadiusStack.Value;
         }
 
@@ -30,10 +31,11 @@ namespace UltimateCustomRun
                 x => x.MatchLdcR4(0.0225f)
             );
             c.Next.Operand = Main.BungusInterval.Value;
-            c.Index += 3;
+            c.Index += 4;
             c.Next.Operand = Main.BungusHealingPercent.Value;
             c.Index += 1;
             c.Next.Operand = Main.BungusHealingPercentStack.Value;
         }
+        // TODO: Add Lingering
     }
 }

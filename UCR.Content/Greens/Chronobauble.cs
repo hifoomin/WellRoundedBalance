@@ -1,8 +1,7 @@
-﻿using MonoMod.Cil;
-using R2API;
+﻿using R2API;
 using RoR2;
 
-namespace UltimateCustomRun.Greens
+namespace UltimateCustomRun
 {
     static class Chronobauble
     {

@@ -37,6 +37,9 @@ namespace UltimateCustomRun
         // \_| |_/\____/\_____/\_|    
 
         // Global
+
+        public static ConfigEntry<int> EquipmentChargeCap { get; set; }
+
         public static ConfigEntry<float> GlobalCritDamageMultiplier { get; set; }
 
         public static ConfigEntry<float> PlayerFactorBase { get; set; }
@@ -139,6 +142,21 @@ namespace UltimateCustomRun
         public static ConfigEntry<float> ChronobaubleAS { get; set; }
         public static ConfigEntry<bool> ChronobaubleStacking { get; set; }
 
+        public static ConfigEntry<bool> DeathMarkChanges { get; set; }
+        public static ConfigEntry<float> DeathMarkDmgIncreasePerDebuff { get; set; }
+        public static ConfigEntry<float> DeathMarkStackBonus { get; set; }
+        public static ConfigEntry<int> DeathMarkMinimumDebuffsRequired { get; set; }
+
+        public static ConfigEntry<float> FuelCellCDR { get; set; }
+
+        public static ConfigEntry<int> GhorsTomeReward { get; set; }
+        public static ConfigEntry<float> GhorsTomeChance { get; set; }
+
+        public static ConfigEntry<bool> HarvestersCritStack { get; set; }
+        public static ConfigEntry<float> HarvestersCrit { get; set; }
+        public static ConfigEntry<float> HarvestersHealBase { get; set; }
+        public static ConfigEntry<float> HarvestersHealStack { get; set; }
+
         public static ConfigEntry<float> InfusionBaseCap { get; set; }
         public static ConfigEntry<float> InfusionBaseHealth { get; set; }
         public static ConfigEntry<float> InfusionPercentHealth { get; set; }
@@ -146,6 +164,9 @@ namespace UltimateCustomRun
 
         public static ConfigEntry<float> KjaroBaseDamage { get; set; }
         public static ConfigEntry<float> KjaroTotalDamage { get; set; }
+
+        public static ConfigEntry<float> OldGThreshold { get; set; }
+
         public static ConfigEntry<float> RunaldBaseDamage { get; set; }
         public static ConfigEntry<float> RunaldTotalDamage { get; set; }
 
@@ -176,23 +197,26 @@ namespace UltimateCustomRun
         {
 
             // Global
-            GlobalCritDamageMultiplier = Config.Bind<float>(":: Global : Damage ::", "Crit Damage Multiplier", (float)2f, "The Crit Damage Multiplier, Vanilla is 2");
 
-            PlayerFactorBase = Config.Bind<float>(":: Global :: Scaling ::", "Player Factor Base", (float)0.7f, "The Base Value of the Player Factor, Vanilla is 0.7");
-            PlayerCountMultiplier = Config.Bind<float>(":: Global :: Scaling ::", "Player Count Multiplier", (float)0.3f, "The Multiplier of the Player Count, Vanilla is 0.3");
-            PlayerCountExponent = Config.Bind<float>(":: Global :: Scaling ::", "Player Count Exponent", (float)0.2f, "The Exponent of the Player Count, Vanilla is 0.2");
-            AdditiveStageScaling = Config.Bind<bool>(":: Global :: Scaling ::", "Additive Scaling on Stage Entry", (bool)false, "Should there be Additive Scaling on Stage Entry?, Vanilla is false");
-            AdditiveStageScalingBase = Config.Bind<float>(":: Global :: Scaling ::", "Additive Stage Scaling Add", (float)0f, "How many Seconds to add on Stage Entry?, Vanilla is 0");
-            ExponentialStageScaling = Config.Bind<bool>(":: Global :: Scaling ::", "Exponential Scaling on Stage Entry", (bool)true, "Should there be Exponential Scaling on Stage Entry?, Vanilla is true");
-            ExponentialStageScalingCount = Config.Bind<float>(":: Global :: Scaling ::", "Exponential Stage Scaling Count", (float)1f, "Every Nth Stage Scales the Difficulty Exponentially, Vanilla is 1");
-            ExponentialStageScalingBase = Config.Bind<float>(":: Global :: Scaling ::", "Exponential Stage Scaling Exponent", (float)1.15f, "The Exponent of Exponential Scaling, Vanilla is 1.15");
-            TimeFactorMultiplier = Config.Bind<float>(":: Global :: Scaling ::", "Time Factor Multiplier", (float)0.0506f, "The Time Factor Multiplier of Scaling, Vanilla is 0.0506");
-            AmbientLevelCap = Config.Bind<int>(":: Global :: Scaling ::", "Ambient Level Cap", (int)99, "The Ambient Level Cap of Monsters, Vanilla is 99");
-            GoldRewardExponent = Config.Bind<float>(":: Global :: Scaling ::", "Gold Reward Exponent", (float)1f, "The Exponent of Gold Awarded on kill, Vanilla is 1");
-            GoldRewardDivisorBase = Config.Bind<float>(":: Global :: Scaling ::", "Gold Reward Divisor Base", (float)1f, "The Base Divisor of Gold Awarded on kill, Vanilla is 1");
-            GoldRewardStageClearCountDivisor = Config.Bind<float>(":: Global :: Scaling ::", "Gold Reward Stage Clear Count Divisor", (float)1f, "The Stage Clear Count Divisor of Gold Awarded on kill, Vanilla is 1");
-            Guide = Config.Bind<bool>(":: Global :: Scaling ::", "Time Scaling Guide", (bool)true, "The entire Scaling formula is as follows:\n(Player Factor Base + Player Count * Player Count Multiplier + \nDifficulty Coefficient Multiplier * Difficulty Def Scaling Value \n(1 for Drizzle, 2 for Rainstorm, 3 for Monsoon) * \nPlayer Count ^ Player Count Exponent * \nTime in Minutes) * Exponential Scaling Stage Base ^ Stages Cleared \nI highly recommend changing Gold Scaling while changing these as well");
-            Guide2 = Config.Bind<bool>(":: Global :: Scaling ::", "Gold Scaling Guide", (bool)true, "The entire Scaling formula is as follows:\n(Gold Reward ^ Gold Reward Exponent) / Gold Reward Divisor Base ^ \n(Stage Clear Count / Gold Reward Stage Clear Count Divisor)");
+            EquipmentChargeCap = Config.Bind<int>("::: Global :: Scaling ::", "Equipment Charge Cap", (int)255, "The Maximum amount of Charges an Equipment can have, Vanilla is 255");
+
+            GlobalCritDamageMultiplier = Config.Bind<float>("::: Global : Damage ::", "Crit Damage Multiplier", (float)2f, "The Crit Damage Multiplier, Vanilla is 2");
+
+            PlayerFactorBase = Config.Bind<float>("::: Global :: Scaling ::", "Player Factor Base", (float)0.7f, "The Base Value of the Player Factor, Vanilla is 0.7");
+            PlayerCountMultiplier = Config.Bind<float>("::: Global :: Scaling ::", "Player Count Multiplier", (float)0.3f, "The Multiplier of the Player Count, Vanilla is 0.3");
+            PlayerCountExponent = Config.Bind<float>("::: Global :: Scaling ::", "Player Count Exponent", (float)0.2f, "The Exponent of the Player Count, Vanilla is 0.2");
+            AdditiveStageScaling = Config.Bind<bool>("::: Global :: Scaling ::", "Additive Scaling on Stage Entry", (bool)false, "Should there be Additive Scaling on Stage Entry?, Vanilla is false");
+            AdditiveStageScalingBase = Config.Bind<float>("::: Global :: Scaling ::", "Additive Stage Scaling Add", (float)0f, "How many Seconds to add on Stage Entry?, Vanilla is 0");
+            ExponentialStageScaling = Config.Bind<bool>("::: Global :: Scaling ::", "Exponential Scaling on Stage Entry", (bool)true, "Should there be Exponential Scaling on Stage Entry?, Vanilla is true");
+            ExponentialStageScalingCount = Config.Bind<float>("::: Global :: Scaling ::", "Exponential Stage Scaling Count", (float)1f, "Every Nth Stage Scales the Difficulty Exponentially, Vanilla is 1");
+            ExponentialStageScalingBase = Config.Bind<float>("::: Global :: Scaling ::", "Exponential Stage Scaling Exponent", (float)1.15f, "The Exponent of Exponential Scaling, Vanilla is 1.15");
+            TimeFactorMultiplier = Config.Bind<float>("::: Global :: Scaling ::", "Time Factor Multiplier", (float)0.0506f, "The Time Factor Multiplier of Scaling, Vanilla is 0.0506");
+            AmbientLevelCap = Config.Bind<int>("::: Global :: Scaling ::", "Ambient Level Cap", (int)99, "The Ambient Level Cap of Monsters, Vanilla is 99");
+            GoldRewardExponent = Config.Bind<float>("::: Global :: Scaling ::", "Gold Reward Exponent", (float)1f, "The Exponent of Gold Awarded on kill, Vanilla is 1");
+            GoldRewardDivisorBase = Config.Bind<float>("::: Global :: Scaling ::", "Gold Reward Divisor Base", (float)1f, "The Base Divisor of Gold Awarded on kill, Vanilla is 1");
+            GoldRewardStageClearCountDivisor = Config.Bind<float>("::: Global :: Scaling ::", "Gold Reward Stage Clear Count Divisor", (float)1f, "The Stage Clear Count Divisor of Gold Awarded on kill, Vanilla is 1");
+            Guide = Config.Bind<bool>("::: Global :: Scaling ::", "Time Scaling Guide", (bool)true, "The entire Scaling formula is as follows:\n(Player Factor Base + Player Count * Player Count Multiplier + \nDifficulty Coefficient Multiplier * Difficulty Def Scaling Value \n(1 for Drizzle, 2 for Rainstorm, 3 for Monsoon) * \nPlayer Count ^ Player Count Exponent * \nTime in Minutes) * Exponential Scaling Stage Base ^ Stages Cleared \nI highly recommend changing Gold Scaling while changing these as well");
+            Guide2 = Config.Bind<bool>("::: Global :: Scaling ::", "Gold Scaling Guide", (bool)true, "The entire Scaling formula is as follows:\n(Gold Reward ^ Gold Reward Exponent) / Gold Reward Divisor Base ^ \n(Stage Clear Count / Gold Reward Stage Clear Count Divisor)");
 
             // Whites
             AprDamage = Config.Bind<float>(":: Items : Whites ::", "Armor-Piercing Rounds Damage Coefficient", (float)0.2f, "Decimal. The Damage Coefficient of Armor-Piercing Rounds, Vanilla is 0.2");
@@ -268,14 +292,29 @@ namespace UltimateCustomRun
             BandolierExponent = Config.Bind<float>(":: Items :: Greens ::", "Bandolier Exponent", (float)1f, "The Exponent of Bandolier, Vanilla is 0.33");
             BandolierGuide = Config.Bind<bool>(":: Items :: Greens ::", "Bandolier Formula", (bool)true, "The entire Bandolier formula is as follows: \n1 - 1 / (stack + Bandolier Base)^Bandolier Exponent) * 100\n If you want to make stacking not as bad, lower the base and increase the exponent.");
 
-            BerzerkersKillsReq = Config.Bind<int>(":: Items :: Greens ::", "Berzerkers Pauldron Kills", (int)2, "The Amount of Kills required for Berzerkers Pauldron, Vanilla is 4");
-            BerzerkersDurationBase = Config.Bind<float>(":: Items :: Greens ::", "Berzerkers Pauldron Base Duration", (float)4f, "The Base Buff Duration of Berzerkers Pauldron, Vanilla is 2");
-            BerzerkersDurationStack = Config.Bind<float>(":: Items :: Greens ::", "Berzerkers Pauldron Duration Per Stack", (float)8f, "The Buff Duration of Berzerkers Pauldron, per stack too, Vanilla is 4");
-            BerzerkersBuffArmor = Config.Bind<float>(":: Items :: Greens ::", "Berzerkers Pauldron Buff Armor", (float)50f, "The Armor Increase of Berzerkers Pauldrons Buff, per stack too, Vanilla is 0");
-            BerzerkersUnconditionalArmor = Config.Bind<float>(":: Items :: Greens ::", "Berzerkers Pauldron Unconditional Armor", (float)50f, "The Armor Increase of Berzerkers Pauldrons, per stack too, Vanilla is 0");
+            BerzerkersKillsReq = Config.Bind<int>(":: Items :: Greens ::", "Berzerkers Pauldron Kills", (int)4, "The Amount of Kills required for Berzerkers Pauldron, Vanilla is 4");
+            BerzerkersDurationBase = Config.Bind<float>(":: Items :: Greens ::", "Berzerkers Pauldron Base Duration", (float)2f, "The Base Buff Duration of Berzerkers Pauldron, Vanilla is 2");
+            BerzerkersDurationStack = Config.Bind<float>(":: Items :: Greens ::", "Berzerkers Pauldron Duration Per Stack", (float)4f, "The Buff Duration of Berzerkers Pauldron, per stack too, Vanilla is 4");
+            BerzerkersBuffArmor = Config.Bind<float>(":: Items :: Greens ::", "Berzerkers Pauldron Buff Armor", (float)0f, "The Armor Increase of Berzerkers Pauldrons Buff, per stack too, Vanilla is 0");
+            BerzerkersUnconditionalArmor = Config.Bind<float>(":: Items :: Greens ::", "Berzerkers Pauldron Unconditional Armor", (float)0f, "The Armor Increase of Berzerkers Pauldrons, per stack too, Vanilla is 0");
 
-            ChronobaubleStacking = Config.Bind<bool>(":: Items :: Greens ::", "Chronobauble Stacking", (bool)true, "Should the Attack Speed Decrease of Chronobauble stack?, Vanilla is false");
-            ChronobaubleAS = Config.Bind<float>(":: Items :: Greens ::", "Chronobauble Attack Speed", (float)0.5f, "Decimal. The Attack Speed Decrease of Chronobauble on enemies, per stack too if stacking is enabled, Vanilla is 0");
+            ChronobaubleStacking = Config.Bind<bool>(":: Items :: Greens ::", "Chronobauble Stacking", (bool)false, "Should the Attack Speed Decrease of Chronobauble stack?, Vanilla is false");
+            ChronobaubleAS = Config.Bind<float>(":: Items :: Greens ::", "Chronobauble Attack Speed", (float)0.0f, "Decimal. The Attack Speed Decrease of Chronobauble on enemies, per stack too if stacking is enabled, Vanilla is 0");
+
+            DeathMarkChanges = Config.Bind<bool>(":: Items :: Greens ::", "Death Mark Changes", (bool)false, "Should the Death Mark changes be enabled? Vanilla is false");
+            DeathMarkDmgIncreasePerDebuff = Config.Bind<float>(":: Items :: Greens ::", "Death Mark Damage Increase Per Debuff", (float)0.1f, "Decimal. The Damage Increase Per Debuff of Death Mark");
+            DeathMarkStackBonus = Config.Bind<float>(":: Items :: Greens ::", "Death Mark Damage Bonus Per Debuff Per Stack", (float)0.05f, "Decimal. The Damage Increase Per Debuff Per Stack of Death Mark");
+            DeathMarkMinimumDebuffsRequired = Config.Bind<int>(":: Items :: Greens", "Death Mark Minimum Debuffs", (int)2, "The minimum amount of Debuffs required for Death Mark");
+
+            FuelCellCDR = Config.Bind<float>(":: Items :: Greens ::", "Fuel Cell Cooldown Reduction", (float)0.15f, "Decimal. The Cooldown Reduction of Fuel Cell, per stack too, Vanilla is 0.15");
+
+            GhorsTomeReward = Config.Bind<int>(":: Items :: Greens ::", "Ghors Tome Reward", (int)100025, "The Reward of Ghors Tome, Vanilla is 25");
+            GhorsTomeChance = Config.Bind<float>(":: Items :: Greens ::", "Ghors Tome Chance", (float)50f, "The Chance of Ghors Tome, Vanilla is 4");
+
+            HarvestersCritStack = Config.Bind<bool>(":: Items :: Greens ::", "Harvesters Scythe Crit Chance Stack", (bool)true, "Should Harvesters Scythe stack Crit Chance? Vanilla is false");
+            HarvestersCrit = Config.Bind<float>(":: Items :: Greens ::", "Harvesters Scythe Crit Chance", (float)25f, "The Crit Chance of Harvesters Scythe, Vanilla is 5");
+            HarvestersHealBase = Config.Bind<float>(":: Items :: Greens ::", "Harvesters Scythe Base Healing", (float)1f, "The Base Flat Healing of Harvesters Scythe, Vanilla is 4");
+            HarvestersHealStack = Config.Bind<float>(":: Items :: Greens ::", "Harvesters Scythe Healing Per Stack", (float)4f, "The Flat Healing of Harvesters Scythe, per stack too, Vanilla is 4");
 
             InfusionScaling = Config.Bind<bool>(":: Items :: Greens ::", "Infusion Level Scaling Cap", (bool)false, "Use Infusion's Level Scaling Cap? The formula is: \nInfusion Base Cap * 1 + 0.3 * (Level - 1) * Infusion Count");
             InfusionBaseCap = Config.Bind<float>(":: Items :: Greens ::", "Infusion Base Cap", (float)30f, "The Base Cap of Infusion, used for the Config Option above");
@@ -286,6 +325,8 @@ namespace UltimateCustomRun
             KjaroBaseDamage = Config.Bind<float>(":: Items :: Greens ::", "Kjaros Band Base Damage", (float)0f, "Decimal. The Base Damage Increase of Kjaro's Band, per stack too, Vanilla is 0");
             RunaldTotalDamage = Config.Bind<float>(":: Items :: Greens ::", "Runalds Band Total Damage", (float)2.5f, "Decimal. The Total Damage Increase of Runald's Band, per stack too, Vanilla is 2.5");
             RunaldBaseDamage = Config.Bind<float>(":: Items :: Greens ::", "Runalds Band Base Damage", (float)0f, "Decimal. The Base Damage Increase of Runald's Band, per stack too, Vanilla is 0");
+
+            OldGThreshold = Config.Bind<float>(":: Items :: Greens ::", "Old Guillotine Threshold", (float)13f, "The Threshold of Old Guillotine, Vanilla is 13");
 
             ReplaceRoseBucklerSprintWithHpThreshold = Config.Bind<bool>(":: Items :: Greens ::", "Rose Buckler Disable Sprinting, Enable Health Threshold", (bool)false, "Replace Rose Buckler's Condition to be 'Below X% Health' instead?");
             RoseBucklerThreshold = Config.Bind<float>(":: Items :: Greens ::", "Rose Buckler Health Threshold", (float)0.5f, "Decimal. The Health Threshold of Rose Buckler to be active");
@@ -393,6 +434,23 @@ namespace UltimateCustomRun
             IL.RoR2.CharacterBody.AddMultiKill += BerzerkersPauldron.ChangeBuffDuration;
             RecalculateStatsAPI.GetStatCoefficients += BerzerkersPauldron.AddBehavior;
 
+            RecalculateStatsAPI.GetStatCoefficients += Chronobauble.AddBehavior;
+
+            IL.RoR2.GlobalEventManager.OnHitEnemy += DeathMark.ChangeDebuffsReq;
+            IL.RoR2.HealthComponent.TakeDamage += DeathMark.Changes;
+
+            IL.RoR2.Inventory.CalculateEquipmentCooldownScale += FuelCell.ChangeCDR;
+
+            IL.RoR2.GlobalEventManager.OnCharacterDeath += GhorsTome.ChangeChance;
+            GhorsTome.ChangeReward();
+
+            IL.RoR2.GlobalEventManager.OnCrit += HarvestersScythe.ChangeHealing;
+            IL.RoR2.CharacterBody.RecalculateStats += HarvestersScythe.ChangeCrit;
+            if (HarvestersCritStack.Value)
+            {
+                RecalculateStatsAPI.GetStatCoefficients += HarvestersScythe.AddBehavior;
+            }
+
             RecalculateStatsAPI.GetStatCoefficients += Infusion.BehaviorAddFlatHealth;
             if (InfusionScaling.Value == true)
             {
@@ -401,7 +459,8 @@ namespace UltimateCustomRun
             RecalculateStatsAPI.GetStatCoefficients += Infusion.BehaviorAddPercentHealth;
 
             //IL.RoR2.GlobalEventManager.OnHitEnemy += KjaroChange;
-            //IL.RoR2.GlobalEventManager.OnHitEnemy += RunaldChange;
+
+            IL.RoR2.CharacterBody.OnInventoryChanged += OldGuillotine.ChangeThreshold;
 
             if (ReplaceRoseBucklerSprintWithHpThreshold.Value == true)
             {
@@ -410,6 +469,9 @@ namespace UltimateCustomRun
             }
             IL.RoR2.CharacterBody.RecalculateStats += RoseBuckler.ChangeArmor;
             RecalculateStatsAPI.GetStatCoefficients += RoseBuckler.AddBehavior;
+
+            //IL.RoR2.GlobalEventManager.OnHitEnemy += RunaldChange;
+
 
             // Lunars
 
@@ -552,6 +614,9 @@ namespace UltimateCustomRun
             LanguageAPI.Add("ITEM_BARRIERONKILL_DESC", "Gain a <style=cIsHealing>temporary barrier</style> on kill for <style=cIsHealing>" + TopazBroochBarrier.Value + " health <style=cStack>(+" + TopazBroochBarrier.Value + " per stack)</style></style>.");
             LanguageAPI.Add("ITEM_BLEEDONHIT_DESC", "<style=cIsDamage>" + TriTipChance.Value + "%</style> <style=cStack>(+" + TriTipChance.Value + "% per stack)</style> chance to <style=cIsDamage>bleed</style> an enemy for <style=cIsDamage>240%</style> base damage.");
             LanguageAPI.Add("ITEM_MISSILE_DESC", "<style=cIsDamage>" + AtGChance.Value + "%</style> chance to fire a missile that deals <style=cIsDamage>" + d(AtGDamage.Value) + "</style> <style=cStack>(+" + d(AtGDamage.Value) + " per stack)</style> TOTAL damage.");
+            float bando = Mathf.Round(1f - 1f / Mathf.Pow(1f + BandolierBase.Value, BandolierExponent.Value));
+            float bandol = Mathf.Round(1f - 1f / Mathf.Pow(2f + BandolierBase.Value, BandolierExponent.Value)) - Mathf.Round(1f - 1f / Mathf.Pow(1f + BandolierBase.Value, BandolierExponent.Value));
+            LanguageAPI.Add("ITEM_BANDOLIER_DESC", "<style=cIsUtility>" + d(bando) +"</style> <style=cStack>(+" + d(bandol) + " on stack)</style> chance on kill to drop an ammo pack that <style=cIsUtility>resets all skill cooldowns</style>.");
             LanguageAPI.Add("ITEM_WARCRYONMULTIKILL_PICKUP", "Enter a frenzy after killing " + BerzerkersKillsReq.Value + " enemies in quick succession.");
             var trash = BerzerkersDurationBase.Value + BerzerkersDurationStack.Value;
             if (BerzerkersBuffArmor.Value != 0f)
@@ -572,16 +637,30 @@ namespace UltimateCustomRun
             }
             if (ChronobaubleStacking.Value)
             {
-                LanguageAPI.Add("ITEM_SLOWONHIT_DESC", "<style=cIsUtility>Slow</style> enemies on hit for <style=cIsUtility>-60% movement speed</style> and <style=cIsDamage>-" + d(ChronobaubleAS.Value) + "</style> <style=cStack>(+" + d(ChronobaubleAS.Value) + " per stack)</style> for <style=cIsUtility>2s</style> <style=cStack>(+2s per stack)</style>.");
+                LanguageAPI.Add("ITEM_SLOWONHIT_DESC", "<style=cIsUtility>Slow</style> enemies on hit for <style=cIsUtility>-60% movement speed</style> and <style=cIsDamage>-" + d(ChronobaubleAS.Value) + " attack speed</style> <style=cStack>(+" + d(ChronobaubleAS.Value) + " per stack)</style> for <style=cIsUtility>2s</style> <style=cStack>(+2s per stack)</style>.");
             }
             else
             {
-                LanguageAPI.Add("ITEM_SLOWONHIT_DESC", "<style=cIsUtility>Slow</style> enemies on hit for <style=cIsUtility>-60% movement speed</style> and <style=cIsDamage>-" + d(ChronobaubleAS.Value) + "</style> for <style=cIsUtility>2s</style> <style=cStack>(+2s per stack)</style>.");
+                LanguageAPI.Add("ITEM_SLOWONHIT_DESC", "<style=cIsUtility>Slow</style> enemies on hit for <style=cIsUtility>-60% movement speed</style> and <style=cIsDamage>-" + d(ChronobaubleAS.Value) + " attack speed</style> for <style=cIsUtility>2s</style> <style=cStack>(+2s per stack)</style>.");
             }
-
-
-
-
+            if (DeathMarkChanges.Value)
+            {
+                LanguageAPI.Add("ITEM_DEATHMARK_DESC", "Enemies with <style=cIsDamage>" + DeathMarkMinimumDebuffsRequired.Value + "</style> or more debuffs are <style=cIsDamage>marked for death</style>, increasing damage taken by <style=cIsDamage>" + d(DeathMarkDmgIncreasePerDebuff.Value) + "</style> <style=cStack>(+" + d(DeathMarkDmgIncreasePerDebuff.Value * DeathMarkStackBonus.Value) + " per stack)</style> per debuff from all sources for <style=cIsUtility>7</style> <style=cStack>(+7 per stack)</style> seconds.");
+            }
+            LanguageAPI.Add("ITEM_EQUIPMENTMAGAZINE_DESC", "Hold an <style=cIsUtility>additional equipment charge</style> <style=cStack>(+1 per stack)</style>. <style=cIsUtility>Reduce equipment cooldown</style> by <style=cIsUtility>" + FuelCellCDR.Value + "%</style> <style=cStack>(+" + FuelCellCDR.Value + "% per stack)</style>.");
+            LanguageAPI.Add("ITEM_BONUSGOLDPACKONKILL_DESC", "<style=cIsUtility>" + GhorsTomeChance.Value + "%</style> <style=cStack>(+" + GhorsTomeChance.Value + "% on stack)</style> chance on kill to drop a treasure worth <style=cIsUtility>$" + GhorsTomeReward.Value + "</style>. <style=cIsUtility>Scales over time.</style>");
+            if (HarvestersCritStack.Value)
+            {
+                var literallyeurope = HarvestersHealBase.Value + HarvestersHealStack.Value;
+                LanguageAPI.Add("ITEM_HEALONCRIT_DESC", "Gain <style=cIsDamage>" + HarvestersCrit.Value + "% critical chance</style> <style=cStack>(+" + HarvestersCrit.Value + "% per stack)</style>. <style=cIsDamage>Critical strikes</style> <style=cIsHealing>heal</style> for <style=cIsHealing>" + literallyeurope +"</style> <style=cStack>(+" + HarvestersHealStack.Value + " per stack)</style> <style=cIsHealing>health</style>.");
+            }
+            else
+            {
+                LanguageAPI.Add("ITEM_HEALONCRIT_DESC", "Gain <style=cIsDamage>5% critical chance</style>. <style=cIsDamage>Critical strikes</style> <style=cIsHealing>heal</style> for <style=cIsHealing>8</style> <style=cStack>(+4 per stack)</style> <style=cIsHealing>health</style>.");
+            }
+            float g = Mathf.Round(1f - 100f / (100f + OldGThreshold.Value));
+            float gf = Mathf.Round(1f - 100f / (100f + (OldGThreshold.Value * 2)));
+            LanguageAPI.Add("ITEM_EXECUTELOWHEALTHELITE_DESC", "Instantly kill Elite monsters below <style=cIsHealth>" + d(g) + "% <style=cStack>(+" + d(gf) + "% per stack)</style> health</style>.");
 
 
 

@@ -23,8 +23,8 @@ namespace UltimateCustomRun
 
             c.GotoNext(MoveType.Before,
                 x => x.MatchLdsfld("RoR2.RoR2Content/Buffs", "WarCryBuff"),
-                x => x.MatchLdcR4(2),
-                x => x.MatchLdcR4(4)
+                x => x.MatchLdcR4(2f),
+                x => x.MatchLdcR4(4f)
             );
             c.Index += 1;
             c.Next.Operand = Main.BerzerkersDurationBase.Value;
@@ -50,5 +50,7 @@ namespace UltimateCustomRun
             }
             args.armorAdd += Main.BerzerkersUnconditionalArmor.Value * stack;
         }
+
+        // TODO: Ask Moffein for his Pauldron changes and implement them :plead
     }
 }

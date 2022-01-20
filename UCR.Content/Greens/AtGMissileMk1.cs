@@ -9,7 +9,7 @@ namespace UltimateCustomRun
             ILCursor c = new ILCursor(il);
 
             c.GotoNext(MoveType.Before,
-                x => x.MatchLdcR4(10)
+                x => x.MatchLdcR4(10f)
             );
             c.Next.Operand = Main.AtGChance.Value;
         }
