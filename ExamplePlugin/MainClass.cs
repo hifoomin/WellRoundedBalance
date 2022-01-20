@@ -11,6 +11,7 @@ using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using System;
 using UnityEngine.Networking;
+using System.Collections.Generic;
 
 namespace UltimateCustomRun
 {
@@ -25,7 +26,15 @@ namespace UltimateCustomRun
         public const string PluginName = "UltimateCustomRun";
         public const string PluginVersion = "1.0.0";
 
-        // I dont know how to make the configs autogenerate :pain:
+        // I REALLY need help on how to autogenerate configs AND descriptions.
+        // AND I also need to add description compat for itemstatsmod............... HELP
+        // PLEASE HELP
+        //  _   _  _____ _     ______ 
+        // | | | ||  ___| |    | ___ \
+        // | |_| || |__ | |    | |_/ /
+        // |  _  ||  __|| |    |  __/ 
+        // | | | || |___| |____| |    
+        // \_| |_/\____/\_____/\_|    
 
         // Global
         public static ConfigEntry<float> GlobalCritDamageMultiplier { get; set; }
@@ -61,8 +70,12 @@ namespace UltimateCustomRun
         public static ConfigEntry<float> BungusRadius { get; set; }
         public static ConfigEntry<float> BungusRadiusStack { get; set; }
 
+        public static ConfigEntry<float> CautiousSlugHealing { get; set; }
+
         public static ConfigEntry<float> CrowbarDamage { get; set; }
         public static ConfigEntry<float> CrowbarThreshold { get; set; }
+
+        public static ConfigEntry<float> EnergyDrinkSpeed { get; set; }
 
         public static ConfigEntry<int> FireworksCount { get; set; }
         public static ConfigEntry<int> FireworksCountStack { get; set; }
@@ -74,12 +87,21 @@ namespace UltimateCustomRun
 
         public static ConfigEntry<float> LensMakersCrit { get; set; }
 
+        public static ConfigEntry<float> MedkitFlatHealing { get; set; }
+        public static ConfigEntry<float> MedkitPercentHealing { get; set; }
+
         //public static ConfigEntry<float> MonsterToothFlatHealing { get; set; }
         //public static ConfigEntry<float> MonsterToothPercentHealing { get; set; }
+
+        public static ConfigEntry<float> PoofSpeed { get; set; }
+
+        public static ConfigEntry<float> PSGPercent { get; set; }
 
         public static ConfigEntry<float> RapArmor { get; set; }
         public static ConfigEntry<float> RapFlatDmgDecrease { get; set; }
         public static ConfigEntry<float> RapMinimumDmgTaken { get; set; }
+
+        public static ConfigEntry<float> SoldiersSyringeAS { get; set; }
 
         public static ConfigEntry<float> StickyBombChance { get; set; }
         public static ConfigEntry<float> StickyBombDamage { get; set; }
@@ -87,8 +109,13 @@ namespace UltimateCustomRun
         public static ConfigEntry<bool> StickyBombFalloff { get; set; }
         public static ConfigEntry<float> StickyBombRadius { get; set; }
 
+        public static ConfigEntry<float> TopazBroochBarrier { get; set; }
+
         public static ConfigEntry<float> TougherTimesArmor { get; set; }
         public static ConfigEntry<float> TougherTimesBlockChance { get; set; }
+
+        public static ConfigEntry<float> TriTipChance { get; set; }
+        public static ConfigEntry<float> TriTipDuration { get; set; }
 
         public static ConfigEntry<float> WarbannerDamage { get; set; }
         public static ConfigEntry<float> WarbannerRadius { get; set; }
@@ -124,13 +151,14 @@ namespace UltimateCustomRun
         public static ConfigEntry<float> HooksExplosionDamage { get; set; }
         public static ConfigEntry<float> HooksExplosionProcCoefficient { get; set; }
         public static ConfigEntry<float> HooksExplosionRadius { get; set; }
-
+        
         public static ConfigEntry<int> StridesCharges { get; set; }
         public static ConfigEntry<float> StridesCooldown { get; set; }
         public static ConfigEntry<float> StridesDuration { get; set; }
         public static ConfigEntry<float> StridesHealingPercent { get; set; }
         public void Awake()
         {
+
             // Global
             GlobalCritDamageMultiplier = Config.Bind<float>(":: Global : Damage ::", "Crit Damage Multiplier", (float)2f, "The Crit Damage Multiplier, Vanilla is 2");
 
@@ -149,6 +177,7 @@ namespace UltimateCustomRun
             GoldRewardStageClearCountDivisor = Config.Bind<float>(":: Global :: Scaling ::", "Gold Reward Stage Clear Count Divisor", (float)1f, "The Stage Clear Count Divisor of Gold Awarded on kill, Vanilla is 1");
             Guide = Config.Bind<bool>(":: Global :: Scaling ::", "Time Scaling Guide", (bool)true, "The entire Scaling formula is as follows:\n(Player Factor Base + Player Count * Player Count Multiplier + \nDifficulty Coefficient Multiplier * Difficulty Def Scaling Value \n(1 for Drizzle, 2 for Rainstorm, 3 for Monsoon) * \nPlayer Count ^ Player Count Exponent * \nTime in Minutes) * Exponential Scaling Stage Base ^ Stages Cleared \nI highly recommend changing Gold Scaling while changing these as well");
             Guide2 = Config.Bind<bool>(":: Global :: Scaling ::", "Gold Scaling Guide", (bool)true, "The entire Scaling formula is as follows:\n(Gold Reward ^ Gold Reward Exponent) / Gold Reward Divisor Base ^ \n(Stage Clear Count / Gold Reward Stage Clear Count Divisor)");
+
             // Whites
             AprDamage = Config.Bind<float>(":: Items : Whites ::", "Armor-Piercing Rounds Damage Coefficient", (float)0.2f, "Decimal. The Damage Coefficient of Armor-Piercing Rounds, Vanilla is 0.2");
 
@@ -163,11 +192,15 @@ namespace UltimateCustomRun
             BungusRadius = Config.Bind<float>(":: Items : Whites ::", "Bustling Fungus Radius", (float)1.5f, "The Radius of Bustling Fungus, Vanilla is 1.5");
             BungusRadiusStack = Config.Bind<float>(":: Items : Whites ::", "Bustling Fungus Radius Per Stack", (float)1.5f, "The Radius of Bustling Fungus, per stack, Vanilla is 1.5");
 
+            CautiousSlugHealing = Config.Bind<float>(":: Items : Whites ::", "Cautious Slug Regen", (float)3f, "The Regen increase of Cautious Slug, per stack too, Vanilla is 3");
+
             CrowbarThreshold = Config.Bind<float>(":: Items : Whites ::", "Crowbar Threshold", (float)0.9f, "Decimal. The Threshold of Crowbar to activate, Vanilla is 0.9");
             CrowbarDamage = Config.Bind<float>(":: Items : Whites ::", "Crowbar Damage Coefficient", (float)0.75f, "Decimal. The Damage increase of Crowbar, Vanilla is 0.75");
 
-            FireworksCount = Config.Bind<int>(":: Items : Whites ::", "Fireworks Count", (int)6, "The Amount of Fireworks fired, Vanilla is 4");
-            FireworksCountStack = Config.Bind<int>(":: Items : Whites ::", "Fireworks Count Per Stack", (int)6, "The Amount of Fireworks fired, per stack, Vanilla is 4");
+            EnergyDrinkSpeed = Config.Bind<float>(":: Items : Whites ::", "Energy Drink Speed", (float)0.25f, "Decimal. The Speed increase of Energy Drink, per stack too, Vanilla is 0.25");
+
+            FireworksCount = Config.Bind<int>(":: Items : Whites ::", "Fireworks Count", (int)4, "The Amount of Fireworks fired, Vanilla is 4");
+            FireworksCountStack = Config.Bind<int>(":: Items : Whites ::", "Fireworks Count Per Stack", (int)4, "The Amount of Fireworks fired, per stack, Vanilla is 4");
             FireworksDamage = Config.Bind<float>(":: Items : Whites ::", "Fireworks Damage Coefficient", (float)3f, "Decimal. The Damage Coefficient of each Firework, Vanilla is 3");
             FireworksProcCo = Config.Bind<float>(":: Items : Whites ::", "Fireworks Proc Coefficient", (float)0.2f, "The Proc Coefficient of each Firework, Vanilla is 0.2");
 
@@ -176,12 +209,22 @@ namespace UltimateCustomRun
 
 
             LensMakersCrit = Config.Bind<float>(":: Items : Whites ::", "Lens-makers Glasses Crit", (float)10f, "The Crit Chance of Lens-makers Glasses, per stack too, Vanilla is 10");
+
+            MedkitFlatHealing = Config.Bind<float>(":: Items : Whites ::", "Medkit Flat Healing", (float)20f, "The Flat Healing of Medkit, Vanilla is 20");
+            MedkitPercentHealing = Config.Bind<float>(":: Items : Whites ::", "Medkit Percent Healing", (float)0.05f, "Decimal. The Percent Healing of Medkit, Vanilla is 0.05");
+
             //MonsterToothFlatHealing = Config.Bind<float>(":: Items : Whites ::", "Monster Tooth Flat Heal", (float)8f, "The Flat Healing of Monster Tooth, only first stack");
             //MonsterToothPercentHealing = Config.Bind<float>(":: Items : Whites ::", "Monster Tooth Percent Heal", (float)0.04f, "The Percent Healing of Monster Tooth, only first stack");
+
+            PoofSpeed = Config.Bind<float>(":: Items : Whites ::", "Pauls Goat Hoof Speed", (float)0.14f, "Decimal. The Speed increase of Pauls Goat Hoof, per stack too, Vanilla is 0.14");
+
+            PSGPercent = Config.Bind<float>(":: Items : Whites ::", "Personal Shield Generator Percent Increase", (float)0.08f, "Decimal. The Percent Shield increase of Personal Shield Generator, per stack too, Vanilla is 0.08");
 
             RapFlatDmgDecrease = Config.Bind<float>(":: Items : Whites ::", "Repulsion Armor Plate Flat Damage Reduction", (float)5f, "The Flat Damage Reduction of Repulsion Armor Plate, per stack too, Vanilla is 5");
             RapMinimumDmgTaken = Config.Bind<float>(":: Items : Whites ::", "Repulsion Armor Plate Minimum Damage", (float)1f, "The Minimum Damage Taken with Repulsion Armor Plate, Vanilla is 1");
             RapArmor = Config.Bind<float>(":: Items : Whites ::", "Repulsion Armor Plate Armor", (float)0f, "The Armor increase of Repulsion Armor Plate, per stack too, Vanilla is 0");
+
+            SoldiersSyringeAS = Config.Bind<float>(":: Items : Whites ::", "Soldiers Syringe Attack Speed", (float)0.15f, "Decimal. The Attack Speed increase of Soldiers Syringe, per stack too, Vanilla is 0.15");
 
             StickyBombDamage = Config.Bind<float>(":: Items : Whites ::", "Sticky Bomb Damage Coefficient", (float) 1.8f, "Decimal. The Total Damage of Sticky Bomb, Vanilla is 1.8");
             StickyBombChance = Config.Bind<float>(":: Items : Whites ::", "Sticky Bomb Chance", (float)5f, "The Proc Chance of Sticky Bomb, per stack too, Vanilla is 5");
@@ -189,15 +232,19 @@ namespace UltimateCustomRun
             StickyBombFalloff = Config.Bind<bool>(":: Items : Whites ::", "Sticky Bomb Falloff Type", (true), "The Falloff Type of Sticky Bomb, if set to true, use Sweetspot, if set to false, use None, Vanilla is Sweetspot");
             StickyBombDelay = Config.Bind<float>(":: Items : Whites ::", "Sticky Bomb Explosion Delay", (float)1.5f, "Decimal. The Explosion Delay of Sticky Bomb, Vanilla is 1.5");
 
-            TougherTimesBlockChance = Config.Bind<float>(":: Items : Whites ::", "Tougher Times Block Chance", (float)15f, "The Block Chance of Tougher Times, per stack too, Vanilla is 15");
-            TougherTimesArmor = Config.Bind<float>(":: Items : Whites ::", "Tougher Times Armor", (float)0f, "The Armor increase of Tougher Times, per stack too. Vanilla is 0");
+            TopazBroochBarrier = Config.Bind<float>(":: Items : Whites ::", "Topaz Brooch Barrier", (float)15f, "The Barrier gain of Topaz Brooch, per stack too, Vanilla is 15");
 
-            WarbannerDamage = Config.Bind<float>(":: Items : Whites ::", "Warbanner Base Damage", (float)16, "The Base Damage increase of Warbanner in its radius, per stack too, Vanilla is 0");
-            WarbannerRadius = Config.Bind<float>(":: Items : Whites ::", "Warbanner Base Radius", (float)16, "The Base Radius of Warbanner in its radius, Vanilla is 8");
-            WarbannerRadiusStack = Config.Bind<float>(":: Items : Whites ::", "Warbanner Radius Per Stack", (float)16, "The Radius of Warbanner in its radius, per stack, Vanilla is 8");
+            TougherTimesBlockChance = Config.Bind<float>(":: Items : Whites ::", "Tougher Times Block Chance", (float)15f, "The Block Chance of Tougher Times, per stack too, Vanilla is 15");
+            TougherTimesArmor = Config.Bind<float>(":: Items : Whites ::", "Tougher Times Armor", (float)0f, "The Armor increase of Tougher Times, per stack too, Vanilla is 0");
+
+            TriTipChance = Config.Bind<float>(":: Items : Whites ::", "Tri Tip Dagger Chance", (float)10f, "The Chance of Tri Tip Dagger, per stack too, Vanilla is 10");
+            TriTipDuration = Config.Bind<float>(":: Items : Whites ::", "Tri Tip Dagger Duration", (float)3f, "The Duration of Tri Tip Daggers Bleed, Vanilla is 3");
+
+            WarbannerDamage = Config.Bind<float>(":: Items : Whites ::", "Warbanner Base Damage", (float)16f, "The Base Damage increase of Warbanner in its radius, per stack too, Vanilla is 0");
+            WarbannerRadius = Config.Bind<float>(":: Items : Whites ::", "Warbanner Base Radius", (float)8f, "The Base Radius of Warbanner in its radius, Vanilla is 8");
+            WarbannerRadiusStack = Config.Bind<float>(":: Items : Whites ::", "Warbanner Radius Per Stack", (float)8f, "The Radius of Warbanner in its radius, per stack, Vanilla is 8");
 
             // Greens
-
             InfusionScaling = Config.Bind<bool>(":: Items :: Greens ::", "Infusion Level Scaling Cap", (bool)false, "Use Infusion's Level Scaling Cap? The formula is: \nInfusion Base Cap * 1 + 0.3 * (Level - 1) * Infusion Count");
             InfusionBaseCap = Config.Bind<float>(":: Items :: Greens ::", "Infusion Base Cap", (float)30f, "The Base Cap of Infusion, used for the Config Option above");
             InfusionBaseHealth = Config.Bind<float>(":: Items :: Greens ::", "Infusion Base Health", (float)25f, "The Max Health Increase of Infusion, per stack too, Vanilla is 0");
@@ -228,16 +275,16 @@ namespace UltimateCustomRun
 
             StridesCharges = Config.Bind<int>(":: Items :::: Lunars ::", "Strides of Heresy Charges", (int)1, "The amount of Charges of Strides of Heresy, Vanilla is 1");
             StridesCooldown = Config.Bind<float>(":: Items :::: Lunars ::", "Strides of Heresy Cooldown", (float)6f, "The Cooldown of Strides of Heresy, Vanilla is 6");
-            StridesDuration = Config.Bind<float>(":: Items :::: Lunars ::", "Strides of Heresy Duration", (float)3, "The Duration of Strides of Heresy, Vanilla is 3");
+            StridesDuration = Config.Bind<float>(":: Items :::: Lunars ::", "Strides of Heresy Duration", (float)3f, "The Duration of Strides of Heresy, Vanilla is 3");
             StridesHealingPercent = Config.Bind<float>(":: Items :::: Lunars ::", "Strides of Heresy Healing Per Tick", (float)0.013, "Decimal. The Healing Per Tick of Charges of Strides of Heresy, Vanilla is 0.013");
 
             ChangeDescriptions();
 
             // Global
 
-            IL.RoR2.HealthComponent.TakeDamage += GlobalCritMultChange;
+            IL.RoR2.HealthComponent.TakeDamage += CritMultiplier.ChangeDamage;
 
-            ChangeScaling();
+            Scaling.ChangeBehavior();
 
             // Whites
 
@@ -254,8 +301,12 @@ namespace UltimateCustomRun
             IL.RoR2.CharacterBody.MushroomItemBehavior.FixedUpdate += BustlingFungus.ChangeRadius;
             IL.RoR2.CharacterBody.MushroomItemBehavior.FixedUpdate += BustlingFungus.ChangeHealing;
 
+            IL.RoR2.CharacterBody.RecalculateStats += CautiousSlug.ChangeHealing;
+
             IL.RoR2.HealthComponent.TakeDamage += Crowbar.ChangeDamage;
             IL.RoR2.HealthComponent.TakeDamage += Crowbar.ChangeThreshold;
+
+            IL.RoR2.CharacterBody.RecalculateStats += EnergyDrink.ChangeSpeed;
 
             IL.RoR2.GlobalEventManager.OnInteractionBegin += Fireworks.ChangeCount;
             Fireworks.Changes();
@@ -266,18 +317,32 @@ namespace UltimateCustomRun
 
             IL.RoR2.CharacterBody.RecalculateStats += LensMakersGlasses.ChangeCrit;
 
+            IL.RoR2.CharacterBody.RemoveBuff_BuffIndex += Medkit.ChangeFlatHealing;
+            IL.RoR2.CharacterBody.RemoveBuff_BuffIndex += Medkit.ChangePercentHealing;
+
             //IncreaseMonsterToothHealing();
+
+            IL.RoR2.CharacterBody.RecalculateStats += PaulsGoatHoof.ChangeSpeed;
+
+            IL.RoR2.CharacterBody.RecalculateStats += PersonalShieldGenerator.ChangeShieldPercent;
 
             RecalculateStatsAPI.GetStatCoefficients += RepulsionArmorPlate.AddBehavior;
             IL.RoR2.HealthComponent.TakeDamage += RepulsionArmorPlate.ChangeReduction;
             IL.RoR2.HealthComponent.TakeDamage += RepulsionArmorPlate.ChangeMinimum;
 
+            IL.RoR2.CharacterBody.RecalculateStats += SoldiersSyringe.ChangeAS;
+
             StickyBomb.Changes();
             IL.RoR2.GlobalEventManager.OnHitEnemy += StickyBomb.ChangeChance;
             // IL.RoR2.SetStateOnHurt.OnTakeDamageServer += StunGrenade.ChangeBehavior;
 
+            IL.RoR2.GlobalEventManager.OnCharacterDeath += TopazBrooch.ChangeBarrier;
+
             RecalculateStatsAPI.GetStatCoefficients += TougherTimes.AddBehavior;
             IL.RoR2.HealthComponent.TakeDamage += TougherTimes.ChangeBlock;
+
+            IL.RoR2.GlobalEventManager.OnHitEnemy += TriTipDagger.ChangeChance;
+            IL.RoR2.GlobalEventManager.OnHitEnemy += TriTipDagger.ChangeDuration;
 
             RecalculateStatsAPI.GetStatCoefficients += Warbanner.AddBehavior;
             IL.RoR2.TeleporterInteraction.ChargingState.OnEnter += Warbanner.ChangeRadiusTP;
@@ -310,73 +375,6 @@ namespace UltimateCustomRun
         public static string d(float f)
         {
             return (f * 100).ToString() + "%";
-        }
-
-        // Global
-
-        private void GlobalCritMultChange(ILContext il)
-        {
-            ILCursor c = new ILCursor(il);
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdfld<DamageInfo>("crit"),
-                x => x.MatchBrfalse(out _),
-                x => x.MatchLdloc(out _),
-                x => x.MatchLdcR4(2f)
-            );
-            c.Index += 3;
-            c.Next.Operand = GlobalCritDamageMultiplier.Value;
-        }
-
-        private void ChangeScaling()
-        {
-            On.RoR2.Run.RecalculateDifficultyCoefficentInternal += (orig, self) =>
-            {
-                int playerCount = self.participatingPlayerCount;
-                float time = self.GetRunStopwatch() * 0.016666668f; // stupid vanilla workaround
-
-                DifficultyDef difficultyDef = DifficultyCatalog.GetDifficultyDef(self.selectedDifficulty);
-                float playerFactor = PlayerFactorBase.Value + playerCount * PlayerCountMultiplier.Value;
-                float timeFactor = time * TimeFactorMultiplier.Value * difficultyDef.scalingValue;
-                float playerScalar = (float)Math.Pow(playerCount, PlayerCountExponent.Value);
-                float stageFactor = 1f;
-                if (ExponentialStageScaling.Value && AdditiveStageScaling.Value == false)
-                {
-                    stageFactor = Mathf.Pow(ExponentialStageScalingBase.Value, self.stageClearCount / ExponentialStageScalingCount.Value);
-                }
-                else if (AdditiveStageScaling.Value && ExponentialStageScaling.Value == false)
-                {
-                    stageFactor = 1f;
-                    time += AdditiveStageScalingBase.Value;
-                }
-                else if (ExponentialStageScaling.Value && AdditiveStageScaling.Value)
-                {
-                    stageFactor = Mathf.Pow(ExponentialStageScalingBase.Value, self.stageClearCount / ExponentialStageScalingCount.Value);
-                    time += AdditiveStageScalingBase.Value;
-                }
-                else
-                {
-                    stageFactor = 1f;
-                }
-                float finalDifficulty = (playerFactor + timeFactor * playerScalar) * stageFactor;
-                self.compensatedDifficultyCoefficient = finalDifficulty;
-                self.difficultyCoefficient = finalDifficulty;
-                self.ambientLevel = Mathf.Min(3f * (finalDifficulty - playerFactor) + 1f, Run.ambientLevelCap);
-
-                //Vanilla code
-                Run.ambientLevelCap = AmbientLevelCap.Value;
-                int ambientLevelFloor = self.ambientLevelFloor;
-                self.ambientLevelFloor = Mathf.FloorToInt(self.ambientLevel);
-                if (ambientLevelFloor != self.ambientLevelFloor && ambientLevelFloor != 0 && self.ambientLevelFloor > ambientLevelFloor)
-                {
-                    self.OnAmbientLevelUp();
-                }
-
-            };
-            On.RoR2.DeathRewards.OnKilledServer += (orig, self, damageReport) =>
-            {
-                self.goldReward = (uint)Mathf.CeilToInt(Mathf.Pow(self.goldReward, GoldRewardExponent.Value) / Mathf.Pow(GoldRewardDivisorBase.Value, Run.instance.stageClearCount / GoldRewardStageClearCountDivisor.Value));
-                orig(self, damageReport);
-            };
         }
 
         private void ChangeDescriptions()
@@ -497,10 +495,24 @@ namespace UltimateCustomRun
                     $" up to a <style=cIsHealing>maximum</style> of" +
                     $" <style=cIsHealing>100 <style=cStack>(+100 per stack)</style> health</style>." +
                     (useScalingInfusion ? $" Scales with level." : ""));
+                // this is so painfully unreadable
             }
             var bru = FireworksCount.Value + FireworksCountStack.Value;
             LanguageAPI.Add("ITEM_FIREWORK_DESC", "Activating an interactable <style=cIsDamage>launches " + bru + " <style=cStack>(+" + FireworksCountStack.Value + " per stack)</style> fireworks</style> that deal <style=cIsDamage>" + d(FireworksDamage.Value) + "%</style> base damage.");
             LanguageAPI.Add("ITEM_LUNARPRIMARYREPLACEMENT_DESC", "<style=cIsUtility>Replace your Primary Skill</style> with <style=cIsUtility>Hungering Gaze</style>. \n\nFire a flurry of <style=cIsUtility>tracking shards</style> that detonate after a delay, dealing <style=cIsDamage>120%</style> base damage. Hold up to " + VisionsCharges.Value + " charges <style=cStack>(+12 per stack)</style> that reload after " + VisionsCooldown.Value + " seconds <style=cStack>(+2 per stack)</style>.");
+            LanguageAPI.Add("ITEM_HEALWHILESAFE_DESC", "Increases <style=cIsHealing>base health regeneration</style> by <style=cIsHealing>+" + CautiousSlugHealing.Value + " hp/s</style> <style=cStack>(+" + CautiousSlugHealing.Value + " hp/s per stack)</style>while outside of combat.");
+            LanguageAPI.Add("ITEM_SPRINTBONUS_DESC", "<style=cIsUtility>Sprint speed</style> is improved by <style=cIsUtility>" + d(EnergyDrinkSpeed.Value) + "</style> <style=cStack>(+" + d(EnergyDrinkSpeed.Value) + " per stack)</style>.");
+            LanguageAPI.Add("ITEM_MEDKIT_DESC", "2 seconds after getting hurt, <style=cIsHealing>heal</style> for <style=cIsHealing>" + MedkitFlatHealing.Value + "</style> plus an additional <style=cIsHealing>" + d(MedkitPercentHealing.Value) + " <style=cStack>(+" + d(MedkitPercentHealing.Value) + " per stack)</style></style> of <style=cIsHealing>maximum health</style>.");
+            LanguageAPI.Add("ITEM_HOOF_DESC", "Increases <style=cIsUtility>movement speed</style> by <style=cIsUtility>" + d(PoofSpeed.Value) + "</style> <style=cStack>(+" + d(PoofSpeed.Value) + " per stack)</style>.");
+            LanguageAPI.Add("ITEM_PERSONALSHIELD_DESC", "Gain a <style=cIsHealing>shield</style> equal to <style=cIsHealing>" + d(PSGPercent.Value) + "</style> <style=cStack>(+" + d(PSGPercent.Value) + " per stack)</style> of your maximum health. Recharges outside of danger.");
+            LanguageAPI.Add("ITEM_SYRINGE_DESC", "Increases <style=cIsDamage>attack speed</style> by <style=cIsDamage>" + d(SoldiersSyringeAS.Value) + " <style=cStack>(+" + d(SoldiersSyringeAS.Value) + " per stack)</style></style>.");
+            LanguageAPI.Add("ITEM_BARRIERONKILL_DESC", "Gain a <style=cIsHealing>temporary barrier</style> on kill for <style=cIsHealing>" + TopazBroochBarrier.Value + " health <style=cStack>(+" + TopazBroochBarrier.Value + " per stack)</style></style>.");
+            LanguageAPI.Add("ITEM_BLEEDONHIT_DESC", "<style=cIsDamage>" + TriTipChance.Value + "%</style> <style=cStack>(+" + TriTipChance.Value + "% per stack)</style> chance to <style=cIsDamage>bleed</style> an enemy for <style=cIsDamage>240%</style> base damage.");
+
+
+
+
+
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿
+﻿using RoR2;
+using UnityEngine;
+
 namespace UltimateCustomRun
 {
     static class MonsterTooth
@@ -11,8 +13,8 @@ namespace UltimateCustomRun
         {
             var MonsterTooth = Resources.Load<GameObject>("Prefabs/NetworkedObjects/HealPack");
             HealthPickup cic = MonsterTooth.GetComponentInChildren<HealthPickup>();
-            cic.flatHealing = MonsterToothFlatHealing.Value;
-            cic.fractionalHealing = MonsterToothPercentHealing.Value;
+            //cic.flatHealing = Main.MonsterToothFlatHealing.Value;
+            //cic.fractionalHealing = Main.MonsterToothPercentHealing.Value;
         }
         // farthest i got
         // fuck this item j

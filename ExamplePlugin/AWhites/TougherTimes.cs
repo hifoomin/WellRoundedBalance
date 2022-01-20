@@ -9,8 +9,6 @@ using UnityEngine;
 using BepInEx.Configuration;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
-using System;
-using UnityEngine.Networking;
 
 namespace UltimateCustomRun
 {

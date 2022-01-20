@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace UltimateCustomRun.Lunars
+namespace UltimateCustomRun
 {
     class EssenceOfHeresy
     {
