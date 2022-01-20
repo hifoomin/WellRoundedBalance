@@ -1,0 +1,54 @@
+﻿using MonoMod.Cil;
+using R2API;
+using RoR2;
+
+namespace UltimateCustomRun
+{
+    static class BerzerkersPauldron
+    {
+        public static void ChangeKillCount(ILContext il)
+        {
+            ILCursor c = new ILCursor(il);
+
+            c.GotoNext(MoveType.Before,
+                x => x.MatchCallOrCallvirt<RoR2.CharacterBody>("get_multiKillCount"),
+                x => x.MatchLdcI4(4)
+            );
+            c.Index += 1;
+            c.Next.Operand = Main.BerzerkersKillsReq.Value;
+        }
+        public static void ChangeBuffDuration(ILContext il)
+        {
+            ILCursor c = new ILCursor(il);
+
+            c.GotoNext(MoveType.Before,
+                x => x.MatchLdsfld("RoR2.RoR2Content/Buffs", "WarCryBuff"),
+                x => x.MatchLdcR4(2),
+                x => x.MatchLdcR4(4)
+            );
+            c.Index += 1;
+            c.Next.Operand = Main.BerzerkersDurationBase.Value;
+            c.Index += 1;
+            c.Next.Operand = Main.BerzerkersDurationStack.Value;
+        }
+        public static void ChangeBuffStats(ILContext il)
+        {
+            ILCursor c = new ILCursor(il);
+
+            c.GotoNext(MoveType.Before
+
+                // this changes both gorags and pauldron so i will do the stupid workaround instead
+            );
+        }
+        public static void AddBehavior(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
+        {
+            var buff = sender.HasBuff(RoR2Content.Buffs.WarCryBuff);
+            var stack = sender.inventory.GetItemCount(RoR2.RoR2Content.Items.WarCryOnMultiKill);
+            if (sender.inventory && buff && stack > 0)
+            {
+                args.armorAdd += Main.BerzerkersBuffArmor.Value;
+            }
+            args.armorAdd += Main.BerzerkersUnconditionalArmor.Value * stack;
+        }
+    }
+}

@@ -90,8 +90,8 @@ namespace UltimateCustomRun
         public static ConfigEntry<float> MedkitFlatHealing { get; set; }
         public static ConfigEntry<float> MedkitPercentHealing { get; set; }
 
-        //public static ConfigEntry<float> MonsterToothFlatHealing { get; set; }
-        //public static ConfigEntry<float> MonsterToothPercentHealing { get; set; }
+        public static ConfigEntry<float> MonsterToothFlatHealing { get; set; }
+        public static ConfigEntry<float> MonsterToothPercentHealing { get; set; }
 
         public static ConfigEntry<float> PoofSpeed { get; set; }
 
@@ -122,6 +122,22 @@ namespace UltimateCustomRun
         public static ConfigEntry<float> WarbannerRadiusStack { get; set; }
 
         // Greens
+
+        public static ConfigEntry<float> AtGChance { get; set; }
+        public static ConfigEntry<float> AtGDamage { get; set; }
+
+        public static ConfigEntry<float> BandolierBase { get; set; }
+        public static ConfigEntry<float> BandolierExponent { get; set; }
+        public static ConfigEntry<bool> BandolierGuide { get; set; }
+
+        public static ConfigEntry<int> BerzerkersKillsReq { get; set; }
+        public static ConfigEntry<float> BerzerkersDurationBase { get; set; }
+        public static ConfigEntry<float> BerzerkersDurationStack { get; set; }
+        public static ConfigEntry<float> BerzerkersBuffArmor { get; set; }
+        public static ConfigEntry<float> BerzerkersUnconditionalArmor { get; set; }
+
+        public static ConfigEntry<float> ChronobaubleAS { get; set; }
+        public static ConfigEntry<bool> ChronobaubleStacking { get; set; }
 
         public static ConfigEntry<float> InfusionBaseCap { get; set; }
         public static ConfigEntry<float> InfusionBaseHealth { get; set; }
@@ -213,8 +229,8 @@ namespace UltimateCustomRun
             MedkitFlatHealing = Config.Bind<float>(":: Items : Whites ::", "Medkit Flat Healing", (float)20f, "The Flat Healing of Medkit, Vanilla is 20");
             MedkitPercentHealing = Config.Bind<float>(":: Items : Whites ::", "Medkit Percent Healing", (float)0.05f, "Decimal. The Percent Healing of Medkit, Vanilla is 0.05");
 
-            //MonsterToothFlatHealing = Config.Bind<float>(":: Items : Whites ::", "Monster Tooth Flat Heal", (float)8f, "The Flat Healing of Monster Tooth, only first stack");
-            //MonsterToothPercentHealing = Config.Bind<float>(":: Items : Whites ::", "Monster Tooth Percent Heal", (float)0.04f, "The Percent Healing of Monster Tooth, only first stack");
+            MonsterToothFlatHealing = Config.Bind<float>(":: Items : Whites ::", "Monster Tooth Flat Heal", (float)8f, "The Flat Healing of Monster Tooth, Vanilla is 8");
+            MonsterToothPercentHealing = Config.Bind<float>(":: Items : Whites ::", "Monster Tooth Percent Heal", (float)0.02f, "Decimal. The Percent Healing of Monster Tooth, per stack too, Vanilla is 0.02");
 
             PoofSpeed = Config.Bind<float>(":: Items : Whites ::", "Pauls Goat Hoof Speed", (float)0.14f, "Decimal. The Speed increase of Pauls Goat Hoof, per stack too, Vanilla is 0.14");
 
@@ -245,6 +261,22 @@ namespace UltimateCustomRun
             WarbannerRadiusStack = Config.Bind<float>(":: Items : Whites ::", "Warbanner Radius Per Stack", (float)8f, "The Radius of Warbanner in its radius, per stack, Vanilla is 8");
 
             // Greens
+            AtGChance = Config.Bind<float>(":: Items :: Greens ::", "AtG Missile Mk 1 Chance", (float)70f, "The Chance of AtG Missile Mk 1, Vanilla is 10");
+            AtGDamage = Config.Bind<float>(":: Items :: Greens ::", "AtG Missile Mk 1 Total Damage", (float)50f, "The Total Damage Increase of AtG Missile Mk 1, Vanilla is 3");
+
+            BandolierBase = Config.Bind<float>(":: Items :: Greens ::", "Bandolier Base", (float)1f, "The Base Value of Bandolier, Vanilla is 1");
+            BandolierExponent = Config.Bind<float>(":: Items :: Greens ::", "Bandolier Exponent", (float)1f, "The Exponent of Bandolier, Vanilla is 0.33");
+            BandolierGuide = Config.Bind<bool>(":: Items :: Greens ::", "Bandolier Formula", (bool)true, "The entire Bandolier formula is as follows: \n1 - 1 / (stack + Bandolier Base)^Bandolier Exponent) * 100\n If you want to make stacking not as bad, lower the base and increase the exponent.");
+
+            BerzerkersKillsReq = Config.Bind<int>(":: Items :: Greens ::", "Berzerkers Pauldron Kills", (int)2, "The Amount of Kills required for Berzerkers Pauldron, Vanilla is 4");
+            BerzerkersDurationBase = Config.Bind<float>(":: Items :: Greens ::", "Berzerkers Pauldron Base Duration", (float)4f, "The Base Buff Duration of Berzerkers Pauldron, Vanilla is 2");
+            BerzerkersDurationStack = Config.Bind<float>(":: Items :: Greens ::", "Berzerkers Pauldron Duration Per Stack", (float)8f, "The Buff Duration of Berzerkers Pauldron, per stack too, Vanilla is 4");
+            BerzerkersBuffArmor = Config.Bind<float>(":: Items :: Greens ::", "Berzerkers Pauldron Buff Armor", (float)50f, "The Armor Increase of Berzerkers Pauldrons Buff, per stack too, Vanilla is 0");
+            BerzerkersUnconditionalArmor = Config.Bind<float>(":: Items :: Greens ::", "Berzerkers Pauldron Unconditional Armor", (float)50f, "The Armor Increase of Berzerkers Pauldrons, per stack too, Vanilla is 0");
+
+            ChronobaubleStacking = Config.Bind<bool>(":: Items :: Greens ::", "Chronobauble Stacking", (bool)true, "Should the Attack Speed Decrease of Chronobauble stack?, Vanilla is false");
+            ChronobaubleAS = Config.Bind<float>(":: Items :: Greens ::", "Chronobauble Attack Speed", (float)0.5f, "Decimal. The Attack Speed Decrease of Chronobauble on enemies, per stack too if stacking is enabled, Vanilla is 0");
+
             InfusionScaling = Config.Bind<bool>(":: Items :: Greens ::", "Infusion Level Scaling Cap", (bool)false, "Use Infusion's Level Scaling Cap? The formula is: \nInfusion Base Cap * 1 + 0.3 * (Level - 1) * Infusion Count");
             InfusionBaseCap = Config.Bind<float>(":: Items :: Greens ::", "Infusion Base Cap", (float)30f, "The Base Cap of Infusion, used for the Config Option above");
             InfusionBaseHealth = Config.Bind<float>(":: Items :: Greens ::", "Infusion Base Health", (float)25f, "The Max Health Increase of Infusion, per stack too, Vanilla is 0");
@@ -334,6 +366,7 @@ namespace UltimateCustomRun
 
             StickyBomb.Changes();
             IL.RoR2.GlobalEventManager.OnHitEnemy += StickyBomb.ChangeChance;
+
             // IL.RoR2.SetStateOnHurt.OnTakeDamageServer += StunGrenade.ChangeBehavior;
 
             IL.RoR2.GlobalEventManager.OnCharacterDeath += TopazBrooch.ChangeBarrier;
@@ -349,6 +382,16 @@ namespace UltimateCustomRun
             IL.RoR2.Items.WardOnLevelManager.OnCharacterLevelUp += Warbanner.ChangeRadius;
 
             // Greens
+
+            IL.RoR2.GlobalEventManager.ProcMissile += AtGMissileMk1.ChangeChance;
+            IL.RoR2.GlobalEventManager.ProcMissile += AtGMissileMk1.ChangeDamage;
+
+            // IL.RoR2.GlobalEventManager.OnCharacterDeath += Bandolier.ChangeBase;
+            IL.RoR2.GlobalEventManager.OnCharacterDeath += Bandolier.ChangeExponent;
+
+            IL.RoR2.CharacterBody.AddMultiKill += BerzerkersPauldron.ChangeKillCount;
+            IL.RoR2.CharacterBody.AddMultiKill += BerzerkersPauldron.ChangeBuffDuration;
+            RecalculateStatsAPI.GetStatCoefficients += BerzerkersPauldron.AddBehavior;
 
             RecalculateStatsAPI.GetStatCoefficients += Infusion.BehaviorAddFlatHealth;
             if (InfusionScaling.Value == true)
@@ -508,6 +551,68 @@ namespace UltimateCustomRun
             LanguageAPI.Add("ITEM_SYRINGE_DESC", "Increases <style=cIsDamage>attack speed</style> by <style=cIsDamage>" + d(SoldiersSyringeAS.Value) + " <style=cStack>(+" + d(SoldiersSyringeAS.Value) + " per stack)</style></style>.");
             LanguageAPI.Add("ITEM_BARRIERONKILL_DESC", "Gain a <style=cIsHealing>temporary barrier</style> on kill for <style=cIsHealing>" + TopazBroochBarrier.Value + " health <style=cStack>(+" + TopazBroochBarrier.Value + " per stack)</style></style>.");
             LanguageAPI.Add("ITEM_BLEEDONHIT_DESC", "<style=cIsDamage>" + TriTipChance.Value + "%</style> <style=cStack>(+" + TriTipChance.Value + "% per stack)</style> chance to <style=cIsDamage>bleed</style> an enemy for <style=cIsDamage>240%</style> base damage.");
+            LanguageAPI.Add("ITEM_MISSILE_DESC", "<style=cIsDamage>" + AtGChance.Value + "%</style> chance to fire a missile that deals <style=cIsDamage>" + d(AtGDamage.Value) + "</style> <style=cStack>(+" + d(AtGDamage.Value) + " per stack)</style> TOTAL damage.");
+            LanguageAPI.Add("ITEM_WARCRYONMULTIKILL_PICKUP", "Enter a frenzy after killing " + BerzerkersKillsReq.Value + " enemies in quick succession.");
+            var trash = BerzerkersDurationBase.Value + BerzerkersDurationStack.Value;
+            if (BerzerkersBuffArmor.Value != 0f)
+            {
+                LanguageAPI.Add("ITEM_WARCRYONMULTIKILL_DESC", "<style=cIsDamage>Killing " + BerzerkersKillsReq.Value + " enemies</style> within <style=cIsDamage>1</style> second sends you into a <style=cIsDamage>frenzy</style> for <style=cIsDamage>" + trash + "s</style> <style=cStack>(+" + BerzerkersDurationStack.Value + "s per stack)</style>. Increases <style=cIsUtility>movement speed</style> by <style=cIsUtility>50%</style>, <style=cIsDamage>attack speed</style> by <style=cIsDamage>100%</style> and <style=cIsHealing>armor</style> by <style=cIsHealing>" + BerzerkersBuffArmor.Value + "</style>.");
+            }
+            else if (BerzerkersBuffArmor.Value != 0f && BerzerkersUnconditionalArmor.Value != 0f)
+            {
+                LanguageAPI.Add("ITEM_WARCRYONMULTIKILL_DESC", "<style=cIsHealing>Increase armor</style> by <style=cIsHealing>" + BerzerkersUnconditionalArmor.Value + "</style> <style=cStack>(+" + BerzerkersUnconditionalArmor.Value + " per stack)</style>. <style=cIsDamage>Killing " + BerzerkersKillsReq.Value + " enemies</style> within <style=cIsDamage>1</style> second sends you into a <style=cIsDamage>frenzy</style> for <style=cIsDamage>" + trash + "s</style> <style=cStack>(+" + BerzerkersDurationStack.Value + "s per stack)</style>. Increases <style=cIsUtility>movement speed</style> by <style=cIsUtility>50%</style>, <style=cIsDamage>attack speed</style> by <style=cIsDamage>100%</style> and <style=cIsHealing>armor</style> by <style=cIsHealing>" + BerzerkersBuffArmor.Value + "</style>.");
+            }
+            else if (BerzerkersBuffArmor.Value == 0f && BerzerkersUnconditionalArmor.Value != 0f)
+            {
+                LanguageAPI.Add("ITEM_WARCRYONMULTIKILL_DESC", "<style=cIsHealing>Increase armor</style> by <style=cIsHealing>" + BerzerkersUnconditionalArmor.Value + "</style> <style=cStack>(+" + BerzerkersUnconditionalArmor.Value + " per stack)</style>. <style=cIsDamage>Killing " + BerzerkersKillsReq.Value + " enemies</style> within <style=cIsDamage>1</style> second sends you into a <style=cIsDamage>frenzy</style> for <style=cIsDamage>" + trash + "s</style> <style=cStack>(+" + BerzerkersDurationStack.Value + "s per stack)</style>. Increases <style=cIsUtility>movement speed</style> by <style=cIsUtility>50%</style> and <style=cIsDamage>attack speed</style> by <style=cIsDamage>100%</style>.");
+            }
+            else
+            {
+                LanguageAPI.Add("ITEM_WARCRYONMULTIKILL_DESC", "<style=cIsDamage>Killing " + BerzerkersKillsReq.Value + " enemies</style> within <style=cIsDamage>1</style> second sends you into a <style=cIsDamage>frenzy</style> for <style=cIsDamage>" + trash + "s</style> <style=cStack>(+" + BerzerkersDurationStack.Value + "s per stack)</style>. Increases <style=cIsUtility>movement speed</style> by <style=cIsUtility>50%</style> and <style=cIsDamage>attack speed</style> by <style=cIsDamage>100%</style>.");
+            }
+            if (ChronobaubleStacking.Value)
+            {
+                LanguageAPI.Add("ITEM_SLOWONHIT_DESC", "<style=cIsUtility>Slow</style> enemies on hit for <style=cIsUtility>-60% movement speed</style> and <style=cIsDamage>-" + d(ChronobaubleAS.Value) + "</style> <style=cStack>(+" + d(ChronobaubleAS.Value) + " per stack)</style> for <style=cIsUtility>2s</style> <style=cStack>(+2s per stack)</style>.");
+            }
+            else
+            {
+                LanguageAPI.Add("ITEM_SLOWONHIT_DESC", "<style=cIsUtility>Slow</style> enemies on hit for <style=cIsUtility>-60% movement speed</style> and <style=cIsDamage>-" + d(ChronobaubleAS.Value) + "</style> for <style=cIsUtility>2s</style> <style=cStack>(+2s per stack)</style>.");
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -1,22 +1,23 @@
 ﻿using RoR2;
-using UnityEngine;
+using MonoMod.Cil;
+using System;
 
 namespace UltimateCustomRun
 {
     static class MonsterTooth
     {
-        // honestly help me lmao
-        // the stupid ass math.pow thing whyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy
-        // how do I do the IL :pain:
-
-        public static void ChangeHealing()
+        public static void ChangeHealing(ILContext il)
         {
-            var MonsterTooth = Resources.Load<GameObject>("Prefabs/NetworkedObjects/HealPack");
-            HealthPickup cic = MonsterTooth.GetComponentInChildren<HealthPickup>();
-            //cic.flatHealing = Main.MonsterToothFlatHealing.Value;
-            //cic.fractionalHealing = Main.MonsterToothPercentHealing.Value;
+            ILCursor c = new ILCursor(il);
+
+            c.GotoNext(MoveType.Before,
+                x => x.MatchStfld<HealthPickup>(nameof(HealthPickup.flatHealing))
+            );
+            c.Index--;
+            c.EmitDelegate<Func<float, float>>((vanilla) => { return Main.MonsterToothFlatHealing.Value; });
+            c.Index += 2;
+            c.EmitDelegate<Func<float, float>>((vanilla) => { return Main.MonsterToothPercentHealing.Value; });
+            //thanks to RandomlyAwesome!
         }
-        // farthest i got
-        // fuck this item j
     }
 }
