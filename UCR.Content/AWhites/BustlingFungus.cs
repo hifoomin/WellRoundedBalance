@@ -1,5 +1,17 @@
 ﻿using RoR2;
 using MonoMod.Cil;
+using BepInEx;
+using R2API;
+using R2API.Utils;
+using RoR2.Skills;
+using RoR2.Orbs;
+using RoR2.Projectile;
+using UnityEngine;
+using BepInEx.Configuration;
+using Mono.Cecil.Cil;
+using System;
+using UnityEngine.Networking;
+using System.Collections.Generic;
 
 namespace UltimateCustomRun
 {
@@ -14,7 +26,7 @@ namespace UltimateCustomRun
                 x => x.MatchAdd(),
                 x => x.MatchLdcR4(1.5f)
             );
-            c.Index += 2;
+            c.Index += 1;
             c.Next.Operand = Main.BungusRadius.Value;
             c.Index += 2;
             c.Next.Operand = Main.BungusRadiusStack.Value;
@@ -31,7 +43,7 @@ namespace UltimateCustomRun
                 x => x.MatchLdcR4(0.0225f)
             );
             c.Next.Operand = Main.BungusInterval.Value;
-            c.Index += 4;
+            c.Index += 3;
             c.Next.Operand = Main.BungusHealingPercent.Value;
             c.Index += 1;
             c.Next.Operand = Main.BungusHealingPercentStack.Value;

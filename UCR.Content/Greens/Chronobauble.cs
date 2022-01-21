@@ -27,6 +27,7 @@ namespace UltimateCustomRun
                     args.attackSpeedMultAdd -= Main.ChronobaubleAS.Value;
                 }
             }
+            // this method throws
         }
     }
 }

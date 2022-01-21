@@ -42,6 +42,8 @@ namespace UltimateCustomRun
 
         public static ConfigEntry<float> GlobalCritDamageMultiplier { get; set; }
 
+        public static ConfigEntry<float> GlobalLowHealthThreshold { get; set; }
+
         public static ConfigEntry<float> PlayerFactorBase { get; set; }
         public static ConfigEntry<float> PlayerCountMultiplier { get; set; }
         public static ConfigEntry<float> PlayerCountExponent { get; set; }
@@ -167,6 +169,19 @@ namespace UltimateCustomRun
 
         public static ConfigEntry<float> OldGThreshold { get; set; }
 
+        public static ConfigEntry<bool> OldWarArmorStack { get; set; }
+        public static ConfigEntry<float> OldWarArmor { get; set; }
+
+        public static ConfigEntry<bool> PredatoryCritStack { get; set; }
+        public static ConfigEntry<bool> PredatorySpeedStack { get; set; }
+        public static ConfigEntry<float> PredatoryAS { get; set; }
+        public static ConfigEntry<float> PredatoryBaseCap { get; set; }
+        public static ConfigEntry<float> PredatoryStackCap { get; set; }
+        public static ConfigEntry<float> PredatoryCrit { get; set; }
+        public static ConfigEntry<float> PredatorySpeed { get; set; }
+
+        public static ConfigEntry<float> RedWhipSpeed { get; set; }
+
         public static ConfigEntry<float> RunaldBaseDamage { get; set; }
         public static ConfigEntry<float> RunaldTotalDamage { get; set; }
 
@@ -174,6 +189,9 @@ namespace UltimateCustomRun
         public static ConfigEntry<int> RoseBucklerArmor { get; set; }
         public static ConfigEntry<int> RoseBucklerArmorAlways { get; set; }
         public static ConfigEntry<float> RoseBucklerThreshold { get; set; }
+
+        public static ConfigEntry<int> SquidPolypDuration { get; set; }
+        public static ConfigEntry<int> SquidPolypAS { get; set; }
 
         // Lunars
 
@@ -198,9 +216,11 @@ namespace UltimateCustomRun
 
             // Global
 
-            EquipmentChargeCap = Config.Bind<int>("::: Global :: Scaling ::", "Equipment Charge Cap", (int)255, "The Maximum amount of Charges an Equipment can have, Vanilla is 255");
+            EquipmentChargeCap = Config.Bind<int>("::: Global :: Scaling ::", "Equipment Charge Cap", (int)2147483646, "The Maximum amount of Charges an Equipment can have, Vanilla is 255");
 
             GlobalCritDamageMultiplier = Config.Bind<float>("::: Global : Damage ::", "Crit Damage Multiplier", (float)2f, "The Crit Damage Multiplier, Vanilla is 2");
+
+            GlobalLowHealthThreshold = Config.Bind<float>("::: Global : Health ::", "Low Health Threshold", (float)0.5f, "The Low Health Threshold, Vanilla is 0.25. This affects Old War Stealthkit, Genesis Loop and the low health vignette");
 
             PlayerFactorBase = Config.Bind<float>("::: Global :: Scaling ::", "Player Factor Base", (float)0.7f, "The Base Value of the Player Factor, Vanilla is 0.7");
             PlayerCountMultiplier = Config.Bind<float>("::: Global :: Scaling ::", "Player Count Multiplier", (float)0.3f, "The Multiplier of the Player Count, Vanilla is 0.3");
@@ -312,7 +332,7 @@ namespace UltimateCustomRun
             GhorsTomeChance = Config.Bind<float>(":: Items :: Greens ::", "Ghors Tome Chance", (float)50f, "The Chance of Ghors Tome, Vanilla is 4");
 
             HarvestersCritStack = Config.Bind<bool>(":: Items :: Greens ::", "Harvesters Scythe Crit Chance Stack", (bool)true, "Should Harvesters Scythe stack Crit Chance? Vanilla is false");
-            HarvestersCrit = Config.Bind<float>(":: Items :: Greens ::", "Harvesters Scythe Crit Chance", (float)25f, "The Crit Chance of Harvesters Scythe, Vanilla is 5");
+            HarvestersCrit = Config.Bind<float>(":: Items :: Greens ::", "Harvesters Scythe Crit Chance", (float)25f, "The Crit Chance increase of Harvesters Scythe, Vanilla is 5");
             HarvestersHealBase = Config.Bind<float>(":: Items :: Greens ::", "Harvesters Scythe Base Healing", (float)1f, "The Base Flat Healing of Harvesters Scythe, Vanilla is 4");
             HarvestersHealStack = Config.Bind<float>(":: Items :: Greens ::", "Harvesters Scythe Healing Per Stack", (float)4f, "The Flat Healing of Harvesters Scythe, per stack too, Vanilla is 4");
 
@@ -328,10 +348,26 @@ namespace UltimateCustomRun
 
             OldGThreshold = Config.Bind<float>(":: Items :: Greens ::", "Old Guillotine Threshold", (float)13f, "The Threshold of Old Guillotine, Vanilla is 13");
 
+            OldWarArmor = Config.Bind<float>(":: Items :: Greens ::", "Old War Stealthkit Armor", (float)25f, "The Armor increase of Old War Stealthkit, Vanilla is 0");
+            OldWarArmorStack = Config.Bind<bool>(":: Items :: Greens ::", "Old War Stealthkit Stack Armor", (bool)true, "Should the Armor from Old War Stealthkit stack? Vanilla is false");
+
+            PredatoryAS = Config.Bind<float>(":: Items :: Greens ::", "Predatory Instincts Attack Speed", (float)0.25f, "Decimal. The Attack Speed increase of Predatory Instincts per Buff, Vanilla is 0.12");
+            PredatoryBaseCap = Config.Bind<float>(":: Items :: Greens ::", "Predatory Instincts Base Buff Cap", (int)5, "The Base Cap of Predatory Instincts Buffs, Vanilla is 1");
+            PredatoryStackCap = Config.Bind<float>(":: Items :: Greens ::", "Predatory Instincts Buff Cap Per Stack", (int)5, "The Cap of Predatory Instincts Buffs, per stack, Vanilla is 2");
+            PredatoryCritStack = Config.Bind<bool>(":: Items :: Greens ::", "Predatory Instincts Crit Chance Stack", (bool)true, "Should Harvesters Scythe stack Crit Chance? Vanilla is false");
+            PredatoryCrit = Config.Bind<float>(":: Items :: Greens ::", "Predatory Instincts Crit Chance", (float)20f, "The Crit Chance increase of Predatory Instincts, Vanilla is 5");
+            PredatorySpeed = Config.Bind<float>(":: Items :: Greens ::", "Predatory Instincts Speed", (float)0.5f, "Decimal. The Speed increase of Predatory Instincts, Vanilla is 0");
+            PredatorySpeedStack = Config.Bind<bool>(":: Items :: Greens ::", "Predatory Instincts Speed Stack", (bool)true, "Should Harvesters Scythe stack Speed? Vanilla is false");
+
+            RedWhipSpeed = Config.Bind<float>(":: Items :: Greens ::", "Red Whip Speed", (float)1.3f, "Decimal. The Speed increase of Red Whip, per stack too, Vanilla is 0.3");
+
             ReplaceRoseBucklerSprintWithHpThreshold = Config.Bind<bool>(":: Items :: Greens ::", "Rose Buckler Disable Sprinting, Enable Health Threshold", (bool)false, "Replace Rose Buckler's Condition to be 'Below X% Health' instead?");
             RoseBucklerThreshold = Config.Bind<float>(":: Items :: Greens ::", "Rose Buckler Health Threshold", (float)0.5f, "Decimal. The Health Threshold of Rose Buckler to be active");
             RoseBucklerArmor = Config.Bind<int>(":: Items :: Greens ::", "Rose Buckler Armor", (int)30, "The Armor Increase of Rose Buckler while sprinting, per stack too, Vanilla is 30");
             RoseBucklerArmorAlways = Config.Bind<int>(":: Items :: Greens ::", "Rose Buckler Unconditional Armor", (int)0, "The Armor Increase of Rose Buckler unconditionally, per stack too, Vanilla is 0");
+
+            SquidPolypDuration = Config.Bind<int>(":: Items :: Greens ::", "Squid Polyp Lifetime", (int)900, "The lifetime of Squid Polyp, Vanilla is 30");
+            SquidPolypAS = Config.Bind<int>(":: Items :: Greens ::", "Squid Polyp Attack Speed", (int)500, "The Amount of +10% Attack Speed Items of Squid Polyp, per stack too, Vanilla is 10");
 
             // Lunars
             VisionsCharges = Config.Bind<int>(":: Items :::: Lunars ::", "Visions of Heresy Charges", (int)24, "The amount of Charges of Visions of Heresy, Vanilla is 12");
@@ -462,6 +498,15 @@ namespace UltimateCustomRun
 
             IL.RoR2.CharacterBody.OnInventoryChanged += OldGuillotine.ChangeThreshold;
 
+            RecalculateStatsAPI.GetStatCoefficients += OldWarStealthkit.AddBehavior;
+
+            IL.RoR2.CharacterBody.AddTimedBuff_BuffDef_float += PredatoryInstincts.ChangeCap;
+            IL.RoR2.CharacterBody.RecalculateStats += PredatoryInstincts.ChangeAS;
+            RecalculateStatsAPI.GetStatCoefficients += PredatoryInstincts.AddBehavior;
+
+            IL.RoR2.CharacterBody.RecalculateStats += RedWhip.ChangeSpeed;
+
+
             if (ReplaceRoseBucklerSprintWithHpThreshold.Value == true)
             {
                 IL.RoR2.CharacterBody.RecalculateStats += RoseBuckler.ChangeBehavior;
@@ -472,6 +517,8 @@ namespace UltimateCustomRun
 
             //IL.RoR2.GlobalEventManager.OnHitEnemy += RunaldChange;
 
+            // IL.RoR2.GlobalEventManager.OnInteractionBegin += SquidPolyp.ChangeAS;
+            // IL.RoR2.GlobalEventManager.OnInteractionBegin += SquidPolyp.ChangeLifetime;
 
             // Lunars
 
@@ -505,19 +552,19 @@ namespace UltimateCustomRun
                 LanguageAPI.Add("ITEM_BEAR_PICKUP", "Reduce incoming damage.");
                 LanguageAPI.Add("ITEM_BEAR_DESC", "<style=cIsHealing>Increase armor</style> by <style=cIsHealing>" + TougherTimesArmor.Value + "</style> <style=cStack>(+" + TougherTimesArmor.Value + " per stack)</style>.");
             }
-            LanguageAPI.Add("ITEM_STICKYBOMB_DESC", "<style=cIsDamage>" + StickyBombChance.Value +"%</style> <style=cStack>(+" + StickyBombChance.Value +"% per stack)</style> chance on hit to attach a <style=cIsDamage>bomb</style> to an enemy, detonating for <style=cIsDamage>" + StickyBombDamage.Value * 100f + "%</style> TOTAL damage.");
+            LanguageAPI.Add("ITEM_STICKYBOMB_DESC", "<style=cIsDamage>" + StickyBombChance.Value + "%</style> <style=cStack>(+" + StickyBombChance.Value + "% per stack)</style> chance on hit to attach a <style=cIsDamage>bomb</style> to an enemy, detonating for <style=cIsDamage>" + StickyBombDamage.Value * 100f + "%</style> TOTAL damage.");
             LanguageAPI.Add("ITEM_CRITGLASSES_PICKUP", "Chance to 'Critically Strike', dealing " + GlobalCritDamageMultiplier.Value + "x damage.");
             LanguageAPI.Add("ITEM_CRITGLASSES_DESC", "Your attacks have a <style=cIsDamage>" + LensMakersCrit.Value + "%</style> <style=cStack>(+" + LensMakersCrit.Value + "% per stack)</style> chance to '<style=cIsDamage>Critically Strike</style>', dealing <style=cIsDamage>" + GlobalCritDamageMultiplier.Value + "x damage</style>.");
             if (RapArmor.Value != 0f)
             {
-                LanguageAPI.Add("ITEM_REPULSIONARMORPLATE_DESC", "<style=cIsHealing>Increase armor</style> by <style=cIsHealing>" + RapArmor.Value + "</style> <style=cStack>(+" + RapArmor.Value + " per stack)</style>. Reduce all <style=cIsDamage>incoming damage</style> by <style=cIsDamage>" + RapFlatDmgDecrease.Value +"<style=cStack> (+" + RapFlatDmgDecrease.Value +" per stack)</style></style>. Cannot be reduced below <style=cIsDamage>" + RapMinimumDmgTaken.Value + "</style>.");
+                LanguageAPI.Add("ITEM_REPULSIONARMORPLATE_DESC", "<style=cIsHealing>Increase armor</style> by <style=cIsHealing>" + RapArmor.Value + "</style> <style=cStack>(+" + RapArmor.Value + " per stack)</style>. Reduce all <style=cIsDamage>incoming damage</style> by <style=cIsDamage>" + RapFlatDmgDecrease.Value + "<style=cStack> (+" + RapFlatDmgDecrease.Value + " per stack)</style></style>. Cannot be reduced below <style=cIsDamage>" + RapMinimumDmgTaken.Value + "</style>.");
             }
             else
             {
                 LanguageAPI.Add("ITEM_REPULSIONARMORPLATE_DESC", "Reduce all <style=cIsDamage>incoming damage</style> by <style=cIsDamage>" + RapFlatDmgDecrease.Value + "<style=cStack> (+" + RapFlatDmgDecrease.Value + " per stack)</style></style>. Cannot be reduced below <style=cIsDamage>" + RapMinimumDmgTaken.Value + "</style>.");
             }
             //LanguageAPI.Add("ITEM_TOOTH_DESC", "Killing an enemy spawns a <style=cIsHealing>healing orb</style> that heals for <style=cIsHealing>" + MonsterToothFlatHealing.Value + "</style> plus an additional <style=cIsHealing>" + MonsterToothPercentHealing.Value * 100f + "% <style=cStack>(+2% per stack)</style></style> of <style=cIsHealing>maximum health</style>.");
-            LanguageAPI.Add("ITEM_CROWBAR_PICKUP", "Deal bonus damage to enemies above " + CrowbarThreshold.Value * 100f +"% health.");
+            LanguageAPI.Add("ITEM_CROWBAR_PICKUP", "Deal bonus damage to enemies above " + CrowbarThreshold.Value * 100f + "% health.");
             LanguageAPI.Add("ITEM_CROWBAR_DESC", "Deal <style=cIsDamage>+" + CrowbarDamage.Value * 100f + "%</style> <style=cStack>(+" + CrowbarDamage.Value * 100f + "% per stack)</style> damage to enemies above <style=cIsDamage>" + CrowbarThreshold.Value * 100f + "% health</style>.");
             LanguageAPI.Add("ITEM_NEARBYDAMAGEBONUS_DESC", "Increase damage to enemies within <style=cIsDamage>" + FocusCrystalRange.Value + "m</style> by <style=cIsDamage>" + FocusCrystalDamage.Value * 100f + "%</style> <style=cStack>(+" + FocusCrystalDamage.Value * 100f + "% per stack)</style>.");
             if (RoseBucklerArmorAlways.Value != 0 && ReplaceRoseBucklerSprintWithHpThreshold.Value == false)
@@ -574,7 +621,7 @@ namespace UltimateCustomRun
             }
             else
             {
-                LanguageAPI.Add("ITEM_FIRERING_DESC", "Hits that deal <style=cIsDamage>more than 400% damage</style> also blasts enemies with a <style=cIsDamage>runic flame tornado</style>, dealing <style=cIsDamage>" + KjaroTotalDamage.Value * 100f +"%</style> <style=cStack>(+" + KjaroTotalDamage.Value * 100f + "% per stack)</style> TOTAL damage over time. Recharges every <style=cIsUtility>10</style> seconds.");
+                LanguageAPI.Add("ITEM_FIRERING_DESC", "Hits that deal <style=cIsDamage>more than 400% damage</style> also blasts enemies with a <style=cIsDamage>runic flame tornado</style>, dealing <style=cIsDamage>" + KjaroTotalDamage.Value * 100f + "%</style> <style=cStack>(+" + KjaroTotalDamage.Value * 100f + "% per stack)</style> TOTAL damage over time. Recharges every <style=cIsUtility>10</style> seconds.");
             }
             bool useBaseHealthInfusion = InfusionBaseHealth.Value != 0f;
             bool usePercentHealthInfusion = InfusionPercentHealth.Value != 0f;
@@ -614,9 +661,9 @@ namespace UltimateCustomRun
             LanguageAPI.Add("ITEM_BARRIERONKILL_DESC", "Gain a <style=cIsHealing>temporary barrier</style> on kill for <style=cIsHealing>" + TopazBroochBarrier.Value + " health <style=cStack>(+" + TopazBroochBarrier.Value + " per stack)</style></style>.");
             LanguageAPI.Add("ITEM_BLEEDONHIT_DESC", "<style=cIsDamage>" + TriTipChance.Value + "%</style> <style=cStack>(+" + TriTipChance.Value + "% per stack)</style> chance to <style=cIsDamage>bleed</style> an enemy for <style=cIsDamage>240%</style> base damage.");
             LanguageAPI.Add("ITEM_MISSILE_DESC", "<style=cIsDamage>" + AtGChance.Value + "%</style> chance to fire a missile that deals <style=cIsDamage>" + d(AtGDamage.Value) + "</style> <style=cStack>(+" + d(AtGDamage.Value) + " per stack)</style> TOTAL damage.");
-            float bando = Mathf.Round(1f - 1f / Mathf.Pow(1f + BandolierBase.Value, BandolierExponent.Value));
-            float bandol = Mathf.Round(1f - 1f / Mathf.Pow(2f + BandolierBase.Value, BandolierExponent.Value)) - Mathf.Round(1f - 1f / Mathf.Pow(1f + BandolierBase.Value, BandolierExponent.Value));
-            LanguageAPI.Add("ITEM_BANDOLIER_DESC", "<style=cIsUtility>" + d(bando) +"</style> <style=cStack>(+" + d(bandol) + " on stack)</style> chance on kill to drop an ammo pack that <style=cIsUtility>resets all skill cooldowns</style>.");
+            var bando = Mathf.Round(1f - 1f / Mathf.Pow(1f + BandolierBase.Value, BandolierExponent.Value));
+            var bandol = Mathf.Round(1f - 1f / Mathf.Pow(2f + BandolierBase.Value, BandolierExponent.Value)) - Mathf.Round(1f - 1f / Mathf.Pow(1f + BandolierBase.Value, BandolierExponent.Value));
+            LanguageAPI.Add("ITEM_BANDOLIER_DESC", "<style=cIsUtility>" + d(bando) + "</style> <style=cStack>(+" + d(bandol) + " on stack)</style> chance on kill to drop an ammo pack that <style=cIsUtility>resets all skill cooldowns</style>.");
             LanguageAPI.Add("ITEM_WARCRYONMULTIKILL_PICKUP", "Enter a frenzy after killing " + BerzerkersKillsReq.Value + " enemies in quick succession.");
             var trash = BerzerkersDurationBase.Value + BerzerkersDurationStack.Value;
             if (BerzerkersBuffArmor.Value != 0f)
@@ -637,7 +684,7 @@ namespace UltimateCustomRun
             }
             if (ChronobaubleStacking.Value)
             {
-                LanguageAPI.Add("ITEM_SLOWONHIT_DESC", "<style=cIsUtility>Slow</style> enemies on hit for <style=cIsUtility>-60% movement speed</style> and <style=cIsDamage>-" + d(ChronobaubleAS.Value) + " attack speed</style> <style=cStack>(+" + d(ChronobaubleAS.Value) + " per stack)</style> for <style=cIsUtility>2s</style> <style=cStack>(+2s per stack)</style>.");
+                LanguageAPI.Add("ITEM_SLOWONHIT_DESC", "<style=cIsUtility>Slow</style> enemies on hit for <style=cIsUtility>-60% movement speed</style> and <style=cIsDamage>-" + d(ChronobaubleAS.Value) + " attack speed</style> <style=cStack>(-" + d(ChronobaubleAS.Value) + " per stack)</style> for <style=cIsUtility>2s</style> <style=cStack>(+2s per stack)</style>.");
             }
             else
             {
@@ -652,51 +699,50 @@ namespace UltimateCustomRun
             if (HarvestersCritStack.Value)
             {
                 var literallyeurope = HarvestersHealBase.Value + HarvestersHealStack.Value;
-                LanguageAPI.Add("ITEM_HEALONCRIT_DESC", "Gain <style=cIsDamage>" + HarvestersCrit.Value + "% critical chance</style> <style=cStack>(+" + HarvestersCrit.Value + "% per stack)</style>. <style=cIsDamage>Critical strikes</style> <style=cIsHealing>heal</style> for <style=cIsHealing>" + literallyeurope +"</style> <style=cStack>(+" + HarvestersHealStack.Value + " per stack)</style> <style=cIsHealing>health</style>.");
+                LanguageAPI.Add("ITEM_HEALONCRIT_DESC", "Gain <style=cIsDamage>" + HarvestersCrit.Value + "% critical chance</style> <style=cStack>(+" + HarvestersCrit.Value + "% per stack)</style>. <style=cIsDamage>Critical strikes</style> <style=cIsHealing>heal</style> for <style=cIsHealing>" + literallyeurope + "</style> <style=cStack>(+" + HarvestersHealStack.Value + " per stack)</style> <style=cIsHealing>health</style>.");
             }
             else
             {
                 LanguageAPI.Add("ITEM_HEALONCRIT_DESC", "Gain <style=cIsDamage>5% critical chance</style>. <style=cIsDamage>Critical strikes</style> <style=cIsHealing>heal</style> for <style=cIsHealing>8</style> <style=cStack>(+4 per stack)</style> <style=cIsHealing>health</style>.");
             }
-            float g = Mathf.Round(1f - 100f / (100f + OldGThreshold.Value));
-            float gf = Mathf.Round(1f - 100f / (100f + (OldGThreshold.Value * 2)));
+            var g = Mathf.Round(1f - 100f / (100f + OldGThreshold.Value));
+            var gf = Mathf.Round(1f - 100f / (100f + (OldGThreshold.Value * 2)));
             LanguageAPI.Add("ITEM_EXECUTELOWHEALTHELITE_DESC", "Instantly kill Elite monsters below <style=cIsHealth>" + d(g) + "% <style=cStack>(+" + d(gf) + "% per stack)</style> health</style>.");
+            if (OldWarArmor.Value != 0f && OldWarArmorStack.Value == false)
+            {
+                LanguageAPI.Add("ITEM_PHASING_DESC", "Falling below <style=cIsHealth>" + d(GlobalLowHealthThreshold.Value) + " health</style> causes you to gain <style=cIsUtility>40% movement speed</style>, <style=cIsHealing>" + OldWarArmor.Value + " armor</style> and <style=cIsUtility>invisibility</style> for <style=cIsUtility>5s</style>. Recharges every <style=cIsUtility>30 seconds</style> <style=cStack>(-50% per stack)</style>.");
+            }
+            else if (OldWarArmor.Value != 0f && OldWarArmorStack.Value)
+            {
+                LanguageAPI.Add("ITEM_PHASING_DESC", "Falling below <style=cIsHealth>" + d(GlobalLowHealthThreshold.Value) + " health</style> causes you to gain <style=cIsUtility>40% movement speed</style>, <style=cIsHealing>" + OldWarArmor.Value + " armor</style> <style=cStack>(+" + OldWarArmor.Value + " per stack)</style> and <style=cIsUtility>invisibility</style> for <style=cIsUtility>5s</style>. Recharges every <style=cIsUtility>30 seconds</style> <style=cStack>(-50% per stack)</style>.");
+            }
+            else
+            {
+                LanguageAPI.Add("ITEM_PHASING_DESC", "Falling below <style=cIsHealth>" + d(GlobalLowHealthThreshold.Value) + " health</style> causes you to gain <style=cIsUtility>40% movement speed</style> and <style=cIsUtility>invisibility</style> for <style=cIsUtility>5s</style>. Recharges every <style=cIsUtility>30 seconds</style> <style=cStack>(-50% per stack)</style>.");
+            }
+            var jacob = PredatoryBaseCap.Value + PredatoryStackCap.Value;
+            if (PredatorySpeed.Value != 0f)
+            {
+                LanguageAPI.Add("ITEM_ATTACKSPEEDONCRIT_PICKUP", "'Critical Strikes' increase attack speed and movement speed. Stacks " + jacob + " times.");
+            }
+            else
+            {
+                LanguageAPI.Add("ITEM_ATTACKSPEEDONCRIT_PICKUP", "'Critical Strikes' increase attack speed. Stacks " + jacob + " times.");
+            }
+            if (PredatorySpeed.Value == 0f)
+            {
+                LanguageAPI.Add("ITEM_ATTACKSPEEDONCRIT_DESC", "<style=cIsDamage>Critical strikes</style> increase <style=cIsDamage>attack speed</style> by <style=cIsDamage>" + d(PredatoryAS.Value) + "</style>. Stacks up to <style=cIsUtility>" + jacob + "</style> <style=cStack>(+" + PredatoryStackCap.Value + " per stack)</style> times.");
+            }
+            else if (PredatorySpeed.Value != 0f)
+            {
+                LanguageAPI.Add("ITEM_ATTACKSPEEDONCRIT_DESC", "<style=cIsDamage>Critical strikes</style> increase <style=cIsDamage>attack speed</style> by <style=cIsDamage>" + d(PredatoryAS.Value) + "</style> and <style=cIsUtility>movement speed</style> by </style=cIsUtility>" + d(PredatorySpeed.Value) + ". Stacks up to <style=cIsUtility>" + jacob + "</style> <style=cStack>(+" + PredatoryStackCap.Value + " per stack)</style> times.");
+            }
+            LanguageAPI.Add("ITEM_SPRINTOUTOFCOMBAT_DESC", "Leaving combat boosts your <style=cIsUtility>movement speed</style> by <style=cIsUtility>" + d(RedWhipSpeed.Value) + "</style> <style=cStack>(+" + d(RedWhipSpeed.Value) + " per stack)</style>.");
+            var polyp = SquidPolypAS.Value * 10f;
+            LanguageAPI.Add("ITEM_SQUIDTURRET_DESC", "Activating an interactable summons a <style=cIsDamage>Squid Turret</style> that attacks nearby enemies at <style=cIsDamage>" + d(polyp) + " <style=cStack>(+" + d(polyp) + " per stack)</style> attack speed</style>. Lasts <style=cIsUtility>" + SquidPolypDuration.Value + "</style> seconds.");
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            // what the fuck is a switch statement jesse :clueless
+            // all the examples ive seen use the methods overload which this one doesnt have and i would even know what to overload with soooooo
         }
     }
 }

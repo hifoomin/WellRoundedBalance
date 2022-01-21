@@ -11,10 +11,11 @@ namespace UltimateCustomRun
             ILCursor c = new ILCursor(il);
 
             c.GotoNext(MoveType.Before,
+                x => x.MatchLdarg(0),
                 x => x.MatchCallOrCallvirt<RoR2.CharacterBody>("get_multiKillCount"),
                 x => x.MatchLdcI4(4)
             );
-            c.Index += 1;
+            c.Index += 2;
             c.Next.Operand = Main.BerzerkersKillsReq.Value;
         }
         public static void ChangeBuffDuration(ILContext il)
@@ -50,6 +51,10 @@ namespace UltimateCustomRun
             }
             args.armorAdd += Main.BerzerkersUnconditionalArmor.Value * stack;
         }
+
+        // this method throws
+
+        // its a fuckin pauldron why does it not add armor lmao
 
         // TODO: Ask Moffein for his Pauldron changes and implement them :plead
     }
