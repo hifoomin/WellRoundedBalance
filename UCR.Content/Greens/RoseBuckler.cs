@@ -74,7 +74,22 @@ namespace UltimateCustomRun
                 }
                 return ret;
             };
-            // im going insane why is this just the j
+            // [Error  : Unity Log] NullReferenceException: Object reference not set to an instance of an object
+            // Stack trace:
+            // UltimateCustomRun.RoseBuckler+<>c.<Insanity>b__3_0 (On.RoR2.HealthComponent+orig_TakeDamage orig, RoR2.HealthComponent self, RoR2.DamageInfo damageInfo) (at <064868df148e436dadbbf814800d76e5>:IL_000C)
+            // DMD<>?-165335808.Hook<RoR2.HealthComponent::TakeDamage>?-1564710144 (RoR2.HealthComponent , RoR2.DamageInfo ) (at <5a36487301ef4d1e9184a5bbbf5c5755>:IL_0014)
+            // RoR2.BulletAttack.DefaultHitCallback (RoR2.BulletAttack+BulletHit& hitInfo) (at <da7c19fa62814b28bdb8f3a9223868e1>:IL_02CE)
+            // RoR2.BulletAttack.ProcessHit (RoR2.BulletAttack+BulletHit& hitInfo) (at <da7c19fa62814b28bdb8f3a9223868e1>:IL_0028)
+            // RoR2.BulletAttack.ProcessHitList (System.Collections.Generic.List`1[T] hits, UnityEngine.Vector3& endPosition, System.Collections.Generic.List`1[T] ignoreList) (at <da7c19fa62814b28bdb8f3a9223868e1>:IL_0099)
+            // DMD<FireSingle>?-165335808._RoR2_BulletAttack::FireSingle (RoR2.BulletAttack this, UnityEngine.Vector3 normal, System.Int32 muzzleIndex) (at <78e82462a1754689ab787937e3526634>:IL_019E)
+            // DMD<>?-165335808.Trampoline<RoR2.BulletAttack::FireSingle>?1114247168 (RoR2.BulletAttack , UnityEngine.Vector3 , System.Int32 ) (at <e1cb1e725a0349fd85503abc6beab3d4>:IL_0020)
+            // SillyHitboxViewer.HitboxViewerMod.BulletAttack_FireSingle (On.RoR2.BulletAttack+orig_FireSingle orig, RoR2.BulletAttack self, UnityEngine.Vector3 normal, System.Int32 muzzleIndex) (at <758913ef92f24ad49857526c5212b051>:IL_0001)
+            // DMD<>?-165335808.Hook<RoR2.BulletAttack::FireSingle>?2080950144 (RoR2.BulletAttack , UnityEngine.Vector3 , System.Int32 ) (at <b8eb0e722b3e4ea8b64c060039ce4fb2>:IL_0014)
+            // RoR2.BulletAttack.Fire () (at <da7c19fa62814b28bdb8f3a9223868e1>:IL_018E)
+            // EntityStates.Commando.CommandoWeapon.FirePistol2.FireBullet (System.String targetMuzzle) (at <da7c19fa62814b28bdb8f3a9223868e1>:IL_0118)
+            // EntityStates.Commando.CommandoWeapon.FirePistol2.OnEnter () (at <da7c19fa62814b28bdb8f3a9223868e1>:IL_0050)
+            // RoR2.EntityStateMachine.SetState (EntityStates.EntityState newState) (at <da7c19fa62814b28bdb8f3a9223868e1>:IL_0050)
+            // RoR2.EntityStateMachine.FixedUpdate () (at <da7c19fa62814b28bdb8f3a9223868e1>:IL_0008)
         }
 
         public static void AddBehavior(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)

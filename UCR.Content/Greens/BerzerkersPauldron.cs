@@ -49,7 +49,7 @@ namespace UltimateCustomRun
             {
                 args.armorAdd += Main.BerzerkersBuffArmor.Value;
             }
-            args.armorAdd += Main.BerzerkersUnconditionalArmor.Value * stack;
+            args.armorAdd += Main.BerzerkersArmorAlways.Value * stack;
         }
 
         // this method throws
