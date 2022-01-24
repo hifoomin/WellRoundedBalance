@@ -2,7 +2,7 @@
 
 namespace UltimateCustomRun
 {
-    static class AtGMissileMk1
+    public static class AtGMissileMk1
     {
         public static void ChangeChance(ILContext il)
         {

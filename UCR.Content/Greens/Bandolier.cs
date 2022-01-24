@@ -2,7 +2,7 @@
 
 namespace UltimateCustomRun
 {
-    static class Bandolier
+    public static class Bandolier
     {
         public static void ChangeExponent(ILContext il)
         {

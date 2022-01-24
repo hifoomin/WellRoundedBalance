@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace UltimateCustomRun
 {
-    static class VisionsOfHeresy
+    public static class VisionsOfHeresy
     {
         public static void VisionsChanges()
         {

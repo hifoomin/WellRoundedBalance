@@ -7,7 +7,7 @@ using System;
 
 namespace UltimateCustomRun
 {
-    static class RoseBuckler
+    public static class RoseBuckler
     {
         public static void ChangeBehavior(ILContext il)
         {
@@ -56,21 +56,26 @@ namespace UltimateCustomRun
         {
             On.RoR2.HealthComponent.TakeDamage += (On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo) =>
             {
-                float health = self.body.inventory.GetItemCount(RoR2Content.Items.SprintArmor) > 0 ? self.combinedHealthFraction : 0f;
                 orig(self, damageInfo);
-                if (health >= Main.RoseBucklerThreshold.Value && self.combinedHealthFraction < Main.RoseBucklerThreshold.Value)
+                if (self.body && self.body.inventory)
                 {
-                    self.body.statsDirty = true;
+                    float health = self.body.inventory.GetItemCount(RoR2Content.Items.SprintArmor) > 0 ? self.combinedHealthFraction : 0f;
+                    if (health >= Main.RoseBucklerThreshold.Value && self.combinedHealthFraction < Main.RoseBucklerThreshold.Value)
+                    {
+                        self.body.statsDirty = true;
+                    }
                 }
-
             };
             On.RoR2.HealthComponent.Heal += (On.RoR2.HealthComponent.orig_Heal orig, HealthComponent self, float amount, ProcChainMask procChainMask, bool nonRegen) =>
             {
-                float health = self.body.inventory.GetItemCount(RoR2Content.Items.SprintArmor) > 0 ? self.combinedHealthFraction : 1f;
                 float ret = orig(self, amount, procChainMask, nonRegen);
-                if (health < Main.RoseBucklerThreshold.Value && self.combinedHealthFraction >= Main.RoseBucklerThreshold.Value)
+                if (self.body && self.body.inventory)
                 {
-                    self.body.statsDirty = true;
+                    float health = self.body.inventory.GetItemCount(RoR2Content.Items.SprintArmor) > 0 ? self.combinedHealthFraction : 1f;
+                    if (health < Main.RoseBucklerThreshold.Value && self.combinedHealthFraction >= Main.RoseBucklerThreshold.Value)
+                    {
+                        self.body.statsDirty = true;
+                    }
                 }
                 return ret;
             };

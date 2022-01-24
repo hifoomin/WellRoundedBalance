@@ -5,7 +5,7 @@ using System;
 
 namespace UltimateCustomRun
 {
-    static class KjarosBand
+    public static class KjarosBand
     {
         public static void KjaroChange(ILContext il)
         {

@@ -1,7 +1,7 @@
 ﻿
 namespace UltimateCustomRun
 {
-    static class FutureOfHeresy
+    public static class FutureOfHeresy
     {
         public static void TheJ()
         {

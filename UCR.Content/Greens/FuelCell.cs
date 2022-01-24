@@ -2,7 +2,7 @@
 
 namespace UltimateCustomRun
 {
-    static class FuelCell
+    public static class FuelCell
     {
         public static void ChangeCDR(ILContext il)
         {

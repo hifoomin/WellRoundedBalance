@@ -4,7 +4,7 @@ using System;
 
 namespace UltimateCustomRun
 {
-    static class Scaling
+    public static class Scaling
     {
         public static void ChangeBehavior()
         {

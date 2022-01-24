@@ -2,7 +2,7 @@
 
 namespace UltimateCustomRun
 {
-    static class TriTipDagger
+    public static class TriTipDagger
     {
         public static void ChangeDamage(ILContext il)
         {

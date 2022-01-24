@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace UltimateCustomRun
 {
-    static class HooksOfHeresy
+    public static class HooksOfHeresy
     {
         public static void HooksChanges()
         {

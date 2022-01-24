@@ -2,7 +2,7 @@
 
 namespace UltimateCustomRun
 {
-    static class StunGrenade
+    public static class StunGrenade
     {
         public static void ChangeBehavior(ILContext il)
         {

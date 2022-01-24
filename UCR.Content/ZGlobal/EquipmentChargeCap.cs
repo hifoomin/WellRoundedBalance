@@ -2,7 +2,7 @@
 
 namespace UltimateCustomRun
 {
-    static class EquipmentChargeCap
+    public static class EquipmentChargeCap
     {
         public static void ChangeCap(ILContext il)
         {

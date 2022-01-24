@@ -4,7 +4,7 @@ using System;
 
 namespace UltimateCustomRun
 {
-    static class MonsterTooth
+    public static class MonsterTooth
     {
         public static void ChangeHealing(ILContext il)
         {

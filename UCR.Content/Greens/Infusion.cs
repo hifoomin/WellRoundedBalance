@@ -6,7 +6,7 @@ using System;
 
 namespace UltimateCustomRun
 {
-    static class Infusion
+    public static class Infusion
     {
         public static void ChangeBehavior(ILContext il)
         {

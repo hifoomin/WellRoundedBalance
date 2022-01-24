@@ -2,7 +2,7 @@
 
 namespace UltimateCustomRun
 {
-    static class EnergyDrink
+    public static class EnergyDrink
     {
         // ene is actually a 17.2% increase because its divided by the sprint mult (1.45) for some reason
         // i wanna change that later down the road but im not into cbt 

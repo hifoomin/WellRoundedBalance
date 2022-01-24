@@ -2,7 +2,7 @@
 
 namespace UltimateCustomRun
 {
-    static class SoldiersSyringe
+    public static class SoldiersSyringe
     {
         public static void ChangeAS(ILContext il)
         {

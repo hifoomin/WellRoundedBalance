@@ -2,7 +2,7 @@
 
 namespace UltimateCustomRun
 {
-    static class LeechingSeed
+    public static class LeechingSeed
     {
         public static void ChangeHealing(ILContext il)
         {

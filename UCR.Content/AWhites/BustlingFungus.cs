@@ -15,7 +15,7 @@ using System.Collections.Generic;
 
 namespace UltimateCustomRun
 {
-    static class BustlingFungus
+    public static class BustlingFungus
     {
         public static void ChangeRadius(ILContext il)
         {

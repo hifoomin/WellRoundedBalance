@@ -4,7 +4,7 @@ using RoR2;
 
 namespace UltimateCustomRun
 {
-    static class BerzerkersPauldron
+    public static class BerzerkersPauldron
     {
         public static void ChangeKillCount(ILContext il)
         {
@@ -45,11 +45,17 @@ namespace UltimateCustomRun
         {
             var buff = sender.HasBuff(RoR2Content.Buffs.WarCryBuff);
             var stack = sender.inventory.GetItemCount(RoR2.RoR2Content.Items.WarCryOnMultiKill);
-            if (sender.inventory && buff && stack > 0)
+            if (sender.inventory)
             {
-                args.armorAdd += Main.BerzerkersBuffArmor.Value;
+                if (stack > 0)
+                {
+                    if (buff)
+                    {
+                        args.armorAdd += Main.BerzerkersBuffArmor.Value;
+                    }
+                }
+                args.armorAdd += Main.BerzerkersArmorAlways.Value * stack;
             }
-            args.armorAdd += Main.BerzerkersArmorAlways.Value * stack;
         }
 
         // this method throws

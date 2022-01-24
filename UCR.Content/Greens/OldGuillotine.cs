@@ -2,7 +2,7 @@
 
 namespace UltimateCustomRun
 {
-    static class OldGuillotine
+    public static class OldGuillotine
     {
         public static void ChangeThreshold(ILContext il)
         {

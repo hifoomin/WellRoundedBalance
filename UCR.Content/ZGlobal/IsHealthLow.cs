@@ -2,7 +2,7 @@
 
 namespace UltimateCustomRun
 {
-    static class IsHealthLow
+    public static class IsHealthLow
     {
         public static void ChangeThreshold(ILContext il)
         {

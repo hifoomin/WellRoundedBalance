@@ -5,7 +5,7 @@ using System;
 
 namespace UltimateCustomRun
 {
-    static class RunaldsBand
+    public static class RunaldsBand
     {
         public static void RunaldChange(ILContext il)
         {

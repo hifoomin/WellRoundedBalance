@@ -2,7 +2,7 @@
 
 namespace UltimateCustomRun
 {
-    static class PersonalShieldGenerator
+    public static class PersonalShieldGenerator
     {
         public static void ChangeShieldPercent(ILContext il)
         {

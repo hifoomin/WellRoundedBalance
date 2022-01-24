@@ -4,7 +4,7 @@ using MonoMod.Cil;
 
 namespace UltimateCustomRun
 {
-    static class Warbanner
+    public static class Warbanner
     {
         public static void AddBehavior(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {

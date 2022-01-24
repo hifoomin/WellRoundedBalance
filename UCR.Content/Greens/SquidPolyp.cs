@@ -2,7 +2,7 @@
 
 namespace UltimateCustomRun
 {
-    static class SquidPolyp
+    public static class SquidPolyp
     {
         public static void ChangeLifetime(ILContext il)
         {

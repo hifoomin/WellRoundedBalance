@@ -2,7 +2,7 @@
 
 namespace UltimateCustomRun
 {
-    static class ArmorPiercingRounds
+    public static class ArmorPiercingRounds
     {
         public static void ChangeDamage(ILContext il)
         {

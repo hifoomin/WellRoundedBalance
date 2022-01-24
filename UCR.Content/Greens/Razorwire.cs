@@ -4,7 +4,7 @@ using System.Text;
 
 namespace UltimateCustomRun
 {
-    static class Razorwire
+    public static class Razorwire
     {
         // TODO: Ask bobo for their razorwire changes :flus
     }

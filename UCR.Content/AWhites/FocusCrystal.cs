@@ -4,7 +4,7 @@ using MonoMod.Cil;
 
 namespace UltimateCustomRun
 {
-    static class FocusCrystal
+    public static class FocusCrystal
     {
         public static void ChangeDamage(ILContext il)
         {

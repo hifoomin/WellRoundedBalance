@@ -2,7 +2,7 @@
 
 namespace UltimateCustomRun
 {
-    static class CautiousSlug
+    public static class CautiousSlug
     {
         public static void ChangeHealing(ILContext il)
         {

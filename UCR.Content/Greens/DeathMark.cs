@@ -5,7 +5,7 @@ using RoR2;
 
 namespace UltimateCustomRun
 {
-    static class DeathMark
+    public static class DeathMark
     {
         // ////////////
         // 

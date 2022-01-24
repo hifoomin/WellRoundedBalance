@@ -5,7 +5,7 @@ using MonoMod.Cil;
 
 namespace UltimateCustomRun
 {
-    static class TougherTimes
+    public static class TougherTimes
     {
         public static void AddBehavior(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {

@@ -5,7 +5,7 @@ using System;
 
 namespace UltimateCustomRun
 {
-    static class Fireworks
+    public static class Fireworks
     {
         public static void ChangeCount(ILContext il)
         {

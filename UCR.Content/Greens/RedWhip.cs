@@ -2,7 +2,7 @@
 
 namespace UltimateCustomRun
 {
-    static class RedWhip
+    public static class RedWhip
     {
         public static void ChangeSpeed(ILContext il)
         {

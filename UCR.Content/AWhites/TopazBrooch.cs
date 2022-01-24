@@ -2,7 +2,7 @@
 
 namespace UltimateCustomRun
 {
-    static class TopazBrooch
+    public static class TopazBrooch
     {
         public static void ChangeBarrier(ILContext il)
         {

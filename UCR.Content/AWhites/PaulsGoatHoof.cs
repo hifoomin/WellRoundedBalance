@@ -2,7 +2,7 @@
 
 namespace UltimateCustomRun
 {
-    static class PaulsGoatHoof
+    public static class PaulsGoatHoof
     {
         public static void ChangeSpeed(ILContext il)
         {

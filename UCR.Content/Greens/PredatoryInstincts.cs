@@ -4,7 +4,7 @@ using RoR2;
 
 namespace UltimateCustomRun
 {
-    static class PredatoryInstincts
+    public static class PredatoryInstincts
     {
         public static void ChangeAS(ILContext il)
         {

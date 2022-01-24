@@ -3,7 +3,7 @@ using MonoMod.Cil;
 
 namespace UltimateCustomRun
 {
-    static class Crowbar
+    public static class Crowbar
     {
         public static void ChangeDamage(ILContext il)
         {

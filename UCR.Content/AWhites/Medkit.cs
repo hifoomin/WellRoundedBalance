@@ -2,7 +2,7 @@
 
 namespace UltimateCustomRun
 {
-    static class Medkit
+    public static class Medkit
     {
         public static void ChangeFlatHealing(ILContext il)
         {

@@ -4,7 +4,7 @@ using MonoMod.Cil;
 
 namespace UltimateCustomRun
 {
-    static class BisonSteak
+    public static class BisonSteak
     {
         public static void ChangeHealth(ILContext il)
         {

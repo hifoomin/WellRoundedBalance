@@ -3,7 +3,7 @@ using RoR2;
 
 namespace UltimateCustomRun
 {
-    static class BackupMag
+    public static class BackupMag
     {
         public static void AddBehavior(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {

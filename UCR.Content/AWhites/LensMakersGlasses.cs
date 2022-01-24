@@ -3,7 +3,7 @@ using MonoMod.Cil;
 
 namespace UltimateCustomRun
 {
-    static class LensMakersGlasses
+    public static class LensMakersGlasses
     {
         public static void ChangeCrit(ILContext il)
         {

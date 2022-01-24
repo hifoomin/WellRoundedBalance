@@ -4,7 +4,7 @@ using MonoMod.Cil;
 
 namespace UltimateCustomRun
 {
-    static class RepulsionArmorPlate
+    public static class RepulsionArmorPlate
     {
         public static void AddBehavior(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {

@@ -4,7 +4,7 @@ using RoR2;
 
 namespace UltimateCustomRun
 {
-    static class HarvestersScythe
+    public static class HarvestersScythe
     {
         public static void ChangeCrit(ILContext il)
         {

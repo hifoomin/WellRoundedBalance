@@ -3,7 +3,7 @@ using MonoMod.Cil;
 
 namespace UltimateCustomRun
 {
-    static class CritMultiplier
+    public static class CritMultiplier
     {
         public static void ChangeDamage(ILContext il)
         {

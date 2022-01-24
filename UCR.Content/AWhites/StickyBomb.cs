@@ -5,7 +5,7 @@ using MonoMod.Cil;
 
 namespace UltimateCustomRun
 {
-    static class StickyBomb
+    public static class StickyBomb
     {
         public static void Changes()
         {

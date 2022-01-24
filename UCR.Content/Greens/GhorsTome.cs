@@ -7,7 +7,7 @@ using MonoMod.Cil;
 
 namespace UltimateCustomRun
 {
-    static class GhorsTome
+    public static class GhorsTome
     {
         public static void ChangeReward()
         {

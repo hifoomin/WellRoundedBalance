@@ -4,7 +4,7 @@ using R2API;
 
 namespace UltimateCustomRun
 {
-    static class OldWarStealthkit
+    public static class OldWarStealthkit
     {
         public static void ChangeCooldown(ILContext il)
         {

@@ -12,6 +12,8 @@ using MonoMod.Cil;
 using System;
 using UnityEngine.Networking;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 
 namespace UltimateCustomRun
 {
@@ -103,6 +105,11 @@ namespace UltimateCustomRun
 
         public static ConfigEntry<float> FocusCrystalDamage { get; set; }
         public static ConfigEntry<float> FocusCrystalRange { get; set; }
+
+        public static ConfigEntry<float> GasolineBaseRadius { get; set; }
+        public static ConfigEntry<float> GasolineBurnDamage { get; set; }
+        public static ConfigEntry<float> GasolineExplosionDamage { get; set; }
+        public static ConfigEntry<float> GasolineStackRadius{ get; set; }
 
         public static ConfigEntry<float> LensMakersCrit { get; set; }
 
@@ -237,7 +244,7 @@ namespace UltimateCustomRun
         public static ConfigEntry<float> StridesHealingPercent { get; set; }
         public void Awake()
         {
-
+            
             //        _       _           _ 
             //       | |     | |         | |
             //   __ _| | ___ | |__   __ _| |
@@ -247,29 +254,29 @@ namespace UltimateCustomRun
             //   __/ |                      
             //  |___/ 
 
-            ConfigGuide = Config.Bind<bool>(":: Config : Guide ::", "", (bool)true, "Some items, for example Fireworks count work like this:\n4 + 4 * stack which results in 8 + 4 per stack.\nThis behavior is indicated in the config with the V tag.");
+            ConfigGuide = Config.Bind<bool>(":: Config : Guide ::", "", (bool)true, "Some items, for example Fireworks Count work like this:\n4 + 4 * stack which results in 8 + 4 per stack.\nThis behavior is indicated in the config with the V tag.");
 
-            EquipmentChargeCap = Config.Bind<int>("::: Global :: Scaling ::", "Equipment Charge Cap", (int)2147483646, "The Maximum amount of Charges an Equipment can have, Vanilla is 255");
+            EquipmentChargeCap = Config.Bind<int>("::: Global :: Scaling ::", "Max Equipment Charges", (int)255, "Vanilla is 255");
 
-            GlobalCritDamageMultiplier = Config.Bind<float>("::: Global : Damage ::", "Crit Damage Multiplier", (float)2f, "The Crit Damage Multiplier, Vanilla is 2");
+            GlobalCritDamageMultiplier = Config.Bind<float>("::: Global : Damage ::", "Crit Damage Multiplier", (float)2f, "Vanilla is 2");
 
-            GlobalLowHealthThreshold = Config.Bind<float>("::: Global : Health ::", "Low Health Threshold", (float)0.5f, "The Low Health Threshold, Vanilla is 0.25. This affects Old War Stealthkit, Genesis Loop and the low health vignette");
+            GlobalLowHealthThreshold = Config.Bind<float>("::: Global : Health ::", "Low Health Threshold", (float)0.25f, "This affects Old War Stealthkit, Genesis Loop and the low health vignette. Vanilla is 0.25");
 
-            PlayerFactorBase = Config.Bind<float>("::: Global :: Scaling ::", "Player Factor Base", (float)0.7f, "The Base Value of the Player Factor, Vanilla is 0.7");
-            PlayerCountMultiplier = Config.Bind<float>("::: Global :: Scaling ::", "Player Count Multiplier", (float)0.3f, "The Multiplier of the Player Count, Vanilla is 0.3");
-            PlayerCountExponent = Config.Bind<float>("::: Global :: Scaling ::", "Player Count Exponent", (float)0.2f, "The Exponent of the Player Count, Vanilla is 0.2");
-            AdditiveStageScaling = Config.Bind<bool>("::: Global :: Scaling ::", "Additive Scaling on Stage Entry", (bool)false, "Should there be Additive Scaling on Stage Entry?, Vanilla is false");
-            AdditiveStageScalingBase = Config.Bind<float>("::: Global :: Scaling ::", "Additive Stage Scaling Add", (float)0f, "How many Seconds to add on Stage Entry?, Vanilla is 0");
-            ExponentialStageScaling = Config.Bind<bool>("::: Global :: Scaling ::", "Exponential Scaling on Stage Entry", (bool)true, "Should there be Exponential Scaling on Stage Entry?, Vanilla is true");
-            ExponentialStageScalingCount = Config.Bind<float>("::: Global :: Scaling ::", "Exponential Stage Scaling Count", (float)1f, "Every Nth Stage Scales the Difficulty Exponentially, Vanilla is 1");
-            ExponentialStageScalingBase = Config.Bind<float>("::: Global :: Scaling ::", "Exponential Stage Scaling Exponent", (float)1.15f, "The Exponent of Exponential Scaling, Vanilla is 1.15");
-            TimeFactorMultiplier = Config.Bind<float>("::: Global :: Scaling ::", "Time Factor Multiplier", (float)0.0506f, "The Time Factor Multiplier of Scaling, Vanilla is 0.0506");
-            AmbientLevelCap = Config.Bind<int>("::: Global :: Scaling ::", "Ambient Level Cap", (int)99, "The Ambient Level Cap of Monsters, Vanilla is 99");
-            GoldRewardExponent = Config.Bind<float>("::: Global :: Scaling ::", "Gold Reward Exponent", (float)1f, "The Exponent of Gold Awarded on kill, Vanilla is 1");
-            GoldRewardDivisorBase = Config.Bind<float>("::: Global :: Scaling ::", "Gold Reward Divisor Base", (float)1f, "The Base Divisor of Gold Awarded on kill, Vanilla is 1");
-            GoldRewardStageClearCountDivisor = Config.Bind<float>("::: Global :: Scaling ::", "Gold Reward Stage Clear Count Divisor", (float)1f, "The Stage Clear Count Divisor of Gold Awarded on kill, Vanilla is 1");
-            Guide = Config.Bind<bool>("::: Global :: Scaling ::", "Time Scaling Guide", (bool)true, "The entire Scaling formula is as follows:\n(Player Factor Base + Player Count * Player Count Multiplier + \nDifficulty Coefficient Multiplier * Difficulty Def Scaling Value \n(1 for Drizzle, 2 for Rainstorm, 3 for Monsoon) * \nPlayer Count ^ Player Count Exponent * \nTime in Minutes) * Exponential Scaling Stage Base ^ Stages Cleared \nI highly recommend changing Gold Scaling while changing these as well");
-            Guide2 = Config.Bind<bool>("::: Global :: Scaling ::", "Gold Scaling Guide", (bool)true, "The entire Scaling formula is as follows:\n(Gold Reward ^ Gold Reward Exponent) / Gold Reward Divisor Base ^ \n(Stage Clear Count / Gold Reward Stage Clear Count Divisor)");
+            PlayerFactorBase = Config.Bind<float>("::: Global :: Scaling ::", "Player Factor Base", (float)0.7f, "Vanilla is 0.7");
+            PlayerCountMultiplier = Config.Bind<float>("::: Global :: Scaling ::", "Player Count Multiplier", (float)0.3f, "Vanilla is 0.3");
+            PlayerCountExponent = Config.Bind<float>("::: Global :: Scaling ::", "Player Count Exponent", (float)0.2f, "Vanilla is 0.2");
+            AdditiveStageScaling = Config.Bind<bool>("::: Global :: Scaling ::", "Additive Stage Scaling?", (bool)false, "Vanilla is false");
+            AdditiveStageScalingBase = Config.Bind<float>("::: Global :: Scaling ::", "Additive Stage Scaling Adder", (float)0f, "Only works with Additive Stage Scaling enabled. Vanilla is 0");
+            ExponentialStageScaling = Config.Bind<bool>("::: Global :: Scaling ::", "Exponential Stage Scaling?", (bool)true, "Vanilla is true");
+            ExponentialStageScalingCount = Config.Bind<float>("::: Global :: Scaling ::", "Exponential Stage Scaling Count", (float)1f, "Every Nth Stage Scales the Difficulty Exponentially. Only works with Exponential Stage Scaling enabled. Vanilla is 1");
+            ExponentialStageScalingBase = Config.Bind<float>("::: Global :: Scaling ::", "Exponential Stage Scaling Base", (float)1.15f, "Only works with Exponential Stage Scaling enabled. Vanilla is 1.15");
+            TimeFactorMultiplier = Config.Bind<float>("::: Global :: Scaling ::", "Time Factor Multiplier", (float)0.0506f, "Vanilla is 0.0506");
+            AmbientLevelCap = Config.Bind<int>("::: Global :: Scaling ::", "Ambient Level Cap", (int)99, "Vanilla is 99");
+            GoldRewardExponent = Config.Bind<float>("::: Global :: Scaling ::", "Gold Reward Exponent", (float)1f, "Vanilla is 1");
+            GoldRewardDivisorBase = Config.Bind<float>("::: Global :: Scaling ::", "Gold Reward Divisor Base", (float)1f, "Vanilla is 1");
+            GoldRewardStageClearCountDivisor = Config.Bind<float>("::: Global :: Scaling ::", "Gold Reward Divisor Stage", (float)1f, "Vanilla is 1");
+            Guide = Config.Bind<bool>("::: Global :: Scaling ::", "Time Scaling Guide", (bool)true, "The entire Scaling formula is as follows:\n(Player Factor Base + Player Count * Player Count Multiplier + \nDifficulty Coefficient Multiplier * Difficulty Def Scaling Value \n(1 for Drizzle, 2 for Rainstorm, 3 for Monsoon) * \nPlayer Count ^ Player Count Exponent * \nTime in Minutes) * Exponential Stage Scaling Base ^ Stages Cleared \nI highly recommend changing Gold Scaling while changing these as well");
+            Guide2 = Config.Bind<bool>("::: Global :: Scaling ::", "Gold Scaling Guide", (bool)true, "The entire Scaling formula is as follows:\n(Gold Reward ^ Gold Reward Exponent) / Gold Reward Divisor Base ^ \n(Stage Clear Count / Gold Reward Divisor Stage)");
 
             //           _     _ _            
             //          | |   (_) |           
@@ -306,6 +313,11 @@ namespace UltimateCustomRun
 
             FocusCrystalDamage = Config.Bind<float>(":: Items : Whites :: Focus Crystal", "Damage Coefficient", (float)0.2f, "Decimal. Per Stack. Vanilla is 0.2");
             FocusCrystalRange = Config.Bind<float>(":: Items : Whites :: Focus Crystal", "Range", (float)13f, "Vanilla is 13");
+
+            GasolineBaseRadius = Config.Bind<float>(":: Items : Whites :: Gasoline", "Base Range", (float)8f, "V. Vanilla is 8");
+            GasolineBurnDamage = Config.Bind<float>(":: Items : Whites :: Gasoline", "Burn Damage", (float)1.5f, "Vanilla is 1.5");
+            GasolineExplosionDamage = Config.Bind<float>(":: Items : Whites :: Gasoline", "Explosion Damage", (float)1.5f, "Vanilla is 1.5");
+            GasolineStackRadius = Config.Bind<float>(":: Items : Whites :: Gasoline", "Range", (float)4f, "V. Per Stack. Vanilla is 4");
 
             LensMakersCrit = Config.Bind<float>(":: Items : Whites :: Lens-Makers Glasses", "Crit Chance", (float)10f, "Per Stack. Vanilla is 10");
 
@@ -484,6 +496,10 @@ namespace UltimateCustomRun
 
             IL.RoR2.HealthComponent.TakeDamage += FocusCrystal.ChangeDamage;
             IL.RoR2.HealthComponent.TakeDamage += FocusCrystal.ChangeRadius;
+
+            IL.RoR2.GlobalEventManager.ProcIgniteOnKill += Gasoline.ChangeBurnDamage;
+            IL.RoR2.GlobalEventManager.ProcIgniteOnKill += Gasoline.ChangeExplosionDamage;
+            IL.RoR2.GlobalEventManager.ProcIgniteOnKill += Gasoline.ChangeRadius;
 
             IL.RoR2.CharacterBody.RecalculateStats += LensMakersGlasses.ChangeCrit;
 
@@ -677,6 +693,10 @@ namespace UltimateCustomRun
 
             LanguageAPI.Add("ITEM_NEARBYDAMAGEBONUS_DESC", "Increase damage to enemies within <style=cIsDamage>" + FocusCrystalRange.Value + "m</style> by <style=cIsDamage>" + d(FocusCrystalDamage.Value) + "</style> <style=cStack>(+" + d(FocusCrystalDamage.Value) + " per stack)</style>.");
 
+            var erised = GasolineBaseRadius.Value + GasolineStackRadius.Value;
+            var fourlights = GasolineBurnDamage.Value / 2;
+            LanguageAPI.Add("ITEM_IGNITEONKILL_DESC", "Killing an enemy <style=cIsDamage>ignites</style> all enemies within <style=cIsDamage>" + erised + "m</style> <style=cStack>(+" + GasolineStackRadius.Value + "m per stack)</style> for <style=cIsDamage>" + d(GasolineExplosionDamage.Value) + "</style> base damage. Additionally, enemies <style=cIsDamage>burn</style> for <style=cIsDamage>" + d(GasolineBurnDamage.Value) + "</style> <style=cStack>(+" + d(fourlights) + " per stack)</style> base damage.");
+
             LanguageAPI.Add("ITEM_CRITGLASSES_PICKUP", "Chance to 'Critically Strike', dealing " + GlobalCritDamageMultiplier.Value + "x damage.");
             LanguageAPI.Add("ITEM_CRITGLASSES_DESC", "Your attacks have a <style=cIsDamage>" + LensMakersCrit.Value + "%</style> <style=cStack>(+" + LensMakersCrit.Value + "% per stack)</style> chance to '<style=cIsDamage>Critically Strike</style>', dealing <style=cIsDamage>" + GlobalCritDamageMultiplier.Value + "x damage</style>.");
 
@@ -755,6 +775,7 @@ namespace UltimateCustomRun
             if (pleaseendthis)
             {
                 var whitney = DeathMarkDmgIncreasePerDebuff.Value * DeathMarkStackBonus.Value;
+                LanguageAPI.Add("ITEM_DEATHMARK_PICKUP", "Enemies with " + DeathMarkMinimumDebuffsRequired.Value + " or more debuffs are marked for death, taking bonus damage.");
                 LanguageAPI.Add("ITEM_DEATHMARK_DESC", "Enemies with <style=cIsDamage>" + DeathMarkMinimumDebuffsRequired.Value + "</style> or more debuffs are <style=cIsDamage>marked for death</style>, increasing damage taken by <style=cIsDamage>" + d(DeathMarkDmgIncreasePerDebuff.Value) + "</style> <style=cStack>(+" + d(whitney) + " per stack)</style> per debuff from all sources for <style=cIsUtility>7</style> <style=cStack>(+7 per stack)</style> seconds.");
             }
 

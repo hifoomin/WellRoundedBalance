@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace UltimateCustomRun
 {
-    static class StridesOfHeresy
+    public static class StridesOfHeresy
     {
         public static void StridesChanges()
         {
