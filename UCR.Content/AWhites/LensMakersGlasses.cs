@@ -1,4 +1,5 @@
-﻿using RoR2;
+﻿using R2API;
+using RoR2;
 using MonoMod.Cil;
 
 namespace UltimateCustomRun
@@ -15,6 +16,17 @@ namespace UltimateCustomRun
             c.Next.Operand = Main.LensMakersCrit.Value;
             // I dont actually know why the standard method doesnt work
             // Thanks to uhh someone for this instead
+        }
+        public static void AddBehavior(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
+        {
+            if (sender.inventory)
+            {
+                var stack = sender.inventory.GetItemCount(RoR2Content.Items.CritGlasses);
+                if (stack > 0)
+                {
+                    // waiting for RecalcStats update if possible to add critdamagemult :thonk: += Main.LensMakersCritDamage.Value * stack;
+                }
+            }
         }
     }
 }

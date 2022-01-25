@@ -18,7 +18,14 @@ namespace UltimateCustomRun
             //c.EmitDelegate<Func<>>() => { return };
 
             // I want it to be linear instead of hyperbolic
-
+        }
+        public static void ChangeChance(ILContext il)
+        {
+            ILCursor c = new ILCursor(il);
+            c.GotoNext(MoveType.Before,
+                x => x.MatchLdcR4(5f)
+            );
+            c.Next.Operand = Main.StunGrenadeChance;
         }
     }
 }

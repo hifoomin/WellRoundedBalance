@@ -1,4 +1,8 @@
-﻿using MonoMod.Cil;
+﻿using R2API;
+using RoR2;
+using UnityEngine;
+using MonoMod.Cil;
+using UnityEngine.Networking;
 
 namespace UltimateCustomRun
 {
@@ -36,6 +40,11 @@ namespace UltimateCustomRun
             );
             c.Index += 2;
             c.Next.Operand = Main.TriTipDuration.Value;
+        }
+        public static void ChangeBehavior()
+        {
+            var b = Resources.Load<BuffDef>("buffdefs/bleeding");
+            b.canStack = Main.TriTipBuffStack.Value;
         }
     }
 }

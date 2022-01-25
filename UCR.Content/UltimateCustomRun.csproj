@@ -12,7 +12,17 @@
     <EmbeddedResource Remove="libs\**" />
     <None Remove="libs\**" />
   </ItemGroup>
-
+	
+  <ItemGroup>
+    <PackageReference Include="BepInEx.Analyzers" Version="1.0.6">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="BepInEx.Core" Version="5.4.16" />
+    <PackageReference Include="RiskOfRain2.GameLibs" Version="1.1.1.4-r.1" />
+    <PackageReference Include="UnityEngine.Modules" Version="2018.4.16" />
+  </ItemGroup>
+	
   <ItemGroup>
     <Reference Include="Assembly-CSharp">
       <HintPath>libs\Assembly-CSharp.dll</HintPath>

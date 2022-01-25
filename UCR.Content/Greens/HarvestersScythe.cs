@@ -28,14 +28,7 @@ namespace UltimateCustomRun
                 var stack = sender.inventory.GetItemCount(RoR2Content.Items.HealOnCrit);
                 if (stack > 0)
                 {
-                    if (Main.HarvestersCritStack.Value)
-                    {
-                        args.critAdd += Main.HarvestersCrit.Value * stack;
-                    }
-                    else
-                    {
-                        args.critAdd += Main.HarvestersCrit.Value;
-                    }
+                    args.critAdd += Main.HarvestersCritStack.Value ? Main.HarvestersCrit.Value * stack : Main.HarvestersCrit.Value;
                 }
             }
         }

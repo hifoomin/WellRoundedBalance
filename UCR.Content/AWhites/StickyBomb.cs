@@ -15,14 +15,7 @@ namespace UltimateCustomRun
             // weird
             s.blastRadius = Main.StickyBombRadius.Value;
             s.lifetime = Main.StickyBombDelay.Value;
-            if (Main.StickyBombFalloff.Value)
-            {
-                s.falloffModel = BlastAttack.FalloffModel.SweetSpot;
-            }
-            else
-            {
-                s.falloffModel = BlastAttack.FalloffModel.None;
-            }
+            s.falloffModel = Main.StickyBombFalloff.Value ? BlastAttack.FalloffModel.SweetSpot : BlastAttack.FalloffModel.None;
         }
         public static void ChangeChance(ILContext il)
         {

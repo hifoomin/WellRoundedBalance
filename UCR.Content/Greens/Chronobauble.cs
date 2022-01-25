@@ -7,33 +7,16 @@ namespace UltimateCustomRun
     {
         public static void AddBehavior(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
-            if (Main.ChronobaubleStacking.Value)
+            if (sender.inventory)
             {
-                // best change i could come up with
                 var debuff = sender.HasBuff(RoR2Content.Buffs.Slow50);
                 var stack = sender.inventory.GetItemCount(RoR2Content.Items.SlowOnHit);
-                if (stack > 0)
+                if (stack > 0 && sender && debuff)
                 {
-                    if (sender && debuff)
-                    {
-                        args.attackSpeedMultAdd -= Main.ChronobaubleAS.Value * stack;
-                    }
-                }
-            }
-            else
-            {
-                //best change i could come up with
-                var debuff = sender.HasBuff(RoR2Content.Buffs.Slow50);
-                var stack = sender.inventory.GetItemCount(RoR2Content.Items.SlowOnHit);
-                if (stack > 0)
-                {
-                    if (sender && debuff)
-                    {
-                        args.attackSpeedMultAdd -= Main.ChronobaubleAS.Value;
-                    }
-                    
+                    args.attackSpeedMultAdd -= Main.ChronobaubleStacking.Value ? Main.ChronobaubleAS.Value * stack : Main.ChronobaubleAS.Value;
                 }
             }
         }
+        // this method throws
     }
 }

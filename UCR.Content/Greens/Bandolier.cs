@@ -20,10 +20,13 @@ namespace UltimateCustomRun
         {
             ILCursor c = new ILCursor(il);
 
-            c.GotoNext(MoveType.Before
-                // to be done
-                // which 1 is the 1 in 1 + item count lmao
+            c.GotoNext(MoveType.Before,
+                x => x.MatchLdcR4(1),
+                x => x.MatchLdcR4(1),
+                x => x.MatchLdloc(out _),
+                x => x.MatchLdcI4(1)
             );
+            c.Index += 3;
             c.Next.Operand = Main.BandolierBase.Value;
         }
     }

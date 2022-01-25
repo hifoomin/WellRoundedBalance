@@ -29,11 +29,11 @@ namespace UltimateCustomRun
 
         public static void Changes()
         {
-            var furrywork = Resources.Load<GameObject>("prefabs/projectiles/FireworkProjectile");
-            var croppa = furrywork.GetComponent<ProjectileImpactExplosion>();
-            var croppa2 = furrywork.GetComponent<ProjectileController>();
-            croppa.blastDamageCoefficient = Main.FireworksDamage.Value / 3f;
-            croppa2.procCoefficient = Main.FireworksProcCo.Value;
+            var croppa = Resources.Load<GameObject>("prefabs/projectiles/FireworkProjectile");
+            var msm = croppa.GetComponent<ProjectileImpactExplosion>();
+            var skm = croppa.GetComponent<ProjectileController>();
+            msm.blastDamageCoefficient = Main.FireworksDamage.Value / 3f;
+            skm.procCoefficient = Main.FireworksProcCo.Value;
             // this is probably the wrong way of doing this but i cant figure out another
         }
     }

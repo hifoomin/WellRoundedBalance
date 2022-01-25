@@ -35,14 +35,7 @@ namespace UltimateCustomRun
                 // periphery 1 sucks, periphery 2 best cry about it
                 if (stack > 0 && buffp1 && buffp2)
                 {
-                    if (Main.OldWarArmorStack.Value)
-                    {
-                        args.armorAdd += Main.OldWarArmor.Value * stack;
-                    }
-                    else
-                    {
-                        args.armorAdd += Main.OldWarArmor.Value;
-                    }
+                    args.armorAdd += Main.OldWarArmorStack.Value ? Main.OldWarArmor.Value * stack : Main.OldWarArmor.Value;
                 }
             }
         }

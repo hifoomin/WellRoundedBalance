@@ -32,27 +32,15 @@ namespace UltimateCustomRun
             c.Index += 1;
             c.Next.Operand = Main.BerzerkersDurationStack.Value;
         }
-        public static void ChangeBuffStats(ILContext il)
-        {
-            ILCursor c = new ILCursor(il);
-
-            c.GotoNext(MoveType.Before
-
-                // this changes both gorags and pauldron so i will do the stupid workaround instead
-            );
-        }
         public static void AddBehavior(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
-            var buff = sender.HasBuff(RoR2Content.Buffs.WarCryBuff);
-            var stack = sender.inventory.GetItemCount(RoR2.RoR2Content.Items.WarCryOnMultiKill);
             if (sender.inventory)
             {
-                if (stack > 0)
+                var buff = sender.HasBuff(RoR2Content.Buffs.WarCryBuff);
+                var stack = sender.inventory.GetItemCount(RoR2Content.Items.WarCryOnMultiKill);
+                if (stack > 0 && buff)
                 {
-                    if (buff)
-                    {
-                        args.armorAdd += Main.BerzerkersBuffArmor.Value;
-                    }
+                    args.armorAdd += Main.BerzerkersBuffArmor.Value;
                 }
                 args.armorAdd += Main.BerzerkersArmorAlways.Value * stack;
             }

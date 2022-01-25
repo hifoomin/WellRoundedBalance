@@ -43,24 +43,11 @@ namespace UltimateCustomRun
                 int buff = sender.GetBuffCount(RoR2Content.Buffs.AttackSpeedOnCrit);
                 if (stack > 0)
                 {
-                    if (Main.PredatoryCritStack.Value)
-                    {
-                        args.critAdd += Main.PredatoryCrit.Value * stack;
-                    }
-                    else
-                    {
-                        args.critAdd += Main.PredatoryCrit.Value;
-                    }
+                    args.critAdd += Main.PredatoryCritStack.Value ? Main.PredatoryCrit.Value * stack : Main.PredatoryCrit.Value;
+
                     if (buff > 0)
                     {
-                        if (Main.PredatorySpeedStack.Value)
-                        {
-                            args.moveSpeedMultAdd += Main.PredatorySpeed.Value * buff * stack;
-                        }
-                        else
-                        {
-                            args.moveSpeedMultAdd += Main.PredatorySpeed.Value * buff;
-                        }
+                        args.moveSpeedMultAdd += Main.PredatorySpeedStack.Value ? Main.PredatorySpeed.Value * buff * stack : Main.PredatorySpeed.Value * buff;
                     }
                 }
             }

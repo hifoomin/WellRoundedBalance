@@ -36,6 +36,7 @@ namespace UltimateCustomRun
                 {
                     stageFactor = 1f;
                 }
+                // im not changing this chain. Cope
                 float finalDifficulty = (playerFactor + timeFactor * playerScalar) * stageFactor;
                 self.compensatedDifficultyCoefficient = finalDifficulty;
                 self.difficultyCoefficient = finalDifficulty;

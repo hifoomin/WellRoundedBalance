@@ -1,4 +1,6 @@
-﻿using MonoMod.Cil;
+﻿using RoR2;
+using MonoMod.Cil;
+using UnityEngine.Networking;
 
 namespace UltimateCustomRun
 {
@@ -15,5 +17,24 @@ namespace UltimateCustomRun
             c.Index += 1;
             c.Next.Operand = Main.TopazBroochBarrier.Value;
         }
+        public static void AddBehavior(DamageReport report)
+        {
+            if (!NetworkServer.active)
+            {
+                return;
+            }
+            CharacterBody att = report.attackerBody;
+            Inventory inv = att.inventory;
+            if (att && inv)
+            {
+                var stack = report.attackerBody.inventory.GetItemCount(RoR2Content.Items.BarrierOnKill);
+                if (stack > 0)
+                {
+                    var maxhp = att.healthComponent.fullCombinedHealth;
+                    att.healthComponent.AddBarrier(Main.TopazBroochPercentBarrierStack.Value ? maxhp * stack : maxhp);
+                }
+            }
+        }
+        // i was told a NetworkServer.active needs to be here :Thonk:
     }
 }
