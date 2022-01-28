@@ -27,5 +27,7 @@ namespace UltimateCustomRun
             );
             c.Next.Operand = Main.StunGrenadeChance;
         }
+        // hooking this requires reflection?
+        // PLEASE HELP TO FIX
     }
 }

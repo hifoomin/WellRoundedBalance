@@ -27,7 +27,7 @@ using System.Security.Permissions;
 
 namespace UltimateCustomRun
 {
-    class AAPublicizedAssembly
+    class PublicizedAssembly
     {
     }
 }

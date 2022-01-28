@@ -17,6 +17,5 @@ namespace UltimateCustomRun
                 }
             }
         }
-        // this method throws
     }
 }

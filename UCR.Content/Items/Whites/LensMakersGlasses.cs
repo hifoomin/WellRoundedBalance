@@ -25,6 +25,7 @@ namespace UltimateCustomRun
                 if (stack > 0)
                 {
                     // waiting for RecalcStats update if possible to add critdamagemult :thonk: += Main.LensMakersCritDamage.Value * stack;
+                    // OR PLEASE HELP TO FIX
                 }
             }
         }

@@ -78,5 +78,7 @@ namespace UltimateCustomRun
         // BepInEx.Bootstrap.Chainloader:Start()
         // UnityEngine.Application:.cctor()
         // RoR2.Console:RegisterLogHandler()
+
+        // PLEASE HELP TO FIX
     }
 }

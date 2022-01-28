@@ -30,30 +30,20 @@ namespace UltimateCustomRun
                 }
             }
         }
-        public static void AddBehaviorRegen(DamageReport report)
+        public static void AddBehaviorRegen(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
-            if (Main.BisonSteakRegenStack.Value)
-            {
-                if (NetworkServer.active)
-                {
-                    var stack = report.attackerBody.inventory.GetItemCount(RoR2Content.Items.FlatHealth);
-                    if (report.attacker && report.attackerBody && report.attackerBody.inventory && stack > 0)
-                    {
-                        report.attackerBody.AddTimedBuff(RoR2Content.Buffs.MeatRegenBoost, Main.BisonSteakRegen.Value);
-                    }
-                }
-            }
+
         }
         public static void ChangeBuffBehavior(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
             var mrb = Resources.Load<BuffDef>("buffdefs/meatregenboost");
-            mrb.canStack = true;
+            mrb.canStack = Main.BisonSteakRegenStack.Value ? true : false;
             if (sender.inventory)
             {
-                var buff = sender.GetBuffCount(RoR2Content.Buffs.MeatRegenBoost);
+                int buff = sender.GetBuffCount(RoR2Content.Buffs.MeatRegenBoost);
                 if (buff > 0)
                 {
-                    args.baseRegenAdd += Main.BisonSteakRegen.Value * buff;
+                    args.baseRegenAdd += 2 * (1 + 0.2f * (sender.level - 1)) * (buff - 1);
                 }
             }
         }

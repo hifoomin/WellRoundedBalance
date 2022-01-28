@@ -45,6 +45,8 @@ namespace UltimateCustomRun
 
         public static ConfigEntry<float> GlobalLowHealthThreshold { get; set; }
 
+        public static ConfigEntry<float> LuckBase { get; set; }
+
         public static ConfigEntry<float> PlayerFactorBase { get; set; }
         public static ConfigEntry<float> PlayerCountMultiplier { get; set; }
         public static ConfigEntry<float> PlayerCountExponent { get; set; }
@@ -229,6 +231,53 @@ namespace UltimateCustomRun
         public static ConfigEntry<int> SquidPolypAS { get; set; }
         public static ConfigEntry<int> SquidPolypDuration { get; set; }
 
+        public static ConfigEntry<float> UkuleleDamage { get; set; }
+        public static ConfigEntry<float> UkuleleProcCo { get; set; }
+        public static ConfigEntry<float> UkuleleChance { get; set; }
+        public static ConfigEntry<float> UkuleleRange { get; set; }
+        public static ConfigEntry<int> UkuleleRangeStack { get; set; }
+        public static ConfigEntry<int> UkuleleTargets { get; set; }
+        public static ConfigEntry<int> UkuleleTargetsStack { get; set; }
+
+        public static ConfigEntry<float> WarhornAS { get; set; }
+        public static ConfigEntry<int> WarhornDuration { get; set; }
+        public static ConfigEntry<int> WarhornDurationStack { get; set; }
+
+        public static ConfigEntry<float> WaxQuailDistance { get; set; }
+
+        public static ConfigEntry<float> WilloDamage { get; set; }
+        public static ConfigEntry<float> WilloDamageStack { get; set; }
+        public static ConfigEntry<float> WilloProcCo { get; set; }
+        public static ConfigEntry<float> WilloRange { get; set; }
+        public static ConfigEntry<float> WilloRangeStack { get; set; }
+
+        //               _     
+        //              | |    
+        //  _ __ ___  __| |___ 
+        // | '__/ _ \/ _` / __|
+        // | | |  __/ (_| \__ \
+        // |_|  \___|\__,_|___/
+
+        public static ConfigEntry<float> AlienHeadCDR { get; set; }
+        public static ConfigEntry<float> AlienHeadFlatCDR { get; set; }
+
+        public static ConfigEntry<float> AegisArmor { get; set; }
+        public static ConfigEntry<bool> AegisDynamicBarrierDecay { get; set; }
+        public static ConfigEntry<float> AegisOverhealPercent { get; set; }
+
+        public static ConfigEntry<float> BehemothDamage { get; set; }
+        public static ConfigEntry<float> BehemothAoe { get; set; }
+        public static ConfigEntry<float> BehemothAoeStack { get; set; }
+
+        public static ConfigEntry<float> CeremonialDamage { get; set; }
+        public static ConfigEntry<int> CeremonialCount { get; set; }
+        public static ConfigEntry<float> CeremonialProcCo { get; set; }
+
+        public static ConfigEntry<float> DefeMicroMinFireFreq { get; set; }
+        public static ConfigEntry<float> DefeMicroRechargeFreq { get; set; }
+        public static ConfigEntry<float> DefeMicroRange { get; set; }
+        public static ConfigEntry<bool> DefeMicroGuide { get; set; }
+
         //  _                            
         // | |                           
         // | |_   _ _ __   __ _ _ __ ___ 
@@ -369,15 +418,15 @@ namespace UltimateCustomRun
             // StunGrenadeChance = Config.Bind<float>(":: Items : Whites :: Stun Grenade", "Chance", (float)5f, "Vanilla is 5");
 
             TopazBroochBarrier = Config.Bind<float>(":: Items : Whites :: Topaz Brooch", "Barrier", (float)15f, "Per Stack. Vanilla is 15");
-            TopazBroochPercentBarrier = Config.Bind<float>(":: Items : Whites :: Topaz Brooch", "Percent Barrier", (float)0.1f, "Decimal. Per Stack. Vanilla is 0");
-            TopazBroochPercentBarrierStack = Config.Bind<bool>(":: Items : Whites :: Topaz Brooch", "Stack Percent Barrier?", (bool)true, "Vanilla is false");
+            //TopazBroochPercentBarrier = Config.Bind<float>(":: Items : Whites :: Topaz Brooch", "Percent Barrier", (float)0.1f, "Decimal. Per Stack. Vanilla is 0");
+            //TopazBroochPercentBarrierStack = Config.Bind<bool>(":: Items : Whites :: Topaz Brooch", "Increase Percent Barrier Gain Per Stack?", (bool)true, "Vanilla is false");
 
             TougherTimesBlockChance = Config.Bind<float>(":: Items : Whites :: Tougher Times", "Block Chance", (float)15f, "Per Stack. Vanilla is 15");
             TougherTimesArmor = Config.Bind<float>(":: Items : Whites :: Tougher Times", "Armor", (float)0f, "Per Stack. Vanilla is 0");
 
             TriTipChance = Config.Bind<float>(":: Items : Whites :: Tri Tip Dagger", "Chance", (float)10f, "Per Stack. Vanilla is 10");
             TriTipDuration = Config.Bind<float>(":: Items : Whites :: Tri Tip Dagger", "Duration", (float)3f, "Vanilla is 3");
-            TriTipBuffStack = Config.Bind<bool>(":: Items : Whites :: Tri Tip Dagger", "Stack Tri Tip Bleed?", (bool)false, "Vanilla is true");
+            TriTipBuffStack = Config.Bind<bool>(":: Items : Whites :: Tri Tip Dagger", "Stack Tri Tip Bleed?", (bool)true, "Vanilla is true");
 
             WarbannerDamage = Config.Bind<float>(":: Items : Whites :: Warbanner", "Base Damage", (float)0f, "Vanilla is 0");
             WarbannerRadius = Config.Bind<float>(":: Items : Whites :: Warbanner", "Base Radius", (float)8f, "V. Vanilla is 8");
@@ -455,6 +504,53 @@ namespace UltimateCustomRun
 
             // SquidPolypDuration = Config.Bind<int>(":: Items :: Greens :: Squid Polyp", "Lifetime", (int)30, "Vanilla is 30");
             // SquidPolypAS = Config.Bind<int>(":: Items :: Greens :: Squid Polyp", "Attack Speed Item Count", (int)10, "Per Stack. Vanilla is 10");
+
+            UkuleleDamage = Config.Bind<float>(":: Items :: Greens :: Ukulele", "Total Damage", (float)2f, "Decimal. Vanilla is 0.8");
+            UkuleleChance = Config.Bind<float>(":: Items :: Greens :: Ukulele", "Chance", (float)75f, "Vanilla is 25");
+            UkuleleProcCo = Config.Bind<float>(":: Items :: Greens :: Ukulele", "Proc Coefficient", (float)10f, "Vanilla is 0.2");
+            UkuleleRange = Config.Bind<float>(":: Items :: Greens :: Ukulele", "Base Range", (float)50f, "Vanilla is 20");
+            UkuleleRangeStack = Config.Bind<int>(":: Items :: Greens :: Ukulele", "Range", (int)30, "Per Stack. Vanilla is 2");
+            UkuleleTargets = Config.Bind<int>(":: Items :: Greens :: Ukulele", "Base Max Targets", (int)100, "Vanilla is 3");
+            UkuleleTargetsStack = Config.Bind<int>(":: Items :: Greens :: Ukulele", "Max Targets", (int)50, "Per Stack. Vanilla is 2");
+
+            WarhornAS = Config.Bind<float>(":: Items :: Greens :: War Horn", "Attack Speed", (float)0.7f, "Decimal. Vanilla is 0.7");
+            // WarhornDuration = Config.Bind<int>(":: Items :: Greens :: War Horn", "Base Duration", (int)8, "Vanilla is 8");
+            // WarhornDurationStack = Config.Bind<int>(":: Items :: Greens :: War Horn", "Duration", (int)4, "Per Stack. Vanilla is 4");
+
+            WaxQuailDistance = Config.Bind<float>(":: Items :: Greens :: Wax Quail", "Distance", (float)10f, "Per Stack. Vanilla is 10");
+
+            WilloDamage = Config.Bind<float>(":: Items :: Greens :: Will o The Wisp", "Base Damage", (float)3.5f, "Vanilla is 3.5");
+            WilloDamageStack = Config.Bind<float>(":: Items :: Greens :: Will o The Wisp", "Damage", (float)0.8f, "Per Stack. Vanilla is Base Damage * 0.8, resulting in 280%");
+            WilloProcCo = Config.Bind<float>(":: Items :: Greens :: Will o The Wisp", "Proc Coefficient", (float)1f, "Vanilla is 1");
+            WilloRange = Config.Bind<float>(":: Items :: Greens :: Will o The Wisp", "Base Range", (float)12f, "Vanilla is 12");
+            WilloRangeStack = Config.Bind<float>(":: Items :: Greens :: Will o The Wisp", "Range", (float)2.4f, "Per Stack. Vanilla is 2.4");
+
+            //               _     
+            //              | |    
+            //  _ __ ___  __| |___ 
+            // | '__/ _ \/ _` / __|
+            // | | |  __/ (_| \__ \
+            // |_|  \___|\__,_|___/
+
+            AegisArmor = Config.Bind<float>(":: Items ::: Reds :: Aegis", "Armor", (float)0f, "Vanilla is 0");
+            AegisDynamicBarrierDecay = Config.Bind<bool>(":: Items ::: Reds :: Aegis", "Make Barrier Decay Dynamic?", (bool)true, "Vanilla is false");
+            AegisOverhealPercent = Config.Bind<float>(":: Items ::: Reds :: Aegis", "Overheal Percent", (float)0.5f, "Per Stack. Vanilla is 0.5");
+
+            AlienHeadCDR = Config.Bind<float>(":: Items ::: Reds :: Alien Head", "Percent Cooldown Reduction", (float)0.25f, "Per Stack. Vanilla is 0.25");
+            AlienHeadFlatCDR = Config.Bind<float>(":: Items ::: Reds :: Alien Head", "Flat Cooldown Reduction", (float)1f, "Vanilla is 0");
+
+            BehemothDamage = Config.Bind<float>(":: Items ::: Reds :: Brilliant Behemoth", "Damage", (float)0.6f, "Vanilla is 0.6");
+            BehemothAoe = Config.Bind<float>(":: Items ::: Reds :: Brilliant Behemoth", "Base AoE", (float)1.5f, "V. Vanilla is 1.5");
+            BehemothAoeStack = Config.Bind<float>(":: Items ::: Reds :: Brilliant Behemoth", "AoE", (float)2.5f, "V. Per Stack. Vanilla is 2.5");
+
+            // CeremonialCount = Config.Bind<int>(":: Items ::: Reds :: Ceremonial Dagger", "Count", (int)3, "Vanilla is 3");
+            CeremonialDamage = Config.Bind<float>(":: Items ::: Reds :: Ceremonial Dagger", "Damage", (float)1.5f, "Per Stack. Vanilla is 1.5");
+            CeremonialProcCo = Config.Bind<float>(":: Items ::: Reds :: Ceremonial Dagger", "Proc Coefficient", (float)1f, "Vanilla is 1");
+
+            DefeMicroMinFireFreq = Config.Bind<float>(":: Items ::: Reds :: Defensive Microbots", "Minimum Fire Frequency", (float)10f, "Vanilla is 10");
+            DefeMicroRechargeFreq = Config.Bind<float>(":: Items ::: Reds :: Defensive Microbots", "Recharge Frequency", (float)2f, "Vanilla is 2");
+            DefeMicroGuide = Config.Bind<bool>(":: Items ::: Reds :: Defensive Microbots", "Recharge Guide", (bool)true, "Recharge Frequency Formula: 1 / (The lower value between Minimum Fire Frequency and Recharge Frequency)");
+            DefeMicroRange = Config.Bind<float>(":: Items ::: Reds :: Defensive Microbots", "Range", (float)20f, "Vanilla is 20");
 
             //  _                            
             // | |                           
@@ -569,13 +665,13 @@ namespace UltimateCustomRun
 
             if (BisonSteakRegen.Value != 0f)
             {
-                GlobalEventManager.onCharacterDeathGlobal += BisonSteak.AddBehaviorRegen;
+                RecalculateStatsAPI.GetStatCoefficients += BisonSteak.AddBehaviorRegen;
             }
 
-            if (TopazBroochPercentBarrier.Value != 0f)
-            {
-                GlobalEventManager.onCharacterDeathGlobal += TopazBrooch.AddBehavior;
-            }
+            //if (TopazBroochPercentBarrier.Value != 0f)
+            //{
+            //    GlobalEventManager.onCharacterDeathGlobal += TopazBrooch.AddBehavior;
+            //}
 
             RecalculateStatsAPI.GetStatCoefficients += BackupMag.AddBehavior;
 
@@ -665,14 +761,25 @@ namespace UltimateCustomRun
             // IL.RoR2.GlobalEventManager.OnInteractionBegin += SquidPolyp.ChangeLifetime;
             // throws
 
-            AtGMissileMk1.ChangeProc();
+            IL.RoR2.GlobalEventManager.OnHitEnemy += Ukulele.ChangeChance;
+            IL.RoR2.GlobalEventManager.OnHitEnemy += Ukulele.ChangeDamage;
+            IL.RoR2.GlobalEventManager.OnHitEnemy += Ukulele.ChangeProcCo;
+            IL.RoR2.GlobalEventManager.OnHitEnemy += Ukulele.ChangeRangeStack;
+            IL.RoR2.GlobalEventManager.OnHitEnemy += Ukulele.ChangeTargetCountStack;
+
+            IL.RoR2.CharacterBody.RecalculateStats += Warhorn.ChangeAS;
+            // honestly me when i hook it to the wrong thing and wonder why it doesnt work 
+            // IL.RoR2.EquipmentSlot.Execute += Warhorn.ChangeDuration;
+            // doesnt work because ???????????????????????????????
+
+            IL.EntityStates.GenericCharacterMain.ProcessJump += WaxQuail.ChangeDistance;
+
+            IL.RoR2.GlobalEventManager.OnCharacterDeath += WillOTheWisp.ChangeDamage;
+            IL.RoR2.GlobalEventManager.OnCharacterDeath += WillOTheWisp.ChangeRange;
 
             RecalculateStatsAPI.GetStatCoefficients += BerzerkersPauldron.AddBehavior;
-            // throws (harmless)
-
 
             RecalculateStatsAPI.GetStatCoefficients += Chronobauble.AddBehavior;
-            // throws (harmless)
 
 
             if (HarvestersCritStack.Value)
@@ -688,10 +795,48 @@ namespace UltimateCustomRun
             RecalculateStatsAPI.GetStatCoefficients += PredatoryInstincts.AddBehavior;
            
             RecalculateStatsAPI.GetStatCoefficients += RoseBuckler.AddBehavior;
+
+            AtGMissileMk1.ChangeProc();
+
             if (ReplaceRoseBucklerSprintWithHpThreshold.Value == true)
             {
                 RoseBuckler.Insanity();
             }
+
+            Ukulele.ChangeTargetCountBase();
+            Ukulele.ChangeRangeBase();
+
+            WillOTheWisp.ChangeProc();
+
+            //               _     
+            //              | |    
+            //  _ __ ___  __| |___ 
+            // | '__/ _ \/ _` / __|
+            // | | |  __/ (_| \__ \
+            // |_|  \___|\__,_|___/
+
+            IL.RoR2.HealthComponent.Heal += Aegis.ChangeOverheal;
+
+            IL.RoR2.CharacterBody.RecalculateStats += AlienHead.ChangeCDR;
+
+            IL.RoR2.GlobalEventManager.OnHitAll += BrilliantBehemoth.ChangeDamage;
+            IL.RoR2.GlobalEventManager.OnHitAll += BrilliantBehemoth.ChangeRadius;
+
+            // IL.RoR2.GlobalEventManager.OnCharacterDeath += CeremonialDagger.ChangeCount;
+            IL.RoR2.GlobalEventManager.OnCharacterDeath += CeremonialDagger.ChangeDamage;
+
+            RecalculateStatsAPI.GetStatCoefficients += Aegis.AddBehavior;
+
+            RecalculateStatsAPI.GetStatCoefficients += AlienHead.AddBehavior;
+
+            if (Main.AegisDynamicBarrierDecay.Value)
+            {
+                On.RoR2.CharacterBody.FixedUpdate += Aegis.ChangeBarrierDecay;
+            }
+
+            CeremonialDagger.ChangeProc();
+
+            DefensiveMicrobots.Changes();
 
             //  _                            
             // | |                           
@@ -947,6 +1092,40 @@ namespace UltimateCustomRun
              var wooliegaming = SquidPolypAS.Value * 10f;
              LanguageAPI.Add("ITEM_SQUIDTURRET_DESC", "Activating an interactable summons a <style=cIsDamage>Squid Turret</style> that attacks nearby enemies at <style=cIsDamage>" + wooliegaming + "% <style=cStack>(+" + wooliegaming + "% per stack)</style> attack speed</style>. Lasts <style=cIsUtility>" + SquidPolypDuration.Value + "</style> seconds.");
             */
+
+            LanguageAPI.Add("ITEM_CHAINLIGHTNING_DESC", "<style=cIsDamage>" + UkuleleChance.Value + "%</style> chance to fire <style=cIsDamage>chain lightning</style> for <style=cIsDamage>" + d(UkuleleDamage.Value) + "</style> TOTAL damage on up to <style=cIsDamage>" + UkuleleTargets.Value + " <style=cStack>(+" + UkuleleTargetsStack.Value + " per stack)</style></style> targets within <style=cIsDamage>" + UkuleleRange.Value + "m</style> <style=cStack>(+" + UkuleleRangeStack.Value + "m per stack)</style>.");
+
+            // LanguageAPI.Add("ITEM_ENERGIZEDONEQUIPMENTUSE_DESC", "Activating your Equipment gives you <style=cIsDamage>+" + d(WarhornAS.Value) + " attack speed</style> for <style=cIsDamage>" + WarhornDuration.Value + "s</style> <style=cStack>(+" + WarhornDurationStack.Value + "s per stack)</style>.");
+            LanguageAPI.Add("ITEM_ENERGIZEDONEQUIPMENTUSE_DESC", "Activating your Equipment gives you <style=cIsDamage>+" + d(WarhornAS.Value) + " attack speed</style> for <style=cIsDamage>8s</style> <style=cStack>(+4s per stack)</style>.");
+
+            LanguageAPI.Add("ITEM_JUMPBOOST_DESC", "<style=cIsUtility>Jumping</style> while <style=cIsUtility>sprinting</style> boosts you forward by <style=cIsUtility>" + WaxQuailDistance.Value + "m</style><style=cStack>(+" + WaxQuailDistance.Value + "m per stack)</style>.");
+
+            var brie = WilloDamage.Value * WilloDamageStack.Value;
+            LanguageAPI.Add("ITEM_EXPLODEONDEATH_DESC", "On killing an enemy, spawn a <style=cIsDamage>lava pillar</style> in a <style=cIsDamage>" + WilloRange.Value + "m</style> <style=cStack>(+" + WilloRangeStack.Value + "m per stack)</style> radius for <style=cIsDamage>" + d(WilloDamage.Value) + "</style> <style=cStack>(+" + d(brie) + " per stack)</style> base damage.");
+
+            //               _     
+            //              | |    
+            //  _ __ ___  __| |___ 
+            // | '__/ _ \/ _` / __|
+            // | | |  __/ (_| \__ \
+            // |_|  \___|\__,_|___/
+
+            bool aeArmor = AegisArmor.Value != 0f;
+            LanguageAPI.Add("ITEM_BARRIERONOVERHEAL_DESC", 
+            (aeArmor ? "<style=cIsHealing>Increase armor</style> by <style=cIsHealing>" + AegisArmor.Value + "</style>. " : "") +
+            "Healing past full grants you a <style=cIsHealing>temporary barrier</style> for <style=cIsHealing>" + d(AegisOverhealPercent.Value) + " <style=cStack>(+" + d(AegisOverhealPercent.Value) + " per stack)</style></style> of the amount you <style=cIsHealing>healed</style>.");
+
+            bool ahFlatCDR = AlienHeadFlatCDR.Value != 0f;
+            LanguageAPI.Add("ITEM_ALIENHEAD_DESC", "<style=cIsUtility>Reduce skill cooldowns</style> by <style=cIsUtility>" + d(AlienHeadCDR.Value) + "</style> <style=cStack>(+" + d(AlienHeadCDR.Value) + " per stack)</style>" +
+            (ahFlatCDR ? " and <style=cIsUtility>" + AlienHeadFlatCDR.Value + "</style> second." : "."));
+
+            var breh = BehemothAoe.Value + BehemothAoeStack.Value;
+            LanguageAPI.Add("ITEM_BEHEMOTH_DESC", "All your <style=cIsDamage>attacks explode</style> in a <style=cIsDamage>" + breh + "m</style> <style=cStack>(+" + BehemothAoeStack.Value + "m per stack)</style> radius for a bonus <style=cIsDamage>" + d(BehemothDamage.Value) + "</style> TOTAL damage to nearby enemies.");
+
+            LanguageAPI.Add("ITEM_DAGGER_DESC", "Killing an enemy fires out <style=cIsDamage>3</style> <style=cIsDamage>homing daggers</style> that deal <style=cIsDamage>" + d(CeremonialDamage.Value) + "</style> <style=cStack>(+" + d(CeremonialDamage.Value) + " per stack)</style> base damage.");
+
+            var bruj = 1 / DefeMicroRechargeFreq.Value;
+            LanguageAPI.Add("ITEM_CAPTAINDEFENSEMATRIX_DESC", "Shoot down <style=cIsDamage>1</style> <style=cStack>(+1 per stack)</style> projectiles within <style=cIsDamage>" + DefeMicroRange.Value + "m</style> every <style=cIsDamage>" + bruj + " seconds</style>. <style=cIsUtility>Recharge rate scales with attack speed</style>.");
 
             //  _                            
             // | |                           

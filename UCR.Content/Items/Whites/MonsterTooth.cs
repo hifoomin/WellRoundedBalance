@@ -17,7 +17,8 @@ namespace UltimateCustomRun
             c.EmitDelegate<Func<float, float>>((vanilla) => { return Main.MonsterToothFlatHealing.Value; });
             c.Index += 2;
             c.EmitDelegate<Func<float, float>>((vanilla) => { return Main.MonsterToothPercentHealing.Value; });
-            //thanks to RandomlyAwesome!
+            // thanks to RandomlyAwesome!
+            // PLEASE HELP TO FIX
         }
     }
 }

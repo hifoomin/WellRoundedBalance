@@ -17,6 +17,7 @@ namespace UltimateCustomRun
             );
             c.Index += 2;
             c.Next.Operand = Main.BerzerkersKillsReq.Value;
+            // WHY DOES THIS NOT WORK
         }
         public static void ChangeBuffDuration(ILContext il)
         {
@@ -45,11 +46,6 @@ namespace UltimateCustomRun
                 args.armorAdd += Main.BerzerkersArmorAlways.Value * stack;
             }
         }
-
-        // this method throws
-
-        // its a fuckin pauldron why does it not add armor lmao
-
         // TODO: Ask Moffein for his Pauldron changes and implement them :plead
     }
 }

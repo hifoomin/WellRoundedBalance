@@ -36,10 +36,7 @@ namespace UltimateCustomRun
                 bool flying = Main.AprF.Value && body.isFlying;
                 return boss || champion || elite || flying; 
             });
-
-            // this throws
-            // idk how to fix
-
+            // PLEASE HELP IN FIXING
         }
         // THANK YOU BORBO HOLY
         // For the life of me I couldn't have figured out how to check for 24 possible combinations and put them into the description :P
