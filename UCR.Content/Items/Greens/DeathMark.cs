@@ -5,13 +5,47 @@ using RoR2;
 
 namespace UltimateCustomRun
 {
-    public static class DeathMark
+    public class DeathMark : Based
     {
         // ////////////
         // 
         // Thanks to Skell
         //
         // ///////////////
+
+        public static bool enable;
+        public static float dmgperdebuff;
+        public static float dmgperstack;
+        public static int mindebuffs;
+
+        public override string Name => ":: Items :: Greens :: Death Mark";
+        public override string InternalPickupToken => "deathmark";
+        public override bool NewPickup => true;
+        public override string PickupText => enable ? " Enemies with " + mindebuffs + " or more debuffs are marked for death, taking bonus damage." : "Enemies with 4 or more debuffs are marked for death, taking bonus damage.";
+
+        float actualStack = dmgperdebuff * dmgperstack;
+
+        public override string DescText => enable ? "Enemies with <style=cIsDamage>" + mindebuffs + "</style> or more debuffs are <style=cIsDamage>marked for death</style>, increasing damage taken by <style=cIsDamage>" + d(dmgperstack) + "</style> <style=cStack>(+" + d(actualStack) + " per stack)</style> per debuff from all sources for <style=cIsUtility>7</style> <style=cStack>(+7 per stack)</style> seconds." : "Enemies with <style=cIsDamage>4</style> or more debuffs are <style=cIsDamage>marked for death</style>, increasing damage taken by <style=cIsDamage>50%</style> from all sources for <style=cIsUtility>7</style> <style=cStack>(+7 per stack)</style> seconds.";
+
+
+        public override void Init()
+        {
+            enable = ConfigOption(false, "Enable Changes?", "Vanilla is false");
+            dmgperdebuff = ConfigOption(0.1f, "Debuff Damage Increase", "Decimal. Per Debuff. Vanilla is 0");
+            dmgperstack = ConfigOption(0.05f, "Stack Debuff Damage Increase", "Decimal. Per Stack. Vanilla is 0");
+            mindebuffs = ConfigOption(2, "Minimum Debuffs", "Vanilla is 4");
+            base.Init();
+        }
+
+        public override void Hooks()
+        {
+            if (enable)
+            {
+                IL.RoR2.GlobalEventManager.OnHitEnemy += ChangeDebuffsReq;
+                IL.RoR2.HealthComponent.TakeDamage += Changes;
+            }
+        }
+
         public static void Changes(ILContext il)
         {
             ILCursor c = new ILCursor(il);
@@ -53,10 +87,10 @@ namespace UltimateCustomRun
                             }
                         }
                     }
-                    float damageBonus = debuffCount * Main.DeathMarkDmgIncreasePerDebuff.Value;
+                    float damageBonus = debuffCount * dmgperdebuff;
                     if (DeathMarkCount > 0)
                     {
-                        return 1f + damageBonus + (Main.DeathMarkStackBonus.Value * damageBonus * ((float)DeathMarkCount - 1f));
+                        return 1f + damageBonus + (dmgperstack * damageBonus * ((float)DeathMarkCount - 1f));
                     }
                     return 1f + damageBonus;
                 }
@@ -74,7 +108,7 @@ namespace UltimateCustomRun
                 );
             c.Index += 2;
             c.Emit(OpCodes.Pop);
-            c.Emit(OpCodes.Ldc_I4, Main.DeathMarkMinimumDebuffsRequired.Value);
+            c.Emit(OpCodes.Ldc_I4, mindebuffs);
         }
     }
 }

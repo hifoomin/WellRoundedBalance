@@ -7,8 +7,50 @@ using System;
 
 namespace UltimateCustomRun
 {
-    public static class RoseBuckler
+    public class RoseBuckler : Based
     {
+        public static int condarmor;
+        public static float armor;
+        public static bool armorstack;
+        public static bool changecond;
+        public static float threshold;
+
+        public override string Name => ":: Items :: Greens :: Rose Buckler";
+        public override string InternalPickupToken => "sprintArmor";
+        public override bool NewPickup => false;
+        public override string PickupText => "";
+
+        bool rbArmor = armor != 0f;
+        bool rbArmorStack = armorstack;
+        bool rbBehavior = changecond;
+
+        public override string DescText => (rbArmor ? "<style=cIsHealing>Increase armor</style> by <style=cIsHealing>" + armor + "</style>" +
+                                           (rbArmorStack ? " <style=cStack>(+" + armor + " per stack)</style>" : "") + 
+                                           " and <style=cIsHealing>" + condarmor + "</style> <style=cStack>(+" + condarmor + " per stack)</style> " : "<style=cIsHealing>Increase armor</style> by <style=cIsHealing>" + condarmor + "</style> <style=cStack>(+" + condarmor + " per stack)</style>") +
+                                           " while" +
+                                           (rbBehavior ? " <style=cIsHealth>under " + d(threshold) + " health</style>." : " <style=cIsUtility>sprinting</style>.");
+
+
+        public override void Init()
+        {
+            condarmor = ConfigOption(30, "Conditional Armor", "Per Stack. Vanilla is 30");
+            armor = ConfigOption(0f, "Armor", "Vanilla is 0");
+            armorstack = ConfigOption(false, "Stack Armor?", "Vanilla is false");
+            changecond = ConfigOption(false, "Change Condition to Below Health Threshold?", "Vanilla is false");
+            threshold = ConfigOption(0.5f, "Health Threshold", "Decimal. Vanilla is 0");
+            base.Init();
+        }
+
+        public override void Hooks()
+        {
+            if (changecond)
+            {
+                IL.RoR2.CharacterBody.RecalculateStats += ChangeBehavior;
+                Insanity();
+            }
+            IL.RoR2.CharacterBody.RecalculateStats += ChangeArmor;
+            RecalculateStatsAPI.GetStatCoefficients += AddBehavior;
+        }
         public static void ChangeBehavior(ILContext il)
         {
             ILCursor c = new ILCursor(il);
@@ -22,7 +64,7 @@ namespace UltimateCustomRun
                 x => x.MatchCallOrCallvirt(typeof(CharacterBody).GetPropertyGetter(nameof(CharacterBody.isSprinting)))
             );
             c.Emit(OpCodes.Ldarg_0);
-            c.EmitDelegate<Func<bool, CharacterBody, bool>>((sprinting, body) => { return body.healthComponent.combinedHealthFraction < Main.RoseBucklerThreshold.Value; });
+            c.EmitDelegate<Func<bool, CharacterBody, bool>>((sprinting, body) => { return body.healthComponent.combinedHealthFraction < threshold; });
         }
         public static void ChangeArmor(ILContext il)
         {
@@ -35,7 +77,7 @@ namespace UltimateCustomRun
             c.Index += 3;
             c.EmitDelegate<Func<int, int>>((sdfgsdfhgsghdfv) =>
             {
-                return Main.RoseBucklerArmor.Value;
+                return condarmor;
             });
         }
 
@@ -60,7 +102,7 @@ namespace UltimateCustomRun
                 if (self.body && self.body.inventory)
                 {
                     float health = self.body.inventory.GetItemCount(RoR2Content.Items.SprintArmor) > 0 ? self.combinedHealthFraction : 0f;
-                    if (health >= Main.RoseBucklerThreshold.Value && self.combinedHealthFraction < Main.RoseBucklerThreshold.Value)
+                    if (health >= threshold && self.combinedHealthFraction < threshold)
                     {
                         self.body.statsDirty = true;
                     }
@@ -72,29 +114,13 @@ namespace UltimateCustomRun
                 if (self.body && self.body.inventory)
                 {
                     float health = self.body.inventory.GetItemCount(RoR2Content.Items.SprintArmor) > 0 ? self.combinedHealthFraction : 1f;
-                    if (health < Main.RoseBucklerThreshold.Value && self.combinedHealthFraction >= Main.RoseBucklerThreshold.Value)
+                    if (health < threshold && self.combinedHealthFraction >= threshold)
                     {
                         self.body.statsDirty = true;
                     }
                 }
                 return ret;
             };
-            // [Error  : Unity Log] NullReferenceException: Object reference not set to an instance of an object
-            // Stack trace:
-            // UltimateCustomRun.RoseBuckler+<>c.<Insanity>b__3_0 (On.RoR2.HealthComponent+orig_TakeDamage orig, RoR2.HealthComponent self, RoR2.DamageInfo damageInfo) (at <064868df148e436dadbbf814800d76e5>:IL_000C)
-            // DMD<>?-165335808.Hook<RoR2.HealthComponent::TakeDamage>?-1564710144 (RoR2.HealthComponent , RoR2.DamageInfo ) (at <5a36487301ef4d1e9184a5bbbf5c5755>:IL_0014)
-            // RoR2.BulletAttack.DefaultHitCallback (RoR2.BulletAttack+BulletHit& hitInfo) (at <da7c19fa62814b28bdb8f3a9223868e1>:IL_02CE)
-            // RoR2.BulletAttack.ProcessHit (RoR2.BulletAttack+BulletHit& hitInfo) (at <da7c19fa62814b28bdb8f3a9223868e1>:IL_0028)
-            // RoR2.BulletAttack.ProcessHitList (System.Collections.Generic.List`1[T] hits, UnityEngine.Vector3& endPosition, System.Collections.Generic.List`1[T] ignoreList) (at <da7c19fa62814b28bdb8f3a9223868e1>:IL_0099)
-            // DMD<FireSingle>?-165335808._RoR2_BulletAttack::FireSingle (RoR2.BulletAttack this, UnityEngine.Vector3 normal, System.Int32 muzzleIndex) (at <78e82462a1754689ab787937e3526634>:IL_019E)
-            // DMD<>?-165335808.Trampoline<RoR2.BulletAttack::FireSingle>?1114247168 (RoR2.BulletAttack , UnityEngine.Vector3 , System.Int32 ) (at <e1cb1e725a0349fd85503abc6beab3d4>:IL_0020)
-            // SillyHitboxViewer.HitboxViewerMod.BulletAttack_FireSingle (On.RoR2.BulletAttack+orig_FireSingle orig, RoR2.BulletAttack self, UnityEngine.Vector3 normal, System.Int32 muzzleIndex) (at <758913ef92f24ad49857526c5212b051>:IL_0001)
-            // DMD<>?-165335808.Hook<RoR2.BulletAttack::FireSingle>?2080950144 (RoR2.BulletAttack , UnityEngine.Vector3 , System.Int32 ) (at <b8eb0e722b3e4ea8b64c060039ce4fb2>:IL_0014)
-            // RoR2.BulletAttack.Fire () (at <da7c19fa62814b28bdb8f3a9223868e1>:IL_018E)
-            // EntityStates.Commando.CommandoWeapon.FirePistol2.FireBullet (System.String targetMuzzle) (at <da7c19fa62814b28bdb8f3a9223868e1>:IL_0118)
-            // EntityStates.Commando.CommandoWeapon.FirePistol2.OnEnter () (at <da7c19fa62814b28bdb8f3a9223868e1>:IL_0050)
-            // RoR2.EntityStateMachine.SetState (EntityStates.EntityState newState) (at <da7c19fa62814b28bdb8f3a9223868e1>:IL_0050)
-            // RoR2.EntityStateMachine.FixedUpdate () (at <da7c19fa62814b28bdb8f3a9223868e1>:IL_0008)
         }
 
         public static void AddBehavior(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
@@ -104,7 +130,7 @@ namespace UltimateCustomRun
                 var stack = sender.inventory.GetItemCount(RoR2Content.Items.SprintArmor);
                 if (stack > 0)
                 {
-                    args.armorAdd += Main.RoseBucklerArmorAlways.Value * stack;
+                    args.armorAdd += (armorstack ? armor * stack : armor);
                 }
             }
         }

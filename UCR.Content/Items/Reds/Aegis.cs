@@ -5,14 +5,48 @@ using MonoMod.Cil;
 
 namespace UltimateCustomRun
 {
-    public static class Aegis
+    public class Aegis : Based
     {
+        public static float armor;
+        public static bool armorstack;
+        public static float overhealpercent;
+        public static bool dynamicdecay;
+
+        public override string Name => ":: Items ::: Reds :: Aegis";
+        public override string InternalPickupToken => "barrierOnOverheal";
+        public override bool NewPickup => false;
+        public override string PickupText => "";
+
+        public static bool aeArmor = armor != 0f;
+        public static bool aeArmorStack = armorstack;
+
+        public override string DescText => (aeArmor ? "<style=cIsHealing>Increase armor</style> by <style=cIsHealing>" + armor + "</style>. " +
+                                           (aeArmorStack ? "<style=cStack>(+" + armor + " per stack)</style>" : "") : "") +
+                                           "Healing past full grants you a <style=cIsHealing>temporary barrier</style> for <style=cIsHealing>" + d(overhealpercent) + " <style=cStack>(+" + d(overhealpercent) + " per stack)</style></style> of the amount you <style=cIsHealing>healed</style>.";
+        public override void Init()
+        {
+            armor = ConfigOption(0f, "Armor", "Vanilla is 0");
+            armorstack = ConfigOption(false, "Stack Armor?", "Vanilla is false");
+            overhealpercent = ConfigOption(0.5f, "Overheal Percent", "Decimal. Per Stack. Vanilla is 0.5");
+            dynamicdecay = ConfigOption(false, "Make Barrier Decay Dynamic?", "Vanilla is false");
+            base.Init();
+        }
+
+        public override void Hooks()
+        {
+            IL.RoR2.HealthComponent.Heal += ChangeOverheal;
+            RecalculateStatsAPI.GetStatCoefficients += AddBehavior;
+            if (dynamicdecay)
+            {
+                On.RoR2.CharacterBody.FixedUpdate += ChangeBarrierDecay;
+            }
+        }
         public static void ChangeBarrierDecay(On.RoR2.CharacterBody.orig_FixedUpdate orig, CharacterBody self)
         {
             if (self.inventory)
             {
                 var stack = self.inventory.GetItemCount(RoR2Content.Items.BarrierOnOverHeal);
-                if (stack > 0 && Main.AegisDynamicBarrierDecay.Value)
+                if (stack > 0)
                 {
                     self.barrierDecayRate = Mathf.Max(1f, self.healthComponent.barrier / self.barrierDecayRate);
                 }
@@ -30,7 +64,7 @@ namespace UltimateCustomRun
                 x => x.MatchLdcR4(0.5f)
             );
             c.Index += 2;
-            c.Next.Operand = Main.AegisOverhealPercent.Value;
+            c.Next.Operand = overhealpercent;
         }
         public static void AddBehavior(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
@@ -39,7 +73,7 @@ namespace UltimateCustomRun
                 var stack = sender.inventory.GetItemCount(RoR2Content.Items.BarrierOnOverHeal);
                 if (stack > 0)
                 {
-                    args.armorAdd += Main.AegisArmor.Value;
+                    args.armorAdd += (armorstack ? armor * stack : armor);
                 }
             }
         }

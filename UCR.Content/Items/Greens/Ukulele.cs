@@ -5,18 +5,50 @@ using RoR2.Orbs;
 using RoR2.Projectile;
 using UnityEngine;
 using BepInEx.Configuration;
-using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using System;
-using UnityEngine.Networking;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 
 namespace UltimateCustomRun
 {
-    public static class Ukulele
+    public class Ukulele : Based
     {
+        public static float damage;
+        public static float chance;
+        public static int targets;
+        public static int targetstack;
+        public static float range;
+        public static int rangestack;
+        public static float procco;
+
+        public override string Name => ":: Items :: Greens :: Ukulele";
+        public override string InternalPickupToken => "chainLightning";
+        public override bool NewPickup => false;
+        public override string PickupText => "";
+        public override string DescText => "<style=cIsDamage>" + chance + "%</style> chance to fire <style=cIsDamage>chain lightning</style> for <style=cIsDamage>" + d(damage) + "</style> TOTAL damage on up to <style=cIsDamage>" + targets + " <style=cStack>(+" + targetstack + " per stack)</style></style> targets within <style=cIsDamage>" + range + "m</style> <style=cStack>(+" + rangestack + "m per stack)</style>.";
+
+
+        public override void Init()
+        {
+            damage = ConfigOption(0.8f, "Total Damage", "Decimal. Vanilla is 0.8");
+            chance = ConfigOption(25f, "Chance", "Vanilla is 25");
+            procco = ConfigOption(0.2f, "Proc Coefficient", "Decimal. Vanilla is 0.2");
+            range = ConfigOption(20f, "Base Range", "Vanilla is 20");
+            rangestack = ConfigOption(20, "Stack Range", "Per Stack. Vanilla is 2");
+            targets = ConfigOption(3, "Base Max Targets", "Vanilla is 3");
+            targetstack = ConfigOption(2, "Stack Max Targets", "Per Stack. Vanilla is 2");
+            base.Init();
+        }
+
+        public override void Hooks()
+        {
+            IL.RoR2.GlobalEventManager.OnHitEnemy += ChangeChance;
+            IL.RoR2.GlobalEventManager.OnHitEnemy += ChangeDamage;
+            IL.RoR2.GlobalEventManager.OnHitEnemy += ChangeProcCo;
+            IL.RoR2.GlobalEventManager.OnHitEnemy += ChangeRangeStack;
+            IL.RoR2.GlobalEventManager.OnHitEnemy += ChangeTargetCountStack;
+            ChangeTargetCountBase();
+            ChangeRangeBase();
+        }
         public static void ChangeDamage(ILContext il)
         {
             ILCursor c = new ILCursor(il);
@@ -27,7 +59,7 @@ namespace UltimateCustomRun
                 x => x.MatchLdcR4(0.8f)
             );
             c.Index += 2;
-            c.Next.Operand = Main.UkuleleDamage.Value;
+            c.Next.Operand = damage;
             // oh wow util.checkroll is stupid why tf are there two methods named the same
             // thank you harb :)
         }
@@ -42,7 +74,7 @@ namespace UltimateCustomRun
                 x => x.MatchLdcR4(25f)
             );
             c.Index += 3;
-            c.Next.Operand = Main.UkuleleChance.Value;
+            c.Next.Operand = chance;
         }
         public static void ChangeTargetCountStack(ILContext il)
         {
@@ -54,7 +86,7 @@ namespace UltimateCustomRun
                 x => x.MatchLdcI4(2)
             );
             c.Index += 2;
-            c.Next.Operand = Main.UkuleleTargetsStack.Value;
+            c.Next.Operand = targetstack;
         }
 
         public static void ChangeTargetCountBase()
@@ -64,7 +96,7 @@ namespace UltimateCustomRun
                 orig(self);
                 if (self.lightningType is LightningOrb.LightningType.Ukulele)
                 {
-                    self.bouncesRemaining = Main.UkuleleTargets.Value;
+                    self.bouncesRemaining = targets;
                 }
             };
         }
@@ -76,8 +108,8 @@ namespace UltimateCustomRun
                 orig(self);
                 if (self.lightningType is LightningOrb.LightningType.Ukulele)
                 {
-                    self.range = Main.UkuleleRange.Value;
-                    // self.canBounceOnSameTarget = Main.UkuleleCanBounceOnSameTarget.Value;
+                    self.range = range;
+                    // self.canBounceOnSameTarget = :TROLLGE:
                     // im scared of the warning :IL:
                 }
                 
@@ -93,7 +125,7 @@ namespace UltimateCustomRun
                 x => x.MatchLdcI4(2)
             );
             c.Index += 1;
-            c.Next.Operand = Main.UkuleleRangeStack.Value;
+            c.Next.Operand = rangestack;
         }
 
         public static void ChangeProcCo(ILContext il)
@@ -109,7 +141,7 @@ namespace UltimateCustomRun
 
             );
             c.Index += 4;
-            c.Next.Operand = Main.UkuleleProcCo.Value;
+            c.Next.Operand = procco;
         }
     }
 }

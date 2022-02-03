@@ -4,8 +4,28 @@ using UnityEngine.Networking;
 
 namespace UltimateCustomRun
 {
-    public static class TopazBrooch
+    public class TopazBrooch : Based
     {
+        public static float barrier;
+
+        public override string Name => ":: Items : Whites :: Topaz Brooch";
+        public override string InternalPickupToken => "barrierOnKill";
+        public override bool NewPickup => false;
+
+        public override string PickupText => "";
+
+        public override string DescText => "Gain a <style=cIsHealing>temporary barrier</style> on kill for <style=cIsHealing>" + barrier + " health <style=cStack>(+" + barrier + " per stack)</style></style>.";
+        public override void Init()
+        {
+            barrier = ConfigOption(15f, "Barrier Gain", "Per Stack. Vanilla is 15");
+            base.Init();
+        }
+
+        public override void Hooks()
+        {
+            IL.RoR2.GlobalEventManager.OnCharacterDeath += ChangeBarrier;
+            // GlobalEventManager.onCharacterDeathGlobal += TopazBrooch.AddBehavior;
+        }
         public static void ChangeBarrier(ILContext il)
         {
             ILCursor c = new ILCursor(il);
@@ -15,7 +35,7 @@ namespace UltimateCustomRun
                 x => x.MatchLdcR4(15f)
             );
             c.Index += 1;
-            c.Next.Operand = Main.TopazBroochBarrier.Value;
+            c.Next.Operand = barrier;
         }
         public static void AddBehavior(DamageReport report)
         {

@@ -1,24 +1,30 @@
 ﻿using BepInEx;
 using R2API;
-using R2API.Utils;
-using RoR2;
-using RoR2.Skills;
-using RoR2.Orbs;
-using RoR2.Projectile;
-using UnityEngine;
-using BepInEx.Configuration;
-using Mono.Cecil.Cil;
 using MonoMod.Cil;
-using System;
-using UnityEngine.Networking;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 
 namespace UltimateCustomRun
 {
-    public static class RedWhip
+    public class RedWhip : Based
     {
+        public static float speed;
+
+        public override string Name => ":: Items :: Greens :: Red Whip";
+        public override string InternalPickupToken => "sprintOutOfCombat";
+        public override bool NewPickup => false;
+        public override string PickupText => "";
+        public override string DescText => "Leaving combat boosts your <style=cIsUtility>movement speed</style> by <style=cIsUtility>" + d(speed) + "</style> <style=cStack>(+" + d(speed) + " per stack)</style>.";
+
+
+        public override void Init()
+        {
+            speed = ConfigOption(0.3f, "Speed Increase", "Decimal. Per Stack. Vanilla is 0.3");
+            base.Init();
+        }
+
+        public override void Hooks()
+        {
+            IL.RoR2.CharacterBody.RecalculateStats += ChangeSpeed;
+        }
         public static void ChangeSpeed(ILContext il)
         {
             ILCursor c = new ILCursor(il);
@@ -32,7 +38,7 @@ namespace UltimateCustomRun
                 x => x.MatchLdcR4(0.3f)
             );
             c.Index += 5;
-            c.Next.Operand = Main.RedWhipSpeed.Value;
+            c.Next.Operand = speed;
         }
     }
 }

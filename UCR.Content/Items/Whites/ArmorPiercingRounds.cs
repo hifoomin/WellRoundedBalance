@@ -5,8 +5,48 @@ using System;
 
 namespace UltimateCustomRun
 {
-    public static class ArmorPiercingRounds
+    public class ArmorPiercingRounds : Based
     {
+        public static float damage;
+
+        public override string Name => ":: Items : Whites :: Armor Piercing Rounds";
+        public override string InternalPickupToken => "bossDamageBonus";
+        public override bool NewPickup => false;
+        public override string PickupText => "";
+        /*
+        List<string> aprStrings = new List<string>();
+        if (AprB.Value) { aprStrings.Add("bosses"); }
+        if (AprC.Value) { aprStrings.Add("champions"); }
+        if (AprE.Value) { aprStrings.Add("elites"); }
+        if (AprF.Value) { aprStrings.Add("fliers"); }
+
+        string allEnemiesAffected = "";
+        for (int i = 0; i < aprStrings.Count; i++)
+        {
+            if (i != aprStrings.Count - 1)
+            {
+                allEnemiesAffected += $"{aprStrings[i]}, ";
+            }
+            else
+            {
+                allEnemiesAffected += $"and {aprStrings[i]}";
+            }
+        }
+        */
+        // "Deal an additional <style=cIsDamage>" + d(AprDamage.Value) + "</style> damage <style=cStack>(+" + d(AprDamage.Value) + " per stack)</style> to " + allEnemiesAffected + ".");
+        public override string DescText => "Deal an additional <style=cIsDamage>" + d(damage) + "</style> damage <style=cStack>(+" + d(damage) + " per stack)</style> to bosses.";
+
+
+        public override void Init()
+        {
+            damage = ConfigOption(0.2f, "Damage Coefficient", "Decimal. Per Stack. Vanilla is 0.2");
+            base.Init();
+        }
+
+        public override void Hooks()
+        {
+            IL.RoR2.HealthComponent.TakeDamage += ChangeDamage;
+        }
         public static void ChangeDamage(ILContext il)
         {
             ILCursor c = new ILCursor(il);
@@ -15,8 +55,9 @@ namespace UltimateCustomRun
                 x => x.MatchLdcR4(0.2f)
             );
             c.Index += 1;
-            c.Next.Operand = Main.AprDamage.Value;
+            c.Next.Operand = damage;
         }
+        /*
         public static void ChangeType(ILContext il)
         {
             ILCursor c = new ILCursor(il);
@@ -42,5 +83,6 @@ namespace UltimateCustomRun
         // For the life of me I couldn't have figured out how to check for 24 possible combinations and put them into the description :P
         // play their game
         // https://plumicorn.itch.io/superbug
+        */
     }
 }

@@ -4,8 +4,41 @@ using MonoMod.Cil;
 
 namespace UltimateCustomRun
 {
-    public static class RepulsionArmorPlate
+    public class RepulsionArmorPlate : Based
     {
+        public static float armor;
+        public static bool armorstack;
+        public static float reduc;
+        public static float mindmg;
+
+        public override string Name => ":: Items : Whites :: Repulsion Armor Plate";
+        public override string InternalPickupToken => "repulsionArmorPlate";
+        public override bool NewPickup => false;
+
+        public override string PickupText => "";
+
+        public static bool rArmor = armor != 0f;
+        public static bool rReduc = reduc != 0f;
+        public static bool rArmorStack = armorstack;
+
+        public override string DescText => (rArmor ? "<style=cIsHealing>Increase armor</style> by <style=cIsHealing>" + armor + "</style> " +
+                                           (rArmorStack ? "<style=cStack>(+" + armor + " per stack)</style>. " : "") : "") +
+                                           (rReduc ? "Reduce all <style=cIsDamage>incoming damage</style> by <style=cIsDamage>" + reduc + "<style=cStack> (+" + reduc + " per stack)</style></style>. Cannot be reduced below <style=cIsDamage>" + mindmg + "</style>." : "");
+        public override void Init()
+        {
+            reduc = ConfigOption(5f, "Flat Damage Reduction", "Per Stack. Vanilla is 5");
+            mindmg = ConfigOption(1f, "Minimum Damage", "Vanilla is 1");
+            armor = ConfigOption(0f, "Armor", "Vanilla is 0");
+            armorstack = ConfigOption(false, "Stack Armor?", "Vanilla is false");
+            base.Init();
+        }
+
+        public override void Hooks()
+        {
+            IL.RoR2.HealthComponent.TakeDamage += ChangeReduction;
+            IL.RoR2.HealthComponent.TakeDamage += ChangeMinimum;
+            RecalculateStatsAPI.GetStatCoefficients += AddBehavior;
+        }
         public static void AddBehavior(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
             if (sender.inventory)
@@ -13,7 +46,7 @@ namespace UltimateCustomRun
                 var stack = sender.inventory.GetItemCount(RoR2Content.Items.ArmorPlate);
                 if (stack > 0)
                 {
-                    args.armorAdd += Main.RapArmor.Value * stack;
+                    args.armorAdd += (armorstack ? armor * stack : armor);
                 }
             }
         }
@@ -27,7 +60,7 @@ namespace UltimateCustomRun
                 x => x.MatchLdcR4(5)
             );
             c.Index += 2;
-            c.Next.Operand = Main.RapFlatDmgDecrease.Value;
+            c.Next.Operand = reduc;
         }
 
         public static void ChangeMinimum(ILContext il)
@@ -41,7 +74,7 @@ namespace UltimateCustomRun
                 x => x.MatchLdcR4(1)
             );
             c.Index += 2;
-            c.Next.Operand = Main.RapMinimumDmgTaken.Value;
+            c.Next.Operand = mindmg;
         }
     }
 }

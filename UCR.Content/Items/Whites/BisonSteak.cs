@@ -6,8 +6,57 @@ using UnityEngine.Networking;
 
 namespace UltimateCustomRun
 {
-    public static class BisonSteak
+    public class BisonSteak : Based
     {
+        public static float flathealth;
+        public static bool levelhealth;
+        public static float regen;
+        public static bool regenstack;
+        public override string Name => ":: Items : Whites :: Bison Steak";
+        public override string InternalPickupToken => "flathealth";
+        public override bool NewPickup => true;
+
+        public static bool useFlatHealthSteak = flathealth != 0f;
+        public static bool useLevelHealthSteak = levelhealth;
+        public static bool useBothHealthSteak = useFlatHealthSteak && useLevelHealthSteak;
+        public static bool useRegen = /* regen != 0f; */ false;
+        public static bool useRegenStack = /* regenstack; */ false;
+
+        public override string PickupText => (useRegen ? "Regenerate on kill." : "") +
+                                             "Gain" +
+                                             (useLevelHealthSteak ? " 30% base health" : "") +
+                                             (useBothHealthSteak ? " +" : "") +
+                                             (useFlatHealthSteak ? " " + flathealth + " max health" : "") +
+                                             ".";
+        public override string DescText => (useRegen ? "Increases <style=cIsHealing>base health regeneration</style> by <style=cIsHealing>" + regen + "</style>. " : "") +
+                                           (useRegenStack ? "<style=cStack>(+" + regen + " Per Stack)</style>. " : "") +
+                                           "Increases <style=cIsHealing>base health</style> by" +
+                                           (useLevelHealthSteak ? " <style=cIsHealing>30%</style> <style=cStack>(+30% per stack)</style>" : "") +
+                                           (useBothHealthSteak ? " +" : "") +
+                                           (useFlatHealthSteak ? " <style=cIsHealing>" + flathealth + "</style> <style=cStack>(+" + flathealth + " per stack)</style>" : "") +
+                                           ".";
+
+
+        public override void Init()
+        {
+            flathealth = ConfigOption(25f, "Health", "Per Stack. Vanilla is 25");
+            levelhealth = ConfigOption(false, "Give Health worth a single Level Up?", "Vanilla is false");
+            /*
+            regen = Config.Bind<float>(0f, "Regen", "Vanilla is 0");
+            regenstack = Config.Bind<bool>(false, "Stack Regen?", "Vanilla is false");
+            */
+            base.Init();
+        }
+
+        public override void Hooks()
+        {
+            IL.RoR2.CharacterBody.RecalculateStats += ChangeHealth;
+            if (levelhealth)
+            {
+                RecalculateStatsAPI.GetStatCoefficients += AddBehaviorLevelHealth;
+            }
+            // RecalculateStatsAPI.GetStatCoefficients += ChangeBuffBehavior;
+        }
         public static void ChangeHealth(ILContext il)
         {
             ILCursor c = new ILCursor(il);
@@ -16,7 +65,7 @@ namespace UltimateCustomRun
                 x => x.MatchLdcR4(25f)
             );
             c.Index += 1;
-            c.Next.Operand = Main.BisonSteakHealth.Value;
+            c.Next.Operand = flathealth;
         }
 
         public static void AddBehaviorLevelHealth(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
@@ -30,14 +79,10 @@ namespace UltimateCustomRun
                 }
             }
         }
-        public static void AddBehaviorRegen(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
-        {
-
-        }
         public static void ChangeBuffBehavior(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
             var mrb = Resources.Load<BuffDef>("buffdefs/meatregenboost");
-            mrb.canStack = Main.BisonSteakRegenStack.Value ? true : false;
+            mrb.canStack = regenstack ? true : false;
             if (sender.inventory)
             {
                 int buff = sender.GetBuffCount(RoR2Content.Buffs.MeatRegenBoost);
@@ -47,5 +92,6 @@ namespace UltimateCustomRun
                 }
             }
         }
+        // TODO: Make it add the buff lmao
     }
 }

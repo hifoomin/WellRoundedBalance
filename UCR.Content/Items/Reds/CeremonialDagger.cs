@@ -29,7 +29,8 @@ namespace UltimateCustomRun
             );
             c.Index += 1;
             c.Next.Operand = Main.CeremonialCount.Value;
-            // PLEASE HELP TO FIX
+            // WHY DOES THIS NOT WORK
+            // also thanks harb for checkroll match
         }
         public static void ChangeProc()
         {
