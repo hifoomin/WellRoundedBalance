@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-namespace UltimateCustomRun.Enemies
+﻿namespace UltimateCustomRun.Survivors
 {
     public class LoadBodies
     {
@@ -9,9 +7,9 @@ namespace UltimateCustomRun.Enemies
             On.RoR2.BodyCatalog.Init += (orig) =>
             {
                 orig();
-                // ChangeBodies.ChangeBodies();
             };
         }
+        /*
         public static GameObject AlloyVulture;
         public static Base AlloyVultureStats;
         public static GameObject Beetle;
@@ -54,5 +52,6 @@ namespace UltimateCustomRun.Enemies
         public static Base StoneGolemStats;
         public static GameObject VoidReaver;
         public static Base VoidReaverStats;
+        */
     }
 }

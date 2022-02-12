@@ -10,13 +10,17 @@ using System.Linq;
 using System.Reflection;
 using BepInEx.Logging;
 using System;
+using UltimateCustomRun.Enemies;
+using UltimateCustomRun.Enemies.Bosses;
+using UltimateCustomRun.Survivors;
+using UltimateCustomRun.Stages;
 
 namespace UltimateCustomRun
 {
 
     [BepInDependency("com.bepis.r2api")]
     [BepInPlugin(PluginGUID, PluginName, PluginVersion)]
-    [R2APISubmoduleDependency(nameof(LanguageAPI), nameof(RecalculateStatsAPI), nameof(BuffAPI))]
+    [R2APISubmoduleDependency(nameof(LanguageAPI), nameof(RecalculateStatsAPI), nameof(BuffAPI), nameof(LoadoutAPI), nameof(DirectorAPI))]
     public class Main : BaseUnityPlugin
     {
         public const string PluginGUID = PluginAuthor + "." + PluginName;
@@ -80,9 +84,6 @@ namespace UltimateCustomRun
         // | '__/ _ \/ _` / __|
         // | | |  __/ (_| \__ \
         // |_|  \___|\__,_|___/
-
-        public static ConfigEntry<float> AlienHeadCDR { get; set; }
-        public static ConfigEntry<float> AlienHeadFlatCDR { get; set; }
 
         public static ConfigEntry<float> BehemothDamage { get; set; }
         public static ConfigEntry<float> BehemothAoe { get; set; }
@@ -148,6 +149,28 @@ namespace UltimateCustomRun
         public static ConfigEntry<float> StridesDuration { get; set; }
         public static ConfigEntry<float> StridesHealingPercent { get; set; }
 
+        public static ConfigEntry<bool> BeetleQueenChanges { get; set; }
+        public static ConfigEntry<bool> ClayDunestriderChanges { get; set; }
+        public static ConfigEntry<bool> GrandparentChanges { get; set; }
+        public static ConfigEntry<bool> GrovetenderChanges { get; set; }
+        public static ConfigEntry<bool> ImpOverlordChanges { get; set; }
+        public static ConfigEntry<bool> MithrixPhase1And3Changes { get; set; }
+        public static ConfigEntry<bool> MithrixPhase2Changes { get; set; }
+        public static ConfigEntry<bool> MithrixPhase4Changes { get; set; }
+        public static ConfigEntry<bool> MithrixPhase5Changes { get; set; }
+        public static ConfigEntry<bool> StoneTitanChanges { get; set; }
+        public static ConfigEntry<bool> BeetleChanges { get; set; }
+        public static ConfigEntry<bool> BighornBisonChanges { get; set; }
+        public static ConfigEntry<bool> GolemChanges { get; set; }
+        public static ConfigEntry<bool> GreaterWispChanges { get; set; }
+        public static ConfigEntry<bool> ImpChanges { get; set; }
+        public static ConfigEntry<bool> LemurianChanges { get; set; }
+        public static ConfigEntry<bool> LesserWispChanges { get; set; }
+        public static ConfigEntry<bool> LunarExploderChanges { get; set; }
+
+        public static ConfigEntry<bool> LunarWispChanges { get; set; }
+        public static ConfigEntry<bool> VoidReaverChanges { get; set; }
+
         public static ConfigFile UCRConfig;
         public static ManualLogSource UCRLogger;
 
@@ -163,7 +186,28 @@ namespace UltimateCustomRun
                 Based based = (Based)Activator.CreateInstance(type2);
                 based.Init();
             }
-            
+
+            BeetleQueenChanges = Config.Bind<bool>(":::: Enemies ::: Beetle Queen ::::", "Enable changes?", true, "This makes her less sluggish. Vanilla is false");
+            ClayDunestriderChanges = Config.Bind<bool>(":::: Enemies ::: Clay Dunestrider ::::", "Enable changes?", true, "Does nothing currently. Vanilla is false");
+            GrandparentChanges = Config.Bind<bool>(":::: Enemies ::: Grandparent ::::", "Enable changes?", true, "This makes him less sluggish. Vanilla is false");
+            GrovetenderChanges = Config.Bind<bool>(":::: Enemies ::: Grovetender ::::", "Enable changes?", true, "This makes him less sluggish and enables an unused skill. Vanilla is false");
+            ImpOverlordChanges = Config.Bind<bool>(":::: Enemies ::: Imp Overlord ::::", "Enable changes?", true, "This makes him less sluggish and a bit smarter. Vanilla is false");
+            MithrixPhase1And3Changes = Config.Bind<bool>(":::: Enemies ::: Mithrix Phase 1 and 3 ::::", "Enable changes?", true, "This makes him faster and more threatening. Especially Phase 3. Vanilla is false");
+            MithrixPhase2Changes = Config.Bind<bool>(":::: Enemies ::: Mithrix Phase 2 ::::", "Enable changes?", true, "Does nothing currently. Vanilla is false");
+            MithrixPhase4Changes = Config.Bind<bool>(":::: Enemies ::: Mithrix Phase 4 ::::", "Enable changes?", true, "This makes him less sluggish and much more threatening. Might be a little buggy... Vanilla is false");
+            MithrixPhase5Changes = Config.Bind<bool>(":::: Enemies ::: Mithrix Phase 5 ::::", "Enable changes?", true, "This is the escape sequence lines. Enables unused rotation, makes them move and they are generally spammier. Vanilla is false");
+            StoneTitanChanges = Config.Bind<bool>(":::: Enemies ::: Stone Titan ::::", "Enable changes?", true, "This makes him less sluggish. Vanilla is false");
+            BeetleChanges = Config.Bind<bool>(":::: Enemies :: Beetle ::::", "Enable changes?", true, "This makes them less sluggish, and enables a dash. Vanilla is false");
+            BighornBisonChanges = Config.Bind<bool>(":::: Enemies :: Bighorn Bison ::::", "Enable changes?", true, "This makes them less sluggish and turn much faster. Vanilla is false");
+            GolemChanges = Config.Bind<bool>(":::: Enemies :: Stone Golem ::::", "Enable changes?", true, "This makes them less sluggish and slightly nerfs their damage. Vanilla is false");
+            GreaterWispChanges = Config.Bind<bool>(":::: Enemies :: Greater Wisp ::::", "Enable changes?", true, "This makes them less sluggish. Vanilla is false");
+            ImpChanges = Config.Bind<bool>(":::: Enemies :: Imp ::::", "Enable changes?", true, "This makes them less sluggish and a bit smarter. Vanilla is false");
+            LemurianChanges = Config.Bind<bool>(":::: Enemies :: Lemurian ::::", "Enable changes?", true, "This makes them less sluggish and a bit smarter. Vanilla is false");
+            LesserWispChanges = Config.Bind<bool>(":::: Enemies :: Lesser Wisp ::::", "Enable changes?", true, "This makes them less sluggish. Vanilla is false");
+            LunarExploderChanges = Config.Bind<bool>(":::: Enemies :: Lunar Exploder ::::", "Enable changes?", true, "This makes them less sluggish. Vanilla is false");
+            LunarWispChanges = Config.Bind<bool>(":::: Enemies :: Lunar Wisp ::::", "Enable changes?", true, "This makes them more sluggish. Vanilla is false");
+            VoidReaverChanges = Config.Bind<bool>(":::: Enemies :: Void Reaver ::::", "Enable changes?", true, "This makes them more aggressive. Vanilla is false");
+
 
             //        _       _           _ 
             //       | |     | |         | |
@@ -232,14 +276,11 @@ namespace UltimateCustomRun
             // | | |  __/ (_| \__ \
             // |_|  \___|\__,_|___/
 
-            AlienHeadCDR = Config.Bind<float>(":: Items ::: Reds :: Alien Head", "Percent Cooldown Reduction", (float)0.25f, "Per Stack. Vanilla is 0.25");
-            AlienHeadFlatCDR = Config.Bind<float>(":: Items ::: Reds :: Alien Head", "Flat Cooldown Reduction", (float)1f, "Vanilla is 0");
-
             BehemothDamage = Config.Bind<float>(":: Items ::: Reds :: Brilliant Behemoth", "Damage", (float)0.6f, "Vanilla is 0.6");
             BehemothAoe = Config.Bind<float>(":: Items ::: Reds :: Brilliant Behemoth", "Base AoE", (float)1.5f, "V. Vanilla is 1.5");
             BehemothAoeStack = Config.Bind<float>(":: Items ::: Reds :: Brilliant Behemoth", "AoE", (float)2.5f, "V. Per Stack. Vanilla is 2.5");
 
-            BrainstalksDuration = Config.Bind<float>(":: Items ::: Reds :: Brainstalks", "Duration", (float)30f, "Per Stack. Vanilla is 4");
+            BrainstalksDuration = Config.Bind<float>(":: Items ::: Reds :: Brainstalks", "Duration", (float)4f, "Per Stack. Vanilla is 4");
 
             // CeremonialCount = Config.Bind<int>(":: Items ::: Reds :: Ceremonial Dagger", "Count", (int)3, "Vanilla is 3");
             CeremonialDamage = Config.Bind<float>(":: Items ::: Reds :: Ceremonial Dagger", "Damage", (float)1.5f, "Per Stack. Vanilla is 1.5");
@@ -250,7 +291,7 @@ namespace UltimateCustomRun
             DefeMicroGuide = Config.Bind<bool>(":: Items ::: Reds :: Defensive Microbots", "Recharge Guide", (bool)true, "Recharge Frequency Formula:\n1 / (The lower value between Minimum Fire Frequency and Recharge Frequency)");
             DefeMicroRange = Config.Bind<float>(":: Items ::: Reds :: Defensive Microbots", "Range", (float)20f, "Vanilla is 20");
 
-            DiosTTCount = Config.Bind<int>(":: Items ::: Reds :: Dios Best Friend", "Tougher Times Per Consumed Dios Count", (int)10f, "Vanilla is 0");
+            DiosTTCount = Config.Bind<int>(":: Items ::: Reds :: Dios Best Friend", "Tougher Times Per Consumed Dios Count", (int)0, "Vanilla is 0");
 
             FrostRelicAS = Config.Bind<float>(":: Items ::: Reds :: Frost Relic", "Attack Interval", (float)0.25f, "Vanilla is 0.25");
             FrostRelicBaseRadius = Config.Bind<float>(":: Items ::: Reds :: Frost Relic", "Base Radius", (float)6f, "Vanilla is 6");
@@ -264,10 +305,10 @@ namespace UltimateCustomRun
 
             HeadstompersCooldown = Config.Bind<float>(":: Items ::: Reds :: H3AD-5T v2", "Cooldown", (float)1f, "Vanilla is 10");
             HeadstompersJumpHeight = Config.Bind<float>(":: Items ::: Reds :: H3AD-5T v2", "Jump Height Multiplier", (float)5f, "Vanilla is 2");
-            HeadstompersMinRange = Config.Bind<float>(":: Items ::: Reds :: H3AD-5T v2", "Minimum Range", (float)50f, "Vanilla is 5");
-            HeadstompersMaxRange = Config.Bind<float>(":: Items ::: Reds :: H3AD-5T v2", "Maximum Range", (float)1000f, "Vanilla is 100");
-            HeadstompersMinDamage = Config.Bind<float>(":: Items ::: Reds :: H3AD-5T v2", "Minimum Damage", (float)100f, "Decimal. Vanilla is 10");
-            HeadstompersMaxDamage = Config.Bind<float>(":: Items ::: Reds :: H3AD-5T v2", "Maximum Damage", (float)1000f, "Decimal. Vanilla is 100");
+            HeadstompersMinRange = Config.Bind<float>(":: Items ::: Reds :: H3AD-5T v2", "Minimum Range", (float)5f, "Vanilla is 5");
+            HeadstompersMaxRange = Config.Bind<float>(":: Items ::: Reds :: H3AD-5T v2", "Maximum Range", (float)100f, "Vanilla is 100");
+            HeadstompersMinDamage = Config.Bind<float>(":: Items ::: Reds :: H3AD-5T v2", "Minimum Damage", (float)10f, "Decimal. Vanilla is 10");
+            HeadstompersMaxDamage = Config.Bind<float>(":: Items ::: Reds :: H3AD-5T v2", "Maximum Damage", (float)100f, "Decimal. Vanilla is 100");
 
             HappiestMaskDuration = Config.Bind<int>(":: Items ::: Reds :: Happiest Mask", "Ghost Lifetime", (int)30, "Per Stack. Vanilla is 30");
             HappiestMaskChance = Config.Bind<float>(":: Items ::: Reds :: Happiest Mask", "Chance", (float)0.07f, "Decimal. Vanilla is 0.07");
@@ -416,13 +457,88 @@ namespace UltimateCustomRun
 
             Headstompers.Changes();
 
-            //  _                            
-            // | |                           
-            // | |_   _ _ __   __ _ _ __ ___ 
-            // | | | | | '_ \ / _` | '__/ __|
-            // | | |_| | | | | (_| | |  \__ \
-            // |_|\__,_|_| |_|\__,_|_|  |___/
 
+            if (BeetleQueenChanges.Value)
+            {
+                BeetleQueen.Buff();
+            }
+            if (ClayDunestriderChanges.Value)
+            {
+                ClayDunestrider.Berf();
+            }
+            if (GrandparentChanges.Value)
+            {
+                Grandparent.Buff();
+            }
+            if (GrovetenderChanges.Value)
+            {
+                Grovetender.Buff();
+            }
+            if (ImpOverlordChanges.Value)
+            {
+                ImpOverlord.Buff();
+            }
+            if (MithrixPhase1And3Changes.Value)
+            {
+                MithrixPhase1And3.Buff();
+            }
+            if (MithrixPhase2Changes.Value)
+            {
+                MithrixPhase2.Buff();
+            }
+            if (MithrixPhase4Changes.Value)
+            {
+                MithrixPhase4.Buff();
+            }
+            if (StoneTitanChanges.Value)
+            {
+                StoneTitan.Buff();
+            }
+            if (BeetleChanges.Value)
+            {
+                Beetle.Buff();
+            }
+            if (BighornBisonChanges.Value)
+            {
+                BighornBison.Buff();
+            }
+            if (GolemChanges.Value)
+            {
+                Golem.Berf();
+            }
+            if (GreaterWispChanges.Value)
+            {
+                GreaterWisp.Buff();
+            }
+            if (ImpChanges.Value)
+            {
+                Imp.Buff();
+            }
+            if (LemurianChanges.Value)
+            {
+                Lemurian.Buff();
+            }
+            if (LesserWispChanges.Value)
+            {
+                LesserWisp.Buff();
+            }
+            if (LunarExploderChanges.Value)
+            {
+                LunarExploder.Buff();
+            }
+            if (LunarWispChanges.Value)
+            {
+                LunarWisp.Nerf();
+            }
+            if (VoidReaverChanges.Value)
+            {
+                VoidReaver.Buff();
+            }
+            Commencement.Changes();
+            DistantRoost.AddCredits();
+            SunderedGrove.AddGrovetender();
+            SunderedGrove.RemoveClayDunestrider();
+            TitanicPlains.AddBison();
         }
 
         public static string d(float f)
@@ -460,10 +576,6 @@ namespace UltimateCustomRun
             // | '__/ _ \/ _` / __|
             // | | |  __/ (_| \__ \
             // |_|  \___|\__,_|___/
-
-            bool ahFlatCDR = AlienHeadFlatCDR.Value != 0f;
-            LanguageAPI.Add("ITEM_ALIENHEAD_DESC", "<style=cIsUtility>Reduce skill cooldowns</style> by <style=cIsUtility>" + d(AlienHeadCDR.Value) + "</style> <style=cStack>(+" + d(AlienHeadCDR.Value) + " per stack)</style>" +
-            (ahFlatCDR ? " and <style=cIsUtility>" + AlienHeadFlatCDR.Value + "</style> second." : "."));
 
             var breh = BehemothAoe.Value + BehemothAoeStack.Value;
             LanguageAPI.Add("ITEM_BEHEMOTH_DESC", "All your <style=cIsDamage>attacks explode</style> in a <style=cIsDamage>" + breh + "m</style> <style=cStack>(+" + BehemothAoeStack.Value + "m per stack)</style> radius for a bonus <style=cIsDamage>" + d(BehemothDamage.Value) + "</style> TOTAL damage to nearby enemies.");

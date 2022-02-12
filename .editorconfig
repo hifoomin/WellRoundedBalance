@@ -1,0 +1,10 @@
+﻿[*.cs]
+
+# CS0618: Type or member is obsolete
+dotnet_diagnostic.CS0618.severity = silent
+
+# Default severity for analyzer diagnostics with category 'Member Access'
+dotnet_analyzer_diagnostic.category-Member Access.severity = silent
+
+# Publicizer001: Accessing a member that was not originally public
+dotnet_diagnostic.Publicizer001.severity = none

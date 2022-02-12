@@ -12,6 +12,10 @@
     <EmbeddedResource Remove="libs\**" />
     <None Remove="libs\**" />
   </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\.editorconfig" Link=".editorconfig" />
+  </ItemGroup>
 	
   <ItemGroup>
     <PackageReference Include="BepInEx.Analyzers" Version="1.0.6">

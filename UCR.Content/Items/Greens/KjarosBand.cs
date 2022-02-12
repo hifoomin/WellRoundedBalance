@@ -33,7 +33,7 @@ namespace UltimateCustomRun
             basedmg = ConfigOption(0f, "Base Damage", "Decimal. Per Stack. Vanilla is 0");
             totaldmg = ConfigOption(3f, "Total Damage", "Decimal. Per Stack. Vanilla is 3");
             threshold = ConfigOption(4f, "Threshold", "Decimal. Affects both Bands. Vanilla is 4");
-            cooldown = ConfigOption(10f, "Cooldown", "Affects both Bands. Vanilla is 1");
+            cooldown = ConfigOption(10f, "Cooldown", "Affects both Bands. Vanilla is 10");
             base.Init();
         }
 
