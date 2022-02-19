@@ -3,7 +3,7 @@ using RoR2;
 
 namespace UltimateCustomRun
 {
-    public class BackupMag : Based
+    public class BackupMag : ItemBase
     {
         public static float cdr;
 
@@ -11,7 +11,7 @@ namespace UltimateCustomRun
         public override string InternalPickupToken => "secondarySkillMagazine";
         public override bool NewPickup => true;
 
-        public static bool bCDR = cdr != 0f;
+        bool bCDR = cdr != 0f;
 
         public override string PickupText => "Add an extra charge of your Secondary skill" + 
                                              (bCDR ? " and reduce its Cooldown." : ".");

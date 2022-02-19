@@ -3,7 +3,7 @@ using MonoMod.Cil;
 
 namespace UltimateCustomRun
 {
-    public class OldGuillotine : Based
+    public class OldGuillotine : ItemBase
     {
         public static float threshold;
 

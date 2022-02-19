@@ -4,7 +4,7 @@ using System;
 
 namespace UltimateCustomRun
 {
-    public class MonsterTooth : Based
+    public class MonsterTooth : ItemBase
     {
         public static float flatheal;
         public static float percentheal;

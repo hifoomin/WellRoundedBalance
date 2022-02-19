@@ -6,7 +6,7 @@ using System;
 
 namespace UltimateCustomRun
 {
-    public class Infusion : Based
+    public class Infusion : ItemBase
     {
         
         public static float basecap;
@@ -21,12 +21,12 @@ namespace UltimateCustomRun
         public override string InternalPickupToken => "infusion";
         public override bool NewPickup => true;
 
-        public static bool iBaseH = basehealth != 0f;
-        public static bool iStackBaseH = stackbase;
-        public static bool iPercentH = percenthealth != 0f;
-        public static bool iStackPercentH = stackpercent;
-        public static bool iBothH = iBaseH && iPercentH;
-        public static bool iScaling = scaling;
+        bool iBaseH = basehealth != 0f;
+        bool iStackBaseH = stackbase;
+        bool iPercentH = percenthealth != 0f;
+        bool iStackPercentH = stackpercent;
+        bool iBothH = basehealth != 0f && percenthealth != 0f;
+        bool iScaling = scaling;
             
 
         public override string PickupText => "Gain" +

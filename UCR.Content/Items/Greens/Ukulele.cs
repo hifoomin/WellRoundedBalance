@@ -10,7 +10,7 @@ using System;
 
 namespace UltimateCustomRun
 {
-    public class Ukulele : Based
+    public class Ukulele : ItemBase
     {
         public static float damage;
         public static float chance;

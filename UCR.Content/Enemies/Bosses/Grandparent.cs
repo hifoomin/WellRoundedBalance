@@ -7,46 +7,69 @@ using RoR2.Skills;
 using EntityStates;
 using R2API;
 using UnityEngine.Networking;
-#pragma warning disable CS0618 // Type or member is obsolete
-// fuck off
+
 namespace UltimateCustomRun.Enemies.Bosses
 {
-    public static class Grandparent
+    public class Grandparent : EnemyBase
     {
+        public static bool aitw;
+        public static bool speedtw;
         public static CharacterMaster master;
         public static CharacterBody body;
         public static AISkillDriver dr;
+        public override string Name => ":::: Enemies ::: Grandparent";
+
+        public override void Init()
+        {
+            aitw = ConfigOption(false, "Make Grandparent AI smarter?", "Vanilla is false. Recommended Value: True");
+            speedtw = ConfigOption(false, "Make Grandparent faster?", "Vanilla is false. Recommended Value: True");
+            base.Init();
+        }
+
+        public override void Hooks()
+        {
+            Buff();
+        }
         public static void Buff()
         {
             master = Resources.Load<CharacterMaster>("prefabs/charactermasters/GrandparentMaster").GetComponent<CharacterMaster>();
             GameObject masterbase = Resources.Load<GameObject>("prefabs/charactermasters/GrandparentMaster");
-            AISkillDriver dr = masterbase.AddComponent<AISkillDriver>();
-            masterbase.GetComponent<BaseAI>().aimVectorMaxSpeed = 180f;
             body = Resources.Load<CharacterBody>("prefabs/characterbodies/GrandparentBody").GetComponent<CharacterBody>();
 
-            var sun = Resources.Load<GameObject>("prefabs/networkedobjects/GrandParentSun").GetComponent<GrandParentSunController>();
-            sun.maxDistance = 1000f;
-
-            On.EntityStates.GrandParentBoss.FireSecondaryProjectile.OnEnter += (orig, self) =>
+            if (aitw)
             {
-                self.baseDuration = 1.5f;
-                orig(self);
-            };
+                var ai = (from x in masterbase.GetComponents<AISkillDriver>()
+                          where x.customName == "FireSecondaryProjectile"
+                          select x).First();
+                masterbase.GetComponent<BaseAI>().aimVectorMaxSpeed = 180f;
+            }
 
-            On.EntityStates.GrandParent.ChannelSunStart.OnEnter += (orig, self) =>
+            if (speedtw)
             {
-                EntityStates.GrandParent.ChannelSunStart.baseDuration = 1f;
-                orig(self);
-            };
-            On.EntityStates.GrandParent.ChannelSunEnd.OnEnter += (orig, self) =>
-            {
-                EntityStates.GrandParent.ChannelSunEnd.baseDuration = 1f;
-                orig(self);
-            };
+                var sun = Resources.Load<GameObject>("prefabs/networkedobjects/GrandParentSun").GetComponent<GrandParentSunController>();
+                sun.maxDistance = 1000f;
 
-            var ai = (from x in masterbase.GetComponents<AISkillDriver>()
-                      where x.customName == "FireSecondaryProjectile"
-                      select x).First();
+                On.EntityStates.GrandParentBoss.FireSecondaryProjectile.OnEnter += (orig, self) =>
+                {
+                    self.baseDuration = 1.5f;
+                    orig(self);
+                };
+
+                On.EntityStates.GrandParent.ChannelSunStart.OnEnter += (orig, self) =>
+                {
+                    EntityStates.GrandParent.ChannelSunStart.baseDuration = 1f;
+                    orig(self);
+                };
+                On.EntityStates.GrandParent.ChannelSunEnd.OnEnter += (orig, self) =>
+                {
+                    EntityStates.GrandParent.ChannelSunEnd.baseDuration = 1f;
+                    orig(self);
+                };
+            }
+
+            /*
+             
+            AISkillDriver dr = masterbase.AddComponent<AISkillDriver>();
 
             dr.customName = "SkyLeap";
             dr.skillSlot = SkillSlot.Utility;
@@ -99,7 +122,7 @@ namespace UltimateCustomRun.Enemies.Bosses
             var sd = ScriptableObject.CreateInstance<SkillDef>();
             sd.skillName = "SkyLeap";
             sd.activationStateMachineName = "Body";
-            sd.activationState = new SerializableEntityStateType(typeof(BasedLeap));
+            sd.activationState = new SerializableEntityStateType(typeof(ItemBaseLeap));
             sd.interruptPriority = InterruptPriority.PrioritySkill;
             sd.baseRechargeInterval = 15f;
             sd.resetCooldownTimerOnUse = false;
@@ -118,8 +141,10 @@ namespace UltimateCustomRun.Enemies.Bosses
                 unlockableDef = null,
                 viewableNode = new ViewablesCatalog.Node(sd.skillNameToken, false, null)
             };
+            */
         }
-        public class BasedLeap : EntityStates.BrotherMonster.ExitSkyLeap
+        /*
+        public class ItemBaseLeap : EntityStates.BrotherMonster.ExitSkyLeap
         {
             public override void OnEnter()
             {
@@ -130,5 +155,6 @@ namespace UltimateCustomRun.Enemies.Bosses
                 base.OnEnter();
             }
         }
+        */
     }
 }

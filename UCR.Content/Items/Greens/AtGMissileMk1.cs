@@ -4,7 +4,7 @@ using MonoMod.Cil;
 
 namespace UltimateCustomRun
 {
-    public class AtGMissileMk1 : Based
+    public class AtGMissileMk1 : ItemBase
     {
         public static float chance;
         public static float damage;

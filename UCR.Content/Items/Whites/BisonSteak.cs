@@ -6,7 +6,7 @@ using UnityEngine.Networking;
 
 namespace UltimateCustomRun
 {
-    public class BisonSteak : Based
+    public class BisonSteak : ItemBase
     {
         public static float flathealth;
         public static bool levelhealth;
@@ -16,11 +16,11 @@ namespace UltimateCustomRun
         public override string InternalPickupToken => "flathealth";
         public override bool NewPickup => true;
 
-        public static bool useFlatHealthSteak = flathealth != 0f;
-        public static bool useLevelHealthSteak = levelhealth;
-        public static bool useBothHealthSteak = useFlatHealthSteak && useLevelHealthSteak;
-        public static bool useRegen = /* regen != 0f; */ false;
-        public static bool useRegenStack = /* regenstack; */ false;
+        bool useFlatHealthSteak = flathealth != 0f;
+        bool useLevelHealthSteak = levelhealth;
+        bool useBothHealthSteak = flathealth != 0f && levelhealth;
+        bool useRegen = /* regen != 0f; */ false;
+        bool useRegenStack = /* regenstack; */ false;
 
         public override string PickupText => (useRegen ? "Regenerate on kill." : "") +
                                              "Gain" +

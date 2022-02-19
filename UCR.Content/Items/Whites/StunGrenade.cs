@@ -2,7 +2,7 @@
 
 namespace UltimateCustomRun
 {
-    public class StunGrenade : Based
+    public class StunGrenade : ItemBase
     {
 
         public static float chance;

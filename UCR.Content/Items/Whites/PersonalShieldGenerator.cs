@@ -2,7 +2,7 @@
 
 namespace UltimateCustomRun
 {
-    public class PersonalShieldGenerator : Based
+    public class PersonalShieldGenerator : ItemBase
     {
         public static float percenthp;
 

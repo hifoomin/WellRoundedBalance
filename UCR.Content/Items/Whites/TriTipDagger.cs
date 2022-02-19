@@ -6,7 +6,7 @@ using UnityEngine.Networking;
 
 namespace UltimateCustomRun
 {
-    public class TriTipDagger : Based
+    public class TriTipDagger : ItemBase
     {
         public static float chance;
         public static float dur;

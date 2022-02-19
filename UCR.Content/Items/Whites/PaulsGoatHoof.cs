@@ -2,7 +2,7 @@
 
 namespace UltimateCustomRun
 {
-    public class PaulsGoatHoof : Based
+    public class PaulsGoatHoof : ItemBase
     {
         public static float speed;
 

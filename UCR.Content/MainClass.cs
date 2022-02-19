@@ -14,6 +14,7 @@ using UltimateCustomRun.Enemies;
 using UltimateCustomRun.Enemies.Bosses;
 using UltimateCustomRun.Survivors;
 using UltimateCustomRun.Stages;
+using UltimateCustomRun.Global;
 
 namespace UltimateCustomRun
 {
@@ -179,12 +180,27 @@ namespace UltimateCustomRun
             UCRLogger = Logger;
             Main.UCRConfig = base.Config;
             IEnumerable<Type> enumerable = from type in Assembly.GetExecutingAssembly().GetTypes()
-                                           where !type.IsAbstract && type.IsSubclassOf(typeof(Based))
+                                           where !type.IsAbstract && type.IsSubclassOf(typeof(ItemBase))
                                            select type;
-            foreach (Type type2 in enumerable)
+
+            UCRLogger.LogInfo("==+---------==ITEMS==----------------+==");
+
+            foreach (Type type in enumerable)
             {
-                Based based = (Based)Activator.CreateInstance(type2);
-                based.Init();
+                ItemBase qased = (ItemBase)Activator.CreateInstance(type);
+                qased.Init();
+            }
+
+            IEnumerable<Type> enumerable2 = from type in Assembly.GetExecutingAssembly().GetTypes()
+                                           where !type.IsAbstract && type.IsSubclassOf(typeof(EnemyBase))
+                                           select type;
+
+            UCRLogger.LogInfo("==+---------==ENEMIES==----------------+==");
+
+            foreach (Type type2 in enumerable2)
+            {
+                EnemyBase wased = (EnemyBase)Activator.CreateInstance(type2);
+                wased.Init();
             }
 
             BeetleQueenChanges = Config.Bind<bool>(":::: Enemies ::: Beetle Queen ::::", "Enable changes?", true, "This makes her less sluggish. Vanilla is false");
@@ -197,7 +213,6 @@ namespace UltimateCustomRun
             MithrixPhase4Changes = Config.Bind<bool>(":::: Enemies ::: Mithrix Phase 4 ::::", "Enable changes?", true, "This makes him less sluggish and much more threatening. Might be a little buggy... Vanilla is false");
             MithrixPhase5Changes = Config.Bind<bool>(":::: Enemies ::: Mithrix Phase 5 ::::", "Enable changes?", true, "This is the escape sequence lines. Enables unused rotation, makes them move and they are generally spammier. Vanilla is false");
             StoneTitanChanges = Config.Bind<bool>(":::: Enemies ::: Stone Titan ::::", "Enable changes?", true, "This makes him less sluggish. Vanilla is false");
-            BeetleChanges = Config.Bind<bool>(":::: Enemies :: Beetle ::::", "Enable changes?", true, "This makes them less sluggish, and enables a dash. Vanilla is false");
             BighornBisonChanges = Config.Bind<bool>(":::: Enemies :: Bighorn Bison ::::", "Enable changes?", true, "This makes them less sluggish and turn much faster. Vanilla is false");
             GolemChanges = Config.Bind<bool>(":::: Enemies :: Stone Golem ::::", "Enable changes?", true, "This makes them less sluggish and slightly nerfs their damage. Vanilla is false");
             GreaterWispChanges = Config.Bind<bool>(":::: Enemies :: Greater Wisp ::::", "Enable changes?", true, "This makes them less sluggish. Vanilla is false");
@@ -223,6 +238,8 @@ namespace UltimateCustomRun
             GlobalCritDamageMultiplier = Config.Bind<float>("::: Global : Damage :::", "Crit Damage Multiplier", (float)2f, "Vanilla is 2");
 
             GlobalLowHealthThreshold = Config.Bind<float>("::: Global ::: Health :::", "Low Health Threshold", (float)0.25f, "This affects Old War Stealthkit, Genesis Loop and the low health vignette. Vanilla is 0.25");
+            // OspTime = Config.Bind<float>("::: Global ::: Health :::", "One Shot Protection Time", 0.1f, "Vanilla is 0.1");
+            // OspThreshold = Config.Bind<float>("::: Global ::: Health :::", "One Shot Protection Threshold", 0.1f, "Decimal. Vanilla is 0.1");
 
             PlayerFactorBase = Config.Bind<float>("::: Global :::: Scaling :::", "Player Factor Base", (float)0.7f, "Vanilla is 0.7");
             PlayerCountMultiplier = Config.Bind<float>("::: Global :::: Scaling :::", "Player Count Multiplier", (float)0.3f, "Vanilla is 0.3");
@@ -350,6 +367,9 @@ namespace UltimateCustomRun
             //  \__, |_|\___/|_.__/ \__,_|_|
             //   __/ |                      
             //  |___/   
+
+            IL.RoR2.HealthComponent.TriggerOneShotProtection += OneShotProtection.ChangeTime;
+            IL.RoR2.CharacterBody.RecalculateStats += OneShotProtection.ChangeThreshold;
 
             IL.RoR2.HealthComponent.TakeDamage += CritMultiplier.ChangeDamage;
 
@@ -494,10 +514,6 @@ namespace UltimateCustomRun
             {
                 StoneTitan.Buff();
             }
-            if (BeetleChanges.Value)
-            {
-                Beetle.Buff();
-            }
             if (BighornBisonChanges.Value)
             {
                 BighornBison.Buff();
@@ -607,7 +623,7 @@ namespace UltimateCustomRun
             // |_|\__,_|_| |_|\__,_|_|  |___/
 
             // TODO
-
+            
             // LanguageAPI.Add("ITEM_LUNARPRIMARYREPLACEMENT_DESC", "<style=cIsUtility>Replace your Primary Skill</style> with <style=cIsUtility>Hungering Gaze</style>. \n\nFire a flurry of <style=cIsUtility>tracking shards</style> that detonate after a delay, dealing <style=cIsDamage>120%</style> base damage. Hold up to " + VisionsCharges.Value + " charges <style=cStack>(+12 per stack)</style> that reload after " + VisionsCooldown.Value + " seconds <style=cStack>(+2 per stack)</style>.");
         }
     }

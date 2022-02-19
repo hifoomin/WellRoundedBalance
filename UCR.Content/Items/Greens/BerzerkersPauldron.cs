@@ -4,7 +4,7 @@ using RoR2;
 
 namespace UltimateCustomRun
 {
-    public class BerzerkersPauldron : Based
+    public class BerzerkersPauldron : ItemBase
     {
         public static float armor;
         public static float buffarmor;
@@ -24,7 +24,7 @@ namespace UltimateCustomRun
         float bFullDur = basebuffdur + stackbuffdur;
        
         public override string DescText => (bArmor ? "<style=cIsHealing>Increase armor</style> by <style=cIsHealing>" + armor + "</style> <style=cStack>(+" + armor + " per stack)</style>. " : "") +
-                                           "<style=cIsDamage>Killing " + "" /* change killcount */ + " 4 enemies</style> within <style=cIsDamage>1</style> second sends you into a <style=cIsDamage>frenzy</style> for <style=cIsDamage>" + bFullDur + "s</style> <style=cStack>(+" + stackbuffdur + "s per stack)</style>. Increases <style=cIsUtility>movement speed</style> by <style=cIsUtility>50%</style>, <style=cIsDamage>attack speed</style> by <style=cIsDamage>100%</style>" +
+                                           "<style=cIsDamage>Killing " + "" /* change killcount */ + "4 enemies</style> within <style=cIsDamage>1</style> second sends you into a <style=cIsDamage>frenzy</style> for <style=cIsDamage>" + bFullDur + "s</style> <style=cStack>(+" + stackbuffdur + "s per stack)</style>. Increases <style=cIsUtility>movement speed</style> by <style=cIsUtility>50%</style>, <style=cIsDamage>attack speed</style> by <style=cIsDamage>100%</style>" +
                                            (bBuffArmor ? " and <style=cIsHealing>armor</style> by <style=cIsHealing>" + buffarmor + "</style>." : "");
 
 

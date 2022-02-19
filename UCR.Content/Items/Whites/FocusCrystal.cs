@@ -4,7 +4,7 @@ using MonoMod.Cil;
 
 namespace UltimateCustomRun
 {
-    public class FocusCrystal : Based
+    public class FocusCrystal : ItemBase
     {
         public static float damage;
         public static float range;

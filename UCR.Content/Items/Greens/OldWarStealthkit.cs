@@ -3,7 +3,7 @@ using R2API;
 
 namespace UltimateCustomRun
 {
-    public class OldWarStealthkit : Based
+    public class OldWarStealthkit : ItemBase
     {
         public static float buffarmor;
         public static bool stackbuffarmor;
@@ -13,8 +13,8 @@ namespace UltimateCustomRun
         public override bool NewPickup => false;
         public override string PickupText => "";
 
-        public static bool oArmor = buffarmor != 0f;
-        public static bool oArmorStack = stackbuffarmor;
+        bool oArmor = buffarmor != 0f;
+        bool oArmorStack = stackbuffarmor;
 
         public override string DescText => "Falling below <style=cIsHealth>25% health</style> causes you to gain <style=cIsUtility>40% movement speed</style>" +
                                            (oArmor ? ", <style=cIsHealing>" + buffarmor + " armor</style>" +

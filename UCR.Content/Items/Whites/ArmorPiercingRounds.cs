@@ -5,7 +5,7 @@ using System;
 
 namespace UltimateCustomRun
 {
-    public class ArmorPiercingRounds : Based
+    public class ArmorPiercingRounds : ItemBase
     {
         public static float damage;
 

@@ -2,7 +2,7 @@
 
 namespace UltimateCustomRun
 {
-    public class Gasoline : Based
+    public class Gasoline : ItemBase
     {
         public static float expdamage;
         public static float burndamage;

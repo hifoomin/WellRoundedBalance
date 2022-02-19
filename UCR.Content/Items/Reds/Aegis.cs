@@ -5,7 +5,7 @@ using MonoMod.Cil;
 
 namespace UltimateCustomRun
 {
-    public class Aegis : Based
+    public class Aegis : ItemBase
     {
         public static float armor;
         public static bool armorstack;
@@ -17,8 +17,8 @@ namespace UltimateCustomRun
         public override bool NewPickup => false;
         public override string PickupText => "";
 
-        public static bool aeArmor = armor != 0f;
-        public static bool aeArmorStack = armorstack;
+        bool aeArmor = armor != 0f;
+        bool aeArmorStack = armorstack;
 
         public override string DescText => (aeArmor ? "<style=cIsHealing>Increase armor</style> by <style=cIsHealing>" + armor + "</style>. " +
                                            (aeArmorStack ? "<style=cStack>(+" + armor + " per stack)</style>" : "") : "") +

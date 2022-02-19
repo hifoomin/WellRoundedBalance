@@ -3,7 +3,7 @@ using MonoMod.Cil;
 
 namespace UltimateCustomRun
 {
-    public class Crowbar : Based
+    public class Crowbar : ItemBase
     {
         public static float damage;
         public static float threshold;

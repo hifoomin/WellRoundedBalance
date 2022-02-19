@@ -5,7 +5,7 @@ using System;
 
 namespace UltimateCustomRun
 {
-    public class RunaldsBand : Based
+    public class RunaldsBand : ItemBase
     {
         public static float basedmg;
         public static float totaldmg;
@@ -14,9 +14,9 @@ namespace UltimateCustomRun
         public override string InternalPickupToken => "icering";
         public override bool NewPickup => false;
 
-        public static bool rBaseDamage = basedmg != 0f;
-        public static bool rTotalDamage = totaldmg != 0f;
-        public static bool rBoth = rBaseDamage && rTotalDamage;
+        bool rBaseDamage = basedmg != 0f;
+        bool rTotalDamage = totaldmg != 0f;
+        bool rBoth = basedmg != 0f && totaldmg != 0f;
 
         public override string PickupText => "";
 

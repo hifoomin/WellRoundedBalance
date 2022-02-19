@@ -5,7 +5,7 @@ using RoR2;
 
 namespace UltimateCustomRun
 {
-    public class DeathMark : Based
+    public class DeathMark : ItemBase
     {
         // ////////////
         // 

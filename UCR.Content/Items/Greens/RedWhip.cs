@@ -4,7 +4,7 @@ using MonoMod.Cil;
 
 namespace UltimateCustomRun
 {
-    public class RedWhip : Based
+    public class RedWhip : ItemBase
     {
         public static float speed;
 

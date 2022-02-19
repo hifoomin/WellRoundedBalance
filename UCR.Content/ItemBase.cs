@@ -1,28 +1,13 @@
-﻿using BepInEx;
-using R2API;
-using R2API.Utils;
+﻿using R2API;
 using RoR2;
-using RoR2.Skills;
-using RoR2.Orbs;
-using RoR2.Projectile;
-using UnityEngine;
-using BepInEx.Configuration;
-using Mono.Cecil.Cil;
-using MonoMod.Cil;
-using System;
-using UnityEngine.Networking;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using JetBrains.Annotations;
 
 namespace UltimateCustomRun
 {
-    public abstract class Based
+    public abstract class ItemBase
     {
         public abstract string Name { get; }
         public abstract bool NewPickup { get; }
-        public abstract string InternalPickupToken { get; }
+        public virtual string InternalPickupToken { get; }
         public abstract string PickupText { get; }
         public abstract string DescText { get; }
         public virtual bool isEnabled { get; } = true;

@@ -3,7 +3,7 @@ using RoR2;
 
 namespace UltimateCustomRun
 {
-    public class Chronobauble : Based
+    public class Chronobauble : ItemBase
     {
         public static float ass;
         public static bool asstack;

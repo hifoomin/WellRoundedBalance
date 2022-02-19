@@ -2,7 +2,7 @@
 
 namespace UltimateCustomRun
 {
-    public class WaxQuail : Based
+    public class WaxQuail : ItemBase
     {
         public static float distance;
 

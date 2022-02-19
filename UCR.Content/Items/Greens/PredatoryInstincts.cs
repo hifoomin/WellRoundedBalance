@@ -4,7 +4,7 @@ using RoR2;
 
 namespace UltimateCustomRun
 {
-    public class PredatoryInstincts : Based
+    public class PredatoryInstincts : ItemBase
     {
         // TODO: FIX ALL THE CODE AAAAAAAAA WHY DOESNT IT WORK RANDOMLY
         public static float aspd;

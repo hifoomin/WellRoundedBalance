@@ -7,7 +7,7 @@ using System;
 
 namespace UltimateCustomRun
 {
-    public class RoseBuckler : Based
+    public class RoseBuckler : ItemBase
     {
         public static int condarmor;
         public static float armor;

@@ -5,10 +5,26 @@ using RoR2.CharacterAI;
 
 namespace UltimateCustomRun.Enemies
 {
-    public static class LesserWisp
+    public class LesserWisp : EnemyBase
     {
+        public static bool tw;
         public static CharacterBody body;
         public static CharacterMaster master;
+        public override string Name => ":::: Enemies :: Lesser Wisp";
+
+        public override void Init()
+        {
+            tw = ConfigOption(false, "Enable Speed Tweaks and AI Tweaks?", "Vanilla is false. Recommended Value: true");
+            base.Init();
+        }
+
+        public override void Hooks()
+        {
+            if (tw)
+            {
+                Buff();
+            }
+        }
         public static void Buff()
         {
             master = Resources.Load<CharacterMaster>("prefabs/charactermasters/WispMaster").GetComponent<CharacterMaster>();

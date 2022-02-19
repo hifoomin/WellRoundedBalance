@@ -1,7 +1,7 @@
 ﻿using RoR2;
 using MonoMod.Cil;
 
-namespace UltimateCustomRun
+namespace UltimateCustomRun.Global
 {
     public static class CritMultiplier
     {

@@ -4,7 +4,7 @@ using MonoMod.Cil;
 
 namespace UltimateCustomRun
 {
-    public class RepulsionArmorPlate : Based
+    public class RepulsionArmorPlate : ItemBase
     {
         public static float armor;
         public static bool armorstack;
@@ -17,9 +17,9 @@ namespace UltimateCustomRun
 
         public override string PickupText => "";
 
-        public static bool rArmor = armor != 0f;
-        public static bool rReduc = reduc != 0f;
-        public static bool rArmorStack = armorstack;
+        bool rArmor = armor != 0f;
+        bool rReduc = reduc != 0f;
+        bool rArmorStack = armorstack;
 
         public override string DescText => (rArmor ? "<style=cIsHealing>Increase armor</style> by <style=cIsHealing>" + armor + "</style> " +
                                            (rArmorStack ? "<style=cStack>(+" + armor + " per stack)</style>. " : "") : "") +

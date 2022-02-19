@@ -3,7 +3,7 @@ using MonoMod.Cil;
 
 namespace UltimateCustomRun
 {
-    public class Bandolier : Based
+    public class Bandolier : ItemBase
     {
         public static float basee;
         public static float exponent;

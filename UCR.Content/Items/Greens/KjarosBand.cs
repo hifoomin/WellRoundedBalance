@@ -5,7 +5,7 @@ using System;
 
 namespace UltimateCustomRun
 {
-    public class KjarosBand : Based
+    public class KjarosBand : ItemBase
     {
         public static float basedmg;
         public static float totaldmg;
@@ -16,9 +16,9 @@ namespace UltimateCustomRun
         public override string InternalPickupToken => "firering";
         public override bool NewPickup => false;
 
-        public static bool kBaseDamage = basedmg != 0f;
-        public static bool kTotalDamage = totaldmg != 0f;
-        public static bool kBoth = kBaseDamage && kTotalDamage;
+        bool kBaseDamage = basedmg != 0f;
+        bool kTotalDamage = totaldmg != 0f;
+        bool kBoth = basedmg != 0f && totaldmg != 0f;
 
         public override string PickupText => "";
 

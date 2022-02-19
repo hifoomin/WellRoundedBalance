@@ -5,10 +5,26 @@ using RoR2.CharacterAI;
 
 namespace UltimateCustomRun.Enemies
 {
-    public static class Imp
+    public class Imp : EnemyBase
     {
+        public static bool tw;
         public static CharacterMaster master;
         public static CharacterBody body;
+        public override string Name => ":::: Enemies :: Imp";
+
+        public override void Init()
+        {
+            tw = ConfigOption(false, "Enable Speed Tweaks and AI Tweaks?", "Vanilla is false. Recommended Value: true");
+            base.Init();
+        }
+
+        public override void Hooks()
+        {
+            if (tw)
+            {
+                Buff();
+            }
+        }
         public static void Buff()
         {
             master = Resources.Load<CharacterMaster>("prefabs/charactermasters/ImpMaster").GetComponent<CharacterMaster>();

@@ -2,7 +2,7 @@
 using UnityEngine;
 using System;
 
-namespace UltimateCustomRun
+namespace UltimateCustomRun.Global
 {
     public static class Scaling
     {

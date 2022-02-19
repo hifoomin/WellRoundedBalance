@@ -2,7 +2,7 @@
 
 namespace UltimateCustomRun
 {
-    public class FuelCell : Based
+    public class FuelCell : ItemBase
     {
         public static float cdr;
 

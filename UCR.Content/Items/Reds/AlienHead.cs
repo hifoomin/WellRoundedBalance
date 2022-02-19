@@ -4,7 +4,7 @@ using MonoMod.Cil;
 
 namespace UltimateCustomRun
 {
-    public class AlienHead : Based
+    public class AlienHead : ItemBase
     {
         public static float cdr;
         public static float flatcdr;
@@ -15,8 +15,8 @@ namespace UltimateCustomRun
         public override bool NewPickup => false;
         public override string PickupText => "";
 
-        public static bool ahFCDR = flatcdr != 0f;
-        public static bool ahFCDRStack = flatcdrstack;
+        bool ahFCDR = flatcdr != 0f;
+        bool ahFCDRStack = flatcdrstack;
 
         public override string DescText => "<style=cIsUtility>Reduce skill cooldowns</style> by <style=cIsUtility>" + d(cdr) + "</style> <style=cStack>(+" + d(cdr) + " per stack)</style>" +
                                            (ahFCDR ? " and <style=cIsUtility>" + flatcdr + "</style> second" + 

@@ -3,7 +3,7 @@ using MonoMod.Cil;
 
 namespace UltimateCustomRun
 {
-    public class BustlingFungus : Based
+    public class BustlingFungus : ItemBase
     {
         public static float radius;
         public static float radiustack;

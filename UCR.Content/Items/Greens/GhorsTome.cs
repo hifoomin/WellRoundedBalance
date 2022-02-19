@@ -7,7 +7,7 @@ using MonoMod.Cil;
 
 namespace UltimateCustomRun
 {
-    public class GhorsTome : Based
+    public class GhorsTome : ItemBase
     {
         public static float chance;
         public static int reward;

@@ -2,7 +2,7 @@
 
 namespace UltimateCustomRun
 {
-    public class SoldiersSyringe : Based
+    public class SoldiersSyringe : ItemBase
     {
         public static float aspd;
 

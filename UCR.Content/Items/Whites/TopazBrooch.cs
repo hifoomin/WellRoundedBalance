@@ -4,7 +4,7 @@ using UnityEngine.Networking;
 
 namespace UltimateCustomRun
 {
-    public class TopazBrooch : Based
+    public class TopazBrooch : ItemBase
     {
         public static float barrier;
 

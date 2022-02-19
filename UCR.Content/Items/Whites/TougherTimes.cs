@@ -5,7 +5,7 @@ using MonoMod.Cil;
 
 namespace UltimateCustomRun
 {
-    public class TougherTimes : Based
+    public class TougherTimes : ItemBase
     {
         public static float blockchance;
         public static float armor;
@@ -15,8 +15,8 @@ namespace UltimateCustomRun
         public override string InternalPickupToken => "bear";
         public override bool NewPickup => true;
 
-        public static bool tArmor = armor != 0f;
-        public static bool tBlock = blockchance != 0f;
+        bool tArmor = armor != 0f;
+        bool tBlock = blockchance != 0f;
 
         public override string PickupText => (tBlock ? "Chance to block incoming damage." : "") +
                                              (tArmor ? " Reduce incoming damage." : "");

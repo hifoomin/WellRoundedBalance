@@ -5,7 +5,7 @@ using MonoMod.Cil;
 
 namespace UltimateCustomRun
 {
-    public class CautiousSlug : Based
+    public class CautiousSlug : ItemBase
     {
         public static float regen;
 

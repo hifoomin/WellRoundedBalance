@@ -4,7 +4,7 @@ using MonoMod.Cil;
 
 namespace UltimateCustomRun
 {
-    public class Medkit : Based
+    public class Medkit : ItemBase
     {
         public static float flatheal;
         public static float percentheal;

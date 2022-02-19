@@ -5,7 +5,7 @@ using MonoMod.Cil;
 
 namespace UltimateCustomRun
 {
-    public class StickyBomb : Based
+    public class StickyBomb : ItemBase
     {
         public static float damage;
         public static float chance;

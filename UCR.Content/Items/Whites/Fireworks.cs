@@ -5,7 +5,7 @@ using System;
 
 namespace UltimateCustomRun
 {
-    public class Fireworks : Based
+    public class Fireworks : ItemBase
     {
         public static int count;
         public static int countstack;

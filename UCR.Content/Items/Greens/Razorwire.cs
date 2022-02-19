@@ -8,7 +8,7 @@ using RoR2.Orbs;
 
 namespace UltimateCustomRun
 {
-    public class Razorwire : Based
+    public class Razorwire : ItemBase
     {
 
 		public static BuffDef noRazorwire;

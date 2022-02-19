@@ -3,7 +3,7 @@ using MonoMod.Cil;
 
 namespace UltimateCustomRun
 {
-    public class WillOTheWisp : Based
+    public class WillOTheWisp : ItemBase
     {
         public static float damage;
         public static float damagestack;

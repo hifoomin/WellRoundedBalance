@@ -2,7 +2,7 @@
 
 namespace UltimateCustomRun
 {
-    public class SquidPolyp : Based
+    public class SquidPolyp : ItemBase
     {
         public static int aspd;
         public static int dur;

@@ -2,7 +2,7 @@
 
 namespace UltimateCustomRun
 {
-    public class Warhorn : Based
+    public class Warhorn : ItemBase
     {
         public static float aspd;
         public static int basedur;

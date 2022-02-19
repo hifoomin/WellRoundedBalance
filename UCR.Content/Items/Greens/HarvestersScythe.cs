@@ -4,7 +4,7 @@ using RoR2;
 
 namespace UltimateCustomRun
 {
-    public class HarvestersScythe : Based
+    public class HarvestersScythe : ItemBase
     {
         public static float crit;
         public static bool critstack;

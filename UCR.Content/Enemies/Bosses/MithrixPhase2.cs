@@ -1,19 +1,29 @@
-﻿using RoR2;
-using UnityEngine;
-using System.Linq;
-using RoR2.CharacterAI;
-using RoR2.Projectile;
-using Rewired.ComponentControls.Effects;
-using RoR2.Skills;
-using UnityEngine.Networking;
-
+﻿
 namespace UltimateCustomRun.Enemies.Bosses
 {
-    public static class MithrixPhase2
+    public class MithrixPhase2 : EnemyBase
     {
-        public static void Buff()
-        {
+        public static bool skip;
+        public override string Name => ":::: Enemies ::: Mithrix Phase 2";
 
+        public override void Init()
+        {
+            skip = ConfigOption(false, "Skip phase 2?", "Vanilla is false. Recommended Value: True");
+            base.Init();
         }
+
+        public override void Hooks()
+        {
+            RemoveLmao();
+        }
+        public static void RemoveLmao()
+        {
+            On.EntityStates.Missions.BrotherEncounter.Phase2.OnEnter += (orig, self) =>
+            {
+                orig(self);
+                self.PreEncounterBegin();
+                self.outer.SetNextState(new EntityStates.Missions.BrotherEncounter.Phase3());
+            };
+        } 
     }
 }

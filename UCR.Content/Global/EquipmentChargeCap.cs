@@ -1,6 +1,6 @@
 ﻿using MonoMod.Cil;
 
-namespace UltimateCustomRun
+namespace UltimateCustomRun.Global
 {
     public static class EquipmentChargeCap
     {

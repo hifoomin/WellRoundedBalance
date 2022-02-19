@@ -5,7 +5,7 @@ using RoR2;
 
 namespace UltimateCustomRun
 {
-    public class EnergyDrink : Based
+    public class EnergyDrink : ItemBase
     {
         public static float speed;
         public static bool change;
@@ -21,7 +21,7 @@ namespace UltimateCustomRun
         public override string DescText => "<style=cIsUtility>Sprint speed</style> is improved by <style=cIsUtility>" + actualSpeed + "%</style> <style=cStack>(+" + actualSpeed + "% per stack)</style>.";
         public override void Init()
         {
-            speed = ConfigOption(0.25f, "Speed Increase", "Decimal. Per Stack. Vanilla is 0.25 / 1.45");
+            speed = ConfigOption(0.25f, "Speed Increase", "Decimal. Per Stack. Vanilla is 0.25");
             change = ConfigOption(false, "Increase the Sprinting Speed Multiplier instead?", "Vanilla is false");
             sprintingspeed = ConfigOption(0.0357f, "Sprinting Speed Multiplier Increase", "Vanilla is 0\nFormula: (Base Character Speed + Item Speed Increases) * Sprinting Speed Multiplier");
             base.Init();
@@ -54,7 +54,7 @@ namespace UltimateCustomRun
                 var stack = sender.inventory.GetItemCount(RoR2Content.Items.SprintBonus);
                 if (stack > 0)
                 {
-                    args.baseHealthAdd += sender.sprintingSpeedMultiplier += 0.0357f;
+                    sender.sprintingSpeedMultiplier += 0.0357f;
                 }
             }
         }

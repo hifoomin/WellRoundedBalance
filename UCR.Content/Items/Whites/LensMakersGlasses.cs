@@ -4,7 +4,7 @@ using MonoMod.Cil;
 
 namespace UltimateCustomRun
 {
-    public class LensMakersGlasses : Based
+    public class LensMakersGlasses : ItemBase
     {
         public static float crit;
 

@@ -4,7 +4,7 @@ using MonoMod.Cil;
 
 namespace UltimateCustomRun
 {
-    public class Warbanner : Based
+    public class Warbanner : ItemBase
     {
         public static float basedamage;
         public static bool damstack;
@@ -15,7 +15,7 @@ namespace UltimateCustomRun
         public override string InternalPickupToken => "wardOnLevel";
         public override bool NewPickup => true;
 
-        public static bool wBaseDamage = basedamage != 0f;
+        bool wBaseDamage = basedamage != 0f;
         public static float actualRange = range + rangestack;
 
         public override string PickupText => "Drop a Warbanner on level up or starting the Teleporter event. Grants allies " +
