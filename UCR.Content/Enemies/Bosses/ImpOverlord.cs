@@ -9,11 +9,8 @@ namespace UltimateCustomRun.Enemies.Bosses
 {
     public class ImpOverlord : EnemyBase
     {
-        public static bool aitw
+        public static bool aitw;
         public static bool speedtw;
-        public static CharacterMaster master;
-        public static CharacterBody body;
-        public static CharacterBody bodybase;
         public override string Name => ":::: Enemies ::: Imp Overlord";
 
         public override void Init()
@@ -29,9 +26,9 @@ namespace UltimateCustomRun.Enemies.Bosses
         }
         public static void Buff()
         {
-            master = Resources.Load<CharacterMaster>("prefabs/charactermasters/ImpBossMaster").GetComponent<CharacterMaster>();
-            body = Resources.Load<CharacterBody>("prefabs/characterbodies/ImpBossBody").GetComponent<CharacterBody>();
-            bodybase = Resources.Load<CharacterBody>("prefabs/characterbodies/ImpBossBody");
+            var master = Resources.Load<CharacterMaster>("prefabs/charactermasters/ImpBossMaster").GetComponent<CharacterMaster>();
+            var body = Resources.Load<CharacterBody>("prefabs/characterbodies/ImpBossBody").GetComponent<CharacterBody>();
+            var bodybase = Resources.Load<CharacterBody>("prefabs/characterbodies/ImpBossBody");
             if (aitw)
             {
                 AISkillDriver ai = (from x in master.GetComponents<AISkillDriver>()

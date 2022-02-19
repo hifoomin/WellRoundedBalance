@@ -1,16 +1,9 @@
-﻿using RoR2;
-using UnityEngine;
-using System.Linq;
-using RoR2.CharacterAI;
-using RoR2.Skills;
-using RoR2.Projectile;
-
+﻿
 namespace UltimateCustomRun.Enemies.Bosses
 {
     public class ClayDunestrider : EnemyBase
     {
         public static bool tw;
-        public static CharacterBody body;
         public override string Name => ":::: Enemies ::: Clay Dunestrider";
 
         public override void Init()

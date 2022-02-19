@@ -18,9 +18,7 @@ namespace UltimateCustomRun
 
         public override string PickupText => "";
 
-        public static float actualCount = count + countstack;
-
-        public override string DescText => "Activating an interactable <style=cIsDamage>launches " + actualCount + " <style=cStack>(+" + countstack + " per stack)</style> fireworks</style> that deal <style=cIsDamage>" + damage + "</style> base damage.";
+        public override string DescText => "Activating an interactable <style=cIsDamage>launches " + count + countstack + " <style=cStack>(+" + countstack + " per stack)</style> fireworks</style> that deal <style=cIsDamage>" + damage + "</style> base damage.";
         public override void Init()
         {
             count = ConfigOption(8, "Base Count", "Vanilla is 8");

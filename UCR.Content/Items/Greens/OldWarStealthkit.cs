@@ -13,12 +13,9 @@ namespace UltimateCustomRun
         public override bool NewPickup => false;
         public override string PickupText => "";
 
-        bool oArmor = buffarmor != 0f;
-        bool oArmorStack = stackbuffarmor;
-
         public override string DescText => "Falling below <style=cIsHealth>25% health</style> causes you to gain <style=cIsUtility>40% movement speed</style>" +
-                                           (oArmor ? ", <style=cIsHealing>" + buffarmor + " armor</style>" +
-                                           (oArmorStack ? " <style=cStack>(+" + buffarmor + " per stack)</style>" : "") : "") +
+                                           (buffarmor != 0f ? ", <style=cIsHealing>" + buffarmor + " armor</style>" +
+                                           (stackbuffarmor ? " <style=cStack>(+" + buffarmor + " per stack)</style>" : "") : "") +
                                            " and <style=cIsUtility>invisibility</style> for <style=cIsUtility>5s</style>. Recharges every <style=cIsUtility>30 seconds</style> <style=cStack>(-50% per stack)</style>.";
 
 

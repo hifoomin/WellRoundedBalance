@@ -22,18 +22,18 @@ namespace UltimateCustomRun
         bool useRegen = /* regen != 0f; */ false;
         bool useRegenStack = /* regenstack; */ false;
 
-        public override string PickupText => (useRegen ? "Regenerate on kill." : "") +
+        public override string PickupText => // (useRegen ? "Regenerate on kill." : "") +
                                              "Gain" +
-                                             (useLevelHealthSteak ? " 30% base health" : "") +
-                                             (useBothHealthSteak ? " +" : "") +
-                                             (useFlatHealthSteak ? " " + flathealth + " max health" : "") +
+                                             (levelhealth ? " 30% base health" : "") +
+                                             (flathealth != 0f && levelhealth ? " +" : "") +
+                                             (flathealth != 0f ? " " + flathealth + " max health" : "") +
                                              ".";
-        public override string DescText => (useRegen ? "Increases <style=cIsHealing>base health regeneration</style> by <style=cIsHealing>" + regen + "</style>. " : "") +
-                                           (useRegenStack ? "<style=cStack>(+" + regen + " Per Stack)</style>. " : "") +
+        public override string DescText => // (useRegen ? "Increases <style=cIsHealing>base health regeneration</style> by <style=cIsHealing>" + regen + "</style>. " : "") +
+                                           // (useRegenStack ? "<style=cStack>(+" + regen + " Per Stack)</style>. " : "") +
                                            "Increases <style=cIsHealing>base health</style> by" +
-                                           (useLevelHealthSteak ? " <style=cIsHealing>30%</style> <style=cStack>(+30% per stack)</style>" : "") +
-                                           (useBothHealthSteak ? " +" : "") +
-                                           (useFlatHealthSteak ? " <style=cIsHealing>" + flathealth + "</style> <style=cStack>(+" + flathealth + " per stack)</style>" : "") +
+                                           (levelhealth ? " <style=cIsHealing>30%</style> <style=cStack>(+30% per stack)</style>" : "") +
+                                           (flathealth != 0f && levelhealth ? " +" : "") +
+                                           (flathealth != 0f ? " <style=cIsHealing>" + flathealth + "</style> <style=cStack>(+" + flathealth + " per stack)</style>" : "") +
                                            ".";
 
 
@@ -82,7 +82,7 @@ namespace UltimateCustomRun
         public static void ChangeBuffBehavior(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
             var mrb = Resources.Load<BuffDef>("buffdefs/meatregenboost");
-            mrb.canStack = regenstack ? true : false;
+            mrb.canStack = regenstack;
             if (sender.inventory)
             {
                 int buff = sender.GetBuffCount(RoR2Content.Buffs.MeatRegenBoost);

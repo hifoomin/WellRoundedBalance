@@ -16,9 +16,7 @@ namespace UltimateCustomRun
         public override bool NewPickup => false;
         public override string PickupText => "";
 
-        public static float actualdamagestack = damage * damagestack;
-
-        public override string DescText => "On killing an enemy, spawn a <style=cIsDamage>lava pillar</style> in a <style=cIsDamage>" + range + "m</style> <style=cStack>(+" + rangestack + "m per stack)</style> radius for <style=cIsDamage>" + d(damage) + "</style> <style=cStack>(+" + d(actualdamagestack) + " per stack)</style> base damage.";
+        public override string DescText => "On killing an enemy, spawn a <style=cIsDamage>lava pillar</style> in a <style=cIsDamage>" + range + "m</style> <style=cStack>(+" + rangestack + "m per stack)</style> radius for <style=cIsDamage>" + d(damage) + "</style> <style=cStack>(+" + d(damage * damagestack) + " per stack)</style> base damage.";
 
 
         public override void Init()

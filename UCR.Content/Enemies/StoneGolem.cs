@@ -5,7 +5,7 @@ using RoR2.CharacterAI;
 
 namespace UltimateCustomRun.Enemies
 {
-    public class Golem : EnemyBase
+    public class StoneGolem : EnemyBase
     {
         public static CharacterMaster master;
         public static CharacterBody body;
@@ -20,7 +20,7 @@ namespace UltimateCustomRun.Enemies
         public override void Init()
         {
             aspd = ConfigOption(2.5f, "Headbutt Duration", "Vanilla is 2.5. Recommended Value: 1");
-            ldmg = ConfigOption(2.5f, "Laser Damage", "Vanilla is 2.5. Recommended Value: 2.5");
+            ldmg = ConfigOption(2.5f, "Laser Damage", "Vanilla is 3.125 with Damage Tweaks and 2.5 without. Recommended Value: 2.5");
             ldur = ConfigOption(3f, "Laser Charge Up Duration", "Vanilla is 3. Recommended Value: 1.8");
             tw = ConfigOption(false, "Enable Damage Tweaks and AI Tweaks?", "Vanilla is false. Recommended Value: true");
             base.Init();

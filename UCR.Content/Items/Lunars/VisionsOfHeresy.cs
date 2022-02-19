@@ -29,7 +29,7 @@ namespace UltimateCustomRun
         public override string InternalPickupToken => "lunarPrimaryReplacement";
         public override bool NewPickup => false;
         public override string PickupText => "";
-        public override string DescText => "<style=cIsUtility>Replace your Primary Skill</style> with <style=cIsUtility>Hungering Gaze</style>. \n\nFire a flurry of <style=cIsUtility>tracking shards</style> that detonate after a delay, dealing <style=cIsDamage>" + d(edmg) + "</style> base damage. Hold up to " + charges + " charges <style=cStack>(+12 per stack)</style> that reload after " + cd + " seconds <style=cStack>(+2 per stack)</style>.";
+        public override string DescText => "<style=cIsUtility>Replace your Primary Skill</style> with <style=cIsUtility>Hungering Gaze</style>. \n\nFire a flurry of <style=cIsUtility>tracking shards</style> that detonate after a delay, dealing <style=cIsDamage>" + d(edmg) + "</style> base damage. Hold up to " + charges + " charges <style=cStack>(+" + charges + " per stack)</style> that reload after " + cd + " seconds <style=cStack>(+" + cd + " per stack)</style>.";
 
 
         public override void Init()

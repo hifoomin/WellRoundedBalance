@@ -20,31 +20,24 @@ namespace UltimateCustomRun
         public override string Name => ":: Items :: Greens :: Infusion";
         public override string InternalPickupToken => "infusion";
         public override bool NewPickup => true;
-
-        bool iBaseH = basehealth != 0f;
-        bool iStackBaseH = stackbase;
-        bool iPercentH = percenthealth != 0f;
-        bool iStackPercentH = stackpercent;
-        bool iBothH = basehealth != 0f && percenthealth != 0f;
-        bool iScaling = scaling;
             
 
         public override string PickupText => "Gain" +
-                                             (iPercentH? " " + d(percenthealth) : "") +
-                                             (iBothH? " +" : "") +
-                                             (iBaseH? " " + basehealth : "") +
+                                             (percenthealth != 0f ? " " + d(percenthealth) : "") +
+                                             (basehealth != 0f && percenthealth != 0f ? " +" : "") +
+                                             (basehealth != 0f ? " " + basehealth : "") +
                                              " max health. Killing an enemy permanently increases your maximum health, up to 100" +
-                                             (iScaling ? ", scales with level" : "") +
+                                             (scaling ? ", scales with level" : "") +
                                              ".";
 
         public override string DescText => "Increases<style=cIsHealing> maximum health</style> by" +
-                                            (iPercentH ? " <style=cIsHealing>" + d(percenthealth) + "</style> " : "") +
-                                            (iStackPercentH ? "<style=cStack>(+" + d(percenthealth) + " per stack)</style>" : "") +
-                                            (iBothH ? " +" : "") +
-                                            (iBaseH ? " <style=cIsHealing>" + basehealth + "</style> " : "") +
-                                            (iStackBaseH ? "<style=cStack>(+" + basehealth + " per stack)</style>" : "") +
+                                            (percenthealth != 0f ? " <style=cIsHealing>" + d(percenthealth) + "</style> " : "") +
+                                            (stackpercent ? "<style=cStack>(+" + d(percenthealth) + " per stack)</style>" : "") +
+                                            (basehealth != 0f && percenthealth != 0f ? " +" : "") +
+                                            (basehealth != 0f ? " <style=cIsHealing>" + basehealth + "</style> " : "") +
+                                            (stackbase ? "<style=cStack>(+" + basehealth + " per stack)</style>" : "") +
                                             ". Killing an enemy increases your <style=cIsHealing>health permanently</style> by <style=cIsHealing>1</style> <style=cStack>(+1 per stack)</style>, up to a <style=cIsHealing>maximum</style> of <style=cIsHealing>100 <style=cStack>(+100 per stack)</style> health</style>." +
-                                            (iScaling ? " Scales with level." : "");
+                                            (scaling ? " Scales with level." : "");
 
         public override void Init()
         {

@@ -6,6 +6,7 @@ namespace UltimateCustomRun
     {
         public static void AddBehavior()
         {
+            /*
             On.RoR2.CharacterMaster.RespawnExtraLife += (orig, self) =>
             {
                 orig(self);
@@ -20,6 +21,7 @@ namespace UltimateCustomRun
                     }
                 }
             };
+            */
         }
     }
 }

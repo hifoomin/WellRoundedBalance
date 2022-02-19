@@ -16,10 +16,7 @@ namespace UltimateCustomRun.Enemies.Bosses
         public static bool scaltw;
         public static bool stealtw;
         public static bool stagtw;
-        public static CharacterMaster master;
-        public static CharacterMaster masterbase;
-        public static CharacterBody body;
-        public override string Name => ":::: Enemies ::: Mithrix Phase 4";
+        public override string Name => ":::: Enemies :::: Mithrix Phase 4";
 
         public override void Init()
         {
@@ -39,9 +36,9 @@ namespace UltimateCustomRun.Enemies.Bosses
         }
         public static void Buff()
         {
-            master = Resources.Load<CharacterMaster>("prefabs/charactermasters/BrotherHurtMaster").GetComponent<CharacterMaster>();
-            masterbase = Resources.Load<CharacterMaster>("prefabs/charactermasters/BrotherHurtMaster");
-            body = Resources.Load<CharacterBody>("prefabs/characterbodies/BrotherHurtBody");
+            var master = Resources.Load<CharacterMaster>("prefabs/charactermasters/BrotherHurtMaster").GetComponent<CharacterMaster>();
+            var masterbase = Resources.Load<CharacterMaster>("prefabs/charactermasters/BrotherHurtMaster");
+            var body = Resources.Load<CharacterBody>("prefabs/characterbodies/BrotherHurtBody");
 
             if (aitw)
             {

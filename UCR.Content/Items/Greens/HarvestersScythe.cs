@@ -16,12 +16,9 @@ namespace UltimateCustomRun
         public override bool NewPickup => false;
         public override string PickupText => "";
 
-        bool hStack = critstack;
-        float pain = healbase + healstack;
-
         public override string DescText => "Gain <style=cIsDamage>" + crit + "% critical chance</style>" +
-                                           (hStack ? " <style=cStack>(+" + crit + "% per stack)</style>. " : "") +
-                                           "<style=cIsDamage>Critical strikes</style> <style=cIsHealing>heal</style> for <style=cIsHealing>" + pain + "</style> <style=cStack>(+" + healstack + " per stack)</style> <style=cIsHealing>health</style>.";
+                                           (critstack ? " <style=cStack>(+" + crit + "% per stack)</style>. " : "") +
+                                           "<style=cIsDamage>Critical strikes</style> <style=cIsHealing>heal</style> for <style=cIsHealing>" + healbase + healstack + "</style> <style=cStack>(+" + healstack + " per stack)</style> <style=cIsHealing>health</style>.";
 
         public override void Init()
         {

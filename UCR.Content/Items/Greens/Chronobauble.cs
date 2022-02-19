@@ -14,12 +14,9 @@ namespace UltimateCustomRun
         public override bool NewPickup => false;
         public override string PickupText => "";
 
-        bool cStack = asstack;
-        bool cAS = ass != 0f;
-
         public override string DescText => "<style=cIsUtility>Slow</style> enemies on hit for <style=cIsUtility>-60% movement speed</style>" +
-                                           (cAS ? " and <style=cIsDamage>-" + d(ass) + " attack speed</style>" +
-                                           (cStack ? " <style=cStack>(-" + d(ass) + " per stack)</style>" : "") : "") +
+                                           (ass != 0f ? " and <style=cIsDamage>-" + d(ass) + " attack speed</style>" +
+                                           (asstack ? " <style=cStack>(-" + d(ass) + " per stack)</style>" : "") : "") +
                                            " for <style=cIsUtility>2s</style> <style=cStack>(+2s per stack)</style>.";
 
 

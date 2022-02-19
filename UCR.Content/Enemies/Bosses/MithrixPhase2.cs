@@ -4,7 +4,7 @@ namespace UltimateCustomRun.Enemies.Bosses
     public class MithrixPhase2 : EnemyBase
     {
         public static bool skip;
-        public override string Name => ":::: Enemies ::: Mithrix Phase 2";
+        public override string Name => ":::: Enemies :::: Mithrix Phase 2";
 
         public override void Init()
         {

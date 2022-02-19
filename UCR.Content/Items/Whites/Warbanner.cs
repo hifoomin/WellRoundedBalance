@@ -15,14 +15,11 @@ namespace UltimateCustomRun
         public override string InternalPickupToken => "wardOnLevel";
         public override bool NewPickup => true;
 
-        bool wBaseDamage = basedamage != 0f;
-        public static float actualRange = range + rangestack;
-
         public override string PickupText => "Drop a Warbanner on level up or starting the Teleporter event. Grants allies " +
-                                             (wBaseDamage ? "base damage, " : "") +
+                                             (basedamage != 0f ? "base damage, " : "") +
                                              "movement speed and attack speed.";
-        public override string DescText => "On <style=cIsUtility>level up</style> or starting the <style=cIsUtility>Teleporter event</style>, drop a banner that strengthens all allies within <style=cIsUtility>" + actualRange + "m</style> <style=cStack>(+" + rangestack + "m per stack)</style>. Raise " +
-                                           (wBaseDamage ? "<style=cIsDamage>base damage</style> by <style=cIsDamage>" + basedamage + "</style>, " +
+        public override string DescText => "On <style=cIsUtility>level up</style> or starting the <style=cIsUtility>Teleporter event</style>, drop a banner that strengthens all allies within <style=cIsUtility>" + range + "m</style> <style=cStack>(+" + rangestack + "m per stack)</style>. Raise " +
+                                           (basedamage != 0f ? "<style=cIsDamage>base damage</style> by <style=cIsDamage>" + basedamage + "</style>, " +
                                            (damstack ? "<style=cStack>(+" + basedamage + " per stack)</style>. " : "") : "") +
                                            "<style=cIsUtility>movement speed</style> and <style=cIsDamage>attack speed</style> by <style=cIsDamage>30%</style>.";
         public override void Init()

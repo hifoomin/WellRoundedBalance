@@ -12,12 +12,7 @@ namespace UltimateCustomRun
         public override bool NewPickup => false;
         public override string PickupText => "";
 
-        public static float actualthreshold = (1f - 100f / (100f + threshold)) * 100f;
-        public static float actualthresholdtwo = (1f - 100f / (100f + threshold * 2f)) * 100f;
-        public static float firststack = Mathf.Round(actualthreshold);
-        public static float secondstack = Mathf.Round(actualthresholdtwo);
-
-        public override string DescText => "Instantly kill Elite monsters below <style=cIsHealth>" + firststack + "% <style=cStack>(+" + secondstack + "% per stack)</style> health</style>.";
+        public override string DescText => "Instantly kill Elite monsters below <style=cIsHealth>" + Mathf.Round(1f - 1f / (1f + threshold)) * 100f + "% <style=cStack>(+" + Mathf.Round((1f - 1f / (1f + threshold* 2f))) * 100f + "% per stack)</style> health</style>.";
 
 
         public override void Init()

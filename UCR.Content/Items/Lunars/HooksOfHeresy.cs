@@ -28,10 +28,7 @@ namespace UltimateCustomRun
         public override bool NewPickup => false;
         public override string PickupText => "";
 
-        public static float[] minmaxingsmh = new float[] { mindmg, maxdmg };
-        public static float avgdmg = Queryable.Average(minmaxingsmh.AsQueryable());
-
-        public override string DescText => "<style=cIsUtility>Replace your Secondary Skill </style> with <style=cIsUtility>Slicing Maelstrom</style>.  \n\nCharge up a projectile that deals <style=cIsDamage>" + d(avgdmg) + " damage per second</style> to nearby enemies, exploding after <style=cIsUtility>" + fuse + "</style> seconds to deal <style=cIsDamage>" + d(edmg) + " damage</style> and <style=cIsDamage>root</style> enemies for <style=cIsUtility>3</style> <style=cStack>(+3 per stack)</style> seconds. Recharges after " + cd + " <style=cStack>(+5 per stack)</style> seconds.";
+        public override string DescText => "<style=cIsUtility>Replace your Secondary Skill </style> with <style=cIsUtility>Slicing Maelstrom</style>.  \n\nCharge up a projectile that deals <style=cIsDamage>" + d(mindmg) + "-" + d(maxdmg) + " damage per second</style> to nearby enemies, exploding after <style=cIsUtility>" + fuse + "</style> seconds to deal <style=cIsDamage>" + d(mindmg * edmg) + "-" + d(maxdmg * edmg) + " damage</style> and <style=cIsDamage>root</style> enemies for <style=cIsUtility>3</style> <style=cStack>(+3 per stack)</style> seconds. Recharges after " + cd + " <style=cStack>(+" + cd + " per stack)</style> seconds.";
         
         public override void Init()
         {

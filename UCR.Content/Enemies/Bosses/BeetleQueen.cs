@@ -9,11 +9,8 @@ namespace UltimateCustomRun.Enemies.Bosses
     {
         public static bool aitw;
         public static bool speedtw;
-        public static CharacterMaster master;
         public static SpawnCard beeb;
         public static SpawnCard guard;
-        public static CharacterBody body;
-        public static CharacterBody bodydir;
         public override string Name => ":::: Enemies ::: Beetle Queen";
 
         public override void Init()
@@ -29,8 +26,8 @@ namespace UltimateCustomRun.Enemies.Bosses
         }
         public static void Buff()
         {
-            master = Resources.Load<CharacterMaster>("prefabs/charactermasters/BeetleQueenMaster").GetComponent<CharacterMaster>();
-            body = Resources.Load<CharacterBody>("prefabs/characterbodies/BeetleQueen2Body");
+            var master = Resources.Load<CharacterMaster>("prefabs/charactermasters/BeetleQueenMaster").GetComponent<CharacterMaster>();
+            var body = Resources.Load<CharacterBody>("prefabs/characterbodies/BeetleQueen2Body");
 
             if (aitw)
             {

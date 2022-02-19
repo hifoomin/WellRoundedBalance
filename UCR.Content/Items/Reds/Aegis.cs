@@ -17,11 +17,8 @@ namespace UltimateCustomRun
         public override bool NewPickup => false;
         public override string PickupText => "";
 
-        bool aeArmor = armor != 0f;
-        bool aeArmorStack = armorstack;
-
-        public override string DescText => (aeArmor ? "<style=cIsHealing>Increase armor</style> by <style=cIsHealing>" + armor + "</style>. " +
-                                           (aeArmorStack ? "<style=cStack>(+" + armor + " per stack)</style>" : "") : "") +
+        public override string DescText => (armor != 0f ? "<style=cIsHealing>Increase armor</style> by <style=cIsHealing>" + armor + "</style>. " +
+                                           (armorstack ? "<style=cStack>(+" + armor + " per stack)</style>" : "") : "") +
                                            "Healing past full grants you a <style=cIsHealing>temporary barrier</style> for <style=cIsHealing>" + d(overhealpercent) + " <style=cStack>(+" + d(overhealpercent) + " per stack)</style></style> of the amount you <style=cIsHealing>healed</style>.";
         public override void Init()
         {

@@ -23,9 +23,7 @@ namespace UltimateCustomRun
         public override bool NewPickup => true;
         public override string PickupText => enable ? " Enemies with " + mindebuffs + " or more debuffs are marked for death, taking bonus damage." : "Enemies with 4 or more debuffs are marked for death, taking bonus damage.";
 
-        float actualStack = dmgperdebuff * dmgperstack;
-
-        public override string DescText => enable ? "Enemies with <style=cIsDamage>" + mindebuffs + "</style> or more debuffs are <style=cIsDamage>marked for death</style>, increasing damage taken by <style=cIsDamage>" + d(dmgperstack) + "</style> <style=cStack>(+" + d(actualStack) + " per stack)</style> per debuff from all sources for <style=cIsUtility>7</style> <style=cStack>(+7 per stack)</style> seconds." : "Enemies with <style=cIsDamage>4</style> or more debuffs are <style=cIsDamage>marked for death</style>, increasing damage taken by <style=cIsDamage>50%</style> from all sources for <style=cIsUtility>7</style> <style=cStack>(+7 per stack)</style> seconds.";
+        public override string DescText => enable ? "Enemies with <style=cIsDamage>" + mindebuffs + "</style> or more debuffs are <style=cIsDamage>marked for death</style>, increasing damage taken by <style=cIsDamage>" + d(dmgperstack) + "</style> <style=cStack>(+" + d(dmgperdebuff * dmgperstack) + " per stack)</style> per debuff from all sources for <style=cIsUtility>7</style> <style=cStack>(+7 per stack)</style> seconds." : "Enemies with <style=cIsDamage>4</style> or more debuffs are <style=cIsDamage>marked for death</style>, increasing damage taken by <style=cIsDamage>50%</style> from all sources for <style=cIsUtility>7</style> <style=cStack>(+7 per stack)</style> seconds.";
 
 
         public override void Init()

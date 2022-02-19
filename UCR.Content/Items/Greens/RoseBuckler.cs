@@ -20,15 +20,11 @@ namespace UltimateCustomRun
         public override bool NewPickup => false;
         public override string PickupText => "";
 
-        bool rbArmor = armor != 0f;
-        bool rbArmorStack = armorstack;
-        bool rbBehavior = changecond;
-
-        public override string DescText => (rbArmor ? "<style=cIsHealing>Increase armor</style> by <style=cIsHealing>" + armor + "</style>" +
-                                           (rbArmorStack ? " <style=cStack>(+" + armor + " per stack)</style>" : "") + 
+        public override string DescText => (armor != 0f ? "<style=cIsHealing>Increase armor</style> by <style=cIsHealing>" + armor + "</style>" +
+                                           (armorstack ? " <style=cStack>(+" + armor + " per stack)</style>" : "") + 
                                            " and <style=cIsHealing>" + condarmor + "</style> <style=cStack>(+" + condarmor + " per stack)</style> " : "<style=cIsHealing>Increase armor</style> by <style=cIsHealing>" + condarmor + "</style> <style=cStack>(+" + condarmor + " per stack)</style>") +
                                            " while" +
-                                           (rbBehavior ? " <style=cIsHealth>under " + d(threshold) + " health</style>." : " <style=cIsUtility>sprinting</style>.");
+                                           (changecond ? " <style=cIsHealth>under " + d(threshold) + " health</style>." : " <style=cIsUtility>sprinting</style>.");
 
 
         public override void Init()

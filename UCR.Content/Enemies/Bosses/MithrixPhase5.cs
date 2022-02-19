@@ -9,7 +9,7 @@ namespace UltimateCustomRun.Enemies.Bosses
         public static bool walltw;
         public static bool rottw;
         public static bool movetw;
-        public override string Name => ":::: Enemies ::: Mithrix Escape Sequence";
+        public override string Name => ":::: Enemies :::: Mithrix Escape Sequence";
 
         public override void Init()
         {

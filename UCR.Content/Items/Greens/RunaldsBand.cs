@@ -14,16 +14,12 @@ namespace UltimateCustomRun
         public override string InternalPickupToken => "icering";
         public override bool NewPickup => false;
 
-        bool rBaseDamage = basedmg != 0f;
-        bool rTotalDamage = totaldmg != 0f;
-        bool rBoth = basedmg != 0f && totaldmg != 0f;
-
         public override string PickupText => "";
 
         public override string DescText => "Hits that deal <style=cIsDamage>more than " + d(KjarosBand.threshold) + " damage</style> also blasts enemies with a <style=cIsDamage>runic ice blast</style>, <style=cIsUtility>slowing</style> them by <style=cIsUtility>80%</style> for <style=cIsUtility>3s</style> <style=cStack>(+3s per stack)</style>" +
-                                            (rTotalDamage ? " and <style=cIsDamage>" + d(totaldmg) + "</style> <style=cStack>(+" + d(totaldmg) + " per stack)</style> TOTAL damage" : "" +
-                                            (rBoth ? " and " : "") +
-                                            (rBaseDamage ? "<style=cIsDamage>" + d(basedmg) + "</style> <style=cStack>(+" + d(basedmg) + " per stack)</style> base damage." : "") +
+                                            (totaldmg != 0f ? " and <style=cIsDamage>" + d(totaldmg) + "</style> <style=cStack>(+" + d(totaldmg) + " per stack)</style> TOTAL damage" : "" +
+                                            (basedmg != 0f && totaldmg != 0f ? " and " : "") +
+                                            (basedmg != 0f ? "<style=cIsDamage>" + d(basedmg) + "</style> <style=cStack>(+" + d(basedmg) + " per stack)</style> base damage." : "") +
                                             " Recharges every <style=cIsUtility>" + KjarosBand.cooldown + "</style> seconds.");
 
         public override void Init()

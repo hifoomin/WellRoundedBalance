@@ -28,8 +28,8 @@ namespace UltimateCustomRun
 		public override void Init()
 		{
 			enable = ConfigOption(false, "Enable Razorwire Changes?", "Vanilla is false");
-			cooldown = ConfigOption(1f, "Cooldown", "Vanilla is 0");
-			damage = ConfigOption(3.6f, "Damage", "Decimal. Vanilla is 1.6");
+			cooldown = ConfigOption(0f, "Cooldown", "Vanilla is 0");
+			damage = ConfigOption(1.6f, "Damage", "Decimal. Vanilla is 1.6");
 			procco = ConfigOption(0.2f, "Proc Coefficient", "Decimal. Vanilla is 0.2");
 			base.Init();
 		}

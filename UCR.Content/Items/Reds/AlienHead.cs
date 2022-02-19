@@ -15,12 +15,9 @@ namespace UltimateCustomRun
         public override bool NewPickup => false;
         public override string PickupText => "";
 
-        bool ahFCDR = flatcdr != 0f;
-        bool ahFCDRStack = flatcdrstack;
-
         public override string DescText => "<style=cIsUtility>Reduce skill cooldowns</style> by <style=cIsUtility>" + d(cdr) + "</style> <style=cStack>(+" + d(cdr) + " per stack)</style>" +
-                                           (ahFCDR ? " and <style=cIsUtility>" + flatcdr + "</style> second" + 
-                                           (ahFCDRStack ? "<style=cStack>(+" + flatcdr + " per stack)</style>" : ".") : ".");
+                                           (flatcdr != 0f ? " and <style=cIsUtility>" + flatcdr + "</style> second" + 
+                                           (flatcdrstack ? "<style=cStack>(+" + flatcdr + " per stack)</style>" : ".") : ".");
         public override void Init()
         {
             cdr = ConfigOption(0.25f, "Percent Cooldown Reduction", "Decimal. Per Stack. Vanilla is 0.25");

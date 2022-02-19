@@ -15,13 +15,10 @@ namespace UltimateCustomRun
         public override string InternalPickupToken => "bear";
         public override bool NewPickup => true;
 
-        bool tArmor = armor != 0f;
-        bool tBlock = blockchance != 0f;
-
-        public override string PickupText => (tBlock ? "Chance to block incoming damage." : "") +
-                                             (tArmor ? " Reduce incoming damage." : "");
-        public override string DescText => (tBlock ? "<style=cIsHealing>" + blockchance + "%</style> <style=cStack>(+" + blockchance + "% per stack)</style> chance to <style=cIsHealing>block</style> incoming damage. " : "") +
-                                           (tArmor ? "<style=cIsHealing>Increase armor</style> by <style=cIsHealing>" + armor + "</style> " +
+        public override string PickupText => (blockchance != 0f ? "Chance to block incoming damage." : "") +
+                                             (armor != 0f ? " Reduce incoming damage." : "");
+        public override string DescText => (blockchance != 0f ? "<style=cIsHealing>" + blockchance + "%</style> <style=cStack>(+" + blockchance + "% per stack)</style> chance to <style=cIsHealing>block</style> incoming damage. " : "") +
+                                           (armor != 0f ? "<style=cIsHealing>Increase armor</style> by <style=cIsHealing>" + armor + "</style> " +
                                            (armorstack ? "<style=cStack>(+" + armor + " per stack)</style>. " : "") : "") +
                                            "<style=cIsUtility>Unaffected by luck</style>.";
         public override void Init()

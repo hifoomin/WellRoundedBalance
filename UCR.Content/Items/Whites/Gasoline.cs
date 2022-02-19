@@ -15,10 +15,7 @@ namespace UltimateCustomRun
 
         public override string PickupText => "";
 
-        public static float actualRange = range + rangestack;
-        public static float actualBurnStackdamage = burndamage / 2;
-
-        public override string DescText => "Killing an enemy <style=cIsDamage>ignites</style> all enemies within <style=cIsDamage>" + actualRange + "m</style> <style=cStack>(+" + rangestack + "m per stack)</style> for <style=cIsDamage>" + d(expdamage) + "</style> base damage. Additionally, enemies <style=cIsDamage>burn</style> for <style=cIsDamage>" + d(burndamage) + "</style> <style=cStack>(+" + d(actualBurnStackdamage) + " per stack)</style> base damage.";
+        public override string DescText => "Killing an enemy <style=cIsDamage>ignites</style> all enemies within <style=cIsDamage>" + (range + rangestack) + "m</style> <style=cStack>(+" + rangestack + "m per stack)</style> for <style=cIsDamage>" + d(expdamage) + "</style> base damage. Additionally, enemies <style=cIsDamage>burn</style> for <style=cIsDamage>" + d(burndamage) + "</style> <style=cStack>(+" + d(burndamage / 2f) + " per stack)</style> base damage.";
         public override void Init()
         {
             expdamage = ConfigOption(1.5f, "Damage Coefficient", "Decimal. Vanilla is 1.5");

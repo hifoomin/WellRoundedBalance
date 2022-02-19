@@ -16,16 +16,12 @@ namespace UltimateCustomRun
         public override string InternalPickupToken => "firering";
         public override bool NewPickup => false;
 
-        bool kBaseDamage = basedmg != 0f;
-        bool kTotalDamage = totaldmg != 0f;
-        bool kBoth = basedmg != 0f && totaldmg != 0f;
-
         public override string PickupText => "";
 
         public override string DescText => "Hits that deal <style=cIsDamage>more than " + d(threshold) + " damage</style> also blasts enemies with a <style=cIsDamage>runic flame tornado</style>, dealing " +
-                                            (kTotalDamage ? "<style=cIsDamage>" + d(totaldmg) + "</style> <style=cStack>(+" + d(totaldmg) + " per stack)</style> TOTAL damage over time" : "") +
-                                            (kBoth ? " and " : "") +
-                                            (kBaseDamage ? "<style=cIsDamage>" + d(basedmg) + "</style> <style=cStack>(+" + d(basedmg) + " per stack)</style> base damage." : "") +
+                                            (totaldmg != 0f ? "<style=cIsDamage>" + d(totaldmg) + "</style> <style=cStack>(+" + d(totaldmg) + " per stack)</style> TOTAL damage over time" : "") +
+                                            (basedmg != 0f && totaldmg != 0f ? " and " : "") +
+                                            (basedmg != 0f ? "<style=cIsDamage>" + d(basedmg) + "</style> <style=cStack>(+" + d(basedmg) + " per stack)</style> base damage." : "") +
                                             " Recharges every <style=cIsUtility>" + cooldown + "</style> seconds.";
 
         public override void Init()

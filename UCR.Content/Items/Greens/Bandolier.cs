@@ -12,13 +12,8 @@ namespace UltimateCustomRun
         public override string InternalPickupToken => "bandolier";
         public override bool NewPickup => false;
         public override string PickupText => "";
-
-        public static float actual = (1f - 1f / Mathf.Pow(1f + basee, exponent)) * 100f;
-        public static float actualtwo = (1f - 1f / Mathf.Pow(2f + basee, exponent) - 1f - 1f / Mathf.Pow(1f + basee, exponent)) * 100f;
-        float firststack = Mathf.Round(actual);
-        float secondstack = Mathf.Round(actualtwo);
         
-        public override string DescText => "<style=cIsUtility>" + firststack + "% </style> <style=cStack>(+" + secondstack + "% on stack)</style> chance on kill to drop an ammo pack that <style=cIsUtility>resets all skill cooldowns</style>.";
+        public override string DescText => "<style=cIsUtility>" + Mathf.Round((1f - 1f / Mathf.Pow((1f + basee), exponent)) * 100f) + "%</style> <style=cStack>(+" + (Mathf.Round((1f - 1f / Mathf.Pow((2f + basee), exponent)) * 100f) - Mathf.Round((1f - 1f / Mathf.Pow((1f + basee), exponent)) * 100f)) + "% on stack)</style> chance on kill to drop an ammo pack that <style=cIsUtility>resets all skill cooldowns</style>.";
 
 
         public override void Init()

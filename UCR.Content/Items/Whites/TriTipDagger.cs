@@ -17,9 +17,7 @@ namespace UltimateCustomRun
         public override bool NewPickup => false;
         public override string PickupText => "";
 
-        public static float actualDamage = 0.2f * 4f * dur;
-
-        public override string DescText => "<style=cIsDamage>" + chance + "%</style> <style=cStack>(+" + chance + "% per stack)</style> chance to <style=cIsDamage>bleed</style> an enemy for <style=cIsDamage>" + d(actualDamage) + "</style> base damage.";
+        public override string DescText => "<style=cIsDamage>" + chance + "%</style> <style=cStack>(+" + chance + "% per stack)</style> chance to <style=cIsDamage>bleed</style> an enemy for <style=cIsDamage>" + d(0.2f * 4f * dur) + "</style> base damage.";
         public override void Init()
         {
             chance = ConfigOption(10f, "Chance", "Per Stack. Vanilla is 10");

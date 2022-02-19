@@ -17,8 +17,7 @@ namespace UltimateCustomRun.Enemies.Bosses
         public static bool leaptw;
         public static bool aggtw;
         public static bool wavetw;
-        public static CharacterMaster master;
-        public override string Name => ":::: Enemies ::: Mithrix Phase 1 and 3";
+        public override string Name => ":::: Enemies :::: Mithrix Phase 1 and 3";
 
         public override void Init()
         {
@@ -38,7 +37,7 @@ namespace UltimateCustomRun.Enemies.Bosses
         }
         public static void Buff()
         {
-            master = Resources.Load<CharacterMaster>("prefabs/charactermasters/BrotherMaster").GetComponent<CharacterMaster>();
+            var master = Resources.Load<CharacterMaster>("prefabs/charactermasters/BrotherMaster").GetComponent<CharacterMaster>();
             
             if (aitw)
             {

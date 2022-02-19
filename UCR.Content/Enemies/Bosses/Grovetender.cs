@@ -12,8 +12,6 @@ namespace UltimateCustomRun.Enemies.Bosses
         public static bool speedtw;
         public static bool wisptw;
         public static bool eun;
-        public static CharacterMaster master;
-        public static CharacterBody body;
         public override string Name => ":::: Enemies ::: Grovetender";
 
         public override void Init()
@@ -31,8 +29,8 @@ namespace UltimateCustomRun.Enemies.Bosses
         }
         public static void Buff()
         {
-            master = Resources.Load<CharacterMaster>("prefabs/charactermasters/GravekeeperMaster").GetComponent<CharacterMaster>();
-            body = Resources.Load<CharacterBody>("prefabs/characterbodies/GravekeeperBody").GetComponent<CharacterBody>();
+            var master = Resources.Load<CharacterMaster>("prefabs/charactermasters/GravekeeperMaster").GetComponent<CharacterMaster>();
+            var body = Resources.Load<CharacterBody>("prefabs/characterbodies/GravekeeperBody").GetComponent<CharacterBody>();
             if (aitw)
             {
                 AISkillDriver ai = (from x in master.GetComponents<AISkillDriver>()

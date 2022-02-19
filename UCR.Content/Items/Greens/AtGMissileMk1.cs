@@ -52,8 +52,8 @@ namespace UltimateCustomRun
         }
         public static void ChangeProc()
         {
-            var mp = Resources.Load<GameObject>("prefabs/projectiles/MissileProjectile").GetComponent<ProjectileController>().procCoefficient;
-            mp = procco;
+            var mp = Resources.Load<GameObject>("prefabs/projectiles/MissileProjectile").GetComponent<ProjectileController>();
+            mp.procCoefficient = procco;
         }
     }
 }

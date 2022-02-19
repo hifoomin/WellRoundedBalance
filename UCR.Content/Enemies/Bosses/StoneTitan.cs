@@ -12,8 +12,6 @@ namespace UltimateCustomRun.Enemies.Bosses
         public static bool fisttw;
         public static bool rockstw;
         public static bool speedtw;
-        public static CharacterMaster master;
-        public static CharacterBody body;
 
         public override string Name => ":::: Enemies ::: Stone Titan";
 
@@ -32,8 +30,8 @@ namespace UltimateCustomRun.Enemies.Bosses
         }
         public static void Buff()
         {
-            master = Resources.Load<CharacterMaster>("prefabs/charactermasters/TitanMaster").GetComponent<CharacterMaster>();
-            body = Resources.Load<CharacterBody>("prefabs/characterbodies/TitanBody");
+            var master = Resources.Load<CharacterMaster>("prefabs/charactermasters/TitanMaster").GetComponent<CharacterMaster>();
+            var body = Resources.Load<CharacterBody>("prefabs/characterbodies/TitanBody");
             if (aitw)
             {
                 master.GetComponent<BaseAI>().fullVision = true;

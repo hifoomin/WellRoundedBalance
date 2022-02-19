@@ -14,8 +14,6 @@ namespace UltimateCustomRun.Enemies.Bosses
     {
         public static bool aitw;
         public static bool speedtw;
-        public static CharacterMaster master;
-        public static CharacterBody body;
         public static AISkillDriver dr;
         public override string Name => ":::: Enemies ::: Grandparent";
 
@@ -32,9 +30,9 @@ namespace UltimateCustomRun.Enemies.Bosses
         }
         public static void Buff()
         {
-            master = Resources.Load<CharacterMaster>("prefabs/charactermasters/GrandparentMaster").GetComponent<CharacterMaster>();
+            var master = Resources.Load<CharacterMaster>("prefabs/charactermasters/GrandparentMaster").GetComponent<CharacterMaster>();
             GameObject masterbase = Resources.Load<GameObject>("prefabs/charactermasters/GrandparentMaster");
-            body = Resources.Load<CharacterBody>("prefabs/characterbodies/GrandparentBody").GetComponent<CharacterBody>();
+            var body = Resources.Load<CharacterBody>("prefabs/characterbodies/GrandparentBody").GetComponent<CharacterBody>();
 
             if (aitw)
             {

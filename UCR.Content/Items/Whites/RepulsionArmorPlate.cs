@@ -17,13 +17,9 @@ namespace UltimateCustomRun
 
         public override string PickupText => "";
 
-        bool rArmor = armor != 0f;
-        bool rReduc = reduc != 0f;
-        bool rArmorStack = armorstack;
-
-        public override string DescText => (rArmor ? "<style=cIsHealing>Increase armor</style> by <style=cIsHealing>" + armor + "</style> " +
-                                           (rArmorStack ? "<style=cStack>(+" + armor + " per stack)</style>. " : "") : "") +
-                                           (rReduc ? "Reduce all <style=cIsDamage>incoming damage</style> by <style=cIsDamage>" + reduc + "<style=cStack> (+" + reduc + " per stack)</style></style>. Cannot be reduced below <style=cIsDamage>" + mindmg + "</style>." : "");
+        public override string DescText => (armor != 0f ? "<style=cIsHealing>Increase armor</style> by <style=cIsHealing>" + armor + "</style> " +
+                                           (armorstack ? "<style=cStack>(+" + armor + " per stack)</style>. " : "") : "") +
+                                           (reduc != 0f ? "Reduce all <style=cIsDamage>incoming damage</style> by <style=cIsDamage>" + reduc + "<style=cStack> (+" + reduc + " per stack)</style></style>. Cannot be reduced below <style=cIsDamage>" + mindmg + "</style>." : "");
         public override void Init()
         {
             reduc = ConfigOption(5f, "Flat Damage Reduction", "Per Stack. Vanilla is 5");

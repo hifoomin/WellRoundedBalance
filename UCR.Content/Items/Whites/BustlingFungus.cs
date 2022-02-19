@@ -15,8 +15,7 @@ namespace UltimateCustomRun
         public override bool NewPickup => false;
         public override string PickupText => "";
 
-        public static float actualRadius = radius + radiustack;
-        public override string DescText => "After standing still for <style=cIsHealing>1</style> second, create a zone that <style=cIsHealing>heals</style> for <style=cIsHealing>" + d(healing) + "</style> <style=cStack>(+" + d(healingstack) + " per stack)</style> of your <style=cIsHealing>health</style> every second to all allies within <style=cIsHealing>" + actualRadius + "m</style> <style=cStack>(+" + radiustack + "m per stack)</style>.";
+        public override string DescText => "After standing still for <style=cIsHealing>1</style> second, create a zone that <style=cIsHealing>heals</style> for <style=cIsHealing>" + d(healing) + "</style> <style=cStack>(+" + d(healingstack) + " per stack)</style> of your <style=cIsHealing>health</style> every second to all allies within <style=cIsHealing>" + (radius + radiustack) + "m</style> <style=cStack>(+" + radiustack + "m per stack)</style>.";
 
         public override void Init()
         {
