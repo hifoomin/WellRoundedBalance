@@ -3,8 +3,21 @@ using MonoMod.Cil;
 
 namespace UltimateCustomRun.Global
 {
-    public static class CritMultiplier
+    public class CritMultiplier : GlobalBase
     {
+        public static float cdm;
+        public override string Name => ": Global ::: Crit Damage Multiplier";
+
+        public override void Init()
+        {
+            cdm = ConfigOption(2f, "Crit Damage Multiplier", "Vanilla is 2");
+            base.Init();
+        }
+        public override void Hooks()
+        {
+            IL.RoR2.HealthComponent.TakeDamage += ChangeDamage;
+        }
+
         public static void ChangeDamage(ILContext il)
         {
             ILCursor c = new ILCursor(il);
@@ -15,7 +28,7 @@ namespace UltimateCustomRun.Global
                 x => x.MatchLdcR4(2f)
             );
             c.Index += 3;
-            c.Next.Operand = Main.GlobalCritDamageMultiplier.Value;
+            c.Next.Operand = cdm;
         }
     }
 }

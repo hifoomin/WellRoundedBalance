@@ -1,9 +1,26 @@
 ﻿using MonoMod.Cil;
+using System;
+using System.Reflection;
+using RoR2;
+using R2API.Utils;
+using MonoMod.RuntimeDetour;
 
 namespace UltimateCustomRun.Global
 {
-    public static class IsHealthLow
+    public class IsHealthLow : GlobalBase
     {
+        public static float lowhpthreshold;
+        public override string Name => ": Global ::::: Low Health Threshold";
+
+        public override void Init()
+        {
+            lowhpthreshold = ConfigOption(0.25f, "Low Health Threshold", "Decimal. Used for Genesis Loop, Old War Stealthkit and the Low Health Visual. Vanilla is 0.25");
+            base.Init();
+        }
+        public override void Hooks()
+        {
+            new ILHook(typeof(CharacterBody).GetMethod("get_isHealthLow"), ChangeThreshold);
+        }
         public static void ChangeThreshold(ILContext il)
         {
             ILCursor c = new ILCursor(il);
@@ -11,9 +28,7 @@ namespace UltimateCustomRun.Global
             c.GotoNext(MoveType.Before,
                 x => x.MatchLdcR4(0.25f)
             );
-            c.Next.Operand = Main.GlobalLowHealthThreshold.Value;
+            c.Next.Operand = lowhpthreshold;
         }
-        // HOOKING THIS REQUIRES REFLECTION?
-        // PLEASE HELP TO FIX
     }
 }
