@@ -1,27 +1,25 @@
 ﻿using RoR2;
-using UnityEngine;
-using System.Linq;
 using RoR2.CharacterAI;
 using RoR2.Projectile;
+using System.Linq;
+using UnityEngine;
 
 namespace UltimateCustomRun.Enemies
 {
     public class Lemurian : EnemyBase
     {
-        public static bool tw;
-        public static float fbdur;
-        public static float fbspd;
-        public static bool cbhs;
-        public static CharacterMaster master;
-        public static CharacterBody body;
+        public static bool Tweaks;
+        public static float FireballDuration;
+        public static float FireballSpeed;
+        public static bool CanBeHitStunned;
         public override string Name => ":::: Enemies :: Lemurian";
 
         public override void Init()
         {
-            tw = ConfigOption(false, "Enable Bite Lunge, Speed Tweaks and AI Tweaks?", "Vanilla is false. Recommended Value: true");
-            cbhs = ConfigOption(false, "Can be Hit Stunned?", "Vanilla is true. Recommended Value: false");
-            fbdur = ConfigOption(0.6f, "Fireball Charge Duration", "Vanilla is 0.6. Recommended Value: 0.4");
-            fbspd = ConfigOption(60f, "Fireball Projecitle Speed", "Vanilla is 60. Recommended Value: 75");
+            Tweaks = ConfigOption(false, "Enable Bite Lunge, Speed Tweaks and AI Tweaks?", "Vanilla is false.\nRecommended Value: true");
+            CanBeHitStunned = ConfigOption(true, "Can be Hit Stunned?", "Vanilla is true.\nRecommended Value: false");
+            FireballDuration = ConfigOption(0.6f, "Fireball Charge Duration", "Vanilla is 0.6.\nRecommended Value: 0.4");
+            FireballSpeed = ConfigOption(60f, "Fireball Projecitle Speed", "Vanilla is 60.\nRecommended Value: 75");
             base.Init();
         }
 
@@ -29,13 +27,14 @@ namespace UltimateCustomRun.Enemies
         {
             Buff();
         }
+
         public static void Buff()
         {
-            master = Resources.Load<CharacterMaster>("prefabs/charactermasters/LemurianMaster").GetComponent<CharacterMaster>();
+            var master = Resources.Load<CharacterMaster>("prefabs/charactermasters/LemurianMaster").GetComponent<CharacterMaster>();
             master.GetComponent<BaseAI>().fullVision = true;
-            body = Resources.Load<CharacterBody>("prefabs/characterbodies/LemurianBody");
+            var body = Resources.Load<CharacterBody>("prefabs/characterbodies/LemurianBody");
 
-            if (tw)
+            if (Tweaks)
             {
                 AISkillDriver ai = (from x in master.GetComponents<AISkillDriver>()
                                     where x.customName == "ChaseAndBiteOffNodegraph"
@@ -75,8 +74,8 @@ namespace UltimateCustomRun.Enemies
                     if (self.modelAnimator && self.modelAnimator.GetFloat("Bite.hitBoxActive") > 0.1f)
                     {
                         Vector3 direction = self.GetAimRay().direction;
-                        Vector3 a = direction.normalized * 2f * self.moveSpeedStat;
-                        Vector3 b = new Vector3(direction.x, 0f, direction.z).normalized * 2f;
+                        Vector3 a = direction.normalized * 1.5f * self.moveSpeedStat;
+                        Vector3 b = new Vector3(direction.x, 0f, direction.z).normalized * 1.5f;
                         self.characterMotor.Motor.ForceUnground();
                         self.characterMotor.velocity = a + b;
                     }
@@ -88,17 +87,16 @@ namespace UltimateCustomRun.Enemies
                 };
             }
 
-            body.GetComponent<SetStateOnHurt>().canBeHitStunned = cbhs;
+            body.GetComponent<SetStateOnHurt>().canBeHitStunned = CanBeHitStunned;
 
             On.EntityStates.LemurianMonster.ChargeFireball.OnEnter += (orig, self) =>
             {
-                EntityStates.LemurianMonster.ChargeFireball.baseDuration = fbdur;
+                EntityStates.LemurianMonster.ChargeFireball.baseDuration = FireballDuration;
                 orig(self);
             };
 
             var projectile = Resources.Load<GameObject>("prefabs/projectiles/Fireball").GetComponent<ProjectileSimple>();
-            projectile.desiredForwardSpeed = fbspd;
-            
+            projectile.desiredForwardSpeed = FireballSpeed;
         }
     }
 }

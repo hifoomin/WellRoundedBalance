@@ -1,23 +1,21 @@
-﻿using BepInEx;
-using R2API;
-using R2API.Utils;
-using MonoMod.Cil;
+﻿using MonoMod.Cil;
 
-namespace UltimateCustomRun
+namespace UltimateCustomRun.Items.Whites
 {
     public class CautiousSlug : ItemBase
     {
-        public static float regen;
+        public static float Regen;
 
         public override string Name => ":: Items : Whites :: Cautious Slug";
         public override string InternalPickupToken => "healWhileSafe";
         public override bool NewPickup => false;
 
         public override string PickupText => "";
-        public override string DescText => "Increases <style=cIsHealing>base health regeneration</style> by <style=cIsHealing>+" + regen + " hp/s</style> <style=cStack>(+" + regen + " hp/s per stack)</style> while outside of combat.";
+        public override string DescText => "Increases <style=cIsHealing>base health regeneration</style> by <style=cIsHealing>+" + Regen + " hp/s</style> <style=cStack>(+" + Regen + " hp/s per stack)</style> while outside of combat.";
+
         public override void Init()
         {
-            regen = ConfigOption(3f, "Regen", "Per Stack. Vanilla is 3");
+            Regen = ConfigOption(3f, "Regen", "Per Stack. Vanilla is 3");
             base.Init();
         }
 
@@ -25,6 +23,7 @@ namespace UltimateCustomRun
         {
             IL.RoR2.CharacterBody.RecalculateStats += ChangeHealing;
         }
+
         public static void ChangeHealing(ILContext il)
         {
             ILCursor c = new ILCursor(il);
@@ -35,7 +34,7 @@ namespace UltimateCustomRun
                 x => x.MatchLdcR4(3)
             );
             c.Index += 2;
-            c.Next.Operand = regen;
+            c.Next.Operand = Regen;
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using RoR2.Skills;
 using UnityEngine;
 
-namespace UltimateCustomRun
+namespace UltimateCustomRun.Items.Lunars
 {
     public static class StridesOfHeresy
     {
@@ -12,6 +12,7 @@ namespace UltimateCustomRun
             ss.baseRechargeInterval = Main.StridesCooldown.Value;
             ss.rechargeStock = Main.StridesCharges.Value;
         }
+
         // very unfinished
     }
 }

@@ -1,26 +1,26 @@
 ﻿using RoR2;
-using UnityEngine;
-using System.Linq;
 using RoR2.CharacterAI;
 using RoR2.Skills;
+using System.Linq;
+using UnityEngine;
 
 namespace UltimateCustomRun.Enemies.Bosses
 {
     public class StoneTitan : EnemyBase
     {
-        public static bool aitw;
-        public static bool fisttw;
-        public static bool rockstw;
-        public static bool speedtw;
+        public static bool AITweaks;
+        public static bool FistTweaks;
+        public static bool RockTweaks;
+        public static bool SpeedTweaks;
 
         public override string Name => ":::: Enemies ::: Stone Titan";
 
         public override void Init()
         {
-            aitw = ConfigOption(false, "Make Stone Titan AI smarter?", "Vanilla is false. Recommended Value: True");
-            fisttw = ConfigOption(false, "Make Fist faster?", "Vanilla is false. Recommended Value: True");
-            rockstw = ConfigOption(false, "Make Rock Turret faster?", "Vanilla is false. Recommended Value: True");
-            speedtw = ConfigOption(false, "Make Stone Titan faster?", "Vanilla is false. Recommended Value: True");
+            AITweaks = ConfigOption(false, "Make Stone Titan AI smarter?", "Vanilla is false.\nRecommended Value: True");
+            FistTweaks = ConfigOption(false, "Make Fist faster?", "Vanilla is false.\nRecommended Value: True");
+            RockTweaks = ConfigOption(false, "Make Rock Turret faster?", "Vanilla is false.\nRecommended Value: True");
+            SpeedTweaks = ConfigOption(false, "Make Stone Titan faster?", "Vanilla is false.\nRecommended Value: True");
             base.Init();
         }
 
@@ -28,11 +28,12 @@ namespace UltimateCustomRun.Enemies.Bosses
         {
             Buff();
         }
+
         public static void Buff()
         {
             var master = Resources.Load<CharacterMaster>("prefabs/charactermasters/TitanMaster").GetComponent<CharacterMaster>();
             var body = Resources.Load<CharacterBody>("prefabs/characterbodies/TitanBody");
-            if (aitw)
+            if (AITweaks)
             {
                 master.GetComponent<BaseAI>().fullVision = true;
                 master.GetComponent<BaseAI>().aimVectorMaxSpeed = 240f;
@@ -52,13 +53,13 @@ namespace UltimateCustomRun.Enemies.Bosses
                 ai2.movementType = AISkillDriver.MovementType.StrafeMovetarget;
             }
 
-            if (speedtw)
+            if (SpeedTweaks)
             {
                 body.GetComponent<CharacterBody>().baseMoveSpeed = 10f;
                 body.GetComponent<CharacterDirection>().turnSpeed = 170f;
             }
-            
-            if (fisttw)
+
+            if (FistTweaks)
             {
                 var fistdef = Resources.Load<SkillDef>("skilldefs/titanbody/TitanBodyFist");
                 fistdef.baseRechargeInterval = 4f;
@@ -72,7 +73,7 @@ namespace UltimateCustomRun.Enemies.Bosses
                 };
             }
 
-            if (rockstw)
+            if (RockTweaks)
             {
                 var rocksdef = Resources.Load<SkillDef>("skilldefs/titanbody/TitanBodyFist");
                 rocksdef.baseRechargeInterval = 30f;

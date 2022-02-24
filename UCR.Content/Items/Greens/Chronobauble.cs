@@ -1,12 +1,12 @@
 ﻿using R2API;
 using RoR2;
 
-namespace UltimateCustomRun
+namespace UltimateCustomRun.Items.Greens
 {
     public class Chronobauble : ItemBase
     {
-        public static float ass;
-        public static bool asstack;
+        public static float BaseAttackSpeed;
+        public static bool StackAttackSpeed;
         // :trollge:
 
         public override string Name => ":: Items :: Greens :: Chronobauble";
@@ -14,16 +14,15 @@ namespace UltimateCustomRun
         public override bool NewPickup => false;
         public override string PickupText => "";
 
-        public override string DescText => "<style=cIsUtility>Slow</style> enemies on hit for <style=cIsUtility>-60% movement speed</style>" +
-                                           (ass != 0f ? " and <style=cIsDamage>-" + d(ass) + " attack speed</style>" +
-                                           (asstack ? " <style=cStack>(-" + d(ass) + " per stack)</style>" : "") : "") +
+        public override string DescText => "<style=cIsUtility>Slow</style> enemies on hit for <style=cIsUtility>-60% movement Speed</style>" +
+                                           (BaseAttackSpeed != 0f ? " and <style=cIsDamage>-" + d(BaseAttackSpeed) + " attack Speed</style>" +
+                                           (StackAttackSpeed ? " <style=cStack>(-" + d(BaseAttackSpeed) + " per stack)</style>" : "") : "") +
                                            " for <style=cIsUtility>2s</style> <style=cStack>(+2s per stack)</style>.";
-
 
         public override void Init()
         {
-            ass = ConfigOption(0f, "Attack Speed Decrease", "Decimal. Vanilla is 0");
-            asstack = ConfigOption(false, "Stack Attack Speed Decrease?", "Vanilla is false");
+            BaseAttackSpeed = ConfigOption(0f, "Attack Speed Decrease", "Decimal. Vanilla is 0");
+            StackAttackSpeed = ConfigOption(false, "Stack Attack Speed Decrease?", "Vanilla is false");
             base.Init();
         }
 
@@ -31,6 +30,7 @@ namespace UltimateCustomRun
         {
             RecalculateStatsAPI.GetStatCoefficients += AddBehavior;
         }
+
         public static void AddBehavior(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
             if (sender.inventory)
@@ -39,7 +39,7 @@ namespace UltimateCustomRun
                 var stack = sender.inventory.GetItemCount(RoR2Content.Items.SlowOnHit);
                 if (stack > 0 && sender && debuff)
                 {
-                    args.attackSpeedMultAdd -= asstack ? ass * stack : ass;
+                    args.attackSpeedMultAdd -= StackAttackSpeed ? BaseAttackSpeed * stack : BaseAttackSpeed;
                 }
             }
         }

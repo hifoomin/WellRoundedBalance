@@ -1,24 +1,24 @@
 ﻿using RoR2;
-using UnityEngine;
-using System.Linq;
 using RoR2.CharacterAI;
+using System.Linq;
+using UnityEngine;
 
 namespace UltimateCustomRun.Enemies
 {
     public class Beetle : EnemyBase
     {
-        public static float aspd;
-        public static float spspd;
-        public static bool cbhs;
-        public static bool tw;
+        public static float Duration;
+        public static float SpawnSpeed;
+        public static bool CanBeHitStunned;
+        public static bool Tweaks;
         public override string Name => ":::: Enemies :: Beetle";
 
         public override void Init()
         {
-            aspd = ConfigOption(1.5f, "Headbutt Duration", "Vanilla is 1.5. Recommended Value with Dash enabled: 2.25");
-            spspd = ConfigOption(5f, "Spawn Duration", "Vanilla is 5. Recommended Value: 2.5");
-            cbhs = ConfigOption(true, "Can be Hit Stunned?", "Vanilla is true. Recommended Value: false");
-            tw = ConfigOption(false, "Enable Dash and AI Tweaks?", "Vanilla is false. Recommended Value: true");
+            Duration = ConfigOption(1.5f, "Headbutt Duration", "Vanilla is 1.5.\nRecommended Value with Dash enabled: 3");
+            SpawnSpeed = ConfigOption(5f, "Spawn Duration", "Vanilla is 5.\nRecommended Value: 2.5");
+            CanBeHitStunned = ConfigOption(true, "Can be Hit Stunned?", "Vanilla is true.\nRecommended Value: false");
+            Tweaks = ConfigOption(false, "Enable Dash and AI Tweaks?", "Vanilla is false.\nRecommended Value: true");
             base.Init();
         }
 
@@ -31,11 +31,11 @@ namespace UltimateCustomRun.Enemies
         {
             var m = Resources.Load<CharacterMaster>("prefabs/charactermasters/BeetleMaster");
             var b = Resources.Load<CharacterBody>("prefabs/characterbodies/BeetleBody");
-            if (tw)
+            if (Tweaks)
             {
                 On.EntityStates.BeetleMonster.HeadbuttState.FixedUpdate += (orig, self) =>
                 {
-                    EntityStates.BeetleMonster.HeadbuttState.baseDuration = aspd;
+                    EntityStates.BeetleMonster.HeadbuttState.baseDuration = Duration;
                     if (self.modelAnimator && self.modelAnimator.GetFloat("Headbutt.hitBoxActive") > 0.5f)
                     {
                         Vector3 direction = self.GetAimRay().direction;
@@ -64,13 +64,13 @@ namespace UltimateCustomRun.Enemies
                 b.baseMoveSpeed = 12f;
             }
 
-            b.GetComponent<SetStateOnHurt>().canBeHitStunned = cbhs;
+            b.GetComponent<SetStateOnHurt>().canBeHitStunned = CanBeHitStunned;
 
             On.EntityStates.GenericCharacterSpawnState.OnEnter += (orig, self) =>
             {
                 if (self is EntityStates.BeetleMonster.SpawnState)
                 {
-                    self.duration = spspd;
+                    self.duration = SpawnSpeed;
                 }
                 orig(self);
             };

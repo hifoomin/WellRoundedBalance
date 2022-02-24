@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace UltimateCustomRun
+﻿namespace UltimateCustomRun.Items.Lunars
 {
-    class EssenceOfHeresy
+    internal class EssenceOfHeresy
     {
     }
 }

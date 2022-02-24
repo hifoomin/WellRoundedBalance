@@ -1,12 +1,11 @@
 ﻿using MonoMod.Cil;
 
-namespace UltimateCustomRun
+namespace UltimateCustomRun.Items.Whites
 {
     public class StunGrenade : ItemBase
     {
-
-        public static float chance;
-        public static bool stacking;
+        public static float Chance;
+        public static bool Stacking;
 
         public override string Name => ":: Items : Whites :: Stun Grenade";
         public override string InternalPickupToken => "stunChanceOnHit";
@@ -14,12 +13,13 @@ namespace UltimateCustomRun
 
         public override string PickupText => "";
 
-        public override string DescText => "<style=cIsUtility>5%</style> <style=cStack>(+5% on stack)</style> chance on hit to <style=cIsUtility>stun</style> enemies for <style=cIsUtility>2 seconds</style>.";
+        public override string DescText => "<style=cIsUtility>5%</style> <style=cStack>(+5% on stack)</style> Chance on hit to <style=cIsUtility>stun</style> enemies for <style=cIsUtility>2 seconds</style>.";
+
         public override void Init()
         {
             /*
-            chance = ConfigOption(5f, "Chance", "Vanilla is 5");
-            stacking = ConfigOption(false, "Stacking Type", "If set to true, use Linear\nIf set to false, use Hyperbolic.\nVanilla is false");
+            Chance = ConfigOption(5f, "Chance", "Vanilla is 5");
+            Stacking = ConfigOption(false, "Stacking Type", "If set to true, use Linear\nIf set to false, use Hyperbolic.\nVanilla is false");
             */
             base.Init();
         }
@@ -29,6 +29,7 @@ namespace UltimateCustomRun
             // IL.RoR2.SetStateOnHurt.OnTakeDamageServer += ChangeBehavior;
             // IL.RoR2.SetStateOnHurt += ChangeChance;
         }
+
         public static void ChangeBehavior(ILContext il)
         {
             // yeah i have no clue
@@ -44,6 +45,7 @@ namespace UltimateCustomRun
 
             // I want it to be linear instead of hyperbolic
         }
+
         public static void ChangeChance(ILContext il)
         {
             ILCursor c = new ILCursor(il);
@@ -52,6 +54,7 @@ namespace UltimateCustomRun
             );
             c.Next.Operand = Main.StunGrenadeChance;
         }
+
         // hooking this requires reflection?
         // PLEASE HELP TO FIX
     }

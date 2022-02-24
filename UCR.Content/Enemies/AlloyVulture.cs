@@ -1,19 +1,16 @@
-﻿using RoR2;
+﻿using RoR2.Projectile;
 using UnityEngine;
-using System.Linq;
-using RoR2.CharacterAI;
-using RoR2.Projectile;
 
 namespace UltimateCustomRun.Enemies
 {
     public class AlloyVulture : EnemyBase
     {
-        public static float pspd;
+        public static float ProjectileSpeed;
         public override string Name => ":::: Enemies :: Alloy Vulture";
 
         public override void Init()
         {
-            pspd = ConfigOption(40f, "Windblade Projectile Speed", "Vanilla is 40. Recommended Value: 55");
+            ProjectileSpeed = ConfigOption(40f, "Windblade Projectile Speed", "Vanilla is 40.\nRecommended Value: 55");
             base.Init();
         }
 
@@ -24,8 +21,8 @@ namespace UltimateCustomRun.Enemies
 
         public void Buff()
         {
-            var w = Resources.Load<GameObject>("prefabs/projectiles/WindbladeProjectile").GetComponent<ProjectileSimple>();
-            w.desiredForwardSpeed = pspd;
+            var WindbladeProjectile = Resources.Load<GameObject>("prefabs/projectiles/WindbladeProjectile").GetComponent<ProjectileSimple>();
+            WindbladeProjectile.desiredForwardSpeed = ProjectileSpeed;
         }
     }
 }

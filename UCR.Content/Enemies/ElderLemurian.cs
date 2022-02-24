@@ -1,22 +1,22 @@
 ﻿using RoR2;
-using UnityEngine;
-using System.Linq;
 using RoR2.CharacterAI;
+using System.Linq;
+using UnityEngine;
 
 namespace UltimateCustomRun.Enemies
 {
     public class ElderLemurian : EnemyBase
     {
-        public static bool aitw;
-        public static bool spdtw;
-        public static bool fbtw;
+        public static bool AITweaks;
+        public static bool SpeedTweaks;
+        public static bool FireballTweaks;
         public override string Name => ":::: Enemies :: Elder Lemurian";
 
         public override void Init()
         {
-            aitw = ConfigOption(false, "Make Elder Lemurian AI smarter?", "Vanilla is false. Recommended Value: true");
-            spdtw = ConfigOption(false, "Make Elder Lemurian faster?", "Vanilla is false. Recommended Value: true");
-            fbtw = ConfigOption(false, "Adjust Fireballs amount, damage etc?", "Vanilla is false. Recommended Value: true");
+            AITweaks = ConfigOption(false, "Make Elder Lemurian AI smarter?", "Vanilla is false.\nRecommended Value: true");
+            SpeedTweaks = ConfigOption(false, "Make Elder Lemurian faster?", "Vanilla is false.\nRecommended Value: true");
+            FireballTweaks = ConfigOption(false, "Adjust Fireballs amount, Damage etc?", "Vanilla is false.\nRecommended Value: true");
             base.Init();
         }
 
@@ -24,12 +24,13 @@ namespace UltimateCustomRun.Enemies
         {
             Buff();
         }
+
         public static void Buff()
         {
             var master = Resources.Load<CharacterMaster>("prefabs/charactermasters/LemurianBruiserMaster");
             var body = Resources.Load<CharacterBody>("prefabs/characterbodies/LemurianBruiserBody");
 
-            if (aitw)
+            if (AITweaks)
             {
                 AISkillDriver ai = (from x in master.GetComponents<AISkillDriver>()
                                     where x.customName == "StopAndShoot"
@@ -37,12 +38,12 @@ namespace UltimateCustomRun.Enemies
                 ai.movementType = AISkillDriver.MovementType.ChaseMoveTarget;
             }
 
-            if (spdtw)
+            if (SpeedTweaks)
             {
                 body.baseMoveSpeed = 16f;
             }
 
-            if (fbtw)
+            if (FireballTweaks)
             {
                 On.EntityStates.LemurianBruiserMonster.FireMegaFireball.OnEnter += (orig, self) =>
                 {

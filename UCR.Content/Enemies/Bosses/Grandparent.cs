@@ -1,26 +1,21 @@
 ﻿using RoR2;
-using UnityEngine;
-using System.Linq;
 using RoR2.CharacterAI;
-using RoR2.Projectile;
-using RoR2.Skills;
-using EntityStates;
-using R2API;
-using UnityEngine.Networking;
+using System.Linq;
+using UnityEngine;
 
 namespace UltimateCustomRun.Enemies.Bosses
 {
     public class Grandparent : EnemyBase
     {
-        public static bool aitw;
-        public static bool speedtw;
+        public static bool AITweaks;
+        public static bool SpeedTweaks;
         public static AISkillDriver dr;
         public override string Name => ":::: Enemies ::: Grandparent";
 
         public override void Init()
         {
-            aitw = ConfigOption(false, "Make Grandparent AI smarter?", "Vanilla is false. Recommended Value: True");
-            speedtw = ConfigOption(false, "Make Grandparent faster?", "Vanilla is false. Recommended Value: True");
+            AITweaks = ConfigOption(false, "Make Grandparent AI smarter?", "Vanilla is false.\nRecommended Value: True");
+            SpeedTweaks = ConfigOption(false, "Make Grandparent faster?", "Vanilla is false.\nRecommended Value: True");
             base.Init();
         }
 
@@ -28,13 +23,14 @@ namespace UltimateCustomRun.Enemies.Bosses
         {
             Buff();
         }
+
         public static void Buff()
         {
             var master = Resources.Load<CharacterMaster>("prefabs/charactermasters/GrandparentMaster").GetComponent<CharacterMaster>();
             GameObject masterbase = Resources.Load<GameObject>("prefabs/charactermasters/GrandparentMaster");
             var body = Resources.Load<CharacterBody>("prefabs/characterbodies/GrandparentBody").GetComponent<CharacterBody>();
 
-            if (aitw)
+            if (AITweaks)
             {
                 var ai = (from x in masterbase.GetComponents<AISkillDriver>()
                           where x.customName == "FireSecondaryProjectile"
@@ -42,7 +38,7 @@ namespace UltimateCustomRun.Enemies.Bosses
                 masterbase.GetComponent<BaseAI>().aimVectorMaxSpeed = 180f;
             }
 
-            if (speedtw)
+            if (SpeedTweaks)
             {
                 var sun = Resources.Load<GameObject>("prefabs/networkedobjects/GrandParentSun").GetComponent<GrandParentSunController>();
                 sun.maxDistance = 1000f;
@@ -66,7 +62,7 @@ namespace UltimateCustomRun.Enemies.Bosses
             }
 
             /*
-             
+
             AISkillDriver dr = masterbase.AddComponent<AISkillDriver>();
 
             dr.customName = "SkyLeap";
@@ -127,7 +123,7 @@ namespace UltimateCustomRun.Enemies.Bosses
             sd.dontAllowPastMaxStocks = false;
             sd.beginSkillCooldownOnSkillEnd = true;
             sd.forceSprintDuringState = false;
-            sd.canceledFromSprinting = false;   
+            sd.canceledFromSprinting = false;
             sd.mustKeyPress = false;
 
             LoadoutAPI.AddSkillDef(sd);
@@ -141,6 +137,7 @@ namespace UltimateCustomRun.Enemies.Bosses
             };
             */
         }
+
         /*
         public class ItemBaseLeap : EntityStates.BrotherMonster.ExitSkyLeap
         {

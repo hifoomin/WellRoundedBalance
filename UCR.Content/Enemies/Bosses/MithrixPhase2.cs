@@ -1,14 +1,13 @@
-﻿
-namespace UltimateCustomRun.Enemies.Bosses
+﻿namespace UltimateCustomRun.Enemies.Bosses
 {
     public class MithrixPhase2 : EnemyBase
     {
-        public static bool skip;
+        public static bool Skip;
         public override string Name => ":::: Enemies :::: Mithrix Phase 2";
 
         public override void Init()
         {
-            skip = ConfigOption(false, "Skip phase 2?", "Vanilla is false. Recommended Value: True");
+            Skip = ConfigOption(false, "Skip phase 2?", "Vanilla is false.\nRecommended Value: True");
             base.Init();
         }
 
@@ -16,6 +15,7 @@ namespace UltimateCustomRun.Enemies.Bosses
         {
             RemoveLmao();
         }
+
         public static void RemoveLmao()
         {
             On.EntityStates.Missions.BrotherEncounter.Phase2.OnEnter += (orig, self) =>
@@ -24,6 +24,6 @@ namespace UltimateCustomRun.Enemies.Bosses
                 self.PreEncounterBegin();
                 self.outer.SetNextState(new EntityStates.Missions.BrotherEncounter.Phase3());
             };
-        } 
+        }
     }
 }

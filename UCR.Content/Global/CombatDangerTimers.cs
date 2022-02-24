@@ -7,14 +7,13 @@ using RoR2.Skills;
 using RoR2.Orbs;
 using MonoMod.Cil;
 
-
-namespace UltimateCustomRun
+namespace UltimateCustomRun.Global
 {
     public class CombatDangerTimers : GlobalBase
     {
         public static float ood;
         public static float ooc;
-        public override string Name => ": Global :::::::: Out of Combat and Danger";
+        public override string Name => ": Global ::: Health";
 
         public override void Init()
         {
@@ -43,7 +42,7 @@ namespace UltimateCustomRun
             ILCursor c = new ILCursor(il);
 
             c.GotoNext(MoveType.Before,
-               x => x.MatchLdfld<nameof(CharacterBody.outOfCombatStopwatch)>,
+               x => x.MatchLdfld<CharacterBody>("outOfCombatStopwatch"),
                x => x.MatchLdcR4(5f)
             );
             c.Index += 1;

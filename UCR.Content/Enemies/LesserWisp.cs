@@ -1,34 +1,33 @@
 ﻿using RoR2;
-using UnityEngine;
-using System.Linq;
 using RoR2.CharacterAI;
+using System.Linq;
+using UnityEngine;
 
 namespace UltimateCustomRun.Enemies
 {
     public class LesserWisp : EnemyBase
     {
-        public static bool tw;
-        public static CharacterBody body;
-        public static CharacterMaster master;
+        public static bool Tweaks;
         public override string Name => ":::: Enemies :: Lesser Wisp";
 
         public override void Init()
         {
-            tw = ConfigOption(false, "Enable Speed Tweaks and AI Tweaks?", "Vanilla is false. Recommended Value: true");
+            Tweaks = ConfigOption(false, "Enable Speed Tweaks and AI Tweaks?", "Vanilla is false.\nRecommended Value: true");
             base.Init();
         }
 
         public override void Hooks()
         {
-            if (tw)
+            if (Tweaks)
             {
                 Buff();
             }
         }
+
         public static void Buff()
         {
-            master = Resources.Load<CharacterMaster>("prefabs/charactermasters/WispMaster").GetComponent<CharacterMaster>();
-            body = Resources.Load<CharacterBody>("prefabs/characterbodies/WispBody").GetComponent<CharacterBody>();
+            var master = Resources.Load<CharacterMaster>("prefabs/charactermasters/WispMaster").GetComponent<CharacterMaster>();
+            var body = Resources.Load<CharacterBody>("prefabs/characterbodies/WispBody").GetComponent<CharacterBody>();
             body.baseMoveSpeed = 12f;
             body.baseAcceleration = 24f;
 
@@ -38,8 +37,8 @@ namespace UltimateCustomRun.Enemies
             ai.maxDistance = 10f;
 
             AISkillDriver ai2 = (from x in master.GetComponents<AISkillDriver>()
-                                where x.maxDistance == 30
-                                select x).First();
+                                 where x.maxDistance == 30
+                                 select x).First();
             ai2.minDistance = 10f;
         }
     }

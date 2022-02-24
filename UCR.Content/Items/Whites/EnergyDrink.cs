@@ -1,39 +1,39 @@
 ﻿using MonoMod.Cil;
 using UnityEngine;
-using R2API;
-using RoR2;
 
-namespace UltimateCustomRun
+namespace UltimateCustomRun.Items.Whites
 {
     public class EnergyDrink : ItemBase
     {
-        public static float speed;
-        public static bool change;
-        public static float sprintingspeed;
+        public static float Speed;
+        public static bool Change;
+        public static float SprintingSpeed;
         public override string Name => ":: Items : Whites :: Energy Drink";
         public override string InternalPickupToken => "sprintBonus";
         public override bool NewPickup => false;
 
         public override string PickupText => "";
 
-        public override string DescText => "<style=cIsUtility>Sprint speed</style> is improved by <style=cIsUtility>" +
-                                           (change ? sprintingspeed * 100f + "%</style> <style=cStack>(+" + sprintingspeed * 100f + "% per stack)</style>." : Mathf.Round((speed / 1.45f) * 100f) + " %</style> <style=cStack>(+" + Mathf.Round((speed / 1.45f) * 100f) + "% per stack)</style>.");
+        public override string DescText => "<style=cIsUtility>Sprint Speed</style> is improved by <style=cIsUtility>" +
+                                           (Change ? SprintingSpeed * 100f + "%</style> <style=cStack>(+" + SprintingSpeed * 100f + "% per stack)</style>." : Mathf.Round((Speed / 1.45f) * 100f) + "%</style> <style=cStack>(+" + Mathf.Round((Speed / 1.45f) * 100f) + "% per stack)</style>.");
+
         public override void Init()
         {
-            speed = ConfigOption(0.25f, "Speed Increase", "Decimal. Per Stack. Vanilla is 0.25");
-            change = ConfigOption(false, "Increase the Sprinting Speed Multiplier instead?", "Vanilla is false");
-            sprintingspeed = ConfigOption(0.25f, "Sprinting Speed Multiplier Increase", "Vanilla is 0\nFormula: (Base Movement Speed * (1 + (1 * Item Speed Increase) + (1 * Item Speed Increase)) * (Sprinting Speed Multiplier + Sprinting Speed Multiplier Increase)");
+            Speed = ConfigOption(0.25f, "Speed Increase", "Decimal. Per Stack. Vanilla is 0.25");
+            //Change = ConfigOption(false, "Increase the Sprinting Speed Multiplier instead?", "Vanilla is false");
+            //SprintingSpeed = ConfigOption(0.25f, "Sprinting Speed Multiplier Increase", "Vanilla is 0\nFormula: (Base Movement Speed * (1 + (1 * Item Speed Increase) + (1 * Item Speed Increase)) * (Sprinting Speed Multiplier + Sprinting Speed Multiplier Increase)");
             base.Init();
         }
 
         public override void Hooks()
         {
             IL.RoR2.CharacterBody.RecalculateStats += ChangeSpeed;
-            if (change)
+            if (Change)
             {
-                RecalculateStatsAPI.GetStatCoefficients += AddBehavior;
+                //On.RoR2.CharacterBody.RecalculateStats += AddBehavior();
             }
         }
+
         public static void ChangeSpeed(ILContext il)
         {
             ILCursor c = new ILCursor(il);
@@ -44,18 +44,21 @@ namespace UltimateCustomRun
                 x => x.MatchLdloc(out _)
             );
             c.Index += 1;
-            c.Next.Operand = (change ? 0f : speed);
+            c.Next.Operand = (Change ? 0f : Speed);
         }
-        public static void AddBehavior(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
+
+        /*
+        public static void AddBehavior(CharacterBody body)
         {
-            if (sender.inventory)
+            if (body.inventory)
             {
-                var stack = sender.inventory.GetItemCount(RoR2Content.Items.SprintBonus);
+                var stack = body.inventory.GetItemCount(RoR2Content.Items.SprintBonus);
                 if (stack > 0)
                 {
-                    sender.sprintingSpeedMultiplier += 0.0357f;
+                    body.sprintingSpeedMultiplier += SprintingSpeed * stack;
                 }
             }
         }
+        */
     }
 }

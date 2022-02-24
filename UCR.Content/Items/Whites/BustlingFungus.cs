@@ -1,29 +1,31 @@
-﻿using RoR2;
-using MonoMod.Cil;
+﻿using MonoMod.Cil;
+using RoR2;
 
-namespace UltimateCustomRun
+namespace UltimateCustomRun.Items.Whites
 {
     public class BustlingFungus : ItemBase
     {
-        public static float radius;
-        public static float radiustack;
-        public static float interval;
-        public static float healing;
-        public static float healingstack;
+        public static float Radius;
+        public static float StackRadius;
+        public static float Interval;
+        public static float Healing;
+        public static float StackHealing;
         public override string Name => ":: Items : Whites :: Bustling Fungus";
         public override string InternalPickupToken => "mushroom";
         public override bool NewPickup => false;
         public override string PickupText => "";
 
-        public override string DescText => "After standing still for <style=cIsHealing>1</style> second, create a zone that <style=cIsHealing>heals</style> for <style=cIsHealing>" + d(healing) + "</style> <style=cStack>(+" + d(healingstack) + " per stack)</style> of your <style=cIsHealing>health</style> every second to all allies within <style=cIsHealing>" + (radius + radiustack) + "m</style> <style=cStack>(+" + radiustack + "m per stack)</style>.";
+        public override string DescText => "After standing still for <style=cIsHealing>" +
+                                            (Global.GetNotMoving.NotMovingTimer != 1f ? "" + Global.GetNotMoving.NotMovingTimer + "</style> seconds" : "1</style> second") +
+                                            ", create a zone that <style=cIsHealing>heals</style> for <style=cIsHealing>" + d(Healing) + "</style> <style=cStack>(+" + d(StackHealing) + " per stack)</style> of your <style=cIsHealing>health</style> every second to all allies within <style=cIsHealing>" + Radius + "m</style> <style=cStack>(+" + StackRadius + "m per stack)</style>.";
 
         public override void Init()
         {
-            healing = ConfigOption(0.045f, "Base Healing Percent", "Decimal. Vanilla is 0.045");
-            healingstack = ConfigOption(0.0225f, "Stack Healing Percent", "Decimal. Per Stack. Vanilla is 0.0225");
-            interval = ConfigOption(0.25f, "Interval", "Decimal. Vanilla is 0.25");
-            radius = ConfigOption(3f, "Base Radius", "Vanilla is 3");
-            radiustack = ConfigOption(1.5f, "Stack Radius", "Per Stack. Vanilla is 1.5");
+            Healing = ConfigOption(0.045f, "Base Healing Percent", "Decimal. Vanilla is 0.045");
+            StackHealing = ConfigOption(0.0225f, "Stack Healing Percent", "Decimal. Per Stack. Vanilla is 0.0225");
+            Interval = ConfigOption(0.25f, "Interval", "Decimal. Vanilla is 0.25");
+            Radius = ConfigOption(3f, "Base Radius", "Vanilla is 3");
+            StackRadius = ConfigOption(1.5f, "Stack Radius", "Per Stack. Vanilla is 1.5");
             base.Init();
         }
 
@@ -32,6 +34,7 @@ namespace UltimateCustomRun
             IL.RoR2.CharacterBody.MushroomItemBehavior.FixedUpdate += ChangeRadius;
             IL.RoR2.CharacterBody.MushroomItemBehavior.FixedUpdate += ChangeHealing;
         }
+
         public static void ChangeRadius(ILContext il)
         {
             ILCursor c = new ILCursor(il);
@@ -42,9 +45,9 @@ namespace UltimateCustomRun
                 x => x.MatchLdcR4(1.5f)
             );
             c.Index += 1;
-            c.Next.Operand = radius - radiustack;
+            c.Next.Operand = Radius - StackRadius;
             c.Index += 2;
-            c.Next.Operand = radiustack;
+            c.Next.Operand = StackRadius;
         }
 
         public static void ChangeHealing(ILContext il)
@@ -57,12 +60,13 @@ namespace UltimateCustomRun
                 x => x.MatchLdcR4(0.045f),
                 x => x.MatchLdcR4(0.0225f)
             );
-            c.Next.Operand = interval;
+            c.Next.Operand = Interval;
             c.Index += 3;
-            c.Next.Operand = healing;
+            c.Next.Operand = Healing;
             c.Index += 1;
-            c.Next.Operand = healingstack;
+            c.Next.Operand = StackHealing;
         }
+
         // TODO: Add Lingering
     }
 }

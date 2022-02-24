@@ -2,11 +2,11 @@
 
 namespace UltimateCustomRun
 {
-    public abstract class ItemBase<T> : ItemBase where T : ItemBase<T>
+    public abstract class GlobalBase<T> : GlobalBase where T : GlobalBase<T>
     {
         public static T instance { get; set; }
 
-        public ItemBase()
+        public GlobalBase()
         {
             if (instance != null)
             {

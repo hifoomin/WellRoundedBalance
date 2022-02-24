@@ -6,12 +6,21 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>C:\Users\Admin\AppData\Roaming\r2modmanPlus-local\RiskOfRain2\profiles\TestingMyMods\BepInEx\plugins\Unknown-UltimateCustomRun\</OutputPath>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Remove="libs\**" />
     <EmbeddedResource Remove="libs\**" />
     <None Remove="libs\**" />
   </ItemGroup>
 
+    <PropertyGroup>
+		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+		<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+	</PropertyGroup>
+	
   <ItemGroup>
     <PackageReference Include="BepInEx.Analyzers" Version="1.0.6">
       <PrivateAssets>all</PrivateAssets>

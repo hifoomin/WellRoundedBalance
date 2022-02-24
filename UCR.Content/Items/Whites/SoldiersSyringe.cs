@@ -1,10 +1,10 @@
 ﻿using MonoMod.Cil;
 
-namespace UltimateCustomRun
+namespace UltimateCustomRun.Items.Whites
 {
     public class SoldiersSyringe : ItemBase
     {
-        public static float aspd;
+        public static float Duration;
 
         public override string Name => ":: Items : Whites :: Soldiers Syringe";
         public override string InternalPickupToken => "syringe";
@@ -12,10 +12,11 @@ namespace UltimateCustomRun
 
         public override string PickupText => "";
 
-        public override string DescText => "Increases <style=cIsDamage>attack speed</style> by <style=cIsDamage>" + d(aspd) + " <style=cStack>(+" + d(aspd) + " per stack)</style></style>.";
+        public override string DescText => "Increases <style=cIsDamage>attack Speed</style> by <style=cIsDamage>" + d(Duration) + " <style=cStack>(+" + d(Duration) + " per stack)</style></style>.";
+
         public override void Init()
         {
-            aspd = ConfigOption(0.15f, "Attack Speed", "Decimal. Per Stack. Vanilla is 0.15");
+            Duration = ConfigOption(0.15f, "Attack Speed", "Decimal. Per Stack. Vanilla is 0.15");
             base.Init();
         }
 
@@ -23,6 +24,7 @@ namespace UltimateCustomRun
         {
             IL.RoR2.CharacterBody.RecalculateStats += SoldiersSyringe.ChangeAS;
         }
+
         public static void ChangeAS(ILContext il)
         {
             ILCursor c = new ILCursor(il);
@@ -32,7 +34,7 @@ namespace UltimateCustomRun
                 x => x.MatchLdcR4(0.15f)
             );
             c.Index += 1;
-            c.Next.Operand = aspd;
+            c.Next.Operand = Duration;
         }
     }
 }

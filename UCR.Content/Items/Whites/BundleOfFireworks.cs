@@ -1,16 +1,16 @@
-﻿using RoR2.Projectile;
-using UnityEngine;
-using MonoMod.Cil;
+﻿using MonoMod.Cil;
+using RoR2.Projectile;
 using System;
+using UnityEngine;
 
-namespace UltimateCustomRun
+namespace UltimateCustomRun.Items.Whites
 {
-    public class Fireworks : ItemBase
+    public class BundleOfFireworks : ItemBase
     {
-        public static int count;
-        public static int countstack;
-        public static float damage;
-        public static float procco;
+        public static int Count;
+        public static int StackCount;
+        public static float Damage;
+        public static float ProcCoefficient;
 
         public override string Name => ":: Items : Whites :: Bundle of Fireworks";
         public override string InternalPickupToken => "firework";
@@ -18,13 +18,14 @@ namespace UltimateCustomRun
 
         public override string PickupText => "";
 
-        public override string DescText => "Activating an interactable <style=cIsDamage>launches " + count + countstack + " <style=cStack>(+" + countstack + " per stack)</style> fireworks</style> that deal <style=cIsDamage>" + damage + "</style> base damage.";
+        public override string DescText => "Activating an interactable <style=cIsDamage>launches " + (Count + StackCount) + " <style=cStack>(+" + StackCount + " per stack)</style> fireworks</style> that deal <style=cIsDamage>" + d(Damage) + "</style> base Damage.";
+
         public override void Init()
         {
-            count = ConfigOption(8, "Base Count", "Vanilla is 8");
-            countstack = ConfigOption(4, "Stack Count", "Per Stack. Vanilla is 4");
-            damage = ConfigOption(3f, "Damage Coefficient", "Decimal. Vanilla is 3");
-            procco = ConfigOption(0.2f, "Proc Coefficient", "Vanilla is 0.2");
+            Count = ConfigOption(8, "Base Count", "Vanilla is 8");
+            StackCount = ConfigOption(4, "Stack Count", "Per Stack. Vanilla is 4");
+            Damage = ConfigOption(3f, "Damage Coefficient", "Decimal. Vanilla is 3");
+            ProcCoefficient = ConfigOption(0.2f, "Proc Coefficient", "Vanilla is 0.2");
             base.Init();
         }
 
@@ -33,6 +34,7 @@ namespace UltimateCustomRun
             IL.RoR2.GlobalEventManager.OnInteractionBegin += ChangeCount;
             Changes();
         }
+
         public static void ChangeCount(ILContext il)
         {
             ILCursor c = new ILCursor(il);
@@ -48,9 +50,8 @@ namespace UltimateCustomRun
             //c.Next.Operand = FireworksCountStack.Value;
             c.EmitDelegate<Func<int, int>>((val) =>
             {
-                return count - countstack + ((val - 4) / 4) * countstack;
+                return Count - StackCount + ((val - 4) / 4) * StackCount;
             });
-
         }
 
         public static void Changes()
@@ -58,8 +59,8 @@ namespace UltimateCustomRun
             var croppa = Resources.Load<GameObject>("prefabs/projectiles/FireworkProjectile");
             var msm = croppa.GetComponent<ProjectileImpactExplosion>();
             var skm = croppa.GetComponent<ProjectileController>();
-            msm.blastDamageCoefficient = damage / 3f;
-            skm.procCoefficient = procco;
+            msm.blastDamageCoefficient = Damage / 3f;
+            skm.procCoefficient = ProcCoefficient;
             // this is probably the wrong way of doing this but i cant figure out another
         }
     }

@@ -1,23 +1,24 @@
-﻿using RoR2;
-using MonoMod.Cil;
+﻿using MonoMod.Cil;
+using RoR2;
 
-namespace UltimateCustomRun
+namespace UltimateCustomRun.Items.Whites
 {
     public class Crowbar : ItemBase
     {
-        public static float damage;
-        public static float threshold;
+        public static float Damage;
+        public static float Threshold;
 
         public override string Name => ":: Items : Whites :: Crowbar";
         public override string InternalPickupToken => "crowbar";
         public override bool NewPickup => true;
 
-        public override string PickupText => "Deal bonus damage to enemies above " + d(threshold) + " health.";
-        public override string DescText => "Deal <style=cIsDamage>+" + d(damage) + "</style> <style=cStack>(+" + d(damage) + " per stack)</style> damage to enemies above <style=cIsDamage>" + d(threshold) + " health</style>.";
+        public override string PickupText => "Deal bonus Damage to enemies above " + d(Threshold) + " health.";
+        public override string DescText => "Deal <style=cIsDamage>+" + d(Damage) + "</style> <style=cStack>(+" + d(Damage) + " per stack)</style> Damage to enemies above <style=cIsDamage>" + d(Threshold) + " health</style>.";
+
         public override void Init()
         {
-            damage = ConfigOption(0.75f, "Damage Coefficient", "Decimal. Per Stack. Vanilla is 0.75");
-            threshold = ConfigOption(0.9f, "Threshold", "Decimal. Vanilla is 0.9");
+            Damage = ConfigOption(0.75f, "Damage Coefficient", "Decimal. Per Stack. Vanilla is 0.75");
+            Threshold = ConfigOption(0.9f, "Threshold", "Decimal. Vanilla is 0.9");
             base.Init();
         }
 
@@ -26,6 +27,7 @@ namespace UltimateCustomRun
             IL.RoR2.HealthComponent.TakeDamage += ChangeDamage;
             IL.RoR2.HealthComponent.TakeDamage += ChangeThreshold;
         }
+
         public static void ChangeDamage(ILContext il)
         {
             ILCursor c = new ILCursor(il);
@@ -34,8 +36,9 @@ namespace UltimateCustomRun
                 x => x.MatchLdcR4(0.75f)
             );
             c.Index += 1;
-            c.Next.Operand = damage;
+            c.Next.Operand = Damage;
         }
+
         public static void ChangeThreshold(ILContext il)
         {
             ILCursor c = new ILCursor(il);
@@ -45,7 +48,7 @@ namespace UltimateCustomRun
                 x => x.MatchLdcR4(0.9f)
             );
             c.Index += 2;
-            c.Next.Operand = threshold;
+            c.Next.Operand = Threshold;
         }
     }
 }

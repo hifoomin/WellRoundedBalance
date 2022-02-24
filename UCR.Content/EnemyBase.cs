@@ -1,6 +1,4 @@
-﻿using RoR2;
-
-namespace UltimateCustomRun
+﻿namespace UltimateCustomRun
 {
     public abstract class EnemyBase
     {

@@ -1,21 +1,21 @@
-﻿using UnityEngine;
+﻿using Rewired.ComponentControls.Effects;
 using RoR2.Projectile;
-using Rewired.ComponentControls.Effects;
+using UnityEngine;
 
 namespace UltimateCustomRun.Enemies.Bosses
 {
     public class MithrixPhase5 : EnemyBase
     {
-        public static bool walltw;
-        public static bool rottw;
-        public static bool movetw;
+        public static bool WallTweaks;
+        public static bool RotationTweaks;
+        public static bool MoveTweaks;
         public override string Name => ":::: Enemies :::: Mithrix Escape Sequence";
 
         public override void Init()
         {
-            walltw = ConfigOption(false, "Make Walls spammier?", "Vanilla is false. Recommended Value: True");
-            rottw = ConfigOption(false, "Make Walls rotate?", "Vanilla is false. Recommended Value: True");
-            movetw = ConfigOption(false, "Make Walls move?", "Vanilla is false. Recommended Value: True");
+            WallTweaks = ConfigOption(false, "Make Walls spammier?", "Vanilla is false.\nRecommended Value: True");
+            RotationTweaks = ConfigOption(false, "Make Walls rotate?", "Vanilla is false.\nRecommended Value: True");
+            MoveTweaks = ConfigOption(false, "Make Walls move?", "Vanilla is false.\nRecommended Value: True");
             base.Init();
         }
 
@@ -23,10 +23,11 @@ namespace UltimateCustomRun.Enemies.Bosses
         {
             Buff();
         }
+
         public static void Buff()
         {
             var cool = Resources.Load<GameObject>("prefabs/projectiles/BrotherUltLineProjectileStatic");
-            if (walltw)
+            if (WallTweaks)
             {
                 On.EntityStates.BrotherHaunt.FireRandomProjectiles.OnEnter += (orig, self) =>
                 {
@@ -37,21 +38,19 @@ namespace UltimateCustomRun.Enemies.Bosses
                 };
             }
 
-            if (rottw || movetw)
+            if (RotationTweaks || MoveTweaks)
             {
                 cool.GetComponent<RotateAroundAxis>().enabled = true;
             }
 
-            if (rottw)
+            if (RotationTweaks)
             {
-
                 cool.GetComponent<RotateAroundAxis>().slowRotationSpeed = 15f;
             }
-            if (movetw)
+            if (MoveTweaks)
             {
                 cool.GetComponent<ProjectileSimple>().desiredForwardSpeed = 20f;
             }
-
         }
     }
 }

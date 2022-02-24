@@ -1,25 +1,25 @@
 ﻿using RoR2;
-using UnityEngine;
-using System.Linq;
 using RoR2.CharacterAI;
 using RoR2.Skills;
+using System.Linq;
+using UnityEngine;
 
 namespace UltimateCustomRun.Enemies.Bosses
 {
     public class Grovetender : EnemyBase
     {
-        public static bool aitw;
-        public static bool speedtw;
-        public static bool wisptw;
-        public static bool eun;
+        public static bool AITweaks;
+        public static bool SpeedTweaks;
+        public static bool WispTweaks;
+        public static bool EnableUnusedHook;
         public override string Name => ":::: Enemies ::: Grovetender";
 
         public override void Init()
         {
-            aitw = ConfigOption(false, "Make Grovetender AI smarter?", "Vanilla is false. Recommended Value: True");
-            speedtw = ConfigOption(false, "Make Grovetender faster?", "Vanilla is false. Recommended Value: True");
-            aitw = ConfigOption(false, "Make Wisps faster and have more HP?", "Vanilla is false. Recommended Value: True");
-            eun = ConfigOption(false, "Enable Unused Hook?", "Vanilla is false. Recommended Value: True");
+            AITweaks = ConfigOption(false, "Make Grovetender AI smarter?", "Vanilla is false.\nRecommended Value: True");
+            SpeedTweaks = ConfigOption(false, "Make Grovetender faster?", "Vanilla is false.\nRecommended Value: True");
+            WispTweaks = ConfigOption(false, "Make Wisps faster and have more HP?", "Vanilla is false.\nRecommended Value: True");
+            EnableUnusedHook = ConfigOption(false, "Enable Unused Hook?", "Vanilla is false.\nRecommended Value: True");
             base.Init();
         }
 
@@ -27,11 +27,12 @@ namespace UltimateCustomRun.Enemies.Bosses
         {
             Buff();
         }
+
         public static void Buff()
         {
             var master = Resources.Load<CharacterMaster>("prefabs/charactermasters/GravekeeperMaster").GetComponent<CharacterMaster>();
             var body = Resources.Load<CharacterBody>("prefabs/characterbodies/GravekeeperBody").GetComponent<CharacterBody>();
-            if (aitw)
+            if (AITweaks)
             {
                 AISkillDriver ai = (from x in master.GetComponents<AISkillDriver>()
                                     where x.customName == "RunAndShoot"
@@ -51,9 +52,9 @@ namespace UltimateCustomRun.Enemies.Bosses
                 ai3.movementType = AISkillDriver.MovementType.StrafeMovetarget;
             }
 
-            if (speedtw)
+            if (SpeedTweaks)
             {
-                body.baseMoveSpeed = 16f;
+                body.baseMoveSpeed = 20f;
 
                 On.EntityStates.GravekeeperBoss.PrepHook.OnEnter += (orig, self) =>
                 {
@@ -62,7 +63,7 @@ namespace UltimateCustomRun.Enemies.Bosses
                 };
             }
 
-            if (wisptw)
+            if (WispTweaks)
             {
                 var wisp = Resources.Load<GameObject>("prefabs/projectiles/GravekeeperTrackingFireball").GetComponent<CharacterBody>();
                 wisp.baseMoveSpeed = 50f;
@@ -79,7 +80,7 @@ namespace UltimateCustomRun.Enemies.Bosses
                 wisp2.baseRechargeInterval = 3f;
             }
 
-            if (eun)
+            if (EnableUnusedHook)
             {
                 On.EntityStates.GravekeeperBoss.FireHook.OnEnter += (orig, self) =>
                 {

@@ -1,31 +1,33 @@
-﻿using R2API;
-using RoR2;
-using Mono.Cecil.Cil;
+﻿using Mono.Cecil.Cil;
 using MonoMod.Cil;
+using R2API;
+using RoR2;
 
-namespace UltimateCustomRun
+namespace UltimateCustomRun.Items.Whites
 {
     public class TougherTimes : ItemBase
     {
-        public static float blockchance;
-        public static float armor;
-        public static bool armorstack;
+        public static float BlockChance;
+        public static float Armor;
+        public static bool StackArmor;
 
         public override string Name => ":: Items : Whites :: Tougher Times";
         public override string InternalPickupToken => "bear";
         public override bool NewPickup => true;
 
-        public override string PickupText => (blockchance != 0f ? "Chance to block incoming damage." : "") +
-                                             (armor != 0f ? " Reduce incoming damage." : "");
-        public override string DescText => (blockchance != 0f ? "<style=cIsHealing>" + blockchance + "%</style> <style=cStack>(+" + blockchance + "% per stack)</style> chance to <style=cIsHealing>block</style> incoming damage. " : "") +
-                                           (armor != 0f ? "<style=cIsHealing>Increase armor</style> by <style=cIsHealing>" + armor + "</style> " +
-                                           (armorstack ? "<style=cStack>(+" + armor + " per stack)</style>. " : "") : "") +
+        public override string PickupText => (BlockChance != 0f ? "Chance to block incoming Damage." : "") +
+                                             (Armor != 0f ? " Reduce incoming Damage." : "");
+
+        public override string DescText => (BlockChance != 0f ? "<style=cIsHealing>" + BlockChance + "%</style> <style=cStack>(+" + BlockChance + "% per stack)</style> Chance to <style=cIsHealing>block</style> incoming Damage. " : "") +
+                                           (Armor != 0f ? "<style=cIsHealing>Increase Armor</style> by <style=cIsHealing>" + Armor + "</style> " +
+                                           (StackArmor ? "<style=cStack>(+" + Armor + " per stack)</style>. " : "") : "") +
                                            "<style=cIsUtility>Unaffected by luck</style>.";
+
         public override void Init()
         {
-            blockchance = ConfigOption(15f, "Block Chance", "Per Stack. Vanilla is 15");
-            armor = ConfigOption(0f, "Armor", "Vanilla is 0");
-            armorstack = ConfigOption(false, "Stack Armor?", "Vanilla is false");
+            BlockChance = ConfigOption(15f, "Block Chance", "Per Stack. Vanilla is 15");
+            Armor = ConfigOption(0f, "Armor", "Vanilla is 0");
+            StackArmor = ConfigOption(false, "Stack Armor?", "Vanilla is false");
             base.Init();
         }
 
@@ -34,6 +36,7 @@ namespace UltimateCustomRun
             IL.RoR2.HealthComponent.TakeDamage += ChangeBlock;
             RecalculateStatsAPI.GetStatCoefficients += AddBehavior;
         }
+
         public static void AddBehavior(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
             if (sender.inventory)
@@ -41,10 +44,11 @@ namespace UltimateCustomRun
                 var stack = sender.inventory.GetItemCount(RoR2Content.Items.Bear);
                 if (stack > 0)
                 {
-                    args.armorAdd += (armorstack ? armor * stack : armor);
+                    args.armorAdd += (StackArmor ? Armor * stack : Armor);
                 }
             }
         }
+
         public static void ChangeBlock(ILContext il)
         {
             ILCursor c = new ILCursor(il);
@@ -54,7 +58,7 @@ namespace UltimateCustomRun
                  x => x.MatchLdcR4(15f)
             );
             c.Index += 2;
-            c.Next.Operand = blockchance;
+            c.Next.Operand = BlockChance;
         }
     }
 }

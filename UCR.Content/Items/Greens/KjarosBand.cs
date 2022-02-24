@@ -1,16 +1,22 @@
-﻿using RoR2;
-using Mono.Cecil.Cil;
+﻿using Mono.Cecil.Cil;
 using MonoMod.Cil;
+using RoR2;
 using System;
 
-namespace UltimateCustomRun
+namespace UltimateCustomRun.Items.Greens
 {
     public class KjarosBand : ItemBase
     {
-        public static float basedmg;
-        public static float totaldmg;
-        public static float threshold;
-        public static float cooldown;
+        // ////////////
+        //
+        // Thanks to Borbo
+        //
+        // ///////////////
+
+        public static float BaseDamage;
+        public static float TotalDamage;
+        public static float Threshold;
+        public static float Cooldown;
 
         public override string Name => ":: Items :: Greens :: Kjaros Band";
         public override string InternalPickupToken => "firering";
@@ -18,18 +24,18 @@ namespace UltimateCustomRun
 
         public override string PickupText => "";
 
-        public override string DescText => "Hits that deal <style=cIsDamage>more than " + d(threshold) + " damage</style> also blasts enemies with a <style=cIsDamage>runic flame tornado</style>, dealing " +
-                                            (totaldmg != 0f ? "<style=cIsDamage>" + d(totaldmg) + "</style> <style=cStack>(+" + d(totaldmg) + " per stack)</style> TOTAL damage over time" : "") +
-                                            (basedmg != 0f && totaldmg != 0f ? " and " : "") +
-                                            (basedmg != 0f ? "<style=cIsDamage>" + d(basedmg) + "</style> <style=cStack>(+" + d(basedmg) + " per stack)</style> base damage." : "") +
-                                            " Recharges every <style=cIsUtility>" + cooldown + "</style> seconds.";
+        public override string DescText => "Hits that deal <style=cIsDamage>more than " + d(Threshold) + " Damage</style> also blasts enemies with a <style=cIsDamage>runic flame tornado</style>, dealing " +
+                                            (TotalDamage != 0f ? "<style=cIsDamage>" + d(TotalDamage) + "</style> <style=cStack>(+" + d(TotalDamage) + " per stack)</style> TOTAL Damage over Time" : "") +
+                                            (BaseDamage != 0f && TotalDamage != 0f ? " and " : "") +
+                                            (BaseDamage != 0f ? "<style=cIsDamage>" + d(BaseDamage) + "</style> <style=cStack>(+" + d(BaseDamage) + " per stack)</style> base Damage." : "") +
+                                            " Recharges every <style=cIsUtility>" + Cooldown + "</style> seconds.";
 
         public override void Init()
         {
-            basedmg = ConfigOption(0f, "Base Damage", "Decimal. Per Stack. Vanilla is 0");
-            totaldmg = ConfigOption(3f, "Total Damage", "Decimal. Per Stack. Vanilla is 3");
-            threshold = ConfigOption(4f, "Threshold", "Decimal. Affects both Bands. Vanilla is 4");
-            cooldown = ConfigOption(10f, "Cooldown", "Affects both Bands. Vanilla is 10");
+            BaseDamage = ConfigOption(0f, "Base Damage", "Decimal. Per Stack. Vanilla is 0");
+            TotalDamage = ConfigOption(3f, "Total Damage", "Decimal. Per Stack. Vanilla is 3");
+            Threshold = ConfigOption(4f, "Threshold", "Decimal. Affects both Bands. Vanilla is 4");
+            Cooldown = ConfigOption(10f, "Cooldown", "Affects both Bands. Vanilla is 10");
             base.Init();
         }
 
@@ -39,6 +45,7 @@ namespace UltimateCustomRun
             IL.RoR2.GlobalEventManager.OnHitEnemy += BandsThreshold;
             IL.RoR2.GlobalEventManager.OnHitEnemy += BandsCooldown;
         }
+
         public static void KjaroChange(ILContext il)
         {
             ILCursor c = new ILCursor(il);
@@ -60,20 +67,21 @@ namespace UltimateCustomRun
                 x => x.MatchStloc(out totalDamageMultiplierLocation)
                 );
             c.Remove();
-            c.Emit(OpCodes.Ldc_R4, totaldmg);
+            c.Emit(OpCodes.Ldc_R4, TotalDamage);
 
             c.GotoNext(MoveType.After,
                 x => x.MatchLdloc(totalDamageMultiplierLocation),
                 x => x.MatchCallOrCallvirt(out _)
                 );
             c.Emit(OpCodes.Ldloc_0);
-            c.EmitDelegate<Func<float, CharacterBody, float>>((damage, self) =>
+            c.EmitDelegate<Func<float, CharacterBody, float>>((Damage, self) =>
             {
-                float dam = self.baseDamage * basedmg;
+                float dam = self.baseDamage * BaseDamage;
 
-                return damage + dam;
+                return Damage + dam;
             });
         }
+
         public static void BandsThreshold(ILContext il)
         {
             ILCursor c = new ILCursor(il);
@@ -84,8 +92,9 @@ namespace UltimateCustomRun
                 x => x.MatchLdcR4(4f)
             );
             c.Index += 2;
-            c.Next.Operand = threshold;
+            c.Next.Operand = Threshold;
         }
+
         public static void BandsCooldown(ILContext il)
         {
             ILCursor c = new ILCursor(il);
@@ -97,7 +106,7 @@ namespace UltimateCustomRun
                 x => x.MatchBle(out _)
             );
             c.Index += 2;
-            c.Next.Operand = cooldown;
+            c.Next.Operand = Cooldown;
         }
     }
 }

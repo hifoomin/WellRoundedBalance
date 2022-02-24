@@ -1,6 +1,6 @@
 ﻿using RoR2;
-using UnityEngine;
 using System;
+using UnityEngine;
 
 namespace UltimateCustomRun.Global
 {
@@ -34,20 +34,22 @@ namespace UltimateCustomRun.Global
             tsguide = ConfigOption(true, "Time Scaling Guide", "Time Scaling Formula:\n(Player Factor Base + Player Count * Player Count Multiplier +\nTime Scaling Multiplier * Difficulty Def Scaling Value\n(1 for Drizzle, 2 for Rainstorm, 3 for Monsoon) *\nPlayer Count ^ Player Count Exponent *\nTime in Minutes) * Exponential Stage Scaling Base ^ Stages Cleared\nI highly recommend changing Gold Scaling while changing these as well");
             base.Init();
         }
+
         public override void Hooks()
         {
             ChangeBehavior();
         }
+
         public static void ChangeBehavior()
         {
             On.RoR2.Run.RecalculateDifficultyCoefficentInternal += (orig, self) =>
             {
                 int playerCount = self.participatingPlayerCount;
-                float time = self.GetRunStopwatch() * 0.016666668f; // stupid vanilla workaround
+                float Time = self.GetRunStopwatch() * 0.016666668f; // stupid vanilla workaround
 
                 DifficultyDef difficultyDef = DifficultyCatalog.GetDifficultyDef(self.selectedDifficulty);
                 float playerFactor = playerfactorbase + playerCount * playercountmultiplier;
-                float timeFactor = time * timefactormultiplier * difficultyDef.scalingValue;
+                float timeFactor = Time * timefactormultiplier * difficultyDef.scalingValue;
                 float playerScalar = (float)Math.Pow(playerCount, playercountexponent);
                 float stageFactor = 1f;
 
@@ -58,12 +60,12 @@ namespace UltimateCustomRun.Global
                 else if (additivestagescaling && exponentialstagescaling == false)
                 {
                     stageFactor = 1f;
-                    time += additivestagescalingbase;
+                    Time += additivestagescalingbase;
                 }
                 else if (exponentialstagescaling && additivestagescaling)
                 {
                     stageFactor = Mathf.Pow(exponentialstagescalingbase, self.stageClearCount / exponentialstagescalingcount);
-                    time += additivestagescalingbase;
+                    Time += additivestagescalingbase;
                 }
                 else
                 {
@@ -83,7 +85,6 @@ namespace UltimateCustomRun.Global
                 {
                     self.OnAmbientLevelUp();
                 }
-
             };
         }
     }

@@ -1,15 +1,15 @@
-﻿using RoR2;
+﻿using MonoMod.Cil;
+using RoR2;
 using UnityEngine;
-using MonoMod.Cil;
 
-namespace UltimateCustomRun
+namespace UltimateCustomRun.Items.Whites
 {
     public class Medkit : ItemBase
     {
-        public static float flatheal;
-        public static float percentheal;
-        public static bool stackbuff;
-        public static bool isdebuff;
+        public static float FlatHealing;
+        public static float PercentHealing;
+        public static bool StackBuff;
+        public static bool IsDebuff;
 
         public override string Name => ":: Items : Whites :: Medkit";
         public override string InternalPickupToken => "medkit";
@@ -17,13 +17,14 @@ namespace UltimateCustomRun
 
         public override string PickupText => "";
 
-        public override string DescText => "2 seconds after getting hurt, <style=cIsHealing>heal</style> for <style=cIsHealing>" + flatheal + "</style> plus an additional <style=cIsHealing>" + d(percentheal) + " <style=cStack>(+" + d(percentheal) + " per stack)</style></style> of <style=cIsHealing>maximum health</style>.";
+        public override string DescText => "2 seconds after getting hurt, <style=cIsHealing>Healing</style> for <style=cIsHealing>" + FlatHealing + "</style> plus an additional <style=cIsHealing>" + d(PercentHealing) + " <style=cStack>(+" + d(PercentHealing) + " per stack)</style></style> of <style=cIsHealing>maximum health</style>.";
+
         public override void Init()
         {
-            flatheal = ConfigOption(20f, "Flat Healing", "Vanilla is 20");
-            percentheal = ConfigOption(0.05f, "Percent Healing", "Decimal. Per Stack. Vanilla is 0.05");
-            stackbuff = ConfigOption(false, "Stack Buff?", "Vanilla is false");
-            isdebuff = ConfigOption(false, "Change to Debuff?", "Vanilla is false");
+            FlatHealing = ConfigOption(20f, "Flat Healing", "Vanilla is 20");
+            PercentHealing = ConfigOption(0.05f, "Percent Healing", "Decimal. Per Stack. Vanilla is 0.05");
+            StackBuff = ConfigOption(false, "Stack Buff?", "Vanilla is false");
+            IsDebuff = ConfigOption(false, "Change to Debuff?", "Vanilla is false");
             base.Init();
         }
 
@@ -32,6 +33,7 @@ namespace UltimateCustomRun
             IL.RoR2.CharacterBody.RemoveBuff_BuffIndex += ChangeFlatHealing;
             IL.RoR2.CharacterBody.RemoveBuff_BuffIndex += ChangePercentHealing;
         }
+
         public static void ChangeFlatHealing(ILContext il)
         {
             ILCursor c = new ILCursor(il);
@@ -43,8 +45,9 @@ namespace UltimateCustomRun
                 x => x.MatchLdcR4(20f)
             ); ;
             c.Index += 2;
-            c.Next.Operand = flatheal;
+            c.Next.Operand = FlatHealing;
         }
+
         public static void ChangePercentHealing(ILContext il)
         {
             ILCursor c = new ILCursor(il);
@@ -55,13 +58,14 @@ namespace UltimateCustomRun
                 x => x.MatchLdcR4(0.05f)
             );
             c.Index += 2;
-            c.Next.Operand = percentheal;
+            c.Next.Operand = PercentHealing;
         }
+
         public static void ChangeBuffBehavior()
         {
             var mh = Resources.Load<BuffDef>("buffdefs/medkitheal");
-            mh.canStack = stackbuff;
-            mh.isDebuff = isdebuff;
+            mh.canStack = StackBuff;
+            mh.isDebuff = IsDebuff;
         }
     }
 }

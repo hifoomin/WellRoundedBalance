@@ -1,22 +1,4 @@
-﻿
-using BepInEx;
-using R2API;
-using R2API.Utils;
-using RoR2;
-using RoR2.Skills;
-using RoR2.Orbs;
-using RoR2.Projectile;
-using UnityEngine;
-using BepInEx.Configuration;
-using Mono.Cecil.Cil;
-using MonoMod.Cil;
-using System;
-using UnityEngine.Networking;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-
-// for copying
+﻿// for copying
 
 using System.Security;
 using System.Security.Permissions;
@@ -25,11 +7,11 @@ using System.Security.Permissions;
 [assembly: SecurityPermission(SecurityAction.RequestMinimum, SkipVerification = true)]
 #pragma warning restore CS0618 // Type or member is obsolete
 [module: UnverifiableCode]
-#pragma warning disable 
+#pragma warning disable
 
 namespace UltimateCustomRun
 {
-    class PublicizedAssembly
+    internal class PublicizedAssembly
     {
     }
 }

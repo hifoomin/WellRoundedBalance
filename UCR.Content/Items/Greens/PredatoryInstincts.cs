@@ -1,49 +1,54 @@
-﻿using MonoMod.Cil;
+﻿using Mono.Cecil.Cil;
+using MonoMod.Cil;
 using R2API;
 using RoR2;
 
-namespace UltimateCustomRun
+namespace UltimateCustomRun.Items.Greens
 {
     public class PredatoryInstincts : ItemBase
     {
         // TODO: FIX ALL THE CODE AAAAAAAAA WHY DOESNT IT WORK RANDOMLY
-        public static float aspd;
-        public static int basecap;
-        public static int stackcap;
-        public static float crit;
-        public static bool critstack;
-        public static float speed;
-        public static bool speedstack;
+        public static float AttackSpeed;
+
+        public static int BaseCap;
+        public static int StackCap;
+        public static float Crit;
+        public static bool StackCrit;
+        public static float Speed;
 
         public override string Name => ":: Items :: Greens :: Predatory Instincts";
         public override string InternalPickupToken => "attackSpeedOnCrit";
-        public override bool NewPickup => false;
-        public override string PickupText => "";
+        public override bool NewPickup => true;
 
-        public override string DescText => "<style=cIsDamage>Critical strikes</style> increase <style=cIsDamage>attack speed</style> by <style=cIsDamage>12%</style>. Maximum cap of <style=cIsDamage>36% <style=cStack>(+24% per stack)</style> attack speed</style>.";
+        public override string PickupText => "'Critical Strikes' increase" +
+                                             (AttackSpeed != 0f ? " attack speed" : "") +
+                                             (AttackSpeed != 0f && Speed != 0f ? " and" : "") +
+                                             (Speed != 0f ? " movement speed" : ".") +
+                                             "Stacks 3 times.";
 
+        public override string DescText => "<style=cIsDamage>Critical strikes</style> increase" +
+                                           (AttackSpeed != 0f ? " <style=cIsDamage>attack speed</style> by <style=cIsDamage>" + d(AttackSpeed) + "</style>" +
+                                           (AttackSpeed != 0f && Speed != 0f ? " and" : "") : "") +
+                                           (Speed != 0f ? " <style=cIsUtility>movement speed</style> by <style=cIsUtility>" + d(Speed) + "</style>" : "") +
+                                           " up to " + BaseCap + " <style=cStack>(+" + StackCap + " per stack)</style> times.";
 
         public override void Init()
         {
-            /*
-            aspd = ConfigOption(0.12f, "Buff Attack Speed", "Decimal. Per Buff. Vanilla is 0.12");
-            basecap = ConfigOption(1, "Base Buff Cap", "V. Vanilla is 1");
-            stackcap = ConfigOption(2, "Stack Buff Cap", "V. Per Stack. Vanilla is 2");
-            crit = ConfigOption(5f, "Crit Chance", "Vanilla is 5");
-            critstack = ConfigOption(false, "Stack Crit Chance?", "Vanilla is false");
-            speed = ConfigOption(0f, "Buff Speed", "Decimal. Per Buff. Vanilla is 0");
-            speedstack = ConfigOption(false, "Stack Buff Speed?", "Vanilla is false");
-            */
+            AttackSpeed = ConfigOption(0.12f, "Buff Attack Speed", "Decimal. Per Buff. Vanilla is 0.12");
+            BaseCap = ConfigOption(3, "Base Buff Cap", "Vanilla is 3");
+            StackCap = ConfigOption(2, "Stack Buff Cap", "Per Stack. Vanilla is 2");
+            Crit = ConfigOption(5f, "Crit Chance", "Vanilla is 5");
+            StackCrit = ConfigOption(false, "Stack Crit Chance?", "Vanilla is false");
+            Speed = ConfigOption(0f, "Buff Speed", "Decimal. Per Buff. Vanilla is 0");
             base.Init();
         }
 
         public override void Hooks()
         {
-            /*
-            IL.RoR2.CharacterBody.AddTimedBuff_BuffDef_float += PredatoryInstincts.ChangeCap;
-            IL.RoR2.CharacterBody.RecalculateStats += PredatoryInstincts.ChangeAS;
+            //IL.RoR2.CharacterBody.AddTimedBuff_BuffDef_float += ChangeCap;
+            IL.RoR2.CharacterBody.AddTimedBuff_BuffDef_float += ChangeCapReal;
+            IL.RoR2.CharacterBody.RecalculateStats += ChangeAS;
             RecalculateStatsAPI.GetStatCoefficients += AddBehavior;
-            */
         }
 
         public static void ChangeAS(ILContext il)
@@ -51,12 +56,15 @@ namespace UltimateCustomRun
             ILCursor c = new ILCursor(il);
 
             c.GotoNext(MoveType.Before,
-                x => x.MatchCallOrCallvirt<RoR2.CharacterBody>("GetBuffCount"),
+                x => x.MatchLdsfld("RoR2.RoR2Content/Buffs", "AttackSpeedOnCrit"),
+                x => x.MatchCallOrCallvirt<CharacterBody>("GetBuffCount"),
                 x => x.MatchConvR4(),
                 x => x.MatchLdcR4(0.12f)
             );
-            c.Index += 2;
-            c.Next.Operand = aspd;
+            c.Index += 3;
+            //c.Remove();
+            //c.Emit(OpCodes.Ldc_R4, AttackSpeed);
+            c.Next.Operand = AttackSpeed;
         }
 
         public static void ChangeCap(ILContext il)
@@ -70,9 +78,22 @@ namespace UltimateCustomRun
                 x => x.MatchLdcI4(2)
             );
             c.Index += 1;
-            c.Next.Operand = basecap;
+            c.Next.Operand = BaseCap - StackCap;
             c.Index += 2;
-            c.Next.Operand = stackcap;
+            c.Next.Operand = StackCap;
+        }
+
+        public static void ChangeCapReal(ILContext il)
+        {
+            ILCursor c = new ILCursor(il);
+
+            c.GotoNext(MoveType.Before,
+                x => x.MatchLdloc(3),
+                x => x.MatchLdloc(2)
+            );
+            c.Next.Operand = BaseCap - StackCap;
+            c.Index += 1;
+            c.Next.Operand = StackCap;
         }
 
         public static void AddBehavior(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
@@ -83,15 +104,16 @@ namespace UltimateCustomRun
                 int buff = sender.GetBuffCount(RoR2Content.Buffs.AttackSpeedOnCrit);
                 if (stack > 0)
                 {
-                    args.critAdd += critstack ? crit * stack : crit;
+                    args.critAdd += StackCrit ? Crit * stack : Crit;
 
                     if (buff > 0)
                     {
-                        args.moveSpeedMultAdd += speedstack ? speed * buff * stack : speed * buff;
+                        args.moveSpeedMultAdd += Speed * buff;
                     }
                 }
             }
         }
+
         // NONE OF THESE WORK PLEASE HELP TO FIX
     }
 }

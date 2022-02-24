@@ -1,26 +1,25 @@
 ﻿using MonoMod.Cil;
 
-namespace UltimateCustomRun
+namespace UltimateCustomRun.Items.Greens
 {
     public class Warhorn : ItemBase
     {
-        public static float aspd;
-        public static int basedur;
-        public static int stackdur;
+        public static float Duration;
+        public static int BaseDuration;
+        public static int StackDuration;
 
         public override string Name => ":: Items :: Greens :: War Horn";
         public override string InternalPickupToken => "energizedOnEquipmentUse";
         public override bool NewPickup => false;
         public override string PickupText => "";
-        public override string DescText => "Activating your Equipment gives you <style=cIsDamage>+" + d(aspd) + " attack speed</style> for <style=cIsDamage>8s</style> <style=cStack>(+4s per stack)</style>.";
-
+        public override string DescText => "Activating your Equipment gives you <style=cIsDamage>+" + d(Duration) + " attack Speed</style> for <style=cIsDamage>8s</style> <style=cStack>(+4s per stack)</style>.";
 
         public override void Init()
         {
-            aspd = ConfigOption(0.7f, "Attack Speed", "Decimal. Vanilla is 0.7");
+            Duration = ConfigOption(0.7f, "Attack Speed", "Decimal. Vanilla is 0.7");
             /*
-            basedur = ConfigOption(8, "Base Duration", "Vanilla is 8");
-            stackdur = ConfigOption(4, "Stack Duration", "Per Stack. Vanilla is 4");
+            BaseDuration = ConfigOption(8, "Base Duration", "Vanilla is 8");
+            StackDuration = ConfigOption(4, "Stack Duration", "Per Stack. Vanilla is 4");
             */
             base.Init();
         }
@@ -30,6 +29,7 @@ namespace UltimateCustomRun
             IL.RoR2.CharacterBody.RecalculateStats += ChangeAS;
             // IL.RoR2.EquipmentSlot.Execute += Warhorn.ChangeDuration;
         }
+
         public static void ChangeAS(ILContext il)
         {
             ILCursor c = new ILCursor(il);
@@ -42,8 +42,9 @@ namespace UltimateCustomRun
                 x => x.MatchLdcR4(0.7f)
             );
             //c.Index += 4;
-            c.Next.Operand = aspd;
+            c.Next.Operand = Duration;
         }
+
         public static void ChangeDuration(ILContext il)
         {
             ILCursor c = new ILCursor(il);
@@ -52,9 +53,9 @@ namespace UltimateCustomRun
                 x => x.MatchLdcI4(8),
                 x => x.MatchLdcI4(4)
             );
-            c.Next.Operand = basedur;
+            c.Next.Operand = BaseDuration;
             c.Index += 1;
-            c.Next.Operand = stackdur;
+            c.Next.Operand = StackDuration;
         }
     }
 }

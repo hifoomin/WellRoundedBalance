@@ -1,47 +1,41 @@
-﻿using System;
-using Mono.Cecil.Cil;
+﻿using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using RoR2;
+using System;
 
-namespace UltimateCustomRun
+namespace UltimateCustomRun.Items.Greens
 {
     public class DeathMark : ItemBase
     {
         // ////////////
-        // 
+        //
         // Thanks to Skell
         //
         // ///////////////
 
-        public static bool enable;
-        public static float dmgperdebuff;
-        public static float dmgperstack;
-        public static int mindebuffs;
+        public static float DamagePerDebuff;
+        public static float DamagePerStack;
+        public static int MinimumDebuffs;
 
         public override string Name => ":: Items :: Greens :: Death Mark";
         public override string InternalPickupToken => "deathmark";
         public override bool NewPickup => true;
-        public override string PickupText => enable ? " Enemies with " + mindebuffs + " or more debuffs are marked for death, taking bonus damage." : "Enemies with 4 or more debuffs are marked for death, taking bonus damage.";
+        public override string PickupText => "Enemies with " + MinimumDebuffs + " or more debuffs are marked for death, taking bonus Damage.";
 
-        public override string DescText => enable ? "Enemies with <style=cIsDamage>" + mindebuffs + "</style> or more debuffs are <style=cIsDamage>marked for death</style>, increasing damage taken by <style=cIsDamage>" + d(dmgperstack) + "</style> <style=cStack>(+" + d(dmgperdebuff * dmgperstack) + " per stack)</style> per debuff from all sources for <style=cIsUtility>7</style> <style=cStack>(+7 per stack)</style> seconds." : "Enemies with <style=cIsDamage>4</style> or more debuffs are <style=cIsDamage>marked for death</style>, increasing damage taken by <style=cIsDamage>50%</style> from all sources for <style=cIsUtility>7</style> <style=cStack>(+7 per stack)</style> seconds.";
-
+        public override string DescText => "Enemies with <style=cIsDamage>" + MinimumDebuffs + "</style> or more debuffs are <style=cIsDamage>marked for death</style>, increasing Damage taken by <style=cIsDamage>" + d(DamagePerDebuff) + "</style> <style=cStack>(+" + d(DamagePerStack) + " per stack)</style> per debuff from all sources for <style=cIsUtility>7</style> <style=cStack>(+7 per stack)</style> seconds.";
 
         public override void Init()
         {
-            enable = ConfigOption(false, "Enable Changes?", "Vanilla is false");
-            dmgperdebuff = ConfigOption(0.1f, "Debuff Damage Increase", "Decimal. Per Debuff. Vanilla is 0");
-            dmgperstack = ConfigOption(0.05f, "Stack Debuff Damage Increase", "Decimal. Per Stack. Vanilla is 0");
-            mindebuffs = ConfigOption(2, "Minimum Debuffs", "Vanilla is 4");
+            DamagePerDebuff = ConfigOption(0.1f, "Debuff Damage Increase", "Decimal. Per Debuff. Vanilla is 0");
+            DamagePerStack = ConfigOption(0.05f, "Stack Debuff Damage Increase", "Decimal. Per Stack. Vanilla is 0");
+            MinimumDebuffs = ConfigOption(2, "Minimum Debuffs", "Vanilla is 4");
             base.Init();
         }
 
         public override void Hooks()
         {
-            if (enable)
-            {
-                IL.RoR2.GlobalEventManager.OnHitEnemy += ChangeDebuffsReq;
-                IL.RoR2.HealthComponent.TakeDamage += Changes;
-            }
+            IL.RoR2.GlobalEventManager.OnHitEnemy += ChangeDebuffsReq;
+            IL.RoR2.HealthComponent.TakeDamage += Changes;
         }
 
         public static void Changes(ILContext il)
@@ -85,10 +79,10 @@ namespace UltimateCustomRun
                             }
                         }
                     }
-                    float damageBonus = debuffCount * dmgperdebuff;
+                    float damageBonus = debuffCount * DamagePerDebuff;
                     if (DeathMarkCount > 0)
                     {
-                        return 1f + damageBonus + (dmgperstack * damageBonus * ((float)DeathMarkCount - 1f));
+                        return 1f + damageBonus + (DamagePerStack * damageBonus * ((float)DeathMarkCount - 1f));
                     }
                     return 1f + damageBonus;
                 }
@@ -106,7 +100,7 @@ namespace UltimateCustomRun
                 );
             c.Index += 2;
             c.Emit(OpCodes.Pop);
-            c.Emit(OpCodes.Ldc_I4, mindebuffs);
+            c.Emit(OpCodes.Ldc_I4, MinimumDebuffs);
         }
     }
 }

@@ -1,34 +1,33 @@
 ﻿using RoR2;
-using UnityEngine;
-using System.Linq;
 using RoR2.CharacterAI;
+using System.Linq;
+using UnityEngine;
 
 namespace UltimateCustomRun.Enemies
 {
     public class Imp : EnemyBase
     {
-        public static bool tw;
-        public static CharacterMaster master;
-        public static CharacterBody body;
+        public static bool Tweaks;
         public override string Name => ":::: Enemies :: Imp";
 
         public override void Init()
         {
-            tw = ConfigOption(false, "Enable Speed Tweaks and AI Tweaks?", "Vanilla is false. Recommended Value: true");
+            Tweaks = ConfigOption(false, "Enable Speed Tweaks and AI Tweaks?", "Vanilla is false.\nRecommended Value: true");
             base.Init();
         }
 
         public override void Hooks()
         {
-            if (tw)
+            if (Tweaks)
             {
                 Buff();
             }
         }
+
         public static void Buff()
         {
-            master = Resources.Load<CharacterMaster>("prefabs/charactermasters/ImpMaster").GetComponent<CharacterMaster>();
-            body = Resources.Load<CharacterBody>("prefabs/characterbodies/ImpBody").GetComponent<CharacterBody>();
+            var master = Resources.Load<CharacterMaster>("prefabs/charactermasters/ImpMaster").GetComponent<CharacterMaster>();
+            var body = Resources.Load<CharacterBody>("prefabs/characterbodies/ImpBody").GetComponent<CharacterBody>();
             body.baseMoveSpeed = 14f;
 
             AISkillDriver ai = (from x in master.GetComponents<AISkillDriver>()

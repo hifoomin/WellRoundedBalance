@@ -1,12 +1,6 @@
-﻿
-using BepInEx;
-using R2API;
-using R2API.Utils;
+﻿/*
 using RoR2;
-using RoR2.Skills;
-using RoR2.Orbs;
 using MonoMod.Cil;
-using UltimateCustomRun;
 
 namespace UltimateCustomRun.Elites
 {
@@ -22,9 +16,12 @@ namespace UltimateCustomRun.Elites
 
         public override void Init()
         {
-            t1cost = ConfigOption(6f, "Tier 1 Elite Cost", "Vanilla is 6");
+            t1cost = ConfigOption(6f, "Tier 1 Elite Cost Multiplier", "Vanilla is 6");
             t1dmg = ConfigOption(2f, "Tier 1 Elite Damage Multiplier", "Vanilla is 2");
             t1hp = ConfigOption(4f, "Tier 1 Elite Health Multiplier", "Vanilla is 4");
+            t2cost = ConfigOption(36f, "Tier 2 Elite Cost Multiplier", "Vanilla is 36");
+            t1dmg = ConfigOption(6f, "Tier 1 Elite Damage Multiplier", "Vanilla is 6");
+            t1hp = ConfigOption(18f, "Tier 1 Elite Health Multiplier", "Vanilla is 18");
             base.Init();
         }
 
@@ -68,3 +65,4 @@ namespace UltimateCustomRun.Elites
         }
     }
 }
+*/

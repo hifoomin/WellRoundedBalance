@@ -1,10 +1,10 @@
 ﻿using MonoMod.Cil;
 
-namespace UltimateCustomRun
+namespace UltimateCustomRun.Items.Whites
 {
     public class PersonalShieldGenerator : ItemBase
     {
-        public static float percenthp;
+        public static float PercentHealth;
 
         public override string Name => ":: Items : Whites :: Personal Shield Generator";
         public override string InternalPickupToken => "personalShield";
@@ -12,10 +12,11 @@ namespace UltimateCustomRun
 
         public override string PickupText => "";
 
-        public override string DescText => "Gain a <style=cIsHealing>shield</style> equal to <style=cIsHealing>" + d(percenthp) + "</style> <style=cStack>(+" + d(percenthp) + " per stack)</style> of your maximum health. Recharges outside of danger.";
+        public override string DescText => "Gain a <style=cIsHealing>shield</style> equal to <style=cIsHealing>" + d(PercentHealth) + "</style> <style=cStack>(+" + d(PercentHealth) + " per stack)</style> of your maximum health. Recharges outside of danger.";
+
         public override void Init()
         {
-            percenthp = ConfigOption(0.08f, "Percent Shield", "Decimal. Per Stack. Vanilla is 0.08");
+            PercentHealth = ConfigOption(0.08f, "Percent Shield", "Decimal. Per Stack. Vanilla is 0.08");
             base.Init();
         }
 
@@ -23,6 +24,7 @@ namespace UltimateCustomRun
         {
             IL.RoR2.CharacterBody.RecalculateStats += ChangeShieldPercent;
         }
+
         public static void ChangeShieldPercent(ILContext il)
         {
             ILCursor c = new ILCursor(il);
@@ -32,7 +34,7 @@ namespace UltimateCustomRun
                 x => x.MatchLdcR4(0.08f)
             );
             c.Index += 1;
-            c.Next.Operand = percenthp;
+            c.Next.Operand = PercentHealth;
         }
     }
 }

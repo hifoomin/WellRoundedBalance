@@ -1,13 +1,10 @@
-﻿using RoR2;
-using Mono.Cecil.Cil;
-using MonoMod.Cil;
-using System;
+﻿using MonoMod.Cil;
 
-namespace UltimateCustomRun
+namespace UltimateCustomRun.Items.Whites
 {
     public class ArmorPiercingRounds : ItemBase
     {
-        public static float damage;
+        public static float Damage;
 
         public override string Name => ":: Items : Whites :: Armor Piercing Rounds";
         public override string InternalPickupToken => "bossDamageBonus";
@@ -33,13 +30,13 @@ namespace UltimateCustomRun
             }
         }
         */
-        // "Deal an additional <style=cIsDamage>" + d(AprDamage.Value) + "</style> damage <style=cStack>(+" + d(AprDamage.Value) + " per stack)</style> to " + allEnemiesAffected + ".");
-        public override string DescText => "Deal an additional <style=cIsDamage>" + d(damage) + "</style> damage <style=cStack>(+" + d(damage) + " per stack)</style> to bosses.";
 
+        // "Deal an additional <style=cIsDamage>" + d(AprDamage.Value) + "</style> Damage <style=cStack>(+" + d(AprDamage.Value) + " per stack)</style> to " + allEnemiesAffected + ".");
+        public override string DescText => "Deal an additional <style=cIsDamage>" + d(Damage) + "</style> Damage <style=cStack>(+" + d(Damage) + " per stack)</style> to bosses.";
 
         public override void Init()
         {
-            damage = ConfigOption(0.2f, "Damage Coefficient", "Decimal. Per Stack. Vanilla is 0.2");
+            Damage = ConfigOption(0.2f, "Damage Coefficient", "Decimal. Per Stack. Vanilla is 0.2");
             base.Init();
         }
 
@@ -47,6 +44,7 @@ namespace UltimateCustomRun
         {
             IL.RoR2.HealthComponent.TakeDamage += ChangeDamage;
         }
+
         public static void ChangeDamage(ILContext il)
         {
             ILCursor c = new ILCursor(il);
@@ -55,8 +53,9 @@ namespace UltimateCustomRun
                 x => x.MatchLdcR4(0.2f)
             );
             c.Index += 1;
-            c.Next.Operand = damage;
+            c.Next.Operand = Damage;
         }
+
         /*
         public static void ChangeType(ILContext il)
         {
@@ -69,13 +68,13 @@ namespace UltimateCustomRun
             // im not sure if i should be emitting the 'this' here
             c.Emit(OpCodes.Ldarg_0);
             // something here? c.Index += X? tried 0, 1, 2 and 3
-            c.EmitDelegate<Func<bool, CharacterBody, bool>>((boss, body) => 
+            c.EmitDelegate<Func<bool, CharacterBody, bool>>((boss, body) =>
             {
                 bool bosss = Main.AprB.Value && boss;
                 bool champion = Main.AprC.Value && body.isChampion;
                 bool elite = Main.AprE.Value && body.isElite;
                 bool flying = Main.AprF.Value && body.isFlying;
-                return boss || champion || elite || flying; 
+                return boss || champion || elite || flying;
             });
             // PLEASE HELP IN FIXING
         }

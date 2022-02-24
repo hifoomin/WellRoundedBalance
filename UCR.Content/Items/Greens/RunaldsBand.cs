@@ -1,14 +1,20 @@
-﻿using RoR2;
-using Mono.Cecil.Cil;
+﻿using Mono.Cecil.Cil;
 using MonoMod.Cil;
+using RoR2;
 using System;
 
-namespace UltimateCustomRun
+namespace UltimateCustomRun.Items.Greens
 {
     public class RunaldsBand : ItemBase
     {
-        public static float basedmg;
-        public static float totaldmg;
+        // ////////////
+        //
+        // Thanks to Borbo
+        //
+        // ///////////////
+        public static float BaseDamage;
+
+        public static float TotalDamage;
 
         public override string Name => ":: Items :: Greens :: Runalds Band";
         public override string InternalPickupToken => "icering";
@@ -16,16 +22,16 @@ namespace UltimateCustomRun
 
         public override string PickupText => "";
 
-        public override string DescText => "Hits that deal <style=cIsDamage>more than " + d(KjarosBand.threshold) + " damage</style> also blasts enemies with a <style=cIsDamage>runic ice blast</style>, <style=cIsUtility>slowing</style> them by <style=cIsUtility>80%</style> for <style=cIsUtility>3s</style> <style=cStack>(+3s per stack)</style>" +
-                                            (totaldmg != 0f ? " and <style=cIsDamage>" + d(totaldmg) + "</style> <style=cStack>(+" + d(totaldmg) + " per stack)</style> TOTAL damage" : "" +
-                                            (basedmg != 0f && totaldmg != 0f ? " and " : "") +
-                                            (basedmg != 0f ? "<style=cIsDamage>" + d(basedmg) + "</style> <style=cStack>(+" + d(basedmg) + " per stack)</style> base damage." : "") +
-                                            " Recharges every <style=cIsUtility>" + KjarosBand.cooldown + "</style> seconds.");
+        public override string DescText => "Hits that deal <style=cIsDamage>more than " + d(KjarosBand.Threshold) + " Damage</style> also blasts enemies with a <style=cIsDamage>runic ice blast</style>, <style=cIsUtility>slowing</style> them by <style=cIsUtility>80%</style> for <style=cIsUtility>3s</style> <style=cStack>(+3s per stack)</style>" +
+                                            (TotalDamage != 0f ? " and <style=cIsDamage>" + d(TotalDamage) + "</style> <style=cStack>(+" + d(TotalDamage) + " per stack)</style> TOTAL Damage" : "" +
+                                            (BaseDamage != 0f && TotalDamage != 0f ? " and " : "") +
+                                            (BaseDamage != 0f ? "<style=cIsDamage>" + d(BaseDamage) + "</style> <style=cStack>(+" + d(BaseDamage) + " per stack)</style> base Damage." : "") +
+                                            " Recharges every <style=cIsUtility>" + KjarosBand.Cooldown + "</style> seconds.");
 
         public override void Init()
         {
-            basedmg = ConfigOption(0f, "Base Damage", "Decimal. Per Stack. Vanilla is 0");
-            totaldmg = ConfigOption(2.5f, "Total Damage", "Decimal. Per Stack. Vanilla is 2.5");
+            BaseDamage = ConfigOption(0f, "Base Damage", "Decimal. Per Stack. Vanilla is 0");
+            TotalDamage = ConfigOption(2.5f, "Total Damage", "Decimal. Per Stack. Vanilla is 2.5");
             base.Init();
         }
 
@@ -33,6 +39,7 @@ namespace UltimateCustomRun
         {
             IL.RoR2.GlobalEventManager.OnHitEnemy += RunaldChange;
         }
+
         public static void RunaldChange(ILContext il)
         {
             ILCursor c = new ILCursor(il);
@@ -54,20 +61,21 @@ namespace UltimateCustomRun
                 x => x.MatchStloc(out totalDamageMultiplierLocation)
                 );
             c.Remove();
-            c.Emit(OpCodes.Ldc_R4, totaldmg);
+            c.Emit(OpCodes.Ldc_R4, TotalDamage);
 
             c.GotoNext(MoveType.After,
                 x => x.MatchLdloc(totalDamageMultiplierLocation),
                 x => x.MatchCallOrCallvirt(out _)
                 );
             c.Emit(OpCodes.Ldloc_0);
-            c.EmitDelegate<Func<float, CharacterBody, float>>((damage, self) =>
+            c.EmitDelegate<Func<float, CharacterBody, float>>((Damage, self) =>
             {
-                float dam = self.baseDamage * basedmg;
+                float dam = self.baseDamage * BaseDamage;
 
-                return damage + dam;
+                return Damage + dam;
             });
         }
+
         // PLEASE HELP TO FIX
     }
 }

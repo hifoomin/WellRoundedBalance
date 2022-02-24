@@ -1,32 +1,32 @@
 ﻿using RoR2;
-using UnityEngine;
-using System.Linq;
 using RoR2.CharacterAI;
 using RoR2.Projectile;
 using RoR2.Skills;
+using System.Linq;
+using UnityEngine;
 
 namespace UltimateCustomRun.Enemies.Bosses
 {
     public class MithrixPhase4 : EnemyBase
     {
-        public static bool aitw;
-        public static bool shardtw;
-        public static bool slamtw;
-        public static bool speedtw;
-        public static bool scaltw;
-        public static bool stealtw;
-        public static bool stagtw;
+        public static bool AITweaks;
+        public static bool ShardTweaks;
+        public static bool OrbSlamTweaks;
+        public static bool SpeedTweaks;
+        public static bool HealthTweaks;
+        public static bool StealTweaks;
+        public static bool StaggerTweaks;
         public override string Name => ":::: Enemies :::: Mithrix Phase 4";
 
         public override void Init()
         {
-            aitw = ConfigOption(false, "Make AI smarter?", "Vanilla is false. Recommended Value: True");
-            shardtw = ConfigOption(false, "Make Shards spammier?", "Vanilla is false. Recommended Value: True");
-            slamtw = ConfigOption(false, "Make Orb Slam better?", "Vanilla is false. Recommended Value: True");
-            speedtw = ConfigOption(false, "Make Mithrix faster?", "Vanilla is false. Recommended Value: True");
-            scaltw = ConfigOption(false, "Make Mithrix have more HP?", "Vanilla is false. Recommended Value: True");
-            stealtw = ConfigOption(false, "Make Mithrix steal items instantly?", "Vanilla is false. Recommended Value: True");
-            stagtw = ConfigOption(false, "Remove stagger?", "Vanilla is false. Recommended Value: True");
+            AITweaks = ConfigOption(false, "Make AI smarter?", "Vanilla is false.\nRecommended Value: True");
+            ShardTweaks = ConfigOption(false, "Make Shards spammier?", "Vanilla is false.\nRecommended Value: True");
+            OrbSlamTweaks = ConfigOption(false, "Make Orb Slam better?", "Vanilla is false.\nRecommended Value: True");
+            SpeedTweaks = ConfigOption(false, "Make Mithrix faster?", "Vanilla is false.\nRecommended Value: True");
+            HealthTweaks = ConfigOption(false, "Make Mithrix have more HP?", "Vanilla is false.\nRecommended Value: True");
+            StealTweaks = ConfigOption(false, "Make Mithrix steal items instantly?", "Vanilla is false.\nRecommended Value: True");
+            StaggerTweaks = ConfigOption(false, "Remove stagger?", "Vanilla is false.\nRecommended Value: True");
             base.Init();
         }
 
@@ -34,13 +34,14 @@ namespace UltimateCustomRun.Enemies.Bosses
         {
             Buff();
         }
+
         public static void Buff()
         {
             var master = Resources.Load<CharacterMaster>("prefabs/charactermasters/BrotherHurtMaster").GetComponent<CharacterMaster>();
             var masterbase = Resources.Load<CharacterMaster>("prefabs/charactermasters/BrotherHurtMaster");
             var body = Resources.Load<CharacterBody>("prefabs/characterbodies/BrotherHurtBody");
 
-            if (aitw)
+            if (AITweaks)
             {
                 masterbase.GetComponent<BaseAI>().aimVectorDampTime = 0.07f;
                 masterbase.GetComponent<BaseAI>().aimVectorMaxSpeed = 400f;
@@ -56,25 +57,25 @@ namespace UltimateCustomRun.Enemies.Bosses
                 ai2.movementType = AISkillDriver.MovementType.StrafeMovetarget;
             }
 
-            if (speedtw)
+            if (SpeedTweaks)
             {
                 body.baseMoveSpeed = 16f;
                 body.sprintingSpeedMultiplier = 1.45f;
             }
 
-            if (scaltw)
+            if (HealthTweaks)
             {
                 body.baseMaxHealth = 1700f;
                 body.levelMaxHealth = 510f;
             }
 
-            if (shardtw)
+            if (ShardTweaks)
             {
                 var shardsdef = Resources.Load<SkillDef>("skilldefs/brotherbody/FireLunarShardsHurt");
                 shardsdef.baseMaxStock = 32;
                 shardsdef.rechargeStock = 32;
             }
-            if (slamtw)
+            if (OrbSlamTweaks)
             {
                 On.EntityStates.BrotherMonster.FistSlam.OnEnter += (orig, self) =>
                 {
@@ -102,8 +103,8 @@ namespace UltimateCustomRun.Enemies.Bosses
                     orig(self);
                 };
             }
-           
-            if (stealtw)
+
+            if (StealTweaks)
             {
                 On.EntityStates.BrotherMonster.SpellChannelEnterState.OnEnter += (orig, self) =>
                 {
@@ -125,7 +126,7 @@ namespace UltimateCustomRun.Enemies.Bosses
                 };
             }
 
-            if (stagtw)
+            if (StaggerTweaks)
             {
                 On.EntityStates.BrotherMonster.StaggerEnter.OnEnter += (orig, self) =>
                 {

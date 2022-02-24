@@ -1,19 +1,20 @@
 ﻿using MonoMod.Cil;
 
-namespace UltimateCustomRun
+namespace UltimateCustomRun.Items.Reds
 {
     public class Brainstalks : ItemBase
     {
-        public static float dur;
+        public static float Duration;
         public override string Name => ":: Items ::: Reds :: Brainstalks";
         public override string InternalPickupToken => "killEliteFrenzy";
         public override bool NewPickup => false;
         public override string PickupText => "";
 
-        public override string DescText => "Upon killing an elite monster, <style=cIsDamage>enter a frenzy</style> for <style=cIsDamage>" + dur + "s</style> <style=cStack>(+" + dur + "s per stack)</style> where <style=cIsUtility>skills have no cooldowns</style>.";
+        public override string DescText => "Upon killing an elite monster, <style=cIsDamage>enter a frenzy</style> for <style=cIsDamage>" + Duration + "s</style> <style=cStack>(+" + Duration + "s per stack)</style> where <style=cIsUtility>skills have no cooldowns</style>.";
+
         public override void Init()
         {
-            dur = ConfigOption(4f, "Buff Duration", "Per Stack. Vanilla is 4");
+            Duration = ConfigOption(4f, "Buff Duration", "Per Stack. Vanilla is 4");
 
             base.Init();
         }
@@ -22,6 +23,7 @@ namespace UltimateCustomRun
         {
             IL.RoR2.GlobalEventManager.OnCharacterDeath += ChangeDuration;
         }
+
         public static void ChangeDuration(ILContext il)
         {
             ILCursor c = new ILCursor(il);
@@ -33,7 +35,7 @@ namespace UltimateCustomRun
                 x => x.MatchLdcR4(4f)
             );
             c.Index += 3;
-            c.Next.Operand = dur;
+            c.Next.Operand = Duration;
         }
     }
 }

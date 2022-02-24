@@ -1,18 +1,19 @@
-﻿using RoR2;
-using MonoMod.Cil;
+﻿using MonoMod.Cil;
+using RoR2;
 
 namespace UltimateCustomRun.Global
 {
-    public class CritMultiplier : GlobalBase
+    public class CritDamageMultiplier : GlobalBase
     {
-        public static float cdm;
-        public override string Name => ": Global ::: Crit Damage Multiplier";
+        public static float CritDamageMarketPlier;
+        public override string Name => ": Global :::: Damage";
 
         public override void Init()
         {
-            cdm = ConfigOption(2f, "Crit Damage Multiplier", "Vanilla is 2");
+            CritDamageMarketPlier = ConfigOption(2f, "Crit Damage Multiplier", "Vanilla is 2");
             base.Init();
         }
+
         public override void Hooks()
         {
             IL.RoR2.HealthComponent.TakeDamage += ChangeDamage;
@@ -28,7 +29,7 @@ namespace UltimateCustomRun.Global
                 x => x.MatchLdcR4(2f)
             );
             c.Index += 3;
-            c.Next.Operand = cdm;
+            c.Next.Operand = CritDamageMarketPlier;
         }
     }
 }

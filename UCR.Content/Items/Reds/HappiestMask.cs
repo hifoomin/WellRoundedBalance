@@ -1,6 +1,6 @@
 ﻿using MonoMod.Cil;
 
-namespace UltimateCustomRun
+namespace UltimateCustomRun.Items.Reds
 {
     public static class HappiestMask
     {
@@ -15,6 +15,7 @@ namespace UltimateCustomRun
             c.Index += 1;
             c.Next.Operand = Main.HappiestMaskChance.Value;
         }
+
         public static void ChangeDuration(ILContext il)
         {
             ILCursor c = new ILCursor(il);
@@ -25,6 +26,7 @@ namespace UltimateCustomRun
             );
             c.Next.Operand = Main.HappiestMaskDuration.Value;
         }
+
         // WHY DO THESE NOT WORK WHAT
     }
 }

@@ -1,25 +1,25 @@
-﻿using RoR2.Projectile;
-using UnityEngine;
+﻿using RoR2;
+using RoR2.Projectile;
 using RoR2.Skills;
-using RoR2;
+using UnityEngine;
 
-namespace UltimateCustomRun
+namespace UltimateCustomRun.Items.Lunars
 {
     public class VisionsOfHeresy : ItemBase
     {
-        public static int charges;
-        public static float cd;
-        public static float dur;
-        public static float idmg;
-        public static float iproc;
-        public static float recoil;
-        public static float bloom;
-        public static float maxs;
-        public static float pspeed;
-        public static float edmg;
-        public static float eaoe;
-        public static float eproc;
-        public static float size;
+        public static int Charges;
+        public static float Cooldown;
+        public static float Duration;
+        public static float InitialHitDamage;
+        public static float InitialHitProcCoefficient;
+        public static float Recoil;
+        public static float Bloom;
+        public static float MaxSpeed;
+        public static float ProjectileSpeed;
+        public static float ExplosionDamage;
+        public static float ExplosionRadius;
+        public static float ExplosionProcCoefficient;
+        public static float Size;
         public static bool EnableTheFeelTarlukNailgunCopeSeethePlusTwoAoeEffect;
         public static Component[] burdel;
         public static Component[] butla;
@@ -29,25 +29,24 @@ namespace UltimateCustomRun
         public override string InternalPickupToken => "lunarPrimaryReplacement";
         public override bool NewPickup => false;
         public override string PickupText => "";
-        public override string DescText => "<style=cIsUtility>Replace your Primary Skill</style> with <style=cIsUtility>Hungering Gaze</style>. \n\nFire a flurry of <style=cIsUtility>tracking shards</style> that detonate after a delay, dealing <style=cIsDamage>" + d(edmg) + "</style> base damage. Hold up to " + charges + " charges <style=cStack>(+" + charges + " per stack)</style> that reload after " + cd + " seconds <style=cStack>(+" + cd + " per stack)</style>.";
-
+        public override string DescText => "<style=cIsUtility>Replace your Primary Skill</style> with <style=cIsUtility>Hungering Gaze</style>. \n\nFire a flurry of <style=cIsUtility>tracking shards</style> that detonate after a delay, dealing <style=cIsDamage>" + d(ExplosionDamage) + "</style> base Damage. Hold up to " + Charges + " Charges <style=cStack>(+" + Charges + " per stack)</style> that reload after " + Cooldown + " seconds <style=cStack>(+" + Cooldown + " per stack)</style>.";
 
         public override void Init()
         {
-            charges = ConfigOption(12, "Stock Count", "Vanilla is 12. Recommended Value: 5");
-            cd = ConfigOption(2f, "Cooldown", "Vanilla is 2. Recommended Value: 1.7");
-            dur = ConfigOption(0.11f, "Duration Per Shot", "Vanilla is 0.11. Recommended Value: 0.1");
-            idmg = ConfigOption(0.05f, "Damage Coeffcient of each Initial Hit", "Decimal. Vanilla is 0.05. Recommended Value: 0.75");
-            iproc = ConfigOption(0.1f, "Proc Coefficient of each Initial Hit", "Vanilla is 0.1. Recommended Value: 0.1");
-            recoil = ConfigOption(1.5f, "Recoil", "Vanilla is 1.5. Recommended Value: 4");
-            bloom = ConfigOption(0.4f, "Spread", "Vanilla is 0.4. Recommended Value: 0");
-            maxs = ConfigOption(3f, "Maximum Spread", "Vanilla is 3. Recommended Value: 0");
-            pspeed = ConfigOption(40f, "Projectile Speed", "Vanilla is 40. Recommended Value: 70");
-            edmg = ConfigOption(24f, "Explosion Damage", "Vanilla is 24. Recommended Value: 2\nNote: This is a multiplier of Initial Hit's Damage");
-            eaoe = ConfigOption(2f, "Explosion Range", "Vanilla is 2. Recommended Value: 6");
-            eproc = ConfigOption(10f, "Explosion Proc Coefficient", "Vanilla is 10. Recommended Value: 10\nNote: This is a multiplier of Initial Hit's Proc Coefficient");
-            size = ConfigOption(1f, "Visual Size", "Vanilla is 1. Recommended Value: 7");
-            EnableTheFeelTarlukNailgunCopeSeethePlusTwoAoeEffect = ConfigOption(false, "Improve Visuals and Sound?", "Vanilla is false. Recommended Value: true");
+            Charges = ConfigOption(12, "Stock Count", "Vanilla is 12.\nRecommended Value: 5");
+            Cooldown = ConfigOption(2f, "Cooldown", "Vanilla is 2.\nRecommended Value: 1.7");
+            Duration = ConfigOption(0.11f, "Duration Per Shot", "Vanilla is 0.11.\nRecommended Value: 0.1");
+            InitialHitDamage = ConfigOption(0.05f, "Damage Coeffcient of each Initial Hit", "Decimal. Vanilla is 0.05.\nRecommended Value: 0.75");
+            InitialHitProcCoefficient = ConfigOption(0.1f, "Proc Coefficient of each Initial Hit", "Vanilla is 0.1.\nRecommended Value: 0.1");
+            Recoil = ConfigOption(1.5f, "Recoil", "Vanilla is 1.5.\nRecommended Value: 4");
+            Bloom = ConfigOption(0.4f, "Spread", "Vanilla is 0.4.\nRecommended Value: 0");
+            MaxSpeed = ConfigOption(3f, "Maximum Spread", "Vanilla is 3.\nRecommended Value: 0");
+            ProjectileSpeed = ConfigOption(40f, "Projectile Speed", "Vanilla is 40.\nRecommended Value: 70");
+            ExplosionDamage = ConfigOption(24f, "Explosion Damage", "Vanilla is 24.\nRecommended Value: 2\nNote: This is a multiplier of Initial Hit's Damage");
+            ExplosionRadius = ConfigOption(2f, "Explosion Range", "Vanilla is 2.\nRecommended Value: 6");
+            ExplosionProcCoefficient = ConfigOption(10f, "Explosion Proc Coefficient", "Vanilla is 10.\nRecommended Value: 10\nNote: This is a multiplier of Initial Hit's Proc Coefficient");
+            Size = ConfigOption(1f, "Visual Size", "Vanilla is 1.\nRecommended Value: 7");
+            EnableTheFeelTarlukNailgunCopeSeethePlusTwoAoeEffect = ConfigOption(false, "Improve Visuals and Sound?", "Vanilla is false.\nRecommended Value: true");
             base.Init();
         }
 
@@ -58,32 +57,32 @@ namespace UltimateCustomRun
 
         public static void Change()
         {
-            Vector3 configsize = new Vector3(size, size, size);
+            Vector3 configsize = new Vector3(Size, Size, Size);
             On.EntityStates.GlobalSkills.LunarNeedle.FireLunarNeedle.OnEnter += (orig, self) =>
             {
-                EntityStates.GlobalSkills.LunarNeedle.FireLunarNeedle.baseDuration = dur;
-                EntityStates.GlobalSkills.LunarNeedle.FireLunarNeedle.damageCoefficient = idmg;
-                EntityStates.GlobalSkills.LunarNeedle.FireLunarNeedle.recoilAmplitude = recoil;
-                EntityStates.GlobalSkills.LunarNeedle.FireLunarNeedle.spreadBloomValue = bloom;
-                EntityStates.GlobalSkills.LunarNeedle.FireLunarNeedle.maxSpread = maxs;
+                EntityStates.GlobalSkills.LunarNeedle.FireLunarNeedle.baseDuration = Duration;
+                EntityStates.GlobalSkills.LunarNeedle.FireLunarNeedle.damageCoefficient = InitialHitDamage;
+                EntityStates.GlobalSkills.LunarNeedle.FireLunarNeedle.recoilAmplitude = Recoil;
+                EntityStates.GlobalSkills.LunarNeedle.FireLunarNeedle.spreadBloomValue = Bloom;
+                EntityStates.GlobalSkills.LunarNeedle.FireLunarNeedle.maxSpread = MaxSpeed;
                 orig(self);
             };
-            
+
             var thej = Resources.Load<GameObject>("prefabs/projectiles/LunarNeedleProjectile");
             var p1 = thej.GetComponent<ProjectileImpactExplosion>();
             var p2 = thej.GetComponent<ProjectileDirectionalTargetFinder>();
-            thej.GetComponent<ProjectileController>().procCoefficient = iproc;
-            thej.GetComponent<ProjectileSimple>().desiredForwardSpeed = pspeed;
-            p1.blastRadius = eaoe;
-            p1.blastDamageCoefficient = edmg;
-            p1.blastProcCoefficient = eproc;
+            thej.GetComponent<ProjectileController>().procCoefficient = InitialHitProcCoefficient;
+            thej.GetComponent<ProjectileSimple>().desiredForwardSpeed = ProjectileSpeed;
+            p1.blastRadius = ExplosionRadius;
+            p1.blastDamageCoefficient = ExplosionDamage;
+            p1.blastProcCoefficient = ExplosionProcCoefficient;
 
             var olbart = Resources.Load<SkillDef>("skilldefs/lunarreplacements/LunarPrimaryReplacement");
-            olbart.baseRechargeInterval = cd;
-            olbart.baseMaxStock = charges;
-            olbart.rechargeStock = charges;
+            olbart.baseRechargeInterval = Cooldown;
+            olbart.baseMaxStock = Charges;
+            olbart.rechargeStock = Charges;
             olbart.fullRestockOnAssign = true;
-            
+
             if (EnableTheFeelTarlukNailgunCopeSeethePlusTwoAoeEffect)
             {
                 On.EntityStates.GlobalSkills.LunarNeedle.FireLunarNeedle.OnEnter += (orig, self) =>

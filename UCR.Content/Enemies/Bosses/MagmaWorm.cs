@@ -1,20 +1,18 @@
 ﻿using RoR2;
 using UnityEngine;
-using System.Linq;
-using RoR2.CharacterAI;
 
 namespace UltimateCustomRun.Enemies.Bosses
 {
     public class MagmaWorm : EnemyBase
     {
-        public static bool aitw;
-        public static bool speedtw;
+        public static bool AITweaks;
+        public static bool SpeedTweaks;
         public override string Name => ":::: Enemies ::: Magma Worm";
 
         public override void Init()
         {
-            aitw = ConfigOption(false, "Make Magma Worm AI smarter?", "Vanilla is false. Recommended Value: True");
-            speedtw = ConfigOption(false, "Make Magma Worm faster?", "Vanilla is false. Recommended Value: True");
+            AITweaks = ConfigOption(false, "Make Magma Worm AI smarter?", "Vanilla is false.\nRecommended Value: True");
+            SpeedTweaks = ConfigOption(false, "Make Magma Worm faster?", "Vanilla is false.\nRecommended Value: True");
             base.Init();
         }
 
@@ -22,12 +20,13 @@ namespace UltimateCustomRun.Enemies.Bosses
         {
             Buff();
         }
+
         public static void Buff()
         {
             var master = Resources.Load<CharacterMaster>("prefabs/charactermasters/MagmaWormMaster").GetComponent<CharacterMaster>();
             var body = Resources.Load<CharacterBody>("prefabs/characterbodies/MagmaWormBody");
 
-            if (aitw)
+            if (AITweaks)
             {
                 On.EntityStates.MagmaWorm.SwitchStance.OnEnter += (orig, self) =>
                 {
@@ -40,7 +39,7 @@ namespace UltimateCustomRun.Enemies.Bosses
                 };
             }
 
-            if (speedtw)
+            if (SpeedTweaks)
             {
                 body.baseMoveSpeed = 35f;
                 body.acceleration = 500f;

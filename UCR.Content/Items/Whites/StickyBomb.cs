@@ -1,17 +1,17 @@
-﻿using RoR2;
+﻿using MonoMod.Cil;
+using RoR2;
 using RoR2.Projectile;
 using UnityEngine;
-using MonoMod.Cil;
 
-namespace UltimateCustomRun
+namespace UltimateCustomRun.Items.Whites
 {
     public class StickyBomb : ItemBase
     {
-        public static float damage;
-        public static float chance;
-        public static float dur;
-        public static float range;
-        public static bool falloff;
+        public static float Damage;
+        public static float Chance;
+        public static float Delay;
+        public static float Radius;
+        public static int Falloff;
 
         public override string Name => ":: Items : Whites :: Sticky Bomb";
         public override string InternalPickupToken => "stickyBomb";
@@ -19,14 +19,15 @@ namespace UltimateCustomRun
 
         public override string PickupText => "";
 
-        public override string DescText => "<style=cIsDamage>" + chance + "%</style> <style=cStack>(+" + chance + "% per stack)</style> chance on hit to attach a <style=cIsDamage>bomb</style> to an enemy, detonating for <style=cIsDamage>" + d(damage) + "</style> TOTAL damage.";
+        public override string DescText => "<style=cIsDamage>" + Chance + "%</style> <style=cStack>(+" + Chance + "% per stack)</style> Chance on hit to attach a <style=cIsDamage>bomb</style> to an enemy, detonating for <style=cIsDamage>" + d(Damage) + "</style> TOTAL Damage.";
+
         public override void Init()
         {
-            damage = ConfigOption(1.8f, "Total Damage", "Decimal. Vanilla is 1.8");
-            chance = ConfigOption(5f, "Chance", "Vanilla is 5");
-            dur = ConfigOption(1.5f, "Delay", "Vanilla is 1.5");
-            range = ConfigOption(10f, "Range", "Vanilla is 10");
-            falloff = ConfigOption(false, "Falloff Type", "If set to true, use None\nIf set to false, use Sweetspot.\nVanilla is false");
+            Damage = ConfigOption(1.8f, "Total Damage", "Decimal. Vanilla is 1.8");
+            Chance = ConfigOption(5f, "Chance", "Vanilla is 5");
+            Delay = ConfigOption(1.5f, "Delay", "Vanilla is 1.5");
+            Radius = ConfigOption(10f, "Range", "Vanilla is 10");
+            Falloff = ConfigOption(1, "Falloff Type", "1 - Sweetspot, 2 - Linear, 3 - None.\nVanilla is 1");
             base.Init();
         }
 
@@ -35,16 +36,23 @@ namespace UltimateCustomRun
             IL.RoR2.GlobalEventManager.OnHitEnemy += ChangeChance;
             Changes();
         }
+
         public static void Changes()
         {
-            var nowthatssticky = Resources.Load<GameObject>("prefabs/projectiles/stickybomb");
-            var s = nowthatssticky.GetComponent<ProjectileImpactExplosion>();
-            s.blastDamageCoefficient = damage / 1.8f;
+            var StickyBombImpact = Resources.Load<GameObject>("prefabs/projectiles/stickybomb").GetComponent<ProjectileImpactExplosion>();
+            StickyBombImpact.blastDamageCoefficient = Damage / 1.8f;
             // weird
-            s.blastRadius = range;
-            s.lifetime = dur;
-            s.falloffModel = falloff ? BlastAttack.FalloffModel.SweetSpot : BlastAttack.FalloffModel.None;
+            StickyBombImpact.blastRadius = Radius;
+            StickyBombImpact.lifetime = Delay;
+            StickyBombImpact.falloffModel = Falloff switch
+            {
+                1 => BlastAttack.FalloffModel.SweetSpot,
+                2 => BlastAttack.FalloffModel.Linear,
+                3 => BlastAttack.FalloffModel.None,
+                _ => BlastAttack.FalloffModel.SweetSpot,
+            };
         }
+
         public static void ChangeChance(ILContext il)
         {
             ILCursor c = new ILCursor(il);
@@ -53,7 +61,7 @@ namespace UltimateCustomRun
                 x => x.MatchLdcR4(5)
             );
             c.Index += 1;
-            c.Next.Operand = chance;
+            c.Next.Operand = Chance;
         }
     }
 }

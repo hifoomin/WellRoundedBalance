@@ -1,22 +1,22 @@
 ﻿using RoR2;
-using UnityEngine;
-using System.Linq;
 using RoR2.CharacterAI;
+using System.Linq;
+using UnityEngine;
 
 namespace UltimateCustomRun.Enemies
 {
     public class ClayTemplar : EnemyBase
     {
-        public static bool aitw;
-        public static bool m2tw;
-        public static bool spdtw;
+        public static bool AITweaks;
+        public static bool SecondaryTweaks;
+        public static bool SpeedTweaks;
         public override string Name => ":::: Enemies :: Clay Templar";
 
         public override void Init()
         {
-            aitw = ConfigOption(false, "Make Clay Templar AI smarter?", "Vanilla is false. Recommended Value: true");
-            m2tw = ConfigOption(false, "Make Shotgun better?", "Vanilla is false. Recommended Value: true");
-            spdtw = ConfigOption(false, "Make Clay Templar faster?", "Vanilla is false. Recommended Value: true");
+            AITweaks = ConfigOption(false, "Make Clay Templar AI smarter?", "Vanilla is false.\nRecommended Value: true");
+            SecondaryTweaks = ConfigOption(false, "Make Shotgun better?", "Vanilla is false.\nRecommended Value: true");
+            SpeedTweaks = ConfigOption(false, "Make Clay Templar faster?", "Vanilla is false.\nRecommended Value: true");
             base.Init();
         }
 
@@ -24,12 +24,13 @@ namespace UltimateCustomRun.Enemies
         {
             Buff();
         }
+
         public static void Buff()
         {
             var master = Resources.Load<CharacterMaster>("prefabs/charactermasters/ClayBruiserMaster");
             var body = Resources.Load<CharacterBody>("prefabs/characterbodies/ClayBruiserBody");
 
-            if (aitw)
+            if (AITweaks)
             {
                 AISkillDriver ai = (from x in master.GetComponents<AISkillDriver>()
                                     where x.customName == "WalkAndShoot"
@@ -37,7 +38,7 @@ namespace UltimateCustomRun.Enemies
                 ai.movementType = AISkillDriver.MovementType.StrafeMovetarget;
             }
 
-            if (m2tw)
+            if (SecondaryTweaks)
             {
                 On.EntityStates.ClayBruiser.Weapon.FireSonicBoom.OnEnter += (orig, self) =>
                 {
@@ -47,7 +48,7 @@ namespace UltimateCustomRun.Enemies
                 };
             }
 
-            if (spdtw)
+            if (SpeedTweaks)
             {
                 body.baseMoveSpeed = 13f;
             }

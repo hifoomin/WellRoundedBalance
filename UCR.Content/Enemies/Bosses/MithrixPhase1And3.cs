@@ -1,33 +1,33 @@
-﻿using RoR2;
-using UnityEngine;
-using System.Linq;
+﻿using Rewired.ComponentControls.Effects;
+using RoR2;
 using RoR2.CharacterAI;
 using RoR2.Projectile;
-using Rewired.ComponentControls.Effects;
 using RoR2.Skills;
+using System.Linq;
+using UnityEngine;
 
 namespace UltimateCustomRun.Enemies.Bosses
 {
     public class MithrixPhase1And3 : EnemyBase
     {
-        public static bool aitw;
-        public static bool shardtw;
-        public static bool hammertw;
-        public static bool pillartw;
-        public static bool leaptw;
-        public static bool aggtw;
-        public static bool wavetw;
+        public static bool AITweaks;
+        public static bool ShardTweaks;
+        public static bool HammerTweaks;
+        public static bool PillarTweaks;
+        public static bool LeapTweaks;
+        public static bool AggressionTweaks;
+        public static bool WaveTweaks;
         public override string Name => ":::: Enemies :::: Mithrix Phase 1 and 3";
 
         public override void Init()
         {
-            aitw = ConfigOption(false, "Make Mithrix AI smarter?", "Vanilla is false. Recommended Value: True");
-            shardtw = ConfigOption(false, "Make Shards spammier?", "Vanilla is false. Recommended Value: True");
-            hammertw = ConfigOption(false, "Make Hammer not one shot?", "Vanilla is false. Recommended Value: True");
-            pillartw = ConfigOption(false, "Make Phase 3 Pillars bigger?", "Vanilla is false. Recommended Value: True");
-            leaptw = ConfigOption(false, "Make Leap faster?", "Vanilla is false. Recommended Value: True");
-            aggtw = ConfigOption(false, "Make Mithrix more aggressive?", "Vanilla is false. Recommended Value: True");
-            wavetw = ConfigOption(false, "Make Waves be non lethal?", "Vanilla is false. Recommended Value: True");
+            AITweaks = ConfigOption(false, "Make Mithrix AI smarter?", "Vanilla is false.\nRecommended Value: True");
+            ShardTweaks = ConfigOption(false, "Make Shards spammier?", "Vanilla is false.\nRecommended Value: True");
+            HammerTweaks = ConfigOption(false, "Make Hammer not one shot?", "Vanilla is false.\nRecommended Value: True");
+            PillarTweaks = ConfigOption(false, "Make Phase 3 Pillars bigger?", "Vanilla is false.\nRecommended Value: True");
+            LeapTweaks = ConfigOption(false, "Make Leap faster?", "Vanilla is false.\nRecommended Value: True");
+            AggressionTweaks = ConfigOption(false, "Make Mithrix more aggressive?", "Vanilla is false.\nRecommended Value: True");
+            WaveTweaks = ConfigOption(false, "Make Waves be non lethal?", "Vanilla is false.\nRecommended Value: True");
             base.Init();
         }
 
@@ -35,11 +35,12 @@ namespace UltimateCustomRun.Enemies.Bosses
         {
             Buff();
         }
+
         public static void Buff()
         {
             var master = Resources.Load<CharacterMaster>("prefabs/charactermasters/BrotherMaster").GetComponent<CharacterMaster>();
-            
-            if (aitw)
+
+            if (AITweaks)
             {
                 AISkillDriver ai = (from x in master.GetComponents<AISkillDriver>()
                                     where x.customName == "Sprint and FireLunarShards"
@@ -53,7 +54,7 @@ namespace UltimateCustomRun.Enemies.Bosses
                 ai2.movementType = AISkillDriver.MovementType.StrafeMovetarget;
             }
 
-            if (leaptw)
+            if (LeapTweaks)
             {
                 On.EntityStates.BrotherMonster.HoldSkyLeap.OnEnter += (orig, self) =>
                 {
@@ -69,7 +70,7 @@ namespace UltimateCustomRun.Enemies.Bosses
                 };
             }
 
-            if (hammertw)
+            if (HammerTweaks)
             {
                 On.EntityStates.BrotherMonster.WeaponSlam.OnEnter += (orig, self) =>
                 {
@@ -94,7 +95,7 @@ namespace UltimateCustomRun.Enemies.Bosses
                 };
             }
 
-            if (aggtw)
+            if (AggressionTweaks)
             {
                 On.EntityStates.BrotherMonster.BaseSlideState.OnEnter += (orig, self) =>
                 {
@@ -129,7 +130,7 @@ namespace UltimateCustomRun.Enemies.Bosses
                 shards.rechargeStock = 32;
             }
 
-            if (shardtw)
+            if (ShardTweaks)
             {
                 On.EntityStates.BrotherMonster.Weapon.FireLunarShards.OnEnter += (orig, self) =>
                 {
@@ -147,7 +148,7 @@ namespace UltimateCustomRun.Enemies.Bosses
                 shardt.rotationSpeed = 35f;
             }
 
-            if (wavetw)
+            if (WaveTweaks)
             {
                 var sunder = Resources.Load<GameObject>("prefabs/projectiles/BrotherSunderWave");
                 sunder.GetComponent<ProjectileDamage>().damageType |= DamageType.NonLethal;
@@ -184,6 +185,7 @@ namespace UltimateCustomRun.Enemies.Bosses
                 r.reverse = false;
             }
         }
+
         public static void FireWavesSlam(EntityStates.BrotherMonster.WeaponSlam self)
         {
             if (self.isAuthority)

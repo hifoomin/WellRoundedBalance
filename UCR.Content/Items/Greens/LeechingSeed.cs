@@ -1,6 +1,6 @@
 ﻿using MonoMod.Cil;
 
-namespace UltimateCustomRun
+namespace UltimateCustomRun.Items.Greens
 {
     public static class LeechingSeed
     {

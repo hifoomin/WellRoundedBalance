@@ -1,27 +1,28 @@
 ﻿using RoR2;
-using UnityEngine;
 using System.Linq;
+using UnityEngine;
 
 namespace UltimateCustomRun.Enemies.Bosses
 {
     public class TwistedScavengerGuraGura : EnemyBase
     {
-        public static bool itw;
+        public static bool ItemTweaks;
         public override string Name => ":::: Enemies ::: Twisted Scavenger Guragura";
 
         public override void Init()
         {
-            itw = ConfigOption(false, "Remove Bands?", "Vanilla is false. Recommended Value: True");
+            ItemTweaks = ConfigOption(false, "Remove Bands?", "Vanilla is false.\nRecommended Value: True");
             base.Init();
         }
 
         public override void Hooks()
         {
-            if (itw)
+            if (ItemTweaks)
             {
                 Nerf();
             }
         }
+
         public static void Nerf()
         {
             var master = Resources.Load<CharacterMaster>("prefabs/charactermasters/ScavLunar4Master");

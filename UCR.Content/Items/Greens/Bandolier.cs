@@ -1,25 +1,24 @@
-﻿using UnityEngine;
-using MonoMod.Cil;
+﻿using MonoMod.Cil;
+using UnityEngine;
 
-namespace UltimateCustomRun
+namespace UltimateCustomRun.Items.Greens
 {
     public class Bandolier : ItemBase
     {
-        public static float basee;
-        public static float exponent;
+        public static float Base;
+        public static float Exponent;
 
         public override string Name => ":: Items :: Greens :: Bandolier";
         public override string InternalPickupToken => "bandolier";
         public override bool NewPickup => false;
         public override string PickupText => "";
-        
-        public override string DescText => "<style=cIsUtility>" + Mathf.Round((1f - 1f / Mathf.Pow((1f + basee), exponent)) * 100f) + "%</style> <style=cStack>(+" + (Mathf.Round((1f - 1f / Mathf.Pow((2f + basee), exponent)) * 100f) - Mathf.Round((1f - 1f / Mathf.Pow((1f + basee), exponent)) * 100f)) + "% on stack)</style> chance on kill to drop an ammo pack that <style=cIsUtility>resets all skill cooldowns</style>.";
 
+        public override string DescText => "<style=cIsUtility>" + Mathf.Round((1f - 1f / Mathf.Pow((1f + Base), Exponent)) * 100f) + "%</style> <style=cStack>(+" + (Mathf.Round((1f - 1f / Mathf.Pow((2f + Base), Exponent)) * 100f) - Mathf.Round((1f - 1f / Mathf.Pow((1f + Base), Exponent)) * 100f)) + "% on stack)</style> Chance on kill to drop an ammo pack that <style=cIsUtility>resets all skill cooldowns</style>.";
 
         public override void Init()
         {
-            basee = ConfigOption(1f, "Base", "Vanilla is 1\nFormula:\n1 - 1 / (stack + Base)^Exponent) * 100\nIf you want to make stacking better, decrease the Base and increase the Exponent.");
-            exponent = ConfigOption(0.33f, "Exponent", "Decimal. Vanilla is 0.33");
+            Base = ConfigOption(1f, "Base", "Vanilla is 1\nFormula:\n1 - 1 / (stack + Base)^Exponent) * 100\nIf you want to make Stacking better, decrease the Base and increase the Exponent.");
+            Exponent = ConfigOption(0.33f, "Exponent", "Decimal. Vanilla is 0.33");
             base.Init();
         }
 
@@ -29,7 +28,8 @@ namespace UltimateCustomRun
             IL.RoR2.GlobalEventManager.OnCharacterDeath += ChangeExponent;
         }
 
-        public static void ChangeBase(ILContext il)
+        public static void
+        ChangeBase(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -40,8 +40,9 @@ namespace UltimateCustomRun
                 x => x.MatchLdcI4(1)
             );
             c.Index += 3;
-            c.Next.Operand = basee;
+            c.Next.Operand = Base;
         }
+
         public static void ChangeExponent(ILContext il)
         {
             ILCursor c = new ILCursor(il);
@@ -52,7 +53,7 @@ namespace UltimateCustomRun
                 x => x.MatchLdcR4(0.33f)
             );
             c.Index += 2;
-            c.Next.Operand = exponent;
+            c.Next.Operand = Exponent;
         }
     }
 }

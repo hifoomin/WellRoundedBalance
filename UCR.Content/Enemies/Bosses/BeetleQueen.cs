@@ -1,22 +1,22 @@
 ﻿using RoR2;
-using UnityEngine;
-using System.Linq;
 using RoR2.CharacterAI;
+using System.Linq;
+using UnityEngine;
 
 namespace UltimateCustomRun.Enemies.Bosses
 {
     public class BeetleQueen : EnemyBase
     {
-        public static bool aitw;
-        public static bool speedtw;
+        public static bool AITweaks;
+        public static bool SpeedTweaks;
         public static SpawnCard beeb;
         public static SpawnCard guard;
         public override string Name => ":::: Enemies ::: Beetle Queen";
 
         public override void Init()
         {
-            aitw = ConfigOption(false, "Make Beetle Queen AI smarter?", "Vanilla is false. Recommended Value: True");
-            speedtw = ConfigOption(false, "Make Beetle Queen faster?", "Vanilla is false. Recommended Value: True");
+            AITweaks = ConfigOption(false, "Make Beetle Queen AI smarter?", "Vanilla is false.\nRecommended Value: True");
+            SpeedTweaks = ConfigOption(false, "Make Beetle Queen faster?", "Vanilla is false.\nRecommended Value: True");
             base.Init();
         }
 
@@ -24,12 +24,13 @@ namespace UltimateCustomRun.Enemies.Bosses
         {
             Buff();
         }
+
         public static void Buff()
         {
             var master = Resources.Load<CharacterMaster>("prefabs/charactermasters/BeetleQueenMaster").GetComponent<CharacterMaster>();
             var body = Resources.Load<CharacterBody>("prefabs/characterbodies/BeetleQueen2Body");
 
-            if (aitw)
+            if (AITweaks)
             {
                 AISkillDriver ai = (from x in master.GetComponents<AISkillDriver>()
                                     where x.customName == "Chase"
@@ -53,7 +54,6 @@ namespace UltimateCustomRun.Enemies.Bosses
                             {
                                 EntityStates.BeetleQueenMonster.SummonEggs.spawnCard = guard;
                             }
-
                         }
                     }
                     EntityStates.BeetleQueenMonster.SummonEggs.baseDuration = 2f;
@@ -62,10 +62,9 @@ namespace UltimateCustomRun.Enemies.Bosses
                     orig(self);
                     self.outer.SetNextState(new EntityStates.BeetleQueenMonster.BeginBurrow());
                 };
-
             }
 
-            if (speedtw)
+            if (SpeedTweaks)
             {
                 var a = body.GetComponent<CharacterBody>();
                 a.mainRootSpeed = 12f;
@@ -74,8 +73,6 @@ namespace UltimateCustomRun.Enemies.Bosses
                 var b = body.GetComponent<CharacterDirection>();
                 b.turnSpeed = 180f;
                 b.driveFromRootRotation = false;
-
-
 
                 On.EntityStates.BeetleQueenMonster.BeginBurrow.OnEnter += (orig, self) =>
                 {

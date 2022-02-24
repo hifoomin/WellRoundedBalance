@@ -1,8 +1,6 @@
-﻿using MonoMod.Cil;
-using System;
-using System.Reflection;
+﻿/*
+using MonoMod.Cil;
 using RoR2;
-using R2API.Utils;
 using MonoMod.RuntimeDetour;
 
 namespace UltimateCustomRun.Global
@@ -10,7 +8,7 @@ namespace UltimateCustomRun.Global
     public class IsHealthLow : GlobalBase
     {
         public static float lowhpthreshold;
-        public override string Name => ": Global ::::: Low Health Threshold";
+        public override string Name => ": Global ::: Health";
 
         public override void Init()
         {
@@ -32,3 +30,4 @@ namespace UltimateCustomRun.Global
         }
     }
 }
+*/

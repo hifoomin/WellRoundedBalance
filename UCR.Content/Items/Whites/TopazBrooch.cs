@@ -1,12 +1,12 @@
-﻿using RoR2;
-using MonoMod.Cil;
+﻿using MonoMod.Cil;
+using RoR2;
 using UnityEngine.Networking;
 
-namespace UltimateCustomRun
+namespace UltimateCustomRun.Items.Whites
 {
     public class TopazBrooch : ItemBase
     {
-        public static float barrier;
+        public static float Barrier;
 
         public override string Name => ":: Items : Whites :: Topaz Brooch";
         public override string InternalPickupToken => "barrierOnKill";
@@ -14,10 +14,11 @@ namespace UltimateCustomRun
 
         public override string PickupText => "";
 
-        public override string DescText => "Gain a <style=cIsHealing>temporary barrier</style> on kill for <style=cIsHealing>" + barrier + " health <style=cStack>(+" + barrier + " per stack)</style></style>.";
+        public override string DescText => "Gain a <style=cIsHealing>temporary Barrier</style> on kill for <style=cIsHealing>" + Barrier + " health <style=cStack>(+" + Barrier + " per stack)</style></style>.";
+
         public override void Init()
         {
-            barrier = ConfigOption(15f, "Barrier Gain", "Per Stack. Vanilla is 15");
+            Barrier = ConfigOption(15f, "Barrier Gain", "Per Stack. Vanilla is 15");
             base.Init();
         }
 
@@ -26,6 +27,7 @@ namespace UltimateCustomRun
             IL.RoR2.GlobalEventManager.OnCharacterDeath += ChangeBarrier;
             // GlobalEventManager.onCharacterDeathGlobal += TopazBrooch.AddBehavior;
         }
+
         public static void ChangeBarrier(ILContext il)
         {
             ILCursor c = new ILCursor(il);
@@ -35,8 +37,9 @@ namespace UltimateCustomRun
                 x => x.MatchLdcR4(15f)
             );
             c.Index += 1;
-            c.Next.Operand = barrier;
+            c.Next.Operand = Barrier;
         }
+
         public static void AddBehavior(DamageReport report)
         {
             if (!NetworkServer.active)
@@ -55,6 +58,7 @@ namespace UltimateCustomRun
                 }
             }
         }
+
         // i was told a NetworkServer.active needs to be here :Thonk:
         // PLEASE HELP TO FIX
     }

@@ -1,13 +1,13 @@
-﻿using RoR2;
+﻿using MonoMod.Cil;
+using RoR2;
 using UnityEngine;
-using MonoMod.Cil;
 
-namespace UltimateCustomRun
+namespace UltimateCustomRun.Items.Whites
 {
     public class FocusCrystal : ItemBase
     {
-        public static float damage;
-        public static float range;
+        public static float Damage;
+        public static float Radius;
 
         public override string Name => ":: Items : Whites :: Focus Crystal";
         public override string InternalPickupToken => "nearbyDamageBonus";
@@ -15,11 +15,12 @@ namespace UltimateCustomRun
 
         public override string PickupText => "";
 
-        public override string DescText => "Increase damage to enemies within <style=cIsDamage>" + range + "m</style> by <style=cIsDamage>" + d(damage) + "</style> <style=cStack>(+" + d(damage) + " per stack)</style>.";
+        public override string DescText => "Increase Damage to enemies within <style=cIsDamage>" + Radius + "m</style> by <style=cIsDamage>" + d(Damage) + "</style> <style=cStack>(+" + d(Damage) + " per stack)</style>.";
+
         public override void Init()
         {
-            damage = ConfigOption(0.2f, "Damage Coefficient", "Decimal. Per Stack. Vanilla is 0.2");
-            range = ConfigOption(13f, "Range", "Vanilla is 13");
+            Damage = ConfigOption(0.2f, "Damage Coefficient", "Decimal. Per Stack. Vanilla is 0.2");
+            Radius = ConfigOption(13f, "Range", "Vanilla is 13");
             base.Init();
         }
 
@@ -29,6 +30,7 @@ namespace UltimateCustomRun
             IL.RoR2.HealthComponent.TakeDamage += ChangeRadius;
             ChangeVisual();
         }
+
         public static void ChangeDamage(ILContext il)
         {
             ILCursor c = new ILCursor(il);
@@ -41,8 +43,9 @@ namespace UltimateCustomRun
                 x => x.MatchLdcR4(0.2f)
             );
             c.Index += 5;
-            c.Next.Operand = damage;
+            c.Next.Operand = Damage;
         }
+
         public static void ChangeRadius(ILContext il)
         {
             ILCursor c = new ILCursor(il);
@@ -51,12 +54,13 @@ namespace UltimateCustomRun
                 x => x.MatchLdcR4(169f)
             );
             c.Index += 1;
-            c.Next.Operand = range * range;
+            c.Next.Operand = Radius * Radius;
         }
+
         public static void ChangeVisual()
         {
             var focus = Resources.Load<GameObject>("Prefabs/NetworkedObjects/NearbyDamageBonusIndicator");
-            float actualRange = range / 13f;
+            float actualRange = Radius / 13f;
             focus.transform.localScale = new Vector3(actualRange, actualRange, actualRange);
         }
     }

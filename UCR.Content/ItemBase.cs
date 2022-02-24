@@ -1,5 +1,4 @@
 ﻿using R2API;
-using System.Collections.Generic;
 
 namespace UltimateCustomRun
 {
@@ -24,7 +23,7 @@ namespace UltimateCustomRun
             return (f * 100f).ToString() + "%";
         }
 
-        List<string> Names = new List<string>();
+        //List<string> Names = new List<string>();
 
         public virtual void Init()
         {
@@ -36,13 +35,12 @@ namespace UltimateCustomRun
                 LanguageAPI.Add(pickupToken, PickupText);
             }
             LanguageAPI.Add(descriptionToken, DescText);
-            Names.Add(Name);
-            Main.SortAlphabetically(Names);
-            foreach (var itemstring in Names)
-            {
-                Main.UCRLogger.LogInfo("Added " + itemstring);
-            }
-
+            //Names.Add(Name);
+            //Main.SortAlphabetically(Names);
+            //foreach (var itemstring in Names)
+            //{
+            Main.UCRLogger.LogInfo("Added " + Name /* itemstring */);
+            //}
         }
     }
 }

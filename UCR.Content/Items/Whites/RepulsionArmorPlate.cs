@@ -1,15 +1,15 @@
-﻿using R2API;
+﻿using MonoMod.Cil;
+using R2API;
 using RoR2;
-using MonoMod.Cil;
 
-namespace UltimateCustomRun
+namespace UltimateCustomRun.Items.Whites
 {
     public class RepulsionArmorPlate : ItemBase
     {
-        public static float armor;
-        public static bool armorstack;
-        public static float reduc;
-        public static float mindmg;
+        public static float Armor;
+        public static bool StackArmor;
+        public static float FlatReduction;
+        public static float MinimumDamage;
 
         public override string Name => ":: Items : Whites :: Repulsion Armor Plate";
         public override string InternalPickupToken => "repulsionArmorPlate";
@@ -17,15 +17,16 @@ namespace UltimateCustomRun
 
         public override string PickupText => "";
 
-        public override string DescText => (armor != 0f ? "<style=cIsHealing>Increase armor</style> by <style=cIsHealing>" + armor + "</style> " +
-                                           (armorstack ? "<style=cStack>(+" + armor + " per stack)</style>. " : "") : "") +
-                                           (reduc != 0f ? "Reduce all <style=cIsDamage>incoming damage</style> by <style=cIsDamage>" + reduc + "<style=cStack> (+" + reduc + " per stack)</style></style>. Cannot be reduced below <style=cIsDamage>" + mindmg + "</style>." : "");
+        public override string DescText => (Armor != 0f ? "<style=cIsHealing>Increase Armor</style> by <style=cIsHealing>" + Armor + "</style> " +
+                                           (StackArmor ? "<style=cStack>(+" + Armor + " per stack)</style>. " : "") : "") +
+                                           (FlatReduction != 0f ? "Reduce all <style=cIsDamage>incoming Damage</style> by <style=cIsDamage>" + FlatReduction + "<style=cStack> (+" + FlatReduction + " per stack)</style></style>. Cannot be reduced below <style=cIsDamage>" + MinimumDamage + "</style>." : "");
+
         public override void Init()
         {
-            reduc = ConfigOption(5f, "Flat Damage Reduction", "Per Stack. Vanilla is 5");
-            mindmg = ConfigOption(1f, "Minimum Damage", "Vanilla is 1");
-            armor = ConfigOption(0f, "Armor", "Vanilla is 0");
-            armorstack = ConfigOption(false, "Stack Armor?", "Vanilla is false");
+            FlatReduction = ConfigOption(5f, "Flat Damage Reduction", "Per Stack. Vanilla is 5");
+            MinimumDamage = ConfigOption(1f, "Minimum Damage", "Vanilla is 1");
+            Armor = ConfigOption(0f, "Armor", "Vanilla is 0");
+            StackArmor = ConfigOption(false, "Stack Armor?", "Vanilla is false");
             base.Init();
         }
 
@@ -35,6 +36,7 @@ namespace UltimateCustomRun
             IL.RoR2.HealthComponent.TakeDamage += ChangeMinimum;
             RecalculateStatsAPI.GetStatCoefficients += AddBehavior;
         }
+
         public static void AddBehavior(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
             if (sender.inventory)
@@ -42,7 +44,7 @@ namespace UltimateCustomRun
                 var stack = sender.inventory.GetItemCount(RoR2Content.Items.ArmorPlate);
                 if (stack > 0)
                 {
-                    args.armorAdd += (armorstack ? armor * stack : armor);
+                    args.armorAdd += (StackArmor ? Armor * stack : Armor);
                 }
             }
         }
@@ -56,7 +58,7 @@ namespace UltimateCustomRun
                 x => x.MatchLdcR4(5)
             );
             c.Index += 2;
-            c.Next.Operand = reduc;
+            c.Next.Operand = FlatReduction;
         }
 
         public static void ChangeMinimum(ILContext il)
@@ -70,7 +72,7 @@ namespace UltimateCustomRun
                 x => x.MatchLdcR4(1)
             );
             c.Index += 2;
-            c.Next.Operand = mindmg;
+            c.Next.Operand = MinimumDamage;
         }
     }
 }
