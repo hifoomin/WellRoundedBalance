@@ -40,11 +40,11 @@ namespace UltimateCustomRun.Survivors
             SkillDef grap = ScriptableObject.CreateInstance<SkillDef>();
             grap.activationState = new EntityStates.SerializableEntityStateType(typeof(ZasedGrapple));
             grap.activationStateMachineName = "Hook";
-            grap.baseRechargeInterval = 1f;
+            grap.baseRechargeInterval = 0.5f;
             grap.baseMaxStock = 1;
             grap.rechargeStock = 1;
             grap.requiredStock = 1;
-            grap.stockToConsume = 0;
+            grap.stockToConsume = 1;
             grap.resetCooldownTimerOnUse = false;
             grap.fullRestockOnAssign = true;
             grap.dontAllowPastMaxStocks = false;
@@ -54,7 +54,7 @@ namespace UltimateCustomRun.Survivors
             grap.canceledFromSprinting = false;
             grap.isCombatSkill = true;
             grap.mustKeyPress = true;
-            grap.interruptPriority = EntityStates.InterruptPriority.Pain;
+            grap.interruptPriority = EntityStates.InterruptPriority.Any;
             grap.icon = Resources.Load<Sprite>("textures/achievementicons/texloaderspeedrunicon");
             grap.skillDescriptionToken = "LOADER_YANKHOOK_DESCRIPTION";
             grap.skillName = "LOADER_YANKHOOK_NAME";
@@ -67,7 +67,7 @@ namespace UltimateCustomRun.Survivors
             pylon.baseMaxStock = 1;
             pylon.rechargeStock = 1;
             pylon.requiredStock = 1;
-            pylon.stockToConsume = 0;
+            pylon.stockToConsume = 1;
             pylon.resetCooldownTimerOnUse = false;
             pylon.fullRestockOnAssign = true;
             pylon.dontAllowPastMaxStocks = false;
@@ -122,8 +122,14 @@ namespace UltimateCustomRun.Survivors
     {
         public override void OnEnter()
         {
-            Loader.pylonn.GetComponent<BeginRapidlyActivatingAndDeactivating>().enabled = false;
-            Loader.pylonn.GetComponent<ProjectileProximityBeamController>().enabled = true;
+            var p = Loader.pylonn.GetComponent<ProjectileProximityBeamController>();
+            Loader.pylonn.GetComponent<ProjectileSimple>().lifetime = 3f;
+            p.attackFireCount = 1000;
+            p.attackInterval = 0.25f;
+            p.attackRange = 35f;
+            p.procCoefficient = 0.3f;
+            p.damageCoefficient = 0.25f;
+            p.bounces = 3;
             projectilePrefab = Loader.pylonn;
             base.OnEnter();
         }
