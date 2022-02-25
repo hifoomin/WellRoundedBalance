@@ -40,6 +40,7 @@ namespace UltimateCustomRun.Items.Whites
             c.Next.Operand = Barrier;
         }
 
+        /*
         public static void AddBehavior(DamageReport report)
         {
             if (!NetworkServer.active)
@@ -58,7 +59,7 @@ namespace UltimateCustomRun.Items.Whites
                 }
             }
         }
-
+        */
         // i was told a NetworkServer.active needs to be here :Thonk:
         // PLEASE HELP TO FIX
     }

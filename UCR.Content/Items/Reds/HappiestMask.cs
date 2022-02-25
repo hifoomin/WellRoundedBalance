@@ -1,4 +1,5 @@
-﻿using MonoMod.Cil;
+﻿/*
+using MonoMod.Cil;
 
 namespace UltimateCustomRun.Items.Reds
 {
@@ -30,3 +31,4 @@ namespace UltimateCustomRun.Items.Reds
         // WHY DO THESE NOT WORK WHAT
     }
 }
+*/

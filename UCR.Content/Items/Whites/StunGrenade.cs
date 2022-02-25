@@ -46,6 +46,7 @@ namespace UltimateCustomRun.Items.Whites
             // I want it to be linear instead of hyperbolic
         }
 
+        /*
         public static void ChangeChance(ILContext il)
         {
             ILCursor c = new ILCursor(il);
@@ -54,7 +55,7 @@ namespace UltimateCustomRun.Items.Whites
             );
             c.Next.Operand = Main.StunGrenadeChance;
         }
-
+        */
         // hooking this requires reflection?
         // PLEASE HELP TO FIX
     }
