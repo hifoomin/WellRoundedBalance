@@ -13,7 +13,7 @@ namespace UltimateCustomRun.Items.Greens
         public override string InternalPickupToken => "bonusGoldPackOnKill";
         public override bool NewPickup => false;
         public override string PickupText => "";
-        public override string DescText => "<style=cIsUtility>" + Chance + "%</style> <style=cStack>(+" + Chance + "% on stack)</style> Chance on kill to drop a treasure worth <style=cIsUtility>$" + Reward + "</style>. <style=cIsUtility>Scales over Time.</style>";
+        public override string DescText => "<style=cIsUtility>" + Chance + "%</style> <style=cStack>(+" + Chance + "% on stack)</style> Chance on kill to drop a treasure worth <style=cIsUtility>$" + Reward + "</style>. <style=cIsUtility>Scales over time.</style>";
 
         public override void Init()
         {

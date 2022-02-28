@@ -28,7 +28,7 @@ namespace UltimateCustomRun.Enemies
         {
             var master = Resources.Load<CharacterMaster>("prefabs/charactermasters/LunarExploderMaster").GetComponent<CharacterMaster>();
             var body = Resources.Load<CharacterBody>("prefabs/characterbodies/LunarExploderBody").GetComponent<CharacterBody>();
-            body.baseMoveSpeed = 32f;
+            body.baseMoveSpeed = 20f;
             body.baseAcceleration = 1000f;
             AISkillDriver ai = (from x in master.GetComponents<AISkillDriver>()
                                 where x.customName == "StrafeAndShoot"

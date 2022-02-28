@@ -16,13 +16,13 @@ namespace UltimateCustomRun.Items.Whites
         public override bool NewPickup => true;
 
         public override string PickupText => "Drop a Warbanner on level up or starting the Teleporter event. Grants allies " +
-                                             (BaseDamage != 0f ? "base Damage, " : "") +
+                                             (BaseDamage != 0f ? "base damage, " : "") +
                                              "movement Speed and attack Speed.";
 
         public override string DescText => "On <style=cIsUtility>level up</style> or starting the <style=cIsUtility>Teleporter event</style>, drop a banner that strengthens all allies within <style=cIsUtility>" + Radius + "m</style> <style=cStack>(+" + StackRadius + "m per stack)</style>. Raise " +
-                                           (BaseDamage != 0f ? "<style=cIsDamage>base Damage</style> by <style=cIsDamage>" + BaseDamage + "</style>, " +
+                                           (BaseDamage != 0f ? "<style=cIsDamage>base damage</style> by <style=cIsDamage>" + BaseDamage + "</style>, " +
                                            (StackBaseDamage ? "<style=cStack>(+" + BaseDamage + " per stack)</style>. " : "") : "") +
-                                           "<style=cIsUtility>movement Speed</style> and <style=cIsDamage>attack Speed</style> by <style=cIsDamage>30%</style>.";
+                                           "<style=cIsUtility>movement speed</style> and <style=cIsDamage>attack speed</style> by <style=cIsDamage>30%</style>.";
 
         public override void Init()
         {

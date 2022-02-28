@@ -18,7 +18,7 @@ namespace UltimateCustomRun.Items.Whites
 
         public override string PickupText => "";
 
-        public override string DescText => "Activating an interactable <style=cIsDamage>launches " + (Count + StackCount) + " <style=cStack>(+" + StackCount + " per stack)</style> fireworks</style> that deal <style=cIsDamage>" + d(Damage) + "</style> base Damage.";
+        public override string DescText => "Activating an interactable <style=cIsDamage>launches " + Count + " <style=cStack>(+" + StackCount + " per stack)</style> fireworks</style> that deal <style=cIsDamage>" + d(Damage) + "</style> base damage.";
 
         public override void Init()
         {

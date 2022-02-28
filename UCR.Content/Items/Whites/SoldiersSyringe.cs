@@ -12,7 +12,7 @@ namespace UltimateCustomRun.Items.Whites
 
         public override string PickupText => "";
 
-        public override string DescText => "Increases <style=cIsDamage>attack Speed</style> by <style=cIsDamage>" + d(Duration) + " <style=cStack>(+" + d(Duration) + " per stack)</style></style>.";
+        public override string DescText => "Increases <style=cIsDamage>attack speed</style> by <style=cIsDamage>" + d(Duration) + " <style=cStack>(+" + d(Duration) + " per stack)</style></style>.";
 
         public override void Init()
         {

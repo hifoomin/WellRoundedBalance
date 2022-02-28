@@ -23,9 +23,9 @@ namespace UltimateCustomRun.Items.Greens
         public override string PickupText => "";
 
         public override string DescText => "Hits that deal <style=cIsDamage>more than " + d(KjarosBand.Threshold) + " Damage</style> also blasts enemies with a <style=cIsDamage>runic ice blast</style>, <style=cIsUtility>slowing</style> them by <style=cIsUtility>80%</style> for <style=cIsUtility>3s</style> <style=cStack>(+3s per stack)</style>" +
-                                            (TotalDamage != 0f ? " and <style=cIsDamage>" + d(TotalDamage) + "</style> <style=cStack>(+" + d(TotalDamage) + " per stack)</style> TOTAL Damage" : "" +
-                                            (BaseDamage != 0f && TotalDamage != 0f ? " and " : "") +
-                                            (BaseDamage != 0f ? "<style=cIsDamage>" + d(BaseDamage) + "</style> <style=cStack>(+" + d(BaseDamage) + " per stack)</style> base Damage." : "") +
+                                            (TotalDamage != 0f ? " and <style=cIsDamage>" + d(TotalDamage) + "</style> <style=cStack>(+" + d(TotalDamage) + " per stack)</style> TOTAL damage" : "" +
+                                            (BaseDamage != 0f && TotalDamage != 0f ? " and" : "") +
+                                            (BaseDamage != 0f ? " <style=cIsDamage>" + d(BaseDamage) + "</style> <style=cStack>(+" + d(BaseDamage) + " per stack)</style> base damage." : "") +
                                             " Recharges every <style=cIsUtility>" + KjarosBand.Cooldown + "</style> seconds.");
 
         public override void Init()

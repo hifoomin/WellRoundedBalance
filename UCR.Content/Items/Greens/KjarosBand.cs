@@ -25,9 +25,9 @@ namespace UltimateCustomRun.Items.Greens
         public override string PickupText => "";
 
         public override string DescText => "Hits that deal <style=cIsDamage>more than " + d(Threshold) + " Damage</style> also blasts enemies with a <style=cIsDamage>runic flame tornado</style>, dealing " +
-                                            (TotalDamage != 0f ? "<style=cIsDamage>" + d(TotalDamage) + "</style> <style=cStack>(+" + d(TotalDamage) + " per stack)</style> TOTAL Damage over Time" : "") +
+                                            (TotalDamage != 0f ? "<style=cIsDamage>" + d(TotalDamage) + "</style> <style=cStack>(+" + d(TotalDamage) + " per stack)</style> TOTAL damage over time" : "") +
                                             (BaseDamage != 0f && TotalDamage != 0f ? " and " : "") +
-                                            (BaseDamage != 0f ? "<style=cIsDamage>" + d(BaseDamage) + "</style> <style=cStack>(+" + d(BaseDamage) + " per stack)</style> base Damage." : "") +
+                                            (BaseDamage != 0f ? "<style=cIsDamage>" + d(BaseDamage) + "</style> <style=cStack>(+" + d(BaseDamage) + " per stack)</style> base damage." : "") +
                                             " Recharges every <style=cIsUtility>" + Cooldown + "</style> seconds.";
 
         public override void Init()
@@ -57,7 +57,7 @@ namespace UltimateCustomRun.Items.Greens
                 x => x.MatchLdsfld("RoR2.RoR2Content/Items", "FireRing"),
                 x => x.MatchCallOrCallvirt<Inventory>(nameof(Inventory.GetItemCount)),
                 x => x.MatchStloc(out itemCountLocation)
-                );
+            );
 
             c.GotoNext(MoveType.Before,
                 x => x.MatchLdcR4(out _),
@@ -65,7 +65,7 @@ namespace UltimateCustomRun.Items.Greens
                 x => x.MatchConvR4(),
                 x => x.MatchMul(),
                 x => x.MatchStloc(out totalDamageMultiplierLocation)
-                );
+            );
             c.Remove();
             c.Emit(OpCodes.Ldc_R4, TotalDamage);
 

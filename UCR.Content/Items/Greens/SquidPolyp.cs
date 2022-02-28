@@ -11,7 +11,7 @@ namespace UltimateCustomRun.Items.Greens
         public override string InternalPickupToken => "squidTurret";
         public override bool NewPickup => false;
         public override string PickupText => "";
-        public override string DescText => "Activating an interactable summons a <style=cIsDamage>Squid Turret</style> that attacks nearby enemies at <style=cIsDamage>" + (10 * AttackSpeed) + "% <style=cStack>(+" + (10 * AttackSpeed) + "% per stack)</style> attack Speed</style>. Lasts <style=cIsUtility>" + Duration + "</style> seconds.";
+        public override string DescText => "Activating an interactable summons a <style=cIsDamage>Squid Turret</style> that attacks nearby enemies at <style=cIsDamage>" + (10 * AttackSpeed) + "% <style=cStack>(+" + (10 * AttackSpeed) + "% per stack)</style> attack speed</style>. Lasts <style=cIsUtility>" + Duration + "</style> seconds.";
 
         public override void Init()
         {

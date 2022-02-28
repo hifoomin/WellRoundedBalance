@@ -12,7 +12,7 @@ namespace UltimateCustomRun.Items.Whites
 
         public override string PickupText => "";
 
-        public override string DescText => "<style=cIsUtility>Sprint Speed</style> is improved by <style=cIsUtility>" + d(Speed) + "</style> <style=cStack>(+" + d(Speed) + " per stack)</style>.";
+        public override string DescText => "Increases <style=cIsUtility>movement speed</style> by <style=cIsUtility>" + d(Speed) + "</style> <style=cStack>(+" + d(Speed) + " per stack)</style>.";
 
         public override void Init()
         {

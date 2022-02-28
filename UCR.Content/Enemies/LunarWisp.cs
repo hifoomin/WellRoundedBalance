@@ -25,8 +25,8 @@ namespace UltimateCustomRun.Enemies
         public static void Nerf()
         {
             var body = Resources.Load<CharacterBody>("prefabs/characterbodies/LunarWispBody").GetComponent<CharacterBody>();
-            body.baseMoveSpeed = 14f;
-            body.acceleration = 8f;
+            body.baseMoveSpeed = 10f;
+            body.acceleration = 5f;
         }
     }
 }

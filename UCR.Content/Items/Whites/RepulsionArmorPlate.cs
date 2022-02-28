@@ -17,9 +17,9 @@ namespace UltimateCustomRun.Items.Whites
 
         public override string PickupText => "";
 
-        public override string DescText => (Armor != 0f ? "<style=cIsHealing>Increase Armor</style> by <style=cIsHealing>" + Armor + "</style> " +
+        public override string DescText => (Armor != 0f ? "<style=cIsHealing>Increase armor</style> by <style=cIsHealing>" + Armor + "</style> " +
                                            (StackArmor ? "<style=cStack>(+" + Armor + " per stack)</style>. " : "") : "") +
-                                           (FlatReduction != 0f ? "Reduce all <style=cIsDamage>incoming Damage</style> by <style=cIsDamage>" + FlatReduction + "<style=cStack> (+" + FlatReduction + " per stack)</style></style>. Cannot be reduced below <style=cIsDamage>" + MinimumDamage + "</style>." : "");
+                                           (FlatReduction != 0f ? "Reduce all <style=cIsDamage>incoming damage</style> by <style=cIsDamage>" + FlatReduction + "<style=cStack> (+" + FlatReduction + " per stack)</style></style>. Cannot be reduced below <style=cIsDamage>" + MinimumDamage + "</style>." : "");
 
         public override void Init()
         {

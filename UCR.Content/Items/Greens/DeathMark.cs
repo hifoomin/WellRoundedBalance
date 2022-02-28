@@ -20,9 +20,9 @@ namespace UltimateCustomRun.Items.Greens
         public override string Name => ":: Items :: Greens :: Death Mark";
         public override string InternalPickupToken => "deathmark";
         public override bool NewPickup => true;
-        public override string PickupText => "Enemies with " + MinimumDebuffs + " or more debuffs are marked for death, taking bonus Damage.";
+        public override string PickupText => "Enemies with " + MinimumDebuffs + " or more debuffs are marked for death, taking bonus damage.";
 
-        public override string DescText => "Enemies with <style=cIsDamage>" + MinimumDebuffs + "</style> or more debuffs are <style=cIsDamage>marked for death</style>, increasing Damage taken by <style=cIsDamage>" + d(DamagePerDebuff) + "</style> <style=cStack>(+" + d(DamagePerStack) + " per stack)</style> per debuff from all sources for <style=cIsUtility>7</style> <style=cStack>(+7 per stack)</style> seconds.";
+        public override string DescText => "Enemies with <style=cIsDamage>" + MinimumDebuffs + "</style> or more debuffs are <style=cIsDamage>marked for death</style>, increasing damage taken by <style=cIsDamage>" + d(DamagePerDebuff) + "</style> <style=cStack>(+" + d(DamagePerStack) + " per stack)</style> per debuff from all sources for <style=cIsUtility>7</style> <style=cStack>(+7 per stack)</style> seconds.";
 
         public override void Init()
         {

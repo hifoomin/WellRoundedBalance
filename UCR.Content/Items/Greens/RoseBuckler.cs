@@ -20,9 +20,9 @@ namespace UltimateCustomRun.Items.Greens
         public override bool NewPickup => false;
         public override string PickupText => "";
 
-        public override string DescText => (Armor != 0f ? "<style=cIsHealing>Increase Armor</style> by <style=cIsHealing>" + Armor + "</style>" +
+        public override string DescText => (Armor != 0f ? "<style=cIsHealing>Increase armor</style> by <style=cIsHealing>" + Armor + "</style>" +
                                            (StackArmor ? " <style=cStack>(+" + Armor + " per stack)</style>" : "") +
-                                           " and <style=cIsHealing>" + ConditionalArmor + "</style> <style=cStack>(+" + ConditionalArmor + " per stack)</style> " : "<style=cIsHealing>Increase Armor</style> by <style=cIsHealing>" + ConditionalArmor + "</style> <style=cStack>(+" + ConditionalArmor + " per stack)</style>") +
+                                           " and <style=cIsHealing>" + ConditionalArmor + "</style> <style=cStack>(+" + ConditionalArmor + " per stack)</style> " : "<style=cIsHealing>Increase armor</style> by <style=cIsHealing>" + ConditionalArmor + "</style> <style=cStack>(+" + ConditionalArmor + " per stack)</style>") +
                                            " while" +
                                            (ChangeCondition ? " <style=cIsHealth>under " + d(Threshold) + " health</style>." : " <style=cIsUtility>sprinting</style>.");
 

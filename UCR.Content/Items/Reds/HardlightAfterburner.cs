@@ -12,7 +12,7 @@ namespace UltimateCustomRun.Items.Reds
         public override bool NewPickup => true;
         public override string PickupText => "Add " + Charges + " extra Charges of your Utility skill. Reduce Utility skill Cooldown.";
 
-        public override string DescText => "Add <style=cIsUtility>+" + Charges + "</style> <style=cStack>(+" + Charges + " per stack)</style> Charges of your <style=cIsUtility>Utility skill</style>. <style=cIsUtility>Reduces Utility skill Cooldown</style> by <style=cIsUtility>" + Mathf.Round(CooldownReduction * 100f) + "%</style>.";
+        public override string DescText => "Add <style=cIsUtility>+" + Charges + "</style> <style=cStack>(+" + Charges + " per stack)</style> Charges of your <style=cIsUtility>Utility skill</style>. <style=cIsUtility>Reduces Utility skill cooldown</style> by <style=cIsUtility>" + Mathf.Round(CooldownReduction * 100f) + "%</style>.";
 
         public override void Init()
         {

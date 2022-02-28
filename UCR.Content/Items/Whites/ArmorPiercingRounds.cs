@@ -32,7 +32,7 @@ namespace UltimateCustomRun.Items.Whites
         */
 
         // "Deal an additional <style=cIsDamage>" + d(AprDamage.Value) + "</style> Damage <style=cStack>(+" + d(AprDamage.Value) + " per stack)</style> to " + allEnemiesAffected + ".");
-        public override string DescText => "Deal an additional <style=cIsDamage>" + d(Damage) + "</style> Damage <style=cStack>(+" + d(Damage) + " per stack)</style> to bosses.";
+        public override string DescText => "Deal an additional <style=cIsDamage>" + d(Damage) + "</style> damage <style=cStack>(+" + d(Damage) + " per stack)</style> to bosses.";
 
         public override void Init()
         {

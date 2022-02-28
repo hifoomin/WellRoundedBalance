@@ -13,7 +13,7 @@ namespace UltimateCustomRun.Items.Whites
         public override bool NewPickup => true;
 
         public override string PickupText => "Deal bonus Damage to enemies above " + d(Threshold) + " health.";
-        public override string DescText => "Deal <style=cIsDamage>+" + d(Damage) + "</style> <style=cStack>(+" + d(Damage) + " per stack)</style> Damage to enemies above <style=cIsDamage>" + d(Threshold) + " health</style>.";
+        public override string DescText => "Deal <style=cIsDamage>+" + d(Damage) + "</style> <style=cStack>(+" + d(Damage) + " per stack)</style> damage to enemies above <style=cIsDamage>" + d(Threshold) + " health</style>.";
 
         public override void Init()
         {

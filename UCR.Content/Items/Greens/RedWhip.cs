@@ -10,7 +10,7 @@ namespace UltimateCustomRun.Items.Greens
         public override string InternalPickupToken => "sprintOutOfCombat";
         public override bool NewPickup => false;
         public override string PickupText => "";
-        public override string DescText => "Leaving combat boosts your <style=cIsUtility>movement Speed</style> by <style=cIsUtility>" + d(Speed) + "</style> <style=cStack>(+" + d(Speed) + " per stack)</style>.";
+        public override string DescText => "Leaving combat boosts your <style=cIsUtility>movement speed</style> by <style=cIsUtility>" + d(Speed) + "</style> <style=cStack>(+" + d(Speed) + " per stack)</style>.";
 
         public override void Init()
         {

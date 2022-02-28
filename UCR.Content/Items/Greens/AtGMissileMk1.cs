@@ -14,7 +14,7 @@ namespace UltimateCustomRun.Items.Greens
         public override string InternalPickupToken => "missile";
         public override bool NewPickup => false;
         public override string PickupText => "";
-        public override string DescText => "<style=cIsDamage>" + Chance + "%</style> Chance to fire a missile that deals <style=cIsDamage>" + d(Damage) + "</style> <style=cStack>(+" + d(Damage) + " per stack)</style> TOTAL Damage.";
+        public override string DescText => "<style=cIsDamage>" + Chance + "%</style> Chance to fire a missile that deals <style=cIsDamage>" + d(Damage) + "</style> <style=cStack>(+" + d(Damage) + " per stack)</style> TOTAL damage.";
 
         public override void Init()
         {

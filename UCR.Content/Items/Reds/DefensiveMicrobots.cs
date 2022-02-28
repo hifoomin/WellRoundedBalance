@@ -10,13 +10,13 @@
         public override bool NewPickup => false;
         public override string PickupText => "";
 
-        public override string DescText => "Shoot down <style=cIsDamage>1</style> <style=cStack>(+1 per stack)</style> projectiles within <style=cIsDamage>" + Radius + "m</style> every <style=cIsDamage>" + BaseRechargeFrequency + " seconds</style>. <style=cIsUtility>Recharge rate scales with attack Speed</style>.";
+        public override string DescText => "Shoot down <style=cIsDamage>1</style> <style=cStack>(+1 per stack)</style> projectiles within <style=cIsDamage>" + Radius + "m</style> every <style=cIsDamage>" + BaseRechargeFrequency + " seconds</style>. <style=cIsUtility>Recharge rate scales with attack speed</style>.";
 
         public override void Init()
         {
             Radius = ConfigOption(20f, "Range", "Vanilla is 20");
             MinimumFireFrequency = ConfigOption(10f, "Minimum Fire Frequency", "Vanilla is 10");
-            BaseRechargeFrequency = ConfigOption(2f, "Base Recharge Frequency", "Vanilla is 2");
+            BaseRechargeFrequency = ConfigOption(2f, "Base Recharge Frequency", "Vanilla is 2\nLower this to increase the frequency.");
             base.Init();
         }
 

@@ -15,11 +15,11 @@ namespace UltimateCustomRun.Items.Whites
         public override string InternalPickupToken => "bear";
         public override bool NewPickup => true;
 
-        public override string PickupText => (BlockChance != 0f ? "Chance to block incoming Damage." : "") +
-                                             (Armor != 0f ? " Reduce incoming Damage." : "");
+        public override string PickupText => (BlockChance != 0f ? "Chance to block incoming damage." : "") +
+                                             (Armor != 0f ? " Reduce incoming damage." : "");
 
-        public override string DescText => (BlockChance != 0f ? "<style=cIsHealing>" + BlockChance + "%</style> <style=cStack>(+" + BlockChance + "% per stack)</style> Chance to <style=cIsHealing>block</style> incoming Damage. " : "") +
-                                           (Armor != 0f ? "<style=cIsHealing>Increase Armor</style> by <style=cIsHealing>" + Armor + "</style> " +
+        public override string DescText => (BlockChance != 0f ? "<style=cIsHealing>" + BlockChance + "%</style> <style=cStack>(+" + BlockChance + "% per stack)</style> Chance to <style=cIsHealing>block</style> incoming damage. " : "") +
+                                           (Armor != 0f ? "<style=cIsHealing>Increase armor</style> by <style=cIsHealing>" + Armor + "</style> " +
                                            (StackArmor ? "<style=cStack>(+" + Armor + " per stack)</style>. " : "") : "") +
                                            "<style=cIsUtility>Unaffected by luck</style>.";
 

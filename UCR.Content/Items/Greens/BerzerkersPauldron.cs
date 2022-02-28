@@ -23,9 +23,9 @@ namespace UltimateCustomRun.Items.Greens
 
         // "Enter a frenzy after killing " + KillRequirement + " enemies in quick succession.");
 
-        public override string DescText => (Armor != 0f ? "<style=cIsHealing>Increase Armor</style> by <style=cIsHealing>" + Armor + "</style> <style=cStack>(+" + Armor + " per stack)</style>. " : "") +
-                                           "<style=cIsDamage>Killing " + KillRequirement + " enemies</style> within <style=cIsDamage>1</style> second sends you into a <style=cIsDamage>frenzy</style> for <style=cIsDamage>" + BaseBuffDuration + "s</style> <style=cStack>(+" + StackBuffDuration + "s per stack)</style>. Increases <style=cIsUtility>movement Speed</style> by <style=cIsUtility>50%</style>, <style=cIsDamage>attack Speed</style> by <style=cIsDamage>100%</style>" +
-                                           (BuffArmor != 0f ? " and <style=cIsHealing>Armor</style> by <style=cIsHealing>" + BuffArmor + "</style>." : "");
+        public override string DescText => (Armor != 0f ? "<style=cIsHealing>Increase armor</style> by <style=cIsHealing>" + Armor + "</style> <style=cStack>(+" + Armor + " per stack)</style>. " : "") +
+                                           "<style=cIsDamage>Killing " + KillRequirement + " enemies</style> within <style=cIsDamage>1</style> second sends you into a <style=cIsDamage>frenzy</style> for <style=cIsDamage>" + BaseBuffDuration + "s</style> <style=cStack>(+" + StackBuffDuration + "s per stack)</style>. Increases <style=cIsUtility>movement speed</style> by <style=cIsUtility>50%</style>, <style=cIsDamage>attack speed</style> by <style=cIsDamage>100%</style>" +
+                                           (BuffArmor != 0f ? " and <style=cIsHealing>armor</style> by <style=cIsHealing>" + BuffArmor + "</style>." : "");
 
         public override void Init()
         {

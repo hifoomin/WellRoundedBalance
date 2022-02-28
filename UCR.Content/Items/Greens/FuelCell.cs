@@ -10,7 +10,7 @@ namespace UltimateCustomRun.Items.Greens
         public override string InternalPickupToken => "equipmentMagazine";
         public override bool NewPickup => false;
         public override string PickupText => "";
-        public override string DescText => "Hold an <style=cIsUtility>additional equipment charge</style> <style=cStack>(+1 per stack)</style>. <style=cIsUtility>Reduce equipment Cooldown</style> by <style=cIsUtility>" + d(CooldownReduction) + "</style> <style=cStack>(+" + d(CooldownReduction) + " per stack)</style>.";
+        public override string DescText => "Hold an <style=cIsUtility>additional equipment charge</style> <style=cStack>(+1 per stack)</style>. <style=cIsUtility>Reduce equipment cooldown</style> by <style=cIsUtility>" + d(CooldownReduction) + "</style> <style=cStack>(+" + d(CooldownReduction) + " per stack)</style>.";
 
         public override void Init()
         {

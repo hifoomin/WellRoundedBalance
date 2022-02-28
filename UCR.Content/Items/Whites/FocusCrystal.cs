@@ -15,7 +15,7 @@ namespace UltimateCustomRun.Items.Whites
 
         public override string PickupText => "";
 
-        public override string DescText => "Increase Damage to enemies within <style=cIsDamage>" + Radius + "m</style> by <style=cIsDamage>" + d(Damage) + "</style> <style=cStack>(+" + d(Damage) + " per stack)</style>.";
+        public override string DescText => "Increase damage to enemies within <style=cIsDamage>" + Radius + "m</style> by <style=cIsDamage>" + d(Damage) + "</style> <style=cStack>(+" + d(Damage) + " per stack)</style>.";
 
         public override void Init()
         {

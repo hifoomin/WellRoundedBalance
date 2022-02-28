@@ -24,7 +24,7 @@ namespace UltimateCustomRun.Items.Whites
 
         public override string DescText => // (useRegen ? "Increases <style=cIsHealing>base health regeneration</style> by <style=cIsHealing>" + Regen + "</style>. " : "") +
                                            // (useRegenStack ? "<style=cStack>(+" + Regen + " Per Stack)</style>. " : "") +
-                                           "Increases <style=cIsHealing>base health</style> by" +
+                                           "Increases <style=cIsHealing>maximum health</style> by" +
                                            (HealthFromLevel ? " <style=cIsHealing>30%</style> <style=cStack>(+30% per stack)</style>" : "") +
                                            (BaseHealth != 0f && HealthFromLevel ? " +" : "") +
                                            (BaseHealth != 0f ? " <style=cIsHealing>" + BaseHealth + "</style> <style=cStack>(+" + BaseHealth + " per stack)</style>" : "") +

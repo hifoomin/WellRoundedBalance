@@ -27,7 +27,7 @@ namespace UltimateCustomRun.Items.Lunars
         public override bool NewPickup => false;
         public override string PickupText => "";
 
-        public override string DescText => "<style=cIsUtility>Replace your Secondary Skill </style> with <style=cIsUtility>Slicing Maelstrom</style>.  \n\nCharge up a projectile that deals <style=cIsDamage>" + d(MinimumDamage) + "-" + d(MaximumDamage) + " Damage per second</style> to nearby enemies, exploding after <style=cIsUtility>" + FuseTime + "</style> seconds to deal <style=cIsDamage>" + d(MinimumDamage * ExplosionDamage) + "-" + d(MaximumDamage * ExplosionDamage) + " Damage</style> and <style=cIsDamage>root</style> enemies for <style=cIsUtility>3</style> <style=cStack>(+3 per stack)</style> seconds. Recharges after " + Cooldown + " <style=cStack>(+" + Cooldown + " per stack)</style> seconds.";
+        public override string DescText => "<style=cIsUtility>Replace your Secondary Skill </style> with <style=cIsUtility>Slicing Maelstrom</style>.  \n\nCharge up a projectile that deals <style=cIsDamage>" + d(MinimumDamage * 5f) + "-" + d(MaximumDamage * 5f) + " damage per second</style> to nearby enemies, exploding after <style=cIsUtility>" + FuseTime + "</style> seconds to deal <style=cIsDamage>" + d(MinimumDamage * ExplosionDamage) + "-" + d(MaximumDamage * ExplosionDamage) + " damage</style> and <style=cIsDamage>root</style> enemies for <style=cIsUtility>3</style> <style=cStack>(+3 per stack)</style> seconds. Recharges after " + Cooldown + " <style=cStack>(+" + Cooldown + " per stack)</style> seconds.";
 
         public override void Init()
         {
@@ -37,7 +37,7 @@ namespace UltimateCustomRun.Items.Lunars
             MinimumDuration = ConfigOption(0.2f, "Minimum Charge Duration", "Vanilla is 0.2.\nRecommended Value: 0");
             ChargeDuration = ConfigOption(2f, "Maximum Charge Duration", "Vanilla is 2.\nRecommended Value: 1");
             MinimumSpeed = ConfigOption(4f, "Minimum Speed", "Vanilla is 4.\nRecommended Value: 5");
-            MaximumSpeed = ConfigOption(80f, "Maximum Speed", "Vanilla is 80.\nRecommended Value: 5");
+            MaximumSpeed = ConfigOption(80f, "Maximum Speed", "Vanilla is 80.\nRecommended Value: 10");
             SelfForce = ConfigOption(1000f, "Self Knockback", "Vanilla is 1000.\nRecommended Value: 2500");
             MinimumDamage = ConfigOption(7f, "Minimum Damage Multiplier", "Based on Charge Duration. Vanilla is 7.\nRecommended Value: 1");
             MaximumDamage = ConfigOption(7f, "Maximum Damage Multiplier", "Based on Charge Duration. Vanilla is 7.\nRecommended Value: 4.5");
@@ -68,8 +68,8 @@ namespace UltimateCustomRun.Items.Lunars
                 {
                     self.baseDuration = ChargeDuration;
                     self.minChargeDuration = MinimumDuration;
-                    orig(self);
                 }
+                orig(self);
             };
             On.EntityStates.Mage.Weapon.BaseThrowBombState.OnEnter += (orig, self) =>
             {
@@ -78,8 +78,8 @@ namespace UltimateCustomRun.Items.Lunars
                     self.minDamageCoefficient = MinimumDamage;
                     self.maxDamageCoefficient = MaximumDamage;
                     self.selfForce = SelfForce;
-                    orig(self);
                 }
+                orig(self);
             };
             On.EntityStates.GlobalSkills.LunarNeedle.ThrowLunarSecondary.ModifyProjectile += (On.EntityStates.GlobalSkills.LunarNeedle.ThrowLunarSecondary.orig_ModifyProjectile orig, EntityStates.GlobalSkills.LunarNeedle.ThrowLunarSecondary self, ref FireProjectileInfo projectileInfo) =>
             {

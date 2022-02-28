@@ -3,7 +3,7 @@ using System;
 
 namespace UltimateCustomRun.Survivors
 {
-    internal class Commando : Base
+    internal class CommandoStats : Base
     {
         // Did Commando first as an example
         public override String EntityName => "Commando";

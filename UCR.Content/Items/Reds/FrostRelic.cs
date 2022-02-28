@@ -1,4 +1,5 @@
-﻿using RoR2;
+﻿using MonoMod.Cil;
+using RoR2;
 using UnityEngine;
 
 namespace UltimateCustomRun.Items.Reds
@@ -13,13 +14,14 @@ namespace UltimateCustomRun.Items.Reds
         public static float ProcCoefficient;
         public static int Maximum;
         public static int StackMaximum;
+        public static bool CameraChanges;
         public static bool Guide;
         public override string Name => ":: Items ::: Reds :: Frost Relic";
         public override string InternalPickupToken => "icicle";
         public override bool NewPickup => false;
         public override string PickupText => "";
 
-        public override string DescText => "Killing an enemy surrounds you with an <style=cIsDamage>ice storm</style> that deals <style=cIsDamage>" + d(Damage / Duration) + " Damage per second</style> and <style=cIsUtility>slows</style> enemies by <style=cIsUtility>80%</style> for <style=cIsUtility>1.5s</style>. The storm <style=cIsDamage>grows with every kill</style>, increasing its Radius by <style=cIsDamage>" + RadiusPerKill + "m</style>. Stacks up to <style=cIsDamage>" + (BaseRadius + RadiusPerKill * Maximum) + "m</style> <style=cStack>(+" + RadiusPerKill * StackMaximum + "m per stack)</style>.";
+        public override string DescText => "Killing an enemy surrounds you with an <style=cIsDamage>ice storm</style> that deals <style=cIsDamage>" + d(Damage / AttackInterval) + " damage per second</style> and <style=cIsUtility>slows</style> enemies by <style=cIsUtility>80%</style> for <style=cIsUtility>1.5s</style>. The storm <style=cIsDamage>grows with every kill</style>, increasing its radius by <style=cIsDamage>" + RadiusPerKill + "m</style>. Stacks up to <style=cIsDamage>" + (BaseRadius + RadiusPerKill * Maximum) + "m</style> <style=cStack>(+" + RadiusPerKill * StackMaximum + "m per stack)</style>.";
 
         public override void Init()
         {
@@ -31,6 +33,7 @@ namespace UltimateCustomRun.Items.Reds
             ProcCoefficient = ConfigOption(0.2f, "Proc Coefficient Per Tick", "Vanilal is 0.2");
             Maximum = ConfigOption(6, "Maximum Icicles Amount", "Vanilla is 6");
             StackMaximum = ConfigOption(6, "Stack Maximum Icicles Amount", "Per Stack. Vanilla is 6");
+            CameraChanges = ConfigOption(false, "Disable Camera Changes?", "Vanilla is false");
             Guide = ConfigOption(true, "Formulas", "1 / Attack Interval = Attacks per Second\nBase Radius * (Base Icicle Cap + Icicle Cap) = Max Radius\nDamage / Attack Interval = DPS\nProc Coefficient / Attack Interval = PPS");
             base.Init();
         }
@@ -38,6 +41,10 @@ namespace UltimateCustomRun.Items.Reds
         public override void Hooks()
         {
             Changes();
+            if (CameraChanges)
+            {
+                IL.RoR2.CameraTargetParams.Update += ChangeCamera;
+            }
         }
 
         public static void Changes()
@@ -60,6 +67,21 @@ namespace UltimateCustomRun.Items.Reds
             // per stack
             var fb = f.GetComponent<BuffWard>();
             fb.interval = Duration;
+        }
+
+        public static void ChangeCamera(ILContext il)
+        {
+            ILCursor c = new(il);
+
+            c.GotoNext(MoveType.Before,
+                x => x.MatchLdcR4(0f),
+                x => x.MatchLdcR4(1.5f),
+                x => x.MatchLdcR4(-7f)
+            );
+            c.Index += 1;
+            c.Next.Operand = 0f;
+            c.Index += 1;
+            c.Next.Operand = 0f;
         }
     }
 }

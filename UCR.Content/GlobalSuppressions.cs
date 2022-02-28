@@ -92,7 +92,7 @@ using System.Diagnostics.CodeAnalysis;
 [assembly: SuppressMessage("Style", "IDE0090:Use 'new(...)'", Justification = "<Pending>", Scope = "member", Target = "~M:UltimateCustomRun.Items.Whites.TriTipDagger.ChangeDuration(MonoMod.Cil.ILContext)")]
 [assembly: SuppressMessage("Style", "IDE0090:Use 'new(...)'", Justification = "<Pending>", Scope = "member", Target = "~M:UltimateCustomRun.Items.Whites.Warbanner.ChangeRadius(MonoMod.Cil.ILContext)")]
 [assembly: SuppressMessage("Style", "IDE0090:Use 'new(...)'", Justification = "<Pending>", Scope = "member", Target = "~M:UltimateCustomRun.Items.Whites.Warbanner.ChangeRadiusTP(MonoMod.Cil.ILContext)")]
-[assembly: SuppressMessage("Style", "IDE0090:Use 'new(...)'", Justification = "<Pending>", Scope = "member", Target = "~P:UltimateCustomRun.Survivors.Commando.Entity")]
+[assembly: SuppressMessage("Style", "IDE0090:Use 'new(...)'", Justification = "<Pending>", Scope = "member", Target = "~P:UltimateCustomRun.Survivors.CommandoStats.Entity")]
 [assembly: SuppressMessage("CodeQuality", "IDE0079:Remove unnecessary suppression", Justification = "<Pending>")]
 [assembly: SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>", Scope = "member", Target = "~M:UltimateCustomRun.GlobalBase.d(System.Single)~System.String")]
 [assembly: SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>", Scope = "member", Target = "~M:UltimateCustomRun.ItemBase.d(System.Single)~System.String")]

@@ -16,9 +16,9 @@ namespace UltimateCustomRun.Items.Greens
         public override bool NewPickup => false;
         public override string PickupText => "";
 
-        public override string DescText => "Gain <style=cIsDamage>" + Crit + "% critical Chance</style>" +
+        public override string DescText => "Gain <style=cIsDamage>" + Crit + "% critical chance</style>" +
                                            (StackCrit ? " <style=cStack>(+" + Crit + "% per stack)</style>." : ".") +
-                                           " <style=cIsDamage>Critical strikes</style> <style=cIsHealing>Healing</style> for <style=cIsHealing>" + BaseHealing + "</style> <style=cStack>(+" + StackHealing + " per stack)</style> <style=cIsHealing>health</style>.";
+                                           " <style=cIsDamage>Critical strikes</style> <style=cIsHealing>heal</style> for <style=cIsHealing>" + BaseHealing + "</style> <style=cStack>(+" + StackHealing + " per stack)</style> <style=cIsHealing>health</style>.";
 
         public override void Init()
         {

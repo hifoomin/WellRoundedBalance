@@ -12,10 +12,10 @@ namespace UltimateCustomRun.Items.Whites
         public override string InternalPickupToken => "critGlasses";
         public override bool NewPickup => false;
 
-        public override string PickupText => "Chance to 'Critically Strike', dealing double Damage.";
+        public override string PickupText => "Chance to 'Critically Strike', dealing double damage.";
         // Change double to global Crit Damage
 
-        public override string DescText => "Your attacks have a <style=cIsDamage>" + Crit + "%</style> <style=cStack>(+" + Crit + "% per stack)</style> Chance to '<style=cIsDamage>Critically Strike</style>', dealing <style=cIsDamage>double Damage</style>.";
+        public override string DescText => "Your attacks have a <style=cIsDamage>" + Crit + "%</style> <style=cStack>(+" + Crit + "% per stack)</style> Chance to '<style=cIsDamage>Critically Strike</style>', dealing <style=cIsDamage>double damage</style>.";
 
         // Change double to global Crit Damage
         public override void Init()

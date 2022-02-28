@@ -15,7 +15,7 @@ namespace UltimateCustomRun.Items.Reds
         public override bool NewPickup => false;
         public override string PickupText => "";
 
-        public override string DescText => "Increase <style=cIsUtility>jump height</style>. Creates a <style=cIsDamage>" + MinimumRadius + "m-" + MaximumRadius + "m</style> Radius <style=cIsDamage>kinetic explosion</style> on hitting the ground, dealing <style=cIsDamage>" + d(MinimumDamage) + "-" + d(MaximumDamage) + "</style> base Damage that scales up with <style=cIsDamage>fall Distance</style>. Recharges in <style=cIsDamage>" + Cooldown + "</style> <style=cStack>(-50% per stack)</style> seconds.";
+        public override string DescText => "Increase <style=cIsUtility>jump height</style>. Creates a <style=cIsDamage>" + MinimumRadius + "m-" + MaximumRadius + "m</style> radius <style=cIsDamage>kinetic explosion</style> on hitting the ground, dealing <style=cIsDamage>" + d(MinimumDamage) + "-" + d(MaximumDamage) + "</style> base damage that scales up with <style=cIsDamage>fall distance</style>. Recharges in <style=cIsDamage>" + Cooldown + "</style> <style=cStack>(-50% per stack)</style> seconds.";
 
         public override void Init()
         {

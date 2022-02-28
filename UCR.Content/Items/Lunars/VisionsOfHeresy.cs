@@ -29,7 +29,7 @@ namespace UltimateCustomRun.Items.Lunars
         public override string InternalPickupToken => "lunarPrimaryReplacement";
         public override bool NewPickup => false;
         public override string PickupText => "";
-        public override string DescText => "<style=cIsUtility>Replace your Primary Skill</style> with <style=cIsUtility>Hungering Gaze</style>. \n\nFire a flurry of <style=cIsUtility>tracking shards</style> that detonate after a delay, dealing <style=cIsDamage>" + d(ExplosionDamage) + "</style> base Damage. Hold up to " + Charges + " Charges <style=cStack>(+" + Charges + " per stack)</style> that reload after " + Cooldown + " seconds <style=cStack>(+" + Cooldown + " per stack)</style>.";
+        public override string DescText => "<style=cIsUtility>Replace your Primary Skill</style> with <style=cIsUtility>Hungering Gaze</style>. \n\nFire a flurry of <style=cIsUtility>tracking shards</style> that detonate after a delay, dealing <style=cIsDamage>" + d(ExplosionDamage) + "</style> base damage. Hold up to " + Charges + " Charges <style=cStack>(+" + Charges + " per stack)</style> that reload after " + Cooldown + " seconds <style=cStack>(+" + Cooldown + " per stack)</style>.";
 
         public override void Init()
         {

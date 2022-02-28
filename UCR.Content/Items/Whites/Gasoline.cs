@@ -15,14 +15,14 @@ namespace UltimateCustomRun.Items.Whites
 
         public override string PickupText => "";
 
-        public override string DescText => "Killing an enemy <style=cIsDamage>ignites</style> all enemies within <style=cIsDamage>" + Radius + "m</style> <style=cStack>(+" + StackRadius + "m per stack)</style> for <style=cIsDamage>" + d(ExplosionDamage) + "</style> base Damage. Additionally, enemies <style=cIsDamage>burn</style> for <style=cIsDamage>" + d(BurnDamage) + "</style> <style=cStack>(+" + d(BurnDamage / 2f) + " per stack)</style> base Damage.";
+        public override string DescText => "Killing an enemy <style=cIsDamage>ignites</style> all enemies within <style=cIsDamage>" + Radius + "m</style> <style=cStack>(+" + StackRadius + "m per stack)</style> for <style=cIsDamage>" + d(ExplosionDamage) + "</style> base damage. Additionally, enemies <style=cIsDamage>burn</style> for <style=cIsDamage>" + d(BurnDamage) + "</style> <style=cStack>(+" + d(BurnDamage / 2f) + " per stack)</style> base damage.";
 
         public override void Init()
         {
-            ExplosionDamage = ConfigOption(1.5f, "Damage Coefficient", "Decimal. Vanilla is 1.5");
-            BurnDamage = ConfigOption(1.5f, "Damage Coefficient", "Decimal. Per Stack. Vanilla is 1.5");
-            Radius = ConfigOption(12f, "Range", "Vanilla is 12");
-            StackRadius = ConfigOption(4f, "Range", "Vanilla is 4");
+            ExplosionDamage = ConfigOption(1.5f, "Explosion Damage", "Decimal. Vanilla is 1.5");
+            BurnDamage = ConfigOption(1.5f, "Burn Damage", "Decimal. Per Stack. Vanilla is 1.5");
+            Radius = ConfigOption(12f, "Base Range", "Vanilla is 12");
+            StackRadius = ConfigOption(4f, "Stack Range", "Per Stack. Vanilla is 4");
             base.Init();
         }
 

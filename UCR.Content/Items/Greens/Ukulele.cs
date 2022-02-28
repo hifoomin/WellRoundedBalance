@@ -19,7 +19,7 @@ namespace UltimateCustomRun.Items.Greens
         public override string InternalPickupToken => "chainLightning";
         public override bool NewPickup => false;
         public override string PickupText => "";
-        public override string DescText => "<style=cIsDamage>" + Chance + "%</style> Chance to fire <style=cIsDamage>chain lightning</style> for <style=cIsDamage>" + d(Damage) + "</style> TOTAL Damage on up to <style=cIsDamage>" + Targets + " <style=cStack>(+" + StackTargets + " per stack)</style></style> Targets within <style=cIsDamage>" + Radius + "m</style> <style=cStack>(+" + StackRadius + "m per stack)</style>.";
+        public override string DescText => "<style=cIsDamage>" + Chance + "%</style> Chance to fire <style=cIsDamage>chain lightning</style> for <style=cIsDamage>" + d(Damage) + "</style> TOTAL damage on up to <style=cIsDamage>" + Targets + " <style=cStack>(+" + StackTargets + " per stack)</style></style> Targets within <style=cIsDamage>" + Radius + "m</style> <style=cStack>(+" + StackRadius + "m per stack)</style>.";
 
         public override void Init()
         {
@@ -27,7 +27,7 @@ namespace UltimateCustomRun.Items.Greens
             Chance = ConfigOption(25f, "Chance", "Vanilla is 25");
             ProcCoefficient = ConfigOption(0.2f, "Proc Coefficient", "Decimal. Vanilla is 0.2");
             Radius = ConfigOption(20f, "Base Range", "Vanilla is 20");
-            StackRadius = ConfigOption(20, "Stack Range", "Per Stack. Vanilla is 2");
+            StackRadius = ConfigOption(2, "Stack Range", "Per Stack. Vanilla is 2");
             Targets = ConfigOption(3, "Base Max Targets", "Vanilla is 3");
             StackTargets = ConfigOption(2, "Stack Max Targets", "Per Stack. Vanilla is 2");
             base.Init();

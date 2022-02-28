@@ -17,9 +17,9 @@ namespace UltimateCustomRun.Items.Reds
         public override bool NewPickup => false;
         public override string PickupText => "";
 
-        public override string DescText => (Armor != 0f ? "<style=cIsHealing>Increase Armor</style> by <style=cIsHealing>" + Armor + "</style>. " +
+        public override string DescText => (Armor != 0f ? "<style=cIsHealing>Increase armor</style> by <style=cIsHealing>" + Armor + "</style>. " +
                                            (StackArmor ? "<style=cStack>(+" + Armor + " per stack)</style>" : "") : "") +
-                                           "Healing past full grants you a <style=cIsHealing>temporary Barrier</style> for <style=cIsHealing>" + d(OverhealPercent) + " <style=cStack>(+" + d(OverhealPercent) + " per stack)</style></style> of the amount you <style=cIsHealing>healed</style>.";
+                                           "Healing past full grants you a <style=cIsHealing>temporary barrier</style> for <style=cIsHealing>" + d(OverhealPercent) + " <style=cStack>(+" + d(OverhealPercent) + " per stack)</style></style> of the amount you <style=cIsHealing>healed</style>.";
 
         public override void Init()
         {

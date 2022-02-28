@@ -12,7 +12,7 @@ namespace UltimateCustomRun.Items.Greens
         public override string InternalPickupToken => "energizedOnEquipmentUse";
         public override bool NewPickup => false;
         public override string PickupText => "";
-        public override string DescText => "Activating your Equipment gives you <style=cIsDamage>+" + d(Duration) + " attack Speed</style> for <style=cIsDamage>8s</style> <style=cStack>(+4s per stack)</style>.";
+        public override string DescText => "Activating your Equipment gives you <style=cIsDamage>+" + d(Duration) + " attack speed</style> for <style=cIsDamage>8s</style> <style=cStack>(+4s per stack)</style>.";
 
         public override void Init()
         {

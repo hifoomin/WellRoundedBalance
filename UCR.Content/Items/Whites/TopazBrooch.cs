@@ -14,7 +14,7 @@ namespace UltimateCustomRun.Items.Whites
 
         public override string PickupText => "";
 
-        public override string DescText => "Gain a <style=cIsHealing>temporary Barrier</style> on kill for <style=cIsHealing>" + Barrier + " health <style=cStack>(+" + Barrier + " per stack)</style></style>.";
+        public override string DescText => "Gain a <style=cIsHealing>temporary barrier</style> on kill for <style=cIsHealing>" + Barrier + " health <style=cStack>(+" + Barrier + " per stack)</style></style>.";
 
         public override void Init()
         {

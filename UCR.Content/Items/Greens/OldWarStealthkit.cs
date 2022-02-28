@@ -13,8 +13,8 @@ namespace UltimateCustomRun.Items.Greens
         public override bool NewPickup => false;
         public override string PickupText => "";
 
-        public override string DescText => "Falling below <style=cIsHealth>25% health</style> causes you to gain <style=cIsUtility>40% movement Speed</style>" +
-                                           (BuffArmor != 0f ? ", <style=cIsHealing>" + BuffArmor + " Armor</style>" +
+        public override string DescText => "Falling below <style=cIsHealth>25% health</style> causes you to gain <style=cIsUtility>40% movement speed</style>" +
+                                           (BuffArmor != 0f ? ", <style=cIsHealing>" + BuffArmor + " armor</style>" +
                                            (StackBuffArmor ? " <style=cStack>(+" + BuffArmor + " per stack)</style>" : "") : "") +
                                            " and <style=cIsUtility>invisibility</style> for <style=cIsUtility>5s</style>. Recharges every <style=cIsUtility>30 seconds</style> <style=cStack>(-50% per stack)</style>.";
 
