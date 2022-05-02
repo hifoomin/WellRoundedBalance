@@ -30,7 +30,7 @@ namespace UltimateCustomRun.Items.Greens
 
         public static void ChangeReward()
         {
-            var gtc = Resources.Load<GameObject>("Prefabs/NetworkedObjects/BonusMoneyPack").GetComponentInChildren<MoneyPickup>();
+            var gtc = LegacyResourcesAPI.Load<GameObject>("Prefabs/NetworkedObjects/BonusMoneyPack").GetComponentInChildren<MoneyPickup>();
             gtc.baseGoldReward = Reward;
         }
 

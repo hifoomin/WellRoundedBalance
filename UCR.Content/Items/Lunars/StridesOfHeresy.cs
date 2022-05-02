@@ -8,7 +8,7 @@ namespace UltimateCustomRun.Items.Lunars
     {
         public static void StridesChanges()
         {
-            var ss = Resources.Load<SkillDef>("skilldefs/lunarreplacements/lunarutilityreplacement");
+            var ss = LegacyResourcesAPI.Load<SkillDef>("skilldefs/lunarreplacements/lunarutilityreplacement");
             ss.baseMaxStock = Main.StridesCharges.Value;
             ss.baseRechargeInterval = Main.StridesCooldown.Value;
             ss.rechargeStock = Main.StridesCharges.Value;

@@ -1,4 +1,5 @@
-﻿using RoR2.Projectile;
+﻿using RoR2;
+using RoR2.Projectile;
 using RoR2.Skills;
 using UnityEngine;
 
@@ -57,7 +58,7 @@ namespace UltimateCustomRun.Items.Lunars
 
         public static void Changes()
         {
-            var DLCBalance = Resources.Load<SkillDef>("skilldefs/lunarreplacements/LunarSecondaryReplacement");
+            var DLCBalance = LegacyResourcesAPI.Load<SkillDef>("skilldefs/lunarreplacements/LunarSecondaryReplacement");
             DLCBalance.baseRechargeInterval = Cooldown;
             DLCBalance.baseMaxStock = Charges;
             DLCBalance.rechargeStock = Recharge;
@@ -88,7 +89,7 @@ namespace UltimateCustomRun.Items.Lunars
                 orig(self, ref projectileInfo);
             };
 
-            var zamn = Resources.Load<GameObject>("prefabs/projectiles/LunarSecondaryProjectile");
+            var zamn = LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/LunarSecondaryProjectile");
             var dooo = zamn.GetComponent<ProjectileExplosion>();
             dooo.blastRadius = ExplosionRadius;
             dooo.blastDamageCoefficient = ExplosionDamage;

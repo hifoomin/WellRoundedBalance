@@ -27,8 +27,7 @@ namespace UltimateCustomRun.Items.Whites
 
         public override void Hooks()
         {
-            IL.RoR2.GlobalEventManager.OnHitEnemy += ChangeChance;
-            IL.RoR2.GlobalEventManager.OnHitEnemy += ChangeDuration;
+            IL.RoR2.CharacterBody.RecalculateStats += ChangeChance;
             ChangeBehavior();
         }
 
@@ -46,31 +45,18 @@ namespace UltimateCustomRun.Items.Whites
             ILCursor c = new ILCursor(il);
 
             c.GotoNext(MoveType.Before,
+                x => x.MatchLdarg(0),
+                x => x.MatchLdcR4(10f),
                 x => x.MatchLdloc(out _),
-                x => x.MatchBrtrue(out _),
-                x => x.MatchLdcR4(10)
+                x => x.MatchConvR4()
             );
-            c.Index += 2;
+            c.Index += 1;
             c.Next.Operand = Chance;
-        }
-
-        public static void ChangeDuration(ILContext il)
-        {
-            ILCursor c = new ILCursor(il);
-
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdfld(typeof(DamageInfo).GetField("attacker")),
-                // not sure if this is the right way to do it
-                x => x.MatchLdcI4(0),
-                x => x.MatchLdcR4(3)
-            );
-            c.Index += 2;
-            c.Next.Operand = Duration;
         }
 
         public static void ChangeBehavior()
         {
-            var b = Resources.Load<BuffDef>("buffdefs/bleeding");
+            var b = LegacyResourcesAPI.Load<BuffDef>("buffdefs/bleeding");
             b.canStack = StackDamage;
         }
     }

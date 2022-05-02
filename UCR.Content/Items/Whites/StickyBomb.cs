@@ -39,7 +39,7 @@ namespace UltimateCustomRun.Items.Whites
 
         public static void Changes()
         {
-            var StickyBombImpact = Resources.Load<GameObject>("prefabs/projectiles/stickybomb").GetComponent<ProjectileImpactExplosion>();
+            var StickyBombImpact = LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/stickybomb").GetComponent<ProjectileImpactExplosion>();
             StickyBombImpact.blastDamageCoefficient = Damage / 1.8f;
             // weird
             StickyBombImpact.blastRadius = Radius;

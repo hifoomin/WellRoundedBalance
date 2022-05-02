@@ -11,9 +11,8 @@ namespace UltimateCustomRun.Stages
         {
             var tendies = new DirectorCard
             {
-                spawnCard = Resources.Load<CharacterSpawnCard>("SpawnCards/CharacterSpawnCards/cscGravekeeper"),
+                spawnCard = LegacyResourcesAPI.Load<CharacterSpawnCard>("SpawnCards/CharacterSpawnCards/cscGravekeeper"),
                 selectionWeight = 2,
-                allowAmbushSpawn = true,
                 preventOverhead = false,
                 minimumStageCompletions = 0,
                 requiredUnlockable = "",
@@ -44,9 +43,8 @@ namespace UltimateCustomRun.Stages
         {
             var glue = new DirectorCard
             {
-                spawnCard = Resources.Load<CharacterSpawnCard>("SpawnCards/CharacterSpawnCards/cscClayBoss"),
+                spawnCard = LegacyResourcesAPI.Load<CharacterSpawnCard>("SpawnCards/CharacterSpawnCards/cscClayBoss"),
                 selectionWeight = 1,
-                allowAmbushSpawn = true,
                 preventOverhead = false,
                 minimumStageCompletions = 0,
                 requiredUnlockable = "",

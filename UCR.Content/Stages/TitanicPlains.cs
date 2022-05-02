@@ -11,9 +11,8 @@ namespace UltimateCustomRun.Stages
         {
             var bizzozeron = new DirectorCard
             {
-                spawnCard = Resources.Load<CharacterSpawnCard>("SpawnCards/CharacterSpawnCards/cscBison"),
+                spawnCard = LegacyResourcesAPI.Load<CharacterSpawnCard>("SpawnCards/CharacterSpawnCards/cscBison"),
                 selectionWeight = 1,
-                allowAmbushSpawn = true,
                 preventOverhead = false,
                 minimumStageCompletions = 0,
                 requiredUnlockable = "",

@@ -62,7 +62,7 @@ namespace UltimateCustomRun.Items.Reds
 
         public static void ChangeProc()
         {
-            var c = Resources.Load<GameObject>("prefabs/projectiles/daggerprojectile").GetComponent<ProjectileController>();
+            var c = LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/daggerprojectile").GetComponent<ProjectileController>();
             c.procCoefficient = ProcCoefficient;
         }
     }

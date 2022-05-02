@@ -63,7 +63,7 @@ namespace UltimateCustomRun.Items.Whites
 
         public static void ChangeBuffBehavior()
         {
-            var mh = Resources.Load<BuffDef>("buffdefs/medkitheal");
+            var mh = LegacyResourcesAPI.Load<BuffDef>("buffdefs/medkitheal");
             mh.canStack = StackBuff;
             mh.isDebuff = IsDebuff;
         }

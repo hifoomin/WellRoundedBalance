@@ -11,9 +11,8 @@ namespace UltimateCustomRun.Stages
         {
             var scu = new DirectorCard
             {
-                spawnCard = Resources.Load<CharacterSpawnCard>("SpawnCards/CharacterSpawnCards/cscRoboBallBoss"),
+                spawnCard = LegacyResourcesAPI.Load<CharacterSpawnCard>("SpawnCards/CharacterSpawnCards/cscRoboBallBoss"),
                 selectionWeight = 1,
-                allowAmbushSpawn = true,
                 preventOverhead = false,
                 minimumStageCompletions = 0,
                 requiredUnlockable = "",
@@ -28,7 +27,7 @@ namespace UltimateCustomRun.Stages
             };
             DirectorAPI.MonsterActions += (List<DirectorAPI.DirectorCardHolder> list, DirectorAPI.StageInfo stage) =>
             {
-                if (stage.stage == DirectorAPI.Stage.TitanicPlains)
+                if (stage.stage == DirectorAPI.Stage.RallypointDelta)
                 {
                     if (!list.Contains(scucard))
                     {

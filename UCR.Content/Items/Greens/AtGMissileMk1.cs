@@ -1,5 +1,7 @@
 ﻿using MonoMod.Cil;
+using RoR2;
 using RoR2.Projectile;
+using System;
 using UnityEngine;
 
 namespace UltimateCustomRun.Items.Greens
@@ -26,8 +28,8 @@ namespace UltimateCustomRun.Items.Greens
 
         public override void Hooks()
         {
-            IL.RoR2.GlobalEventManager.ProcMissile += ChangeDamage;
-            IL.RoR2.GlobalEventManager.ProcMissile += ChangeChance;
+            IL.RoR2.GlobalEventManager.OnHitEnemy += ChangeDamage;
+            IL.RoR2.GlobalEventManager.OnHitEnemy += ChangeChance;
             ChangeProc();
         }
 
@@ -36,8 +38,11 @@ namespace UltimateCustomRun.Items.Greens
             ILCursor c = new ILCursor(il);
 
             c.GotoNext(MoveType.Before,
-                x => x.MatchLdcR4(10f)
+                x => x.MatchBle(out _),
+                x => x.MatchLdcR4(10f),
+                x => x.MatchLdarg(1)
             );
+            c.Index += 1;
             c.Next.Operand = Chance;
         }
 
@@ -46,14 +51,16 @@ namespace UltimateCustomRun.Items.Greens
             ILCursor c = new ILCursor(il);
 
             c.GotoNext(MoveType.Before,
+                x => x.MatchBrfalse(out _),
                 x => x.MatchLdcR4(3f)
             );
+            c.Index += 1;
             c.Next.Operand = Damage;
         }
 
         public static void ChangeProc()
         {
-            var mp = Resources.Load<GameObject>("prefabs/projectiles/MissileProjectile").GetComponent<ProjectileController>();
+            var mp = LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/MissileProjectile").GetComponent<ProjectileController>();
             mp.procCoefficient = ProcCoefficient;
         }
     }

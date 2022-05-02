@@ -50,9 +50,9 @@ namespace UltimateCustomRun.Items.Greens
             noRazorwire.canStack = false;
             noRazorwire.isDebuff = true;
             noRazorwire.name = "NoRazorwire";
-            noRazorwire.iconSprite = Resources.Load<Sprite>("textures/bufficons/texBuffEntangleIcon");
-
-            BuffAPI.Add(new CustomBuff(noRazorwire));
+            noRazorwire.iconSprite = LegacyResourcesAPI.Load<Sprite>("textures/bufficons/texBuffEntangleIcon");
+            noRazorwire.buffColor = new Color32();
+            R2API.ContentAddition.AddBuffDef(noRazorwire);
         }
 
         public static void ChangeBehavior(ILContext il)

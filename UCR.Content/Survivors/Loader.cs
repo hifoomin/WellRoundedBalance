@@ -15,8 +15,8 @@ namespace UltimateCustomRun.Survivors
         public static SkillFamily utility;
         public static SkillFamily special;
 
-        public static GameObject ZasedFireHook = PrefabAPI.InstantiateClone(Resources.Load<GameObject>("prefabs/projectiles/LoaderYankHook"), "prefabs/projectiles/LoaderZasedHook", true);
-        public static GameObject ZasedThrowPylon = PrefabAPI.InstantiateClone(Resources.Load<GameObject>("prefabs/projectiles/LoaderPylon"), "prefabs/projectiles/LoaderZasedPylon", true);
+        public static GameObject ZasedFireHook = PrefabAPI.InstantiateClone(LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/LoaderYankHook"), "prefabs/projectiles/LoaderZasedHook", true);
+        public static GameObject ZasedThrowPylon = PrefabAPI.InstantiateClone(LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/LoaderPylon"), "prefabs/projectiles/LoaderZasedPylon", true);
 
         public static void GetSkillsFromBodyObject(GameObject bodyObject)
         {
@@ -35,7 +35,7 @@ namespace UltimateCustomRun.Survivors
 
         public static void Changes()
         {
-            GetSkillsFromBodyObject(Resources.Load<GameObject>("prefabs/characterbodies/LoaderBody"));
+            GetSkillsFromBodyObject(LegacyResourcesAPI.Load<GameObject>("prefabs/characterbodies/LoaderBody"));
 
             SkillDef ZasedFireHookDef = ScriptableObject.CreateInstance<SkillDef>();
             ZasedFireHookDef.activationState = new EntityStates.SerializableEntityStateType(typeof(ZasedGrapple));
@@ -55,7 +55,7 @@ namespace UltimateCustomRun.Survivors
             ZasedFireHookDef.isCombatSkill = true;
             ZasedFireHookDef.mustKeyPress = true;
             ZasedFireHookDef.interruptPriority = EntityStates.InterruptPriority.Any;
-            ZasedFireHookDef.icon = Resources.Load<Sprite>("textures/achievementicons/texloaderspeedrunicon");
+            ZasedFireHookDef.icon = LegacyResourcesAPI.Load<Sprite>("textures/achievementicons/texloaderspeedrunicon");
             ZasedFireHookDef.skillDescriptionToken = "LOADER_YANKHOOK_DESCRIPTION";
             ZasedFireHookDef.skillName = "LOADER_YANKHOOK_NAME";
             ZasedFireHookDef.skillNameToken = "LOADER_YANKHOOK_NAME";
@@ -78,7 +78,7 @@ namespace UltimateCustomRun.Survivors
             ZasedThrowPylonDef.isCombatSkill = true;
             ZasedThrowPylonDef.mustKeyPress = true;
             ZasedThrowPylonDef.interruptPriority = EntityStates.InterruptPriority.Any;
-            ZasedThrowPylonDef.icon = Resources.Load<SkillDef>("skilldefs/loaderbody/ThrowPylon").icon;
+            ZasedThrowPylonDef.icon = LegacyResourcesAPI.Load<SkillDef>("skilldefs/loaderbody/ThrowPylon").icon;
             ZasedThrowPylonDef.skillDescriptionToken = "LOADER_SPECIAL_DESCRIPTION";
             ZasedThrowPylonDef.skillName = "LOADER_SPECIAL_NAME";
             ZasedThrowPylonDef.skillNameToken = "LOADER_SPECIAL_NAME";

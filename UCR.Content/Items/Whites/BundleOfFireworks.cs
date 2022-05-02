@@ -1,4 +1,5 @@
 ﻿using MonoMod.Cil;
+using RoR2;
 using RoR2.Projectile;
 using System;
 using UnityEngine;
@@ -56,7 +57,7 @@ namespace UltimateCustomRun.Items.Whites
 
         public static void Changes()
         {
-            var croppa = Resources.Load<GameObject>("prefabs/projectiles/FireworkProjectile");
+            var croppa = LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/FireworkProjectile");
             var msm = croppa.GetComponent<ProjectileImpactExplosion>();
             var skm = croppa.GetComponent<ProjectileController>();
             msm.blastDamageCoefficient = Damage / 3f;

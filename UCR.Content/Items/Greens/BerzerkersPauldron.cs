@@ -82,7 +82,10 @@ namespace UltimateCustomRun.Items.Greens
                 {
                     args.armorAdd += BuffArmor;
                 }
-                args.armorAdd += Armor;
+                if (stack > 0)
+                {
+                    args.armorAdd += Armor;
+                }
             }
         }
 

@@ -31,8 +31,8 @@ namespace UltimateCustomRun.Items.Whites
 
         public override void Hooks()
         {
-            IL.RoR2.CharacterBody.MushroomItemBehavior.FixedUpdate += ChangeRadius;
-            IL.RoR2.CharacterBody.MushroomItemBehavior.FixedUpdate += ChangeHealing;
+            IL.RoR2.Items.MushroomBodyBehavior.FixedUpdate += ChangeRadius;
+            IL.RoR2.Items.MushroomBodyBehavior.FixedUpdate += ChangeHealing;
         }
 
         public static void ChangeRadius(ILContext il)
@@ -56,12 +56,13 @@ namespace UltimateCustomRun.Items.Whites
             c.GotoNext(MoveType.Before,
                 x => x.MatchLdcR4(0.25f),
                 x => x.MatchStfld<HealingWard>("interval"),
-                x => x.MatchLdloc(out _),
+                x => x.MatchLdarg(0),
+                x => x.MatchLdfld<RoR2.Items.MushroomBodyBehavior>("mushroomHealingWard"),
                 x => x.MatchLdcR4(0.045f),
                 x => x.MatchLdcR4(0.0225f)
             );
             c.Next.Operand = Interval;
-            c.Index += 3;
+            c.Index += 4;
             c.Next.Operand = Healing;
             c.Index += 1;
             c.Next.Operand = StackHealing;

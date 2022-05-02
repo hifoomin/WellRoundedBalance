@@ -59,7 +59,7 @@ namespace UltimateCustomRun.Items.Greens
         {
             if (Scaling)
             {
-                IL.RoR2.GlobalEventManager.OnCharacterDeath += ChangeBehavior;
+                // IL.RoR2.GlobalEventManager.OnCharacterDeath += ChangeBehavior;
             }
             RecalculateStatsAPI.GetStatCoefficients += BehaviorAddFlatHealth;
             RecalculateStatsAPI.GetStatCoefficients += BehaviorAddPercentHealth;

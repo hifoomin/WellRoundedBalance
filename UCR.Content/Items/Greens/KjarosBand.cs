@@ -1,4 +1,5 @@
-﻿using Mono.Cecil.Cil;
+﻿/*
+using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using RoR2;
 using System;
@@ -87,7 +88,7 @@ namespace UltimateCustomRun.Items.Greens
             ILCursor c = new ILCursor(il);
 
             c.GotoNext(MoveType.Before,
-                x => x.MatchCallOrCallvirt<RoR2.CharacterBody>("get_damage"),
+                x => x.MatchCallOrCallvirt<CharacterBody>("get_damage"),
                 x => x.MatchDiv(),
                 x => x.MatchLdcR4(4f)
             );
@@ -110,3 +111,4 @@ namespace UltimateCustomRun.Items.Greens
         }
     }
 }
+*/

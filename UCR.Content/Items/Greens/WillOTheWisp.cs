@@ -1,4 +1,5 @@
 ﻿using MonoMod.Cil;
+using RoR2;
 using UnityEngine;
 
 namespace UltimateCustomRun.Items.Greens
@@ -69,7 +70,7 @@ namespace UltimateCustomRun.Items.Greens
 
         public static void ChangeProc()
         {
-            var w = Resources.Load<GameObject>("prefabs/networkedobjects/WilloWispDelay").GetComponent<RoR2.DelayBlast>();
+            var w = LegacyResourcesAPI.Load<GameObject>("prefabs/networkedobjects/WilloWispDelay").GetComponent<RoR2.DelayBlast>();
             w.procCoefficient = ProcCoefficient;
         }
     }

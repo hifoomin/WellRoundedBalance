@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>C:\Users\Admin\AppData\Roaming\r2modmanPlus-local\RiskOfRain2\profiles\TestingMyMods\BepInEx\plugins\Unknown-UltimateCustomRun\</OutputPath>
+    <OutputPath>C:\Users\Admin\AppData\Roaming\r2modmanPlus-local\RiskOfRain2\profiles\InfernoTesting\BepInEx\plugins\Unknown-UltimateCustomRun\</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
@@ -22,13 +22,13 @@
 	</PropertyGroup>
 	
   <ItemGroup>
-    <PackageReference Include="BepInEx.Analyzers" Version="1.0.6">
+    <PackageReference Include="BepInEx.Analyzers" Version="1.0.*">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="BepInEx.Core" Version="5.4.16" />
-    <PackageReference Include="RiskOfRain2.GameLibs" Version="1.1.1.4-r.1" />
-    <PackageReference Include="UnityEngine.Modules" Version="2018.4.16" />
+    <PackageReference Include="BepInEx.Core" Version="5.4.19" />
+    <PackageReference Include="RiskOfRain2.GameLibs" Version="1.2.1-r.1" />
+    <PackageReference Include="UnityEngine.Modules" Version="2019.4.26" />
   </ItemGroup>
 
   <ItemGroup>
@@ -40,9 +40,11 @@
       <HintPath>libs\KdTreeLib.dll</HintPath>
       <Private>false</Private>
     </Reference>
-    <Reference Include="MMHOOK_Assembly-CSharp">
-      <HintPath>libs\MMHOOK_Assembly-CSharp.dll</HintPath>
-      <Private>false</Private>
+    <Reference Include="KinematicCharacterController">
+      <HintPath>libs\KinematicCharacterController.dll</HintPath>
+    </Reference>
+    <Reference Include="MMHOOK_RoR2">
+      <HintPath>libs\MMHOOK_RoR2.dll</HintPath>
     </Reference>
     <Reference Include="Mono.Security">
       <HintPath>libs\Mono.Security.dll</HintPath>
@@ -65,7 +67,7 @@
       <Private>false</Private>
     </Reference>
     <Reference Include="R2API">
-      <HintPath>..\..\..\R2API.dll</HintPath>
+      <HintPath>..\..\..\..\R2API.dll</HintPath>
     </Reference>
     <Reference Include="Rewired_Windows_Lib">
       <HintPath>libs\Rewired_Windows_Lib.dll</HintPath>
@@ -74,6 +76,9 @@
     <Reference Include="SimpleJSON">
       <HintPath>libs\SimpleJSON.dll</HintPath>
       <Private>false</Private>
+    </Reference>
+    <Reference Include="Wwise">
+      <HintPath>libs\Wwise.dll</HintPath>
     </Reference>
     <Reference Include="Zio">
       <HintPath>libs\Zio.dll</HintPath>

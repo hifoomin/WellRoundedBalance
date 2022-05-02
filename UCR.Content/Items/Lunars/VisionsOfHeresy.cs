@@ -68,7 +68,7 @@ namespace UltimateCustomRun.Items.Lunars
                 orig(self);
             };
 
-            var thej = Resources.Load<GameObject>("prefabs/projectiles/LunarNeedleProjectile");
+            var thej = LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/LunarNeedleProjectile");
             var p1 = thej.GetComponent<ProjectileImpactExplosion>();
             var p2 = thej.GetComponent<ProjectileDirectionalTargetFinder>();
             thej.GetComponent<ProjectileController>().procCoefficient = InitialHitProcCoefficient;
@@ -77,7 +77,7 @@ namespace UltimateCustomRun.Items.Lunars
             p1.blastDamageCoefficient = ExplosionDamage;
             p1.blastProcCoefficient = ExplosionProcCoefficient;
 
-            var olbart = Resources.Load<SkillDef>("skilldefs/lunarreplacements/LunarPrimaryReplacement");
+            var olbart = LegacyResourcesAPI.Load<SkillDef>("skilldefs/lunarreplacements/LunarPrimaryReplacement");
             olbart.baseRechargeInterval = Cooldown;
             olbart.baseMaxStock = Charges;
             olbart.rechargeStock = Charges;
@@ -91,7 +91,7 @@ namespace UltimateCustomRun.Items.Lunars
                     EntityStates.GlobalSkills.LunarNeedle.FireLunarNeedle.fireSound = "Play_MULT_m1_grenade_launcher_shoot";
                 };
 
-                var a = Resources.Load<GameObject>("prefabs/effects/impacteffects/LunarNeedleDamageEffect");
+                var a = LegacyResourcesAPI.Load<GameObject>("prefabs/effects/impacteffects/LunarNeedleDamageEffect");
                 a.transform.localScale = configsize;
 
                 burdel = a.GetComponentsInChildren<Transform>();
@@ -101,7 +101,7 @@ namespace UltimateCustomRun.Items.Lunars
                     kurwa.localScale = configsize;
                 }
 
-                var b = Resources.Load<GameObject>("prefabs/effects/impacteffects/LunarNeedleExplosionEffect");
+                var b = LegacyResourcesAPI.Load<GameObject>("prefabs/effects/impacteffects/LunarNeedleExplosionEffect");
                 b.GetComponent<EffectComponent>().soundName = "Play_imp_overlord_attack1_throw";
                 b.transform.localScale = configsize;
 
@@ -112,7 +112,7 @@ namespace UltimateCustomRun.Items.Lunars
                     stary.localScale = configsize;
                 }
 
-                var c = Resources.Load<GameObject>("prefabs/projectileghosts/LunarNeedleGhost");
+                var c = LegacyResourcesAPI.Load<GameObject>("prefabs/projectileghosts/LunarNeedleGhost");
                 c.transform.localScale = configsize;
 
                 kara = c.GetComponentsInChildren<Transform>();

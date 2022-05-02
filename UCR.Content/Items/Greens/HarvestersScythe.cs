@@ -70,7 +70,7 @@ namespace UltimateCustomRun.Items.Greens
 
             c.GotoNext(MoveType.Before,
                 x => x.MatchLdcR4(4f),
-                x => x.MatchLdloc(2),
+                x => x.MatchLdloc(out _),
                 x => x.MatchConvR4(),
                 x => x.MatchLdcR4(4f)
             );

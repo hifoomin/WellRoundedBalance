@@ -14,16 +14,16 @@ using UnityEngine;
 
 namespace UltimateCustomRun
 {
-    [BepInDependency("com.bepis.r2api")]
+    [BepInDependency(R2API.R2API.PluginGUID)]
     [BepInPlugin(PluginGUID, PluginName, PluginVersion)]
-    [R2APISubmoduleDependency(nameof(LanguageAPI), nameof(RecalculateStatsAPI), nameof(BuffAPI), nameof(LoadoutAPI), nameof(DirectorAPI), nameof(PrefabAPI))]
+    [R2APISubmoduleDependency(nameof(LanguageAPI), nameof(RecalculateStatsAPI), nameof(LoadoutAPI), nameof(DirectorAPI), nameof(PrefabAPI))]
     public class Main : BaseUnityPlugin
     {
         public const string PluginGUID = PluginAuthor + "." + PluginName;
         public const string PluginAuthor = "HIFU";
         public const string PluginName = "UltimateCustomRun";
         public const string PluginVersion = "1.0.0";
-
+        public const string a = "";
         public static ConfigFile UCRConfig;
         public static ManualLogSource UCRLogger;
 
@@ -76,14 +76,6 @@ namespace UltimateCustomRun
                     based.Init();
                 }
             }
-
-            Commencement.Changes();
-            DistantRoost.AddCredits();
-            SunderedGrove.AddGrovetender();
-            SunderedGrove.RemoveClayDunestrider();
-            TitanicPlains.AddBison();
-
-            Loader.Changes();
         }
 
         public bool ValidateGlobal(GlobalBase gb)

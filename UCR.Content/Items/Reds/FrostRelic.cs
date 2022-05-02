@@ -43,13 +43,13 @@ namespace UltimateCustomRun.Items.Reds
             Changes();
             if (CameraChanges)
             {
-                IL.RoR2.CameraTargetParams.Update += ChangeCamera;
+                IL.RoR2.IcicleAuraController.OnIciclesActivated += ChangeCamera;
             }
         }
 
         public static void Changes()
         {
-            var f = Resources.Load<GameObject>("prefabs/networkedobjects/IcicleAura");
+            var f = LegacyResourcesAPI.Load<GameObject>("prefabs/networkedobjects/IcicleAura");
             var fi = f.GetComponent<IcicleAuraController>();
             fi.baseIcicleAttackInterval = Duration;
             // (1 / Interval) = aps
@@ -74,14 +74,8 @@ namespace UltimateCustomRun.Items.Reds
             ILCursor c = new(il);
 
             c.GotoNext(MoveType.Before,
-                x => x.MatchLdcR4(0f),
-                x => x.MatchLdcR4(1.5f),
-                x => x.MatchLdcR4(-7f)
+                x => x.MatchLdfld<IcicleAuraController.OwnerInfo>("cameraTargetParams")
             );
-            c.Index += 1;
-            c.Next.Operand = 0f;
-            c.Index += 1;
-            c.Next.Operand = 0f;
         }
     }
 }

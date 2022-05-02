@@ -74,9 +74,10 @@ namespace UltimateCustomRun.Items.Whites
             }
         }
 
+        /*
         public static void ChangeBuffBehavior(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
-            var mrb = Resources.Load<BuffDef>("buffdefs/meatregenboost");
+            var mrb = LegacyResourcesAPI.Load<BuffDef>("buffdefs/meatregenboost");
             mrb.canStack = StackRegen;
             if (sender.inventory)
             {
@@ -89,5 +90,6 @@ namespace UltimateCustomRun.Items.Whites
         }
 
         // TODO: Make it add the buff lmao
+        */
     }
 }

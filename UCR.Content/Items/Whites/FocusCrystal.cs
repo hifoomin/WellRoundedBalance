@@ -59,7 +59,7 @@ namespace UltimateCustomRun.Items.Whites
 
         public static void ChangeVisual()
         {
-            var focus = Resources.Load<GameObject>("Prefabs/NetworkedObjects/NearbyDamageBonusIndicator");
+            var focus = LegacyResourcesAPI.Load<GameObject>("Prefabs/NetworkedObjects/NearbyDamageBonusIndicator");
             float actualRange = Radius / 13f;
             focus.transform.localScale = new Vector3(actualRange, actualRange, actualRange);
         }
