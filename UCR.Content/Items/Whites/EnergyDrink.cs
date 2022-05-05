@@ -36,7 +36,7 @@ namespace UltimateCustomRun.Items.Whites
 
         public static void ChangeSpeed(ILContext il)
         {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
 
             c.GotoNext(MoveType.Before,
                 x => x.MatchLdloc(out _),

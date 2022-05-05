@@ -37,7 +37,7 @@ namespace UltimateCustomRun.Items.Whites
 
         public static void ChangeRadius(ILContext il)
         {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
             c.GotoNext(MoveType.Before,
                 x => x.MatchCallOrCallvirt<CharacterBody>("get_radius"),
                 x => x.MatchLdcR4(1.5f),
@@ -52,7 +52,7 @@ namespace UltimateCustomRun.Items.Whites
 
         public static void ChangeHealing(ILContext il)
         {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
             c.GotoNext(MoveType.Before,
                 x => x.MatchLdcR4(0.25f),
                 x => x.MatchStfld<HealingWard>("interval"),

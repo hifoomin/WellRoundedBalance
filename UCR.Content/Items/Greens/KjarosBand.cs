@@ -49,7 +49,7 @@ namespace UltimateCustomRun.Items.Greens
 
         public static void KjaroChange(ILContext il)
         {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
 
             int itemCountLocation = 51;
             int totalDamageMultiplierLocation = 56;
@@ -85,7 +85,7 @@ namespace UltimateCustomRun.Items.Greens
 
         public static void BandsThreshold(ILContext il)
         {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
 
             c.GotoNext(MoveType.Before,
                 x => x.MatchCallOrCallvirt<CharacterBody>("get_damage"),
@@ -98,7 +98,7 @@ namespace UltimateCustomRun.Items.Greens
 
         public static void BandsCooldown(ILContext il)
         {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
 
             c.GotoNext(MoveType.Before,
                 x => x.MatchLdloc(out _),

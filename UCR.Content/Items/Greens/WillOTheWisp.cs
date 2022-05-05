@@ -38,7 +38,7 @@ namespace UltimateCustomRun.Items.Greens
 
         public static void ChangeDamage(ILContext il)
         {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
 
             c.GotoNext(MoveType.Before,
                 x => x.MatchLdcR4(3.5f),
@@ -57,7 +57,7 @@ namespace UltimateCustomRun.Items.Greens
 
         public static void ChangeRange(ILContext il)
         {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
 
             c.GotoNext(MoveType.Before,
                 x => x.MatchLdcR4(12f),

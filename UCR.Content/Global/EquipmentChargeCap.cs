@@ -20,7 +20,7 @@ namespace UltimateCustomRun.Global
 
         public static void ChangeCap(ILContext il)
         {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
 
             c.GotoNext(MoveType.Before,
                 x => x.MatchLdcI4(255)

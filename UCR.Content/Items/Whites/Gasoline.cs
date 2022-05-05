@@ -37,7 +37,7 @@ namespace UltimateCustomRun.Items.Whites
 
         public static void ChangeExplosionDamage(ILContext il)
         {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
 
             c.GotoNext(MoveType.Before,
                 x => x.MatchAdd(),
@@ -50,7 +50,7 @@ namespace UltimateCustomRun.Items.Whites
 
         public static void ChangeBurnDamage(ILContext il)
         {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
 
             c.GotoNext(MoveType.Before,
                 x => x.MatchLdcI4(1),
@@ -66,7 +66,7 @@ namespace UltimateCustomRun.Items.Whites
 
         public static void ChangeRadius(ILContext il)
         {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
 
             c.GotoNext(MoveType.Before,
                 x => x.MatchLdcR4(8f),

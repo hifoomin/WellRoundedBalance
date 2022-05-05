@@ -26,7 +26,7 @@ namespace UltimateCustomRun.Items.Reds
 
         public static void ChangeDuration(ILContext il)
         {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
 
             c.GotoNext(MoveType.Before,
                 x => x.MatchLdsfld("RoR2.RoR2Content/Buffs", "NoCooldowns"),

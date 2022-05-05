@@ -51,7 +51,7 @@ namespace UltimateCustomRun.Items.Whites
 
         public static void ChangeReduction(ILContext il)
         {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
             c.GotoNext(MoveType.Before,
                 x => x.MatchLdcR4(1),
                 x => x.MatchLdloc(out _),
@@ -63,7 +63,7 @@ namespace UltimateCustomRun.Items.Whites
 
         public static void ChangeMinimum(ILContext il)
         {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
             c.GotoNext(MoveType.Before,
                 //x => x.MatchLdflda<HealthComponent>("itemCounts"),
                 //x => x.MatchLdfld<HealthComponent>("armorPlate"),

@@ -51,7 +51,7 @@ namespace UltimateCustomRun.Items.Whites
 
         public static void ChangeBlock(ILContext il)
         {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
             c.GotoNext(MoveType.Before,
                  x => x.MatchLdcI4(0),
                  x => x.Match(OpCodes.Ble_S),

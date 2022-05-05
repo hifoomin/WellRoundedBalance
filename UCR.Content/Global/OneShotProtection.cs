@@ -23,7 +23,7 @@ namespace UltimateCustomRun.Global
 
         public static void ChangeTime(ILContext il)
         {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
 
             c.GotoNext(MoveType.Before,
                 x => x.MatchLdcR4(0.1f)
@@ -33,7 +33,7 @@ namespace UltimateCustomRun.Global
 
         public static void ChangeThreshold(ILContext il)
         {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
 
             c.GotoNext(MoveType.Before,
                 x => x.MatchCallOrCallvirt<RoR2.CharacterBody>("set_maxJumpCount"),

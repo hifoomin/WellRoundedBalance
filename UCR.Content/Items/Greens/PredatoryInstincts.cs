@@ -53,7 +53,7 @@ namespace UltimateCustomRun.Items.Greens
 
         public static void ChangeAS(ILContext il)
         {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
 
             c.GotoNext(MoveType.Before,
                 x => x.MatchLdsfld("RoR2.RoR2Content/Buffs", "AttackSpeedOnCrit"),
@@ -69,7 +69,7 @@ namespace UltimateCustomRun.Items.Greens
 
         public static void ChangeCap(ILContext il)
         {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
 
             c.GotoNext(MoveType.Before,
                 x => x.MatchStloc(1),
@@ -85,7 +85,7 @@ namespace UltimateCustomRun.Items.Greens
 
         public static void ChangeCapReal(ILContext il)
         {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
 
             c.GotoNext(MoveType.Before,
                 x => x.MatchLdloc(3),

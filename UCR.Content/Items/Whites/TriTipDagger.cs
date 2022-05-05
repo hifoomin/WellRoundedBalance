@@ -33,7 +33,7 @@ namespace UltimateCustomRun.Items.Whites
 
         public static void ChangeDamage(ILContext il)
         {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
 
             c.GotoNext(MoveType.Before
             // to be done
@@ -42,7 +42,7 @@ namespace UltimateCustomRun.Items.Whites
 
         public static void ChangeChance(ILContext il)
         {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
 
             c.GotoNext(MoveType.Before,
                 x => x.MatchLdarg(0),

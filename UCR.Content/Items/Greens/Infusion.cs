@@ -67,7 +67,7 @@ namespace UltimateCustomRun.Items.Greens
 
         public static void ChangeBehavior(ILContext il)
         {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
 
             //int bodyLoc = 17;
             int countLoc = 33;

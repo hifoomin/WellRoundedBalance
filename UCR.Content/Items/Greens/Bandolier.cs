@@ -31,7 +31,7 @@ namespace UltimateCustomRun.Items.Greens
         public static void
         ChangeBase(ILContext il)
         {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
 
             c.GotoNext(MoveType.Before,
                 x => x.MatchLdcR4(1f),
@@ -45,7 +45,7 @@ namespace UltimateCustomRun.Items.Greens
 
         public static void ChangeExponent(ILContext il)
         {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
 
             c.GotoNext(MoveType.Before,
                 x => x.MatchAdd(),

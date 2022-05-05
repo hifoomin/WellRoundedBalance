@@ -20,7 +20,7 @@ namespace UltimateCustomRun.Global
 
         public static void ChangeLuck(ILContext il)
         {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
 
             c.GotoNext(MoveType.Before,
                 x => x.MatchLdcR4(0.0f)

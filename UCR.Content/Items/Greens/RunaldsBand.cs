@@ -43,7 +43,7 @@ namespace UltimateCustomRun.Items.Greens
 
         public static void RunaldChange(ILContext il)
         {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
 
             int itemCountLocation = 51;
             int totalDamageMultiplierLocation = 56;

@@ -36,7 +36,7 @@ namespace UltimateCustomRun.Items.Whites
 
         public static void ChangeFlatHealing(ILContext il)
         {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
 
             c.GotoNext(MoveType.Before,
                 x => x.MatchLdsfld(typeof(RoR2Content.Items), "Medkit"),
@@ -50,7 +50,7 @@ namespace UltimateCustomRun.Items.Whites
 
         public static void ChangePercentHealing(ILContext il)
         {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
 
             c.GotoNext(MoveType.Before,
                 x => x.MatchLdarg(0),

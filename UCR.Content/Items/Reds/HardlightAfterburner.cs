@@ -17,7 +17,7 @@ namespace UltimateCustomRun.Items.Reds
         public override void Init()
         {
             Charges = ConfigOption(2, "Charges", "Per Stack. Vanilla is 2");
-            CooldownReduction = ConfigOption(0.3333334f, "Utility Cooldown Reduction", "Vanilla is ");
+            CooldownReduction = ConfigOption(0.3333334f, "Cooldown Reduction", "Vanilla is 0.3333334");
             base.Init();
         }
 
@@ -29,7 +29,7 @@ namespace UltimateCustomRun.Items.Reds
 
         public static void ChangeCharges(ILContext il)
         {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
 
             c.GotoNext(MoveType.Before,
                 x => x.MatchLdfld<RoR2.SkillLocator>("utility"),
@@ -42,7 +42,7 @@ namespace UltimateCustomRun.Items.Reds
 
         public static void ChangeCDR(ILContext il)
         {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
 
             c.GotoNext(MoveType.Before,
                 x => x.MatchLdcR4(0.6666667f)

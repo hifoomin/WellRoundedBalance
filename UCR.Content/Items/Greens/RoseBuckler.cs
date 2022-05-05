@@ -49,7 +49,7 @@ namespace UltimateCustomRun.Items.Greens
 
         public static void ChangeBehavior(ILContext il)
         {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
             c.GotoNext(MoveType.Before,
                 x => x.MatchCallOrCallvirt(typeof(CharacterBody).GetPropertyGetter(nameof(CharacterBody.isSprinting)))
             );
@@ -65,7 +65,7 @@ namespace UltimateCustomRun.Items.Greens
 
         public static void ChangeArmor(ILContext il)
         {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
             c.GotoNext(MoveType.Before,
                 x => x.MatchCallOrCallvirt<RoR2.CharacterBody>("get_armor"),
                 x => x.MatchLdloc(out _),
@@ -80,7 +80,7 @@ namespace UltimateCustomRun.Items.Greens
 
         public static void ChangeVisual(ILContext il)
         {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
             c.GotoNext(MoveType.Before,
                 x => x.MatchCallOrCallvirt<RoR2.CharacterBody>("get_isSprinting"),
                 x => x.MatchBrfalse(out _),

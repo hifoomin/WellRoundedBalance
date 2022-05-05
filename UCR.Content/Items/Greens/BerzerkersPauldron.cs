@@ -46,7 +46,7 @@ namespace UltimateCustomRun.Items.Greens
 
         public static void ChangeKillCount(ILContext il)
         {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
 
             c.GotoNext(MoveType.Before,
                 x => x.MatchCallOrCallvirt(typeof(CharacterBody).GetPropertyGetter(nameof(CharacterBody.multiKillCount))),
@@ -59,7 +59,7 @@ namespace UltimateCustomRun.Items.Greens
 
         public static void ChangeBuffDuration(ILContext il)
         {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
 
             c.GotoNext(MoveType.Before,
                 x => x.MatchLdsfld("RoR2.RoR2Content/Buffs", "WarCryBuff"),

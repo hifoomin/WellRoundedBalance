@@ -25,7 +25,7 @@ namespace UltimateCustomRun.Items.Greens
 
         public static void ChangeCDR(ILContext il)
         {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
 
             c.GotoNext(MoveType.Before,
                 x => x.MatchStloc(out _),

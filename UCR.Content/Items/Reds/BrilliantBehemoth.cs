@@ -30,7 +30,7 @@ namespace UltimateCustomRun.Items.Reds
 
         public static void ChangeDamage(ILContext il)
         {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
 
             c.GotoNext(MoveType.Before,
                 x => x.MatchLdcR4(0.6f)
@@ -40,7 +40,7 @@ namespace UltimateCustomRun.Items.Reds
 
         public static void ChangeRadius(ILContext il)
         {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
 
             c.GotoNext(MoveType.Before,
                 x => x.MatchLdcR4(1.5f),

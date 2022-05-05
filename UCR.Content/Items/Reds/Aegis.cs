@@ -56,7 +56,7 @@ namespace UltimateCustomRun.Items.Reds
         // sender.barrierDecayRate didnt work SOOO lets try the dumb way ig
         public static void ChangeOverheal(ILContext il)
         {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
 
             c.GotoNext(MoveType.Before,
                 x => x.MatchLdfld("RoR2.HealthComponent/ItemCounts", "barrierOnOverHeal"),

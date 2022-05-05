@@ -57,7 +57,7 @@ namespace UltimateCustomRun.Items.Greens
 
         public static void ChangeBehavior(ILContext il)
         {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
 
             c.GotoNext(MoveType.After,
                 x => x.MatchLdflda<HealthComponent>("itemCounts"),

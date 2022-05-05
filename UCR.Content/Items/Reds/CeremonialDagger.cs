@@ -36,7 +36,7 @@ namespace UltimateCustomRun.Items.Reds
 
         public static void ChangeDamage(ILContext il)
         {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
 
             c.GotoNext(MoveType.Before,
                 x => x.MatchBle(out ILLabel IL_067A),
@@ -48,7 +48,7 @@ namespace UltimateCustomRun.Items.Reds
 
         public static void ChangeCount(ILContext il)
         {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
 
             c.GotoNext(MoveType.Before,
                 x => x.MatchCallOrCallvirt(typeof(Util).GetMethod("CheckRoll", new Type[] { typeof(float), typeof(CharacterMaster) })),

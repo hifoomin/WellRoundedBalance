@@ -1,19 +1,18 @@
 ﻿using MonoMod.Cil;
 
-/*
 namespace UltimateCustomRun.Items.Reds
 {
-    public class UnstableTeslaCoil : ItemBase
+    public class LaserScope : ItemBase
     {
         public static float Damage;
         public static float Radius;
         public static float StackRadius;
-        public override string Name => ":: Items ::: Reds :: Unstable Tesla Coil";
-        public override string InternalPickupToken => "shockNearby";
-        public override bool NewPickup => false;
-        public override string PickupText => "";
+        public override string Name => ":: Items ::: Reds :: Laser Scope";
+        public override string InternalPickupToken => "critDamage";
+        public override bool NewPickup => true;
+        public override string PickupText => "Your 'Critical Strikes' deal an additional 100% damage.";
 
-        public override string DescText => "All your <style=cIsDamage>attacks explode</style> in a <style=cIsDamage>" + Radius + "m </style> <style=cStack>(+" + StackRadius + "m per stack)</style> Radius for a bonus <style=cIsDamage>60%</style> TOTAL Damage to nearby enemies.";
+        public override string DescText => "All your <style=cIsDamage>attacks explode</style> in a <style=cIsDamage>" + Radius + "m </style> <style=cStack>(+" + StackRadius + "m per stack)</style> radius for a bonus <style=cIsDamage>" + d(Damage) + "</style> TOTAL damage to nearby enemies.";
 
         public override void Init()
         {
@@ -53,4 +52,3 @@ namespace UltimateCustomRun.Items.Reds
         }
     }
 }
-*/

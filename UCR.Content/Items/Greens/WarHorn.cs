@@ -32,7 +32,7 @@ namespace UltimateCustomRun.Items.Greens
 
         public static void ChangeAS(ILContext il)
         {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
 
             c.GotoNext(MoveType.Before,
                 //x => x.MatchLdsfld("RoR2.RoR2Content/Buffs", "Energized"),
@@ -47,7 +47,7 @@ namespace UltimateCustomRun.Items.Greens
 
         public static void ChangeDuration(ILContext il)
         {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
 
             c.GotoNext(MoveType.Before,
                 x => x.MatchLdcI4(8),

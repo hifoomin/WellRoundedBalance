@@ -32,7 +32,7 @@ namespace UltimateCustomRun.Items.Whites
 
         public static void ChangeHealing(ILContext il)
         {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
 
             c.GotoNext(MoveType.Before,
                 x => x.MatchStfld<HealthPickup>(nameof(HealthPickup.flatHealing))

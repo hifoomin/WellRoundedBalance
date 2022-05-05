@@ -46,7 +46,7 @@ namespace UltimateCustomRun.Items.Greens
 
         public static void ChangeDamage(ILContext il)
         {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
 
             c.GotoNext(MoveType.Before,
                 x => x.MatchCallOrCallvirt(typeof(Util).GetMethod("CheckRoll", new Type[] { typeof(float), typeof(CharacterMaster) })),
@@ -61,7 +61,7 @@ namespace UltimateCustomRun.Items.Greens
 
         public static void ChangeChance(ILContext il)
         {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
 
             c.GotoNext(MoveType.Before,
                 x => x.MatchLdsfld("RoR2.RoR2Content/Items", "ChainLightning"),
@@ -75,7 +75,7 @@ namespace UltimateCustomRun.Items.Greens
 
         public static void ChangeTargetCountStack(ILContext il)
         {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
 
             c.GotoNext(MoveType.Before,
                 x => x.MatchStfld<LightningOrb>("isCrit"),
@@ -114,7 +114,7 @@ namespace UltimateCustomRun.Items.Greens
 
         public static void ChangeRangeStack(ILContext il)
         {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
 
             c.GotoNext(MoveType.Before,
                 x => x.MatchLdfld<LightningOrb>("range"),
@@ -126,7 +126,7 @@ namespace UltimateCustomRun.Items.Greens
 
         public static void ChangeProcCo(ILContext il)
         {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
 
             c.GotoNext(MoveType.Before,
                 x => x.MatchLdflda<LightningOrb>("procChainMask"),

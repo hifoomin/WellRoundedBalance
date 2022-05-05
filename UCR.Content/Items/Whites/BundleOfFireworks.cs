@@ -38,7 +38,7 @@ namespace UltimateCustomRun.Items.Whites
 
         public static void ChangeCount(ILContext il)
         {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
             //c.GotoNext(MoveType.Before,
             //x => x.MatchLdcI4(4),
             //x => x.MatchLdloc(out _),

@@ -33,7 +33,7 @@ namespace UltimateCustomRun.Items.Whites
 
         public static void ChangeDamage(ILContext il)
         {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
             c.GotoNext(MoveType.Before,
                 x => x.MatchStfld<DamageInfo>("damageColorIndex"),
                 x => x.MatchLdloc(out _),
@@ -48,7 +48,7 @@ namespace UltimateCustomRun.Items.Whites
 
         public static void ChangeRadius(ILContext il)
         {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
             c.GotoNext(MoveType.Before,
                 x => x.MatchCallOrCallvirt<UnityEngine.Vector3>("get_sqrMagnitude"),
                 x => x.MatchLdcR4(169f)

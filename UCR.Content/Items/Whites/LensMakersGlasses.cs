@@ -34,7 +34,7 @@ namespace UltimateCustomRun.Items.Whites
 
         public static void ChangeCrit(ILContext il)
         {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
             c.GotoNext(MoveType.Before,
                 x => x.MatchLdcR4(10f),
                 x => x.MatchMul(),

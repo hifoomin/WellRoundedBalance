@@ -47,7 +47,7 @@ namespace UltimateCustomRun.Items.Whites
 
         public static void ChangeDamage(ILContext il)
         {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
             c.GotoNext(MoveType.Before,
                 x => x.MatchLdcR4(1f),
                 x => x.MatchLdcR4(0.2f)
@@ -59,7 +59,7 @@ namespace UltimateCustomRun.Items.Whites
         /*
         public static void ChangeType(ILContext il)
         {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
             c.GotoNext(MoveType.Before,
                 x => x.MatchLdarg(0),
                 x => x.MatchLdfld<CharacterBody>("body"),

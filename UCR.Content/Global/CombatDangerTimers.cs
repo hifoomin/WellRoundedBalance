@@ -28,7 +28,7 @@ namespace UltimateCustomRun.Global
         }
         public static void ChangeDangerDelay(ILContext il)
         {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
 
             c.GotoNext(MoveType.Before,
                 x => x.MatchLdfld<CharacterBody>("outOfDangerStopwatch"),
@@ -39,7 +39,7 @@ namespace UltimateCustomRun.Global
         }
         public static void ChangeCombatDelay(ILContext il)
         {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
 
             c.GotoNext(MoveType.Before,
                x => x.MatchLdfld<CharacterBody>("outOfCombatStopwatch"),

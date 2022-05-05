@@ -27,7 +27,7 @@ namespace UltimateCustomRun.Items.Whites
 
         public static void ChangeAS(ILContext il)
         {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
 
             c.GotoNext(MoveType.Before,
                 x => x.MatchConvR4(),

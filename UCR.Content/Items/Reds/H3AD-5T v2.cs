@@ -53,7 +53,7 @@ namespace UltimateCustomRun.Items.Reds
 
         public static void ChangeJumpHeight(ILContext il)
         {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
 
             c.GotoNext(MoveType.Before,
                 x => x.MatchLdcR4(2f)

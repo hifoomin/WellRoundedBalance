@@ -29,7 +29,7 @@ namespace UltimateCustomRun.Items.Reds
 
         public static void ChangeChance(ILContext il)
         {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
 
             c.GotoNext(MoveType.Before,
                 x => x.MatchBrfalse(out _),
@@ -42,7 +42,7 @@ namespace UltimateCustomRun.Items.Reds
 
         public static void ChangeDuration(ILContext il)
         {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
 
             c.GotoNext(MoveType.Before,
                 x => x.MatchLdcI4(30),

@@ -35,7 +35,7 @@ namespace UltimateCustomRun.Items.Reds
 
         public static void ChangeCDR(ILContext il)
         {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
 
             c.GotoNext(MoveType.Before,
                 x => x.MatchLdcR4(0.75f),

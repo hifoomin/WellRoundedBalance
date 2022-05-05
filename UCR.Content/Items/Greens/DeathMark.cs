@@ -40,7 +40,7 @@ namespace UltimateCustomRun.Items.Greens
 
         public static void Changes(ILContext il)
         {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
             c.GotoNext(
                 x => x.MatchBrfalse(out _),
                 x => x.MatchLdloc(6),
@@ -92,7 +92,7 @@ namespace UltimateCustomRun.Items.Greens
 
         public static void ChangeDebuffsReq(ILContext il)
         {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
             c.GotoNext(
                 x => x.MatchLdloc(16),
                 x => x.MatchLdcI4(4),

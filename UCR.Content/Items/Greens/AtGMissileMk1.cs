@@ -35,7 +35,7 @@ namespace UltimateCustomRun.Items.Greens
 
         public static void ChangeChance(ILContext il)
         {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
 
             c.GotoNext(MoveType.Before,
                 x => x.MatchBle(out _),
@@ -48,7 +48,7 @@ namespace UltimateCustomRun.Items.Greens
 
         public static void ChangeDamage(ILContext il)
         {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
 
             c.GotoNext(MoveType.Before,
                 x => x.MatchBrfalse(out _),

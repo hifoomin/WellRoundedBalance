@@ -30,7 +30,7 @@ namespace UltimateCustomRun.Items.Whites
 
         public static void ChangeDamage(ILContext il)
         {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
             c.GotoNext(MoveType.Before,
                 x => x.MatchLdcR4(1f),
                 x => x.MatchLdcR4(0.75f)
@@ -41,7 +41,7 @@ namespace UltimateCustomRun.Items.Whites
 
         public static void ChangeThreshold(ILContext il)
         {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
             c.GotoNext(MoveType.Before,
                 x => x.MatchLdarg(0),
                 x => x.MatchCallOrCallvirt<HealthComponent>("get_fullCombinedHealth"),

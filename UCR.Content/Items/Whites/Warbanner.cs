@@ -53,7 +53,7 @@ namespace UltimateCustomRun.Items.Whites
 
         public static void ChangeRadius(ILContext il)
         {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
             c.GotoNext(MoveType.Before,
                 x => x.MatchLdcR4(8),
                 x => x.MatchLdcR4(8)
@@ -65,7 +65,7 @@ namespace UltimateCustomRun.Items.Whites
 
         public static void ChangeRadiusTP(ILContext il)
         {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
             c.GotoNext(MoveType.Before,
                 x => x.MatchLdcR4(8),
                 x => x.MatchLdcR4(8)

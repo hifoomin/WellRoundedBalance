@@ -38,7 +38,7 @@ namespace UltimateCustomRun.Items.Greens
 
         public static void ChangeCrit(ILContext il)
         {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
 
             c.GotoNext(MoveType.Before,
                 x => x.MatchLdloc(out _),
@@ -66,7 +66,7 @@ namespace UltimateCustomRun.Items.Greens
 
         public static void ChangeHealing(ILContext il)
         {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
 
             c.GotoNext(MoveType.Before,
                 x => x.MatchLdcR4(4f),
