@@ -9,7 +9,7 @@ namespace UltimateCustomRun.Items.Reds
         public static float BarrierGain;
         public static float RechargeTime;
 
-        public override string Name => ":: Items ::: Reds :: Ben's Raincoat";
+        public override string Name => ":: Items ::: Reds :: Bens Raincoat";
         public override string InternalPickupToken => "immuneToDebuff";
         public override bool NewPickup => false;
         public override string PickupText => "";

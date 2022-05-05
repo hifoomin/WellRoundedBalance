@@ -15,12 +15,12 @@ namespace UltimateCustomRun.Items.Whites
         public override bool NewPickup => false;
         public override string PickupText => "";
 
-        public override string DescText => "<style=cIsDamage>" + Chance + "%</style> <style=cStack>(+" + Chance + "% per stack)</style> Chance to <style=cIsDamage>bleed</style> an enemy for <style=cIsDamage>" + d(0.2f * 4f * Duration) + "</style> base damage.";
+        public override string DescText => "<style=cIsDamage>" + Chance + "%</style> <style=cStack>(+" + Chance + "% per stack)</style> Chance to <style=cIsDamage>bleed</style> an enemy for <style=cIsDamage>" + d(0.2f * 4f * 3f) + "</style> base damage.";
 
         public override void Init()
         {
             Chance = ConfigOption(10f, "Chance", "Per Stack. Vanilla is 10");
-            Duration = ConfigOption(3f, "Debuff Duration", "Vanilla is 3");
+            //Duration = ConfigOption(3f, "Debuff Duration", "Vanilla is 3");
             StackDamage = ConfigOption(true, "Stack Bleed Debuff?", "Vanilla is true");
             base.Init();
         }

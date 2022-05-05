@@ -32,11 +32,10 @@ namespace UltimateCustomRun.Items.Whites
             ILCursor c = new(il);
 
             c.GotoNext(MoveType.Before,
-                x => x.MatchBrfalse(out _),
                 x => x.MatchLdcI4(3),
-                x => x.MatchStloc(out _)
+                x => x.MatchStloc(out _),
+                x => x.MatchNewobj("RoR2.Orbs.GoldOrb")
             );
-            c.Index += 1;
             c.Next.Operand = GoldGain;
         }
     }

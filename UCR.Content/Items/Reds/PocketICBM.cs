@@ -6,7 +6,7 @@ namespace UltimateCustomRun.Items.Reds
     {
         public static int Missiles;
         public static float Damage;
-        public override string Name => ":: Items ::: Reds :: Pocket I.C.B.M.";
+        public override string Name => ":: Items ::: Reds :: Pocket ICBM";
         public override string InternalPickupToken => "moreMissile";
         public override bool NewPickup => true;
         public override string PickupText => "All Missile items deal more damage and fire an additional two missiles.";

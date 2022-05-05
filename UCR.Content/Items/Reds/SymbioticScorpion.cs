@@ -13,7 +13,7 @@ namespace UltimateCustomRun.Items.Reds
         public override string PickupText => (Chance < 100f ? "Chance to permanently" : "Permanently") +
                                              " reduce armor on hit.";
 
-        public override string DescText => "<style=cIsDamage>" + d(Chance) + "</style> chance on hit to reduce <style=cIsDamage>armor</style> by <style=cIsDamage>" + ArmorDecrease + "</style> <style=cStack>(+" + ArmorDecrease + " per stack)</style> <style=cIsDamage>permanently</style>.";
+        public override string DescText => "<style=cIsDamage>" + Chance + "%</style> chance on hit to reduce <style=cIsDamage>armor</style> by <style=cIsDamage>" + ArmorDecrease + "</style> <style=cStack>(+" + ArmorDecrease + " per stack)</style> <style=cIsDamage>permanently</style>.";
 
         public override void Init()
         {
@@ -33,7 +33,7 @@ namespace UltimateCustomRun.Items.Reds
             ILCursor c = new(il);
 
             c.GotoNext(MoveType.Before,
-                x => x.MatchLdsfld<RoR2.DLC1Content>("PermanentDebuffOnHit"),
+                x => x.MatchLdsfld("RoR2.DLC1Content/Items", "PermanentDebuffOnHit"),
                 x => x.MatchCallOrCallvirt<RoR2.Inventory>("GetItemCount"),
                 x => x.MatchStloc(out _),
                 x => x.MatchLdcI4(0),

@@ -10,12 +10,12 @@ namespace UltimateCustomRun.Items.Greens
         public static float Duration;
         public static float StackDuration;
 
-        public override string Name => ":: Items :: Greens :: Hunter's Harpoon";
+        public override string Name => ":: Items :: Greens :: Hunters Harpoon";
         public override string InternalPickupToken => "moveSpeedOnKill";
         public override bool NewPickup => false;
         public override string PickupText => "";
 
-        public override string DescText => "Killing an enemy increases <style=cIsUtility>movement speed</style> by <style=cIsUtility>" + d(MoveSpeed) + "</style>, fading over <style=cIsUtility>" + Duration + "</style> <style=cStack>(+" + StackDuration + " per stack)</style> seconds.";
+        public override string DescText => "Killing an enemy increases <style=cIsUtility>movement speed</style> by <style=cIsUtility>" + d(MoveSpeed * 5f) + "</style>, fading over <style=cIsUtility>" + Duration + "</style> <style=cStack>(+" + StackDuration + " per stack)</style> seconds.";
 
         public override void Init()
         {
@@ -38,7 +38,7 @@ namespace UltimateCustomRun.Items.Greens
             c.GotoNext(MoveType.Before,
                 x => x.MatchLdcR4(0.25f),
                 x => x.MatchLdarg(0),
-                x => x.MatchLdsfld<DLC1Content>("KillMoveSpeed")
+                x => x.MatchLdsfld("RoR2.DLC1Content/Buffs", "KillMoveSpeed")
             );
             c.Next.Operand = MoveSpeed;
         }

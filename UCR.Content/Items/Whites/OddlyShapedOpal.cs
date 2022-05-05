@@ -8,7 +8,7 @@ namespace UltimateCustomRun.Items.Whites
     {
         public static float Armor;
 
-        public override string Name => ":: Items : Whites :: Oddly-shaped Opal";
+        public override string Name => ":: Items : Whites :: Oddly Shaped Opal";
         public override string InternalPickupToken => "outOfCombatArmor";
         public override bool NewPickup => false;
 
@@ -32,7 +32,7 @@ namespace UltimateCustomRun.Items.Whites
             ILCursor c = new(il);
 
             c.GotoNext(MoveType.Before,
-                x => x.MatchLdsfld<DLC1Content>("OutOfCombatArmorBuff"),
+                x => x.MatchLdsfld("RoR2.DLC1Content/Buffs", "OutOfCombatArmorBuff"),
                 x => x.MatchCallOrCallvirt<CharacterBody>("HasBuff"),
                 x => x.MatchBrtrue(out _),
                 x => x.MatchLdcR4(0.0f),
