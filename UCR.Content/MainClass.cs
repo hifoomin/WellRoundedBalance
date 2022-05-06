@@ -10,10 +10,12 @@ using System.Linq;
 using System.Reflection;
 using UltimateCustomRun.Survivors;
 using UnityEngine;
+using RiskOfOptions;
 
 namespace UltimateCustomRun
 {
     [BepInDependency(R2API.R2API.PluginGUID)]
+    [BepInDependency("com.rune580.riskofoptions")]
     [BepInPlugin(PluginGUID, PluginName, PluginVersion)]
     [R2APISubmoduleDependency(nameof(LanguageAPI), nameof(RecalculateStatsAPI), nameof(LoadoutAPI), nameof(DirectorAPI), nameof(PrefabAPI))]
     public class Main : BaseUnityPlugin
@@ -58,6 +60,11 @@ namespace UltimateCustomRun
                 if (ValidateItem(based))
                 {
                     based.Init();
+                    /* something like, if the item that inherits from ItemBase's ConfigOption T is a bool, do stuff
+                    also there's multiple ConfigOptions per item
+                    {
+                    }
+                    */
                 }
             }
 

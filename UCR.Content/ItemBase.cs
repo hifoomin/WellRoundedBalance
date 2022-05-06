@@ -1,4 +1,7 @@
 ﻿using R2API;
+using RiskOfOptions;
+using RiskOfOptions.OptionConfigs;
+using RiskOfOptions.Options;
 
 namespace UltimateCustomRun
 {
@@ -13,7 +16,26 @@ namespace UltimateCustomRun
 
         public T ConfigOption<T>(T value, string name, string description)
         {
-            return Main.UCRConfig.Bind<T>(Name, name, value, description).Value;
+            var config = Main.UCRConfig.Bind(Name, name, value, description);
+            switch (value)
+            {
+                case bool:
+                    ModSettingsManager.AddOption(new CheckBoxOption(config);
+                    break;
+
+                case float:
+                    ModSettingsManager.AddOption(new StepSliderOption(config, new StepSliderConfig() { increment = value / 10f, min = 0f, max = value * 10f }));
+                    break;
+
+                case int:
+                    ModSettingsManager.AddOption(new StepSliderOption(config, new StepSliderConfig() { increment = value / 10, min = 0, max = value * 10 }));
+                    break;
+
+                default:
+                    break;
+            }
+            return config;
+            //return Main.UCRConfig.Bind<T>(Name, name, value, description).Value;
         }
 
         public abstract void Hooks();
@@ -22,8 +44,6 @@ namespace UltimateCustomRun
         {
             return (f * 100f).ToString() + "%";
         }
-
-        //List<string> Names = new List<string>();
 
         public virtual void Init()
         {
@@ -35,12 +55,7 @@ namespace UltimateCustomRun
                 LanguageAPI.Add(pickupToken, PickupText);
             }
             LanguageAPI.Add(descriptionToken, DescText);
-            //Names.Add(Name);
-            //Main.SortAlphabetically(Names);
-            //foreach (var itemstring in Names)
-            //{
-            Main.UCRLogger.LogInfo("Added " + Name /* itemstring */);
-            //}
+            Main.UCRLogger.LogInfo("Added " + Name);
         }
     }
 }

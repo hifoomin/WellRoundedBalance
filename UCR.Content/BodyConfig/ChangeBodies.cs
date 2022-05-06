@@ -1,4 +1,6 @@
-﻿namespace UltimateCustomRun.Survivors
+﻿using RoR2;
+
+namespace UltimateCustomRun.Survivors
 {
     /*
     public static void Change(CharacterBody body, Base based)
@@ -31,7 +33,7 @@
     }
     public class ChangeBodies : Base
     {
-         = BodyCatalog.FindBodyPrefab("VultureBody");
+        AlloyVulture = BodyCatalog.FindBodyPrefab("VultureBody");
         Change()
     }
     */

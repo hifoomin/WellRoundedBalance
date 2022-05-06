@@ -1,4 +1,5 @@
-﻿using MonoMod.Cil;
+﻿using Mono.Cecil.Cil;
+using MonoMod.Cil;
 
 namespace UltimateCustomRun.Items.Greens
 {
@@ -17,17 +18,15 @@ namespace UltimateCustomRun.Items.Greens
         public override void Init()
         {
             Duration = ConfigOption(0.7f, "Attack Speed", "Decimal. Vanilla is 0.7");
-            /*
             BaseDuration = ConfigOption(8, "Base Duration", "Vanilla is 8");
             StackDuration = ConfigOption(4, "Stack Duration", "Per Stack. Vanilla is 4");
-            */
             base.Init();
         }
 
         public override void Hooks()
         {
             IL.RoR2.CharacterBody.RecalculateStats += ChangeAS;
-            // IL.RoR2.EquipmentSlot.Execute += Warhorn.ChangeDuration;
+            IL.RoR2.EquipmentSlot.Execute += Warhorn.ChangeDuration;
         }
 
         public static void ChangeAS(ILContext il)
@@ -53,9 +52,11 @@ namespace UltimateCustomRun.Items.Greens
                 x => x.MatchLdcI4(8),
                 x => x.MatchLdcI4(4)
             );
-            c.Next.Operand = BaseDuration;
+            c.Remove();
+            c.Emit(OpCodes.Ldc_I4, BaseDuration);
             c.Index += 1;
-            c.Next.Operand = StackDuration;
+            c.Remove();
+            c.Emit(OpCodes.Ldc_I4, StackDuration);
         }
     }
 }

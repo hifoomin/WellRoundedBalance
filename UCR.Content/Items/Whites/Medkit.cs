@@ -24,7 +24,6 @@ namespace UltimateCustomRun.Items.Whites
             FlatHealing = ConfigOption(20f, "Flat Healing", "Vanilla is 20");
             PercentHealing = ConfigOption(0.05f, "Percent Healing", "Decimal. Per Stack. Vanilla is 0.05");
             StackBuff = ConfigOption(false, "Stack Buff?", "Vanilla is false");
-            IsDebuff = ConfigOption(false, "Change to Debuff?", "Vanilla is false");
             base.Init();
         }
 
@@ -59,13 +58,6 @@ namespace UltimateCustomRun.Items.Whites
             );
             c.Index += 2;
             c.Next.Operand = PercentHealing;
-        }
-
-        public static void ChangeBuffBehavior()
-        {
-            var mh = LegacyResourcesAPI.Load<BuffDef>("buffdefs/medkitheal");
-            mh.canStack = StackBuff;
-            mh.isDebuff = IsDebuff;
         }
     }
 }

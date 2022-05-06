@@ -1,4 +1,6 @@
-﻿namespace UltimateCustomRun.Survivors
+﻿using UnityEngine;
+
+namespace UltimateCustomRun.Survivors
 {
     public class LoadBodies
     {
@@ -10,7 +12,6 @@
             };
         }
 
-        /*
         public static GameObject AlloyVulture;
         public static Base AlloyVultureStats;
         public static GameObject Beetle;
@@ -53,6 +54,5 @@
         public static Base StoneGolemStats;
         public static GameObject VoidReaver;
         public static Base VoidReaverStats;
-        */
     }
 }
