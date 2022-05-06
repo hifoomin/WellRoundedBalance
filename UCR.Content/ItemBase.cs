@@ -1,7 +1,9 @@
-﻿using R2API;
+﻿using BepInEx.Configuration;
+using R2API;
 using RiskOfOptions;
 using RiskOfOptions.OptionConfigs;
 using RiskOfOptions.Options;
+using System;
 
 namespace UltimateCustomRun
 {
@@ -16,26 +18,31 @@ namespace UltimateCustomRun
 
         public T ConfigOption<T>(T value, string name, string description)
         {
-            var config = Main.UCRConfig.Bind(Name, name, value, description);
+            ConfigEntryBase config = Main.UCRConfig.Bind(Name, name, value, description);
+
             switch (value)
             {
                 case bool:
-                    ModSettingsManager.AddOption(new CheckBoxOption(config);
+                    ModSettingsManager.AddOption(new CheckBoxOption((ConfigEntry<bool>)config, new CheckBoxConfig() { restartRequired = true }));
                     break;
 
                 case float:
-                    ModSettingsManager.AddOption(new StepSliderOption(config, new StepSliderConfig() { increment = value / 10f, min = 0f, max = value * 10f }));
+                    ModSettingsManager.AddOption(new StepSliderOption((ConfigEntry<float>)config, new StepSliderConfig() { restartRequired = true, increment = (float)config.DefaultValue / 10f, min = 0f, max = (float)config.DefaultValue * 10f }));
+                    Main.UCRLogger.LogWarning(Name + " - the slider comes from type" + config + ". The specific ConfigOption is " + name + ". The ConfigOption, when casted to (float)config.DefaultValue is " + (float)config.DefaultValue);
                     break;
 
                 case int:
-                    ModSettingsManager.AddOption(new StepSliderOption(config, new StepSliderConfig() { increment = value / 10, min = 0, max = value * 10 }));
+                    ModSettingsManager.AddOption(new IntSliderOption((ConfigEntry<int>)config, new IntSliderConfig() { restartRequired = true, min = 0, max = (int)config.DefaultValue * 10 }));
+                    Main.UCRLogger.LogWarning(Name + " - the slider comes from type" + config + ". The specific ConfigOption is " + name + ". The ConfigOption, when casted to (int)config.DefaultValue is " + (int)config.DefaultValue);
                     break;
 
                 default:
+                    Main.UCRLogger.LogInfo("Failed to add a Risk Of Options config for" + Name);
                     break;
             }
-            return config;
-            //return Main.UCRConfig.Bind<T>(Name, name, value, description).Value;
+
+            //return config;
+            return Main.UCRConfig.Bind<T>(Name, name, value, description).Value;
         }
 
         public abstract void Hooks();

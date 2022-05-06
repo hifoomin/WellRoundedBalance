@@ -13,7 +13,7 @@ namespace UltimateCustomRun.Items.Greens
         public override string InternalPickupToken => "energizedOnEquipmentUse";
         public override bool NewPickup => false;
         public override string PickupText => "";
-        public override string DescText => "Activating your Equipment gives you <style=cIsDamage>+" + d(Duration) + " attack speed</style> for <style=cIsDamage>8s</style> <style=cStack>(+4s per stack)</style>.";
+        public override string DescText => "Activating your Equipment gives you <style=cIsDamage>+" + d(Duration) + " attack speed</style> for <style=cIsDamage>" + BaseDuration + "s</style> <style=cStack>(+" + StackDuration + "s per stack)</style>.";
 
         public override void Init()
         {
@@ -26,7 +26,7 @@ namespace UltimateCustomRun.Items.Greens
         public override void Hooks()
         {
             IL.RoR2.CharacterBody.RecalculateStats += ChangeAS;
-            IL.RoR2.EquipmentSlot.Execute += Warhorn.ChangeDuration;
+            IL.RoR2.EquipmentSlot.OnEquipmentExecuted += ChangeDuration;
         }
 
         public static void ChangeAS(ILContext il)

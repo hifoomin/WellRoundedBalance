@@ -27,9 +27,9 @@ namespace UltimateCustomRun.Items.Yellows
                                            (FlatHealth != 0f && PercentHealth != 0f ? " +" : "") +
                                            (PercentHealth != 0f ? " <style=cIsHealing>" + d(PercentHealth) + "</style>" : "") +
                                            (StackPercentHealth ? " <style=cStack>(+" + d(PercentHealth) + " per stack)</style>" : "") +
-                                           (Armor != 0f && FlatHealth != 0f ? ", armor by" + Armor : "") +
+                                           (Armor != 0f && FlatHealth != 0f ? ", armor by " + "<style=cIsHealing>" + Armor + "</style>" : "") +
                                            (StackArmor ? " <style=cStack>(+" + Armor + " per stack)</style>" : "") +
-                                           (Regen != 0f ? " and <style=cIsHealing>base health regeneration</style> by <style=cIsHealing>+" + Regen + " hp/s<style=cStack>(+" + Regen + "hp/s per stack)</style>." : ".");
+                                           (Regen != 0f ? " and <style=cIsHealing>base health regeneration</style> by <style=cIsHealing>" + Regen + " hp/s <style=cStack>(+" + Regen + "hp/s per stack)</style>." : ".");
 
         public override void Init()
         {
