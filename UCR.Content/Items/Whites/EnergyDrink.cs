@@ -10,9 +10,9 @@ namespace UltimateCustomRun.Items.Whites
         public static float SprintingSpeed;
         public override string Name => ":: Items : Whites :: Energy Drink";
         public override string InternalPickupToken => "sprintBonus";
-        public override bool NewPickup => false;
+        public override bool NewPickup => true;
 
-        public override string PickupText => "";
+        public override string PickupText => "Increase sprint speed by +" + Mathf.Round((Speed / 1.45f) * 100f) + ".";
 
         public override string DescText => "<style=cIsUtility>Sprint Speed</style> is improved by <style=cIsUtility>" +
                                            (Change ? SprintingSpeed * 100f + "%</style> <style=cStack>(+" + SprintingSpeed * 100f + "% per stack)</style>." : Mathf.Round((Speed / 1.45f) * 100f) + "%</style> <style=cStack>(+" + Mathf.Round((Speed / 1.45f) * 100f) + "% per stack)</style>.");

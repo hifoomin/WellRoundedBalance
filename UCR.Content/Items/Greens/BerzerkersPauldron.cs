@@ -16,12 +16,8 @@ namespace UltimateCustomRun.Items.Greens
 
         public override string Name => ":: Items :: Greens :: Berzerkers Pauldron";
         public override string InternalPickupToken => "warCryOnMultiKill";
-        public override bool NewPickup => false;
-
-        // remember to Change when KillRequirement works
-        public override string PickupText => "";
-
-        // "Enter a frenzy after killing " + KillRequirement + " enemies in quick succession.");
+        public override bool NewPickup => true;
+        public override string PickupText => "Enter a frenzy after killing " + KillRequirement + " enemies in quick succession.";
 
         public override string DescText => (Armor != 0f ? "<style=cIsHealing>Increase armor</style> by <style=cIsHealing>" + Armor + "</style> <style=cStack>(+" + Armor + " per stack)</style>. " : "") +
                                            "<style=cIsDamage>Killing " + KillRequirement + " enemies</style> within <style=cIsDamage>1</style> second sends you into a <style=cIsDamage>frenzy</style> for <style=cIsDamage>" + BaseBuffDuration + "s</style> <style=cStack>(+" + StackBuffDuration + "s per stack)</style>. Increases <style=cIsUtility>movement speed</style> by <style=cIsUtility>50%</style>, <style=cIsDamage>attack speed</style> by <style=cIsDamage>100%</style>" +

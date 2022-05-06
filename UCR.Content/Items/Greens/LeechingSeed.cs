@@ -34,12 +34,12 @@ namespace UltimateCustomRun.Items.Greens
         private void AddUnconditionalHealing(DamageReport report)
         {
             var AB = report.attackerBody;
-            if (report != null || AB != null)
+            if (report != null && AB != null)
             {
                 var HealMask = report.damageInfo.procChainMask;
                 if (AB.inventory)
                 {
-                    var Stack = AB.inventory.GetItemCount(RoR2Content.Items.Seed); ;
+                    var Stack = AB.inventory.GetItemCount(RoR2Content.Items.Seed);
                     if (Stack > 0)
                     {
                         AB.healthComponent.Heal(AdditionalHealing + StackAdditionalHealing * (Stack - 1f), HealMask, true);

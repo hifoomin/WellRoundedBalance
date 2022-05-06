@@ -10,15 +10,15 @@ namespace UltimateCustomRun.Items.Whites
         public static float CritDamageMultiplier;
         public override string Name => ":: Items : Whites :: Lens Makers Glasses";
         public override string InternalPickupToken => "critGlasses";
-        public override bool NewPickup => false;
+        public override bool NewPickup => true;
 
-        public override string PickupText => "Chance to 'Critically Strike', dealing" +
-                                             (CritDamageMultiplier != 0f ? " much more" : " double") +
+        public override string PickupText => "Gain " + Crit + "% chance for hits to 'Critically Strike', dealing" +
+                                             (CritDamageMultiplier > 0 ? " much more" : " double") +
                                              " damage.";
 
-        public override string DescText => "Your attacks have a <style=cIsDamage>" + Crit + "%</style> <style=cStack>(+" + Crit + "% per stack)</style> Chance to '<style=cIsDamage>Critically Strike</style>', dealing <style=cIsDamage>" +
+        public override string DescText => "Your attacks have a <style=cIsDamage>" + Crit + "%</style> <style=cStack>(+" + Crit + "% per stack)</style> Chance to '<style=cIsDamage>Critically Strike</style>', dealing<style=cIsDamage>" +
                                            (CritDamageMultiplier != 0f ? " much more" : " double") +
-                                           "damage</style>.";
+                                           " damage</style>.";
 
         public override void Init()
         {

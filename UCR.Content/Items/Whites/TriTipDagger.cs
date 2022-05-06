@@ -12,8 +12,8 @@ namespace UltimateCustomRun.Items.Whites
 
         public override string Name => ":: Items : Whites :: Tri Tip Dagger";
         public override string InternalPickupToken => "bleedOnHit";
-        public override bool NewPickup => false;
-        public override string PickupText => "";
+        public override bool NewPickup => true;
+        public override string PickupText => "Gain +" + Chance + "% chance to bleed enemies on hit.";
 
         public override string DescText => "<style=cIsDamage>" + Chance + "%</style> <style=cStack>(+" + Chance + "% per stack)</style> Chance to <style=cIsDamage>bleed</style> an enemy for <style=cIsDamage>" + d(0.2f * 4f * 3f) + "</style> base damage.";
 
