@@ -12,7 +12,7 @@ namespace UltimateCustomRun.Items.Greens
         public override bool NewPickup => false;
         public override string PickupText => "";
 
-        public override string DescText => "Instantly kill Elite monsters below <style=cIsHealth>" + Mathf.Round(1f - (1f / (1f + (Threshold / 100f)))) * 100f + "% <style=cStack>(+" + Mathf.Round(1f - (1f / (1f + (Threshold * 2f / 100f)))) * 100f + "% per stack)</style> health</style>.";
+        public override string DescText => "Instantly kill Elite monsters below <style=cIsHealth>" + Mathf.Round((1f - 1f / (1f + (Threshold / 100f))) * 100f) + "% <style=cStack>(+" + Mathf.Round((1f - 1f / (1f + (Threshold * 2f / 100f))) * 100f - (1f - 1f / (1f + (Threshold / 100f))) * 100f) + "% per stack)</style> health</style>.";
 
         public override void Init()
         {

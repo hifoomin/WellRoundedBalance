@@ -51,13 +51,12 @@ namespace UltimateCustomRun.Items.Reds
             ILCursor c = new(il);
 
             c.GotoNext(MoveType.Before,
-                x => x.MatchCallOrCallvirt(typeof(Util).GetMethod("CheckRoll", new Type[] { typeof(float), typeof(CharacterMaster) })),
+                x => x.MatchLdloc(59),
                 x => x.MatchLdcI4(3)
             );
             c.Index += 1;
             c.Remove();
             c.Emit(OpCodes.Ldc_I4, Count);
-            // also thanks harb for checkroll match
         }
 
         public static void ChangeProc()

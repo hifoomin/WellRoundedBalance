@@ -23,11 +23,11 @@ namespace UltimateCustomRun.Items.Yellows
 
         public override string PickupText => "";
 
-        public override string DescText => "Increases <style=cIsUtility>ALL stats</style> by <style=cIsUtility>" + Mathf.Round((PercentHealth * 100f + PercentRegen * 100f + PercentArmor * 100f + PercentSpeed * 100f + PercentDamage * 100f + PercentAttackSpeed * 100f + PercentCrit) / 7f) + "%</style> <style=cStack>(+10% per stack)</style>.";
+        public override string DescText => "Increases <style=cIsUtility>ALL stats</style> by <style=cIsUtility>" + Mathf.Round((PercentHealth * 100f + PercentRegen * 100f + PercentArmor * 100f + PercentSpeed * 100f + PercentDamage * 100f + PercentAttackSpeed * 100f + PercentCrit) / 7f) + "%</style> <style=cStack>(+" + Mathf.Round((PercentHealth * 100f + PercentRegen * 100f + PercentArmor * 100f + PercentSpeed * 100f + PercentDamage * 100f + PercentAttackSpeed * 100f + PercentCrit) / 7f) + " per stack)</style>.";
 
         public override void Init()
         {
-            PercentHealth = ConfigOption(0.1f, "Percent Health", "Decimal. Per Stack. Vanilla is 0.1");
+            PercentHealth = ConfigOption(0.1f, "Percent Health", "Decimal. Per Stack. Vanilla is 0.1. Also affects Pearl.");
             FlatRegen = ConfigOption(0f, "Flat Regen", "Per Stack. Vanilla is 0.1");
             PercentRegen = ConfigOption(0.1f, "Percent Regen", "Decimal. Per Stack. Vanilla is 0");
             PercentArmor = ConfigOption(0.1f, "Percent Armor", "Decimal. Per Stack. Vanilla is 0");

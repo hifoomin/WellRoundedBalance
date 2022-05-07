@@ -24,7 +24,7 @@ namespace UltimateCustomRun.Items.Yellows
             Damage = ConfigOption(60f, "Damage", "Decimal. Vanilla is 60");
             ProcCoefficient = ConfigOption(1f, "Proc Coefficient", "Vanilla is 1");
             Range = ConfigOption(100, "Range", "Vanilla is 100");
-            RechargeTime = ConfigOption(15f, "Recharge Time", "Vanilla is 15");
+            RechargeTime = ConfigOption(30f, "Recharge Time", "Vanilla is 30");
             base.Init();
         }
 
@@ -36,15 +36,15 @@ namespace UltimateCustomRun.Items.Yellows
 
         private void ChangeRechargeTime(On.EntityStates.VagrantNovaItem.RechargeState.orig_FixedUpdate orig, EntityStates.VagrantNovaItem.RechargeState self)
         {
-            Main.UCRLogger.LogInfo("base dur is " + EntityStates.VagrantNovaItem.RechargeState.baseDuration);
+            EntityStates.VagrantNovaItem.RechargeState.baseDuration = RechargeTime;
             orig(self);
         }
 
         private void Changes(On.EntityStates.VagrantNovaItem.DetonateState.orig_OnEnter orig, EntityStates.VagrantNovaItem.DetonateState self)
         {
-            Main.UCRLogger.LogInfo("blast damage coeff is " + EntityStates.VagrantNovaItem.DetonateState.blastDamageCoefficient);
-            Main.UCRLogger.LogInfo("proc co is" + EntityStates.VagrantNovaItem.DetonateState.blastProcCoefficient);
-            Main.UCRLogger.LogDebug("range is " + EntityStates.VagrantNovaItem.DetonateState.blastRadius);
+            EntityStates.VagrantNovaItem.DetonateState.blastDamageCoefficient = Damage;
+            EntityStates.VagrantNovaItem.DetonateState.blastProcCoefficient = ProcCoefficient;
+            EntityStates.VagrantNovaItem.DetonateState.blastRadius = Range;
             orig(self);
         }
     }

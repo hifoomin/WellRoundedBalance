@@ -15,7 +15,7 @@ namespace UltimateCustomRun.Items.Yellows
 
         public override string PickupText => "";
 
-        public override string DescText => "<style=cIsDamage>" + Chance + "%</style> chance on hit to call down a lightning strike, dealing <style=cIsDamage>" + d(Damage) + "</style> <style=cStack>(+" + d(Damage) + " per stack)</style> damage.";
+        public override string DescText => "<style=cIsDamage>" + Chance + "%</style> chance on hit to call down a lightning strike, dealing <style=cIsDamage>" + d(Damage) + "</style> <style=cStack>(+" + d(Damage) + " per stack)</style> TOTAL damage.";
 
         public override void Init()
         {
@@ -29,6 +29,7 @@ namespace UltimateCustomRun.Items.Yellows
         {
             IL.RoR2.GlobalEventManager.OnHitEnemy += ChangeChance;
             IL.RoR2.GlobalEventManager.OnHitEnemy += ChangeDamage;
+            IL.RoR2.GlobalEventManager.OnHitEnemy += ChangeProcCoefficient;
         }
 
         private void ChangeChance(ILContext il)
