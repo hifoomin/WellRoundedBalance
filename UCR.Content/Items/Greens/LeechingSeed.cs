@@ -17,7 +17,7 @@ namespace UltimateCustomRun.Items.Greens
         public override string PickupText => "";
 
         public override string DescText => "Dealing damage <style=cIsHealing>heals</style> you for <style=cIsHealing>1 <style=cStack>(+1 per stack)</style> health</style>" +
-                               (AdditionalHealing > 0 ? " and an additional <style=cIsHealing>" + AdditionalHealing + " <style=cStack>(+" + StackAdditionalHealing + " per stack)<style> health</style>." : ".");
+                               (AdditionalHealing > 0 ? " and an additional <style=cIsHealing>" + AdditionalHealing + " <style=cStack>(+" + StackAdditionalHealing + " per stack)</style> health</style>." : ".");
 
         public override void Init()
         {

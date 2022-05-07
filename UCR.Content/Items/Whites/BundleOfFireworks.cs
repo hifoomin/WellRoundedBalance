@@ -28,7 +28,7 @@ namespace UltimateCustomRun.Items.Whites
             StackCount = ConfigOption(4, "Stack Count", "Per Stack. Vanilla is 4");
             Damage = ConfigOption(3f, "Damage Coefficient", "Decimal. Vanilla is 3");
             ProcCoefficient = ConfigOption(0.2f, "Proc Coefficient", "Vanilla is 0.2");
-            AoE = ConfigOption(4f, "Area of Effect", "Vanilla is ");
+            AoE = ConfigOption(8f, "Area of Effect", "Vanilla is 5");
             base.Init();
         }
 
@@ -63,8 +63,8 @@ namespace UltimateCustomRun.Items.Whites
             var msm = croppa.GetComponent<ProjectileImpactExplosion>();
             var skm = croppa.GetComponent<ProjectileController>();
             msm.blastDamageCoefficient = Damage / 3f;
-            Main.UCRLogger.LogInfo("blast radius is " + msm.blastRadius);
             skm.procCoefficient = ProcCoefficient;
+            msm.blastRadius = AoE;
             // this is probably the wrong way of doing this but i cant figure out another
         }
     }
