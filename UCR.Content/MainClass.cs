@@ -14,6 +14,14 @@ using RiskOfOptions;
 
 namespace UltimateCustomRun
 {
+    /* Notes:
+
+    ILSpy is really useful to get ldloc and stloc values
+    but using those leads to frequent breaking between patches
+    Also use IL with C# mode or it's the j
+
+    */
+
     [BepInDependency(R2API.R2API.PluginGUID)]
     [BepInDependency("com.rune580.riskofoptions")]
     [BepInPlugin(PluginGUID, PluginName, PluginVersion)]
@@ -23,8 +31,7 @@ namespace UltimateCustomRun
         public const string PluginGUID = PluginAuthor + "." + PluginName;
         public const string PluginAuthor = "HIFU";
         public const string PluginName = "UltimateCustomRun";
-        public const string PluginVersion = "1.0.0";
-        public const string a = "";
+        public const string PluginVersion = "0.1.0";
         public static ConfigFile UCRConfig;
         public static ManualLogSource UCRLogger;
 

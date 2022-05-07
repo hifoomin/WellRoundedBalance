@@ -28,12 +28,12 @@ namespace UltimateCustomRun
 
                 case float:
                     ModSettingsManager.AddOption(new StepSliderOption((ConfigEntry<float>)config, new StepSliderConfig() { restartRequired = true, /*increment = (float)cachedDefaultValue / 10f,*/ increment = 0.000001f, min = 0f/*, max = (float)cachedDefaultValue * 10f*/ }));
-                    Main.UCRLogger.LogWarning(Name + " - the slider comes from type" + config + ". The specific ConfigOption is " + name + ". The ConfigOption, when casted to (float)config.DefaultValue is " + (float)cachedDefaultValue);
+                    // Main.UCRLogger.LogWarning(Name + " - the slider comes from type" + config + ". The specific ConfigOption is " + name + ". The ConfigOption, when casted to (float)config.DefaultValue is " + (float)cachedDefaultValue);
                     break;
 
                 case int:
                     ModSettingsManager.AddOption(new IntSliderOption((ConfigEntry<int>)config, new IntSliderConfig() { restartRequired = true, min = 0/*, max = (int)cachedDefaultValue * 10*/ }));
-                    Main.UCRLogger.LogWarning(Name + " - the slider comes from type" + config + ". The specific ConfigOption is " + name + ". The ConfigOption, when casted to (int)config.DefaultValue is " + (int)cachedDefaultValue);
+                    // Main.UCRLogger.LogWarning(Name + " - the slider comes from type" + config + ". The specific ConfigOption is " + name + ". The ConfigOption, when casted to (int)config.DefaultValue is " + (int)cachedDefaultValue);
                     break;
 
                 default:

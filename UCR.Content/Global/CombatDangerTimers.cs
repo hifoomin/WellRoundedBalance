@@ -17,7 +17,7 @@ namespace UltimateCustomRun.Global
 
         public override void Init()
         {
-            ood = ConfigOption(7f, "Out of Danger Timer", "Used for Shield Items and Cautious Slug. Vanilla is 7");
+            ood = ConfigOption(7f, "Out of Danger Timer", "Used for Shield Items, Cautious Slug and Oddly-shaped Opal. Vanilla is 7");
             ooc = ConfigOption(5f, "Out of Combat Timer", "Used for Red Whip. Vanilla is 5");
             base.Init();
         }
