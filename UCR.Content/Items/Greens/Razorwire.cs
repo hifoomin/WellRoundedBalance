@@ -93,8 +93,12 @@ namespace UltimateCustomRun.Items.Greens
 
         public static void ChangeProc(On.RoR2.Orbs.LightningOrb.orig_Begin orig, LightningOrb self)
         {
-            self.procCoefficient = ProcCoefficient;
+            if (self.lightningType is LightningOrb.LightningType.RazorWire)
+            {
+                self.procCoefficient = ProcCoefficient;
+            }
             orig(self);
+            // THONK
         }
 
         public static void ChangeRange(ILContext il)

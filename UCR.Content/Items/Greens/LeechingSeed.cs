@@ -31,7 +31,7 @@ namespace UltimateCustomRun.Items.Greens
             GlobalEventManager.onServerDamageDealt += AddUnconditionalHealing;
         }
 
-        private void AddUnconditionalHealing(DamageReport report)
+        public static void AddUnconditionalHealing(DamageReport report)
         {
             var AB = report.attackerBody;
             if (report != null && AB != null)

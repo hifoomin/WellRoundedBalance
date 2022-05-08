@@ -28,7 +28,7 @@ namespace UltimateCustomRun.Items.Yellows
             On.RoR2.CharacterMaster.GetDeployableSameSlotLimit += ChangeLimit;
         }
 
-        private int ChangeLimit(On.RoR2.CharacterMaster.orig_GetDeployableSameSlotLimit orig, CharacterMaster self, DeployableSlot slot)
+        public static int ChangeLimit(On.RoR2.CharacterMaster.orig_GetDeployableSameSlotLimit orig, CharacterMaster self, DeployableSlot slot)
         {
             if (slot is DeployableSlot.MinorConstructOnKill)
             {

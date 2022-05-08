@@ -44,7 +44,7 @@ namespace UltimateCustomRun.Items.Whites
                 x => x.MatchLdloc(out _)
             );
             c.Index += 1;
-            c.Next.Operand = (Change ? 0f : Speed);
+            c.Next.Operand = Change ? 0f : Speed;
         }
 
         /*

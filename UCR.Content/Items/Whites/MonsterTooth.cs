@@ -19,8 +19,8 @@ namespace UltimateCustomRun.Items.Whites
 
         public override void Init()
         {
-            FlatHealing = ConfigOption(8f, "Flat Healing", "Vanilla is 8");
-            PercentHealing = ConfigOption(0.02f, "Percent Healing", "Decimal. Per Stack. Vanilla is 0.02");
+            //FlatHealing = ConfigOption(8f, "Flat Healing", "Vanilla is 8");
+            //PercentHealing = ConfigOption(0.02f, "Percent Healing", "Decimal. Per Stack. Vanilla is 0.02");
 
             base.Init();
         }

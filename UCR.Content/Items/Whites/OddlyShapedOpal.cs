@@ -27,7 +27,7 @@ namespace UltimateCustomRun.Items.Whites
             IL.RoR2.CharacterBody.RecalculateStats += ChangeArmor;
         }
 
-        private void ChangeArmor(ILContext il)
+        public static void ChangeArmor(ILContext il)
         {
             ILCursor c = new(il);
 

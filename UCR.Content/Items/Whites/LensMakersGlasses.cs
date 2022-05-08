@@ -30,6 +30,7 @@ namespace UltimateCustomRun.Items.Whites
         public override void Hooks()
         {
             IL.RoR2.CharacterBody.RecalculateStats += ChangeCrit;
+            RecalculateStatsAPI.GetStatCoefficients += AddBehavior;
         }
 
         public static void ChangeCrit(ILContext il)
@@ -50,7 +51,7 @@ namespace UltimateCustomRun.Items.Whites
                 var stack = sender.inventory.GetItemCount(RoR2Content.Items.CritGlasses);
                 if (stack > 0)
                 {
-                    args.critDamageMultAdd += CritDamageMultiplier;
+                    args.critDamageMultAdd += CritDamageMultiplier * stack;
                 }
             }
         }

@@ -13,7 +13,7 @@ namespace UltimateCustomRun.Items.Greens
         public override string Name => ":: Items :: Greens :: Ignition Tank";
         public override string InternalPickupToken => "strengthenBurn";
         public override bool NewPickup => true;
-        public override string PickupText => "Your ignite effects deal " + Damage + "x damage.";
+        public override string PickupText => "Your ignite effects deal +" + Damage + "% damage.";
         public override string DescText => "Ignite effects deal <style=cIsDamage>+" + d(Damage) + "</style> <style=cStack>(+" + d(Damage) + " per stack)</style> more damage over time.";
 
         public override void Init()

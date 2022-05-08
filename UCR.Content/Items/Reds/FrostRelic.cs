@@ -1,4 +1,5 @@
-﻿using MonoMod.Cil;
+﻿using Mono.Cecil.Cil;
+using MonoMod.Cil;
 using RoR2;
 using UnityEngine;
 
@@ -74,8 +75,12 @@ namespace UltimateCustomRun.Items.Reds
             ILCursor c = new(il);
 
             c.GotoNext(MoveType.Before,
-                x => x.MatchLdfld<IcicleAuraController.OwnerInfo>("cameraTargetParams")
+                x => x.MatchLdfld<IcicleAuraController.OwnerInfo>("cameraTargetParams"),
+                x => x.MatchLdcI4(2)
             );
+            c.Index += 1;
+            c.Remove();
+            c.Emit(OpCodes.Ldc_I4, 0);
         }
     }
 }

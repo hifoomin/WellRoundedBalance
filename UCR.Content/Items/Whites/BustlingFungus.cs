@@ -67,7 +67,5 @@ namespace UltimateCustomRun.Items.Whites
             c.Index += 1;
             c.Next.Operand = StackHealing;
         }
-
-        // TODO: Add Lingering
     }
 }

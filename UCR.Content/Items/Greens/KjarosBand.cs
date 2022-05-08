@@ -51,8 +51,8 @@ namespace UltimateCustomRun.Items.Greens
         {
             ILCursor c = new(il);
 
-            int itemCountLocation = 51;
-            int totalDamageMultiplierLocation = 56;
+            int itemCountLocation = 81;
+            int totalDamageMultiplierLocation = 91;
 
             c.GotoNext(MoveType.After,
                 x => x.MatchLdsfld("RoR2.RoR2Content/Items", "FireRing"),

@@ -34,13 +34,13 @@ namespace UltimateCustomRun.Items.Yellows
             On.EntityStates.VagrantNovaItem.RechargeState.FixedUpdate += ChangeRechargeTime;
         }
 
-        private void ChangeRechargeTime(On.EntityStates.VagrantNovaItem.RechargeState.orig_FixedUpdate orig, EntityStates.VagrantNovaItem.RechargeState self)
+        public static void ChangeRechargeTime(On.EntityStates.VagrantNovaItem.RechargeState.orig_FixedUpdate orig, EntityStates.VagrantNovaItem.RechargeState self)
         {
             EntityStates.VagrantNovaItem.RechargeState.baseDuration = RechargeTime;
             orig(self);
         }
 
-        private void Changes(On.EntityStates.VagrantNovaItem.DetonateState.orig_OnEnter orig, EntityStates.VagrantNovaItem.DetonateState self)
+        public static void Changes(On.EntityStates.VagrantNovaItem.DetonateState.orig_OnEnter orig, EntityStates.VagrantNovaItem.DetonateState self)
         {
             EntityStates.VagrantNovaItem.DetonateState.blastDamageCoefficient = Damage;
             EntityStates.VagrantNovaItem.DetonateState.blastProcCoefficient = ProcCoefficient;

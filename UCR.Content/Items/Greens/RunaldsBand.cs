@@ -45,8 +45,8 @@ namespace UltimateCustomRun.Items.Greens
         {
             ILCursor c = new(il);
 
-            int itemCountLocation = 51;
-            int totalDamageMultiplierLocation = 56;
+            int itemCountLocation = 80;
+            int totalDamageMultiplierLocation = 85;
 
             c.GotoNext(MoveType.After,
                 x => x.MatchLdsfld("RoR2.RoR2Content/Items", "IceRing"),
@@ -76,8 +76,6 @@ namespace UltimateCustomRun.Items.Greens
                 return Damage + dam;
             });
         }
-
-        // PLEASE HELP TO FIX
     }
 }
 */

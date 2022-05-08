@@ -27,7 +27,7 @@ namespace UltimateCustomRun.Items.Whites
             IL.RoR2.HealthComponent.TakeDamage += ChangeGoldGain;
         }
 
-        private void ChangeGoldGain(ILContext il)
+        public static void ChangeGoldGain(ILContext il)
         {
             ILCursor c = new(il);
 

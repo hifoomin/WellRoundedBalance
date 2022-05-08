@@ -96,7 +96,7 @@ namespace UltimateCustomRun.Items.Greens
             c.GotoNext(
                 x => x.MatchLdloc(16),
                 x => x.MatchLdcI4(4),
-                x => x.MatchBlt(out ILLabel IL_0BD7)
+                x => x.MatchBlt(out ILLabel IL_1180)
                 );
             c.Index += 2;
             c.Emit(OpCodes.Pop);

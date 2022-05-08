@@ -37,7 +37,7 @@ namespace UltimateCustomRun.Items.Yellows
             IL.RoR2.GlobalEventManager.OnCharacterDeath += ChangeAoE;
         }
 
-        private void ChangeExplosionDamage(ILContext il)
+        public static void ChangeExplosionDamage(ILContext il)
         {
             ILCursor c = new(il);
 
@@ -56,7 +56,7 @@ namespace UltimateCustomRun.Items.Yellows
             c.Next.Operand = PercentExplosionDamage;
         }
 
-        private void ChangeAoE(ILContext il)
+        public static void ChangeAoE(ILContext il)
         {
             ILCursor c = new(il);
 

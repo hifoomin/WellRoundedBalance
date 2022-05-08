@@ -26,7 +26,7 @@ namespace UltimateCustomRun.Items.Yellows
             IL.RoR2.HealthComponent.TakeDamage += ChangeHealing;
         }
 
-        private void ChangeHealing(ILContext il)
+        public static void ChangeHealing(ILContext il)
         {
             ILCursor c = new(il);
 

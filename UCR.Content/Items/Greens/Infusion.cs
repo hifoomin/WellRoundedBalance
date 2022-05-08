@@ -59,7 +59,7 @@ namespace UltimateCustomRun.Items.Greens
         {
             if (Scaling)
             {
-                // IL.RoR2.GlobalEventManager.OnCharacterDeath += ChangeBehavior;
+                IL.RoR2.GlobalEventManager.OnCharacterDeath += ChangeBehavior;
             }
             RecalculateStatsAPI.GetStatCoefficients += BehaviorAddFlatHealth;
             RecalculateStatsAPI.GetStatCoefficients += BehaviorAddPercentHealth;
@@ -70,20 +70,21 @@ namespace UltimateCustomRun.Items.Greens
             ILCursor c = new(il);
 
             //int bodyLoc = 17;
-            int countLoc = 33;
-            int capLoc = 47;
+            int countLoc = 43;
+            int capLoc = 63;
 
             c.GotoNext(MoveType.After,
                 x => x.MatchLdsfld("RoR2.RoR2Content/Items", "Infusion"),
-                x => x.MatchCallOrCallvirt<RoR2.Inventory>(nameof(RoR2.Inventory.GetItemCount)),
+                x => x.MatchCallOrCallvirt<Inventory>(nameof(Inventory.GetItemCount)),
                 x => x.MatchStloc(out countLoc)
                 );
             c.GotoNext(MoveType.Before,
                 x => x.MatchStloc(out capLoc)
                 );
             c.Emit(OpCodes.Ldloc, countLoc);
-            c.Emit(OpCodes.Ldloc, 13);
-            c.EmitDelegate<Func<int, int, RoR2.CharacterBody, int>>((currentInfusionCap, infusionCount, body) =>
+            c.Emit(OpCodes.Ldloc, 15);
+            // Ldloc here is infusionOrb.target = Util.FindBodyMainHurtBox(attackerBody);
+            c.EmitDelegate<Func<int, int, CharacterBody, int>>((currentInfusionCap, infusionCount, body) =>
             {
                 float newInfusionCap = 100 * infusionCount;
 

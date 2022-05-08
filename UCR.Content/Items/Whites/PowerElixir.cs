@@ -27,7 +27,7 @@ namespace UltimateCustomRun.Items.Whites
             IL.RoR2.HealthComponent.UpdateLastHitTime += ChangeHealing;
         }
 
-        private void ChangeHealing(ILContext il)
+        public static void ChangeHealing(ILContext il)
         {
             ILCursor c = new(il);
 

@@ -26,7 +26,7 @@ namespace UltimateCustomRun.Items.Yellows
             IL.RoR2.CharacterBody.RecalculateStats += ChangeDamage;
         }
 
-        private void ChangeDamage(ILContext il)
+        public static void ChangeDamage(ILContext il)
         {
             ILCursor c = new(il);
             c.GotoNext(MoveType.Before,

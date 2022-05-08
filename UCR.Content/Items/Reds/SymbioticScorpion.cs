@@ -17,7 +17,7 @@ namespace UltimateCustomRun.Items.Reds
 
         public override void Init()
         {
-            Chance = ConfigOption(1f, "Debuff Chance", "Decimal. Vanilla is 1");
+            Chance = ConfigOption(100f, "Debuff Chance", "Decimal. Vanilla is 100");
             ArmorDecrease = ConfigOption(2f, "Debuff Armor Decrease", "Per Debuff. Per Stack. Vanilla is 2");
             base.Init();
         }

@@ -28,7 +28,7 @@ namespace UltimateCustomRun.Items.Whites
             StackCount = ConfigOption(4, "Stack Count", "Per Stack. Vanilla is 4");
             Damage = ConfigOption(3f, "Damage Coefficient", "Decimal. Vanilla is 3");
             ProcCoefficient = ConfigOption(0.2f, "Proc Coefficient", "Vanilla is 0.2");
-            AoE = ConfigOption(8f, "Area of Effect", "Vanilla is 5");
+            AoE = ConfigOption(5f, "Area of Effect", "Vanilla is 5");
             base.Init();
         }
 

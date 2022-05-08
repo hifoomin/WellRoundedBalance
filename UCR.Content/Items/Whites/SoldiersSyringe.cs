@@ -22,7 +22,7 @@ namespace UltimateCustomRun.Items.Whites
 
         public override void Hooks()
         {
-            IL.RoR2.CharacterBody.RecalculateStats += SoldiersSyringe.ChangeAS;
+            IL.RoR2.CharacterBody.RecalculateStats += ChangeAS;
         }
 
         public static void ChangeAS(ILContext il)

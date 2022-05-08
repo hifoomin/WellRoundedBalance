@@ -30,7 +30,7 @@ namespace UltimateCustomRun.Items.Whites
             IL.RoR2.CharacterBody.RecalculateStats += ChangeAttackSpeed;
         }
 
-        private void ChangeMoveSpeed(ILContext il)
+        public static void ChangeMoveSpeed(ILContext il)
         {
             ILCursor c = new(il);
 
@@ -40,7 +40,7 @@ namespace UltimateCustomRun.Items.Whites
             c.Next.Operand = MoveSpeed;
         }
 
-        private void ChangeAttackSpeed(ILContext il)
+        public static void ChangeAttackSpeed(ILContext il)
         {
             ILCursor c = new(il);
 
