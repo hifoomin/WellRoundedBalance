@@ -25,7 +25,7 @@ namespace UltimateCustomRun.Items.Greens
         public override string InternalPickupToken => "thorns";
         public override bool NewPickup => false;
         public override string PickupText => "";
-        public override string DescText => "Getting hit causes you to explode in a burst of razors, dealing <style=cIsDamage>" + d(Damage) + " damage</style>. Hits up to <style=cIsDamage>5</style> <style=cStack>(+2 per stack)</style> Targets in a <style=cIsDamage>25m</style> <style=cStack>(+10m per stack)</style> radius.";
+        public override string DescText => "Getting hit causes you to explode in a burst of razors, dealing <style=cIsDamage>" + d(Damage) + " damage</style>. Hits up to <style=cIsDamage>5</style> <style=cStack>(+2 per stack)</style> targets in a <style=cIsDamage>25m</style> <style=cStack>(+10m per stack)</style> radius.";
 
         public override void Init()
         {

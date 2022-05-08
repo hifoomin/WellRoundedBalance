@@ -17,7 +17,7 @@ namespace UltimateCustomRun.Items.Reds
         public override bool NewPickup => false;
         public override string PickupText => "";
 
-        public override string DescText => (Speed > 0 || StackSpeed > 0 ? "Gain " + d(Speed) + "</style> <style=cStack>(+" + d(StackSpeed) + " per stack)</style> movement speed. " : "") +
+        public override string DescText => (Speed > 0 || StackSpeed > 0 ? "Gain <style=cIsUtility>" + d(Speed) + "</style> <style=cStack>(+" + d(StackSpeed) + " per stack)</style> movement speed. " : "") +
                                            "Gain the <style=cIsDamage>power</style> of any killed elite monster for <style=cIsDamage>" + Duration + "s</style> <style=cStack>(+" + StackDuration + "s per stack)</style>.";
 
         public override void Init()

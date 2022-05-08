@@ -19,7 +19,7 @@ namespace UltimateCustomRun.Items.Yellows
 
         public override string PickupText => "";
 
-        public override string DescText => "style=cIsDamage>" + Chance + "%</style> chance on hit to call forth <style=cIsDamage>" + Count + " magma balls</style> from an enemy, dealing <style=cIsDamage>300%</style> <style=cStack>(+300% per stack)</style> TOTAL damage and <style=cIsDamage>igniting</style> all enemies.";
+        public override string DescText => "<style=cIsDamage>" + Chance + "%</style> chance on hit to call forth <style=cIsDamage>" + Count + " magma balls</style> from an enemy, dealing <style=cIsDamage>" + d(Damage) + "</style> <style=cStack>(+" + d(Damage) + " per stack)</style> TOTAL damage and <style=cIsDamage>igniting</style> all enemies.";
 
         public override void Init()
         {

@@ -16,6 +16,7 @@ namespace UltimateCustomRun.Items.Reds
         public override string InternalPickupToken => "armorReductionOnHit";
         public override bool NewPickup => true;
 
+        /*
         public override string PickupText => "Reduce the" +
                                              (ArmorReduction > 0 && PercentHealthReduction > 0 ? " armor and health" : (ArmorReduction > 0 ? " armor" : (PercentHealthReduction > 0 ? " health" : ""))) +
                                              " of enemies after repeatedly striking them.";
@@ -25,12 +26,16 @@ namespace UltimateCustomRun.Items.Reds
                                            (ArmorReduction > 0 ? " <style=cIsDamage>armor</style> by <style=cIsDamage>" + ArmorReduction + "</style> " :
                                            (PercentHealthReduction > 0 ? " <style=cIsDamage>health</style> by <style=cIsDamage>" + d(PercentHealthReduction) + "</style> each hit" : ""))) +
                                            " for <style=cIsDamage>" + Duration + "</style><style=cStack> (+" + Duration + " per stack)</style> seconds.";
+        */
+
+        public override string PickupText => "Reduce the armor of enemies after repeatedly striking them.";
+        public override string DescText => "After hitting an enemy <style=cIsDamage>" + Hits + "</style> times, reduce their <style=cIsDamage>armor</style> by <style=cIsDamage>" + ArmorReduction + "</style> for <style=cIsDamage>" + Duration + "</style><style=cStack> (+" + Duration + " per stack)</style> seconds.";
 
         public override void Init()
         {
             Hits = ConfigOption(5, "Hits", "Vanilla is 5");
             ArmorReduction = ConfigOption(60f, "Armor Reduction", "Vanilla is 60");
-            PercentHealthReduction = ConfigOption(0f, "Percent Health Reduction", "Decimal. Vanilla is 0");
+            //PercentHealthReduction = ConfigOption(0f, "Percent Health Reduction", "Decimal. Vanilla is 0");
             Duration = ConfigOption(8f, "Duration", "Per Stack. Vanilla is 8");
             base.Init();
         }
@@ -40,11 +45,14 @@ namespace UltimateCustomRun.Items.Reds
             IL.RoR2.HealthComponent.TakeDamage += ChangeHitCount;
             IL.RoR2.HealthComponent.TakeDamage += ChangeDuration;
             IL.RoR2.CharacterBody.RecalculateStats += ChangeArmorReduction;
+            /*
             AddCounter();
             GlobalEventManager.onServerDamageDealt += AddBehavior;
             On.RoR2.CharacterBody.RecalculateStats += LowerMaxHp;
+            */
         }
 
+        /*
         public static void AddBehavior(DamageReport report)
         {
             var AB = report.attackerBody;
@@ -68,12 +76,14 @@ namespace UltimateCustomRun.Items.Reds
             if (count > 0)
             {
                 Main.UCRLogger.LogInfo("max hp before reduction is " + self.maxHealth);
-                self.maxHealth -= self.maxHealth * PercentHealthReduction * count;
-                self.healthComponent.health -= self.healthComponent.health * PercentHealthReduction * count;
+                self.maxHealth = self.maxHealth * PercentHealthReduction * count;
                 Main.UCRLogger.LogInfo("max hp after reduction is " + self.maxHealth);
+
+        // fuckin hell, too dumb to make this
             }
             orig(self);
         }
+        */
 
         public static void AddCounter()
         {

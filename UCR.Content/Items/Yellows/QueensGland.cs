@@ -12,7 +12,9 @@ namespace UltimateCustomRun.Items.Yellows
         public override string InternalPickupToken => "beetleGland";
         public override bool NewPickup => true;
 
-        public override string PickupText => "Recruit " + Limit + " Beetle Guard.";
+        public override string PickupText => "Recruit " + Limit + " Beetle Guard" +
+                                             (Limit > 1 ? "s" : "") +
+                                             ".";
 
         public override string DescText => "<style=cIsUtility>Summon a Beetle Guard</style> with bonus <style=cIsDamage>300%</style> damage and <style=cIsHealing>100% health</style>. Can have up to <style=cIsUtility>" + Limit + "</style> <style=cStack>(+" + StackLimit + " per stack)</style> Guards at a time.";
 
@@ -32,7 +34,7 @@ namespace UltimateCustomRun.Items.Yellows
         {
             if (slot is DeployableSlot.BeetleGuardAlly)
             {
-                return Limit + StackLimit * (self.inventory.GetItemCount(RoR2.RoR2Content.Items.BeetleGland) - 1);
+                return Limit + StackLimit * (self.inventory.GetItemCount(RoR2Content.Items.BeetleGland) - 1);
             }
             else
             {

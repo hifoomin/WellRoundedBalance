@@ -11,7 +11,7 @@ namespace UltimateCustomRun.Items.Greens
         public static float Radius;
         public static float StackRadius;
         public static float ProcCoefficient;
-
+        public static bool RemoveKnockback;
         public override string Name => ":: Items :: Greens :: Will O The Wisp";
         public override string InternalPickupToken => "explodeOnDeath";
         public override bool NewPickup => false;
@@ -26,6 +26,7 @@ namespace UltimateCustomRun.Items.Greens
             ProcCoefficient = ConfigOption(1f, "Proc Coefficient", "Decimal. Vanilla is 1");
             Radius = ConfigOption(12f, "Base Range", "Vanilla is 12");
             StackRadius = ConfigOption(2.4f, "Stack Range", "Per Stack. Vanilla is 2.4");
+            RemoveKnockback = ConfigOption(false, "Remove Knockback?", "Vanilla is false");
             base.Init();
         }
 
@@ -33,6 +34,7 @@ namespace UltimateCustomRun.Items.Greens
         {
             IL.RoR2.GlobalEventManager.OnCharacterDeath += ChangeDamage;
             IL.RoR2.GlobalEventManager.OnCharacterDeath += ChangeRange;
+            IL.RoR2.GlobalEventManager.OnCharacterDeath += DeleteKnockback;
             ChangeProc();
         }
 
@@ -66,6 +68,18 @@ namespace UltimateCustomRun.Items.Greens
             c.Next.Operand = Radius;
             c.Index += 1;
             c.Next.Operand = StackRadius;
+        }
+
+        public static void DeleteKnockback(ILContext il)
+        {
+            ILCursor c = new(il);
+
+            c.GotoNext(MoveType.Before,
+                x => x.MatchLdloc(55),
+                x => x.MatchLdcR4(2000f)
+            );
+            c.Index += 1;
+            c.Next.Operand = RemoveKnockback ? 0f : 2000f;
         }
 
         public static void ChangeProc()
