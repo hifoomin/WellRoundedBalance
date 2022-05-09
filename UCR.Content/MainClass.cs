@@ -35,10 +35,15 @@ namespace UltimateCustomRun
         public static ConfigFile UCRConfig;
         public static ManualLogSource UCRLogger;
 
+        public AssetBundle UCR;
+
         public void Awake()
         {
             UCRLogger = Logger;
             Main.UCRConfig = base.Config;
+
+            UCR = AssetBundle.LoadFromFile(Assembly.GetExecutingAssembly().Location.Replace("UltimateCustomRun.dll", "ultimatecustomrun"));
+            ModSettingsManager.SetModIcon(UCR.LoadAsset<Sprite>("texUCRIcon.png"));
 
             IEnumerable<Type> enumerable = from type in Assembly.GetExecutingAssembly().GetTypes()
                                            where !type.IsAbstract && type.IsSubclassOf(typeof(GlobalBase))
