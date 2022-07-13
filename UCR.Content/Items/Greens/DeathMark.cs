@@ -27,8 +27,11 @@ namespace UltimateCustomRun.Items.Greens
         public override void Init()
         {
             DamagePerDebuff = ConfigOption(0.1f, "Debuff Damage Increase", "Decimal. Per Debuff. Vanilla is 0");
+            ROSOption("Greens", 0f, 1f, 0.01f, "2");
             DamagePerStack = ConfigOption(0.05f, "Stack Debuff Damage Increase", "Decimal. Per Stack. Vanilla is 0");
+            ROSOption("Greens", 0f, 1f, 0.01f, "2");
             MinimumDebuffs = ConfigOption(2, "Minimum Debuffs", "Vanilla is 4");
+            ROSOption("Greens", 0f, 8f, 1f, "2");
             base.Init();
         }
 

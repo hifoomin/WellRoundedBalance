@@ -23,11 +23,17 @@ namespace UltimateCustomRun.Items.Reds
         public override void Init()
         {
             Chance = ConfigOption(20f, "Chance", "Per Stack. Vanilla is 20");
+            ROSOption("Greens", 0f, 100f, 1f, "3");
             MaxTargets = ConfigOption(10, "Max Targets", "Vanilla is 10");
+            ROSOption("Greens", 0f, 30f, 1f, "3");
             StackMaxTargets = ConfigOption(5, "Stack Max Targets", "Per Stack. Vanilla is 5");
+            ROSOption("Greens", 0f, 30f, 1f, "3");
             Range = ConfigOption(30, "Range", "Vanilla is 30");
+            ROSOption("Greens", 0f, 100f, 1f, "3");
             ProcCoefficient = ConfigOption(0.33f, "Proc Coefficient", "Vanilla is 0.33");
+            ROSOption("Greens", 0f, 1f, 0.033f, "3");
             Damage = ConfigOption(1f, "TOTAL Damage", "Decimal. Vanilla is 1");
+            ROSOption("Greens", 0f, 10f, 0.05f, "3");
             base.Init();
         }
 

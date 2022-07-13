@@ -16,6 +16,7 @@ namespace UltimateCustomRun.Items.Whites
         public override void Init()
         {
             Regen = ConfigOption(3f, "Regen", "Per Stack. Vanilla is 3");
+            ROSOption("Whites", 0f, 6f, 0.1f, "1");
             base.Init();
         }
 

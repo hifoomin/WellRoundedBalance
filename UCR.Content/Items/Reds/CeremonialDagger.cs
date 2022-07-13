@@ -22,8 +22,11 @@ namespace UltimateCustomRun.Items.Reds
         public override void Init()
         {
             Damage = ConfigOption(1.5f, "Damage per Dagger", "Decimal. Per Stack. Vanilla is 1.5");
+            ROSOption("Greens", 0f, 10f, 0.1f, "3");
             ProcCoefficient = ConfigOption(1f, "Proc Coefficient per Dagger", "Vanilla is 1");
+            ROSOption("Greens", 0f, 1f, 0.05f, "3");
             Count = ConfigOption(3, "Dagger Count", "Vanilla is 3");
+            ROSOption("Greens", 0f, 10f, 1f, "3");
             base.Init();
         }
 

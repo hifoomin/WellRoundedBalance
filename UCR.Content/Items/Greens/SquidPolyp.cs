@@ -16,7 +16,9 @@ namespace UltimateCustomRun.Items.Greens
         public override void Init()
         {
             AttackSpeed = ConfigOption(10, "Attack Speed Item", "Per Stack. Vanilla is Attack Speed Item * 10 = 100%.");
+            ROSOption("Greens", 0f, 30f, 1f, "2");
             Duration = ConfigOption(30, "Lifetime", "Vanilla is 30.");
+            ROSOption("Greens", 0f, 120f, 1f, "2");
             base.Init();
         }
 

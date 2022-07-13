@@ -19,6 +19,7 @@ namespace UltimateCustomRun.Items.Whites
         public override void Init()
         {
             GoldGain = ConfigOption(3, "Gold Gain", "Per Stack. Vanilla is 3");
+            ROSOption("Whites", 0f, 6f, 1f, "1");
             base.Init();
         }
 

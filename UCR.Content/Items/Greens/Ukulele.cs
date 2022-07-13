@@ -24,12 +24,19 @@ namespace UltimateCustomRun.Items.Greens
         public override void Init()
         {
             Damage = ConfigOption(0.8f, "Total Damage", "Decimal. Vanilla is 0.8");
+            ROSOption("Greens", 0f, 3f, 0.05f, "2");
             Chance = ConfigOption(25f, "Chance", "Vanilla is 25");
+            ROSOption("Greens", 0f, 100f, 2.5f, "2");
             ProcCoefficient = ConfigOption(0.2f, "Proc Coefficient", "Decimal. Vanilla is 0.2");
+            ROSOption("Greens", 0f, 1f, 0.05f, "2");
             Radius = ConfigOption(20f, "Base Range", "Vanilla is 20");
+            ROSOption("Greens", 0f, 100f, 1f, "2");
             StackRadius = ConfigOption(2, "Stack Range", "Per Stack. Vanilla is 2");
+            ROSOption("Greens", 0f, 100f, 1f, "2");
             Targets = ConfigOption(3, "Base Max Targets", "Vanilla is 3");
+            ROSOption("Greens", 0f, 10f, 1f, "2");
             StackTargets = ConfigOption(2, "Stack Max Targets", "Per Stack. Vanilla is 2");
+            ROSOption("Greens", 0f, 10f, 1f, "2");
             base.Init();
         }
 

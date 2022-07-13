@@ -19,7 +19,9 @@ namespace UltimateCustomRun.Items.Reds
         public override void Init()
         {
             BarrierGain = ConfigOption(0.1f, "Barrier Gain", "Decimal. Vanilla is 0.1");
+            ROSOption("Greens", 0f, 1f, 0.05f, "3");
             RechargeTime = ConfigOption(5f, "Recharge Time", "Vanilla is 5");
+            ROSOption("Greens", 0f, 10f, 0.5f, "3");
             base.Init();
         }
 

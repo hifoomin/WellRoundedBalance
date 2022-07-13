@@ -17,12 +17,14 @@ namespace UltimateCustomRun.Items.Greens
         public override string PickupText => "";
 
         public override string DescText => "Dealing damage <style=cIsHealing>heals</style> you for <style=cIsHealing>1 <style=cStack>(+1 per stack)</style> health</style>" +
-                               (AdditionalHealing > 0 ? " and an additional <style=cIsHealing>" + AdditionalHealing + " <style=cStack>(+" + StackAdditionalHealing + " per stack)</style> health</style>." : ".");
+                               (AdditionalHealing > 0 ? " and an additional <style=cIsHealing>" + AdditionalHealing + " <style=cStack>(+" + StackAdditionalHealing + " per stack)</style> health</style> regardless of source." : ".");
 
         public override void Init()
         {
             AdditionalHealing = ConfigOption(0f, "Additional Healing, regardless of Proc Coefficient", "Vanilla is 0");
+            ROSOption("Greens", 0f, 3f, 0.05f, "2");
             StackAdditionalHealing = ConfigOption(0f, "Stack Additional Healing, regardless of Proc Coefficient", "Per Stack. Vanilla is 0");
+            ROSOption("Greens", 0f, 3f, 0.05f, "2");
             base.Init();
         }
 

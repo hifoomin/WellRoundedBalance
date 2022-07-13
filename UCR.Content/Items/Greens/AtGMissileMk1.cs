@@ -21,8 +21,11 @@ namespace UltimateCustomRun.Items.Greens
         public override void Init()
         {
             Chance = ConfigOption(10f, "Chance", "Vanilla is 10");
+            ROSOption("Greens", 0f, 100f, 1f, "2");
             Damage = ConfigOption(3f, "Total Damage", "Decimal. Per Stack. Vanilla is 3");
+            ROSOption("Greens", 0f, 6f, 0.1f, "2");
             ProcCoefficient = ConfigOption(1f, "Proc Coefficient", "Decimal. Vanilla is 1");
+            ROSOption("Greens", 0f, 1f, 0.05f, "2");
             base.Init();
         }
 

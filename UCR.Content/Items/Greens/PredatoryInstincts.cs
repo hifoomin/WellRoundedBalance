@@ -35,11 +35,17 @@ namespace UltimateCustomRun.Items.Greens
         public override void Init()
         {
             AttackSpeed = ConfigOption(0.12f, "Buff Attack Speed", "Decimal. Per Buff. Vanilla is 0.12");
+            ROSOption("Greens", 0f, 1f, 0.01f, "2");
             BaseCap = ConfigOption(3, "Base Buff Cap", "Vanilla is 3");
+            ROSOption("Greens", 0f, 10f, 1f, "2");
             StackCap = ConfigOption(2, "Stack Buff Cap", "Per Stack. Vanilla is 2");
+            ROSOption("Greens", 0f, 10f, 1f, "2");
             Crit = ConfigOption(5f, "Crit Chance", "Vanilla is 5");
+            ROSOption("Greens", 0f, 100f, 1f, "2");
             StackCrit = ConfigOption(false, "Stack Crit Chance?", "Vanilla is false");
+            ROSOption("Greens", 0f, 10f, 1f, "2");
             Speed = ConfigOption(0f, "Buff Speed", "Decimal. Per Buff. Vanilla is 0");
+            ROSOption("Greens", 0f, 1f, 0.01f, "2");
             base.Init();
         }
 

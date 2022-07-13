@@ -18,7 +18,9 @@ namespace UltimateCustomRun.Items.Reds
         public override void Init()
         {
             Chance = ConfigOption(100f, "Debuff Chance", "Decimal. Vanilla is 100");
+            ROSOption("Greens", 0f, 100f, 1f, "3");
             ArmorDecrease = ConfigOption(2f, "Debuff Armor Decrease", "Per Debuff. Per Stack. Vanilla is 2");
+            ROSOption("Greens", 0f, 10f, 0.25f, "3");
             base.Init();
         }
 

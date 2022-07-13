@@ -23,9 +23,13 @@ namespace UltimateCustomRun.Items.Greens
         public override void Init()
         {
             Crit = ConfigOption(5f, "Crit Chance", "Vanilla is 5");
+            ROSOption("Greens", 0f, 20f, 1f, "2");
             StackCrit = ConfigOption(false, "Stack Crit Chance?", "Vanilla is false");
+            ROSOption("Greens", 0f, 5f, 0.01f, "2");
             BaseHealing = ConfigOption(8f, "Base Healing", "Vanilla is 8");
+            ROSOption("Greens", 0f, 20f, 0.5f, "2");
             StackHealing = ConfigOption(4f, "Stack Healing", "Per Stack. Vanilla is 4");
+            ROSOption("Greens", 0f, 20f, 0.5f, "2");
             base.Init();
         }
 

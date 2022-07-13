@@ -23,10 +23,15 @@ namespace UltimateCustomRun.Items.Reds
         public override void Init()
         {
             Duration = ConfigOption(8f, "Duration", "Vanilla is 8");
+            ROSOption("Greens", 0f, 30f, 1f, "3");
             StackDuration = ConfigOption(5f, "Stack Duration", "Per Stack. Vanilla is 5");
+            ROSOption("Greens", 0f, 30f, 1f, "3");
             Speed = ConfigOption(0f, "Speed Increase", "Vanilla is 0");
+            ROSOption("Greens", 0f, 1f, 0.05f, "3");
             StackSpeed = ConfigOption(0f, "Stack Speed Increase", "Vanilla is 0");
+            ROSOption("Greens", 0f, 1f, 0.05f, "3");
             OnlyUnderBuff = ConfigOption(false, "Should the Speed Increase only work with an Elite buff?", "");
+            ROSOption("Greens", 0f, 10f, 1f, "3");
             base.Init();
         }
 

@@ -27,15 +27,25 @@ namespace UltimateCustomRun.Items.Reds
         public override void Init()
         {
             AttackInterval = ConfigOption(0.25f, "Attack Interval", "Vanilla is 0.25");
+            ROSOption("Greens", 0f, 3f, 0.05f, "3");
             BaseRadius = ConfigOption(6f, "Base Radius", "Vanilla is 6");
+            ROSOption("Greens", 0f, 30f, 1f, "3");
             RadiusPerKill = ConfigOption(2f, "Icicle Radius", "Per Icicle. Vanilla is 2");
+            ROSOption("Greens", 0f, 30f, 0.5f, "3");
             Damage = ConfigOption(3f, "Damage Per Tick", "Decimal. Vanilla is 3");
+            ROSOption("Greens", 0f, 10f, 0.25f, "3");
             Duration = ConfigOption(5f, "Duration", "Vanilla is 5");
+            ROSOption("Greens", 0f, 20f, 0.5f, "3");
             ProcCoefficient = ConfigOption(0.2f, "Proc Coefficient Per Tick", "Vanilal is 0.2");
+            ROSOption("Greens", 0f, 1f, 0.05f, "3");
             Maximum = ConfigOption(6, "Maximum Icicles Amount", "Vanilla is 6");
+            ROSOption("Greens", 0f, 10f, 1f, "3");
             StackMaximum = ConfigOption(6, "Stack Maximum Icicles Amount", "Per Stack. Vanilla is 6");
+            ROSOption("Greens", 0f, 10f, 1f, "3");
             CameraChanges = ConfigOption(false, "Disable Camera Changes?", "Vanilla is false");
+            ROSOption("Greens", 0f, 10f, 1f, "3");
             Guide = ConfigOption(true, "Formulas", "1 / Attack Interval = Attacks per Second\nBase Radius * (Base Icicle Cap + Icicle Cap) = Max Radius\nDamage / Attack Interval = DPS\nProc Coefficient / Attack Interval = PPS");
+            ROSOption("Greens", 0f, 10f, 1f, "3");
             base.Init();
         }
 

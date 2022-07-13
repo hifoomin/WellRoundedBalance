@@ -24,9 +24,13 @@ namespace UltimateCustomRun.Items.Reds
         public override void Init()
         {
             Armor = ConfigOption(0f, "Armor", "Vanilla is 0");
+            ROSOption("Greens", 0f, 60f, 1f, "3");
             StackArmor = ConfigOption(false, "Stack Armor?", "Vanilla is false");
+            ROSOption("Greens", 0f, 10f, 1f, "3");
             OverhealPercent = ConfigOption(0.5f, "Overheal Percent", "Decimal. Per Stack. Vanilla is 0.5");
+            ROSOption("Greens", 0f, 2f, 0.05f, "3");
             DynamicDecay = ConfigOption(false, "Make Barrier Decay Dynamic?", "Vanilla is false");
+            ROSOption("Greens", 0f, 10f, 1f, "3");
             base.Init();
         }
 

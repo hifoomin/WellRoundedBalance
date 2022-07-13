@@ -26,10 +26,15 @@ namespace UltimateCustomRun.Items.Greens
         public override void Init()
         {
             Armor = ConfigOption(0f, "Unconditional Armor", "Per Stack. Vanilla is 0");
+            ROSOption("Greens", 0f, 50f, 5f, "2");
             BuffArmor = ConfigOption(0f, "Buff Armor", "Vanilla is 0");
+            ROSOption("Greens", 0f, 50f, 5f, "2");
             BaseBuffDuration = ConfigOption(6f, "Base Buff Duration", "Vanilla is 6");
+            ROSOption("Greens", 0f, 50f, 5f, "2");
             StackBuffDuration = ConfigOption(4f, "Stack Buff Duration", "Per Stack. Vanilla is 4");
+            ROSOption("Greens", 0f, 50f, 5f, "2");
             KillRequirement = ConfigOption(4, "Buff Kill Requirement", "Vanilla is 4");
+            ROSOption("Greens", 0f, 8f, 1f, "2");
             base.Init();
         }
 

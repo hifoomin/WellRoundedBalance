@@ -22,10 +22,15 @@ namespace UltimateCustomRun.Items.Whites
         public override void Init()
         {
             Healing = ConfigOption(0.045f, "Base Healing Percent", "Decimal. Vanilla is 0.045");
+            ROSOption("Whites", 0f, 0.1f, 0.005f, "1");
             StackHealing = ConfigOption(0.0225f, "Stack Healing Percent", "Decimal. Per Stack. Vanilla is 0.0225");
+            ROSOption("Whites", 0f, 0.1f, 0.005f, "1");
             Interval = ConfigOption(0.25f, "Interval", "Decimal. Vanilla is 0.25");
+            ROSOption("Whites", 0f, 2f, 0.05f, "1");
             Radius = ConfigOption(3f, "Base Radius", "Vanilla is 3");
+            ROSOption("Whites", 0f, 10f, 0.5f, "1");
             StackRadius = ConfigOption(1.5f, "Stack Radius", "Per Stack. Vanilla is 1.5");
+            ROSOption("Whites", 0f, 10f, 0.5f, "1");
             base.Init();
         }
 

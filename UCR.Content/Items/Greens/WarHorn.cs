@@ -18,8 +18,11 @@ namespace UltimateCustomRun.Items.Greens
         public override void Init()
         {
             Duration = ConfigOption(0.7f, "Attack Speed", "Decimal. Vanilla is 0.7");
+            ROSOption("Greens", 0f, 2f, 0.05f, "2");
             BaseDuration = ConfigOption(8, "Base Duration", "Vanilla is 8");
+            ROSOption("Greens", 0f, 32f, 1f, "2");
             StackDuration = ConfigOption(4, "Stack Duration", "Per Stack. Vanilla is 4");
+            ROSOption("Greens", 0f, 32f, 1f, "2");
             base.Init();
         }
 

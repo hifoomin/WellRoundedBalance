@@ -20,11 +20,17 @@ namespace UltimateCustomRun.Items.Reds
         public override void Init()
         {
             Cooldown = ConfigOption(10f, "Cooldown", "Vanilla is 10");
+            ROSOption("Greens", 0f, 30f, 1f, "3");
             JumpBoost = ConfigOption(2f, "Jump Height Multiplier", "Vanilla is 2");
+            ROSOption("Greens", 0f, 10f, 0.25f, "3");
             MinimumRadius = ConfigOption(5f, "Minimum Range", "Vanilla is 5");
+            ROSOption("Greens", 0f, 100f, 1f, "3");
             MaximumRadius = ConfigOption(100f, "Maximum Range", "Vanilla is 100");
+            ROSOption("Greens", 0f, 1000f, 10f, "3");
             MinimumDamage = ConfigOption(10f, "Minimum Damage", "Vanilla is 10");
+            ROSOption("Greens", 0f, 50f, 0.5f, "3");
             MaximumDamage = ConfigOption(100f, "Maximum Damage", "Vanilla is 100");
+            ROSOption("Greens", 0f, 50f, 0.5f, "3");
             base.Init();
         }
 

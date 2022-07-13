@@ -22,8 +22,11 @@ namespace UltimateCustomRun.Items.Reds
         public override void Init()
         {
             CooldownReduction = ConfigOption(0.25f, "Percent Cooldown Reduction", "Decimal. Per Stack. Vanilla is 0.25");
+            ROSOption("Greens", 0f, 1f, 0.05f, "3");
             FlatCDR = ConfigOption(0f, "Flat Cooldown Reduction", "Vanilla is 0");
+            ROSOption("Greens", 0f, 10f, 0.25f, "3");
             StackFlatCDR = ConfigOption(false, "Stack Flat Cooldown Reduction?", "Vanilla is false");
+            ROSOption("Greens", 0f, 10f, 1f, "3");
             base.Init();
         }
 

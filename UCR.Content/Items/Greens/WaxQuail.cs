@@ -15,6 +15,7 @@ namespace UltimateCustomRun.Items.Greens
         public override void Init()
         {
             Distance = ConfigOption(10f, "Distance", "Per Stack. Vanilla is 10");
+            ROSOption("Greens", 0f, 50f, 1f, "2");
             base.Init();
         }
 

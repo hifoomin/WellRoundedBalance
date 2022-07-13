@@ -1,5 +1,4 @@
-﻿/*
-using MonoMod.Cil;
+﻿using MonoMod.Cil;
 using RoR2;
 using UnityEngine;
 
@@ -23,23 +22,32 @@ namespace UltimateCustomRun.Items.Greens
         public override void Init()
         {
             Damage = ConfigOption(4f, "Base Damage", "Decimal. Vanilla is 4");
+            ROSOption("Greens", 0f, 10f, 0.25f, "2");
             StackDamage = ConfigOption(1f, "Stack Damage", "Decimal. Per Stack. Vanilla is 1");
+            ROSOption("Greens", 0f, 10f, 0.25f, "2");
             Count = ConfigOption(3, "Base Count", "Vanilla is 3");
+            ROSOption("Greens", 0f, 10f, 1f, "2");
             StackCount = ConfigOption(1, "Stack Count", "Per Stack. Vanilla is 1");
+            ROSOption("Greens", 0f, 10f, 1f, "2");
             RechargeTime = ConfigOption(10f, "Recharge Time", "Vanilla is 10");
+            ROSOption("Greens", 0f, 30f, 1f, "2");
             base.Init();
         }
 
         public override void Hooks()
         {
-            On.RoR2.PrimarySkillShurikenBehavior.Awake += Changes;
+            IL.RoR2.PrimarySkillShurikenBehavior.Awake += Changes;
         }
 
-        private void Changes(On.RoR2.PrimarySkillShurikenBehavior.orig_Awake orig, PrimarySkillShurikenBehavior self)
+        private void Changes(ILContext il)
         {
-            // PrimarySkillShurikenBehavior.
-            // no publicizer works for anymore ! :))))))))))))))))))))))))))))))))))))))))))) SO FUN ! ! ! !
+            /*
+            ILCursor c = new(il);
+
+            c.GotoNext(MoveType.Before,
+
+            );
+            */
         }
     }
 }
-*/

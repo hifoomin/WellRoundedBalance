@@ -22,12 +22,19 @@ namespace UltimateCustomRun.Items.Reds
         public override void Init()
         {
             KillRequirement = ConfigOption(4, "Kills Required", "Vanilla is 4");
+            ROSOption("Greens", 0f, 10f, 1f, "3");
             KillDuration = ConfigOption(7, "Kill Duration", "Vanilla is 7");
+            ROSOption("Greens", 0f, 10f, 1f, "3");
             BaseDuration = ConfigOption(7f, "Base Duration", "Vanilla is 3");
+            ROSOption("Greens", 0f, 10f, 1f, "3");
             BeamDamage = ConfigOption(3f, "Beam Damage", "Vanilla is 3");
+            ROSOption("Greens", 0f, 10f, 1f, "3");
             BeamProcCoefficient = ConfigOption(1f, "Beam Proc Coefficient", "Vanilla is 1");
+            ROSOption("Greens", 0f, 1f, 0.05f, "3");
             BeamRadius = ConfigOption(1f, "Beam Radius", "Vanilla is 1");
+            ROSOption("Greens", 0f, 10f, 1f, "3");
             BombDamage = ConfigOption(10f, "Explosion Damage", "Vanilla is 10");
+            ROSOption("Greens", 0f, 30f, 1f, "3");
             base.Init();
         }
 

@@ -20,7 +20,9 @@ namespace UltimateCustomRun.Items.Whites
         public override void Init()
         {
             Damage = ConfigOption(0.2f, "Damage Coefficient", "Decimal. Per Stack. Vanilla is 0.2");
+            ROSOption("Whites", 0f, 1f, 0.01f, "1");
             Radius = ConfigOption(13f, "Range", "Vanilla is 13");
+            ROSOption("Whites", 0f, 20f, 0.5f, "1");
             base.Init();
         }
 

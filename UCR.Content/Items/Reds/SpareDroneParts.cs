@@ -27,11 +27,17 @@ namespace UltimateCustomRun.Items.Reds
         public override void Init()
         {
             AttackSpeed = ConfigOption(0.5f, "Attack Speed Increase", "Per Stack. Vanilla is 0.5");
+            ROSOption("Greens", 0f, 2f, 0.1f, "3");
             CooldownReduction = ConfigOption(0.5f, "Cooldown Reduction", "Decimal. Per Stack. Vanilla is 0.5");
+            ROSOption("Greens", 0f, 1f, 0.1f, "3");
             ChaingunBounces = ConfigOption(1, "Additional Chaingun Bounces", "Vanilla is 1");
+            ROSOption("Greens", 0f, 10f, 1f, "3");
             ChaingunDamage = ConfigOption(1f, "Chaingun Damage", "Decimal. Vanilla is 1");
+            ROSOption("Greens", 0f, 10f, 0.25f, "3");
             MissileChance = ConfigOption(10f, "Missile Chance", "Vanilla is 10");
+            ROSOption("Greens", 0f, 100f, 1f, "3");
             MissileDamage = ConfigOption(3f, "Missile TOTAL Damage", "Decimal. Vanilla is 3");
+            ROSOption("Greens", 0f, 10f, 1f, "3");
             base.Init();
         }
 

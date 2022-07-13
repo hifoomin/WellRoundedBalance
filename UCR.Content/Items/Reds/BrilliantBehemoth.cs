@@ -17,8 +17,11 @@ namespace UltimateCustomRun.Items.Reds
         public override void Init()
         {
             Damage = ConfigOption(0.6f, "Damage Increase", "Decimal. Vanilla is 0.6");
+            ROSOption("Greens", 0f, 3f, 0.05f, "3");
             Radius = ConfigOption(4f, "Base Area of Effect", "Vanilla is 4");
+            ROSOption("Greens", 0f, 20f, 0.5f, "3");
             StackRadius = ConfigOption(2.5f, "Stack Area of Effect", "Per Stack. Vanilla is 2.5");
+            ROSOption("Greens", 0f, 20f, 0.5f, "3");
             base.Init();
         }
 

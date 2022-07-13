@@ -1,26 +1,46 @@
 ﻿using MonoMod.Cil;
+using R2API;
+using RoR2;
 
 namespace UltimateCustomRun.Items.Greens
 {
     public class RedWhip : ItemBase
     {
         public static float Speed;
-
+        public static float UnconditionalSpeed;
         public override string Name => ":: Items :: Greens :: Red Whip";
         public override string InternalPickupToken => "sprintOutOfCombat";
         public override bool NewPickup => false;
         public override string PickupText => "";
-        public override string DescText => "Leaving combat boosts your <style=cIsUtility>movement speed</style> by <style=cIsUtility>" + d(Speed) + "</style> <style=cStack>(+" + d(Speed) + " per stack)</style>.";
+
+        public override string DescText => (UnconditionalSpeed > 0 ? "Passively gain <style=cIsUtility>" + d(UnconditionalSpeed) + "</style> <style=cStack>(+" + d(UnconditionalSpeed) + " per stack)</style> movement speed." : "") +
+                                           "Leaving combat boosts your <style=cIsUtility>movement speed</style> by <style=cIsUtility>" + d(Speed) + "</style> <style=cStack>(+" + d(Speed) + " per stack)</style>.";
 
         public override void Init()
         {
-            Speed = ConfigOption(0.3f, "Speed Increase", "Decimal. Per Stack. Vanilla is 0.3");
+            Speed = ConfigOption(0.3f, "Speed", "Decimal. Per Stack. Vanilla is 0.3");
+            ROSOption("Greens", 0f, 1f, 0.05f, "2");
+            UnconditionalSpeed = ConfigOption(0f, "Unconditional Speed", "Decimal. Per Stack. Vanilla is 0");
+            ROSOption("Greens", 0f, 1f, 0.05f, "2");
             base.Init();
         }
 
         public override void Hooks()
         {
             IL.RoR2.CharacterBody.RecalculateStats += ChangeSpeed;
+            RecalculateStatsAPI.GetStatCoefficients += AddBehavior;
+        }
+
+        private void AddBehavior(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
+        {
+            if (sender.inventory)
+            {
+                var stack = sender.inventory.GetItemCount(RoR2Content.Items.SprintOutOfCombat);
+                if (stack > 0)
+                {
+                    args.moveSpeedMultAdd += UnconditionalSpeed * stack;
+                }
+            }
         }
 
         public static void ChangeSpeed(ILContext il)

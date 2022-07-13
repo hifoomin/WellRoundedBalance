@@ -30,8 +30,11 @@ namespace UltimateCustomRun.Items.Greens
         public override void Init()
         {
             Cooldown = ConfigOption(0f, "Cooldown", "Vanilla is 0");
+            ROSOption("Greens", 0f, 3f, 0.1f, "2");
             Damage = ConfigOption(1.6f, "Damage", "Decimal. Vanilla is 1.6");
+            ROSOption("Greens", 0f, 5f, 0.1f, "2");
             ProcCoefficient = ConfigOption(0.2f, "Proc Coefficient", "Decimal. Vanilla is 0.2");
+            ROSOption("Greens", 0f, 1f, 0.05f, "2");
             base.Init();
         }
 

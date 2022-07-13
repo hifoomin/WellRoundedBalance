@@ -4,7 +4,7 @@ namespace UltimateCustomRun.Items.Whites
 {
     public class SoldiersSyringe : ItemBase
     {
-        public static float Duration;
+        public static float AttackSpeed;
 
         public override string Name => ":: Items : Whites :: Soldiers Syringe";
         public override string InternalPickupToken => "syringe";
@@ -12,11 +12,12 @@ namespace UltimateCustomRun.Items.Whites
 
         public override string PickupText => "";
 
-        public override string DescText => "Increases <style=cIsDamage>attack speed</style> by <style=cIsDamage>" + d(Duration) + " <style=cStack>(+" + d(Duration) + " per stack)</style></style>.";
+        public override string DescText => "Increases <style=cIsDamage>attack speed</style> by <style=cIsDamage>" + d(AttackSpeed) + " <style=cStack>(+" + d(AttackSpeed) + " per stack)</style></style>.";
 
         public override void Init()
         {
-            Duration = ConfigOption(0.15f, "Attack Speed", "Decimal. Per Stack. Vanilla is 0.15");
+            AttackSpeed = ConfigOption(0.15f, "Attack Speed", "Decimal. Per Stack. Vanilla is 0.15");
+            ROSOption("Whites", 0f, 1f, 0.01f, "1");
             base.Init();
         }
 
@@ -34,7 +35,7 @@ namespace UltimateCustomRun.Items.Whites
                 x => x.MatchLdcR4(0.15f)
             );
             c.Index += 1;
-            c.Next.Operand = Duration;
+            c.Next.Operand = AttackSpeed;
         }
     }
 }
