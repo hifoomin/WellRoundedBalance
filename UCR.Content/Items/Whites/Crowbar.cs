@@ -18,9 +18,7 @@ namespace UltimateCustomRun.Items.Whites
         public override void Init()
         {
             Damage = ConfigOption(0.75f, "Damage Coefficient", "Decimal. Per Stack. Vanilla is 0.75");
-            ROSOption("Whites", 0f, 1f, 0.05f, "1");
             Threshold = ConfigOption(0.9f, "Threshold", "Decimal. Vanilla is 0.9");
-            ROSOption("Whites", 0f, 1f, 0.01f, "1");
             base.Init();
         }
 

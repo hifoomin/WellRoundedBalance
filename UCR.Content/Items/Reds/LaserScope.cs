@@ -20,11 +20,8 @@ namespace UltimateCustomRun.Items.Reds
         public override void Init()
         {
             Damage = ConfigOption(1f, "Crit Damage Increase", "Decimal. Per Stack. Vanilla is 1");
-            ROSOption("Greens", 0f, 10f, 0.25f, "3");
             Crit = ConfigOption(0f, "Crit Chance", "Vanilla is 0");
-            ROSOption("Greens", 0f, 100f, 1f, "3");
             StackCrit = ConfigOption(false, "Stack Crit Chance?", "Vanilla is false");
-            ROSOption("Greens", 0f, 10f, 1f, "3");
             base.Init();
         }
 

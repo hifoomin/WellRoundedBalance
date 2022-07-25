@@ -24,7 +24,7 @@ namespace UltimateCustomRun.Items.Whites
 
         public override string PickupText => "Drop a Warbanner on level up or starting the Teleporter event. Grants allies" +
                                              (BaseDamage != 0f || PercentDamage != 0f ? " damage," : "") +
-                                             " movement Speed and attack Speed.";
+                                             " movement speed and attack speed.";
 
         public override string DescText => "On <style=cIsUtility>level up</style> or starting the <style=cIsUtility>Teleporter event</style>, drop a banner that strengthens all allies within <style=cIsUtility>" + Radius + "m</style> <style=cStack>(+" + StackRadius + "m per stack)</style>. Raise" +
                                            (PercentDamage != 0f ? " <style=cIsDamage>damage</style> by <style=cIsDamage>" + d(PercentDamage) + "</style>, " +
@@ -36,23 +36,14 @@ namespace UltimateCustomRun.Items.Whites
         public override void Init()
         {
             BaseDamage = ConfigOption(0f, "Base Damage", "Vanilla is 0");
-            ROSOption("Whites", 0f, 10f, 0.5f, "1");
             StackBaseDamage = ConfigOption(false, "Stack Base Damage?", "Vanilla is false");
-            ROSOption("Whites", 0f, 5f, 0.01f, "1");
             Radius = ConfigOption(16f, "Base Range", "Vanilla is 16");
-            ROSOption("Whites", 0f, 30f, 1f, "1");
             StackRadius = ConfigOption(8f, "Stack Range", "Per Stack. Vanilla is 8");
-            ROSOption("Whites", 0f, 30f, 1f, "1");
             PercentDamage = ConfigOption(0f, "Percent Damage", "Decimal. Vanilla is 0");
-            ROSOption("Whites", 0f, 1f, 0.01f, "1");
             StackPercentDamage = ConfigOption(false, "Stack Percent Damage?", "Vanilla is false");
-            ROSOption("Whites", 0f, 5f, 0.01f, "1");
             BuffDuration = ConfigOption(1.5f, "Buff Duration", "Vanilla is 1.5");
-            ROSOption("Whites", 0f, 5f, 0.5f, "1");
             BuffAttackSpeed = ConfigOption(0.3f, "Buff Attack Speed", "Decimal. Vanilla is 0.3");
-            ROSOption("Whites", 0f, 1f, 0.05f, "1");
             BuffMoveSpeed = ConfigOption(0.3f, "Buff Move Speed", "Decimal. Vanilla is 0.3");
-            ROSOption("Whites", 0f, 1f, 0.05f, "1");
             base.Init();
         }
 

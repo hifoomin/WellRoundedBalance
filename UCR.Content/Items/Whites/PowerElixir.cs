@@ -19,7 +19,6 @@ namespace UltimateCustomRun.Items.Whites
         public override void Init()
         {
             Healing = ConfigOption(0.75f, "Healing", "Decimal. Vanilla is 0.75");
-            ROSOption("Whites", 0f, 1f, 0.05f, "1");
             base.Init();
         }
 

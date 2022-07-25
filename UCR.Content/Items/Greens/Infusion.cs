@@ -46,19 +46,12 @@ namespace UltimateCustomRun.Items.Greens
         public override void Init()
         {
             BaseCap = ConfigOption(30f, "Base Cap", "Vanilla is 0");
-            ROSOption("Greens", 0f, 200f, 5f, "2");
             LevelCoefficient = ConfigOption(0.25f, "Level Scaling Coefficient", "Vanilla is 0");
-            ROSOption("Greens", 0f, 1f, 0.01f, "2");
             BaseHealth = ConfigOption(0f, "Flat Health", "Vanilla is 0");
-            ROSOption("Greens", 0f, 200f, 5f, "2");
             PercentHealth = ConfigOption(0f, "Percent Health", "Decimal. Vanilla is 0");
-            ROSOption("Greens", 0f, 1f, 0.02f, "2");
             Scaling = ConfigOption(false, "Use Level Scaling Cap?", "Formula:\nBase Cap * 1 + 0.3 * (Level - 1) * Count\nVanilla is false");
-            ROSOption("Greens", 0f, 10f, 1f, "2");
             StackBase = ConfigOption(false, "Should Flat Health Stack?", "Vanilla is false");
-            ROSOption("Greens", 0f, 10f, 1f, "2");
             StackPercent = ConfigOption(false, "Should Percent Health Stack?", "Vanilla is false");
-            ROSOption("Greens", 0f, 10f, 1f, "2");
             base.Init();
         }
 

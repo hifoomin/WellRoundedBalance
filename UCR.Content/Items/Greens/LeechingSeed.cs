@@ -22,9 +22,7 @@ namespace UltimateCustomRun.Items.Greens
         public override void Init()
         {
             AdditionalHealing = ConfigOption(0f, "Additional Healing, regardless of Proc Coefficient", "Vanilla is 0");
-            ROSOption("Greens", 0f, 3f, 0.05f, "2");
             StackAdditionalHealing = ConfigOption(0f, "Stack Additional Healing, regardless of Proc Coefficient", "Per Stack. Vanilla is 0");
-            ROSOption("Greens", 0f, 3f, 0.05f, "2");
             base.Init();
         }
 

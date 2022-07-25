@@ -15,7 +15,6 @@ namespace UltimateCustomRun.Items.Reds
         public override void Init()
         {
             Healing = ConfigOption(1f, "Healing Increase", "Decimal. Per Stack. Vanilla is 1");
-            ROSOption("Greens", 0f, 10f, 0.25f, "3");
             base.Init();
         }
 

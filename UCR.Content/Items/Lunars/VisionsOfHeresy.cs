@@ -33,20 +33,20 @@ namespace UltimateCustomRun.Items.Lunars
 
         public override void Init()
         {
-            Charges = ConfigOption(12, "Stock Count", "Vanilla is 12.\nRecommended Value: 5");
-            Cooldown = ConfigOption(2f, "Cooldown", "Vanilla is 2.\nRecommended Value: 1.7");
-            Duration = ConfigOption(0.11f, "Duration Per Shot", "Vanilla is 0.11.\nRecommended Value: 0.1");
-            InitialHitDamage = ConfigOption(0.05f, "Damage Coeffcient of each Initial Hit", "Decimal. Vanilla is 0.05.\nRecommended Value: 0.75");
-            InitialHitProcCoefficient = ConfigOption(0.1f, "Proc Coefficient of each Initial Hit", "Vanilla is 0.1.\nRecommended Value: 0.1");
-            Recoil = ConfigOption(1.5f, "Recoil", "Vanilla is 1.5.\nRecommended Value: 4");
-            Bloom = ConfigOption(0.4f, "Spread", "Vanilla is 0.4.\nRecommended Value: 0");
-            MaxSpeed = ConfigOption(3f, "Maximum Spread", "Vanilla is 3.\nRecommended Value: 0");
-            ProjectileSpeed = ConfigOption(40f, "Projectile Speed", "Vanilla is 40.\nRecommended Value: 70");
-            ExplosionDamage = ConfigOption(24f, "Explosion Damage", "Vanilla is 24.\nRecommended Value: 2\nNote: This is a multiplier of Initial Hit's Damage");
-            ExplosionRadius = ConfigOption(2f, "Explosion Range", "Vanilla is 2.\nRecommended Value: 6");
-            ExplosionProcCoefficient = ConfigOption(10f, "Explosion Proc Coefficient", "Vanilla is 10.\nRecommended Value: 10\nNote: This is a multiplier of Initial Hit's Proc Coefficient");
-            Size = ConfigOption(1f, "Visual Size", "Vanilla is 1.\nRecommended Value: 7");
-            EnableTheFeelTarlukNailgunCopeSeethePlusTwoAoeEffect = ConfigOption(false, "Improve Visuals and Sound?", "Vanilla is false.\nRecommended Value: true");
+            Charges = ConfigOption(12, "Stock Count", "Vanilla is 12.");
+            Cooldown = ConfigOption(2f, "Cooldown", "Vanilla is 2.");
+            Duration = ConfigOption(0.11f, "Duration Per Shot", "Vanilla is 0.11.");
+            InitialHitDamage = ConfigOption(0.05f, "Damage Coefficient of each Initial Hit", "Decimal. Vanilla is 0.05.");
+            InitialHitProcCoefficient = ConfigOption(0.1f, "Proc Coefficient of each Initial Hit", "Vanilla is 0.1.");
+            Recoil = ConfigOption(1.5f, "Recoil", "Vanilla is 1.5.");
+            Bloom = ConfigOption(0.4f, "Spread", "Vanilla is 0.4.");
+            MaxSpeed = ConfigOption(3f, "Maximum Spread", "Vanilla is 3.");
+            ProjectileSpeed = ConfigOption(40f, "Projectile Speed", "Vanilla is 40.");
+            ExplosionDamage = ConfigOption(24f, "Explosion Damage", "Vanilla is 24.\nNote: This is a multiplier of Initial Hit's Damage");
+            ExplosionRadius = ConfigOption(2f, "Explosion Range", "Vanilla is 2.");
+            ExplosionProcCoefficient = ConfigOption(10f, "Explosion Proc Coefficient", "Vanilla is 10.\nNote: This is a multiplier of Initial Hit's Proc Coefficient");
+            Size = ConfigOption(1f, "Visual Size", "Vanilla is 1.");
+            EnableTheFeelTarlukNailgunCopeSeethePlusTwoAoeEffect = ConfigOption(false, "Improve Visuals and Sound?", "Vanilla is false.");
             base.Init();
         }
 

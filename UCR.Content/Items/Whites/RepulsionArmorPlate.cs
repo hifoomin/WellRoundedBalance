@@ -18,19 +18,15 @@ namespace UltimateCustomRun.Items.Whites
         public override string PickupText => "";
 
         public override string DescText => (Armor != 0f ? "<style=cIsHealing>Increase armor</style> by <style=cIsHealing>" + Armor + "</style>" +
-                                           (StackArmor ? "<style=cStack>(+" + Armor + " per stack)</style>." : ".") : "") +
+                                           (StackArmor ? "<style=cStack> (+" + Armor + " per stack)</style>." : ".") : "") +
                                            (FlatReduction != 0f ? " Reduce all <style=cIsDamage>incoming damage</style> by <style=cIsDamage>" + FlatReduction + "<style=cStack> (+" + FlatReduction + " per stack)</style></style>. Cannot be reduced below <style=cIsDamage>" + MinimumDamage + "</style>." : "");
 
         public override void Init()
         {
             FlatReduction = ConfigOption(5f, "Flat Damage Reduction", "Per Stack. Vanilla is 5");
-            ROSOption("Whites", 0f, 15f, 1f, "1");
             MinimumDamage = ConfigOption(1f, "Minimum Damage", "Vanilla is 1");
-            ROSOption("Whites", 0f, 15f, 1f, "1");
             Armor = ConfigOption(0f, "Armor", "Vanilla is 0");
-            ROSOption("Whites", 0f, 10f, 0.5f, "1");
             StackArmor = ConfigOption(false, "Stack Armor?", "Vanilla is false");
-            ROSOption("Whites", 0f, 5f, 0.01f, "1");
             base.Init();
         }
 

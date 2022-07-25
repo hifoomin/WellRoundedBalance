@@ -15,7 +15,6 @@ namespace UltimateCustomRun.Items.Reds
         public override void Init()
         {
             Duration = ConfigOption(4f, "Buff Duration", "Per Stack. Vanilla is 4");
-            ROSOption("Greens", 0f, 10f, 0.5f, "3");
             base.Init();
         }
 

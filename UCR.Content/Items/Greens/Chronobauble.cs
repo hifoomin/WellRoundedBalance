@@ -22,9 +22,7 @@ namespace UltimateCustomRun.Items.Greens
         public override void Init()
         {
             BaseAttackSpeed = ConfigOption(0f, "Attack Speed Decrease", "Decimal. Vanilla is 0");
-            ROSOption("Greens", 0f, 1f, 0.05f, "2");
             StackAttackSpeed = ConfigOption(false, "Stack Attack Speed Decrease?", "Vanilla is false");
-            ROSOption("Greens", 0f, 5f, 0.01f, "2");
             base.Init();
         }
 

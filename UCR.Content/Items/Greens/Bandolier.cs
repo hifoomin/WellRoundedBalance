@@ -18,9 +18,7 @@ namespace UltimateCustomRun.Items.Greens
         public override void Init()
         {
             Base = ConfigOption(1f, "Base", "Vanilla is 1\nFormula:\n1 - 1 / (stack + Base)^Exponent) * 100\nIf you want to make Stacking better, decrease the Base and increase the Exponent.");
-            ROSOption("Greens", 0f, 3f, 0.03f, "2");
             Exponent = ConfigOption(0.33f, "Exponent", "Decimal. Vanilla is 0.33");
-            ROSOption("Greens", 0f, 3f, 0.03f, "2");
             base.Init();
         }
 

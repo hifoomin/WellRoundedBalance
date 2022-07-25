@@ -20,10 +20,8 @@ namespace UltimateCustomRun.Items.Whites
         public override void Init()
         {
             Chance = ConfigOption(10f, "Chance", "Per Stack. Vanilla is 10");
-            ROSOption("Whites", 0f, 20f, 1f, "1");
             //Duration = ConfigOption(3f, "Debuff Duration", "Vanilla is 3");
             StackDamage = ConfigOption(true, "Stack Bleed Debuff?", "Vanilla is true");
-            ROSOption("Whites", 0f, 5f, 0.01f, "1");
             base.Init();
         }
 

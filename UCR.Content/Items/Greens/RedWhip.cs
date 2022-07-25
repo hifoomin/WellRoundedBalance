@@ -19,9 +19,7 @@ namespace UltimateCustomRun.Items.Greens
         public override void Init()
         {
             Speed = ConfigOption(0.3f, "Speed", "Decimal. Per Stack. Vanilla is 0.3");
-            ROSOption("Greens", 0f, 1f, 0.05f, "2");
             UnconditionalSpeed = ConfigOption(0f, "Unconditional Speed", "Decimal. Per Stack. Vanilla is 0");
-            ROSOption("Greens", 0f, 1f, 0.05f, "2");
             base.Init();
         }
 

@@ -11,6 +11,7 @@ using System.Reflection;
 using UltimateCustomRun.Survivors;
 using UnityEngine;
 using RiskOfOptions;
+using RiskOfOptions.Options;
 
 namespace UltimateCustomRun
 {

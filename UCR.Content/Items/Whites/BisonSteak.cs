@@ -30,9 +30,7 @@ namespace UltimateCustomRun.Items.Whites
         public override void Init()
         {
             BaseHealth = ConfigOption(25f, "Health", "Per Stack. Vanilla is 25");
-            ROSOption("Whites", 0f, 50f, 5f, "1");
             HealthFromLevel = ConfigOption(false, "Give Health worth a single Level Up?", "Vanilla is false");
-            ROSOption("Whites", 0f, 5f, 0.01f, "1");
             base.Init();
         }
 

@@ -20,7 +20,6 @@ namespace UltimateCustomRun.Items.Whites
         public override void Init()
         {
             CooldownReduction = ConfigOption(0f, "Secondary Skill Cooldown Reduction", "Decimal. Per Stack. Vanilla is 0");
-            ROSOption("Whites", 0f, 0.15f, 0.01f, "1");
             base.Init();
         }
 

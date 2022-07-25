@@ -17,7 +17,6 @@ namespace UltimateCustomRun.Items.Whites
         public override void Init()
         {
             Speed = ConfigOption(0.14f, "Speed Increase", "Decimal. Per Stack. Vanilla is 0.14");
-            ROSOption("Whites", 0f, 1f, 0.01f, "1");
             base.Init();
         }
 

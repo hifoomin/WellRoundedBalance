@@ -26,11 +26,8 @@ namespace UltimateCustomRun.Items.Whites
         public override void Init()
         {
             BlockChance = ConfigOption(15f, "Block Chance", "Per Stack. Vanilla is 15");
-            ROSOption("Whites", 0f, 30f, 0.5f, "1");
             Armor = ConfigOption(0f, "Armor", "Vanilla is 0");
-            ROSOption("Whites", 0f, 10f, 0.5f, "1");
             StackArmor = ConfigOption(false, "Stack Armor?", "Vanilla is false");
-            ROSOption("Whites", 0f, 5f, 0.01f, "1");
             base.Init();
         }
 

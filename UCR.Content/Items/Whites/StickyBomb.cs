@@ -24,15 +24,10 @@ namespace UltimateCustomRun.Items.Whites
         public override void Init()
         {
             Damage = ConfigOption(1.8f, "Total Damage", "Decimal. Vanilla is 1.8");
-            ROSOption("Whites", 0f, 3f, 0.1f, "1");
             Chance = ConfigOption(5f, "Chance", "Vanilla is 5");
-            ROSOption("Whites", 0f, 100f, 1f, "1");
             Delay = ConfigOption(1.5f, "Delay", "Vanilla is 1.5");
-            ROSOption("Whites", 0f, 5f, 0.1f, "1");
             Radius = ConfigOption(10f, "Range", "Vanilla is 10");
-            ROSOption("Whites", 0f, 30f, 0.5f, "1");
             Falloff = ConfigOption(1, "Falloff Type", "1 - Sweetspot, 2 - Linear, 3 - None.\nVanilla is 1");
-            ROSOption("Whites", 1f, 3f, 1f, "1");
             base.Init();
         }
 

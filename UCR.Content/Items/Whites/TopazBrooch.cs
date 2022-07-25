@@ -19,7 +19,6 @@ namespace UltimateCustomRun.Items.Whites
         public override void Init()
         {
             Barrier = ConfigOption(15f, "Barrier Gain", "Per Stack. Vanilla is 15");
-            ROSOption("Whites", 0f, 30f, 1f, "1");
             base.Init();
         }
 

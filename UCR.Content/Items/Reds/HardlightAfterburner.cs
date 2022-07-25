@@ -17,9 +17,7 @@ namespace UltimateCustomRun.Items.Reds
         public override void Init()
         {
             Charges = ConfigOption(2, "Charges", "Per Stack. Vanilla is 2");
-            ROSOption("Greens", 0f, 10f, 1f, "3");
             CooldownReduction = ConfigOption(0.3333334f, "Cooldown Reduction", "Vanilla is 0.3333334");
-            ROSOption("Greens", 0f, 1f, 0.3333334f, "3");
             base.Init();
         }
 

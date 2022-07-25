@@ -17,7 +17,6 @@ namespace UltimateCustomRun.Items.Whites
         public override void Init()
         {
             PercentHealth = ConfigOption(0.08f, "Percent Shield", "Decimal. Per Stack. Vanilla is 0.08");
-            ROSOption("Whites", 0f, 1f, 0.01f, "1");
             base.Init();
         }
 

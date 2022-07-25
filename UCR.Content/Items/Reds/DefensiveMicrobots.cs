@@ -15,11 +15,8 @@
         public override void Init()
         {
             Radius = ConfigOption(20f, "Range", "Vanilla is 20");
-            ROSOption("Greens", 0f, 100f, 1f, "3");
             MinimumFireFrequency = ConfigOption(10f, "Minimum Fire Frequency", "Vanilla is 10");
-            ROSOption("Greens", 0f, 60f, 0.5f, "3");
             BaseRechargeFrequency = ConfigOption(2f, "Base Recharge Frequency", "Vanilla is 2\nLower this to increase the frequency.");
-            ROSOption("Greens", 0f, 10f, 0.1f, "3");
             base.Init();
         }
 

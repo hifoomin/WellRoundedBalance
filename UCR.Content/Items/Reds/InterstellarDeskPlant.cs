@@ -18,11 +18,8 @@ namespace UltimateCustomRun.Items.Reds
         public override void Init()
         {
             PercentHealing = ConfigOption(0.05f, "Percent Healing", "Decimal. Vanilla is 0.05");
-            ROSOption("Greens", 0f, 1f, 0.01f, "3");
             Radius = ConfigOption(10, "Base Radius", "Vanilla is 10");
-            ROSOption("Greens", 0f, 30f, 1f, "3");
             StackRadius = ConfigOption(5, "Stack Radius", "Vanilla is 5");
-            ROSOption("Greens", 0f, 30f, 1f, "3");
             base.Init();
         }
 

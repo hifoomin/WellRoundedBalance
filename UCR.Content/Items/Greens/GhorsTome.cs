@@ -18,9 +18,7 @@ namespace UltimateCustomRun.Items.Greens
         public override void Init()
         {
             Chance = ConfigOption(4f, "Chance", "Per Stack. Vanilla is 4");
-            ROSOption("Greens", 0f, 100f, 1f, "2");
             Reward = ConfigOption(25, "Reward", "Vanilla is 25");
-            ROSOption("Greens", 0f, 100f, 5f, "2");
             base.Init();
         }
 

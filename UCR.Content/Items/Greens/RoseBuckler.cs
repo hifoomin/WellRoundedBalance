@@ -29,15 +29,10 @@ namespace UltimateCustomRun.Items.Greens
         public override void Init()
         {
             ConditionalArmor = ConfigOption(30, "Conditional Armor", "Per Stack. Vanilla is 30");
-            ROSOption("Greens", 0f, 50f, 5f, "2");
             Armor = ConfigOption(0f, "Armor", "Vanilla is 0");
-            ROSOption("Greens", 0f, 50f, 5f, "2");
             StackArmor = ConfigOption(false, "Stack Armor?", "Vanilla is false");
-            ROSOption("Greens", 0f, 10f, 1f, "2");
             ChangeCondition = ConfigOption(false, "Change Condition to Below Health Threshold?", "Vanilla is false");
-            ROSOption("Greens", 0f, 10f, 1f, "2");
             Threshold = ConfigOption(0.5f, "Health Threshold", "Decimal. Vanilla is 0");
-            ROSOption("Greens", 0f, 1f, 0.05f, "2");
             base.Init();
         }
 

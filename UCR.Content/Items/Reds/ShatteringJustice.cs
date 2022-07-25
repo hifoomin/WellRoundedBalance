@@ -34,12 +34,9 @@ namespace UltimateCustomRun.Items.Reds
         public override void Init()
         {
             Hits = ConfigOption(5, "Hits", "Vanilla is 5");
-            ROSOption("Greens", 0f, 20f, 1f, "3");
             ArmorReduction = ConfigOption(60f, "Armor Reduction", "Vanilla is 60");
-            ROSOption("Greens", 0f, 200f, 5f, "3");
             //PercentHealthReduction = ConfigOption(0f, "Percent Health Reduction", "Decimal. Vanilla is 0");
             Duration = ConfigOption(8f, "Duration", "Per Stack. Vanilla is 8");
-            ROSOption("Greens", 0f, 30f, 1f, "3");
             base.Init();
         }
 

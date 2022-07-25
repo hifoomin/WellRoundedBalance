@@ -26,13 +26,9 @@ namespace UltimateCustomRun.Items.Greens
         public override void Init()
         {
             Damage = ConfigOption(3, "Burn Damage", "Decimal. Per Stack. Vanilla is 3");
-            ROSOption("Greens", 0f, 10f, 1f, "2");
             BurnChance = ConfigOption(0f, "Base Burn Chance", "Vanilla is 0");
-            ROSOption("Greens", 0f, 100f, 1f, "2");
             BurnChancePerStack = ConfigOption(0f, "Stack Burn Chance", "Per Stack. Vanilla is 0");
-            ROSOption("Greens", 0f, 100f, 1f, "2");
             StackBurnChance = ConfigOption(false, "Make Burn Chance Stack?", "Vanilla is false");
-            ROSOption("Greens", 0f, 5f, 0.01f, "2");
             base.Init();
         }
 

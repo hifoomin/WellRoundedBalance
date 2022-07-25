@@ -15,7 +15,6 @@ namespace UltimateCustomRun.Items.Greens
         public override void Init()
         {
             CooldownReduction = ConfigOption(0.15f, "Equipment Cooldown Reduction", "Decimal. Per Stack. Vanilla is 0.15");
-            ROSOption("Greens", 0f, 1f, 0.05f, "2");
             base.Init();
         }
 

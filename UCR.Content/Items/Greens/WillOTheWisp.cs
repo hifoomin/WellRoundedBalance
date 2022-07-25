@@ -22,17 +22,11 @@ namespace UltimateCustomRun.Items.Greens
         public override void Init()
         {
             Damage = ConfigOption(3.5f, "Base Damage", "Decimal. Vanilla is 3.5");
-            ROSOption("Greens", 0f, 10f, 0.1f, "2");
             StackDamage = ConfigOption(2.8f, "Stack Damage", "Decimal. Per Stack. Vanilla is 2.8");
-            ROSOption("Greens", 0f, 10f, 0.1f, "2");
             ProcCoefficient = ConfigOption(1f, "Proc Coefficient", "Decimal. Vanilla is 1");
-            ROSOption("Greens", 0f, 1f, 0.05f, "2");
             Radius = ConfigOption(12f, "Base Range", "Vanilla is 12");
-            ROSOption("Greens", 0f, 50f, 1f, "2");
             StackRadius = ConfigOption(2.4f, "Stack Range", "Per Stack. Vanilla is 2.4");
-            ROSOption("Greens", 0f, 50f, 1f, "2");
             RemoveKnockback = ConfigOption(false, "Remove Knockback?", "Vanilla is false");
-            ROSOption("Greens", 0f, 10f, 1f, "2");
             base.Init();
         }
 

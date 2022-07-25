@@ -24,13 +24,9 @@ namespace UltimateCustomRun.Items.Greens
         public override void Init()
         {
             BuffArmor = ConfigOption(0f, "Buff Armor", "With Buff. Vanilla is 0");
-            ROSOption("Greens", 0f, 200f, 5f, "2");
             StackBuffArmor = ConfigOption(false, "Stack Buff Armor?", "Vanilla is false");
-            ROSOption("Greens", 0f, 10f, 1f, "2");
             Armor = ConfigOption(0f, "Armor", "Vanilla is 0");
-            ROSOption("Greens", 0f, 50f, 5f, "2");
             StackArmor = ConfigOption(false, "Stack Armor?", "Vanilla is false");
-            ROSOption("Greens", 0f, 10f, 1f, "2");
             base.Init();
         }
 

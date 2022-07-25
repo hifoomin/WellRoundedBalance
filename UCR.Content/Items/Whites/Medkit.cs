@@ -22,11 +22,8 @@ namespace UltimateCustomRun.Items.Whites
         public override void Init()
         {
             FlatHealing = ConfigOption(20f, "Flat Healing", "Vanilla is 20");
-            ROSOption("Whites", 0f, 50f, 5f, "1");
             PercentHealing = ConfigOption(0.05f, "Percent Healing", "Decimal. Per Stack. Vanilla is 0.05");
-            ROSOption("Whites", 0f, 1f, 0.01f, "1");
             StackBuff = ConfigOption(false, "Stack Buff?", "Vanilla is false");
-            ROSOption("Whites", 0f, 5f, 0.01f, "1");
             base.Init();
         }
 

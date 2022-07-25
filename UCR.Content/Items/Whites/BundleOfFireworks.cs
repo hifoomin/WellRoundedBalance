@@ -25,15 +25,10 @@ namespace UltimateCustomRun.Items.Whites
         public override void Init()
         {
             Count = ConfigOption(8, "Base Count", "Vanilla is 8");
-            ROSOption("Whites", 0f, 16f, 1f, "1");
             StackCount = ConfigOption(4, "Stack Count", "Per Stack. Vanilla is 4");
-            ROSOption("Whites", 0f, 16f, 1f, "1");
             Damage = ConfigOption(3f, "Damage Coefficient", "Decimal. Vanilla is 3");
-            ROSOption("Whites", 0f, 6f, 0.1f, "1");
             ProcCoefficient = ConfigOption(0.2f, "Proc Coefficient", "Vanilla is 0.2");
-            ROSOption("Whites", 0f, 1f, 0.05f, "1");
             AoE = ConfigOption(5f, "Area of Effect", "Vanilla is 5");
-            ROSOption("Whites", 0f, 15f, 0.5f, "1");
             base.Init();
         }
 

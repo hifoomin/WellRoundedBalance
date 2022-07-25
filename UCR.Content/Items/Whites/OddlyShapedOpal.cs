@@ -19,7 +19,6 @@ namespace UltimateCustomRun.Items.Whites
         public override void Init()
         {
             Armor = ConfigOption(100f, "Armor", "Per Stack. Vanilla is 100");
-            ROSOption("Whites", 0f, 200f, 5f, "1");
             base.Init();
         }
 

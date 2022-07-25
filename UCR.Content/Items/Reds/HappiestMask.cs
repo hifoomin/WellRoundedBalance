@@ -17,9 +17,7 @@ namespace UltimateCustomRun.Items.Reds
         public override void Init()
         {
             Chance = ConfigOption(7f, "Chance", "Vanilla is 7");
-            ROSOption("Greens", 0f, 100f, 1f, "3");
             Duration = ConfigOption(30, "Duration", "Per Stack. Vanilla is 30");
-            ROSOption("Greens", 0f, 120f, 1f, "3");
             base.Init();
         }
 

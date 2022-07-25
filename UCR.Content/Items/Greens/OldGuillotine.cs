@@ -17,7 +17,6 @@ namespace UltimateCustomRun.Items.Greens
         public override void Init()
         {
             Threshold = ConfigOption(13f, "Threshold", "Vanilla is 13");
-            ROSOption("Greens", 0f, 100f, 1f, "2");
             base.Init();
         }
 

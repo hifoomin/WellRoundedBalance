@@ -20,9 +20,7 @@ namespace UltimateCustomRun.Items.Whites
         public override void Init()
         {
             AttackSpeed = ConfigOption(0.075f, "Attack Speed", "Decimal. Per Stack. Vanilla is 0.075");
-            ROSOption("Whites", 0f, 0.5f, 0.005f, "1");
             MoveSpeed = ConfigOption(0.07f, "Move Speed", "Decimal. Per Stack. Vanilla is 0.07");
-            ROSOption("Whites", 0f, 0.5f, 0.01f, "1");
             base.Init();
         }
 

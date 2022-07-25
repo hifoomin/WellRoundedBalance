@@ -28,21 +28,13 @@ namespace UltimateCustomRun.Items.Whites
         public override void Init()
         {
             ExplosionDamage = ConfigOption(1.5f, "Explosion Damage", "Decimal. Vanilla is 1.5");
-            ROSOption("Whites", 0f, 5f, 0.01f, "1");
             BurnDamage = ConfigOption(2, "Burn Damage", "Per Stack. Vanilla is 2");
-            ROSOption("Whites", 0f, 4f, 0.1f, "1");
             BurnDamageMultiplier = ConfigOption(0.75f, "Burn Damage Multiplier", "Decimal. Vanilla is 0.75");
-            ROSOption("Whites", 0f, 2f, 0.05f, "1");
             Radius = ConfigOption(12f, "Base Range", "Vanilla is 12");
-            ROSOption("Whites", 0f, 30f, 0.5f, "1");
             StackRadius = ConfigOption(4f, "Stack Range", "Per Stack. Vanilla is 4");
-            ROSOption("Whites", 0f, 30f, 0.5f, "1");
             BurnChance = ConfigOption(0f, "Base Burn Chance", "Vanilla is 0");
-            ROSOption("Whites", 0f, 100f, 1f, "1");
             BurnChancePerStack = ConfigOption(0f, "Stack Burn Chance", "Per Stack. Vanilla is 0");
-            ROSOption("Whites", 0f, 100f, 1f, "1");
             StackBurnChance = ConfigOption(false, "Make Burn Chance Stack?", "Vanilla is false");
-            ROSOption("Whites", 0f, 5f, 0.01f, "1");
             base.Init();
         }
 

@@ -16,7 +16,6 @@ namespace UltimateCustomRun.Items.Reds
         public override void Init()
         {
             Damage = ConfigOption(0.5f, "Missile Damage Increase", "Decimal. Per Stack. Vanilla is 0.5");
-            ROSOption("Greens", 0f, 10f, 0.1f, "3");
             base.Init();
         }
 

@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>C:\Users\Admin\AppData\Roaming\r2modmanPlus-local\RiskOfRain2\profiles\InfernoTesting\BepInEx\plugins\Unknown-UltimateCustomRun\</OutputPath>
+    <OutputPath>C:\Users\Admin\AppData\Roaming\r2modmanPlus-local\RiskOfRain2\profiles\Testing\BepInEx\plugins\Unknown-UltimateCustomRun\</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
@@ -97,7 +97,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Items\Whites Void\" />
+    <Folder Include="Dummy\" />
   </ItemGroup>
 
 </Project>
