@@ -37,27 +37,37 @@ namespace UltimateCustomRun.Items.Whites
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdsfld(typeof(RoR2Content.Items), "Medkit"),
-                x => x.MatchCallOrCallvirt<Inventory>("GetItemCount"),
-                x => x.MatchStloc(0),
-                x => x.MatchLdcR4(20f)
-            ); ;
-            c.Index += 2;
-            c.Next.Operand = FlatHealing;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdsfld(typeof(RoR2Content.Items), "Medkit"),
+                    x => x.MatchCallOrCallvirt<Inventory>("GetItemCount"),
+                    x => x.MatchStloc(0),
+                    x => x.MatchLdcR4(20f)))
+            {
+                c.Index += 2;
+                c.Next.Operand = FlatHealing;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Medkit Flat Healing hook");
+            }
         }
 
         public static void ChangePercentHealing(ILContext il)
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdarg(0),
-                x => x.MatchCallOrCallvirt(typeof(CharacterBody).GetMethod("get_maxHealth")),
-                x => x.MatchLdcR4(0.05f)
-            );
-            c.Index += 2;
-            c.Next.Operand = PercentHealing;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdarg(0),
+                    x => x.MatchCallOrCallvirt(typeof(CharacterBody).GetMethod("get_maxHealth")),
+                    x => x.MatchLdcR4(0.05f)))
+            {
+                c.Index += 2;
+                c.Next.Operand = PercentHealing;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Medkit Percent Healing hook");
+            }
         }
     }
 }

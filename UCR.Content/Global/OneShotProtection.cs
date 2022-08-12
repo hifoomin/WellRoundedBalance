@@ -25,23 +25,33 @@ namespace UltimateCustomRun.Global
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcR4(0.1f)
-            );
-            c.Next.Operand = Time;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdcR4(0.1f)))
+            {
+                c.Next.Operand = Time;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply One Shot Protection Time hook");
+            }
         }
 
         public static void ChangeThreshold(ILContext il)
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchCallOrCallvirt<RoR2.CharacterBody>("set_maxJumpCount"),
-                x => x.MatchLdarg(0),
-                x => x.MatchLdcR4(0.1f)
-            );
-            c.Index += 2;
-            c.Next.Operand = Threshold;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchCallOrCallvirt<RoR2.CharacterBody>("set_maxJumpCount"),
+                    x => x.MatchLdarg(0),
+                    x => x.MatchLdcR4(0.1f)))
+            {
+                c.Index += 2;
+                c.Next.Operand = Threshold;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply One Shot Protection Threshold hook");
+            }
         }
     }
 }

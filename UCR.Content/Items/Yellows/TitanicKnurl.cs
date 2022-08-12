@@ -53,26 +53,36 @@ namespace UltimateCustomRun.Items.Yellows
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchConvR4(),
-                x => x.MatchLdcR4(40f),
-                x => x.MatchMul()
-            );
-            c.Index += 1;
-            c.Next.Operand = FlatHealth;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchConvR4(),
+                    x => x.MatchLdcR4(40f),
+                    x => x.MatchMul()))
+            {
+                c.Index += 1;
+                c.Next.Operand = FlatHealth;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Titanic Knurl Health hook");
+            }
         }
 
         public static void ChangeRegen(ILContext il)
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchConvR4(),
-                x => x.MatchLdcR4(1.6f),
-                x => x.MatchMul()
-            );
-            c.Index += 1;
-            c.Next.Operand = Regen;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchConvR4(),
+                    x => x.MatchLdcR4(1.6f),
+                    x => x.MatchMul()))
+            {
+                c.Index += 1;
+                c.Next.Operand = Regen;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Titanic Knurl Regen hook");
+            }
         }
 
         public static void AddBehaviorPercentHealth(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)

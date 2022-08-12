@@ -62,80 +62,114 @@ namespace UltimateCustomRun.Items.Yellows
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdloc(30),
-                x => x.MatchAdd(),
-                x => x.MatchConvR4(),
-                x => x.MatchLdcR4(0.1f),
-                x => x.MatchMul(),
-                x => x.MatchAdd(),
-                x => x.MatchStloc(63)
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdloc(30),
+                    x => x.MatchAdd(),
+                    x => x.MatchConvR4(),
+                    x => x.MatchLdcR4(0.1f),
+                    x => x.MatchMul(),
+                    x => x.MatchAdd(),
+                    x => x.MatchStloc(63)))
+            {
+                c.Index += 3;
+                c.Next.Operand = PercentHealth;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Irradiant Pearl Percent Health hook");
+            }
 
-            );
-            c.Index += 3;
-            c.Next.Operand = PercentHealth;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdloc(30),
+                    x => x.MatchConvR4(),
+                    x => x.MatchLdcR4(0.1f),
+                    x => x.MatchMul(),
+                    x => x.MatchLdloc(66)))
+            {
+                c.Index += 2;
+                c.Next.Operand = FlatRegen;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Irradiant Pearl Flat Regen hook");
+            }
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdloc(30),
-                x => x.MatchConvR4(),
-                x => x.MatchLdcR4(0.1f),
-                x => x.MatchMul(),
-                x => x.MatchLdloc(66)
-            );
-            c.Index += 2;
-            c.Next.Operand = FlatRegen;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdloc(30),
+                    x => x.MatchConvR4(),
+                    x => x.MatchLdcR4(0.1f),
+                    x => x.MatchMul(),
+                    x => x.MatchAdd(),
+                    x => x.MatchStloc(75)))
+            {
+                c.Index += 2;
+                c.Next.Operand = PercentSpeed;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Irradiant Pearl Percent Speed hook");
+            }
 
-            c.GotoNext(MoveType.Before,
-               x => x.MatchLdloc(30),
-               x => x.MatchConvR4(),
-               x => x.MatchLdcR4(0.1f),
-               x => x.MatchMul(),
-               x => x.MatchAdd(),
-               x => x.MatchStloc(75)
-           );
-            c.Index += 2;
-            c.Next.Operand = PercentSpeed;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdloc(30),
+                    x => x.MatchConvR4(),
+                    x => x.MatchLdcR4(0.1f),
+                    x => x.MatchMul(),
+                    x => x.MatchAdd(),
+                    x => x.MatchStloc(79)))
+            {
+                c.Index += 2;
+                c.Next.Operand = PercentDamage;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Irradiant Pearl Percent Damage hook");
+            }
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdloc(30),
-                x => x.MatchConvR4(),
-                x => x.MatchLdcR4(0.1f),
-                x => x.MatchMul(),
-                x => x.MatchAdd(),
-                x => x.MatchStloc(79)
-            );
-            c.Index += 2;
-            c.Next.Operand = PercentDamage;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdloc(30),
+                    x => x.MatchConvR4(),
+                    x => x.MatchLdcR4(0.1f),
+                    x => x.MatchMul(),
+                    x => x.MatchAdd(),
+                    x => x.MatchStloc(83)))
+            {
+                c.Index += 2;
+                c.Next.Operand = PercentAttackSpeed;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Irradiant Pearl Percent Attack Speed hook");
+            }
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdloc(30),
-                x => x.MatchConvR4(),
-                x => x.MatchLdcR4(0.1f),
-                x => x.MatchMul(),
-                x => x.MatchAdd(),
-                x => x.MatchStloc(83)
-            );
-            c.Index += 2;
-            c.Next.Operand = PercentAttackSpeed;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdloc(30),
+                    x => x.MatchConvR4(),
+                    x => x.MatchLdcR4(10f),
+                    x => x.MatchMul(),
+                    x => x.MatchAdd(),
+                    x => x.MatchStloc(84)))
+            {
+                c.Index += 2;
+                c.Next.Operand = PercentCrit;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Irradiant Pearl Percent Crit hook");
+            }
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdloc(30),
-                x => x.MatchConvR4(),
-                x => x.MatchLdcR4(10f),
-                x => x.MatchMul(),
-                x => x.MatchAdd(),
-                x => x.MatchStloc(84)
-            );
-            c.Index += 2;
-            c.Next.Operand = PercentCrit;
-
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcR4(1f),
-                x => x.MatchLdcR4(0.1f),
-                x => x.MatchLdloc(30)
-            );
-            c.Index += 1;
-            c.Next.Operand = PercentBaseArmor;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdcR4(1f),
+                    x => x.MatchLdcR4(0.1f),
+                    x => x.MatchLdloc(30)))
+            {
+                c.Index += 1;
+                c.Next.Operand = PercentBaseArmor;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Irradiant Pearl Percent Base Armor hook");
+            }
         }
     }
 }

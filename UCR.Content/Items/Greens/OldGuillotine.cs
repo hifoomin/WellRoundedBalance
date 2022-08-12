@@ -29,10 +29,15 @@ namespace UltimateCustomRun.Items.Greens
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcR4(13f)
-            );
-            c.Next.Operand = Threshold;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdcR4(13f)))
+            {
+                c.Next.Operand = Threshold;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Old Guillotine Threshold hook");
+            }
         }
     }
 }

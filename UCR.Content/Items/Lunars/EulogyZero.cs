@@ -28,20 +28,30 @@ namespace UltimateCustomRun.Items.Lunars
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcR4(0.05f)
-            );
-            c.Next.Operand = Chance;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdcR4(0.05f)))
+            {
+                c.Next.Operand = Chance;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Eulogy Zero Chance2 hook");
+            }
         }
 
         private void ChangeChance1(ILContext il)
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcR4(0.05f)
-            );
-            c.Next.Operand = Chance;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdcR4(0.05f)))
+            {
+                c.Next.Operand = Chance;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Eulogy Zero Chance1 hook");
+            }
         }
     }
 }

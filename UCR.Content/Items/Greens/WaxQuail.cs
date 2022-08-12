@@ -27,10 +27,15 @@ namespace UltimateCustomRun.Items.Greens
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcR4(10f)
-            );
-            c.Next.Operand = Distance;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdcR4(10f)))
+            {
+                c.Next.Operand = Distance;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Wax Quail Distance hook");
+            }
         }
     }
 }

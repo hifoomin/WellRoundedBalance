@@ -22,10 +22,15 @@ namespace UltimateCustomRun.Global
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcR4(0.0f)
-            );
-            c.Next.Operand = luck;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdcR4(0.0f)))
+            {
+                c.Next.Operand = luck;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Luck hook");
+            }
         }
     }
 }

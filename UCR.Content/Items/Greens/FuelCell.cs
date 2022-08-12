@@ -27,12 +27,17 @@ namespace UltimateCustomRun.Items.Greens
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchStloc(out _),
-                x => x.MatchLdcR4(0.85f)
-            );
-            c.Index += 1;
-            c.Next.Operand = 1f - CooldownReduction;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchStloc(out _),
+                    x => x.MatchLdcR4(0.85f)))
+            {
+                c.Index += 1;
+                c.Next.Operand = 1f - CooldownReduction;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Fuel Cell Equipment Cooldown Reduction hook");
+            }
         }
     }
 }

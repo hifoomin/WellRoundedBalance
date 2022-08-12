@@ -41,34 +41,49 @@ namespace UltimateCustomRun.Items.Yellows
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcR4(4f),
-                x => x.MatchLdcI4(1),
-                x => x.MatchLdloc(out _)
-            );
-            c.Next.Operand = BaseExplosionDamage;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdcR4(4f),
+                    x => x.MatchLdcI4(1),
+                    x => x.MatchLdloc(out _)))
+            {
+                c.Next.Operand = BaseExplosionDamage;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Shatterspleen Base Explosion Damage hook");
+            }
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcR4(0.15f),
-                x => x.MatchLdcI4(1),
-                x => x.MatchLdloc(out _)
-            );
-            c.Next.Operand = PercentExplosionDamage;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdcR4(0.15f),
+                    x => x.MatchLdcI4(1),
+                    x => x.MatchLdloc(out _)))
+            {
+                c.Next.Operand = PercentExplosionDamage;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Shatterspleen Percent Explosion Damage hook");
+            }
         }
 
         public static void ChangeAoE(ILContext il)
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcR4(0.0f),
-                x => x.MatchStfld("RoR2.DelayBlast", "baseForce"),
-                x => x.MatchDup(),
-                x => x.MatchLdcR4(16f),
-                x => x.MatchStfld("RoR2.DelayBlast", "radius")
-            );
-            c.Index += 3;
-            c.Next.Operand = AoE;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdcR4(0.0f),
+                    x => x.MatchStfld("RoR2.DelayBlast", "baseForce"),
+                    x => x.MatchDup(),
+                    x => x.MatchLdcR4(16f),
+                    x => x.MatchStfld("RoR2.DelayBlast", "radius")))
+            {
+                c.Index += 3;
+                c.Next.Operand = AoE;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Shatterspleen Radius hook");
+            }
         }
 
         public static void AddBehavior(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)

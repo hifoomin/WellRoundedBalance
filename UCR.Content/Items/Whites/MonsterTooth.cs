@@ -34,13 +34,18 @@ namespace UltimateCustomRun.Items.Whites
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchStfld<HealthPickup>(nameof(HealthPickup.flatHealing))
-            );
-            c.Index--;
-            c.EmitDelegate<Func<float, float>>((vanilla) => { return FlatHealing; });
-            c.Index += 2;
-            c.EmitDelegate<Func<float, float>>((vanilla) => { return PercentHealing; });
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchStfld<HealthPickup>(nameof(HealthPickup.flatHealing))))
+            {
+                c.Index--;
+                c.EmitDelegate<Func<float, float>>((vanilla) => { return FlatHealing; });
+                c.Index += 2;
+                c.EmitDelegate<Func<float, float>>((vanilla) => { return PercentHealing; });
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Monster Tooth Healing hook");
+            }
             // thanks to RandomlyAwesome!
             // PLEASE HELP TO FIX
         }

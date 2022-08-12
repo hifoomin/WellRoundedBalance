@@ -29,15 +29,20 @@ namespace UltimateCustomRun.Items.Lunars
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdloc(out _),
-                x => x.MatchLdcR4(2f),
-                x => x.MatchLdcR4(1f)
-            );
-            c.Index += 1;
-            c.Next.Operand = Cdr;
-            c.Index += 1;
-            c.Next.Operand = StackCdr;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdloc(out _),
+                    x => x.MatchLdcR4(2f),
+                    x => x.MatchLdcR4(1f)))
+            {
+                c.Index += 1;
+                c.Next.Operand = Cdr;
+                c.Index += 1;
+                c.Next.Operand = StackCdr;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Purity Cooldown Reduction hook");
+            }
         }
     }
 }

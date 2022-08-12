@@ -76,13 +76,18 @@ namespace UltimateCustomRun.Items.Lunars
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcR4(0.5f),
-                x => x.MatchLdcR4(0.85f)
-            );
-            c.Next.Operand = Cdr;
-            c.Index += 1;
-            c.Next.Operand = 1f - StackCdr;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdcR4(0.5f),
+                    x => x.MatchLdcR4(0.85f)))
+            {
+                c.Next.Operand = Cdr;
+                c.Index += 1;
+                c.Next.Operand = 1f - StackCdr;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Gesture Of The Drowned Equipment Cooldown Reduction hook");
+            }
         }
     }
 }

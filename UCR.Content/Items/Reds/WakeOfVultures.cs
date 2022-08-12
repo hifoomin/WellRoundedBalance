@@ -66,13 +66,18 @@ namespace UltimateCustomRun.Items.Reds
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcR4(3f),
-                x => x.MatchLdcR4(5f)
-            );
-            c.Next.Operand = StackDuration;
-            c.Index += 1;
-            c.Next.Operand = Duration - StackDuration;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdcR4(3f),
+                    x => x.MatchLdcR4(5f)))
+            {
+                c.Next.Operand = StackDuration;
+                c.Index += 1;
+                c.Next.Operand = Duration - StackDuration;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Wake Of Vultures Duration hook");
+            }
         }
     }
 }

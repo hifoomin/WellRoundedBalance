@@ -31,10 +31,15 @@ namespace UltimateCustomRun.Items.VoidReds
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcI4(3)
-            );
-            c.Next.Operand = ItemCount;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdcI4(3)))
+            {
+                c.Next.Operand = ItemCount;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Benthic Bloom Count hook");
+            }
         }
     }
 }

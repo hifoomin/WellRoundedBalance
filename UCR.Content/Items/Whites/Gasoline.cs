@@ -93,42 +93,57 @@ namespace UltimateCustomRun.Items.Whites
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchAdd(),
-                x => x.MatchStloc(1),
-                x => x.MatchLdcR4(1.5f)
-            );
-            c.Index += 2;
-            c.Next.Operand = ExplosionDamage;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchAdd(),
+                    x => x.MatchStloc(1),
+                    x => x.MatchLdcR4(1.5f)))
+            {
+                c.Index += 2;
+                c.Next.Operand = ExplosionDamage;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Gasoline Explosion Damage hook");
+            }
         }
 
         public static void ChangeBurnDamage(ILContext il)
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcI4(1),
-                x => x.MatchLdarg(1),
-                x => x.MatchAdd(),
-                x => x.MatchConvR4(),
-                x => x.MatchLdcR4(0.75f)
-            );
-            c.Next.Operand = BurnDamage;
-            c.Index += 4;
-            c.Next.Operand = BurnDamageMultiplier;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdcI4(1),
+                    x => x.MatchLdarg(1),
+                    x => x.MatchAdd(),
+                    x => x.MatchConvR4(),
+                    x => x.MatchLdcR4(0.75f)))
+            {
+                c.Next.Operand = BurnDamage;
+                c.Index += 4;
+                c.Next.Operand = BurnDamageMultiplier;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Gasoline Burn Damage hook");
+            }
         }
 
         public static void ChangeRadius(ILContext il)
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcR4(8f),
-                x => x.MatchLdcR4(4f)
-            );
-            c.Next.Operand = Radius - StackRadius;
-            c.Index += 1;
-            c.Next.Operand = StackRadius;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdcR4(8f),
+                    x => x.MatchLdcR4(4f)))
+            {
+                c.Next.Operand = Radius - StackRadius;
+                c.Index += 1;
+                c.Next.Operand = StackRadius;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Gasoline Radius hook");
+            }
         }
     }
 }

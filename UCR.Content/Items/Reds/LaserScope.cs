@@ -35,14 +35,19 @@ namespace UltimateCustomRun.Items.Reds
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcR4(2f),
-                x => x.MatchLdcR4(1f),
-                x => x.MatchLdloc(out _),
-                x => x.MatchConvR4()
-            );
-            c.Index += 1;
-            c.Next.Operand = Damage;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdcR4(2f),
+                    x => x.MatchLdcR4(1f),
+                    x => x.MatchLdloc(out _),
+                    x => x.MatchConvR4()))
+            {
+                c.Index += 1;
+                c.Next.Operand = Damage;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Laser Scope Damage hook");
+            }
         }
 
         public static void AddBehavior(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)

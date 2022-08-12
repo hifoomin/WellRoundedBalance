@@ -47,43 +47,63 @@ namespace UltimateCustomRun.Items.Reds
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcR4(10f)
-            );
-            c.Next.Operand = MissileChance;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdcR4(10f)))
+            {
+                c.Next.Operand = MissileChance;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Spare Drone Parts Missile Chance hook");
+            }
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcR4(3f)
-            );
-            c.Next.Operand = MissileDamage;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdcR4(3f)))
+            {
+                c.Next.Operand = MissileDamage;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Spare Drone Parts Missile Damage hook");
+            }
         }
 
         public static void ChangeAttackSpeed(ILContext il)
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
+            if (c.TryGotoNext(MoveType.Before,
                 x => x.MatchLdloc(46),
                 x => x.MatchConvR4(),
                 x => x.MatchLdcR4(0.5f),
-                x => x.MatchMul()
-            );
-            c.Index += 2;
-            c.Next.Operand = AttackSpeed;
+                x => x.MatchMul()))
+            {
+                c.Index += 2;
+                c.Next.Operand = AttackSpeed;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Spare Drone Parts Attack Speed hook");
+            }
         }
 
         public static void ChangeCooldownReduction(ILContext il)
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdloc(87),
-                x => x.MatchLdcR4(0.5f),
-                x => x.MatchMul(),
-                x => x.MatchStloc(87)
-            );
-            c.Index += 1;
-            c.Next.Operand = 1f - CooldownReduction;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdloc(87),
+                    x => x.MatchLdcR4(0.5f),
+                    x => x.MatchMul(),
+                    x => x.MatchStloc(87)))
+            {
+                c.Index += 1;
+                c.Next.Operand = 1f - CooldownReduction;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Spare Drone Parts Cooldown Reduction hook");
+            }
         }
 
         public static void ChaingunChanges(On.EntityStates.DroneWeaponsChainGun.FireChainGun.orig_OnEnter orig, EntityStates.DroneWeaponsChainGun.FireChainGun self)

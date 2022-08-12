@@ -66,16 +66,21 @@ namespace UltimateCustomRun.Items.Greens
         public static void ChangeArmor(ILContext il)
         {
             ILCursor c = new(il);
-            c.GotoNext(MoveType.Before,
-                x => x.MatchCallOrCallvirt<RoR2.CharacterBody>("get_armor"),
-                x => x.MatchLdloc(out _),
-                x => x.MatchLdcI4(30)
-            );
-            c.Index += 3;
-            c.EmitDelegate<Func<int, int>>((sdfgsdfhgsghdfv) =>
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchCallOrCallvirt<RoR2.CharacterBody>("get_armor"),
+                    x => x.MatchLdloc(out _),
+                    x => x.MatchLdcI4(30)))
             {
-                return ConditionalArmor;
-            });
+                c.Index += 3;
+                c.EmitDelegate<Func<int, int>>((sdfgsdfhgsghdfv) =>
+                {
+                    return ConditionalArmor;
+                });
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Rose Buckler Conditional Armor hook");
+            }
         }
 
         public static void ChangeVisual(ILContext il)

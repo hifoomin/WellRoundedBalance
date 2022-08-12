@@ -27,14 +27,19 @@ namespace UltimateCustomRun.Items.Reds
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdsfld("RoR2.RoR2Content/Buffs", "NoCooldowns"),
-                x => x.MatchLdloc(out _),
-                x => x.MatchConvR4(),
-                x => x.MatchLdcR4(4f)
-            );
-            c.Index += 3;
-            c.Next.Operand = Duration;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdsfld("RoR2.RoR2Content/Buffs", "NoCooldowns"),
+                    x => x.MatchLdloc(out _),
+                    x => x.MatchConvR4(),
+                    x => x.MatchLdcR4(4f)))
+            {
+                c.Index += 3;
+                c.Next.Operand = Duration;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Brainstalks Duration hook");
+            }
         }
     }
 }

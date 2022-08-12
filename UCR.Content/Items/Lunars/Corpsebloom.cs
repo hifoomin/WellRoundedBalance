@@ -30,25 +30,35 @@ namespace UltimateCustomRun.Items.Lunars
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdarg(1),
-                x => x.MatchLdcR4(2f),
-                x => x.MatchMul()
-            );
-            c.Index += 1;
-            c.Next.Operand = HealingIncrease;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdarg(1),
+                    x => x.MatchLdcR4(2f),
+                    x => x.MatchMul()))
+            {
+                c.Index += 1;
+                c.Next.Operand = HealingIncrease;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Corpsebloom Heal Increase hook");
+            }
         }
 
         private void ChangeOverTimeCap(ILContext il)
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdfld<RoR2.HealthComponent>("repeatHealComponent"),
-                x => x.MatchLdcR4(0.1f)
-            );
-            c.Index += 1;
-            c.Next.Operand = HealingOverTimeCap;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdfld<RoR2.HealthComponent>("repeatHealComponent"),
+                    x => x.MatchLdcR4(0.1f)))
+            {
+                c.Index += 1;
+                c.Next.Operand = HealingOverTimeCap;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Corpsebloom Healing Cap hook");
+            }
         }
     }
 }

@@ -38,51 +38,72 @@ namespace UltimateCustomRun.Items.VoidGreens
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
+            if (c.TryGotoNext(MoveType.Before,
                 x => x.MatchLdcR4(0.2f),
-                x => x.MatchStfld<RoR2.Orbs.VoidLightningOrb>("procCoefficient")
-            );
-            c.Next.Operand = ProcCoefficient;
+                x => x.MatchStfld<RoR2.Orbs.VoidLightningOrb>("procCoefficient")))
+            {
+                c.Next.Operand = ProcCoefficient;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Polylute Proc Coefficient hook");
+            }
         }
 
         private void ChangeStrikes(ILContext il)
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchStfld<RoR2.Orbs.VoidLightningOrb>("isCrit"),
-                x => x.MatchLdloc(out _),
-                x => x.MatchLdcI4(3)
-            );
-            c.Index += 2;
-            c.Next.Operand = Strikes;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchStfld<RoR2.Orbs.VoidLightningOrb>("isCrit"),
+                    x => x.MatchLdloc(out _),
+                    x => x.MatchLdcI4(3)))
+            {
+                c.Index += 2;
+                c.Next.Operand = Strikes;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Polylute Hits hook");
+            }
         }
 
         private void ChangeDamage(ILContext il)
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchCallOrCallvirt(typeof(Util).GetMethod("CheckRoll", new Type[] { typeof(float), typeof(CharacterMaster) })),
-                x => x.MatchBrfalse(out _),
-                x => x.MatchLdcR4(0.6f)
-            );
-            c.Index += 2;
-            c.Next.Operand = TotalDamage;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchCallOrCallvirt(typeof(Util).GetMethod("CheckRoll",
+                        new Type[] { typeof(float), typeof(CharacterMaster) })),
+                    x => x.MatchBrfalse(out _),
+                    x => x.MatchLdcR4(0.6f)))
+            {
+                c.Index += 2;
+                c.Next.Operand = TotalDamage;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Polylute Damage hook");
+            }
         }
 
         private void ChangeChance(ILContext il)
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdsfld("RoR2.DLC1Content/Items", "ChainLightningVoid"),
-                x => x.MatchCallOrCallvirt<Inventory>("GetItemCount"),
-                x => x.MatchStloc(out _),
-                x => x.MatchLdcR4(25f)
-            );
-            c.Index += 3;
-            c.Next.Operand = Chance;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdsfld("RoR2.DLC1Content/Items", "ChainLightningVoid"),
+                    x => x.MatchCallOrCallvirt<Inventory>("GetItemCount"),
+                    x => x.MatchStloc(out _),
+                    x => x.MatchLdcR4(25f)))
+            {
+                c.Index += 3;
+                c.Next.Operand = Chance;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Polylute Chance hook");
+            }
         }
     }
 }

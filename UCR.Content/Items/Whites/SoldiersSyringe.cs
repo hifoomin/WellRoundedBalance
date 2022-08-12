@@ -29,12 +29,17 @@ namespace UltimateCustomRun.Items.Whites
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchConvR4(),
-                x => x.MatchLdcR4(0.15f)
-            );
-            c.Index += 1;
-            c.Next.Operand = AttackSpeed;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchConvR4(),
+                    x => x.MatchLdcR4(0.15f)))
+            {
+                c.Index += 1;
+                c.Next.Operand = AttackSpeed;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Soldier's Syringe Attack Speed hook");
+            }
         }
     }
 }

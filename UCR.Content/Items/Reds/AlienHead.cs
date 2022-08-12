@@ -37,14 +37,18 @@ namespace UltimateCustomRun.Items.Reds
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcR4(0.75f),
-                x => x.MatchMul()
-            );
-            c.Next.Operand = 1f - CooldownReduction;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdcR4(0.75f),
+                    x => x.MatchMul()))
+            {
+                c.Next.Operand = 1f - CooldownReduction;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Alien Head Cooldown Reduction hook");
+            }
         }
 
-        // PLEASE HELP TO FIX
         public static void AddBehavior(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
             if (sender.inventory)
@@ -56,7 +60,5 @@ namespace UltimateCustomRun.Items.Reds
                 }
             }
         }
-
-        // PLEASE HELP TO FIX
     }
 }

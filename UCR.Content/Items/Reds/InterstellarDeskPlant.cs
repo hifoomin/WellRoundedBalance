@@ -33,10 +33,15 @@ namespace UltimateCustomRun.Items.Reds
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcR4(0.05f)
-            );
-            c.Next.Operand = PercentHealing;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdcR4(0.05f)))
+            {
+                c.Next.Operand = PercentHealing;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Interstellar Desk Plant Healing hook");
+            }
         }
 
         public static void ChangeRadius(On.RoR2.DeskPlantController.orig_Awake orig, RoR2.DeskPlantController self)

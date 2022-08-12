@@ -32,12 +32,17 @@ namespace UltimateCustomRun.Items.Whites
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchCallOrCallvirt<RoR2.CharacterBody>("get_healthComponent"),
-                x => x.MatchLdcR4(15f)
-            );
-            c.Index += 1;
-            c.Next.Operand = Barrier;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchCallOrCallvirt<RoR2.CharacterBody>("get_healthComponent"),
+                    x => x.MatchLdcR4(15f)))
+            {
+                c.Index += 1;
+                c.Next.Operand = Barrier;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Topaz Brooch Barrier hook");
+            }
         }
 
         /*

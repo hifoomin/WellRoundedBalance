@@ -46,12 +46,17 @@ namespace UltimateCustomRun.Items.Whites
         public static void ChangeHealth(ILContext il)
         {
             ILCursor c = new(il);
-            c.GotoNext(MoveType.Before,
-                x => x.MatchConvR4(),
-                x => x.MatchLdcR4(25f)
-            );
-            c.Index += 1;
-            c.Next.Operand = BaseHealth;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchConvR4(),
+                    x => x.MatchLdcR4(25f)))
+            {
+                c.Index += 1;
+                c.Next.Operand = BaseHealth;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Bison Steak Helth hook");
+            }
         }
 
         public static void AddBehaviorLevelHealth(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)

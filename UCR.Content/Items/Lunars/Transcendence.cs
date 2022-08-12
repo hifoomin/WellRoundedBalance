@@ -30,17 +30,22 @@ namespace UltimateCustomRun.Items.Lunars
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcR4(1.5f),
-                x => x.MatchLdloc(out _),
-                x => x.MatchLdcI4(1),
-                x => x.MatchSub(),
-                x => x.MatchConvR4(),
-                x => x.MatchLdcR4(0.25f)
-            );
-            c.Next.Operand = 1f + HpIncrease;
-            c.Index += 5;
-            c.Next.Operand = StackHpIncrease;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdcR4(1.5f),
+                    x => x.MatchLdloc(out _),
+                    x => x.MatchLdcI4(1),
+                    x => x.MatchSub(),
+                    x => x.MatchConvR4(),
+                    x => x.MatchLdcR4(0.25f)))
+            {
+                c.Next.Operand = 1f + HpIncrease;
+                c.Index += 5;
+                c.Next.Operand = StackHpIncrease;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Transcendence Health hook");
+            }
         }
     }
 }

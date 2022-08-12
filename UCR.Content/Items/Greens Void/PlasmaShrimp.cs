@@ -34,33 +34,48 @@ namespace UltimateCustomRun.Items.VoidGreens
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcR4(0.2f),
-                x => x.MatchStfld<RoR2.Orbs.GenericDamageOrb>("procCoefficient")
-            );
-            c.Next.Operand = TotalDamage;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdcR4(0.2f),
+                    x => x.MatchStfld<RoR2.Orbs.GenericDamageOrb>("procCoefficient")))
+            {
+                c.Next.Operand = TotalDamage;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Plasma Shrimp Proc Coefficient hook");
+            }
         }
 
         private void ChangeDamage(ILContext il)
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcR4(0.4f)
-            );
-            c.Next.Operand = TotalDamage;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdcR4(0.4f)))
+            {
+                c.Next.Operand = TotalDamage;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Plasma Shrimp Damage hook");
+            }
         }
 
         private void ChangeShield(ILContext il)
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchCallOrCallvirt<RoR2.CharacterBody>("get_maxHealth"),
-                x => x.MatchLdcR4(0.1f)
-            );
-            c.Index += 1;
-            c.Next.Operand = Shield;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchCallOrCallvirt<RoR2.CharacterBody>("get_maxHealth"),
+                    x => x.MatchLdcR4(0.1f)))
+            {
+                c.Index += 1;
+                c.Next.Operand = Shield;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Plasma Shrimp Shield hook");
+            }
         }
     }
 }

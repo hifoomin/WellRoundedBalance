@@ -21,9 +21,11 @@ namespace UltimateCustomRun
         public IEnumerator LoadStaticContentAsync(LoadStaticContentAsyncArgs args)
         {
             contentPack.identifier = identifier;
+            /*
             contentPack.projectilePrefabs.Add(Main.projectilePrefabContent.ToArray());
             contentPack.entityStateTypes.Add(Main.entityStateContent.ToArray());
             contentPack.skillDefs.Add(Main.skillDefContent.ToArray());
+            */
             args.ReportProgress(1f);
             yield break;
         }

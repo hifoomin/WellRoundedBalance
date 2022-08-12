@@ -33,27 +33,37 @@ namespace UltimateCustomRun.Items.Greens
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcR4(1f),
-                x => x.MatchLdcR4(1f),
-                x => x.MatchLdloc(out _),
-                x => x.MatchLdcI4(1)
-            );
-            c.Index += 3;
-            c.Next.Operand = Base;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdcR4(1f),
+                    x => x.MatchLdcR4(1f),
+                    x => x.MatchLdloc(out _),
+                    x => x.MatchLdcI4(1)))
+            {
+                c.Index += 3;
+                c.Next.Operand = Base;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Bandolier Base hook");
+            }
         }
 
         public static void ChangeExponent(ILContext il)
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchAdd(),
-                x => x.MatchConvR4(),
-                x => x.MatchLdcR4(0.33f)
-            );
-            c.Index += 2;
-            c.Next.Operand = Exponent;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchAdd(),
+                    x => x.MatchConvR4(),
+                    x => x.MatchLdcR4(0.33f)))
+            {
+                c.Index += 2;
+                c.Next.Operand = Exponent;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Bandolier Exponent hook");
+            }
         }
     }
 }

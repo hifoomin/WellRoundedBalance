@@ -31,23 +31,33 @@ namespace UltimateCustomRun.Items.Reds
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchCallOrCallvirt<RoR2.SkillLocator>("get_utilityBonusStockSkill"),
-                x => x.MatchLdloc(out _),
-                x => x.MatchLdcI4(2)
-            );
-            c.Index += 2;
-            c.Next.Operand = Charges;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchCallOrCallvirt<RoR2.SkillLocator>("get_utilityBonusStockSkill"),
+                    x => x.MatchLdloc(out _),
+                    x => x.MatchLdcI4(2)))
+            {
+                c.Index += 2;
+                c.Next.Operand = Charges;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Hardlight Afterburner Charge hook");
+            }
         }
 
         public static void ChangeCDR(ILContext il)
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcR4(0.6666667f)
-            );
-            c.Next.Operand = 1f - CooldownReduction;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdcR4(0.6666667f)))
+            {
+                c.Next.Operand = 1f - CooldownReduction;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Hardlight Afterburner Cooldown Reduction hook");
+            }
         }
     }
 }

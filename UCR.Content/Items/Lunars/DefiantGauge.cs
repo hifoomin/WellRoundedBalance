@@ -27,10 +27,15 @@ namespace UltimateCustomRun.Items.Lunars
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcR4(40f)
-            );
-            c.Next.Operand = Credits;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdcR4(40f)))
+            {
+                c.Next.Operand = Credits;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Defiant Gauge Monster Credits hook");
+            }
         }
     }
 }

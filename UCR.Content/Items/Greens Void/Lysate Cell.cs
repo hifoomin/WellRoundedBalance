@@ -27,10 +27,15 @@ namespace UltimateCustomRun.Items.VoidGreens
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcR4(0.67f)
-            );
-            c.Next.Operand = 1f - CooldownReduction;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdcR4(0.67f)))
+            {
+                c.Next.Operand = 1f - CooldownReduction;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Lysate Cell Cooldown Reduction hook");
+            }
         }
     }
 }

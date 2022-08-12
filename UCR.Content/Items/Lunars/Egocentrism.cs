@@ -30,20 +30,30 @@ namespace UltimateCustomRun.Items.Lunars
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcR4(60f)
-            );
-            c.Next.Operand = Time;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdcR4(60f)))
+            {
+                c.Next.Operand = Time;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Egocentrism Time hook");
+            }
         }
 
         private void ChangeDamage(ILContext il)
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcR4(3.6f)
-            );
-            c.Next.Operand = Damage;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdcR4(3.6f)))
+            {
+                c.Next.Operand = Damage;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Egocentrism Damage hook");
+            }
         }
     }
 }

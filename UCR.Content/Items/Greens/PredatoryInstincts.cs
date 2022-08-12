@@ -55,16 +55,21 @@ namespace UltimateCustomRun.Items.Greens
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdsfld("RoR2.RoR2Content/Buffs", "AttackSpeedOnCrit"),
-                x => x.MatchCallOrCallvirt<CharacterBody>("GetBuffCount"),
-                x => x.MatchConvR4(),
-                x => x.MatchLdcR4(0.12f)
-            );
-            c.Index += 3;
-            //c.Remove();
-            //c.Emit(OpCodes.Ldc_R4, AttackSpeed);
-            c.Next.Operand = AttackSpeed;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdsfld("RoR2.RoR2Content/Buffs", "AttackSpeedOnCrit"),
+                    x => x.MatchCallOrCallvirt<CharacterBody>("GetBuffCount"),
+                    x => x.MatchConvR4(),
+                    x => x.MatchLdcR4(0.12f)))
+            {
+                c.Index += 3;
+                //c.Remove();
+                //c.Emit(OpCodes.Ldc_R4, AttackSpeed);
+                c.Next.Operand = AttackSpeed;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Predatory Instincts Buff Attack Speed hook");
+            }
         }
 
         public static void ChangeCap(ILContext il)
@@ -87,13 +92,18 @@ namespace UltimateCustomRun.Items.Greens
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdloc(3),
-                x => x.MatchLdloc(2)
-            );
-            c.Next.Operand = BaseCap - StackCap;
-            c.Index += 1;
-            c.Next.Operand = StackCap;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdloc(3),
+                    x => x.MatchLdloc(2)))
+            {
+                c.Next.Operand = BaseCap - StackCap;
+                c.Index += 1;
+                c.Next.Operand = StackCap;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Predatory Instincts Buff Cap hook");
+            }
         }
 
         public static void AddBehavior(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)

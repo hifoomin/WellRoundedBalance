@@ -28,16 +28,21 @@ namespace UltimateCustomRun.Items.Whites
         public static void ChangeDamage(ILContext il)
         {
             ILCursor c = new(il);
-            c.GotoNext(MoveType.Before,
-                x => x.MatchBle(out _),
-                x => x.MatchLdloc(out _),
-                x => x.MatchLdcR4(1),
-                x => x.MatchLdloc(out _),
-                x => x.MatchConvR4(),
-                x => x.MatchLdcR4(0.2f)
-            );
-            c.Index += 5;
-            c.Next.Operand = Damage;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchBle(out _),
+                    x => x.MatchLdloc(out _),
+                    x => x.MatchLdcR4(1),
+                    x => x.MatchLdloc(out _),
+                    x => x.MatchConvR4(),
+                    x => x.MatchLdcR4(0.2f)))
+            {
+                c.Index += 5;
+                c.Next.Operand = Damage;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Delicate Watch Damage hook");
+            }
         }
     }
 }

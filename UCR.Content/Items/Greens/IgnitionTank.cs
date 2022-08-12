@@ -85,11 +85,16 @@ namespace UltimateCustomRun.Items.Greens
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcI4(3)
-            );
-            c.Index += 1;
-            c.Next.Operand = Damage;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdcI4(3)))
+            {
+                c.Index += 1;
+                c.Next.Operand = Damage;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Ignition Tank Burn Damage hook");
+            }
         }
     }
 }

@@ -37,41 +37,56 @@ namespace UltimateCustomRun.Items.VoidGreens
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcR4(1000f)
-            );
-            c.Next.Operand = RemoveKnockback ? 0f : 1000f;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdcR4(1000f)))
+            {
+                c.Next.Operand = RemoveKnockback ? 0f : 1000f;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Voidsent Flame Knockback hook");
+            }
         }
 
         private void ChangeRadius(ILContext il)
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcR4(12f),
-                x => x.MatchLdcR4(2.4f)
-            );
-            c.Next.Operand = Radius;
-            c.Index += 1;
-            c.Next.Operand = StackRadius;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdcR4(12f),
+                    x => x.MatchLdcR4(2.4f)))
+            {
+                c.Next.Operand = Radius;
+                c.Index += 1;
+                c.Next.Operand = StackRadius;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Voidsent Flame Radius hook");
+            }
         }
 
         private void ChangeDamage(ILContext il)
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcR4(2.6f),
-                x => x.MatchLdcR4(1f),
-                x => x.MatchLdloc(out _),
-                x => x.MatchLdcI4(1),
-                x => x.MatchSub(),
-                x => x.MatchConvR4(),
-                x => x.MatchLdcR4(0.6f)
-            );
-            c.Next.Operand = Damage;
-            c.Index += 6;
-            c.Next.Operand = StackDamage / Damage;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdcR4(2.6f),
+                    x => x.MatchLdcR4(1f),
+                    x => x.MatchLdloc(out _),
+                    x => x.MatchLdcI4(1),
+                    x => x.MatchSub(),
+                    x => x.MatchConvR4(),
+                    x => x.MatchLdcR4(0.6f)))
+            {
+                c.Next.Operand = Damage;
+                c.Index += 6;
+                c.Next.Operand = StackDamage / Damage;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Voidsent Flame Damage hook");
+            }
         }
     }
 }

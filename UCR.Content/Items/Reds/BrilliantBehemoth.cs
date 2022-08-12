@@ -32,23 +32,33 @@ namespace UltimateCustomRun.Items.Reds
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcR4(0.6f)
-            );
-            c.Next.Operand = Damage;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdcR4(0.6f)))
+            {
+                c.Next.Operand = Damage;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Brilliant Behemoth Damage hook");
+            }
         }
 
         public static void ChangeRadius(ILContext il)
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcR4(1.5f),
-                x => x.MatchLdcR4(2.5f)
-            );
-            c.Next.Operand = Radius - StackRadius;
-            c.Index += 1;
-            c.Next.Operand = StackRadius;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdcR4(1.5f),
+                    x => x.MatchLdcR4(2.5f)))
+            {
+                c.Next.Operand = Radius - StackRadius;
+                c.Index += 1;
+                c.Next.Operand = StackRadius;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Brilliant Behemoth Radius hook");
+            }
         }
     }
 }

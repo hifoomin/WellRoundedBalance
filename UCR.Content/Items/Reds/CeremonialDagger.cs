@@ -38,25 +38,35 @@ namespace UltimateCustomRun.Items.Reds
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchBle(out ILLabel IL_067A),
-                x => x.MatchLdcR4(1.5f)
-            );
-            c.Index += 1;
-            c.Next.Operand = Damage;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchBle(out ILLabel IL_067A),
+                    x => x.MatchLdcR4(1.5f)))
+            {
+                c.Index += 1;
+                c.Next.Operand = Damage;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Ceremonial Dagger Damage hook");
+            }
         }
 
         public static void ChangeCount(ILContext il)
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdloc(59),
-                x => x.MatchLdcI4(3)
-            );
-            c.Index += 1;
-            c.Remove();
-            c.Emit(OpCodes.Ldc_I4, Count);
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdloc(59),
+                    x => x.MatchLdcI4(3)))
+            {
+                c.Index += 1;
+                c.Remove();
+                c.Emit(OpCodes.Ldc_I4, Count);
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Ceremonial Dagger Count hook");
+            }
         }
 
         public static void ChangeProc()

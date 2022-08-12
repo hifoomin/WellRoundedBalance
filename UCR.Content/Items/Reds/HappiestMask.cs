@@ -31,25 +31,35 @@ namespace UltimateCustomRun.Items.Reds
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchBrfalse(out _),
-                x => x.MatchLdcR4(7f)
-            );
-            c.Index += 1;
-            c.Remove();
-            c.Emit(OpCodes.Ldc_R4, Chance);
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchBrfalse(out _),
+                    x => x.MatchLdcR4(7f)))
+            {
+                c.Index += 1;
+                c.Remove();
+                c.Emit(OpCodes.Ldc_R4, Chance);
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Happiest Mask Chance hook");
+            }
         }
 
         public static void ChangeDuration(ILContext il)
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcI4(30),
-                x => x.MatchMul()
-            );
-            c.Remove();
-            c.Emit(OpCodes.Ldc_I4, Duration);
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdcI4(30),
+                    x => x.MatchMul()))
+            {
+                c.Remove();
+                c.Emit(OpCodes.Ldc_I4, Duration);
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Happiest Mask Duration hook");
+            }
         }
     }
 }

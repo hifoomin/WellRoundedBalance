@@ -23,10 +23,15 @@ namespace UltimateCustomRun.Global
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcR4(1f)
-            );
-            c.Next.Operand = NotMovingTimer;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdcR4(1f)))
+            {
+                c.Next.Operand = NotMovingTimer;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Get Not Moving hook");
+            }
         }
     }
 }

@@ -32,15 +32,25 @@ namespace UltimateCustomRun.Items.Reds
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcR4(0.1f)
-            );
-            c.Next.Operand = BarrierGain;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdcR4(0.1f)))
+            {
+                c.Next.Operand = BarrierGain;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Ben's Raincoat Barrier hook");
+            }
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcR4(5f)
-            );
-            c.Next.Operand = RechargeTime;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdcR4(5f)))
+            {
+                c.Next.Operand = RechargeTime;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Ben's Raincoat Recharge hook");
+            }
         }
     }
 }

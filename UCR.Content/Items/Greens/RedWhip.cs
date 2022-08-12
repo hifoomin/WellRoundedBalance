@@ -45,16 +45,21 @@ namespace UltimateCustomRun.Items.Greens
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchCallOrCallvirt<RoR2.CharacterBody>("HasBuff"),
-                x => x.MatchBrfalse(out _),
-                x => x.MatchLdloc(out _),
-                x => x.MatchLdloc(out _),
-                x => x.MatchConvR4(),
-                x => x.MatchLdcR4(0.3f)
-            );
-            c.Index += 5;
-            c.Next.Operand = Speed;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchCallOrCallvirt<RoR2.CharacterBody>("HasBuff"),
+                    x => x.MatchBrfalse(out _),
+                    x => x.MatchLdloc(out _),
+                    x => x.MatchLdloc(out _),
+                    x => x.MatchConvR4(),
+                    x => x.MatchLdcR4(0.3f)))
+            {
+                c.Index += 5;
+                c.Next.Operand = Speed;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Red Whip Speed hook");
+            }
         }
     }
 }

@@ -41,9 +41,9 @@ namespace UltimateCustomRun.Items.Whites
             StackRadius = ConfigOption(8f, "Stack Range", "Per Stack. Vanilla is 8");
             PercentDamage = ConfigOption(0f, "Percent Damage", "Decimal. Vanilla is 0");
             StackPercentDamage = ConfigOption(false, "Stack Percent Damage?", "Vanilla is false");
-            BuffDuration = ConfigOption(1.5f, "Buff Duration", "Vanilla is 1.5");
-            BuffAttackSpeed = ConfigOption(0.3f, "Buff Attack Speed", "Decimal. Vanilla is 0.3");
-            BuffMoveSpeed = ConfigOption(0.3f, "Buff Move Speed", "Decimal. Vanilla is 0.3");
+            // BuffDuration = ConfigOption(1.5f, "Buff Duration", "Vanilla is 1.5");
+            // BuffAttackSpeed = ConfigOption(0.3f, "Buff Attack Speed", "Decimal. Vanilla is 0.3");
+            // BuffMoveSpeed = ConfigOption(0.3f, "Buff Move Speed", "Decimal. Vanilla is 0.3");
             base.Init();
         }
 
@@ -70,25 +70,35 @@ namespace UltimateCustomRun.Items.Whites
         public static void ChangeRadius(ILContext il)
         {
             ILCursor c = new(il);
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcR4(8),
-                x => x.MatchLdcR4(8)
-            );
-            c.Next.Operand = Radius - StackRadius;
-            c.Index += 1;
-            c.Next.Operand = StackRadius;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdcR4(8),
+                    x => x.MatchLdcR4(8)))
+            {
+                c.Next.Operand = Radius - StackRadius;
+                c.Index += 1;
+                c.Next.Operand = StackRadius;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Warbanner Radius1 hook");
+            }
         }
 
         public static void ChangeRadiusTP(ILContext il)
         {
             ILCursor c = new(il);
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcR4(8),
-                x => x.MatchLdcR4(8)
-            );
-            c.Next.Operand = Radius - StackRadius;
-            c.Index += 1;
-            c.Next.Operand = StackRadius;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdcR4(8),
+                    x => x.MatchLdcR4(8)))
+            {
+                c.Next.Operand = Radius - StackRadius;
+                c.Index += 1;
+                c.Next.Operand = StackRadius;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Warbanner Radius2 hook");
+            }
         }
 
         public static void ChangeBuffDuration()

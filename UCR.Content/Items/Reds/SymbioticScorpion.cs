@@ -32,33 +32,43 @@ namespace UltimateCustomRun.Items.Reds
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdsfld("RoR2.DLC1Content/Items", "PermanentDebuffOnHit"),
-                x => x.MatchCallOrCallvirt<RoR2.Inventory>("GetItemCount"),
-                x => x.MatchStloc(out _),
-                x => x.MatchLdcI4(0),
-                x => x.MatchStloc(out _),
-                x => x.MatchLdcI4(0),
-                x => x.MatchStloc(out _),
-                x => x.MatchBr(out _),
-                x => x.MatchLdcR4(100f)
-            );
-            c.Index += 8;
-            c.Next.Operand = Chance;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdsfld("RoR2.DLC1Content/Items", "PermanentDebuffOnHit"),
+                    x => x.MatchCallOrCallvirt<RoR2.Inventory>("GetItemCount"),
+                    x => x.MatchStloc(out _),
+                    x => x.MatchLdcI4(0),
+                    x => x.MatchStloc(out _),
+                    x => x.MatchLdcI4(0),
+                    x => x.MatchStloc(out _),
+                    x => x.MatchBr(out _),
+                    x => x.MatchLdcR4(100f)))
+            {
+                c.Index += 8;
+                c.Next.Operand = Chance;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Symbiotic Scorpion Chance hook");
+            }
         }
 
         public static void ChangeArmor(ILContext il)
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchCallOrCallvirt<RoR2.CharacterBody>("get_armor"),
-                x => x.MatchLdloc(out _),
-                x => x.MatchConvR4(),
-                x => x.MatchLdcR4(2f)
-            );
-            c.Index += 3;
-            c.Next.Operand = ArmorDecrease;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchCallOrCallvirt<RoR2.CharacterBody>("get_armor"),
+                    x => x.MatchLdloc(out _),
+                    x => x.MatchConvR4(),
+                    x => x.MatchLdcR4(2f)))
+            {
+                c.Index += 3;
+                c.Next.Operand = ArmorDecrease;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Symbiotic Scorpion Armor Decrease hook");
+            }
         }
     }
 }

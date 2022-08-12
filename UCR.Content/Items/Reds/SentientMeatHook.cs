@@ -40,42 +40,67 @@ namespace UltimateCustomRun.Items.Reds
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcR4(100f),
-                x => x.MatchLdcR4(100f),
-                x => x.MatchLdcR4(20f)
-            );
-            c.Index += 2;
-            c.Next.Operand = Chance;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdcR4(100f),
+                    x => x.MatchLdcR4(100f),
+                    x => x.MatchLdcR4(20f)))
+            {
+                c.Index += 2;
+                c.Next.Operand = Chance;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Sentient Meat Hook Chance hook");
+            }
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcI4(5),
-                x => x.MatchLdloc(13),
-                x => x.MatchLdcI4(5)
-            );
-            c.Next.Operand = MaxTargets - StackMaxTargets;
-            c.Index += 2;
-            c.Next.Operand = StackMaxTargets;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdcI4(5),
+                    x => x.MatchLdloc(13),
+                    x => x.MatchLdcI4(5)))
+            {
+                c.Next.Operand = MaxTargets - StackMaxTargets;
+                c.Index += 2;
+                c.Next.Operand = StackMaxTargets;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Sentient Meat Hook Max Targets hook");
+            }
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcR4(30f),
-                x => x.MatchLdloc(66),
-                x => x.MatchLdloc(62)
-            );
-            c.Next.Operand = Range;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdcR4(30f),
+                    x => x.MatchLdloc(66),
+                    x => x.MatchLdloc(62)))
+            {
+                c.Next.Operand = Range;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Sentient Meat Hook Range hook");
+            }
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcR4(1f),
-                x => x.MatchStloc(64)
-            );
-            c.Next.Operand = Damage;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdcR4(1f),
+                    x => x.MatchStloc(64)))
+            {
+                c.Next.Operand = Damage;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Sentient Meat Hook Damage hook");
+            }
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdloc(71),
-                x => x.MatchLdcR4(0.33f)
-            );
-            c.Index += 1;
-            c.Next.Operand = ProcCoefficient;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdloc(71),
+                    x => x.MatchLdcR4(0.33f)))
+            {
+                c.Index += 1;
+                c.Next.Operand = ProcCoefficient;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Sentient Meat Hook Proc Coefficient hook");
+            }
         }
     }
 }

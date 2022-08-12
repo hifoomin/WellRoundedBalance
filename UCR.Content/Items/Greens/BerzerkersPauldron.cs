@@ -25,7 +25,6 @@ namespace UltimateCustomRun.Items.Greens
 
         public override void Init()
         {
-            Armor = ConfigOption(0f, "Unconditional Armor", "Per Stack. Vanilla is 0");
             BuffArmor = ConfigOption(0f, "Buff Armor", "Vanilla is 0");
             BaseBuffDuration = ConfigOption(6f, "Base Buff Duration", "Vanilla is 6");
             StackBuffDuration = ConfigOption(4f, "Stack Buff Duration", "Per Stack. Vanilla is 4");
@@ -44,28 +43,39 @@ namespace UltimateCustomRun.Items.Greens
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchCallOrCallvirt(typeof(CharacterBody).GetPropertyGetter(nameof(CharacterBody.multiKillCount))),
-                x => x.MatchLdcI4(4)
-            );
-            c.Index += 1;
-            c.Remove();
-            c.Emit(OpCodes.Ldc_I4, KillRequirement);
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchCallOrCallvirt(
+                        typeof(CharacterBody).GetPropertyGetter(nameof(CharacterBody.multiKillCount))),
+                    x => x.MatchLdcI4(4)))
+            {
+                c.Index += 1;
+                c.Remove();
+                c.Emit(OpCodes.Ldc_I4, KillRequirement);
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Berzerker's Pauldron Buff Kill Requirement hook");
+            }
         }
 
         public static void ChangeBuffDuration(ILContext il)
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdsfld("RoR2.RoR2Content/Buffs", "WarCryBuff"),
-                x => x.MatchLdcR4(2f),
-                x => x.MatchLdcR4(4f)
-            );
-            c.Index += 1;
-            c.Next.Operand = BaseBuffDuration - StackBuffDuration;
-            c.Index += 1;
-            c.Next.Operand = StackBuffDuration;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdsfld("RoR2.RoR2Content/Buffs", "WarCryBuff"),
+                    x => x.MatchLdcR4(2f),
+                    x => x.MatchLdcR4(4f)))
+            {
+                c.Index += 1;
+                c.Next.Operand = BaseBuffDuration - StackBuffDuration;
+                c.Index += 1;
+                c.Next.Operand = StackBuffDuration;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Berzerker's Pauldron Buff Duration hook");
+            }
         }
 
         public static void AddBehavior(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
@@ -78,13 +88,7 @@ namespace UltimateCustomRun.Items.Greens
                 {
                     args.armorAdd += BuffArmor;
                 }
-                if (stack > 0)
-                {
-                    args.armorAdd += Armor;
-                }
             }
         }
-
-        // TODO: Ask Moffein for his Pauldron changes and implement them :plead
     }
 }

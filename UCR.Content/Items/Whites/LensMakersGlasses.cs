@@ -36,12 +36,17 @@ namespace UltimateCustomRun.Items.Whites
         public static void ChangeCrit(ILContext il)
         {
             ILCursor c = new(il);
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcR4(10f),
-                x => x.MatchMul(),
-                x => x.MatchAdd()
-            );
-            c.Next.Operand = Crit;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdcR4(10f),
+                    x => x.MatchMul(),
+                    x => x.MatchAdd()))
+            {
+                c.Next.Operand = Crit;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Lens Maker's Glasses Crit hook");
+            }
         }
 
         public static void AddBehavior(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)

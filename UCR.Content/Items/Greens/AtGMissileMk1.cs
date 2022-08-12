@@ -37,25 +37,35 @@ namespace UltimateCustomRun.Items.Greens
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchBle(out _),
-                x => x.MatchLdcR4(10f),
-                x => x.MatchLdarg(1)
-            );
-            c.Index += 1;
-            c.Next.Operand = Chance;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchBle(out _),
+                    x => x.MatchLdcR4(10f),
+                    x => x.MatchLdarg(1)))
+            {
+                c.Index += 1;
+                c.Next.Operand = Chance;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply AtG Chance hook");
+            }
         }
 
         public static void ChangeDamage(ILContext il)
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchBrfalse(out _),
-                x => x.MatchLdcR4(3f)
-            );
-            c.Index += 1;
-            c.Next.Operand = Damage;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchBrfalse(out _),
+                    x => x.MatchLdcR4(3f)))
+            {
+                c.Index += 1;
+                c.Next.Operand = Damage;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply AtG Missile Mk1 Damage hook");
+            }
         }
 
         public static void ChangeProc()

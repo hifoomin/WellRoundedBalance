@@ -30,12 +30,17 @@ namespace UltimateCustomRun.Items.Yellows
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
+            if (c.TryGotoNext(MoveType.Before,
                 x => x.MatchConvR4(),
-                x => x.MatchLdcR4(15f)
-            );
-            c.Index += 1;
-            c.Next.Operand = FlatHealing;
+                x => x.MatchLdcR4(15f)))
+            {
+                c.Index += 1;
+                c.Next.Operand = FlatHealing;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Planula Healing hook");
+            }
         }
     }
 }

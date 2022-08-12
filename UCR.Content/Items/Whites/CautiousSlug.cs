@@ -28,13 +28,18 @@ namespace UltimateCustomRun.Items.Whites
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcR4(0),
-                x => x.MatchBr(out _),
-                x => x.MatchLdcR4(3)
-            );
-            c.Index += 2;
-            c.Next.Operand = Regen;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdcR4(0),
+                    x => x.MatchBr(out _),
+                    x => x.MatchLdcR4(3)))
+            {
+                c.Index += 2;
+                c.Next.Operand = Regen;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Cautious Slug Healing hook");
+            }
         }
     }
 }

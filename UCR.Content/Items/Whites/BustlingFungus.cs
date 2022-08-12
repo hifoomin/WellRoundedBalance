@@ -38,34 +38,44 @@ namespace UltimateCustomRun.Items.Whites
         public static void ChangeRadius(ILContext il)
         {
             ILCursor c = new(il);
-            c.GotoNext(MoveType.Before,
-                x => x.MatchCallOrCallvirt<CharacterBody>("get_radius"),
-                x => x.MatchLdcR4(1.5f),
-                x => x.MatchAdd(),
-                x => x.MatchLdcR4(1.5f)
-            );
-            c.Index += 1;
-            c.Next.Operand = Radius - StackRadius;
-            c.Index += 2;
-            c.Next.Operand = StackRadius;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchCallOrCallvirt<CharacterBody>("get_radius"),
+                    x => x.MatchLdcR4(1.5f),
+                    x => x.MatchAdd(),
+                    x => x.MatchLdcR4(1.5f)))
+            {
+                c.Index += 1;
+                c.Next.Operand = Radius - StackRadius;
+                c.Index += 2;
+                c.Next.Operand = StackRadius;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Bustling Fungus Radius hook");
+            }
         }
 
         public static void ChangeHealing(ILContext il)
         {
             ILCursor c = new(il);
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcR4(0.25f),
-                x => x.MatchStfld<HealingWard>("interval"),
-                x => x.MatchLdarg(0),
-                x => x.MatchLdfld<RoR2.Items.MushroomBodyBehavior>("mushroomHealingWard"),
-                x => x.MatchLdcR4(0.045f),
-                x => x.MatchLdcR4(0.0225f)
-            );
-            c.Next.Operand = Interval;
-            c.Index += 4;
-            c.Next.Operand = Healing;
-            c.Index += 1;
-            c.Next.Operand = StackHealing;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdcR4(0.25f),
+                    x => x.MatchStfld<HealingWard>("interval"),
+                    x => x.MatchLdarg(0),
+                    x => x.MatchLdfld<RoR2.Items.MushroomBodyBehavior>("mushroomHealingWard"),
+                    x => x.MatchLdcR4(0.045f),
+                    x => x.MatchLdcR4(0.0225f)))
+            {
+                c.Next.Operand = Interval;
+                c.Index += 4;
+                c.Next.Operand = Healing;
+                c.Index += 1;
+                c.Next.Operand = StackHealing;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Bustling Fungus Healing hook");
+            }
         }
     }
 }

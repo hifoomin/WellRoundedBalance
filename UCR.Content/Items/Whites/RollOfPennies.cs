@@ -31,12 +31,17 @@ namespace UltimateCustomRun.Items.Whites
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcI4(3),
-                x => x.MatchStloc(out _),
-                x => x.MatchNewobj("RoR2.Orbs.GoldOrb")
-            );
-            c.Next.Operand = GoldGain;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdcI4(3),
+                    x => x.MatchStloc(out _),
+                    x => x.MatchNewobj("RoR2.Orbs.GoldOrb")))
+            {
+                c.Next.Operand = GoldGain;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Roll Of Pennies Gold hook");
+            }
         }
     }
 }

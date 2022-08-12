@@ -27,14 +27,19 @@ namespace UltimateCustomRun.Items.VoidWhites
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchConvR4(),
-                x => x.MatchLdcR4(0.5f),
-                x => x.MatchMul(),
-                x => x.MatchLdarg(1)
-            );
-            c.Index += 1;
-            c.Next.Operand = Chance;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchConvR4(),
+                    x => x.MatchLdcR4(0.5f),
+                    x => x.MatchMul(),
+                    x => x.MatchLdarg(1)))
+            {
+                c.Index += 1;
+                c.Next.Operand = Chance;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Lost Seer's Lenses Chance hook");
+            }
         }
     }
 }

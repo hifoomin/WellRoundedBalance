@@ -30,24 +30,34 @@ namespace UltimateCustomRun.Items.Lunars
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcR4(2f),
-                x => x.MatchMul(),
-                x => x.MatchCallOrCallvirt<RoR2.Run>("get_instance")
-            );
-            c.Next.Operand = Gold;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdcR4(2f),
+                    x => x.MatchMul(),
+                    x => x.MatchCallOrCallvirt<RoR2.Run>("get_instance")))
+            {
+                c.Next.Operand = Gold;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Brittle Crown Gold hook");
+            }
         }
 
         private void ChangeChance(ILContext il)
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchBle(out _),
-                x => x.MatchLdcR4(30f)
-            );
-            c.Index += 1;
-            c.Next.Operand = Chance;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchBle(out _),
+                    x => x.MatchLdcR4(30f)))
+            {
+                c.Index += 1;
+                c.Next.Operand = Chance;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Brittle Crown Chance hook");
+            }
         }
     }
 }

@@ -52,13 +52,18 @@ namespace UltimateCustomRun.Items.Whites
         public static void ChangeBlock(ILContext il)
         {
             ILCursor c = new(il);
-            c.GotoNext(MoveType.Before,
-                 x => x.MatchLdcI4(0),
-                 x => x.Match(OpCodes.Ble_S),
-                 x => x.MatchLdcR4(15f)
-            );
-            c.Index += 2;
-            c.Next.Operand = BlockChance;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdcI4(0),
+                    x => x.Match(OpCodes.Ble_S),
+                    x => x.MatchLdcR4(15f)))
+            {
+                c.Index += 2;
+                c.Next.Operand = BlockChance;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Tougher Times Block hook");
+            }
         }
     }
 }

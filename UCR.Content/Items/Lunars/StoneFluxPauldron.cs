@@ -1,4 +1,5 @@
-﻿using MonoMod.Cil;
+﻿/*
+using MonoMod.Cil;
 using RoR2;
 
 namespace UltimateCustomRun.Items.Lunars
@@ -31,28 +32,39 @@ namespace UltimateCustomRun.Items.Lunars
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdloc(76),
-                x => x.MatchLdloc(44),
-                x => x.MatchConvR4(),
-                x => x.MatchLdcR4(1f)
-            );
-            c.Index += 3;
-            c.Next.Operand = SpeedDecrease;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdloc(76),
+                    x => x.MatchLdloc(44),
+                    x => x.MatchConvR4(),
+                    x => x.MatchLdcR4(1f)))
+            {
+                c.Index += 3;
+                c.Next.Operand = SpeedDecrease;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Stone Flux Pauldron Speed hook");
+            }
         }
 
         private void ChangeHealth(ILContext il)
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdloc(63),
-                x => x.MatchLdloc(44),
-                x => x.MatchConvR4(),
-                x => x.MatchLdcR4(1f)
-            );
-            c.Index += 3;
-            c.Next.Operand = HpIncrease;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdloc(63),
+                    x => x.MatchLdloc(44),
+                    x => x.MatchConvR4(),
+                    x => x.MatchLdcR4(1f)))
+            {
+                c.Index += 3;
+                c.Next.Operand = HpIncrease;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Stone Flux Pauldron Health hook");
+            }
         }
     }
 }
+*/

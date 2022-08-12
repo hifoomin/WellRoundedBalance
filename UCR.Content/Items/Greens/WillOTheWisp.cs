@@ -42,44 +42,59 @@ namespace UltimateCustomRun.Items.Greens
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcR4(3.5f),
-                x => x.MatchLdcR4(1f),
-                x => x.MatchLdloc(out _),
-                x => x.MatchLdcI4(1),
-                x => x.MatchSub(),
-                x => x.MatchConvR4(),
-                x => x.MatchLdcR4(0.8f)
-                // ik this is guh huge but i wanted to uhh Change all this stupid shit
-            );
-            c.Next.Operand = Damage;
-            c.Index += 6;
-            c.Next.Operand = StackDamage / Damage;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdcR4(3.5f),
+                    x => x.MatchLdcR4(1f),
+                    x => x.MatchLdloc(out _),
+                    x => x.MatchLdcI4(1),
+                    x => x.MatchSub(),
+                    x => x.MatchConvR4(),
+                    x => x.MatchLdcR4(0.8f)))
+            {
+                c.Next.Operand = Damage;
+                c.Index += 6;
+                c.Next.Operand = StackDamage / Damage;
+            }
+            // ik this is guh huge but i wanted to uhh Change all this stupid shit
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Will o' The Wisp Damage hook");
+            }
         }
 
         public static void ChangeRange(ILContext il)
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcR4(12f),
-                x => x.MatchLdcR4(2.4f)
-            );
-            c.Next.Operand = Radius;
-            c.Index += 1;
-            c.Next.Operand = StackRadius;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdcR4(12f),
+                    x => x.MatchLdcR4(2.4f)))
+            {
+                c.Next.Operand = Radius;
+                c.Index += 1;
+                c.Next.Operand = StackRadius;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Will o' The Wisp Range hook");
+            }
         }
 
         public static void DeleteKnockback(ILContext il)
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdloc(55),
-                x => x.MatchLdcR4(2000f)
-            );
-            c.Index += 1;
-            c.Next.Operand = RemoveKnockback ? 0f : 2000f;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdloc(55),
+                    x => x.MatchLdcR4(2000f)))
+            {
+                c.Index += 1;
+                c.Next.Operand = RemoveKnockback ? 0f : 2000f;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Will o' The Wisp Knockback hook");
+            }
         }
 
         public static void ChangeProc()

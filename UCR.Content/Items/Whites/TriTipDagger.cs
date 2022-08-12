@@ -44,14 +44,19 @@ namespace UltimateCustomRun.Items.Whites
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdarg(0),
-                x => x.MatchLdcR4(10f),
-                x => x.MatchLdloc(out _),
-                x => x.MatchConvR4()
-            );
-            c.Index += 1;
-            c.Next.Operand = Chance;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdarg(0),
+                    x => x.MatchLdcR4(10f),
+                    x => x.MatchLdloc(out _),
+                    x => x.MatchConvR4()))
+            {
+                c.Index += 1;
+                c.Next.Operand = Chance;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Tri-tip Dagger Chance hook");
+            }
         }
 
         public static void ChangeBehavior()

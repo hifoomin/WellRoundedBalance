@@ -16,18 +16,6 @@ namespace UltimateCustomRun.Items.Greens
         public override bool NewPickup => false;
         public override string PickupText => "";
 
-        public static void ChangeMoveSpeed(ILContext il)
-        {
-            ILCursor c = new(il);
-
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcR4(0.25f),
-                x => x.MatchLdarg(0),
-                x => x.MatchLdsfld("RoR2.DLC1Content/Buffs", "KillMoveSpeed")
-            );
-            c.Next.Operand = MoveSpeed / 5f;
-        }
-
         public override void Hooks()
         {
             IL.RoR2.CharacterBody.RecalculateStats += ChangeMoveSpeed;
@@ -42,19 +30,41 @@ namespace UltimateCustomRun.Items.Greens
             base.Init();
         }
 
+        public static void ChangeMoveSpeed(ILContext il)
+        {
+            ILCursor c = new(il);
+
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdcR4(0.25f),
+                    x => x.MatchLdarg(0),
+                    x => x.MatchLdsfld("RoR2.DLC1Content/Buffs", "KillMoveSpeed")))
+            {
+                c.Next.Operand = MoveSpeed / 5f;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Hunter's Harpoon Move Speed Increase hook");
+            }
+        }
+
         private void ChangeDuration(ILContext il)
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcR4(1f),
-                x => x.MatchLdloc(out _),
-                x => x.MatchConvR4(),
-                x => x.MatchLdcR4(0.5f)
-            );
-            c.Next.Operand = Duration;
-            c.Index += 3;
-            c.Next.Operand = StackDuration;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdcR4(1f),
+                    x => x.MatchLdloc(out _),
+                    x => x.MatchConvR4(),
+                    x => x.MatchLdcR4(0.5f)))
+            {
+                c.Next.Operand = Duration;
+                c.Index += 3;
+                c.Next.Operand = StackDuration;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Hunter's Harpoon Duration hook");
+            }
         }
     }
 }

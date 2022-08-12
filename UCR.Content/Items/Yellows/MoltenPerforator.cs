@@ -42,24 +42,34 @@ namespace UltimateCustomRun.Items.Yellows
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchStloc(115),
-                x => x.MatchLdcR4(10f)
-            );
-            c.Index += 1;
-            c.Next.Operand = Chance;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchStloc(115),
+                    x => x.MatchLdcR4(10f)))
+            {
+                c.Index += 1;
+                c.Next.Operand = Chance;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Molten Perforator Chance hook");
+            }
         }
 
         private void ChangeDamage(ILContext il)
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchStloc(117),
-                x => x.MatchLdcR4(3f)
-            );
-            c.Index += 1;
-            c.Next.Operand = Damage;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchStloc(117),
+                    x => x.MatchLdcR4(3f)))
+            {
+                c.Index += 1;
+                c.Next.Operand = Damage;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Molten Perforator Damage hook");
+            }
         }
 
         private void ChangeProcCoefficient()
@@ -72,12 +82,17 @@ namespace UltimateCustomRun.Items.Yellows
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcI4(3),
-                x => x.MatchStloc(117)
-            );
-            c.Remove();
-            c.Emit(OpCodes.Ldc_I4, Count);
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdcI4(3),
+                    x => x.MatchStloc(117)))
+            {
+                c.Remove();
+                c.Emit(OpCodes.Ldc_I4, Count);
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Molten Perforator Count hook");
+            }
         }
     }
 }

@@ -37,6 +37,7 @@ namespace UltimateCustomRun
         public static ManualLogSource UCRLogger;
 
         public static AssetBundle UCR;
+        public static ConfigEntry<bool> Dummy { get; set; }
 
         public void Awake()
         {
@@ -45,6 +46,8 @@ namespace UltimateCustomRun
 
             UCR = AssetBundle.LoadFromFile(Assembly.GetExecutingAssembly().Location.Replace("UltimateCustomRun.dll", "ultimatecustomrun"));
             ModSettingsManager.SetModIcon(UCR.LoadAsset<Sprite>("texUCRIcon.png"));
+            Dummy = Config.Bind("Thing", "Dummy", true, "Am dummy so things dont break ! ! !!");
+            ModSettingsManager.AddOption(new CheckBoxOption(Dummy));
 
             IEnumerable<Type> enumerable = from type in Assembly.GetExecutingAssembly().GetTypes()
                                            where !type.IsAbstract && type.IsSubclassOf(typeof(GlobalBase))
@@ -144,6 +147,7 @@ namespace UltimateCustomRun
             // TODO - doesnt do anything currently, cant figure out a way to sort item names, etc alphabetically including the semicolons, so whites are first, then greens etc.
         }
 
+        /*
         public static List<GameObject> projectilePrefabContent = new();
         public static List<Type> entityStateContent = new();
         public static List<SkillDef> skillDefContent = new();
@@ -152,6 +156,7 @@ namespace UltimateCustomRun
         {
             entityStateContent.Add(t);
         }
+        */
 
         private void UnusedOrNotWorkingOrTODO()
         {

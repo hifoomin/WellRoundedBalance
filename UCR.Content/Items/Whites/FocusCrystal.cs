@@ -34,27 +34,37 @@ namespace UltimateCustomRun.Items.Whites
         public static void ChangeDamage(ILContext il)
         {
             ILCursor c = new(il);
-            c.GotoNext(MoveType.Before,
+            if (c.TryGotoNext(MoveType.Before,
                 x => x.MatchStfld<DamageInfo>("damageColorIndex"),
                 x => x.MatchLdloc(out _),
                 x => x.MatchLdcR4(1f),
                 x => x.MatchLdloc(out _),
                 x => x.MatchConvR4(),
-                x => x.MatchLdcR4(0.2f)
-            );
-            c.Index += 5;
-            c.Next.Operand = Damage;
+                x => x.MatchLdcR4(0.2f)))
+            {
+                c.Index += 5;
+                c.Next.Operand = Damage;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Focus Crystal Damage hook");
+            }
         }
 
         public static void ChangeRadius(ILContext il)
         {
             ILCursor c = new(il);
-            c.GotoNext(MoveType.Before,
-                x => x.MatchCallOrCallvirt<UnityEngine.Vector3>("get_sqrMagnitude"),
-                x => x.MatchLdcR4(169f)
-            );
-            c.Index += 1;
-            c.Next.Operand = Radius * Radius;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchCallOrCallvirt<UnityEngine.Vector3>("get_sqrMagnitude"),
+                    x => x.MatchLdcR4(169f)))
+            {
+                c.Index += 1;
+                c.Next.Operand = Radius * Radius;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Focus Crystal Radius hook");
+            }
         }
 
         public static void ChangeVisual()

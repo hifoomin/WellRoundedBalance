@@ -52,27 +52,37 @@ namespace UltimateCustomRun.Items.Whites
         public static void ChangeReduction(ILContext il)
         {
             ILCursor c = new(il);
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcR4(1),
-                x => x.MatchLdloc(out _),
-                x => x.MatchLdcR4(5)
-            );
-            c.Index += 2;
-            c.Next.Operand = FlatReduction;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdcR4(1),
+                    x => x.MatchLdloc(out _),
+                    x => x.MatchLdcR4(5)))
+            {
+                c.Index += 2;
+                c.Next.Operand = FlatReduction;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Repulsion Armor Plate Reduction hook");
+            }
         }
 
         public static void ChangeMinimum(ILContext il)
         {
             ILCursor c = new(il);
-            c.GotoNext(MoveType.Before,
-                //x => x.MatchLdflda<HealthComponent>("itemCounts"),
-                //x => x.MatchLdfld<HealthComponent>("armorPlate"),
-                x => x.MatchLdcI4(0),
-                x => x.MatchBle(out _),
-                x => x.MatchLdcR4(1)
-            );
-            c.Index += 2;
-            c.Next.Operand = MinimumDamage;
+            if (c.TryGotoNext(MoveType.Before,
+                    //x => x.MatchLdflda<HealthComponent>("itemCounts"),
+                    //x => x.MatchLdfld<HealthComponent>("armorPlate"),
+                    x => x.MatchLdcI4(0),
+                    x => x.MatchBle(out _),
+                    x => x.MatchLdcR4(1)))
+            {
+                c.Index += 2;
+                c.Next.Operand = MinimumDamage;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Repulsion Armor Plate Minimum hook");
+            }
         }
     }
 }

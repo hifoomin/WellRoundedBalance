@@ -26,12 +26,17 @@ namespace UltimateCustomRun.Items.VoidGreens
         private void ChangeChance(ILContext il)
         {
             ILCursor c = new(il);
-            c.GotoNext(MoveType.Before,
-                x => x.MatchBrfalse(out _),
-                x => x.MatchLdcR4(5f)
-            );
-            c.Index += 1;
-            c.Next.Operand = Chance;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchBrfalse(out _),
+                    x => x.MatchLdcR4(5f)))
+            {
+                c.Index += 1;
+                c.Next.Operand = Chance;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Tentabauble Chance hook");
+            }
         }
     }
 }

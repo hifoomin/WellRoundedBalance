@@ -38,11 +38,16 @@ namespace UltimateCustomRun.Items.Yellows
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcR4(1f),
-                x => x.MatchStfld("RoR2.Orbs.DevilOrb", "procCoefficient")
-            );
-            c.Next.Operand = ProcCoefficient;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdcR4(1f),
+                    x => x.MatchStfld("RoR2.Orbs.DevilOrb", "procCoefficient")))
+            {
+                c.Next.Operand = ProcCoefficient;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Little Disciple Proc Coefficient hook");
+            }
         }
 
         private void Changes(On.RoR2.Items.SprintWispBodyBehavior.orig_Fire orig, RoR2.Items.SprintWispBodyBehavior self)

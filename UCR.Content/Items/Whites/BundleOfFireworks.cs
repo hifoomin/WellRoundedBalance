@@ -45,16 +45,20 @@ namespace UltimateCustomRun.Items.Whites
             //x => x.MatchLdcI4(4),
             //x => x.MatchLdloc(out _),
             //x => x.MatchLdcI4(4)
-            c.GotoNext(x => x.MatchStfld<RoR2.FireworkLauncher>("remaining")
-
-            );
+            if (c.TryGotoNext(x => x.MatchStfld<RoR2.FireworkLauncher>("remaining")))
+            {
+                c.EmitDelegate<Func<int, int>>((val) =>
+                {
+                    return Count - StackCount + ((val - 4) / 4) * StackCount;
+                });
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Bundle Of Fireworks Count hook");
+            }
             //c.Next.Operand = FireworksCount.Value;
             //c.Index += 2;
             //c.Next.Operand = FireworksCountStack.Value;
-            c.EmitDelegate<Func<int, int>>((val) =>
-            {
-                return Count - StackCount + ((val - 4) / 4) * StackCount;
-            });
         }
 
         public static void Changes()

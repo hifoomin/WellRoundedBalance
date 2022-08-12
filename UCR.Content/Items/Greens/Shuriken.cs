@@ -1,4 +1,5 @@
-﻿using MonoMod.Cil;
+﻿/*
+using MonoMod.Cil;
 using RoR2;
 using UnityEngine;
 
@@ -36,13 +37,12 @@ namespace UltimateCustomRun.Items.Greens
 
         private void Changes(ILContext il)
         {
-            /*
             ILCursor c = new(il);
 
             c.GotoNext(MoveType.Before,
 
             );
-            */
         }
     }
 }
+*/

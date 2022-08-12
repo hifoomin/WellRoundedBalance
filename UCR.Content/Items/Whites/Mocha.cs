@@ -34,20 +34,30 @@ namespace UltimateCustomRun.Items.Whites
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcR4(0.07f)
-            );
-            c.Next.Operand = MoveSpeed;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdcR4(0.07f)))
+            {
+                c.Next.Operand = MoveSpeed;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Mocha Move Speed hook");
+            }
         }
 
         public static void ChangeAttackSpeed(ILContext il)
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcR4(0.075f)
-            );
-            c.Next.Operand = AttackSpeed;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdcR4(0.075f)))
+            {
+                c.Next.Operand = AttackSpeed;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Mocha Attack Speed hook");
+            }
         }
     }
 }

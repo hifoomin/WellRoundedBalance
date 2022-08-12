@@ -12,10 +12,10 @@ namespace UltimateCustomRun.Items.Whites
         public override string InternalPickupToken => "sprintBonus";
         public override bool NewPickup => true;
 
-        public override string PickupText => "Increase sprint speed by +" + Mathf.Round((Speed / 1.45f) * 100f) + "%.";
+        public override string PickupText => "Increase sprint speed by +" + d(Speed) + ".";
 
         public override string DescText => "<style=cIsUtility>Sprint Speed</style> is improved by <style=cIsUtility>" +
-                                           (Change ? SprintingSpeed * 100f + "%</style> <style=cStack>(+" + SprintingSpeed * 100f + "% per stack)</style>." : Mathf.Round((Speed / 1.45f) * 100f) + "%</style> <style=cStack>(+" + Mathf.Round((Speed / 1.45f) * 100f) + "% per stack)</style>.");
+                                           (Change ? SprintingSpeed * 100f + "%</style> <style=cStack>(+" + SprintingSpeed * 100f + "% per stack)</style>." : d(Speed) + "</style> <style=cStack>(+" + d(Speed) + " per stack)</style>.");
 
         public override void Init()
         {
@@ -38,13 +38,18 @@ namespace UltimateCustomRun.Items.Whites
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdloc(out _),
-                x => x.MatchLdcR4(0.25f),
-                x => x.MatchLdloc(out _)
-            );
-            c.Index += 1;
-            c.Next.Operand = Change ? 0f : Speed;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdloc(out _),
+                    x => x.MatchLdcR4(0.25f),
+                    x => x.MatchLdloc(out _)))
+            {
+                c.Index += 1;
+                c.Next.Operand = Change ? 0f : Speed;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Energy Drink Speed hook");
+            }
         }
 
         /*

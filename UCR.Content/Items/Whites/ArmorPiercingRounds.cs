@@ -26,12 +26,17 @@ namespace UltimateCustomRun.Items.Whites
         public static void ChangeDamage(ILContext il)
         {
             ILCursor c = new(il);
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcR4(1f),
-                x => x.MatchLdcR4(0.2f)
-            );
-            c.Index += 1;
-            c.Next.Operand = Damage;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdcR4(1f),
+                    x => x.MatchLdcR4(0.2f)))
+            {
+                c.Index += 1;
+                c.Next.Operand = Damage;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Armor Piercing Rounds Damage hook");
+            }
         }
     }
 }

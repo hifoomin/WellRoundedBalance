@@ -29,12 +29,17 @@ namespace UltimateCustomRun.Items.Whites
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchConvR4(),
-                x => x.MatchLdcR4(0.08f)
-            );
-            c.Index += 1;
-            c.Next.Operand = PercentHealth;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchConvR4(),
+                    x => x.MatchLdcR4(0.08f)))
+            {
+                c.Index += 1;
+                c.Next.Operand = PercentHealth;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Personal Shield Generator Shield hook");
+            }
         }
     }
 }

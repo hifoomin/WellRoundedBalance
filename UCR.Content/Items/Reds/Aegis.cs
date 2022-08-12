@@ -58,13 +58,18 @@ namespace UltimateCustomRun.Items.Reds
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdfld("RoR2.HealthComponent/ItemCounts", "barrierOnOverHeal"),
-                x => x.MatchConvR4(),
-                x => x.MatchLdcR4(0.5f)
-            );
-            c.Index += 2;
-            c.Next.Operand = OverhealPercent;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdfld("RoR2.HealthComponent/ItemCounts", "barrierOnOverHeal"),
+                    x => x.MatchConvR4(),
+                    x => x.MatchLdcR4(0.5f)))
+            {
+                c.Index += 2;
+                c.Next.Operand = OverhealPercent;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Aegis Overheal hook");
+            }
         }
 
         public static void AddBehavior(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)

@@ -22,10 +22,15 @@ namespace UltimateCustomRun.Global
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcI4(255)
-            );
-            c.Next.Operand = EquipChargeCap;
+            if (c.TryGotoNext(MoveType.Before,
+                x => x.MatchLdcI4(255)))
+            {
+                c.Next.Operand = EquipChargeCap;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Equipment Charge Cap hook");
+            }
         }
     }
 }

@@ -27,10 +27,15 @@ namespace UltimateCustomRun.Items.Reds
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcR4(1f)
-            );
-            c.Next.Operand = Healing;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdcR4(1f)))
+            {
+                c.Next.Operand = Healing;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Rejuvenation Rack Healing hook");
+            }
         }
     }
 }

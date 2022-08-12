@@ -29,17 +29,22 @@ namespace UltimateCustomRun.Items.Yellows
         public static void ChangeDamage(ILContext il)
         {
             ILCursor c = new(il);
-            c.GotoNext(MoveType.Before,
-                x => x.MatchStloc(out _),
-                x => x.MatchLdloc(out _),
-                x => x.MatchLdloc(out _),
-                x => x.MatchLdloc(out _),
-                x => x.MatchMul(),
-                x => x.MatchConvR4(),
-                x => x.MatchLdcR4(1f)
-            );
-            c.Index += 6;
-            c.Next.Operand = Damage;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchStloc(out _),
+                    x => x.MatchLdloc(out _),
+                    x => x.MatchLdloc(out _),
+                    x => x.MatchLdloc(out _),
+                    x => x.MatchMul(),
+                    x => x.MatchConvR4(),
+                    x => x.MatchLdcR4(1f)))
+            {
+                c.Index += 6;
+                c.Next.Operand = Damage;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Empathy Cores Damage hook");
+            }
         }
     }
 }

@@ -33,30 +33,40 @@ namespace UltimateCustomRun.Items.Greens
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                //x => x.MatchLdsfld("RoR2.RoR2Content/Buffs", "Energized"),
-                //x => x.MatchCallOrCallvirt<RoR2.CharacterBody>("HasBuff"),
-                //x => x.MatchBrfalse(out _),
-                //x => x.MatchLdloc(out _),
-                x => x.MatchLdcR4(0.7f)
-            );
+            if (c.TryGotoNext(MoveType.Before,
+                    //x => x.MatchLdsfld("RoR2.RoR2Content/Buffs", "Energized"),
+                    //x => x.MatchCallOrCallvirt<RoR2.CharacterBody>("HasBuff"),
+                    //x => x.MatchBrfalse(out _),
+                    //x => x.MatchLdloc(out _),
+                    x => x.MatchLdcR4(0.7f)))
             //c.Index += 4;
-            c.Next.Operand = Duration;
+            {
+                c.Next.Operand = Duration;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply War Horn Attack Speed hook");
+            }
         }
 
         public static void ChangeDuration(ILContext il)
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcI4(8),
-                x => x.MatchLdcI4(4)
-            );
-            c.Remove();
-            c.Emit(OpCodes.Ldc_I4, BaseDuration);
-            c.Index += 1;
-            c.Remove();
-            c.Emit(OpCodes.Ldc_I4, StackDuration);
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdcI4(8),
+                    x => x.MatchLdcI4(4)))
+            {
+                c.Remove();
+                c.Emit(OpCodes.Ldc_I4, BaseDuration);
+                c.Index += 1;
+                c.Remove();
+                c.Emit(OpCodes.Ldc_I4, StackDuration);
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply War Horn Duration hook");
+            }
         }
     }
 }

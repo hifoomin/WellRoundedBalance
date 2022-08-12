@@ -31,13 +31,18 @@ namespace UltimateCustomRun.Items.VoidWhites
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcR4(15f),
-                x => x.MatchLdcR4(0.9f)
-            );
-            c.Next.Operand = Cooldown;
-            c.Index += 1;
-            c.Next.Operand = StackCooldown;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdcR4(15f),
+                    x => x.MatchLdcR4(0.9f)))
+            {
+                c.Next.Operand = Cooldown;
+                c.Index += 1;
+                c.Next.Operand = StackCooldown;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Safer Spaces Cooldown hook");
+            }
         }
     }
 }

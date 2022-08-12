@@ -36,38 +36,53 @@ namespace UltimateCustomRun.Items.Yellows
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchCallOrCallvirt<ProcChainMask>("HasProc"),
-                x => x.MatchBrtrue(out _),
-                x => x.MatchLdcR4(10f)
-            );
-            c.Index += 2;
-            c.Next.Operand = Chance;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchCallOrCallvirt<ProcChainMask>("HasProc"),
+                    x => x.MatchBrtrue(out _),
+                    x => x.MatchLdcR4(10f)))
+            {
+                c.Index += 2;
+                c.Next.Operand = Chance;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Charged Perforator Chance hook");
+            }
         }
 
         private void ChangeDamage(ILContext il)
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchCallOrCallvirt<CharacterBody>("get_damage"),
-                x => x.MatchLdcR4(5f)
-            );
-            c.Index += 1;
-            c.Next.Operand = Damage;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchCallOrCallvirt<CharacterBody>("get_damage"),
+                    x => x.MatchLdcR4(5f)))
+            {
+                c.Index += 1;
+                c.Next.Operand = Damage;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Charged Perforator Damage hook");
+            }
         }
 
         private void ChangeProcCoefficient(ILContext il)
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchStfld("RoR2.Orbs.GenericDamageOrb", "procChainMask"),
-                x => x.MatchDup(),
-                x => x.MatchLdcR4(1f)
-            );
-            c.Index += 2;
-            c.Next.Operand = ProcCoefficient;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchStfld("RoR2.Orbs.GenericDamageOrb", "procChainMask"),
+                    x => x.MatchDup(),
+                    x => x.MatchLdcR4(1f)))
+            {
+                c.Index += 2;
+                c.Next.Operand = ProcCoefficient;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Charged Perforator Proc Coefficient hook");
+            }
         }
     }
 }

@@ -38,12 +38,17 @@ namespace UltimateCustomRun.Items.Greens
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchBle(out _),
-                x => x.MatchLdcR4(4f)
-            );
-            c.Index += 1;
-            c.Next.Operand = Chance;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchBle(out _),
+                    x => x.MatchLdcR4(4f)))
+            {
+                c.Index += 1;
+                c.Next.Operand = Chance;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Ghor's Tome Chance hook");
+            }
         }
     }
 }

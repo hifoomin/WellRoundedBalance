@@ -40,16 +40,18 @@ namespace UltimateCustomRun.Items.Greens
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
+            if (c.TryGotoNext(MoveType.Before,
                 x => x.MatchLdloc(out _),
                 x => x.MatchLdcR4(5f),
-                x => x.MatchAdd()
-            );
-            // ok how the FUCK does this work lmao theres so many of the same instructions
-            // id actually need to know borbo's magic of knowing what the V_ values are
-            // or just do the workaround of changing this to 0 and adding behavior in recalcstats :WittyComeback:
-            c.Index += 1;
-            c.Next.Operand = 0f;
+                x => x.MatchAdd()))
+            {
+                c.Index += 1;
+                c.Next.Operand = 0f;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Harvester's Scythe hook");
+            }
         }
 
         public static void AddBehavior(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
@@ -68,15 +70,20 @@ namespace UltimateCustomRun.Items.Greens
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcR4(4f),
-                x => x.MatchLdloc(out _),
-                x => x.MatchConvR4(),
-                x => x.MatchLdcR4(4f)
-            );
-            c.Next.Operand = BaseHealing - StackHealing;
-            c.Index += 3;
-            c.Next.Operand = StackHealing;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdcR4(4f),
+                    x => x.MatchLdloc(out _),
+                    x => x.MatchConvR4(),
+                    x => x.MatchLdcR4(4f)))
+            {
+                c.Next.Operand = BaseHealing - StackHealing;
+                c.Index += 3;
+                c.Next.Operand = StackHealing;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Harvester's Scythe Healing hook");
+            }
         }
     }
 }

@@ -55,10 +55,15 @@ namespace UltimateCustomRun.Items.Reds
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcR4(2f)
-            );
-            c.Next.Operand = JumpBoost;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdcR4(2f)))
+            {
+                c.Next.Operand = JumpBoost;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply H3AD-5T v2 Jump Boost hook");
+            }
         }
     }
 }

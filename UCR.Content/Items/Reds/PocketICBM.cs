@@ -28,13 +28,18 @@ namespace UltimateCustomRun.Items.Reds
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcR4(1f),
-                x => x.MatchLdcR4(1f),
-                x => x.MatchLdcR4(0.5f)
-            );
-            c.Index += 2;
-            c.Next.Operand = Damage;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdcR4(1f),
+                    x => x.MatchLdcR4(1f),
+                    x => x.MatchLdcR4(0.5f)))
+            {
+                c.Index += 2;
+                c.Next.Operand = Damage;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Pocket I.C.B.M. Damage hook");
+            }
         }
     }
 }

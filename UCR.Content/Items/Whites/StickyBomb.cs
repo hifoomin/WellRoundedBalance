@@ -56,12 +56,17 @@ namespace UltimateCustomRun.Items.Whites
         public static void ChangeChance(ILContext il)
         {
             ILCursor c = new(il);
-            c.GotoNext(MoveType.Before,
-                x => x.MatchBle(out _),
-                x => x.MatchLdcR4(5)
-            );
-            c.Index += 1;
-            c.Next.Operand = Chance;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchBle(out _),
+                    x => x.MatchLdcR4(5)))
+            {
+                c.Index += 1;
+                c.Next.Operand = Chance;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Sticky Bomb Chance hook");
+            }
         }
     }
 }

@@ -85,6 +85,10 @@ namespace UltimateCustomRun.Items.Reds
         }
         */
 
+        /// <summary>
+        /// /////////////// spaghgheitheithiethiet
+        /// </summary>
+
         public static void AddCounter()
         {
             Counter = ScriptableObject.CreateInstance<BuffDef>();
@@ -102,35 +106,50 @@ namespace UltimateCustomRun.Items.Reds
         {
             ILCursor c = new ILCursor(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcR4(60f)
-            );
-            c.Next.Operand = ArmorReduction;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdcR4(60f)))
+            {
+                c.Next.Operand = ArmorReduction;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Shattering Justice Armor Reduction hook");
+            }
         }
 
         public static void ChangeHitCount(ILContext il)
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdsfld("RoR2.RoR2Content/Buffs", "PulverizeBuildup"),
-                x => x.MatchCallOrCallvirt<CharacterBody>("GetBuffCount"),
-                x => x.MatchLdcI4(5)
-            );
-            c.Index += 2;
-            c.Next.Operand = Hits;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdsfld("RoR2.RoR2Content/Buffs", "PulverizeBuildup"),
+                    x => x.MatchCallOrCallvirt<CharacterBody>("GetBuffCount"),
+                    x => x.MatchLdcI4(5)))
+            {
+                c.Index += 2;
+                c.Next.Operand = Hits;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Shattering Justice Hit Count hook");
+            }
         }
 
         public static void ChangeDuration(ILContext il)
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdsfld("RoR2.RoR2Content/Buffs", "Pulverized"),
-                x => x.MatchLdcR4(8f)
-            );
-            c.Index += 1;
-            c.Next.Operand = Duration;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdsfld("RoR2.RoR2Content/Buffs", "Pulverized"),
+                    x => x.MatchLdcR4(8f)))
+            {
+                c.Index += 1;
+                c.Next.Operand = Duration;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Shattering Justice Duration hook");
+            }
         }
     }
 }

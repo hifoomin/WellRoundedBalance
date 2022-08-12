@@ -31,10 +31,15 @@ namespace UltimateCustomRun.Items.Whites
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcR4(0.75f)
-            );
-            c.Next.Operand = Healing;
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdcR4(0.75f)))
+            {
+                c.Next.Operand = Healing;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Power Elixir Healing hook");
+            }
         }
     }
 }
