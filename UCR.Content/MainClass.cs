@@ -46,7 +46,7 @@ namespace UltimateCustomRun
 
             UCR = AssetBundle.LoadFromFile(Assembly.GetExecutingAssembly().Location.Replace("UltimateCustomRun.dll", "ultimatecustomrun"));
             ModSettingsManager.SetModIcon(UCR.LoadAsset<Sprite>("texUCRIcon.png"));
-            Dummy = Config.Bind("Thing", "Dummy", true, "Am dummy so things dont break ! ! !!");
+            Dummy = Config.Bind("Thing", "Important", true, "Make sure to have the same configs for multiplayer!");
             ModSettingsManager.AddOption(new CheckBoxOption(Dummy));
 
             IEnumerable<Type> enumerable = from type in Assembly.GetExecutingAssembly().GetTypes()

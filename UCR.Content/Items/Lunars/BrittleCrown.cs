@@ -11,7 +11,7 @@ namespace UltimateCustomRun.Items.Lunars
         public override string InternalPickupToken => "goldOnHit";
         public override bool NewPickup => false;
         public override string PickupText => "";
-        public override string DescText => "<style=cIsUtility>30% chance on hit</style> to gain <style=cIsUtility>2<style=cStack> (+2 per stack)</style> gold</style>. <style=cIsUtility>Scales over time.</style>\n\nOn taking damage, <style=cIsHealth>lose gold</style> equal to <style=cIsHealth>100%<style=cStack> (+100% per stack)</style></style> of the <style=cIsHealth>maximum health percentage you lost</style>.";
+        public override string DescText => "<style=cIsUtility>" + Chance + "% chance on hit</style> to gain <style=cIsUtility>" + Gold + "<style=cStack> (+" + Gold + " per stack)</style> gold</style>. <style=cIsUtility>Scales over time.</style>\n\nOn taking damage, <style=cIsHealth>lose gold</style> equal to <style=cIsHealth>100%<style=cStack> (+100% per stack)</style></style> of the <style=cIsHealth>maximum health percentage you lost</style>.";
 
         public override void Init()
         {

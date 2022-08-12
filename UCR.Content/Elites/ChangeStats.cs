@@ -1,4 +1,5 @@
-﻿using RoR2;
+﻿/*
+using RoR2;
 using MonoMod.Cil;
 using MonoMod.RuntimeDetour;
 using System.Reflection;
@@ -54,3 +55,4 @@ namespace UltimateCustomRun.Elites
         }
     }
 }
+*/

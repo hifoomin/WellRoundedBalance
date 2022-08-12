@@ -12,7 +12,7 @@ namespace UltimateCustomRun.Items.VoidWhites
         public override string InternalPickupToken => "bearVoid";
         public override bool NewPickup => false;
         public override string PickupText => "";
-        public override string DescText => "<style=cIsHealing>Blocks</style> incoming damage once. Recharges after <style=cIsUtility>15 seconds</style> <style=cStack>(-10% per stack)</style>. <style=cIsVoid>Corrupts all Tougher Times</style>.";
+        public override string DescText => "<style=cIsHealing>Blocks</style> incoming damage once. Recharges after <style=cIsUtility>" + Cooldown + " seconds</style> <style=cStack>(-" + d(StackCooldown) + " per stack)</style>. <style=cIsVoid>Corrupts all Tougher Times</style>.";
 
         public override void Init()
         {
@@ -37,7 +37,7 @@ namespace UltimateCustomRun.Items.VoidWhites
             {
                 c.Next.Operand = Cooldown;
                 c.Index += 1;
-                c.Next.Operand = StackCooldown;
+                c.Next.Operand = 1f - StackCooldown;
             }
             else
             {

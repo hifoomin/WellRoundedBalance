@@ -10,8 +10,8 @@ namespace UltimateCustomRun.Items.Lunars
         public override string Name => ":: Items ::::: Lunars :: Purity";
         public override string InternalPickupToken => "lunarBadLuck";
         public override bool NewPickup => true;
-        public override string PickupText => "Reduce your skill cooldowns by 2 seconds. <color=#FF7F7F>You are unlucky.</color>";
-        public override string DescText => "Using a Shrine summons <style=cIsHealth>enemies</style> nearby. <style=cIsUtility>Scales over time.</style>";
+        public override string PickupText => "Reduce your skill cooldowns by " + Cdr + " seconds. <color=#FF7F7F>You are unlucky.</color>";
+        public override string DescText => "All skill cooldowns are reduced by <style=cIsUtility>" + Cdr + "</style> <style=cStack>(+" + StackCdr + " per stack)</style> seconds. All random effects are rolled <style=cIsUtility>+1</style> <style=cStack>(+1 per stack)</style> times for an <style=cIsHealth>unfavorable outcome</style>.";
 
         public override void Init()
         {

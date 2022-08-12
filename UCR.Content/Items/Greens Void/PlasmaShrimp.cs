@@ -13,7 +13,7 @@ namespace UltimateCustomRun.Items.VoidGreens
         public override string InternalPickupToken => "missileVoid";
         public override bool NewPickup => false;
         public override string PickupText => "";
-        public override string DescText => "Gain a <style=cIsHealing>shield</style> equal to <style=cIsHealing>10%</style> of your maximum health. While you have a <style=cIsHealing>shield</style>, hitting an enemy fires a missile that deals <style=cIsDamage>40%</style> <style=cStack>(+50% per stack)</style> TOTAL damage. <style=cIsVoid>Corrupts all AtG Missile Mk. 1s</style>.";
+        public override string DescText => "Gain a <style=cIsHealing>shield</style> equal to <style=cIsHealing>" + d(Shield) + "</style> of your maximum health. While you have a <style=cIsHealing>shield</style>, hitting an enemy fires a missile that deals <style=cIsDamage>" + d(TotalDamage) + "</style> <style=cStack>(+ " + d(TotalDamage) + " per stack)</style> TOTAL damage. <style=cIsVoid>Corrupts all AtG Missile Mk. 1s</style>.";
 
         public override void Init()
         {

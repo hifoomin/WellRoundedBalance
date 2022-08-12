@@ -12,7 +12,7 @@ namespace UltimateCustomRun.Items.Lunars
         public override string InternalPickupToken => "shieldOnly";
         public override bool NewPickup => false;
         public override string PickupText => "";
-        public override string DescText => "<style=cIsHealing>Convert</style> all but <style=cIsHealing>1 health</style> into <style=cIsHealing>regenerating shields</style>. <style=cIsHealing>Gain 50% <style=cStack>(+25% per stack)</style> maximum health</style>.";
+        public override string DescText => "<style=cIsHealing>Convert</style> all but <style=cIsHealing>1 health</style> into <style=cIsHealing>regenerating shields</style>. <style=cIsHealing>Gain " + d(HpIncrease) + " <style=cStack>(+" + d(StackHpIncrease) + " per stack)</style> maximum health</style>.";
 
         public override void Init()
         {

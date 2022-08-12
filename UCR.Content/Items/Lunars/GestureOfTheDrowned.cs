@@ -18,7 +18,7 @@ namespace UltimateCustomRun.Items.Lunars
         public override string InternalPickupToken => "autoCastEquipment";
         public override bool NewPickup => false;
         public override string PickupText => "";
-        public override string DescText => "<style=cIsUtility>Reduce Equipment cooldown</style> by <style=cIsUtility>50%</style> <style=cStack>(+15% per stack)</style>. Forces your Equipment to <style=cIsUtility>activate</style> whenever it is off <style=cIsUtility>cooldown</style>.";
+        public override string DescText => "<style=cIsUtility>Reduce Equipment cooldown</style> by <style=cIsUtility>" + d(Cdr) + "</style> <style=cStack>(+" + d(StackCdr) + " per stack)</style>. Forces your Equipment to <style=cIsUtility>activate</style> whenever it is off <style=cIsUtility>cooldown</style>.";
 
         public override void Init()
         {

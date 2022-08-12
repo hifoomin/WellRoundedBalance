@@ -11,7 +11,7 @@ namespace UltimateCustomRun.Items.Lunars
         public override string InternalPickupToken => "repeatHeal";
         public override bool NewPickup => true;
         public override string PickupText => "Double your healing... <color=#FF7F7F>BUT it's applied over time.</color>";
-        public override string DescText => "<style=cIsHealing>Heal +100%</style> <style=cStack>(+100% per stack)</style> more. <style=cIsHealing>All healing is applied over time</style>. Can <style=cIsHealing>heal</style> for a <style=cIsHealing>maximum</style> of <style=cIsHealing>10%</style> <style=cStack>(-50% per stack)</style> of your <style=cIsHealing>health per second</style>.";
+        public override string DescText => "<style=cIsHealing>Heal +" + d(HealingIncrease - 1f) + "</style> <style=cStack>(+" + d(HealingIncrease - 1f) + " per stack)</style> more. <style=cIsHealing>All healing is applied over time</style>. Can <style=cIsHealing>heal</style> for a <style=cIsHealing>maximum</style> of <style=cIsHealing>" + d(HealingOverTimeCap) + "</style> <style=cStack>(-50% per stack)</style> of your <style=cIsHealing>health per second</style>.";
 
         public override void Init()
         {

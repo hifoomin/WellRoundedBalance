@@ -10,7 +10,7 @@ namespace UltimateCustomRun.Items.VoidWhites
         public override string InternalPickupToken => "critGlassesVoid";
         public override bool NewPickup => true;
         public override string PickupText => "Gain a " + Chance + "% chance to instantly kill a non-boss enemy. <style=cIsVoid>Corrupts all Lens-Maker's Glasses</style>.";
-        public override string DescText => "Your attacks have a <style=cIsDamage>" + Chance + "%</style> <style=cStack>(+0.5% per stack)</style> chance to <style=cIsDamage>instantly kill</style> a <style=cIsDamage>non-Boss enemy</style>. <style=cIsVoid>Corrupts all Lens-Maker's Glasses</style>.";
+        public override string DescText => "Your attacks have a <style=cIsDamage>" + Chance + "%</style> <style=cStack>(+" + Chance + "% per stack)</style> chance to <style=cIsDamage>instantly kill</style> a <style=cIsDamage>non-Boss enemy</style>. <style=cIsVoid>Corrupts all Lens-Maker's Glasses</style>.";
 
         public override void Init()
         {
