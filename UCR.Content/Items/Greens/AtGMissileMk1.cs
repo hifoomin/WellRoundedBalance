@@ -21,19 +21,18 @@ namespace UltimateCustomRun.Items.Greens
         public override void Init()
         {
             Chance = ConfigOption(10f, "Chance", "Vanilla is 10");
-            Damage = ConfigOption(3f, "Total Damage", "Decimal. Per Stack. Vanilla is 3");
+            Damage = ConfigOption(3f, "Damage", "Decimal. Per Stack. Vanilla is 3");
             ProcCoefficient = ConfigOption(1f, "Proc Coefficient", "Decimal. Vanilla is 1");
             base.Init();
         }
 
         public override void Hooks()
         {
-            IL.RoR2.GlobalEventManager.OnHitEnemy += ChangeDamage;
-            IL.RoR2.GlobalEventManager.OnHitEnemy += ChangeChance;
+            IL.RoR2.GlobalEventManager.OnHitEnemy += Changes;
             ChangeProc();
         }
 
-        public static void ChangeChance(ILContext il)
+        public static void Changes(ILContext il)
         {
             ILCursor c = new(il);
 
@@ -49,15 +48,12 @@ namespace UltimateCustomRun.Items.Greens
             {
                 Main.UCRLogger.LogError("Failed to apply AtG Chance hook");
             }
-        }
 
-        public static void ChangeDamage(ILContext il)
-        {
-            ILCursor c = new(il);
+            c.Index = 0;
 
             if (c.TryGotoNext(MoveType.Before,
-                    x => x.MatchBrfalse(out _),
-                    x => x.MatchLdcR4(3f)))
+               x => x.MatchBrfalse(out _),
+               x => x.MatchLdcR4(3f)))
             {
                 c.Index += 1;
                 c.Next.Operand = Damage;

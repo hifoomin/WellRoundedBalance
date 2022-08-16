@@ -24,8 +24,8 @@ namespace UltimateCustomRun.Items.Greens
         {
             Crit = ConfigOption(5f, "Crit Chance", "Vanilla is 5");
             StackCrit = ConfigOption(false, "Stack Crit Chance?", "Vanilla is false");
-            BaseHealing = ConfigOption(8f, "Base Healing", "Vanilla is 8");
-            StackHealing = ConfigOption(4f, "Stack Healing", "Per Stack. Vanilla is 4");
+            BaseHealing = ConfigOption(8f, "Flat Healing", "Vanilla is 8");
+            StackHealing = ConfigOption(4f, "Stack Flat Healing", "Per Stack. Vanilla is 4");
             base.Init();
         }
 

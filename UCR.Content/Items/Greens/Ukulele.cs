@@ -23,7 +23,7 @@ namespace UltimateCustomRun.Items.Greens
 
         public override void Init()
         {
-            Damage = ConfigOption(0.8f, "Total Damage", "Decimal. Vanilla is 0.8");
+            Damage = ConfigOption(0.8f, "Damage", "Decimal. Vanilla is 0.8");
             Chance = ConfigOption(25f, "Chance", "Vanilla is 25");
             ProcCoefficient = ConfigOption(0.2f, "Proc Coefficient", "Decimal. Vanilla is 0.2");
             Radius = ConfigOption(20f, "Base Range", "Vanilla is 20");
@@ -35,36 +35,12 @@ namespace UltimateCustomRun.Items.Greens
 
         public override void Hooks()
         {
-            IL.RoR2.GlobalEventManager.OnHitEnemy += ChangeChance;
-            IL.RoR2.GlobalEventManager.OnHitEnemy += ChangeDamage;
-            IL.RoR2.GlobalEventManager.OnHitEnemy += ChangeProcCo;
-            IL.RoR2.GlobalEventManager.OnHitEnemy += ChangeRangeStack;
-            IL.RoR2.GlobalEventManager.OnHitEnemy += ChangeTargetCountStack;
+            IL.RoR2.GlobalEventManager.OnHitEnemy += Changes;
             ChangeTargetCountBase();
             ChangeRangeBase();
         }
 
-        public static void ChangeDamage(ILContext il)
-        {
-            ILCursor c = new(il);
-
-            if (c.TryGotoNext(MoveType.Before,
-                x => x.MatchCallOrCallvirt(typeof(Util).GetMethod("CheckRoll", new Type[] { typeof(float), typeof(CharacterMaster) })),
-                x => x.MatchBrfalse(out _),
-                x => x.MatchLdcR4(0.8f)))
-            {
-                c.Index += 2;
-                c.Next.Operand = Damage;
-            }
-            else
-            {
-                Main.UCRLogger.LogError("Failed to apply Ukulele Total Damage hook");
-            }
-            // oh wow util.checkroll is stupid why tf are there two methods named the same
-            // thank you harb :)
-        }
-
-        public static void ChangeChance(ILContext il)
+        public static void Changes(ILContext il)
         {
             ILCursor c = new(il);
 
@@ -81,11 +57,25 @@ namespace UltimateCustomRun.Items.Greens
             {
                 Main.UCRLogger.LogError("Failed to apply Ukulele Chance hook");
             }
-        }
 
-        public static void ChangeTargetCountStack(ILContext il)
-        {
-            ILCursor c = new(il);
+            c.Index = 0;
+
+            if (c.TryGotoNext(MoveType.Before,
+                x => x.MatchCallOrCallvirt(typeof(Util).GetMethod("CheckRoll", new Type[] { typeof(float), typeof(CharacterMaster) })),
+                x => x.MatchBrfalse(out _),
+                x => x.MatchLdcR4(0.8f)))
+            {
+                c.Index += 2;
+                c.Next.Operand = Damage;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Ukulele Total Damage hook");
+            }
+            // oh wow util.checkroll is stupid why tf are there two methods named the same
+            // thank you harb :)
+
+            c.Index = 0;
 
             if (c.TryGotoNext(MoveType.Before,
                     x => x.MatchStfld<LightningOrb>("isCrit"),
@@ -98,6 +88,37 @@ namespace UltimateCustomRun.Items.Greens
             else
             {
                 Main.UCRLogger.LogError("Failed to apply Ukulele Target hook");
+            }
+
+            c.Index = 0;
+
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdfld<LightningOrb>("range"),
+                    x => x.MatchLdcI4(2)))
+            {
+                c.Index += 1;
+                c.Next.Operand = StackRadius;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Ukulele Range hook");
+            }
+
+            c.Index = 0;
+
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdflda<LightningOrb>("procChainMask"),
+                    x => x.MatchLdcI4(3),
+                    x => x.MatchCallOrCallvirt<ProcChainMask>("AddProc"),
+                    x => x.MatchLdloc(out _),
+                    x => x.MatchLdcR4(0.2f)))
+            {
+                c.Index += 4;
+                c.Next.Operand = ProcCoefficient;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Ukulele Proc Coefficient hook");
             }
         }
 
@@ -125,43 +146,6 @@ namespace UltimateCustomRun.Items.Greens
                     // im scared of the warning :IL:
                 }
             };
-        }
-
-        public static void ChangeRangeStack(ILContext il)
-        {
-            ILCursor c = new(il);
-
-            if (c.TryGotoNext(MoveType.Before,
-                    x => x.MatchLdfld<LightningOrb>("range"),
-                    x => x.MatchLdcI4(2)))
-            {
-                c.Index += 1;
-                c.Next.Operand = StackRadius;
-            }
-            else
-            {
-                Main.UCRLogger.LogError("Failed to apply Ukulele Range hook");
-            }
-        }
-
-        public static void ChangeProcCo(ILContext il)
-        {
-            ILCursor c = new(il);
-
-            if (c.TryGotoNext(MoveType.Before,
-                    x => x.MatchLdflda<LightningOrb>("procChainMask"),
-                    x => x.MatchLdcI4(3),
-                    x => x.MatchCallOrCallvirt<ProcChainMask>("AddProc"),
-                    x => x.MatchLdloc(out _),
-                    x => x.MatchLdcR4(0.2f)))
-            {
-                c.Index += 4;
-                c.Next.Operand = ProcCoefficient;
-            }
-            else
-            {
-                Main.UCRLogger.LogError("Failed to apply Ukulele Proc Coefficient hook");
-            }
         }
     }
 }

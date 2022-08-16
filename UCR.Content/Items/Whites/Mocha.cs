@@ -20,14 +20,13 @@ namespace UltimateCustomRun.Items.Whites
         public override void Init()
         {
             AttackSpeed = ConfigOption(0.075f, "Attack Speed", "Decimal. Per Stack. Vanilla is 0.075");
-            MoveSpeed = ConfigOption(0.07f, "Move Speed", "Decimal. Per Stack. Vanilla is 0.07");
+            MoveSpeed = ConfigOption(0.07f, "Movement Speed", "Decimal. Per Stack. Vanilla is 0.07");
             base.Init();
         }
 
         public override void Hooks()
         {
             IL.RoR2.CharacterBody.RecalculateStats += ChangeMoveSpeed;
-            IL.RoR2.CharacterBody.RecalculateStats += ChangeAttackSpeed;
         }
 
         public static void ChangeMoveSpeed(ILContext il)
@@ -43,14 +42,11 @@ namespace UltimateCustomRun.Items.Whites
             {
                 Main.UCRLogger.LogError("Failed to apply Mocha Move Speed hook");
             }
-        }
 
-        public static void ChangeAttackSpeed(ILContext il)
-        {
-            ILCursor c = new(il);
+            c.Index = 0;
 
             if (c.TryGotoNext(MoveType.Before,
-                    x => x.MatchLdcR4(0.075f)))
+               x => x.MatchLdcR4(0.075f)))
             {
                 c.Next.Operand = AttackSpeed;
             }

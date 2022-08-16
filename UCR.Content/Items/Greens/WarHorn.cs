@@ -1,5 +1,6 @@
 ﻿using Mono.Cecil.Cil;
 using MonoMod.Cil;
+using System;
 
 namespace UltimateCustomRun.Items.Greens
 {
@@ -59,9 +60,23 @@ namespace UltimateCustomRun.Items.Greens
             {
                 c.Remove();
                 c.Emit(OpCodes.Ldc_I4, BaseDuration);
+                /*
+                c.Emit(OpCodes.Ldarg_0);
+                c.EmitDelegate<Func<int, int>>((useless) =>
+                {
+                    return BaseDuration;
+                });
+                */
                 c.Index += 1;
                 c.Remove();
                 c.Emit(OpCodes.Ldc_I4, StackDuration);
+                /*
+                c.Emit(OpCodes.Ldarg_0);
+                c.EmitDelegate<Func<int, int>>((useless) =>
+                {
+                    return StackDuration;
+                });
+                */
             }
             else
             {

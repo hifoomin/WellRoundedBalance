@@ -8,10 +8,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using UltimateCustomRun.Survivors;
 using UnityEngine;
 using RiskOfOptions;
 using RiskOfOptions.Options;
+using UltimateCustomRun.Items;
+using UltimateCustomRun.Equipment;
+using UltimateCustomRun.BodyStatsSkills;
 
 namespace UltimateCustomRun
 {
@@ -32,7 +34,7 @@ namespace UltimateCustomRun
         public const string PluginGUID = PluginAuthor + "." + PluginName;
         public const string PluginAuthor = "HIFU";
         public const string PluginName = "UltimateCustomRun";
-        public const string PluginVersion = "0.1.0";
+        public const string PluginVersion = "0.2.0";
         public static ConfigFile UCRConfig;
         public static ManualLogSource UCRLogger;
 
@@ -45,9 +47,13 @@ namespace UltimateCustomRun
             Main.UCRConfig = base.Config;
 
             UCR = AssetBundle.LoadFromFile(Assembly.GetExecutingAssembly().Location.Replace("UltimateCustomRun.dll", "ultimatecustomrun"));
+            // load brundle
             ModSettingsManager.SetModIcon(UCR.LoadAsset<Sprite>("texUCRIcon.png"));
             Dummy = Config.Bind("Thing", "Important", true, "Make sure to have the same configs for multiplayer!");
+            // funnily enough, ROO wouldn't work without this, else the UltimateCustomRun tab would have no entries and it'd break ROO entirely
             ModSettingsManager.AddOption(new CheckBoxOption(Dummy));
+
+            // module/base init stuff below
 
             IEnumerable<Type> enumerable = from type in Assembly.GetExecutingAssembly().GetTypes()
                                            where !type.IsAbstract && type.IsSubclassOf(typeof(GlobalBase))
@@ -76,21 +82,32 @@ namespace UltimateCustomRun
                 if (ValidateItem(based))
                 {
                     based.Init();
-                    /* something like, if the item that inherits from ItemBase's ConfigOption T is a bool, do stuff
-                    also there's multiple ConfigOptions per item
-                    {
-                    }
-                    */
+                    // i would really really like to sort everything alphabetically but i have no idea how, please help
                 }
             }
 
             IEnumerable<Type> enumerable3 = from type in Assembly.GetExecutingAssembly().GetTypes()
+                                            where !type.IsAbstract && type.IsSubclassOf(typeof(EquipmentBase))
+                                            select type;
+
+            UCRLogger.LogInfo("==+----------------==EQUIPMENT==----------------+==");
+
+            foreach (Type type in enumerable3)
+            {
+                EquipmentBase based = (EquipmentBase)Activator.CreateInstance(type);
+                if (ValidateEquipment(based))
+                {
+                    based.Init();
+                }
+            }
+
+            IEnumerable<Type> enumerable4 = from type in Assembly.GetExecutingAssembly().GetTypes()
                                             where !type.IsAbstract && type.IsSubclassOf(typeof(EnemyBase))
                                             select type;
 
             UCRLogger.LogInfo("==+----------------==ENEMIES==----------------+==");
 
-            foreach (Type type in enumerable3)
+            foreach (Type type in enumerable4)
             {
                 EnemyBase based = (EnemyBase)Activator.CreateInstance(type);
                 if (ValidateEnemy(based))
@@ -98,6 +115,7 @@ namespace UltimateCustomRun
                     based.Init();
                 }
             }
+            Generate.Awake();
         }
 
         public bool ValidateGlobal(GlobalBase gb)
@@ -139,6 +157,19 @@ namespace UltimateCustomRun
             return false;
         }
 
+        public bool ValidateEquipment(EquipmentBase eqb)
+        {
+            if (eqb.isEnabled)
+            {
+                bool enabledfr = Config.Bind(eqb.Name, "Enable?", true, "Vanilla is false").Value;
+                if (enabledfr)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         public static List<string> SortAlphabetically(List<string> input)
         {
             input.Sort();
@@ -164,28 +195,12 @@ namespace UltimateCustomRun
              MonsterToothFlatHealing = Config.Bind<float>(":: Items : Whites :: Monster Tooth", "Flat Healing", (float)8f, "Vanilla is 8");
              MonsterToothPercentHealing = Config.Bind<float>(":: Items : Whites :: Monster Tooth", "Percent Healing", (float)0.02f, "Decimal. Per Stack. Vanilla is 0.02");
 
-             StunGrenadeChance = Config.Bind<float>(":: Items : Whites :: Stun Grenade", "Chance", (float)5f, "Vanilla is 5");
-
-            TopazBroochPercentBarrier = Config.Bind<float>(":: Items : Whites :: Topaz Brooch", "Percent Barrier", (float)0.1f, "Decimal. Per Stack. Vanilla is 0");
-            TopazBroochPercentBarrierStack = Config.Bind<bool>(":: Items : Whites :: Topaz Brooch", "Increase Percent Barrier Gain Per Stack?", (bool)true, "Vanilla is false");
+             TopazBroochPercentBarrier = Config.Bind<float>(":: Items : Whites :: Topaz Brooch", "Percent Barrier", (float)0.1f, "Decimal. Per Stack. Vanilla is 0");
+             TopazBroochPercentBarrierStack = Config.Bind<bool>(":: Items : Whites :: Topaz Brooch", "Increase Percent Barrier Gain Per Stack?", (bool)true, "Vanilla is false");
 
              DiosTTCount = Config.Bind<int>(":: Items ::: Reds :: Dios Best Friend", "Tougher Times Per Consumed Dios Count", (int)0, "Vanilla is 0");
 
-             LanguageAPI.Add("ITEM_TOOTH_DESC", "Killing an enemy spawns a <style=cIsHealing>Healing orb</style> that heals for <style=cIsHealing>" + MonsterToothFlatHealing.Value + "</style> plus an additional <style=cIsHealing>" + d(MonsterToothPercentHealing.Value) + " <style=cStack>(+" + d(MonsterToothPercentHealing.Value) + " per stack)</style></style> of <style=cIsHealing>maximum health</style>.");
-
             */
         }
-
-        /*
-        public static ConfigEntry<float> MonsterToothFlatHealing { get; set; }
-        public static ConfigEntry<float> MonsterToothPercentHealing { get; set; }
-
-        public static ConfigEntry<float> StunGrenadeChance { get; set; }
-
-        public static ConfigEntry<float> TopazBroochPercentBarrier { get; set; }
-        public static ConfigEntry<bool> TopazBroochPercentBarrierStack { get; set; }
-
-        public static ConfigEntry<int> DiosTTCount { get; set; }
-        */
     }
 }

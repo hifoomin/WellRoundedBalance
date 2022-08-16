@@ -22,11 +22,10 @@ namespace UltimateCustomRun.Items.Lunars
 
         public override void Hooks()
         {
-            IL.RoR2.HealthComponent.Heal += ChangeOverTimeCap;
-            IL.RoR2.HealthComponent.Heal += ChangeHealIncrease;
+            IL.RoR2.HealthComponent.Heal += Changes;
         }
 
-        private void ChangeHealIncrease(ILContext il)
+        private void Changes(ILContext il)
         {
             ILCursor c = new(il);
 
@@ -42,11 +41,8 @@ namespace UltimateCustomRun.Items.Lunars
             {
                 Main.UCRLogger.LogError("Failed to apply Corpsebloom Heal Increase hook");
             }
-        }
 
-        private void ChangeOverTimeCap(ILContext il)
-        {
-            ILCursor c = new(il);
+            c.Index = 0;
 
             if (c.TryGotoNext(MoveType.Before,
                     x => x.MatchLdfld<RoR2.HealthComponent>("repeatHealComponent"),

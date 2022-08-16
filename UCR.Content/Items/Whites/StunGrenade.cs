@@ -5,7 +5,7 @@ namespace UltimateCustomRun.Items.Whites
     public class StunGrenade : ItemBase
     {
         public static float Chance;
-        public static bool Stacking;
+        public static float Duration;
 
         public override string Name => ":: Items : Whites :: Stun Grenade";
         public override string InternalPickupToken => "stunChanceOnHit";
@@ -13,50 +13,40 @@ namespace UltimateCustomRun.Items.Whites
 
         public override string PickupText => "";
 
-        public override string DescText => "<style=cIsUtility>5%</style> <style=cStack>(+5% on stack)</style> Chance on hit to <style=cIsUtility>stun</style> enemies for <style=cIsUtility>2 seconds</style>.";
+        public override string DescText => "<style=cIsUtility>" + Chance + "%</style> <style=cStack>(+" + Chance + "% on stack)</style> Chance on hit to <style=cIsUtility>stun</style> enemies for <style=cIsUtility>" + Duration + " seconds</style>.";
 
         public override void Init()
         {
-            /*
             Chance = ConfigOption(5f, "Chance", "Vanilla is 5");
-            Stacking = ConfigOption(false, "Stacking Type", "If set to true, use Linear\nIf set to false, use Hyperbolic.\nVanilla is false");
-            */
+            Duration = ConfigOption(2f, "Stun Duration", "Vanilla is 2");
             base.Init();
         }
 
         public override void Hooks()
         {
-            // IL.RoR2.SetStateOnHurt.OnTakeDamageServer += ChangeBehavior;
-            // IL.RoR2.SetStateOnHurt += ChangeChance;
+            On.RoR2.SetStateOnHurt.OnTakeDamageServer += ChangeChance;
+            IL.RoR2.SetStateOnHurt.OnTakeDamageServer += ChangeDuration;
         }
 
-        public static void ChangeBehavior(ILContext il)
-        {
-            // yeah i have no clue
-            ILCursor c = new(il);
-            c.GotoNext(MoveType.Before,
-                x => x.MatchCallOrCallvirt(typeof(RoR2.Util), "ConvertAmplificationPercentageIntoReductionPercentage"),
-                x => x.MatchLdloc(out _),
-                x => x.MatchCallOrCallvirt(typeof(RoR2.Util), "CheckRoll"),
-                x => x.MatchBrfalse(out _),
-                x => x.MatchLdstr("Prefabs/Effects/ImpactEffects/ImpactStunGrenade")
-            );
-            //c.EmitDelegate<Func<>>() => { return };
-
-            // I want it to be linear instead of hyperbolic
-        }
-
-        /*
-        public static void ChangeChance(ILContext il)
+        private void ChangeDuration(ILContext il)
         {
             ILCursor c = new(il);
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcR4(5f)
-            );
-            c.Next.Operand = Main.StunGrenadeChance;
+            if (c.TryGotoNext(MoveType.Before,
+                x => x.MatchLdcR4(2f),
+                x => x.MatchCallOrCallvirt<RoR2.SetStateOnHurt>("SetStun")))
+            {
+                c.Next.Operand = Duration;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Stun Grenade Duration hook");
+            }
         }
-        */
-        // hooking this requires reflection?
-        // PLEASE HELP TO FIX
+
+        private void ChangeChance(On.RoR2.SetStateOnHurt.orig_OnTakeDamageServer orig, RoR2.SetStateOnHurt self, RoR2.DamageReport damageReport)
+        {
+            RoR2.SetStateOnHurt.stunChanceOnHitBaseChancePercent = Chance;
+            orig(self, damageReport);
+        }
     }
 }

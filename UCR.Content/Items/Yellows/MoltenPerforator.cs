@@ -2,6 +2,7 @@
 using MonoMod.Cil;
 using RoR2;
 using RoR2.Projectile;
+using System;
 using UnityEngine;
 
 namespace UltimateCustomRun.Items.Yellows
@@ -23,7 +24,7 @@ namespace UltimateCustomRun.Items.Yellows
 
         public override void Init()
         {
-            Damage = ConfigOption(3f, "TOTAL Damage", "Decimal. Per Stack. Vanilla is 3");
+            Damage = ConfigOption(3f, "Damage", "Decimal. Per Stack. Vanilla is 3");
             Chance = ConfigOption(10f, "Chance", "Vanilla is 10");
             ProcCoefficient = ConfigOption(1f, "Proc Coefficient", "Vanilla is 1");
             Count = ConfigOption(3, "Magma ball Count", "Vanilla is 3");
@@ -32,13 +33,11 @@ namespace UltimateCustomRun.Items.Yellows
 
         public override void Hooks()
         {
-            IL.RoR2.GlobalEventManager.OnHitEnemy += ChangeCount;
-            IL.RoR2.GlobalEventManager.OnHitEnemy += ChangeChance;
+            IL.RoR2.GlobalEventManager.OnHitEnemy += Changes;
             ChangeProcCoefficient();
-            IL.RoR2.GlobalEventManager.OnHitEnemy += ChangeDamage;
         }
 
-        private void ChangeChance(ILContext il)
+        private void Changes(ILContext il)
         {
             ILCursor c = new(il);
 
@@ -53,34 +52,22 @@ namespace UltimateCustomRun.Items.Yellows
             {
                 Main.UCRLogger.LogError("Failed to apply Molten Perforator Chance hook");
             }
-        }
 
-        private void ChangeDamage(ILContext il)
-        {
-            ILCursor c = new(il);
+            c.Index = 0;
 
             if (c.TryGotoNext(MoveType.Before,
-                    x => x.MatchStloc(117),
-                    x => x.MatchLdcR4(3f)))
+                    //x => x.MatchStloc(117),
+                    x => x.MatchLdcR4(3f),
+                    x => x.MatchLdloc(17)))
             {
-                c.Index += 1;
                 c.Next.Operand = Damage;
             }
             else
             {
                 Main.UCRLogger.LogError("Failed to apply Molten Perforator Damage hook");
             }
-        }
 
-        private void ChangeProcCoefficient()
-        {
-            var m = LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/firemeatball").GetComponent<ProjectileController>();
-            m.procCoefficient = ProcCoefficient;
-        }
-
-        private void ChangeCount(ILContext il)
-        {
-            ILCursor c = new(il);
+            c.Index = 0;
 
             if (c.TryGotoNext(MoveType.Before,
                     x => x.MatchLdcI4(3),
@@ -88,11 +75,24 @@ namespace UltimateCustomRun.Items.Yellows
             {
                 c.Remove();
                 c.Emit(OpCodes.Ldc_I4, Count);
+                /*
+                c.Emit(OpCodes.Ldarg_0);
+                c.EmitDelegate<Func<int, int>>((useless) =>
+                {
+                    return Count;
+                });
+                */
             }
             else
             {
                 Main.UCRLogger.LogError("Failed to apply Molten Perforator Count hook");
             }
+        }
+
+        private void ChangeProcCoefficient()
+        {
+            var m = LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/firemeatball").GetComponent<ProjectileController>();
+            m.procCoefficient = ProcCoefficient;
         }
     }
 }

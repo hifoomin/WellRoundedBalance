@@ -43,13 +43,11 @@ namespace UltimateCustomRun.Items.Yellows
 
         public override void Hooks()
         {
-            IL.RoR2.CharacterBody.RecalculateStats += ChangeHealth;
-            IL.RoR2.CharacterBody.RecalculateStats += ChangeRegen;
-            RecalculateStatsAPI.GetStatCoefficients += AddBehaviorArmor;
-            RecalculateStatsAPI.GetStatCoefficients += AddBehaviorPercentHealth;
+            IL.RoR2.CharacterBody.RecalculateStats += Changes;
+            RecalculateStatsAPI.GetStatCoefficients += AddBehavior;
         }
 
-        public static void ChangeHealth(ILContext il)
+        public static void Changes(ILContext il)
         {
             ILCursor c = new(il);
 
@@ -65,11 +63,8 @@ namespace UltimateCustomRun.Items.Yellows
             {
                 Main.UCRLogger.LogError("Failed to apply Titanic Knurl Health hook");
             }
-        }
 
-        public static void ChangeRegen(ILContext il)
-        {
-            ILCursor c = new(il);
+            c.Index = 0;
 
             if (c.TryGotoNext(MoveType.Before,
                     x => x.MatchConvR4(),
@@ -85,7 +80,7 @@ namespace UltimateCustomRun.Items.Yellows
             }
         }
 
-        public static void AddBehaviorPercentHealth(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
+        public static void AddBehavior(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
             if (sender.inventory)
             {
@@ -93,17 +88,6 @@ namespace UltimateCustomRun.Items.Yellows
                 if (stack > 0)
                 {
                     args.healthMultAdd += (StackPercentHealth ? PercentHealth * stack : PercentHealth);
-                }
-            }
-        }
-
-        public static void AddBehaviorArmor(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
-        {
-            if (sender.inventory)
-            {
-                var stack = sender.inventory.GetItemCount(RoR2Content.Items.Knurl);
-                if (stack > 0)
-                {
                     args.armorAdd += (StackArmor ? Armor * stack : Armor);
                 }
             }

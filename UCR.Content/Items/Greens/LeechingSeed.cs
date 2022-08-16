@@ -21,8 +21,8 @@ namespace UltimateCustomRun.Items.Greens
 
         public override void Init()
         {
-            AdditionalHealing = ConfigOption(0f, "Additional Healing, regardless of Proc Coefficient", "Vanilla is 0");
-            StackAdditionalHealing = ConfigOption(0f, "Stack Additional Healing, regardless of Proc Coefficient", "Per Stack. Vanilla is 0");
+            AdditionalHealing = ConfigOption(0f, "Flat Healing unaffected by Proc Coefficient", "Vanilla is 0");
+            StackAdditionalHealing = ConfigOption(0f, "Stack Flat Healing unaffected by Proc Coefficient", "Per Stack. Vanilla is 0");
             base.Init();
         }
 

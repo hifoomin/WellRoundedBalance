@@ -23,7 +23,7 @@ namespace UltimateCustomRun.Items.Whites
         public override void Init()
         {
             Crit = ConfigOption(10f, "Crit Chance", "Per Stack. Vanilla is 10");
-            CritDamageMultiplier = ConfigOption(0f, "Crit Damage Multiplier", "Decimal. Per Stack. Vanilla is 0");
+            CritDamageMultiplier = ConfigOption(0f, "Crit Damage Increase", "Decimal. Per Stack. Vanilla is 0");
             base.Init();
         }
 

@@ -29,12 +29,11 @@ namespace UltimateCustomRun.Items.Reds
 
         public override void Hooks()
         {
-            IL.RoR2.GlobalEventManager.OnCharacterDeath += ChangeDamage;
-            IL.RoR2.GlobalEventManager.OnCharacterDeath += ChangeCount;
+            IL.RoR2.GlobalEventManager.OnCharacterDeath += Changes;
             ChangeProc();
         }
 
-        public static void ChangeDamage(ILContext il)
+        public static void Changes(ILContext il)
         {
             ILCursor c = new(il);
 
@@ -49,11 +48,8 @@ namespace UltimateCustomRun.Items.Reds
             {
                 Main.UCRLogger.LogError("Failed to apply Ceremonial Dagger Damage hook");
             }
-        }
 
-        public static void ChangeCount(ILContext il)
-        {
-            ILCursor c = new(il);
+            c.Index = 0;
 
             if (c.TryGotoNext(MoveType.Before,
                     x => x.MatchLdloc(59),
@@ -62,6 +58,12 @@ namespace UltimateCustomRun.Items.Reds
                 c.Index += 1;
                 c.Remove();
                 c.Emit(OpCodes.Ldc_I4, Count);
+                /*
+                c.EmitDelegate<Func<int, int>>((useless) =>
+                {
+                    return Count;
+                });
+                */
             }
             else
             {

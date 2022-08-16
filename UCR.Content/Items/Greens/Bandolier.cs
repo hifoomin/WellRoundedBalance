@@ -24,12 +24,11 @@ namespace UltimateCustomRun.Items.Greens
 
         public override void Hooks()
         {
-            IL.RoR2.GlobalEventManager.OnCharacterDeath += ChangeBase;
-            IL.RoR2.GlobalEventManager.OnCharacterDeath += ChangeExponent;
+            IL.RoR2.GlobalEventManager.OnCharacterDeath += Changes;
         }
 
         public static void
-        ChangeBase(ILContext il)
+        Changes(ILContext il)
         {
             ILCursor c = new(il);
 
@@ -46,11 +45,8 @@ namespace UltimateCustomRun.Items.Greens
             {
                 Main.UCRLogger.LogError("Failed to apply Bandolier Base hook");
             }
-        }
 
-        public static void ChangeExponent(ILContext il)
-        {
-            ILCursor c = new(il);
+            c.Index = 0;
 
             if (c.TryGotoNext(MoveType.Before,
                     x => x.MatchAdd(),

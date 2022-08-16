@@ -32,8 +32,7 @@ namespace UltimateCustomRun.Items.Whites
 
         public override void Hooks()
         {
-            IL.RoR2.HealthComponent.TakeDamage += ChangeReduction;
-            IL.RoR2.HealthComponent.TakeDamage += ChangeMinimum;
+            IL.RoR2.HealthComponent.TakeDamage += Changes;
             RecalculateStatsAPI.GetStatCoefficients += AddBehavior;
         }
 
@@ -49,7 +48,7 @@ namespace UltimateCustomRun.Items.Whites
             }
         }
 
-        public static void ChangeReduction(ILContext il)
+        public static void Changes(ILContext il)
         {
             ILCursor c = new(il);
             if (c.TryGotoNext(MoveType.Before,
@@ -64,17 +63,15 @@ namespace UltimateCustomRun.Items.Whites
             {
                 Main.UCRLogger.LogError("Failed to apply Repulsion Armor Plate Reduction hook");
             }
-        }
 
-        public static void ChangeMinimum(ILContext il)
-        {
-            ILCursor c = new(il);
+            c.Index = 0;
+
             if (c.TryGotoNext(MoveType.Before,
-                    //x => x.MatchLdflda<HealthComponent>("itemCounts"),
-                    //x => x.MatchLdfld<HealthComponent>("armorPlate"),
-                    x => x.MatchLdcI4(0),
-                    x => x.MatchBle(out _),
-                    x => x.MatchLdcR4(1)))
+               //x => x.MatchLdflda<HealthComponent>("itemCounts"),
+               //x => x.MatchLdfld<HealthComponent>("armorPlate"),
+               x => x.MatchLdcI4(0),
+               x => x.MatchBle(out _),
+               x => x.MatchLdcR4(1)))
             {
                 c.Index += 2;
                 c.Next.Operand = MinimumDamage;

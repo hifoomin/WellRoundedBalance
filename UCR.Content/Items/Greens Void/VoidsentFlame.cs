@@ -28,12 +28,10 @@ namespace UltimateCustomRun.Items.VoidGreens
 
         public override void Hooks()
         {
-            IL.RoR2.HealthComponent.TakeDamage += ChangeDamage;
-            IL.RoR2.HealthComponent.TakeDamage += ChangeRadius;
-            IL.RoR2.HealthComponent.TakeDamage += ChangeKnockback;
+            IL.RoR2.HealthComponent.TakeDamage += Changes;
         }
 
-        private void ChangeKnockback(ILContext il)
+        private void Changes(ILContext il)
         {
             ILCursor c = new(il);
 
@@ -46,11 +44,8 @@ namespace UltimateCustomRun.Items.VoidGreens
             {
                 Main.UCRLogger.LogError("Failed to apply Voidsent Flame Knockback hook");
             }
-        }
 
-        private void ChangeRadius(ILContext il)
-        {
-            ILCursor c = new(il);
+            c.Index = 0;
 
             if (c.TryGotoNext(MoveType.Before,
                     x => x.MatchLdcR4(12f),
@@ -64,11 +59,8 @@ namespace UltimateCustomRun.Items.VoidGreens
             {
                 Main.UCRLogger.LogError("Failed to apply Voidsent Flame Radius hook");
             }
-        }
 
-        private void ChangeDamage(ILContext il)
-        {
-            ILCursor c = new(il);
+            c.Index = 0;
 
             if (c.TryGotoNext(MoveType.Before,
                     x => x.MatchLdcR4(2.6f),

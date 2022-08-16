@@ -1,5 +1,6 @@
 ﻿using Mono.Cecil.Cil;
 using MonoMod.Cil;
+using System;
 
 namespace UltimateCustomRun.Items.Reds
 {
@@ -17,17 +18,16 @@ namespace UltimateCustomRun.Items.Reds
         public override void Init()
         {
             Chance = ConfigOption(7f, "Chance", "Vanilla is 7");
-            Duration = ConfigOption(30, "Duration", "Per Stack. Vanilla is 30");
+            Duration = ConfigOption(30, "Lifetime", "Per Stack. Vanilla is 30");
             base.Init();
         }
 
         public override void Hooks()
         {
-            IL.RoR2.GlobalEventManager.OnCharacterDeath += ChangeChance;
-            IL.RoR2.GlobalEventManager.OnCharacterDeath += ChangeDuration;
+            IL.RoR2.GlobalEventManager.OnCharacterDeath += Changes;
         }
 
-        public static void ChangeChance(ILContext il)
+        public static void Changes(ILContext il)
         {
             ILCursor c = new(il);
 
@@ -38,16 +38,19 @@ namespace UltimateCustomRun.Items.Reds
                 c.Index += 1;
                 c.Remove();
                 c.Emit(OpCodes.Ldc_R4, Chance);
+                /*
+                c.EmitDelegate<Func<float, float>>((useless) =>
+                {
+                    return Chance;
+                });
+                */
             }
             else
             {
                 Main.UCRLogger.LogError("Failed to apply Happiest Mask Chance hook");
             }
-        }
 
-        public static void ChangeDuration(ILContext il)
-        {
-            ILCursor c = new(il);
+            c.Index = 0;
 
             if (c.TryGotoNext(MoveType.Before,
                     x => x.MatchLdcI4(30),
@@ -55,6 +58,12 @@ namespace UltimateCustomRun.Items.Reds
             {
                 c.Remove();
                 c.Emit(OpCodes.Ldc_I4, Duration);
+                /*
+                c.EmitDelegate<Func<int, int>>((useless) =>
+                {
+                    return Duration;
+                });
+                */
             }
             else
             {

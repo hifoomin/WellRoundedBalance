@@ -42,8 +42,7 @@ namespace UltimateCustomRun.Items.Reds
 
         public override void Hooks()
         {
-            IL.RoR2.HealthComponent.TakeDamage += ChangeHitCount;
-            IL.RoR2.HealthComponent.TakeDamage += ChangeDuration;
+            IL.RoR2.HealthComponent.TakeDamage += Changes;
             IL.RoR2.CharacterBody.RecalculateStats += ChangeArmorReduction;
             /*
             AddCounter();
@@ -117,25 +116,7 @@ namespace UltimateCustomRun.Items.Reds
             }
         }
 
-        public static void ChangeHitCount(ILContext il)
-        {
-            ILCursor c = new(il);
-
-            if (c.TryGotoNext(MoveType.Before,
-                    x => x.MatchLdsfld("RoR2.RoR2Content/Buffs", "PulverizeBuildup"),
-                    x => x.MatchCallOrCallvirt<CharacterBody>("GetBuffCount"),
-                    x => x.MatchLdcI4(5)))
-            {
-                c.Index += 2;
-                c.Next.Operand = Hits;
-            }
-            else
-            {
-                Main.UCRLogger.LogError("Failed to apply Shattering Justice Hit Count hook");
-            }
-        }
-
-        public static void ChangeDuration(ILContext il)
+        public static void Changes(ILContext il)
         {
             ILCursor c = new(il);
 
@@ -149,6 +130,21 @@ namespace UltimateCustomRun.Items.Reds
             else
             {
                 Main.UCRLogger.LogError("Failed to apply Shattering Justice Duration hook");
+            }
+
+            c.Index = 0;
+
+            if (c.TryGotoNext(MoveType.Before,
+               x => x.MatchLdsfld("RoR2.RoR2Content/Buffs", "PulverizeBuildup"),
+               x => x.MatchCallOrCallvirt<CharacterBody>("GetBuffCount"),
+               x => x.MatchLdcI4(5)))
+            {
+                c.Index += 2;
+                c.Next.Operand = Hits;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Shattering Justice Hit Count hook");
             }
         }
     }

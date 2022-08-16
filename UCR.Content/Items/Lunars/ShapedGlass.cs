@@ -22,7 +22,7 @@ namespace UltimateCustomRun.Items.Lunars
 
         public override void Init()
         {
-            DamageIncrease = ConfigOption(2f, "Damage Increase", "Decimal. Per Stack. Vanilla is 2");
+            DamageIncrease = ConfigOption(2f, "Damage", "Decimal. Per Stack. Vanilla is 2");
             HpDecrease = ConfigOption(0.5f, "Max HP Decrease", "Decimal. Per Stack. Vanilla is 0.5");
             LinearDamage = ConfigOption(false, "Should the Damage Increase be Linear?", "Vanilla is false");
             a = ScriptableObject.CreateInstance<ItemDef>();

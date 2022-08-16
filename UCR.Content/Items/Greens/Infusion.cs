@@ -62,7 +62,6 @@ namespace UltimateCustomRun.Items.Greens
                 IL.RoR2.GlobalEventManager.OnCharacterDeath += ChangeBehavior;
             }
             RecalculateStatsAPI.GetStatCoefficients += BehaviorAddFlatHealth;
-            RecalculateStatsAPI.GetStatCoefficients += BehaviorAddPercentHealth;
         }
 
         public static void ChangeBehavior(ILContext il)
@@ -107,17 +106,6 @@ namespace UltimateCustomRun.Items.Greens
                 if (stack > 0)
                 {
                     args.baseHealthAdd += StackBase ? BaseHealth * stack : BaseHealth;
-                }
-            }
-        }
-
-        public static void BehaviorAddPercentHealth(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
-        {
-            if (sender.inventory)
-            {
-                var stack = sender.inventory.GetItemCount(RoR2Content.Items.Infusion);
-                if (stack > 0)
-                {
                     args.healthMultAdd += StackPercent ? PercentHealth * stack : PercentHealth;
                 }
             }

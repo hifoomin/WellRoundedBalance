@@ -16,17 +16,16 @@ namespace UltimateCustomRun.Items.Lunars
         public override void Init()
         {
             Chance = ConfigOption(30f, "Chance", "Vanilla is 30");
-            Gold = ConfigOption(2f, "Gold", "Per Stack. Vanilla is 2.");
+            Gold = ConfigOption(2f, "Gold Gain", "Per Stack. Vanilla is 2.");
             base.Init();
         }
 
         public override void Hooks()
         {
-            IL.RoR2.GlobalEventManager.OnHitEnemy += ChangeChance;
-            IL.RoR2.GlobalEventManager.OnHitEnemy += ChangeGold;
+            IL.RoR2.GlobalEventManager.OnHitEnemy += Changes;
         }
 
-        private void ChangeGold(ILContext il)
+        private void Changes(ILContext il)
         {
             ILCursor c = new(il);
 
@@ -41,11 +40,8 @@ namespace UltimateCustomRun.Items.Lunars
             {
                 Main.UCRLogger.LogError("Failed to apply Brittle Crown Gold hook");
             }
-        }
 
-        private void ChangeChance(ILContext il)
-        {
-            ILCursor c = new(il);
+            c.Index = 0;
 
             if (c.TryGotoNext(MoveType.Before,
                     x => x.MatchBle(out _),

@@ -89,6 +89,13 @@ namespace UltimateCustomRun.Items.Greens
                 );
             c.Remove();
             c.Emit(OpCodes.Ldc_R4, Damage);
+            /*
+            c.Emit(OpCodes.Ldarg_0);
+            c.EmitDelegate<Func<float, float>>((useless) =>
+            {
+                return Damage;
+            });
+            */
         }
 
         public static void ChangeProc(On.RoR2.Orbs.LightningOrb.orig_Begin orig, LightningOrb self)

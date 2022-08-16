@@ -6,7 +6,7 @@ using RiskOfOptions.Options;
 using System.Text.RegularExpressions;
 using UnityEngine;
 
-namespace UltimateCustomRun
+namespace UltimateCustomRun.Items
 {
     public abstract class ItemBase
     {

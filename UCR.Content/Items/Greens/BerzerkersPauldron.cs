@@ -3,6 +3,7 @@ using MonoMod.Cil;
 using R2API;
 using R2API.Utils;
 using RoR2;
+using System;
 
 namespace UltimateCustomRun.Items.Greens
 {
@@ -34,33 +35,34 @@ namespace UltimateCustomRun.Items.Greens
 
         public override void Hooks()
         {
-            IL.RoR2.CharacterBody.AddMultiKill += ChangeKillCount;
-            IL.RoR2.CharacterBody.AddMultiKill += ChangeBuffDuration;
+            IL.RoR2.CharacterBody.AddMultiKill += Changes;
             RecalculateStatsAPI.GetStatCoefficients += AddBehavior;
         }
 
-        public static void ChangeKillCount(ILContext il)
+        public static void Changes(ILContext il)
         {
             ILCursor c = new(il);
 
             if (c.TryGotoNext(MoveType.Before,
-                    x => x.MatchCallOrCallvirt(
-                        typeof(CharacterBody).GetPropertyGetter(nameof(CharacterBody.multiKillCount))),
+                    x => x.MatchCallOrCallvirt(typeof(CharacterBody).GetPropertyGetter(nameof(CharacterBody.multiKillCount))),
                     x => x.MatchLdcI4(4)))
             {
                 c.Index += 1;
                 c.Remove();
                 c.Emit(OpCodes.Ldc_I4, KillRequirement);
+                /* c.Emit(OpCodes.Ldarg_0);
+                c.EmitDelegate<Func<int, int>>((useless) =>
+                {
+                    return KillRequirement;
+                });
+                */
             }
             else
             {
                 Main.UCRLogger.LogError("Failed to apply Berzerker's Pauldron Buff Kill Requirement hook");
             }
-        }
 
-        public static void ChangeBuffDuration(ILContext il)
-        {
-            ILCursor c = new(il);
+            c.Index = 0;
 
             if (c.TryGotoNext(MoveType.Before,
                     x => x.MatchLdsfld("RoR2.RoR2Content/Buffs", "WarCryBuff"),

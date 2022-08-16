@@ -24,12 +24,6 @@ namespace UltimateCustomRun
                 ModName = "Global";
                 ModSettingsManager.SetModIcon(Main.UCR.LoadAsset<Sprite>("texUCRIcon.png"), "UltimateCustomRun.TabID." + tabID, "UCR: " + ModName);
             }
-            if (Name.Contains("Equipment"))
-            {
-                tabID = 10;
-                ModName = "Equipment";
-                ModSettingsManager.SetModIcon(Main.UCR.LoadAsset<Sprite>("texUCRIcon.png"), "UltimateCustomRun.TabID." + tabID, "UCR: " + ModName);
-            }
             switch (value)
             {
                 case bool:

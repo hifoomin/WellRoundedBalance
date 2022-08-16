@@ -19,19 +19,18 @@ namespace UltimateCustomRun.Items.Whites
 
         public override void Init()
         {
-            Damage = ConfigOption(0.2f, "Damage Coefficient", "Decimal. Per Stack. Vanilla is 0.2");
+            Damage = ConfigOption(0.2f, "Damage", "Decimal. Per Stack. Vanilla is 0.2");
             Radius = ConfigOption(13f, "Range", "Vanilla is 13");
             base.Init();
         }
 
         public override void Hooks()
         {
-            IL.RoR2.HealthComponent.TakeDamage += ChangeDamage;
-            IL.RoR2.HealthComponent.TakeDamage += ChangeRadius;
+            IL.RoR2.HealthComponent.TakeDamage += Changes;
             ChangeVisual();
         }
 
-        public static void ChangeDamage(ILContext il)
+        public static void Changes(ILContext il)
         {
             ILCursor c = new(il);
             if (c.TryGotoNext(MoveType.Before,
@@ -49,14 +48,12 @@ namespace UltimateCustomRun.Items.Whites
             {
                 Main.UCRLogger.LogError("Failed to apply Focus Crystal Damage hook");
             }
-        }
 
-        public static void ChangeRadius(ILContext il)
-        {
-            ILCursor c = new(il);
+            c.Index = 0;
+
             if (c.TryGotoNext(MoveType.Before,
-                    x => x.MatchCallOrCallvirt<UnityEngine.Vector3>("get_sqrMagnitude"),
-                    x => x.MatchLdcR4(169f)))
+               x => x.MatchCallOrCallvirt<UnityEngine.Vector3>("get_sqrMagnitude"),
+               x => x.MatchLdcR4(169f)))
             {
                 c.Index += 1;
                 c.Next.Operand = Radius * Radius;

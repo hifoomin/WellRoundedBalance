@@ -19,7 +19,7 @@ namespace UltimateCustomRun.Items.Yellows
 
         public override void Init()
         {
-            Damage = ConfigOption(5f, "TOTAL Damage", "Decimal. Per Stack. Vanilla is 5");
+            Damage = ConfigOption(5f, "Damage", "Decimal. Per Stack. Vanilla is 5");
             Chance = ConfigOption(10f, "Chance", "Vanilla is 10");
             ProcCoefficient = ConfigOption(1f, "Proc Coefficient", "Vanilla is 1");
             base.Init();
@@ -27,19 +27,17 @@ namespace UltimateCustomRun.Items.Yellows
 
         public override void Hooks()
         {
-            IL.RoR2.GlobalEventManager.OnHitEnemy += ChangeChance;
-            IL.RoR2.GlobalEventManager.OnHitEnemy += ChangeDamage;
-            IL.RoR2.GlobalEventManager.OnHitEnemy += ChangeProcCoefficient;
+            IL.RoR2.GlobalEventManager.OnHitEnemy += Changes;
         }
 
-        private void ChangeChance(ILContext il)
+        private void Changes(ILContext il)
         {
             ILCursor c = new(il);
 
             if (c.TryGotoNext(MoveType.Before,
-                    x => x.MatchCallOrCallvirt<ProcChainMask>("HasProc"),
-                    x => x.MatchBrtrue(out _),
-                    x => x.MatchLdcR4(10f)))
+                x => x.MatchCallOrCallvirt<ProcChainMask>("HasProc"),
+                x => x.MatchBrtrue(out _),
+                x => x.MatchLdcR4(10f)))
             {
                 c.Index += 2;
                 c.Next.Operand = Chance;
@@ -48,15 +46,12 @@ namespace UltimateCustomRun.Items.Yellows
             {
                 Main.UCRLogger.LogError("Failed to apply Charged Perforator Chance hook");
             }
-        }
 
-        private void ChangeDamage(ILContext il)
-        {
-            ILCursor c = new(il);
+            c.Index = 0;
 
             if (c.TryGotoNext(MoveType.Before,
-                    x => x.MatchCallOrCallvirt<CharacterBody>("get_damage"),
-                    x => x.MatchLdcR4(5f)))
+               x => x.MatchCallOrCallvirt<CharacterBody>("get_damage"),
+               x => x.MatchLdcR4(5f)))
             {
                 c.Index += 1;
                 c.Next.Operand = Damage;
@@ -65,16 +60,13 @@ namespace UltimateCustomRun.Items.Yellows
             {
                 Main.UCRLogger.LogError("Failed to apply Charged Perforator Damage hook");
             }
-        }
 
-        private void ChangeProcCoefficient(ILContext il)
-        {
-            ILCursor c = new(il);
+            c.Index = 0;
 
             if (c.TryGotoNext(MoveType.Before,
-                    x => x.MatchStfld("RoR2.Orbs.GenericDamageOrb", "procChainMask"),
-                    x => x.MatchDup(),
-                    x => x.MatchLdcR4(1f)))
+               x => x.MatchStfld("RoR2.Orbs.GenericDamageOrb", "procChainMask"),
+               x => x.MatchDup(),
+               x => x.MatchLdcR4(1f)))
             {
                 c.Index += 2;
                 c.Next.Operand = ProcCoefficient;

@@ -35,12 +35,10 @@ namespace UltimateCustomRun.Items.Greens
 
         public override void Hooks()
         {
-            IL.RoR2.GlobalEventManager.OnHitEnemy += ChangeDamage;
-            IL.RoR2.GlobalEventManager.OnHitEnemy += BandsThreshold;
-            IL.RoR2.GlobalEventManager.OnHitEnemy += BandsCooldown;
+            IL.RoR2.GlobalEventManager.OnHitEnemy += Changes;
         }
 
-        public static void ChangeDamage(ILContext il)
+        public static void Changes(ILContext il)
         {
             ILCursor c = new(il);
 
@@ -56,11 +54,8 @@ namespace UltimateCustomRun.Items.Greens
             {
                 Main.UCRLogger.LogError("Failed to apply Kjaro's Band Damage hook");
             }
-        }
 
-        public static void BandsThreshold(ILContext il)
-        {
-            ILCursor c = new(il);
+            c.Index = 0;
 
             if (c.TryGotoNext(MoveType.Before,
                 x => x.MatchCallOrCallvirt<CharacterBody>("get_damage"),
@@ -74,11 +69,8 @@ namespace UltimateCustomRun.Items.Greens
             {
                 Main.UCRLogger.LogError("Failed to apply Kjaro's Band Threshold hook");
             }
-        }
 
-        public static void BandsCooldown(ILContext il)
-        {
-            ILCursor c = new(il);
+            c.Index = 0;
 
             if (c.TryGotoNext(MoveType.Before,
                 x => x.MatchLdloc(out _),

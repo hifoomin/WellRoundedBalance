@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace UltimateCustomRun
+namespace UltimateCustomRun.Items
 {
     public abstract class ItemBase<T> : ItemBase where T : ItemBase<T>
     {

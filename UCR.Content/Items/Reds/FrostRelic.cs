@@ -1,6 +1,7 @@
 ﻿using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using RoR2;
+using System;
 using UnityEngine;
 
 namespace UltimateCustomRun.Items.Reds
@@ -31,7 +32,7 @@ namespace UltimateCustomRun.Items.Reds
             RadiusPerKill = ConfigOption(2f, "Icicle Radius", "Per Icicle. Vanilla is 2");
             Damage = ConfigOption(3f, "Damage Per Tick", "Decimal. Vanilla is 3");
             Duration = ConfigOption(5f, "Duration", "Vanilla is 5");
-            ProcCoefficient = ConfigOption(0.2f, "Proc Coefficient Per Tick", "Vanilal is 0.2");
+            ProcCoefficient = ConfigOption(0.2f, "Proc Coefficient Per Tick", "Vanilla is 0.2");
             Maximum = ConfigOption(6, "Maximum Icicles Amount", "Vanilla is 6");
             StackMaximum = ConfigOption(6, "Stack Maximum Icicles Amount", "Per Stack. Vanilla is 6");
             CameraChanges = ConfigOption(false, "Disable Camera Changes?", "Vanilla is false");
@@ -81,6 +82,13 @@ namespace UltimateCustomRun.Items.Reds
                 c.Index += 1;
                 c.Remove();
                 c.Emit(OpCodes.Ldc_I4, 0);
+                /*
+                c.Emit(OpCodes.Ldarg_0);
+                c.EmitDelegate<Func<int, int>>((useless) =>
+                {
+                    return 0;
+                });
+                */
             }
             else
             {

@@ -19,7 +19,7 @@ namespace UltimateCustomRun.Items.Whites
 
         public override void Init()
         {
-            Speed = ConfigOption(0.25f, "Speed Increase", "Decimal. Per Stack. Vanilla is 0.25");
+            Speed = ConfigOption(0.25f, "Movement Speed", "Decimal. Per Stack. Vanilla is 0.25");
             //Change = ConfigOption(false, "Increase the Sprinting Speed Multiplier instead?", "Vanilla is false");
             //SprintingSpeed = ConfigOption(0.25f, "Sprinting Speed Multiplier Increase", "Vanilla is 0\nFormula: (Base Movement Speed * (1 + (1 * Item Speed Increase) + (1 * Item Speed Increase)) * (Sprinting Speed Multiplier + Sprinting Speed Multiplier Increase)");
             base.Init();

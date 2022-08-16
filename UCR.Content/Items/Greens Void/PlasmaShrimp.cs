@@ -18,7 +18,7 @@ namespace UltimateCustomRun.Items.VoidGreens
         public override void Init()
         {
             Shield = ConfigOption(0.1f, "Shield", "Decimal. Vanilla is 0.1");
-            TotalDamage = ConfigOption(0.4f, "Base TOTAL Damage", "Decimal. Vanilla is 0.4");
+            TotalDamage = ConfigOption(0.4f, "Damage", "Decimal. Vanilla is 0.4");
             ProcCoefficient = ConfigOption(0.2f, "Proc Coefficient", "Vanilla is 0.2");
             base.Init();
         }
@@ -26,27 +26,10 @@ namespace UltimateCustomRun.Items.VoidGreens
         public override void Hooks()
         {
             IL.RoR2.CharacterBody.RecalculateStats += ChangeShield;
-            IL.RoR2.GlobalEventManager.OnHitEnemy += ChangeDamage;
-            IL.RoR2.GlobalEventManager.OnHitEnemy += ChangeProcCo;
+            IL.RoR2.GlobalEventManager.OnHitEnemy += Changes;
         }
 
-        private void ChangeProcCo(ILContext il)
-        {
-            ILCursor c = new(il);
-
-            if (c.TryGotoNext(MoveType.Before,
-                    x => x.MatchLdcR4(0.2f),
-                    x => x.MatchStfld<RoR2.Orbs.GenericDamageOrb>("procCoefficient")))
-            {
-                c.Next.Operand = TotalDamage;
-            }
-            else
-            {
-                Main.UCRLogger.LogError("Failed to apply Plasma Shrimp Proc Coefficient hook");
-            }
-        }
-
-        private void ChangeDamage(ILContext il)
+        private void Changes(ILContext il)
         {
             ILCursor c = new(il);
 
@@ -58,6 +41,19 @@ namespace UltimateCustomRun.Items.VoidGreens
             else
             {
                 Main.UCRLogger.LogError("Failed to apply Plasma Shrimp Damage hook");
+            }
+
+            c.Index = 0;
+
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdcR4(0.2f),
+                    x => x.MatchStfld<RoR2.Orbs.GenericDamageOrb>("procCoefficient")))
+            {
+                c.Next.Operand = TotalDamage;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Plasma Shrimp Proc Coefficient hook");
             }
         }
 

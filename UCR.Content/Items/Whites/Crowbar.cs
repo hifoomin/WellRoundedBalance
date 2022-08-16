@@ -17,18 +17,17 @@ namespace UltimateCustomRun.Items.Whites
 
         public override void Init()
         {
-            Damage = ConfigOption(0.75f, "Damage Coefficient", "Decimal. Per Stack. Vanilla is 0.75");
-            Threshold = ConfigOption(0.9f, "Threshold", "Decimal. Vanilla is 0.9");
+            Damage = ConfigOption(0.75f, "Damage", "Decimal. Per Stack. Vanilla is 0.75");
+            Threshold = ConfigOption(0.9f, "Health Threshold", "Decimal. Vanilla is 0.9");
             base.Init();
         }
 
         public override void Hooks()
         {
-            IL.RoR2.HealthComponent.TakeDamage += ChangeDamage;
-            IL.RoR2.HealthComponent.TakeDamage += ChangeThreshold;
+            IL.RoR2.HealthComponent.TakeDamage += Changes;
         }
 
-        public static void ChangeDamage(ILContext il)
+        public static void Changes(ILContext il)
         {
             ILCursor c = new(il);
             if (c.TryGotoNext(MoveType.Before,
@@ -42,15 +41,13 @@ namespace UltimateCustomRun.Items.Whites
             {
                 Main.UCRLogger.LogError("Failed to apply Crowbar Damage hook");
             }
-        }
 
-        public static void ChangeThreshold(ILContext il)
-        {
-            ILCursor c = new(il);
+            c.Index = 0;
+
             if (c.TryGotoNext(MoveType.Before,
-                    x => x.MatchLdarg(0),
-                    x => x.MatchCallOrCallvirt<HealthComponent>("get_fullCombinedHealth"),
-                    x => x.MatchLdcR4(0.9f)))
+               x => x.MatchLdarg(0),
+               x => x.MatchCallOrCallvirt<HealthComponent>("get_fullCombinedHealth"),
+               x => x.MatchLdcR4(0.9f)))
             {
                 c.Index += 2;
                 c.Next.Operand = Threshold;

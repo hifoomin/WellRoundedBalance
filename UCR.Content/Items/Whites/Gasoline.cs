@@ -40,9 +40,7 @@ namespace UltimateCustomRun.Items.Whites
 
         public override void Hooks()
         {
-            IL.RoR2.GlobalEventManager.ProcIgniteOnKill += ChangeBurnDamage;
-            IL.RoR2.GlobalEventManager.ProcIgniteOnKill += ChangeExplosionDamage;
-            IL.RoR2.GlobalEventManager.ProcIgniteOnKill += ChangeRadius;
+            IL.RoR2.GlobalEventManager.ProcIgniteOnKill += Changes;
             On.RoR2.GlobalEventManager.OnHitEnemy += AddBurn;
         }
 
@@ -57,7 +55,7 @@ namespace UltimateCustomRun.Items.Whites
                     switch (StackBurnChance)
                     {
                         default:
-                            if (Util.CheckRoll(BurnChance + BurnChance * (stack - 1), damageInfo.attacker.GetComponent<CharacterBody>().master.luck))
+                            if (Util.CheckRoll(BurnChance * damageInfo.procCoefficient + BurnChance * damageInfo.procCoefficient * (stack - 1), damageInfo.attacker.GetComponent<CharacterBody>().master.luck))
                             {
                                 InflictDotInfo galsone = new()
                                 {
@@ -71,7 +69,7 @@ namespace UltimateCustomRun.Items.Whites
                             break;
 
                         case false:
-                            if (Util.CheckRoll(BurnChance, damageInfo.attacker.GetComponent<CharacterBody>().master.luck))
+                            if (Util.CheckRoll(BurnChance * damageInfo.procCoefficient, damageInfo.attacker.GetComponent<CharacterBody>().master.luck))
                             {
                                 InflictDotInfo galsone = new()
                                 {
@@ -89,25 +87,7 @@ namespace UltimateCustomRun.Items.Whites
             orig(self, damageInfo, victim);
         }
 
-        public static void ChangeExplosionDamage(ILContext il)
-        {
-            ILCursor c = new(il);
-
-            if (c.TryGotoNext(MoveType.Before,
-                    x => x.MatchAdd(),
-                    x => x.MatchStloc(1),
-                    x => x.MatchLdcR4(1.5f)))
-            {
-                c.Index += 2;
-                c.Next.Operand = ExplosionDamage;
-            }
-            else
-            {
-                Main.UCRLogger.LogError("Failed to apply Gasoline Explosion Damage hook");
-            }
-        }
-
-        public static void ChangeBurnDamage(ILContext il)
+        public static void Changes(ILContext il)
         {
             ILCursor c = new(il);
 
@@ -126,15 +106,27 @@ namespace UltimateCustomRun.Items.Whites
             {
                 Main.UCRLogger.LogError("Failed to apply Gasoline Burn Damage hook");
             }
-        }
 
-        public static void ChangeRadius(ILContext il)
-        {
-            ILCursor c = new(il);
+            c.Index = 0;
 
             if (c.TryGotoNext(MoveType.Before,
-                    x => x.MatchLdcR4(8f),
-                    x => x.MatchLdcR4(4f)))
+               x => x.MatchAdd(),
+               x => x.MatchStloc(1),
+               x => x.MatchLdcR4(1.5f)))
+            {
+                c.Index += 2;
+                c.Next.Operand = ExplosionDamage;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Gasoline Explosion Damage hook");
+            }
+
+            c.Index = 0;
+
+            if (c.TryGotoNext(MoveType.Before,
+                x => x.MatchLdcR4(8f),
+                x => x.MatchLdcR4(4f)))
             {
                 c.Next.Operand = Radius - StackRadius;
                 c.Index += 1;

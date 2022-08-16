@@ -24,11 +24,10 @@ namespace UltimateCustomRun.Items.Reds
 
         public override void Hooks()
         {
-            IL.RoR2.GlobalEventManager.OnHitAll += ChangeDamage;
-            IL.RoR2.GlobalEventManager.OnHitAll += ChangeRadius;
+            IL.RoR2.GlobalEventManager.OnHitAll += Changes;
         }
 
-        public static void ChangeDamage(ILContext il)
+        public static void Changes(ILContext il)
         {
             ILCursor c = new(il);
 
@@ -41,11 +40,8 @@ namespace UltimateCustomRun.Items.Reds
             {
                 Main.UCRLogger.LogError("Failed to apply Brilliant Behemoth Damage hook");
             }
-        }
 
-        public static void ChangeRadius(ILContext il)
-        {
-            ILCursor c = new(il);
+            c.Index = 0;
 
             if (c.TryGotoNext(MoveType.Before,
                     x => x.MatchLdcR4(1.5f),

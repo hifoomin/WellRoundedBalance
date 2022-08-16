@@ -32,13 +32,11 @@ namespace UltimateCustomRun.Items.Greens
 
         public override void Hooks()
         {
-            IL.RoR2.GlobalEventManager.OnCharacterDeath += ChangeDamage;
-            IL.RoR2.GlobalEventManager.OnCharacterDeath += ChangeRange;
-            IL.RoR2.GlobalEventManager.OnCharacterDeath += DeleteKnockback;
+            IL.RoR2.GlobalEventManager.OnCharacterDeath += Changes;
             ChangeProc();
         }
 
-        public static void ChangeDamage(ILContext il)
+        public static void Changes(ILContext il)
         {
             ILCursor c = new(il);
 
@@ -60,11 +58,8 @@ namespace UltimateCustomRun.Items.Greens
             {
                 Main.UCRLogger.LogError("Failed to apply Will o' The Wisp Damage hook");
             }
-        }
 
-        public static void ChangeRange(ILContext il)
-        {
-            ILCursor c = new(il);
+            c.Index = 0;
 
             if (c.TryGotoNext(MoveType.Before,
                     x => x.MatchLdcR4(12f),
@@ -78,15 +73,12 @@ namespace UltimateCustomRun.Items.Greens
             {
                 Main.UCRLogger.LogError("Failed to apply Will o' The Wisp Range hook");
             }
-        }
 
-        public static void DeleteKnockback(ILContext il)
-        {
-            ILCursor c = new(il);
+            c.Index = 0;
 
             if (c.TryGotoNext(MoveType.Before,
-                    x => x.MatchLdloc(55),
-                    x => x.MatchLdcR4(2000f)))
+               x => x.MatchLdloc(55),
+               x => x.MatchLdcR4(2000f)))
             {
                 c.Index += 1;
                 c.Next.Operand = RemoveKnockback ? 0f : 2000f;

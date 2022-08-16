@@ -45,8 +45,8 @@ namespace UltimateCustomRun.Items.Greens
 
         public override void Hooks()
         {
-            //IL.RoR2.CharacterBody.AddTimedBuff_BuffDef_float += ChangeCap;
             IL.RoR2.CharacterBody.AddTimedBuff_BuffDef_float += ChangeCapReal;
+            // IL.RoR2.CharacterBody.AddTimedBuff_BuffDef_float += ChangeCap;
             IL.RoR2.CharacterBody.RecalculateStats += ChangeAS;
             RecalculateStatsAPI.GetStatCoefficients += AddBehavior;
         }
@@ -83,9 +83,13 @@ namespace UltimateCustomRun.Items.Greens
                 x => x.MatchLdcI4(2)
             );
             c.Index += 1;
-            c.Next.Operand = BaseCap - StackCap;
+            //c.Next.Operand = BaseCap - StackCap;
+            c.Remove();
+            c.Emit(OpCodes.Ldc_I4, BaseCap - StackCap);
             c.Index += 2;
-            c.Next.Operand = StackCap;
+            //c.Next.Operand = StackCap;
+            c.Remove();
+            c.Emit(OpCodes.Ldc_I4, StackCap);
         }
 
         public static void ChangeCapReal(ILContext il)
@@ -97,8 +101,13 @@ namespace UltimateCustomRun.Items.Greens
                     x => x.MatchLdloc(2)))
             {
                 c.Next.Operand = BaseCap - StackCap;
+                // c.Remove();
+                // c.Emit(OpCodes.Ldc_I4, BaseCap - StackCap);
+
                 c.Index += 1;
                 c.Next.Operand = StackCap;
+                // c.Remove();
+                // c.Emit(OpCodes.Ldc_I4, StackCap);
             }
             else
             {

@@ -25,7 +25,7 @@ namespace UltimateCustomRun.Items.Reds
             Damage = ConfigOption(2f, "Damage Increase", "Decimal. Vanilla is 2");
             Radius = ConfigOption(35f, "Range", "Vanilla is 35");
             MaxTargets = ConfigOption(3, "Base Max Targets", "Vanilla is 3");
-            StackMaxTargets = ConfigOption(3, "Stack Max Targets", "Per Stack. Vanilla is 2");
+            StackMaxTargets = ConfigOption(2, "Stack Max Targets", "Per Stack. Vanilla is 2");
             Seconds = ConfigOption(10f, "Seconds between Switch", "Vanilla is 10");
             Interval = ConfigOption(0.5f, "Hit Interval", "Vanilla is 0.5");
             ProcCoefficient = ConfigOption(0.3f, "Proc Coefficient", "Vanilla is 0.3");
@@ -35,19 +35,11 @@ namespace UltimateCustomRun.Items.Reds
         public override void Hooks()
         {
             On.RoR2.Items.ShockNearbyBodyBehavior.FixedUpdate += ShockNearbyBodyBehavior_FixedUpdate;
-            IL.RoR2.Items.ShockNearbyBodyBehavior.FixedUpdate += ChangeSeconds;
-            IL.RoR2.Items.ShockNearbyBodyBehavior.FixedUpdate += ChangeDamage;
-            IL.RoR2.Items.ShockNearbyBodyBehavior.FixedUpdate += ChangeProcCoefficient;
-            IL.RoR2.Items.ShockNearbyBodyBehavior.FixedUpdate += ChangeRange;
-            IL.RoR2.Items.ShockNearbyBodyBehavior.FixedUpdate += ChangeTargets;
+            IL.RoR2.Items.ShockNearbyBodyBehavior.FixedUpdate += Changes;
+            ChangeBaseTargets();
         }
 
-        private void ShockNearbyBodyBehavior_FixedUpdate1(ILContext il)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        private void ChangeSeconds(ILContext il)
+        private void Changes(ILContext il)
         {
             ILCursor c = new(il);
 
@@ -60,11 +52,8 @@ namespace UltimateCustomRun.Items.Reds
             {
                 Main.UCRLogger.LogError("Failed to apply Unstable Tesla Coil Seconds hook");
             }
-        }
 
-        private void ChangeDamage(ILContext il)
-        {
-            ILCursor c = new(il);
+            c.Index = 0;
 
             if (c.TryGotoNext(MoveType.Before,
                 x => x.MatchLdcR4(2f)))
@@ -75,11 +64,8 @@ namespace UltimateCustomRun.Items.Reds
             {
                 Main.UCRLogger.LogError("Failed to apply Unstable Tesla Coil Damage hook");
             }
-        }
 
-        private void ChangeProcCoefficient(ILContext il)
-        {
-            ILCursor c = new(il);
+            c.Index = 0;
 
             if (c.TryGotoNext(MoveType.Before,
                 x => x.MatchLdcR4(0.3f)))
@@ -90,11 +76,8 @@ namespace UltimateCustomRun.Items.Reds
             {
                 Main.UCRLogger.LogError("Failed to apply Unstable Tesla Coil Proc Coefficient hook");
             }
-        }
 
-        private void ChangeRange(ILContext il)
-        {
-            ILCursor c = new(il);
+            c.Index = 0;
 
             if (c.TryGotoNext(MoveType.Before,
                 x => x.MatchLdcR4(35f)))
@@ -105,11 +88,8 @@ namespace UltimateCustomRun.Items.Reds
             {
                 Main.UCRLogger.LogError("Failed to apply Unstable Tesla Coil Range hook");
             }
-        }
 
-        private void ChangeTargets(ILContext il)
-        {
-            ILCursor c = new(il);
+            c.Index = 0;
 
             if (c.TryGotoNext(MoveType.Before,
                 x => x.MatchLdcI4(2)))

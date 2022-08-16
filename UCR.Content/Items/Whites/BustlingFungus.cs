@@ -31,11 +31,10 @@ namespace UltimateCustomRun.Items.Whites
 
         public override void Hooks()
         {
-            IL.RoR2.Items.MushroomBodyBehavior.FixedUpdate += ChangeRadius;
-            IL.RoR2.Items.MushroomBodyBehavior.FixedUpdate += ChangeHealing;
+            IL.RoR2.Items.MushroomBodyBehavior.FixedUpdate += Changes;
         }
 
-        public static void ChangeRadius(ILContext il)
+        public static void Changes(ILContext il)
         {
             ILCursor c = new(il);
             if (c.TryGotoNext(MoveType.Before,
@@ -53,11 +52,9 @@ namespace UltimateCustomRun.Items.Whites
             {
                 Main.UCRLogger.LogError("Failed to apply Bustling Fungus Radius hook");
             }
-        }
 
-        public static void ChangeHealing(ILContext il)
-        {
-            ILCursor c = new(il);
+            c.Index = 0;
+
             if (c.TryGotoNext(MoveType.Before,
                     x => x.MatchLdcR4(0.25f),
                     x => x.MatchStfld<HealingWard>("interval"),

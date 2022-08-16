@@ -23,11 +23,10 @@ namespace UltimateCustomRun.Items.Reds
 
         public override void Hooks()
         {
-            IL.RoR2.CharacterBody.RecalculateStats += ChangeCDR;
-            IL.RoR2.CharacterBody.RecalculateStats += ChangeCharges;
+            IL.RoR2.CharacterBody.RecalculateStats += Changes;
         }
 
-        public static void ChangeCharges(ILContext il)
+        public static void Changes(ILContext il)
         {
             ILCursor c = new(il);
 
@@ -43,14 +42,11 @@ namespace UltimateCustomRun.Items.Reds
             {
                 Main.UCRLogger.LogError("Failed to apply Hardlight Afterburner Charge hook");
             }
-        }
 
-        public static void ChangeCDR(ILContext il)
-        {
-            ILCursor c = new(il);
+            c.Index = 0;
 
             if (c.TryGotoNext(MoveType.Before,
-                    x => x.MatchLdcR4(0.6666667f)))
+               x => x.MatchLdcR4(0.6666667f)))
             {
                 c.Next.Operand = 1f - CooldownReduction;
             }

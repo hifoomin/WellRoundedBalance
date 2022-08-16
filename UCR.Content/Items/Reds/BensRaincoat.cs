@@ -14,7 +14,7 @@ namespace UltimateCustomRun.Items.Reds
         public override bool NewPickup => false;
         public override string PickupText => "";
 
-        public override string DescText => "Prevents <style=cIsUtility>1 <style=cStack>(+1 per stack)</style></style> <style=cIsDamage>debuff</style> and instead grants a <style=cIsHealing>temporary barrier</style> for <style=cIsHealing>" + d(BarrierGain) + "</style> of <style=cIsHealing>maximum health</style>. Recharges every <style=cIsUtility>" + RechargeTime + "</style> seconds.</style>.";
+        public override string DescText => "Prevents <style=cIsUtility>1 <style=cStack>(+1 per stack)</style></style> <style=cIsDamage>debuff</style> and instead grants a <style=cIsHealing>temporary barrier</style> for <style=cIsHealing>" + d(BarrierGain) + "</style> of <style=cIsHealing>maximum health</style>. Recharges every <style=cIsUtility>" + RechargeTime + "</style> seconds.</style>";
 
         public override void Init()
         {
@@ -41,6 +41,8 @@ namespace UltimateCustomRun.Items.Reds
             {
                 Main.UCRLogger.LogError("Failed to apply Ben's Raincoat Barrier hook");
             }
+
+            c.Index = 0;
 
             if (c.TryGotoNext(MoveType.Before,
                     x => x.MatchLdcR4(5f)))

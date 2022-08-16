@@ -18,7 +18,7 @@ namespace UltimateCustomRun.Items.VoidWhites
         {
             Cooldown = ConfigOption(15f, "Buff Cooldown", "Vanilla is 15");
             StackCooldown = ConfigOption(0.1f, "Buff Cooldown Reduction", "Decimal. Per Stack. Vanilla is 0.1");
-            Formula = ConfigOption(true, "Buff Cooldown Formula", "Cooldown * StackCooldown ^ Stack");
+            Formula = ConfigOption(true, "Buff Cooldown Formula", "Cooldown * (1 - StackCooldown) ^ Stack");
             base.Init();
         }
 

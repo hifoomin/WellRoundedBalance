@@ -16,7 +16,7 @@ namespace UltimateCustomRun.Items.Greens
 
         public override void Init()
         {
-            Threshold = ConfigOption(13f, "Threshold", "Vanilla is 13");
+            Threshold = ConfigOption(13f, "Health Threshold", "Vanilla is 13");
             base.Init();
         }
 

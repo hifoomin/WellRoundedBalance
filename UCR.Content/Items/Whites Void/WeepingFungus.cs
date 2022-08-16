@@ -15,7 +15,7 @@ namespace UltimateCustomRun.Items.VoidWhites
 
         public override void Init()
         {
-            HealPercent = ConfigOption(0.02f, "Heal Percent", "Decimal. Per Stack. Vanilla is 0.02");
+            HealPercent = ConfigOption(0.02f, "Percent Healing", "Decimal. Per Stack. Vanilla is 0.02");
             Interval = ConfigOption(0.5f, "Healing Interval", "Vanilla is 0.5");
             base.Init();
         }

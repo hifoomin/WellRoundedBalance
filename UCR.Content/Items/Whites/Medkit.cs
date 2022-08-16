@@ -8,8 +8,6 @@ namespace UltimateCustomRun.Items.Whites
     {
         public static float FlatHealing;
         public static float PercentHealing;
-        public static bool StackBuff;
-        public static bool IsDebuff;
 
         public override string Name => ":: Items : Whites :: Medkit";
         public override string InternalPickupToken => "medkit";
@@ -23,17 +21,15 @@ namespace UltimateCustomRun.Items.Whites
         {
             FlatHealing = ConfigOption(20f, "Flat Healing", "Vanilla is 20");
             PercentHealing = ConfigOption(0.05f, "Percent Healing", "Decimal. Per Stack. Vanilla is 0.05");
-            StackBuff = ConfigOption(false, "Stack Buff?", "Vanilla is false");
             base.Init();
         }
 
         public override void Hooks()
         {
-            IL.RoR2.CharacterBody.RemoveBuff_BuffIndex += ChangeFlatHealing;
-            IL.RoR2.CharacterBody.RemoveBuff_BuffIndex += ChangePercentHealing;
+            IL.RoR2.CharacterBody.RemoveBuff_BuffIndex += Changes;
         }
 
-        public static void ChangeFlatHealing(ILContext il)
+        public static void Changes(ILContext il)
         {
             ILCursor c = new(il);
 
@@ -50,11 +46,8 @@ namespace UltimateCustomRun.Items.Whites
             {
                 Main.UCRLogger.LogError("Failed to apply Medkit Flat Healing hook");
             }
-        }
 
-        public static void ChangePercentHealing(ILContext il)
-        {
-            ILCursor c = new(il);
+            c.Index = 0;
 
             if (c.TryGotoNext(MoveType.Before,
                     x => x.MatchLdarg(0),

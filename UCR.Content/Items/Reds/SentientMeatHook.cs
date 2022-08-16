@@ -53,6 +53,8 @@ namespace UltimateCustomRun.Items.Reds
                 Main.UCRLogger.LogError("Failed to apply Sentient Meat Hook Chance hook");
             }
 
+            c.Index = 0;
+
             if (c.TryGotoNext(MoveType.Before,
                     x => x.MatchLdcI4(5),
                     x => x.MatchLdloc(13),
@@ -67,6 +69,8 @@ namespace UltimateCustomRun.Items.Reds
                 Main.UCRLogger.LogError("Failed to apply Sentient Meat Hook Max Targets hook");
             }
 
+            c.Index = 0;
+
             if (c.TryGotoNext(MoveType.Before,
                     x => x.MatchLdcR4(30f),
                     x => x.MatchLdloc(66),
@@ -79,6 +83,8 @@ namespace UltimateCustomRun.Items.Reds
                 Main.UCRLogger.LogError("Failed to apply Sentient Meat Hook Range hook");
             }
 
+            c.Index = 0;
+
             if (c.TryGotoNext(MoveType.Before,
                     x => x.MatchLdcR4(1f),
                     x => x.MatchStloc(64)))
@@ -89,6 +95,8 @@ namespace UltimateCustomRun.Items.Reds
             {
                 Main.UCRLogger.LogError("Failed to apply Sentient Meat Hook Damage hook");
             }
+
+            c.Index = 0;
 
             if (c.TryGotoNext(MoveType.Before,
                     x => x.MatchLdloc(71),

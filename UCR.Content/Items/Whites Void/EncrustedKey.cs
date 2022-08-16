@@ -1,40 +1,46 @@
-﻿/*
-using MonoMod.Cil;
+﻿using RoR2;
+using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 namespace UltimateCustomRun.Items.Whites
 {
     public class EncrustedKey : ItemBase
     {
-        public static float Damage;
+        public static int OptionCount;
+        public static float VoidWhiteChance;
+        public static float VoidGreenChance;
+        public static float VoidRedChance;
 
-        public override string Name => ":: Items :::::: Void Whites :: Armor Piercing Rounds";
+        public override string Name => ":: Items :::::: Void Whites :: Encrusted Key";
         public override string InternalPickupToken => "treasureCacheVoid";
         public override bool NewPickup => false;
         public override string PickupText => "";
-        public override string DescText => "Deal an additional <style=cIsDamage>" + d(Damage) + "</style> damage <style=cStack>(+" + d(Damage) + " per stack)</style> to bosses.";
+        public override string DescText => "A <style=cIsUtility>hidden cache</style> containing an item (" + d(Mathf.Round(VoidWhiteChance / (VoidWhiteChance + VoidGreenChance + VoidRedChance))) + "/<style=cIsHealing>" + d(Mathf.Round(VoidGreenChance / (VoidWhiteChance + VoidGreenChance + VoidRedChance))) + "</style>/<style=cIsHealth>" + d(Mathf.Round(VoidRedChance / (VoidWhiteChance + VoidGreenChance + VoidRedChance))) + "</style>) will appear in a random location <style=cIsUtility>on each stage</style>. Opening the cache <style=cIsUtility>consumes</style> this item. <style=cIsVoid>Corrupts all Rusted Keys</style>.";
 
         public override void Init()
         {
-            Damage = ConfigOption(0.2f, "Damage Coefficient", "Decimal. Per Stack. Vanilla is 0.2");
-            ROSOption("Whites", 0f, 5f, 0.01f, "1");
+            OptionCount = ConfigOption(3, "Items to Choose From", "Vanilla is 3");
+            VoidWhiteChance = ConfigOption(5f, "Void White Weight", "Decimal. Vanilla is 5");
+            VoidGreenChance = ConfigOption(5f, "Void Green Weight", "Decimal. Vanilla is 5");
+            VoidRedChance = ConfigOption(2f, "Void Red Weight", "Decimal. Vanilla is 2");
             base.Init();
         }
 
         public override void Hooks()
         {
-            IL.RoR2.HealthComponent.TakeDamage += ChangeDamage;
+            Changes();
         }
 
-        public static void ChangeDamage(ILContext il)
+        private void Changes()
         {
-            ILCursor c = new(il);
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcR4(1f),
-                x => x.MatchLdcR4(0.2f)
-            );
-            c.Index += 1;
-            c.Next.Operand = Damage;
+            var vlockbox = Addressables.LoadAssetAsync<GameObject>("RoR2/DLC1/TreasureCacheVoid/LockboxVoid.prefab").WaitForCompletion().GetComponent<OptionChestBehavior>();
+            vlockbox.numOptions = OptionCount;
+
+            var vlockDt = Addressables.LoadAssetAsync<BasicPickupDropTable>("RoR2/DLC1/TreasureCacheVoid/dtVoidLockbox.asset").WaitForCompletion();
+
+            vlockDt.voidTier1Weight = VoidWhiteChance;
+            vlockDt.voidTier2Weight = VoidGreenChance;
+            vlockDt.voidTier3Weight = VoidRedChance;
         }
     }
 }
-*/

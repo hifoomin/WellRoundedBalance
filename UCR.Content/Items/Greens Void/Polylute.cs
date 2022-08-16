@@ -20,7 +20,7 @@ namespace UltimateCustomRun.Items.VoidGreens
         public override void Init()
         {
             Chance = ConfigOption(25f, "Chance", "Vanilla is 25");
-            TotalDamage = ConfigOption(0.6f, "TOTAL Damage", "Decimal. Vanilla is 0.6");
+            TotalDamage = ConfigOption(0.6f, "Damage", "Decimal. Vanilla is 0.6");
             Strikes = ConfigOption(3, "Hit Count", "Per Stack. Vanilla is 3");
             ProcCoefficient = ConfigOption(0.2f, "Proc Coefficient", "Vanilla is 0.2");
             base.Init();
@@ -28,13 +28,10 @@ namespace UltimateCustomRun.Items.VoidGreens
 
         public override void Hooks()
         {
-            IL.RoR2.GlobalEventManager.OnHitEnemy += ChangeChance;
-            IL.RoR2.GlobalEventManager.OnHitEnemy += ChangeDamage;
-            IL.RoR2.GlobalEventManager.OnHitEnemy += ChangeStrikes;
-            IL.RoR2.GlobalEventManager.OnHitEnemy += ChangeProcCo;
+            IL.RoR2.GlobalEventManager.OnHitEnemy += Changes;
         }
 
-        private void ChangeProcCo(ILContext il)
+        private void Changes(ILContext il)
         {
             ILCursor c = new(il);
 
@@ -48,11 +45,8 @@ namespace UltimateCustomRun.Items.VoidGreens
             {
                 Main.UCRLogger.LogError("Failed to apply Polylute Proc Coefficient hook");
             }
-        }
 
-        private void ChangeStrikes(ILContext il)
-        {
-            ILCursor c = new(il);
+            c.Index = 0;
 
             if (c.TryGotoNext(MoveType.Before,
                     x => x.MatchStfld<RoR2.Orbs.VoidLightningOrb>("isCrit"),
@@ -66,11 +60,8 @@ namespace UltimateCustomRun.Items.VoidGreens
             {
                 Main.UCRLogger.LogError("Failed to apply Polylute Hits hook");
             }
-        }
 
-        private void ChangeDamage(ILContext il)
-        {
-            ILCursor c = new(il);
+            c.Index = 0;
 
             if (c.TryGotoNext(MoveType.Before,
                     x => x.MatchCallOrCallvirt(typeof(Util).GetMethod("CheckRoll",
@@ -85,11 +76,8 @@ namespace UltimateCustomRun.Items.VoidGreens
             {
                 Main.UCRLogger.LogError("Failed to apply Polylute Damage hook");
             }
-        }
 
-        private void ChangeChance(ILContext il)
-        {
-            ILCursor c = new(il);
+            c.Index = 0;
 
             if (c.TryGotoNext(MoveType.Before,
                     x => x.MatchLdsfld("RoR2.DLC1Content/Items", "ChainLightningVoid"),

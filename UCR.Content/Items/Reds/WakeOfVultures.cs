@@ -24,8 +24,8 @@ namespace UltimateCustomRun.Items.Reds
         {
             Duration = ConfigOption(8f, "Duration", "Vanilla is 8");
             StackDuration = ConfigOption(5f, "Stack Duration", "Per Stack. Vanilla is 5");
-            Speed = ConfigOption(0f, "Speed Increase", "Vanilla is 0");
-            StackSpeed = ConfigOption(0f, "Stack Speed Increase", "Vanilla is 0");
+            Speed = ConfigOption(0f, "Speed Increase", "Decimal. Vanilla is 0");
+            StackSpeed = ConfigOption(0f, "Stack Speed Increase", "Decimal. Per Stack. Vanilla is 0");
             OnlyUnderBuff = ConfigOption(false, "Should the Speed Increase only work with an Elite buff?", "");
             base.Init();
         }

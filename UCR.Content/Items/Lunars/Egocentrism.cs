@@ -22,11 +22,10 @@ namespace UltimateCustomRun.Items.Lunars
 
         public override void Hooks()
         {
-            IL.RoR2.LunarSunBehavior.FixedUpdate += ChangeDamage;
-            IL.RoR2.LunarSunBehavior.FixedUpdate += ChangeTimer;
+            IL.RoR2.LunarSunBehavior.FixedUpdate += Changes;
         }
 
-        private void ChangeTimer(ILContext il)
+        private void Changes(ILContext il)
         {
             ILCursor c = new(il);
 
@@ -39,14 +38,11 @@ namespace UltimateCustomRun.Items.Lunars
             {
                 Main.UCRLogger.LogError("Failed to apply Egocentrism Time hook");
             }
-        }
 
-        private void ChangeDamage(ILContext il)
-        {
-            ILCursor c = new(il);
+            c.Index = 0;
 
             if (c.TryGotoNext(MoveType.Before,
-                    x => x.MatchLdcR4(3.6f)))
+                x => x.MatchLdcR4(3.6f)))
             {
                 c.Next.Operand = Damage;
             }

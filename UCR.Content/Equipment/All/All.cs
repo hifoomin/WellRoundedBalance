@@ -1,12 +1,21 @@
 ﻿using RoR2;
-using UnityEngine;
 using UnityEngine.AddressableAssets;
 
-namespace UltimateCustomRun.Items.Equipment
+namespace UltimateCustomRun.Equipment
 {
-    public class All : GlobalBase
+    public class All : EquipmentBase
     {
-        public override string Name => "::: Equipment :: All";
+        public override string Name => "::: Equipment : All";
+        public override string InternalPickupToken => "guh";
+
+        public override bool NewPickup => false;
+
+        public override bool NewDesc => false;
+
+        public override string PickupText => "";
+
+        public override string DescText => "";
+
         public static float BlastShowerCd;
         public static float DisposableCd;
         public static float VaseCd;

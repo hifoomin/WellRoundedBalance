@@ -79,6 +79,8 @@ namespace UltimateCustomRun.Items.Yellows
                 Main.UCRLogger.LogError("Failed to apply Irradiant Pearl Percent Health hook");
             }
 
+            c.Index = 0;
+
             if (c.TryGotoNext(MoveType.Before,
                     x => x.MatchLdloc(30),
                     x => x.MatchConvR4(),
@@ -93,6 +95,8 @@ namespace UltimateCustomRun.Items.Yellows
             {
                 Main.UCRLogger.LogError("Failed to apply Irradiant Pearl Flat Regen hook");
             }
+
+            c.Index = 0;
 
             if (c.TryGotoNext(MoveType.Before,
                     x => x.MatchLdloc(30),
@@ -110,6 +114,8 @@ namespace UltimateCustomRun.Items.Yellows
                 Main.UCRLogger.LogError("Failed to apply Irradiant Pearl Percent Speed hook");
             }
 
+            c.Index = 0;
+
             if (c.TryGotoNext(MoveType.Before,
                     x => x.MatchLdloc(30),
                     x => x.MatchConvR4(),
@@ -125,6 +131,8 @@ namespace UltimateCustomRun.Items.Yellows
             {
                 Main.UCRLogger.LogError("Failed to apply Irradiant Pearl Percent Damage hook");
             }
+
+            c.Index = 0;
 
             if (c.TryGotoNext(MoveType.Before,
                     x => x.MatchLdloc(30),
@@ -142,6 +150,8 @@ namespace UltimateCustomRun.Items.Yellows
                 Main.UCRLogger.LogError("Failed to apply Irradiant Pearl Percent Attack Speed hook");
             }
 
+            c.Index = 0;
+
             if (c.TryGotoNext(MoveType.Before,
                     x => x.MatchLdloc(30),
                     x => x.MatchConvR4(),
@@ -157,6 +167,8 @@ namespace UltimateCustomRun.Items.Yellows
             {
                 Main.UCRLogger.LogError("Failed to apply Irradiant Pearl Percent Crit hook");
             }
+
+            c.Index = 0;
 
             if (c.TryGotoNext(MoveType.Before,
                     x => x.MatchLdcR4(1f),

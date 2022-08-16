@@ -23,7 +23,7 @@ namespace UltimateCustomRun.Items.Whites
 
         public override void Init()
         {
-            Damage = ConfigOption(1.8f, "Total Damage", "Decimal. Vanilla is 1.8");
+            Damage = ConfigOption(1.8f, "Damage", "Decimal. Vanilla is 1.8");
             Chance = ConfigOption(5f, "Chance", "Vanilla is 5");
             Delay = ConfigOption(1.5f, "Delay", "Vanilla is 1.5");
             Radius = ConfigOption(10f, "Range", "Vanilla is 10");

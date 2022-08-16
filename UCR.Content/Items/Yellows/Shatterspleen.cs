@@ -33,11 +33,10 @@ namespace UltimateCustomRun.Items.Yellows
         public override void Hooks()
         {
             RecalculateStatsAPI.GetStatCoefficients += AddBehavior;
-            IL.RoR2.GlobalEventManager.OnCharacterDeath += ChangeExplosionDamage;
-            IL.RoR2.GlobalEventManager.OnCharacterDeath += ChangeAoE;
+            IL.RoR2.GlobalEventManager.OnCharacterDeath += Changes;
         }
 
-        public static void ChangeExplosionDamage(ILContext il)
+        public static void Changes(ILContext il)
         {
             ILCursor c = new(il);
 
@@ -53,6 +52,8 @@ namespace UltimateCustomRun.Items.Yellows
                 Main.UCRLogger.LogError("Failed to apply Shatterspleen Base Explosion Damage hook");
             }
 
+            c.Index = 0;
+
             if (c.TryGotoNext(MoveType.Before,
                     x => x.MatchLdcR4(0.15f),
                     x => x.MatchLdcI4(1),
@@ -64,11 +65,8 @@ namespace UltimateCustomRun.Items.Yellows
             {
                 Main.UCRLogger.LogError("Failed to apply Shatterspleen Percent Explosion Damage hook");
             }
-        }
 
-        public static void ChangeAoE(ILContext il)
-        {
-            ILCursor c = new(il);
+            c.Index = 0;
 
             if (c.TryGotoNext(MoveType.Before,
                     x => x.MatchLdcR4(0.0f),

@@ -18,8 +18,8 @@ namespace UltimateCustomRun.Items.Greens
 
         public override void Init()
         {
-            Speed = ConfigOption(0.3f, "Speed", "Decimal. Per Stack. Vanilla is 0.3");
-            UnconditionalSpeed = ConfigOption(0f, "Unconditional Speed", "Decimal. Per Stack. Vanilla is 0");
+            Speed = ConfigOption(0.3f, "Movement Speed", "Decimal. Per Stack. Vanilla is 0.3");
+            UnconditionalSpeed = ConfigOption(0f, "Unconditional Movement Speed", "Decimal. Per Stack. Vanilla is 0");
             base.Init();
         }
 

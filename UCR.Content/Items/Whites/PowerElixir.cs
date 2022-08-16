@@ -18,7 +18,7 @@ namespace UltimateCustomRun.Items.Whites
 
         public override void Init()
         {
-            Healing = ConfigOption(0.75f, "Healing", "Decimal. Vanilla is 0.75");
+            Healing = ConfigOption(0.75f, "Percent Healing", "Decimal. Vanilla is 0.75");
             base.Init();
         }
 

@@ -49,7 +49,7 @@ namespace UltimateCustomRun.Items.Greens
                     switch (StackBurnChance)
                     {
                         default:
-                            if (Util.CheckRoll(BurnChance + BurnChance * (stack - 1), damageInfo.attacker.GetComponent<CharacterBody>().master.luck))
+                            if (Util.CheckRoll(BurnChance * damageInfo.procCoefficient + BurnChance * damageInfo.procCoefficient * (stack - 1), damageInfo.attacker.GetComponent<CharacterBody>().master.luck))
                             {
                                 InflictDotInfo blaze = new()
                                 {
@@ -63,7 +63,7 @@ namespace UltimateCustomRun.Items.Greens
                             break;
 
                         case false:
-                            if (Util.CheckRoll(BurnChance, damageInfo.attacker.GetComponent<CharacterBody>().master.luck))
+                            if (Util.CheckRoll(BurnChance * damageInfo.procCoefficient, damageInfo.attacker.GetComponent<CharacterBody>().master.luck))
                             {
                                 InflictDotInfo blaze = new()
                                 {

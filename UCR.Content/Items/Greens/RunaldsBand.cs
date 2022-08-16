@@ -26,7 +26,7 @@ namespace UltimateCustomRun.Items.Greens
 
         public override void Init()
         {
-            TotalDamage = ConfigOption(2.5f, "Total Damage", "Decimal. Per Stack. Vanilla is 2.5");
+            TotalDamage = ConfigOption(2.5f, "Damage", "Decimal. Per Stack. Vanilla is 2.5");
             base.Init();
         }
 

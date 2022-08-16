@@ -14,7 +14,7 @@ namespace UltimateCustomRun.Items.Whites
 
         public override void Init()
         {
-            Damage = ConfigOption(0.2f, "Damage Coefficient", "Decimal. Per Stack. Vanilla is 0.2");
+            Damage = ConfigOption(0.2f, "Damage", "Decimal. Per Stack. Vanilla is 0.2");
             base.Init();
         }
 

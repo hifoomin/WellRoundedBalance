@@ -39,8 +39,7 @@ namespace UltimateCustomRun.Items.Reds
         {
             On.EntityStates.DroneWeaponsChainGun.FireChainGun.OnEnter += ChaingunChanges;
             IL.RoR2.DroneWeaponsBoostBehavior.OnEnemyHit += MissileChanges;
-            IL.RoR2.CharacterBody.RecalculateStats += ChangeAttackSpeed;
-            IL.RoR2.CharacterBody.RecalculateStats += ChangeCooldownReduction;
+            IL.RoR2.CharacterBody.RecalculateStats += Changes;
         }
 
         public static void MissileChanges(ILContext il)
@@ -57,6 +56,8 @@ namespace UltimateCustomRun.Items.Reds
                 Main.UCRLogger.LogError("Failed to apply Spare Drone Parts Missile Chance hook");
             }
 
+            c.Index = 0;
+
             if (c.TryGotoNext(MoveType.Before,
                     x => x.MatchLdcR4(3f)))
             {
@@ -68,7 +69,7 @@ namespace UltimateCustomRun.Items.Reds
             }
         }
 
-        public static void ChangeAttackSpeed(ILContext il)
+        public static void Changes(ILContext il)
         {
             ILCursor c = new(il);
 
@@ -85,11 +86,8 @@ namespace UltimateCustomRun.Items.Reds
             {
                 Main.UCRLogger.LogError("Failed to apply Spare Drone Parts Attack Speed hook");
             }
-        }
 
-        public static void ChangeCooldownReduction(ILContext il)
-        {
-            ILCursor c = new(il);
+            c.Index = 0;
 
             if (c.TryGotoNext(MoveType.Before,
                     x => x.MatchLdloc(87),
