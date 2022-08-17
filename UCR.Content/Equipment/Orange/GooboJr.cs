@@ -18,15 +18,15 @@ namespace UltimateCustomRun.Equipment
 
         public static float Duration;
         public static int MaxGoobos;
-        // public static int Damage;
-        // public static int Health;
+        public static int Damage;
+        public static int Health;
 
         public override void Init()
         {
             Duration = ConfigOption(30f, "Lifetime", "Vanilla is 30");
             MaxGoobos = ConfigOption(3, "Max Goboos", "Vanilla is 3");
-            // Damage = ConfigOption(2, "Damage Bonus", "Decimal. Vanilla is 2");
-            // Health = ConfigOption(2, "Health Bonus", "Decimal. Vanilla is 2");
+            Damage = ConfigOption(2, "Damage Bonus", "Decimal. Vanilla is 2");
+            Health = ConfigOption(2, "Health Bonus", "Decimal. Vanilla is 2");
             base.Init();
         }
 
@@ -67,12 +67,9 @@ namespace UltimateCustomRun.Equipment
         private void Changes(On.RoR2.Projectile.GummyCloneProjectile.orig_OnProjectileImpact orig, RoR2.Projectile.GummyCloneProjectile self, RoR2.Projectile.ProjectileImpactInfo impactInfo)
         {
             self.maxLifetime = Duration;
-            // self.damageBoostCount = Damage;
-            // self.hpBoostCount = Health;
-            // does nothing
             orig(self, impactInfo);
+            self.damageBoostCount = Damage;
+            self.hpBoostCount = Health;
         }
-
-        // goobo is dumb and none of this works
     }
 }

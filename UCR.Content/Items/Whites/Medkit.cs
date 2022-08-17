@@ -39,7 +39,7 @@ namespace UltimateCustomRun.Items.Whites
                     x => x.MatchStloc(0),
                     x => x.MatchLdcR4(20f)))
             {
-                c.Index += 2;
+                c.Index += 3;
                 c.Next.Operand = FlatHealing;
             }
             else

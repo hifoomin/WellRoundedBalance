@@ -18,10 +18,10 @@ namespace UltimateCustomRun.Equipment
 
         public override string PickupText => "";
 
-        public override string DescText => "<style=cIsDamage>Ignite</style> ALL characters within " + Radius + "m for " + Duration + " seconds. Deal <style=cIsDamage>" + d(SelfDamage * 5) + " of your maximum health/second as burning</style> to yourself. The burn is <style=cIsDamage>" + d(Mathf.Abs((AllyDamage * 5) - (SelfDamage * 5) / Mathf.Abs(SelfDamage * 5))) + "</style>" +
-                                           (SelfDamage * 5 > AllyDamage * 5 ? " weaker" : " stronger") +
-                                           " on allies, and <style=cIsDamage>" + d(Mathf.Abs((EnemyDamage * 5) - (SelfDamage * 5) / Mathf.Abs(SelfDamage * 5))) + "</style>" +
-                                           (SelfDamage * 5 > EnemyDamage * 5 ? " weaker" : " stronger") +
+        public override string DescText => "<style=cIsDamage>Ignite</style> ALL characters within " + Radius + "m for " + Duration + " seconds. Deal <style=cIsDamage>" + d(SelfDamage * 5) + " of your maximum health/second as burning</style> to yourself. The burn is <style=cIsDamage>" + d(Mathf.Abs(AllyDamage - SelfDamage / Mathf.Abs(SelfDamage))) + "</style>" +
+                                           (SelfDamage > AllyDamage ? " weaker" : " stronger") +
+                                           " on allies, and <style=cIsDamage>" + d(Mathf.Abs(EnemyDamage - SelfDamage / Mathf.Abs(SelfDamage))) + "</style>" +
+                                           (SelfDamage > EnemyDamage ? " weaker" : " stronger") +
                                             " on enemies.";
 
         public static float SelfDamage;

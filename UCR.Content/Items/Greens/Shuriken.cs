@@ -1,4 +1,4 @@
-﻿/*
+﻿
 using MonoMod.Cil;
 using RoR2;
 using UnityEngine;
@@ -32,17 +32,60 @@ namespace UltimateCustomRun.Items.Greens
 
         public override void Hooks()
         {
-            IL.RoR2.PrimarySkillShurikenBehavior.Awake += Changes;
+            IL.RoR2.PrimarySkillShurikenBehavior.FireShuriken += ChangeDamage;
+            IL.RoR2.PrimarySkillShurikenBehavior.FixedUpdate += Changes;
+            On.RoR2.PrimarySkillShurikenBehavior.Awake += PrimarySkillShurikenBehavior_Awake;
+        }
+
+        private void PrimarySkillShurikenBehavior_Awake(On.RoR2.PrimarySkillShurikenBehavior.orig_Awake orig, PrimarySkillShurikenBehavior self)
+        {
+            self.stack = Count - StackCount;
+            orig(self);
         }
 
         private void Changes(ILContext il)
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
+            if (c.TryGotoNext(MoveType.Before,
+               x => x.MatchLdcR4(10f)))
+            {
+                c.Next.Operand = RechargeTime;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Shuriken Cooldown hook");
+            }
 
-            );
+            c.Index = 0;
+
+            if (c.TryGotoNext(MoveType.Before,
+                x => x.MatchLdcI4(2)))
+            {
+                c.Next.Operand = StackCount;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Shuriken Stack hook");
+            }
+        }
+
+        private void ChangeDamage(ILContext il)
+        {
+            ILCursor c = new(il);
+
+            if (c.TryGotoNext(MoveType.Before,
+               x => x.MatchLdcR4(3f),
+               x => x.MatchLdcR4(1f)))
+            {
+                c.Next.Operand = Damage;
+                c.Index += 1;
+                c.Next.Operand = StackDamage;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Shuriken Damage hook");
+            }
         }
     }
 }
-*/

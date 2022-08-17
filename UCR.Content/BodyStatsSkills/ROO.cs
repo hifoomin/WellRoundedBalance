@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using EntityStates;
-using BepInEx.Configuration;
 using RoR2;
-using R2API.Utils;
 using RoR2.Skills;
+using System.Linq;
+using UnityEngine;
 
 namespace UltimateCustomRun.BodyStatsSkills
 {
@@ -44,6 +44,11 @@ namespace UltimateCustomRun.BodyStatsSkills
             new("Base Regen", "float", (character) => character.baseRegen.ToString(), (character, value) => character.baseRegen = float.Parse(value)),
             new("Level Regen", "float", (character) => character.levelRegen.ToString(), (character, value) => character.levelRegen = float.Parse(value)),
             new("Sprinting Speed Multiplier", "float", (character) => character.sprintingSpeedMultiplier.ToString(), (character, value) => character.sprintingSpeedMultiplier = float.Parse(value)),
+            new("Size Multiplier", "float", (character) => { var a = character.GetComponent<ModelLocator>().modelTransform.localScale.ToString(); return a.Substring(1, a.Length - 2); }, (character, value) =>
+            {
+                var a = value.Split(',').Select(x => float.Parse(x)).ToArray();
+                character.GetComponent<ModelLocator>().modelTransform.localScale = new Vector3(a[0], a[1], a[2]);
+            })
         };
 
         public static readonly List<Tuple<string, string, Func<SkillDef, string>, Action<SkillDef, string>, string>> SkillModifyableValues = new()
