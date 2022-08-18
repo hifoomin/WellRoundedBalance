@@ -11,7 +11,7 @@ namespace UltimateCustomRun.Items.Whites
         public static float VoidGreenChance;
         public static float VoidRedChance;
 
-        public override string Name => ":: Items :::::: Void Whites :: Encrusted Key";
+        public override string Name => ":: Items :::::: Voids :: Encrusted Key";
         public override string InternalPickupToken => "treasureCacheVoid";
         public override bool NewPickup => false;
         public override string PickupText => "";

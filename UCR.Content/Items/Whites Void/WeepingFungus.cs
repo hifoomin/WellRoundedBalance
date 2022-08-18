@@ -7,7 +7,7 @@ namespace UltimateCustomRun.Items.VoidWhites
         public static float HealPercent;
         public static float Interval;
 
-        public override string Name => ":: Items :::::: Void Whites :: Weeping Fungus";
+        public override string Name => ":: Items :::::: Voids :: Weeping Fungus";
         public override string InternalPickupToken => "mushroomVoid";
         public override bool NewPickup => false;
         public override string PickupText => "";

@@ -27,7 +27,7 @@ namespace UltimateCustomRun.Equipment
 
             if (Name.Contains("Equipment"))
             {
-                tabID = 10;
+                tabID = 8;
                 ModName = "Equipment";
                 ModSettingsManager.SetModIcon(Main.UCR.LoadAsset<Sprite>("texUCRIcon.png"), "UltimateCustomRun.TabID." + tabID, "UCR: " + ModName);
             }

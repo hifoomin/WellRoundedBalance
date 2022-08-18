@@ -54,22 +54,10 @@ namespace UltimateCustomRun.Items
                 ModName = "Lunars";
                 ModSettingsManager.SetModIcon(Main.UCR.LoadAsset<Sprite>("texUCRIcon.png"), "UltimateCustomRun.TabID." + tabID, "UCR: " + ModName);
             }
-            if (Name.Contains("Void Whites"))
+            if (Name.Contains("Voids"))
             {
                 tabID = 6;
-                ModName = "Void Whites";
-                ModSettingsManager.SetModIcon(Main.UCR.LoadAsset<Sprite>("texUCRIcon.png"), "UltimateCustomRun.TabID." + tabID, "UCR: " + ModName);
-            }
-            if (Name.Contains("Void Greens"))
-            {
-                tabID = 7;
-                ModName = "Void Greens";
-                ModSettingsManager.SetModIcon(Main.UCR.LoadAsset<Sprite>("texUCRIcon.png"), "UltimateCustomRun.TabID." + tabID, "UCR: " + ModName);
-            }
-            if (Name.Contains("Void Reds"))
-            {
-                tabID = 8;
-                ModName = "Void Reds";
+                ModName = "Voids";
                 ModSettingsManager.SetModIcon(Main.UCR.LoadAsset<Sprite>("texUCRIcon.png"), "UltimateCustomRun.TabID." + tabID, "UCR: " + ModName);
             }
             switch (value)

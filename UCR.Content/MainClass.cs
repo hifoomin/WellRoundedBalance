@@ -18,7 +18,7 @@ using UltimateCustomRun.BodyStatsSkills;
 namespace UltimateCustomRun
 {
     /* TODO:
-     - Power Elixir, Delicate Watch, Genesis Loop and Old War Stealhkit health thresholds
+     - Genesis Loop and Old War Stealhkit health thresholds
      - Hopoo Feather counts as n of itself when jumping
      - Lepton Lily counts as n of itself when calculating pulse thresholds
      - Leeching Seed counts as n of itself when healing
@@ -38,14 +38,13 @@ namespace UltimateCustomRun
      - Gesture of The Drowned random equipment cooldown on every equipment activation
      - Light Flux Pauldron cooldown and attack speed
      - Mercurial Rachis radius and damage
-     - Shaped Glass damage, curse, linear damage
-     - Stone Flux Pauldron health, move speed, mass
      - Strides of Heresy move speed, healing, duration, cooldown
      - Transcendence increasing shield recharge timer every stack
      - Needletick % and count for elites
      - Newly Hatched Zoea cooldown, max allies
-     - Singularity Band damage, cooldown, range, detonation timer
-     - Tentabauble debuff duration
+     - Stone Flux Pauldron Mass
+     //// - Singularity Band damage, cooldown, range, detonation timer
+     //// - Tentabauble debuff duration
      - Goobo Jr stat boosts
      - Milky Chrysalis flight speed, glide speed, boost speed and cooldown
     */
@@ -53,7 +52,7 @@ namespace UltimateCustomRun
     [BepInDependency(R2API.R2API.PluginGUID)]
     [BepInDependency("com.rune580.riskofoptions")]
     [BepInPlugin(PluginGUID, PluginName, PluginVersion)]
-    [R2APISubmoduleDependency(nameof(LanguageAPI), nameof(RecalculateStatsAPI), nameof(LoadoutAPI), nameof(DirectorAPI), nameof(PrefabAPI))]
+    [R2APISubmoduleDependency(nameof(LanguageAPI), nameof(RecalculateStatsAPI), nameof(LoadoutAPI), nameof(DirectorAPI), nameof(PrefabAPI), nameof(ItemAPI))]
     public class Main : BaseUnityPlugin
     {
         public const string PluginGUID = PluginAuthor + "." + PluginName;

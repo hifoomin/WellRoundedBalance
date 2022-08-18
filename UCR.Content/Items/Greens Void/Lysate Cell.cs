@@ -6,7 +6,7 @@ namespace UltimateCustomRun.Items.VoidGreens
     {
         public static float CooldownReduction;
 
-        public override string Name => ":: Items ::::::: Void Greens :: Lysate Cell";
+        public override string Name => ":: Items :::::: Voids :: Lysate Cell";
         public override string InternalPickupToken => "equipmentMagazineVoid";
         public override bool NewPickup => false;
         public override string PickupText => "";

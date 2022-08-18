@@ -9,7 +9,7 @@ namespace UltimateCustomRun.Items.VoidReds
     {
         public static int ItemCount;
 
-        public override string Name => ":: Items :::::::: Void Reds :: Benthic Bloom";
+        public override string Name => ":: Items :::::: Voids :: Benthic Bloom";
         public override string InternalPickupToken => "cloverVoid";
         public override bool NewPickup => false;
         public override string PickupText => "";

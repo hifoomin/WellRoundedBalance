@@ -10,7 +10,7 @@ namespace UltimateCustomRun.Items.VoidWhites
         public static float Chance;
         public static int EliteNumber;
 
-        public override string Name => ":: Items :::::: Void Whites :: Needletick";
+        public override string Name => ":: Items :::::: Voids :: Needletick";
         public override string InternalPickupToken => "bleedOnHitVoid";
         public override bool NewPickup => false;
         public override string PickupText => "";

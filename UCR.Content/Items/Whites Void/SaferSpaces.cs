@@ -8,7 +8,7 @@ namespace UltimateCustomRun.Items.VoidWhites
         public static float StackCooldown;
         public static bool Formula;
 
-        public override string Name => ":: Items :::::: Void Whites :: Safer Spaces";
+        public override string Name => ":: Items :::::: Voids :: Safer Spaces";
         public override string InternalPickupToken => "bearVoid";
         public override bool NewPickup => false;
         public override string PickupText => "";

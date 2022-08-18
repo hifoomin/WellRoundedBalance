@@ -10,7 +10,7 @@ namespace UltimateCustomRun.Items.VoidGreens
         public static float StackRadius;
         public static bool RemoveKnockback;
 
-        public override string Name => ":: Items ::::::: Void Greens :: Voidsent Flame";
+        public override string Name => ":: Items :::::: Voids :: Voidsent Flame";
         public override string InternalPickupToken => "explodeOnDeathVoid";
         public override bool NewPickup => false;
         public override string PickupText => "";

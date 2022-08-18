@@ -20,7 +20,7 @@ namespace UltimateCustomRun
 
             if (Name.Contains("Global"))
             {
-                tabID = 9;
+                tabID = 7;
                 ModName = "Global";
                 ModSettingsManager.SetModIcon(Main.UCR.LoadAsset<Sprite>("texUCRIcon.png"), "UltimateCustomRun.TabID." + tabID, "UCR: " + ModName);
             }

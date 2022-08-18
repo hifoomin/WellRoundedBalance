@@ -11,7 +11,7 @@ namespace UltimateCustomRun.Items.VoidGreens
         public static int Strikes;
         public static float ProcCoefficient;
 
-        public override string Name => ":: Items ::::::: Void Greens :: Polylute";
+        public override string Name => ":: Items :::::: Voids :: Polylute";
         public override string InternalPickupToken => "chainLightningVoid";
         public override bool NewPickup => false;
         public override string PickupText => "";

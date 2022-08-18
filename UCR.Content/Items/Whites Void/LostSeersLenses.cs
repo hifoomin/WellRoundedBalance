@@ -6,7 +6,7 @@ namespace UltimateCustomRun.Items.VoidWhites
     {
         public static float Chance;
 
-        public override string Name => ":: Items :::::: Void Whites :: Lost Seers Lenses";
+        public override string Name => ":: Items :::::: Voids :: Lost Seers Lenses";
         public override string InternalPickupToken => "critGlassesVoid";
         public override bool NewPickup => true;
         public override string PickupText => "Gain a " + Chance + "% chance to instantly kill a non-boss enemy. <style=cIsVoid>Corrupts all Lens-Maker's Glasses</style>.";

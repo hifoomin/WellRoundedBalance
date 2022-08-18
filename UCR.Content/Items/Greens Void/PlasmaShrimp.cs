@@ -9,7 +9,7 @@ namespace UltimateCustomRun.Items.VoidGreens
         public static float TotalDamage;
         public static float ProcCoefficient;
 
-        public override string Name => ":: Items ::::::: Void Greens :: Plasma Shrimp";
+        public override string Name => ":: Items :::::: Voids :: Plasma Shrimp";
         public override string InternalPickupToken => "missileVoid";
         public override bool NewPickup => false;
         public override string PickupText => "";

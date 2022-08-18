@@ -27,8 +27,8 @@ namespace UltimateCustomRun.Items.Greens
 
         public override void Init()
         {
-            TotalDamage = ConfigOption(3f, "Total Damage", "Decimal. Per Stack. Vanilla is 3");
-            Threshold = ConfigOption(4f, "Damage Threshold", "Decimal. Affects both Bands. Vanilla is 4");
+            TotalDamage = ConfigOption(3f, "Damage", "Decimal. Per Stack. Vanilla is 3");
+            Threshold = ConfigOption(4f, "Damage Threshold", "Decimal. Affects all Bands. Vanilla is 4");
             Cooldown = ConfigOption(10f, "Cooldown", "Affects both Bands. Vanilla is 10");
             base.Init();
         }
