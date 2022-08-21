@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace UltimateCustomRun
+namespace UltimateCustomRun.Global
 {
     public abstract class GlobalBase<T> : GlobalBase where T : GlobalBase<T>
     {

@@ -4,9 +4,9 @@ using RiskOfOptions.OptionConfigs;
 using RiskOfOptions.Options;
 using UnityEngine;
 
-namespace UltimateCustomRun
+namespace UltimateCustomRun.Elites
 {
-    public abstract class GlobalBase
+    public abstract class DirectorBase
     {
         public abstract string Name { get; }
         public virtual bool isEnabled { get; } = true;
@@ -14,14 +14,14 @@ namespace UltimateCustomRun
 
         public T ConfigOption<T>(T value, string name, string description)
         {
-            config = Main.UCRConfig.Bind(Name, name, value, description);
+            config = Main.UCRDConfig.Bind(Name, name, value, description);
             var tabID = 0;
             var ModName = "";
 
-            if (Name.Contains("Global"))
+            if (Name.Contains("Directors"))
             {
-                tabID = 7;
-                ModName = "Global";
+                tabID = 9;
+                ModName = "Directors";
                 ModSettingsManager.SetModIcon(Main.UCR.LoadAsset<Sprite>("texUCRIcon.png"), "UltimateCustomRun.TabID." + tabID, "UCR: " + ModName);
             }
             switch (value)
@@ -57,15 +57,10 @@ namespace UltimateCustomRun
                     break;
             }
 
-            return Main.UCRConfig.Bind<T>(Name, name, value, description).Value;
+            return Main.UCRDConfig.Bind<T>(Name, name, value, description).Value;
         }
 
         public abstract void Hooks();
-
-        public string d(float f)
-        {
-            return (f * 100f).ToString() + "%";
-        }
 
         public virtual void Init()
         {

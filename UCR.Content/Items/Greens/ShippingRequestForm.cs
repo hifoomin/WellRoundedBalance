@@ -25,7 +25,7 @@ namespace UltimateCustomRun.Items.Greens
         public override void Init()
         {
             WhiteChance = ConfigOption(0.79f, "White Weight", "Decimal. Vanilla is 0.79");
-            GreenChance = ConfigOption(0.79f, "Green Weight", "Decimal. Vanilla is 0.2");
+            GreenChance = ConfigOption(0.2f, "Green Weight", "Decimal. Vanilla is 0.2");
             RedChance = ConfigOption(0.01f, "Red Weight", "Decimal. Vanilla is 0.01");
             base.Init();
         }

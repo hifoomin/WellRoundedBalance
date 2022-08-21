@@ -14,6 +14,8 @@ using RiskOfOptions.Options;
 using UltimateCustomRun.Items;
 using UltimateCustomRun.Equipment;
 using UltimateCustomRun.BodyStatsSkills;
+using UltimateCustomRun.Global;
+using UltimateCustomRun.Elites;
 
 namespace UltimateCustomRun
 {
@@ -43,14 +45,14 @@ namespace UltimateCustomRun
      - Needletick % and count for elites
      - Newly Hatched Zoea cooldown, max allies
      - Stone Flux Pauldron Mass
-     //// - Singularity Band damage, cooldown, range, detonation timer
-     //// - Tentabauble debuff duration
      - Goobo Jr stat boosts
      - Milky Chrysalis flight speed, glide speed, boost speed and cooldown
     */
 
     [BepInDependency(R2API.R2API.PluginGUID)]
     [BepInDependency("com.rune580.riskofoptions")]
+    [BepInDependency("com.Wolfo.WolfoQualityOfLife", BepInDependency.DependencyFlags.SoftDependency)]
+    [BepInDependency("Withor.FixedDescriptions", BepInDependency.DependencyFlags.SoftDependency)] // may thy name shall not curse mine project
     [BepInPlugin(PluginGUID, PluginName, PluginVersion)]
     [R2APISubmoduleDependency(nameof(LanguageAPI), nameof(RecalculateStatsAPI), nameof(LoadoutAPI), nameof(DirectorAPI), nameof(PrefabAPI), nameof(ItemAPI))]
     public class Main : BaseUnityPlugin
@@ -58,9 +60,14 @@ namespace UltimateCustomRun
         public const string PluginGUID = PluginAuthor + "." + PluginName;
         public const string PluginAuthor = "HIFU";
         public const string PluginName = "UltimateCustomRun";
-        public const string PluginVersion = "0.2.1";
+        public const string PluginVersion = "0.3.0";
         public static ConfigFile UCRConfig;
         public static ManualLogSource UCRLogger;
+        public static ConfigFile UCREConfig;
+        public static ConfigFile UCREQConfig;
+        public static ConfigFile UCRIConfig;
+        public static ConfigFile UCRGConfig;
+        public static ConfigFile UCRDConfig;
 
         public static AssetBundle UCR;
         public static ConfigEntry<bool> Dummy { get; set; }
@@ -71,7 +78,11 @@ namespace UltimateCustomRun
         {
             UCRLogger = Logger;
             Main.UCRConfig = base.Config;
-
+            UCREConfig = new ConfigFile(Paths.ConfigPath + "\\HIFU.UltimateCustomRun.Elites.cfg", true);
+            UCREQConfig = new ConfigFile(Paths.ConfigPath + "\\HIFU.UltimateCustomRun.Equipment.cfg", true);
+            UCRIConfig = new ConfigFile(Paths.ConfigPath + "\\HIFU.UltimateCustomRun.Items.cfg", true);
+            UCRGConfig = new ConfigFile(Paths.ConfigPath + "\\HIFU.UltimateCustomRun.Global.cfg", true);
+            UCRDConfig = new ConfigFile(Paths.ConfigPath + "\\HIFU.UltimateCustomRun.Directors.cfg", true);
             UCR = AssetBundle.LoadFromFile(Assembly.GetExecutingAssembly().Location.Replace("UltimateCustomRun.dll", "ultimatecustomrun"));
             // load brundle
             ModSettingsManager.SetModIcon(UCR.LoadAsset<Sprite>("texUCRIcon.png"));
@@ -82,8 +93,6 @@ namespace UltimateCustomRun
             ModSettingsManager.AddOption(new CheckBoxOption(Dummy));
             ModSettingsManager.AddOption(new CheckBoxOption(Dummy2));
             ModSettingsManager.AddOption(new CheckBoxOption(Dummy3));
-
-            // module/base init stuff below
 
             IEnumerable<Type> enumerable = from type in Assembly.GetExecutingAssembly().GetTypes()
                                            where !type.IsAbstract && type.IsSubclassOf(typeof(GlobalBase))

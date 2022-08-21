@@ -1,6 +1,8 @@
-﻿using MonoMod.Cil;
+﻿using Mono.Cecil.Cil;
+using MonoMod.Cil;
 using RoR2;
 using RoR2.Projectile;
+using System;
 using UnityEngine;
 
 namespace UltimateCustomRun.Items.Reds
@@ -29,68 +31,8 @@ namespace UltimateCustomRun.Items.Reds
 
         public override void Hooks()
         {
-            IL.RoR2.MissileUtils.FireMissile_Vector3_CharacterBody_ProcChainMask_GameObject_float_bool_GameObject_DamageColorIndex_Vector3_float_bool += ChangeDamage;
+            IL.RoR2.MissileUtils.FireMissile_Vector3_CharacterBody_ProcChainMask_GameObject_float_bool_GameObject_DamageColorIndex_Vector3_float_bool += Changes;
             // IL.RoR2.GlobalEventManager.OnHitEnemy += ChangeMissileCount;
-            On.RoR2.MissileUtils.FireMissile_Vector3_CharacterBody_ProcChainMask_GameObject_float_bool_GameObject_DamageColorIndex_Vector3_float_bool += RewriteStupidShit;
-        }
-
-        private void RewriteStupidShit(On.RoR2.MissileUtils.orig_FireMissile_Vector3_CharacterBody_ProcChainMask_GameObject_float_bool_GameObject_DamageColorIndex_Vector3_float_bool orig, UnityEngine.Vector3 position, RoR2.CharacterBody attackerBody, RoR2.ProcChainMask procChainMask, UnityEngine.GameObject victim, float missileDamage, bool isCrit, UnityEngine.GameObject projectilePrefab, RoR2.DamageColorIndex damageColorIndex, UnityEngine.Vector3 initialDirection, float force, bool addMissileProc)
-        {
-            int? num;
-            Inventory inventory = attackerBody.inventory;
-            if (attackerBody == null)
-            {
-                num = null;
-            }
-            else
-            {
-                num = ((inventory != null) ? new int?(inventory.GetItemCount(DLC1Content.Items.MoreMissile)) : null);
-            }
-            // dont really understand why nullable and null coalescing here :Thonk:
-            int num2 = num ?? 0;
-            float num3 = Mathf.Max(1f, 1f + Damage * (float)(num2 - 1));
-            InputBankTest component = attackerBody.GetComponent<InputBankTest>();
-            ProcChainMask procChainMask2 = procChainMask;
-            if (addMissileProc)
-            {
-                procChainMask2.AddProc(ProcType.Missile);
-            }
-            FireProjectileInfo fireProjectileInfo = new()
-            {
-                projectilePrefab = projectilePrefab,
-                position = position,
-                rotation = Util.QuaternionSafeLookRotation(initialDirection),
-                procChainMask = procChainMask2,
-                target = victim,
-                owner = attackerBody.gameObject,
-                damage = missileDamage * num3,
-                crit = isCrit,
-                force = force,
-                damageColorIndex = damageColorIndex
-            };
-            ProjectileManager.instance.FireProjectile(fireProjectileInfo);
-
-            int MissileCount = StackMissiles > 0 ? Missiles + StackMissiles * (inventory.GetItemCount(DLC1Content.Items.MoreMissile) - 1) : Missiles;
-
-            if (num2 > 0)
-            {
-                Vector3 axis = component ? component.aimDirection : attackerBody.transform.position;
-                for (int i = 0; i < MissileCount; i++)
-                {
-                    FireProjectileInfo fireProjectileInfo2 = fireProjectileInfo;
-                    float rotation;
-                    if (Missiles % 2 == 0)
-                    {
-                        rotation = -Rotation;
-                    }
-                    else
-                    {
-                        rotation = Rotation;
-                    }
-                    fireProjectileInfo2.rotation = Util.QuaternionSafeLookRotation(Quaternion.AngleAxis(rotation, axis) * initialDirection);
-                    ProjectileManager.instance.FireProjectile(fireProjectileInfo2);
-                }
-            }
         }
 
         private void ChangeMissileCount(ILContext il)
@@ -115,22 +57,51 @@ namespace UltimateCustomRun.Items.Reds
             }
         }
 
-        public static void ChangeDamage(ILContext il)
+        public static void Changes(ILContext il)
         {
             ILCursor c = new(il);
 
-            if (c.TryGotoNext(MoveType.Before,
-                    x => x.MatchLdcR4(1f),
-                    x => x.MatchLdcR4(1f),
-                    x => x.MatchLdcR4(0.5f)))
+            if (c.TryGotoNext(MoveType.After, x => x.MatchCallOrCallvirt(typeof(System.Nullable<Int32>).GetMethod("GetValueOrDefault", new Type[] { }))))
             {
-                c.Index += 2;
-                c.Next.Operand = Damage;
+                c.Index += 4;
+                c.EmitDelegate<Func<float, float>>((orig) => Damage);
+
+                for (int i = 0; c.TryGotoNext(x => x.MatchCallOrCallvirt(typeof(UnityEngine.Quaternion).GetMethod("AngleAxis", (System.Reflection.BindingFlags)(-1)))); i++)
+                {
+                    c.Index--;
+                    c.EmitDelegate<Func<float, float>>((orig) => Rotation * ((i % 2 == 0) ? 1 : (-1)));
+                    c.Index += 2;
+                }
+
+                ILLabel label = c.DefineLabel();
+
+                if (c.TryGotoPrev(MoveType.After, x => x.MatchBle(out label)))
+                {
+                    c.EmitDelegate<Func<bool>>(() => Missiles < 2);
+                    c.Emit(OpCodes.Brtrue, label);
+                    c.GotoLabel(label, MoveType.Before);
+                    c.MoveAfterLabels();
+                    c.Emit(OpCodes.Ldloc_0);
+                    c.Emit(OpCodes.Ldloc, 4);
+                    c.Emit(OpCodes.Ldarg_1);
+                    c.Emit(OpCodes.Ldarg, 8);
+                    c.EmitDelegate<Action<int, FireProjectileInfo, CharacterBody, Vector3>>((stacks, info, body, initDir) =>
+                    {
+                        InputBankTest bank = body.GetComponent<InputBankTest>();
+                        for (int i = 0; i < (stacks - 1) * StackMissiles + ((Missiles == 1) ? 1 : (Missiles > 2) ? Missiles - 2 : 0); i++)
+                        {
+                            info.rotation = Util.QuaternionSafeLookRotation(Quaternion.AngleAxis(Rotation * ((i % 2 == 0) ? 1 : (-1)), bank ? bank.aimDirection : body.transform.position) * initDir);
+                            ProjectileManager.instance.FireProjectile(info);
+                        }
+                    });
+                }
             }
             else
             {
                 Main.UCRLogger.LogError("Failed to apply Pocket I.C.B.M. Damage hook");
             }
+
+            // big thanks to RandomlyAwesome
         }
     }
 }

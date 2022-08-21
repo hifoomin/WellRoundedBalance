@@ -93,7 +93,7 @@ namespace UltimateCustomRun.Items
                     break;
             }
 
-            return Main.UCRConfig.Bind<T>(Name, name, value, description).Value;
+            return Main.UCRIConfig.Bind<T>(Name, name, value, description).Value;
         }
 
         public string Trim(string Text)

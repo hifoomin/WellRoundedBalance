@@ -49,7 +49,7 @@ namespace UltimateCustomRun.Items.Greens
             LevelCoefficient = ConfigOption(0.25f, "Level Scaling Coefficient", "Vanilla is 0");
             BaseHealth = ConfigOption(0f, "Flat Health", "Vanilla is 0");
             PercentHealth = ConfigOption(0f, "Percent Health", "Decimal. Vanilla is 0");
-            Scaling = ConfigOption(false, "Use Level Scaling Cap?", "Formula:\nBase Cap * 1 + 0.3 * (Level - 1) * Count\nVanilla is false");
+            Scaling = ConfigOption(false, "Use Level Scaling Cap?", "Formula:\nBase Cap * 1 + Level Scaling Coefficient * (Level - 1) * Count\nVanilla is false");
             StackBase = ConfigOption(false, "Should Flat Health Stack?", "Vanilla is false");
             StackPercent = ConfigOption(false, "Should Percent Health Stack?", "Vanilla is false");
             base.Init();

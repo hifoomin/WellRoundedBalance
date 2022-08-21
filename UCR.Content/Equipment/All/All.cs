@@ -89,10 +89,10 @@ namespace UltimateCustomRun.Equipment
             var DML = Addressables.LoadAssetAsync<EquipmentDef>("RoR2/Base/CommandMissile/CommandMissile.asset").WaitForCompletion();
             DML.cooldown = DisposableCd;
 
-            var Vase = Addressables.LoadAssetAsync<EquipmentDef>("RoR2/DLC1/MultiShopCard/MultiShopCard.asset").WaitForCompletion();
+            var Vase = Addressables.LoadAssetAsync<EquipmentDef>("RoR2/Base/Gateway/Gateway.asset").WaitForCompletion();
             Vase.cooldown = VaseCd;
 
-            var Card = Addressables.LoadAssetAsync<EquipmentDef>("RoR2/Base/Gateway/Gateway.asset").WaitForCompletion();
+            var Card = Addressables.LoadAssetAsync<EquipmentDef>("RoR2/DLC1/MultiShopCard/MultiShopCard.asset").WaitForCompletion();
             Card.cooldown = CardCd;
 
             var Fruit = Addressables.LoadAssetAsync<EquipmentDef>("RoR2/Base/Fruit/Fruit.asset").WaitForCompletion();

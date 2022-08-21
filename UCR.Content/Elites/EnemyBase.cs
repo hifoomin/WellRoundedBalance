@@ -1,34 +1,27 @@
 ﻿using BepInEx.Configuration;
-using R2API;
 using RiskOfOptions;
 using RiskOfOptions.OptionConfigs;
 using RiskOfOptions.Options;
-using System.Text.RegularExpressions;
 using UnityEngine;
 
-namespace UltimateCustomRun.Equipment
+namespace UltimateCustomRun.Elites
 {
-    public abstract class EquipmentBase
+    public abstract class EnemyBase
     {
         public abstract string Name { get; }
-        public abstract bool NewPickup { get; }
-        public abstract bool NewDesc { get; }
-        public virtual string InternalPickupToken { get; }
-        public abstract string PickupText { get; }
-        public abstract string DescText { get; }
         public virtual bool isEnabled { get; } = true;
         public ConfigEntryBase config;
 
         public T ConfigOption<T>(T value, string name, string description)
         {
-            ConfigEntryBase config = Main.UCRConfig.Bind(Name, name, value, description);
+            config = Main.UCREConfig.Bind(Name, name, value, description);
             var tabID = 0;
             var ModName = "";
 
-            if (Name.Contains("Equipment"))
+            if (Name.Contains("Elites"))
             {
                 tabID = 8;
-                ModName = "Equipment";
+                ModName = "Elites";
                 ModSettingsManager.SetModIcon(Main.UCR.LoadAsset<Sprite>("texUCRIcon.png"), "UltimateCustomRun.TabID." + tabID, "UCR: " + ModName);
             }
             switch (value)
@@ -40,7 +33,7 @@ namespace UltimateCustomRun.Equipment
                 case float:
                     if ((float)config.DefaultValue == 0)
                     {
-                        ModSettingsManager.AddOption(new StepSliderOption((ConfigEntry<float>)config, new StepSliderConfig() { restartRequired = true, increment = 0.01f, min = 0f, max = 100f }), "UltimateCustomRun.TabID." + tabID, "UCR: " + ModName);
+                        ModSettingsManager.AddOption(new StepSliderOption((ConfigEntry<float>)config, new StepSliderConfig() { restartRequired = true, increment = 0.01f, min = 0f, max = 200f }), "UltimateCustomRun.TabID." + tabID, "UCR: " + ModName);
                     }
                     else
                     {
@@ -51,7 +44,7 @@ namespace UltimateCustomRun.Equipment
                 case int:
                     if ((int)config.DefaultValue == 0)
                     {
-                        ModSettingsManager.AddOption(new IntSliderOption((ConfigEntry<int>)config, new IntSliderConfig() { restartRequired = true, min = 0, max = 100 }), "UltimateCustomRun.TabID." + tabID, "UCR: " + ModName);
+                        ModSettingsManager.AddOption(new IntSliderOption((ConfigEntry<int>)config, new IntSliderConfig() { restartRequired = true, min = 0, max = 200 }), "UltimateCustomRun.TabID." + tabID, "UCR: " + ModName);
                     }
                     else
                     {
@@ -64,29 +57,14 @@ namespace UltimateCustomRun.Equipment
                     break;
             }
 
-            return Main.UCREQConfig.Bind<T>(Name, name, value, description).Value;
+            return Main.UCREConfig.Bind<T>(Name, name, value, description).Value;
         }
 
         public abstract void Hooks();
 
-        public string d(float f)
-        {
-            return (f * 100f).ToString() + "%";
-        }
-
         public virtual void Init()
         {
             Hooks();
-            string pickupToken = "EQUIPMENT_" + InternalPickupToken.ToUpper() + "_PICKUP";
-            string descriptionToken = "EQUIPMENT_" + InternalPickupToken.ToUpper() + "_DESC";
-            if (NewPickup)
-            {
-                LanguageAPI.Add(pickupToken, PickupText);
-            }
-            if (NewDesc)
-            {
-                LanguageAPI.Add(descriptionToken, DescText);
-            }
             Main.UCRLogger.LogInfo("Added " + Name);
         }
     }

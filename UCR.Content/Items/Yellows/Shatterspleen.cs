@@ -18,7 +18,10 @@ namespace UltimateCustomRun.Items.Yellows
 
         public override string PickupText => "";
 
-        public override string DescText => "<style=cIsDamage>Critical Strikes bleed</style> enemies for <style=cIsDamage>240%</style> base damage. <style=cIsDamage>Bleeding</style> enemies <style=cIsDamage>explode</style> on death for <style=cIsDamage>400%</style> <style=cStack>(+400% per stack)</style> damage, plus an additional <style=cIsDamage>15%</style> <style=cStack>(+15% per stack)</style> of their maximum health.";
+        public override string DescText => "<style=cIsDamage>Critical Strikes bleed</style> enemies for <style=cIsDamage>240%</style> base damage." +
+            (BaseExplosionDamage > 0f || PercentExplosionDamage > 0f ? "<style=cIsDamage>Bleeding</style> enemies <style=cIsDamage>explode</style> on death for " +
+            (BaseExplosionDamage > 0f ? "<style=cIsDamage>" + d(BaseExplosionDamage) + "</style> <style=cStack>(+" + d(BaseExplosionDamage) + " per stack)</style> damage, plus an additional" : "") +
+            (PercentExplosionDamage > 0f ? "<style=cIsDamage>" + d(PercentExplosionDamage) + "</style> <style=cStack>(+" + d(PercentExplosionDamage) + " per stack)</style> of their maximum health." : "") : "");
 
         public override void Init()
         {

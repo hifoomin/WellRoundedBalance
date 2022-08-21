@@ -9,7 +9,7 @@ namespace UltimateCustomRun.Global
 
         public override void Init()
         {
-            NotMovingTimer = ConfigOption(1f, "Not Moving Timer", "Used for Bustling Fungus. Vanilla is 1.");
+            NotMovingTimer = ConfigOption(1f, "Not Moving Timer", "Used for Bustling Fungus and modded items. Vanilla is 1.");
             base.Init();
         }
 

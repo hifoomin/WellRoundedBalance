@@ -22,7 +22,7 @@ namespace UltimateCustomRun.Items.Reds
 
         public override void Init()
         {
-            Damage = ConfigOption(2f, "Damage Increase", "Decimal. Vanilla is 2");
+            Damage = ConfigOption(2f, "Damage", "Decimal. Vanilla is 2");
             Radius = ConfigOption(35f, "Range", "Vanilla is 35");
             MaxTargets = ConfigOption(3, "Base Max Targets", "Vanilla is 3");
             StackMaxTargets = ConfigOption(2, "Stack Max Targets", "Per Stack. Vanilla is 2");

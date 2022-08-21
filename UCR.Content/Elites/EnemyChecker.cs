@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace UltimateCustomRun
+namespace UltimateCustomRun.Elites
 {
     public abstract class EnemyBase<T> : EnemyBase where T : EnemyBase<T>
     {
