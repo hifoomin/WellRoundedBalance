@@ -17,7 +17,7 @@ namespace UltimateCustomRun.Equipment
 
         public override string PickupText => "";
 
-        public override string DescText => "Drink the Tonic, gaining a boost for " + Duration + " seconds. Increases <style=cIsDamage>damage</style> by <style=cIsDamage>+" + d(DamageBuff) + "</style>. Increases <style=cIsDamage>attack speed</style> by <style=cIsDamage>+" + d(AttackSpeedMult - 1) + "</style>. Increases <style=cIsDamage>armor</style> by <style=cIsDamage>+" + ArmorBuff + "</style>. Increases <style=cIsHealing>maximum health</style> by <style=cIsHealing>+" + d(MaxHpBuff) + "</style>. Increases <style=cIsHealing>passive health regeneration</style> by <style=cIsHealing>+" + d(RegenBuff) + "</style>. Increases <style=cIsUtility>movespeed</style> by <style=cIsUtility>+" + d(MoveSpeedBuff) + "</style>.\n\nWhen the Tonic wears off, you have a <style=cIsHealth>" + AfflictionChance + "</style> chance to gain a <style=cIsHealth>Tonic Affliction, reducing all of your stats</style> by <style=cIsHealth>-" + d(AllStatsDebuff) + "</style> <style=cStack>(-" + d(AllStatsDebuff) + " per stack)</style>.";
+        public override string DescText => "Drink the Tonic, gaining a boost for " + Duration + " seconds. Increases <style=cIsDamage>damage</style> by <style=cIsDamage>+" + d(DamageBuff - 1) + "</style>. Increases <style=cIsDamage>attack speed</style> by <style=cIsDamage>+" + d(AttackSpeedMult - 1) + "</style>. Increases <style=cIsDamage>armor</style> by <style=cIsDamage>+" + ArmorBuff + "</style>. Increases <style=cIsHealing>maximum health</style> by <style=cIsHealing>+" + d(MaxHpBuff) + "</style>. Increases <style=cIsHealing>passive health regeneration</style> by <style=cIsHealing>+" + d(RegenBuff) + "</style>. Increases <style=cIsUtility>movespeed</style> by <style=cIsUtility>+" + d(MoveSpeedBuff) + "</style>.\n\nWhen the Tonic wears off, you have a <style=cIsHealth>" + AfflictionChance + "</style> chance to gain a <style=cIsHealth>Tonic Affliction, reducing all of your stats</style> by <style=cIsHealth>-" + d(AllStatsDebuff) + "</style> <style=cStack>(-" + d(AllStatsDebuff) + " per stack)</style>.";
 
         public static float Duration;
         public static float DamageBuff;
@@ -33,7 +33,7 @@ namespace UltimateCustomRun.Equipment
         public override void Init()
         {
             Duration = ConfigOption(20f, "Duration", "Vanilla is 20");
-            DamageBuff = ConfigOption(1f, "Damage", "Decimal. Vanilla is 1");
+            DamageBuff = ConfigOption(2f, "Damage", "Decimal. Vanilla is 2");
             AttackSpeedMult = ConfigOption(1.7f, "Attack Speed Multiplier", "Decimal. Vanilla is 1.7");
             ArmorBuff = ConfigOption(20f, "Armor", "Vanilla is 20");
             MaxHpBuff = ConfigOption(0.5f, "Percent Health", "Decimal. Vanilla is 0.5");

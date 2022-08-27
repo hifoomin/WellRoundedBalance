@@ -17,7 +17,7 @@ namespace UltimateCustomRun.Equipment
 
         public override string PickupText => "";
 
-        public override string DescText => "Fires a continuous barrage that deals <style=cIsDamage>" + d(Damage) + " damage per shot</style> (extremely low). Costs $" + GoldCost + " per bullet. Cost increases with level.";
+        public override string DescText => "Wind up a continuous barrage that shoots up to <style=cIsDamage>" + MaxShotsPerSec + " times per second</style>, dealing <style=cIsDamage>" + d(Damage) + " damage per shot</style> (extremely low). Costs $" + GoldCost + " per bullet. Cost increases with level.";
 
         public static int GoldCost;
         public static float MinShotsPerSec;

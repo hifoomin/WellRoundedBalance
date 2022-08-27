@@ -2,6 +2,7 @@
 using MonoMod.Cil;
 using RoR2;
 using System;
+using UnityEngine;
 
 namespace UltimateCustomRun.Items.Greens
 {
@@ -22,8 +23,9 @@ namespace UltimateCustomRun.Items.Greens
 
         public override string PickupText => "";
 
-        public override string DescText => "Hits that deal <style=cIsDamage>more than " + d(KjarosBand.Threshold) + " damage</style> also blasts enemies with a <style=cIsDamage>runic ice blast</style>, <style=cIsUtility>slowing</style> them by <style=cIsUtility>80%</style> for <style=cIsUtility>3s</style> <style=cStack>(+3s per stack)</style> and dealing <style=cIsDamage>" + d(TotalDamage) + "</style> <style=cStack>(+" + d(TotalDamage) + " per stack)</style> TOTAL damage. Recharges every <style=cIsUtility>" + KjarosBand.Cooldown + "</style> seconds.";
+        public override string DescText => "Hits that deal <style=cIsDamage>more than " + d(KjarosBand.Threshold) + " damage</style> also blasts enemies with a <style=cIsDamage>runic ice blast</style>, <style=cIsUtility>slowing</style> them by <style=cIsUtility>" + Mathf.Round(Util.ConvertAmplificationPercentageIntoReductionPercentage(80f)) + "%</style> for <style=cIsUtility>3s</style> <style=cStack>(+3s per stack)</style> and dealing <style=cIsDamage>" + d(TotalDamage) + "</style> <style=cStack>(+" + d(TotalDamage) + " per stack)</style> TOTAL damage. Recharges every <style=cIsUtility>" + KjarosBand.Cooldown + "</style> seconds.";
 
+        // slows arent accurate in ror2
         public override void Init()
         {
             TotalDamage = ConfigOption(2.5f, "Damage", "Decimal. Per Stack. Vanilla is 2.5");

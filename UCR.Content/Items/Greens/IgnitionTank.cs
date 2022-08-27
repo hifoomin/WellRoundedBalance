@@ -17,10 +17,10 @@ namespace UltimateCustomRun.Items.Greens
         public override string InternalPickupToken => "strengthenBurn";
         public override bool NewPickup => true;
 
-        public override string PickupText => (BurnChance > 0 ? "Gain " + BurnChance + "% chance to ignite enemies on hit." : "") +
-                                             "Your ignite effects deal +" + Damage + "% damage.";
+        public override string PickupText => (BurnChance > 0 ? "Gain " + BurnChance + "% chance to ignite enemies on hit. " : "") +
+                                             "Your ignite effects deal +" + d(Damage) + "% damage.";
 
-        public override string DescText => (BurnChance > 0 ? "Gain " + BurnChance + "%" + (StackBurnChance ? " <style=cStack>(+" + BurnChancePerStack + "% per stack)</style>" : "") + " chance to <style=cIsDamage>ignite</style> enemies on hit." : "") +
+        public override string DescText => (BurnChance > 0 ? "Gain " + BurnChance + "%" + (StackBurnChance ? " <style=cStack>(+" + BurnChancePerStack + "% per stack)</style>" : "") + " chance to <style=cIsDamage>ignite</style> enemies on hit. " : "") +
                                            "Ignite effects deal <style=cIsDamage>+" + d(Damage) + "</style> <style=cStack>(+" + d(Damage) + " per stack)</style> more damage over time.";
 
         public override void Init()

@@ -23,7 +23,7 @@ namespace UltimateCustomRun.Items.Reds
         public override void Init()
         {
             Damage = ConfigOption(0.5f, "Missile Damage Increase", "Decimal. Per Stack. Vanilla is 0.5");
-            Missiles = ConfigOption(2, "Base Missiles Per Missile", "Vanilla is 3");
+            Missiles = ConfigOption(2, "Base Missiles Per Missile", "Vanilla is 2");
             StackMissiles = ConfigOption(0, "Stack Missiles Per Missile", "Per Stack. Vanilla is 0");
             Rotation = ConfigOption(45f, "Missile Rotation", "Vanilla is 45");
             base.Init();
@@ -39,17 +39,19 @@ namespace UltimateCustomRun.Items.Reds
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchCallOrCallvirt<CharacterBody>("get_inventory"));
-            Inventory inv = (Inventory)c.Next.Operand;
-
             if (c.TryGotoNext(MoveType.Before,
                x => x.MatchLdcI4(1),
                x => x.MatchLdcR4(1f),
                x => x.MatchLdcI4(3)))
             {
-                c.Index += 2;
-                c.Next.Operand = StackMissiles > 0 ? Missiles + StackMissiles * (inv.GetItemCount(DLC1Content.Items.MoreMissile) - 1) : Missiles;
+                /*
+                c.Index += 3;
+                c.EmitDelegate<Func<int, int>>((useless) =>
+                {
+                    return StackMissiles > 0 ? Missiles + StackMissiles * (inv.GetItemCount(DLC1Content.Items.MoreMissile) - 1) : Missiles;
+                });
+                */
+                // get inventory somehow
             }
             else
             {
@@ -65,16 +67,13 @@ namespace UltimateCustomRun.Items.Reds
             {
                 c.Index += 4;
                 c.EmitDelegate<Func<float, float>>((orig) => Damage);
-
                 for (int i = 0; c.TryGotoNext(x => x.MatchCallOrCallvirt(typeof(UnityEngine.Quaternion).GetMethod("AngleAxis", (System.Reflection.BindingFlags)(-1)))); i++)
                 {
                     c.Index--;
-                    c.EmitDelegate<Func<float, float>>((orig) => Rotation * ((i % 2 == 0) ? 1 : (-1)));
+                    c.EmitDelegate<Func<float, float>>((orig) => (i % 2 == 0) ? Rotation : Rotation * (-1));
                     c.Index += 2;
                 }
-
                 ILLabel label = c.DefineLabel();
-
                 if (c.TryGotoPrev(MoveType.After, x => x.MatchBle(out label)))
                 {
                     c.EmitDelegate<Func<bool>>(() => Missiles < 2);
@@ -87,21 +86,24 @@ namespace UltimateCustomRun.Items.Reds
                     c.Emit(OpCodes.Ldarg, 8);
                     c.EmitDelegate<Action<int, FireProjectileInfo, CharacterBody, Vector3>>((stacks, info, body, initDir) =>
                     {
-                        InputBankTest bank = body.GetComponent<InputBankTest>();
-                        for (int i = 0; i < (stacks - 1) * StackMissiles + ((Missiles == 1) ? 1 : (Missiles > 2) ? Missiles - 2 : 0); i++)
+                        if (stacks > 0)
                         {
-                            info.rotation = Util.QuaternionSafeLookRotation(Quaternion.AngleAxis(Rotation * ((i % 2 == 0) ? 1 : (-1)), bank ? bank.aimDirection : body.transform.position) * initDir);
-                            ProjectileManager.instance.FireProjectile(info);
+                            InputBankTest bank = body.GetComponent<InputBankTest>();
+                            for (int i = 0; i < (stacks - 1) * StackMissiles + ((Missiles == 1) ? 1 : (Missiles > 2) ? Missiles - 2 : 0); i++)
+                            {
+                                info.rotation = Util.QuaternionSafeLookRotation(Quaternion.AngleAxis(Rotation * ((i % 2 == 0) ? 1 : (-1)), bank ? bank.aimDirection : body.transform.position) * initDir);
+                                ProjectileManager.instance.FireProjectile(info);
+                            }
                         }
                     });
                 }
             }
             else
             {
-                Main.UCRLogger.LogError("Failed to apply Pocket I.C.B.M. Damage hook");
+                Main.UCRLogger.LogError("Failed to apply Pocket I.C.B.M. Damage, Count, Stacking hook");
             }
 
-            // big thanks to RandomlyAwesome
+            // BIG thanks to RandomlyAwesome
         }
     }
 }

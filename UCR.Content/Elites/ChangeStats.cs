@@ -14,7 +14,7 @@ namespace UltimateCustomRun.Elites
         public static float Tier1Cost;
         public static float Tier1HonorCost;
         public static float Tier2Cost;
-        public override string Name => "Elites :: Tier 1 and Tier 2";
+        public override string Name => "Elites";
 
         public override void Init()
         {

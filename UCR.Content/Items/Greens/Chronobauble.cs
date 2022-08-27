@@ -14,11 +14,12 @@ namespace UltimateCustomRun.Items.Greens
         public override bool NewPickup => false;
         public override string PickupText => "";
 
-        public override string DescText => "<style=cIsUtility>Slow</style> enemies on hit for <style=cIsUtility>-60% movement speed</style>" +
+        public override string DescText => "<style=cIsUtility>Slow</style> enemies on hit for <style=cIsUtility>-" + Util.ConvertAmplificationPercentageIntoReductionPercentage(60f) + "% movement speed</style>" +
                                            (BaseAttackSpeed != 0f ? " and <style=cIsDamage>-" + d(BaseAttackSpeed) + " attack speed</style>" +
                                            (StackAttackSpeed ? " <style=cStack>(-" + d(BaseAttackSpeed) + " per stack)</style>" : "") : "") +
                                            " for <style=cIsUtility>2s</style> <style=cStack>(+2s per stack)</style>.";
 
+        // slows arent accurate in ror2
         public override void Init()
         {
             BaseAttackSpeed = ConfigOption(0f, "Attack Speed Decrease", "Decimal. Vanilla is 0");

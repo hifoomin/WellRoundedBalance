@@ -22,7 +22,7 @@ namespace UltimateCustomRun.Items.Yellows
 
         public override string PickupText => "";
 
-        public override string DescText => "Falling below <style=cIsHealth>" + d(Threshold) + " health</style> causes you to explode, dealing <style=cIsDamage>" + d(Damage) + " base damage</style>. Recharges every <style=cIsUtility>" + RechargeTime + " seconds</style> <style=cStack>(-" + d(StackRechargeTime) + " per stack)</style>.";
+        public override string DescText => "Falling below <style=cIsHealth>"/* + d(Threshold)*/ + "25% health</style> causes you to explode, dealing <style=cIsDamage>" + d(Damage) + " base damage</style>. Recharges every <style=cIsUtility>" + RechargeTime + " seconds</style> <style=cStack>(-" + d(StackRechargeTime) + " per stack)</style>.";
 
         public override void Init()
         {
@@ -32,7 +32,7 @@ namespace UltimateCustomRun.Items.Yellows
             RechargeTime = ConfigOption(30f, "Recharge Time", "Vanilla is 30");
             StackRechargeTime = ConfigOption(0.5f, "Stack Recharge Time Reduction", "Decimal. Vanilla is 0.5");
             ChargeTime = ConfigOption(3f, "Charge Time", "Vanilla is 3");
-            Threshold = ConfigOption(0.25f, "Health Threshold", "Decimal. Vanilla is 0.25");
+            // Threshold = ConfigOption(0.25f, "Health Threshold", "Decimal. Vanilla is 0.25");
             base.Init();
         }
 
@@ -41,7 +41,7 @@ namespace UltimateCustomRun.Items.Yellows
             On.EntityStates.VagrantNovaItem.DetonateState.OnEnter += Changes;
             On.EntityStates.VagrantNovaItem.RechargeState.FixedUpdate += ChangeRechargeTime;
             On.EntityStates.VagrantNovaItem.ChargeState.OnEnter += ChangeChargeTime;
-            IL.EntityStates.VagrantNovaItem.ReadyState.FixedUpdate += ChangeThreshold;
+            // IL.EntityStates.VagrantNovaItem.ReadyState.FixedUpdate += ChangeThreshold;
         }
 
         private void ChangeThreshold(ILContext il)

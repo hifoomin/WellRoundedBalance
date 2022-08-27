@@ -23,8 +23,9 @@ namespace UltimateCustomRun.Items.Reds
         public override bool NewPickup => false;
         public override string PickupText => "";
 
-        public override string DescText => "Killing an enemy surrounds you with an <style=cIsDamage>ice storm</style> that deals <style=cIsDamage>" + d(Damage / AttackInterval) + " damage per second</style> and <style=cIsUtility>slows</style> enemies by <style=cIsUtility>80%</style> for <style=cIsUtility>1.5s</style>. The storm <style=cIsDamage>grows with every kill</style>, increasing its radius by <style=cIsDamage>" + RadiusPerKill + "m</style>. Stacks up to <style=cIsDamage>" + (BaseRadius + RadiusPerKill * Maximum) + "m</style> <style=cStack>(+" + RadiusPerKill * StackMaximum + "m per stack)</style>.";
+        public override string DescText => "Killing an enemy surrounds you with an <style=cIsDamage>ice storm</style> that deals <style=cIsDamage>" + d(Damage / AttackInterval) + " damage per second</style> and <style=cIsUtility>slows</style> enemies by <style=cIsUtility>" + Util.ConvertAmplificationPercentageIntoReductionPercentage(80f) + "</style> for <style=cIsUtility>1.5s</style>. The storm <style=cIsDamage>grows with every kill</style>, increasing its radius by <style=cIsDamage>" + RadiusPerKill + "m</style>. Stacks up to <style=cIsDamage>" + (BaseRadius + RadiusPerKill * Maximum) + "m</style> <style=cStack>(+" + RadiusPerKill * StackMaximum + "m per stack)</style>.";
 
+        // slows arent accurate in ror2
         public override void Init()
         {
             AttackInterval = ConfigOption(0.25f, "Attack Interval", "Vanilla is 0.25");

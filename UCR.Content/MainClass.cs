@@ -16,6 +16,7 @@ using UltimateCustomRun.Equipment;
 using UltimateCustomRun.BodyStatsSkills;
 using UltimateCustomRun.Global;
 using UltimateCustomRun.Elites;
+using UltimateCustomRun.Directors;
 
 namespace UltimateCustomRun
 {
@@ -29,29 +30,29 @@ namespace UltimateCustomRun
      - Bottled Chaos counts as n of itself when activating equip
      - Dio's Best Friend tougher times on death
      - Nkuhanas Opinion max pool, pool threshold and skull damage
-     - Proper Pocket ICBM IL hook/rewrite
      - Defense Nucleus stat boosts
      - Halcyon Seed stat boosts
-     - Mired Urn range, dps and healing
      - Queen's Gland beetle guard count
      - Beads of Fealty more scavs and more lunar coins
-     - Essence of Heresy debuff duration, initial hit damage, explosion damage, cooldown
-     - Focused Convergence charging speed, zone size change, charging on kill
+     - Essence of Heresy debuff duration, initial hit damage, explosion damage
      - Gesture of The Drowned random equipment cooldown on every equipment activation
      - Light Flux Pauldron cooldown and attack speed
-     - Mercurial Rachis radius and damage
-     - Strides of Heresy move speed, healing, duration, cooldown
+     - Strides of Heresy move speed, healing, duration
      - Transcendence increasing shield recharge timer every stack
      - Needletick % and count for elites
      - Newly Hatched Zoea cooldown, max allies
-     - Stone Flux Pauldron Mass
      - Goobo Jr stat boosts
      - Milky Chrysalis flight speed, glide speed, boost speed and cooldown
+     - Topaz Brooch percent barrier
+     - EmitDelegates for stacking chance/damage on items that don't (e.g. sticky bomb, atg)
+     - Improve descriptions for Focused Convergence and Mercurial Rachis
     */
 
     [BepInDependency(R2API.R2API.PluginGUID)]
     [BepInDependency("com.rune580.riskofoptions")]
     [BepInDependency("com.Wolfo.WolfoQualityOfLife", BepInDependency.DependencyFlags.SoftDependency)]
+    [BepInDependency("com.xoxfaby.BetterUI", BepInDependency.DependencyFlags.SoftDependency)]
+    [BepInDependency("dev.ontrigger.itemstats", BepInDependency.DependencyFlags.SoftDependency)]
     [BepInDependency("Withor.FixedDescriptions", BepInDependency.DependencyFlags.SoftDependency)] // may thy name shall not curse mine project
     [BepInPlugin(PluginGUID, PluginName, PluginVersion)]
     [R2APISubmoduleDependency(nameof(LanguageAPI), nameof(RecalculateStatsAPI), nameof(LoadoutAPI), nameof(DirectorAPI), nameof(PrefabAPI), nameof(ItemAPI))]
@@ -60,7 +61,7 @@ namespace UltimateCustomRun
         public const string PluginGUID = PluginAuthor + "." + PluginName;
         public const string PluginAuthor = "HIFU";
         public const string PluginName = "UltimateCustomRun";
-        public const string PluginVersion = "0.3.0";
+        public const string PluginVersion = "0.2.5";
         public static ConfigFile UCRConfig;
         public static ManualLogSource UCRLogger;
         public static ConfigFile UCREConfig;
@@ -154,14 +155,27 @@ namespace UltimateCustomRun
                     based.Init();
                 }
             }
+
+            IEnumerable<Type> enumerable5 = from type in Assembly.GetExecutingAssembly().GetTypes()
+                                            where !type.IsAbstract && type.IsSubclassOf(typeof(DirectorBase))
+                                            select type;
+
+            UCRLogger.LogInfo("==+----------------==DIRECTORS==----------------+==");
+
+            foreach (Type type in enumerable5)
+            {
+                DirectorBase based = (DirectorBase)Activator.CreateInstance(type);
+                based.Init();
+            }
             Generate.Awake();
+            SendChatNotif.Send();
         }
 
         public bool ValidateGlobal(GlobalBase gb)
         {
             if (gb.isEnabled)
             {
-                bool enabledfr = Config.Bind(gb.Name, "Enable?", true, "Vanilla is false").Value;
+                bool enabledfr = UCRGConfig.Bind(gb.Name, "Enable?", true, "Vanilla is false").Value;
                 if (enabledfr)
                 {
                     return true;
@@ -174,7 +188,7 @@ namespace UltimateCustomRun
         {
             if (ib.isEnabled)
             {
-                bool enabledfr = Config.Bind(ib.Name, "Enable?", true, "Vanilla is false").Value;
+                bool enabledfr = UCRIConfig.Bind(ib.Name, "Enable?", true, "Vanilla is false").Value;
                 if (enabledfr)
                 {
                     return true;
@@ -187,7 +201,7 @@ namespace UltimateCustomRun
         {
             if (eb.isEnabled)
             {
-                bool enabledfr = Config.Bind(eb.Name, "Enable?", true, "Vanilla is false").Value;
+                bool enabledfr = UCREConfig.Bind(eb.Name, "Enable?", true, "Vanilla is false").Value;
                 if (enabledfr)
                 {
                     return true;
@@ -200,7 +214,7 @@ namespace UltimateCustomRun
         {
             if (eqb.isEnabled)
             {
-                bool enabledfr = Config.Bind(eqb.Name, "Enable?", true, "Vanilla is false").Value;
+                bool enabledfr = UCREQConfig.Bind(eqb.Name, "Enable?", true, "Vanilla is false").Value;
                 if (enabledfr)
                 {
                     return true;
@@ -227,20 +241,6 @@ namespace UltimateCustomRun
             entityStateContent.Add(t);
         }
         */
-
-        private void UnusedOrNotWorkingOrTODO()
-        {
-            /*
-             MonsterToothFlatHealing = Config.Bind<float>(":: Items : Whites :: Monster Tooth", "Flat Healing", (float)8f, "Vanilla is 8");
-             MonsterToothPercentHealing = Config.Bind<float>(":: Items : Whites :: Monster Tooth", "Percent Healing", (float)0.02f, "Decimal. Per Stack. Vanilla is 0.02");
-
-             TopazBroochPercentBarrier = Config.Bind<float>(":: Items : Whites :: Topaz Brooch", "Percent Barrier", (float)0.1f, "Decimal. Per Stack. Vanilla is 0");
-             TopazBroochPercentBarrierStack = Config.Bind<bool>(":: Items : Whites :: Topaz Brooch", "Increase Percent Barrier Gain Per Stack?", (bool)true, "Vanilla is false");
-
-             DiosTTCount = Config.Bind<int>(":: Items ::: Reds :: Dios Best Friend", "Tougher Times Per Consumed Dios Count", (int)0, "Vanilla is 0");
-
-            */
-        }
 
         private void DoNothing()
         {

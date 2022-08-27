@@ -1,19 +1,21 @@
 ﻿using MonoMod.Cil;
+using R2API;
+using RoR2;
 using UnityEngine;
 
-namespace UltimateCustomRun.Items.Reds
+namespace UltimateCustomRun.Items.VoidReds
 {
-    public class DiosBestFriend : ItemBase
+    public class PluripotentLarva : ItemBase
     {
         public static float Invincibility;
         public static float Delay;
 
-        public override string Name => ":: Items ::: Reds :: Dios Best Friend";
-        public override string InternalPickupToken => "extraLife";
+        public override string Name => ":: Items :::::: Voids :: Pluripotent Larva";
+        public override string InternalPickupToken => "extraLifeVoid";
         public override bool NewPickup => false;
         public override string PickupText => "";
 
-        public override string DescText => "<style=cIsUtility>Upon death</style>, this item will be <style=cIsUtility>consumed</style> and you will <style=cIsHealing>return to life</style> with <style=cIsHealing>" + Invincibility + " seconds of invulnerability</style>.";
+        public override string DescText => "Get a <style=cIsVoid>corrupted</style> extra life. Consumed on use. <style=cIsVoid>Corrupts all Dio's Best Friends.</style>.";
 
         public override void Init()
         {
@@ -25,7 +27,7 @@ namespace UltimateCustomRun.Items.Reds
         public override void Hooks()
         {
             IL.RoR2.CharacterMaster.OnBodyDeath += ChangeDelay;
-            IL.RoR2.CharacterMaster.RespawnExtraLife += ChangeInvinc;
+            IL.RoR2.CharacterMaster.RespawnExtraLifeVoid += ChangeInvinc;
         }
 
         private void ChangeInvinc(ILContext il)
@@ -39,7 +41,7 @@ namespace UltimateCustomRun.Items.Reds
             }
             else
             {
-                Main.UCRLogger.LogError("Failed to apply Dios Best Friend Invincibility hook");
+                Main.UCRLogger.LogError("Failed to apply Pluripotent Larva Invincibility hook");
             }
         }
 
@@ -48,7 +50,7 @@ namespace UltimateCustomRun.Items.Reds
             ILCursor c = new(il);
 
             if (c.TryGotoNext(MoveType.Before,
-                x => x.MatchLdsfld("RoR2.RoR2Content/Items", "ExtraLife"),
+                x => x.MatchLdsfld("RoR2.DLC1Content/Items", "ExtraLifeVoid"),
                 x => x.MatchLdcI4(1)))
             {
                 c.Index += 5;
@@ -58,7 +60,7 @@ namespace UltimateCustomRun.Items.Reds
             }
             else
             {
-                Main.UCRLogger.LogError("Failed to apply Dios Best Friend Delay hook");
+                Main.UCRLogger.LogError("Failed to apply Pluripotent Larva Delay hook");
             }
         }
     }

@@ -23,10 +23,10 @@ namespace UltimateCustomRun.Items.Greens
         public override string PickupText => "";
 
         public override string DescText => (Armor != 0f ? "<style=cIsHealing>Increase armor</style> by <style=cIsHealing>" + Armor + "</style> <style=cStack>(+" + Armor + " per stack)</style>. " : "") +
-                                           "Falling below <style=cIsHealth>" + d(Threshold) + " health</style> causes you to gain <style=cIsUtility>40% movement speed</style>" +
+                                           "Falling below <style=cIsHealth>"/* + d(Threshold)*/ + "25% health</style> causes you to gain <style=cIsUtility>40% movement speed</style>" +
                                            (BuffArmor != 0f ? ", <style=cIsHealing>" + BuffArmor + " armor</style>" +
                                            (StackBuffArmor ? " <style=cStack>(+" + BuffArmor + " per stack)</style>" : "") : "") +
-                                           " and <style=cIsUtility>invisibility</style> for <style=cIsUtility>" + BuffDuration + "s</style>. Recharges every <style=cIsUtility>" + RechargeTime + " seconds</style> <style=cStack>(-" + d(RechargeTime) + " per stack)</style>.";
+                                           " and <style=cIsUtility>invisibility</style> for <style=cIsUtility>" + BuffDuration + "s</style>. Recharges every <style=cIsUtility>" + RechargeTime + " seconds</style> <style=cStack>(-" + d(StackRechargeTime) + " per stack)</style>.";
 
         public override void Init()
         {
@@ -37,7 +37,7 @@ namespace UltimateCustomRun.Items.Greens
             BuffDuration = ConfigOption(5f, "Buff Duration", "Vanilla is 5");
             RechargeTime = ConfigOption(30f, "Recharge Time", "Vanilla is 30");
             StackRechargeTime = ConfigOption(0.5f, "Stack Recharge Time Reduction", "Decimal. Vanilla is 0.5");
-            Threshold = ConfigOption(0.25f, "Health Threshold", "Decimal. Vanilla is 0.25");
+            // Threshold = ConfigOption(0.25f, "Health Threshold", "Decimal. Vanilla is 0.25");
             base.Init();
         }
 
@@ -45,7 +45,7 @@ namespace UltimateCustomRun.Items.Greens
         {
             RecalculateStatsAPI.GetStatCoefficients += AddBehavior;
             On.RoR2.Items.PhasingBodyBehavior.Start += Changes;
-            IL.RoR2.Items.PhasingBodyBehavior.FixedUpdate += ChangeThreshold;
+            // IL.RoR2.Items.PhasingBodyBehavior.FixedUpdate += ChangeThreshold;
         }
 
         private void ChangeThreshold(ILContext il)

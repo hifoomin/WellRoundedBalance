@@ -14,7 +14,7 @@ namespace UltimateCustomRun.Global
 
         public T ConfigOption<T>(T value, string name, string description)
         {
-            config = Main.UCRConfig.Bind(Name, name, value, description);
+            config = Main.UCRGConfig.Bind(Name, name, value, description);
             var tabID = 0;
             var ModName = "";
 

@@ -1,4 +1,5 @@
-﻿using MonoMod.Cil;
+﻿using Mono.Cecil.Cil;
+using MonoMod.Cil;
 using RoR2;
 using UnityEngine;
 
@@ -11,7 +12,8 @@ namespace UltimateCustomRun.Items.Greens
         public static float Radius;
         public static float StackRadius;
         public static float ProcCoefficient;
-        public static bool RemoveKnockback;
+        public static float Force;
+        public static int FalloffType;
         public override string Name => ":: Items :: Greens :: Will O The Wisp";
         public override string InternalPickupToken => "explodeOnDeath";
         public override bool NewPickup => false;
@@ -26,7 +28,8 @@ namespace UltimateCustomRun.Items.Greens
             ProcCoefficient = ConfigOption(1f, "Proc Coefficient", "Decimal. Vanilla is 1");
             Radius = ConfigOption(12f, "Base Range", "Vanilla is 12");
             StackRadius = ConfigOption(2.4f, "Stack Range", "Per Stack. Vanilla is 2.4");
-            RemoveKnockback = ConfigOption(false, "Remove Knockback?", "Vanilla is false");
+            Force = ConfigOption(2000f, "Force", "Vanilla is 2000");
+            FalloffType = ConfigOption(2, "Falloff Type", "0 - None, 1 - Linear, 2 - Sweetspot.\nVanilla is 2");
             base.Init();
         }
 
@@ -81,11 +84,24 @@ namespace UltimateCustomRun.Items.Greens
                x => x.MatchLdcR4(2000f)))
             {
                 c.Index += 1;
-                c.Next.Operand = RemoveKnockback ? 0f : 2000f;
+                c.Next.Operand = Force;
             }
             else
             {
                 Main.UCRLogger.LogError("Failed to apply Will o' The Wisp Knockback hook");
+            }
+
+            c.Index = 0;
+
+            if (c.TryGotoNext(MoveType.Before,
+                x => x.MatchLdcI4(2),
+                x => x.MatchStfld("RoR2.DelayBlast", "falloffModel")))
+            {
+                c.Next.Operand = FalloffType;
+            }
+            else
+            {
+                Main.UCRLogger.LogError("Failed to apply Will o' The Wisp Falloff hook");
             }
         }
 

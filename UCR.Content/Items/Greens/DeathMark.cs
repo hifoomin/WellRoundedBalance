@@ -13,19 +13,21 @@ namespace UltimateCustomRun.Items.Greens
         //
         // ///////////////
 
+        public static bool Use;
         public static float DamagePerDebuff;
         public static float DamagePerStack;
         public static int MinimumDebuffs;
 
         public override string Name => ":: Items :: Greens :: Death Mark";
-        public override string InternalPickupToken => "deathmark";
+        public override string InternalPickupToken => "deathMark";
         public override bool NewPickup => true;
-        public override string PickupText => "Enemies with " + MinimumDebuffs + " or more debuffs are marked for death, taking bonus damage.";
+        public override string PickupText => (Use ? "Enemies with " + MinimumDebuffs + " or more debuffs are marked for death, taking bonus damage." : "Enemies with 4 or more debuffs are marked for death, taking bonus damage.");
 
-        public override string DescText => "Enemies with <style=cIsDamage>" + MinimumDebuffs + "</style> or more debuffs are <style=cIsDamage>marked for death</style>, increasing damage taken by <style=cIsDamage>" + d(DamagePerDebuff) + "</style> <style=cStack>(+" + d(DamagePerStack) + " per stack)</style> per debuff from all sources for <style=cIsUtility>7</style> <style=cStack>(+7 per stack)</style> seconds.";
+        public override string DescText => (Use ? "Enemies with <style=cIsDamage>" + MinimumDebuffs + "</style> or more debuffs are <style=cIsDamage>marked for death</style>, increasing damage taken by <style=cIsDamage>" + d(DamagePerDebuff) + "</style> <style=cStack>(+" + d(DamagePerStack) + " per stack)</style> per debuff from all sources for <style=cIsUtility>7</style> <style=cStack>(+7 per stack)</style> seconds." : "Enemies with <style=cIsDamage>4</style> or more debuffs are <style=cIsDamage>marked for death</style>, increasing damage taken by <style=cIsDamage>50%</style> from all sources for <style=cIsUtility>7</style> <style=cStack>(+7 per stack)</style> seconds.");
 
         public override void Init()
         {
+            Use = ConfigOption(false, "Use new Death Mark?", "Vanilla is false");
             DamagePerDebuff = ConfigOption(0.1f, "Debuff Damage Increase", "Decimal. Per Debuff. Vanilla is 0");
             DamagePerStack = ConfigOption(0.05f, "Stack Debuff Damage Increase", "Decimal. Per Stack. Vanilla is 0");
             MinimumDebuffs = ConfigOption(2, "Minimum Debuffs", "Vanilla is 4");
@@ -34,8 +36,11 @@ namespace UltimateCustomRun.Items.Greens
 
         public override void Hooks()
         {
-            IL.RoR2.GlobalEventManager.OnHitEnemy += ChangeDebuffsReq;
-            IL.RoR2.HealthComponent.TakeDamage += Changes;
+            if (Use)
+            {
+                IL.RoR2.GlobalEventManager.OnHitEnemy += ChangeDebuffsReq;
+                IL.RoR2.HealthComponent.TakeDamage += Changes;
+            }
         }
 
         public static void Changes(ILContext il)

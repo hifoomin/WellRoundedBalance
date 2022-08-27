@@ -10,7 +10,10 @@ namespace UltimateCustomRun.Items.VoidGreens
         public override string InternalPickupToken => "equipmentMagazineVoid";
         public override bool NewPickup => false;
         public override string PickupText => "";
-        public override string DescText => "Add <style=cIsUtility>+1</style> <style=cStack>(+1 per stack)</style> charge of your <style=cIsUtility>Special skill</style>. <style=cIsVoid>Corrupts all Fuel Cells.</style>.";
+
+        public override string DescText => "Add <style=cIsUtility>+1</style> <style=cStack>(+1 per stack)</style> charge of your <style=cIsUtility>Special skill</style>." +
+                                           (CooldownReduction > 0f ? " <style=cIsUtility>Reduce special cooldown by " + d(CooldownReduction) + "</style>." : "") +
+                                           " <style=cIsVoid>Corrupts all Fuel Cells.</style>.";
 
         public override void Init()
         {

@@ -16,7 +16,7 @@ namespace UltimateCustomRun.Items.Reds
         public override string PickupText => "";
 
         public override string DescText => "<style=cIsUtility>Reduce skill cooldowns</style> by <style=cIsUtility>" + d(CooldownReduction) + "</style> <style=cStack>(+" + d(CooldownReduction) + " per stack)</style>" +
-                                           (FlatCDR != 0f ? " and <style=cIsUtility>" + FlatCDR + "</style> second" +
+                                           (FlatCDR > 0 ? " and <style=cIsUtility>" + FlatCDR + (FlatCDR == 1 ? "</style> second" : "</style> seconds") +
                                            (StackFlatCDR ? "<style=cStack>(+" + FlatCDR + " per stack)</style>" : ".") : ".");
 
         public override void Init()

@@ -54,7 +54,7 @@ namespace UltimateCustomRun.Items.Yellows
         {
             RoR2.Items.SprintWispBodyBehavior.damageCoefficient = Damage;
             RoR2.Items.SprintWispBodyBehavior.searchRadius = Range;
-            RoR2.Items.SprintWispBodyBehavior.fireRate = 1f / (FireRate * 10.15f);
+            RoR2.Items.SprintWispBodyBehavior.fireRate = FireRate;
             orig(self);
         }
     }

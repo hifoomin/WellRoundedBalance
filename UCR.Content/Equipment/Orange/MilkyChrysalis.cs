@@ -29,7 +29,7 @@ namespace UltimateCustomRun.Equipment
             Duration = ConfigOption(15f, "Duration", "Vanilla is 15");
             SpeedBuff = ConfigOption(0.2f, "Movement Speed Boost", "Decimal. Vanilla is 0.2");
             GlideSpeed = ConfigOption(-5f, "Glide Speed", "Vanilla is -5");
-            FlySpeed = ConfigOption(15f, "Initial Height Bost", "Vanilla is 15");
+            FlySpeed = ConfigOption(15f, "Initial Height Boost", "Vanilla is 15");
             BoostSpeed = ConfigOption(3f, "Boost Speed", "Vanilla is 3");
             BoostCooldown = ConfigOption(0.5f, "Boost Cooldown", "Vanilla is 0.5");
             base.Init();

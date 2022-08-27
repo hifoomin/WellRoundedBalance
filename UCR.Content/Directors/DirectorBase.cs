@@ -4,7 +4,7 @@ using RiskOfOptions.OptionConfigs;
 using RiskOfOptions.Options;
 using UnityEngine;
 
-namespace UltimateCustomRun.Elites
+namespace UltimateCustomRun.Directors
 {
     public abstract class DirectorBase
     {

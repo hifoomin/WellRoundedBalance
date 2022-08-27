@@ -21,7 +21,7 @@ namespace UltimateCustomRun.Equipment
 
         public T ConfigOption<T>(T value, string name, string description)
         {
-            ConfigEntryBase config = Main.UCRConfig.Bind(Name, name, value, description);
+            ConfigEntryBase config = Main.UCREQConfig.Bind(Name, name, value, description);
             var tabID = 0;
             var ModName = "";
 

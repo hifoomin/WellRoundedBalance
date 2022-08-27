@@ -3,6 +3,7 @@ using UnityEngine;
 using RoR2;
 using UnityEngine.AddressableAssets;
 using RoR2.Projectile;
+using Mono.Cecil.Cil;
 
 namespace UltimateCustomRun.Equipment
 {
@@ -53,7 +54,8 @@ namespace UltimateCustomRun.Equipment
             if (c.TryGotoNext(MoveType.Before,
                x => x.MatchLdcI4(4)))
             {
-                c.Next.Operand = DroneCount;
+                c.Remove();
+                c.Emit(OpCodes.Ldc_I4, DroneCount);
             }
             else
             {

@@ -16,14 +16,14 @@ namespace UltimateCustomRun.Items.Lunars
         public override string Name => ":: Items ::::: Lunars :: Shaped Glass";
         public override string InternalPickupToken => "lunarDagger";
         public override bool NewPickup => true;
-        public override string PickupText => "Increase your damage by " + d(DamageIncrease) + "... <color=#FF7F7F>BUT reduce your health by " + d(1 / HpDecrease) + ".</color>";
-        public override string DescText => "Increase base damage by <style=cIsDamage>" + d(DamageIncrease) + "</style> <style=cStack>(+" + d(DamageIncrease) + " per stack)</style>. <style=cIsHealing>Reduce maximum health by " + d(1 / HpDecrease) + "</style> <style=cStack>(+" + d(1 / HpDecrease) + " per stack)</style>.";
+        public override string PickupText => "Increase your damage by " + d(DamageIncrease) + "... <color=#FF7F7F>BUT reduce your health by " + d(HpDecrease) + ".</color>";
+        public override string DescText => "Increase base damage by <style=cIsDamage>" + d(DamageIncrease) + "</style> <style=cStack>(+" + d(DamageIncrease) + " per stack)</style>. <style=cIsHealing>Reduce maximum health by " + d(HpDecrease) + "</style> <style=cStack>(+" + d(HpDecrease) + " per stack)</style>.";
 
         public override void Init()
         {
             DamageIncrease = ConfigOption(1f, "Damage", "Decimal. Per Stack. Vanilla is 1");
             HpDecrease = ConfigOption(0.5f, "Curse Gain", "Decimal. Per Stack. Vanilla is 0.5");
-            LinearDamage = ConfigOption(false, "Should the Damage Increase be Linear?", "Vanilla is false");
+            LinearDamage = ConfigOption(false, "Make Damage Linear?", "Vanilla is false");
             a = ScriptableObject.CreateInstance<ItemDef>();
             a.nameToken = "UCR_USELESS_STUPID_ITEM";
             a.deprecatedTier = ItemTier.NoTier;
@@ -47,7 +47,7 @@ namespace UltimateCustomRun.Items.Lunars
                 if (stack > 0)
                 {
                     args.damageMultAdd += LinearDamage ? DamageIncrease * stack : Mathf.Pow(DamageIncrease, stack);
-                    args.baseCurseAdd += Mathf.Pow(HpDecrease, stack) - 1;
+                    args.baseCurseAdd += Mathf.Pow(1 / HpDecrease, stack) - 1;
                 }
             }
         }
