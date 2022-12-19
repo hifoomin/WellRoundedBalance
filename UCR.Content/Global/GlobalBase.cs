@@ -53,7 +53,7 @@ namespace UltimateCustomRun.Global
                     break;
 
                 default:
-                    Main.UCRLogger.LogInfo("Failed to add a Risk Of Options config for" + Name);
+                    Main.UCRLogger.LogDebug("Failed to add a Risk Of Options config for" + Name);
                     break;
             }
 
@@ -70,7 +70,6 @@ namespace UltimateCustomRun.Global
         public virtual void Init()
         {
             Hooks();
-            Main.UCRLogger.LogInfo("Added " + Name);
         }
     }
 }

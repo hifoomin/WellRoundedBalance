@@ -20,7 +20,7 @@ namespace UltimateCustomRun.Items.Greens
         public override bool NewPickup => false;
         public override string PickupText => "";
 
-        public override string DescText => "A <style=cIsUtility>delivery</style> containing 2 items (" + d(Mathf.Round(WhiteChance / (WhiteChance + GreenChance + RedChance))) + "/<style=cIsHealing>" + d(Mathf.Round(GreenChance / (WhiteChance + GreenChance + RedChance))) + "</style>/<style=cIsHealth>" + d(Mathf.Round(RedChance / (WhiteChance + GreenChance + RedChance))) + "</style>) will appear in a random location <style=cIsUtility>on each stage</style>. <style=cStack>(Increases rarity chances of the items per stack).</style>";
+        public override string DescText => "A <style=cIsUtility>delivery</style> containing 2 items (" + Mathf.Round(WhiteChance / (WhiteChance + GreenChance + RedChance) * 100) + "%/<style=cIsHealing>" + Mathf.Round(GreenChance / (WhiteChance + GreenChance + RedChance) * 100) + "%</style>/<style=cIsHealth>" + Mathf.Round(RedChance / (WhiteChance + GreenChance + RedChance) * 100) + "%</style>) will appear in a random location <style=cIsUtility>on each stage</style>. <style=cStack>(Increases rarity chances of the items per stack).</style>";
 
         public override void Init()
         {

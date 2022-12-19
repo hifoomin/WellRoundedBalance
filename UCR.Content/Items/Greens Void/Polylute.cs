@@ -15,7 +15,7 @@ namespace UltimateCustomRun.Items.VoidGreens
         public override string InternalPickupToken => "chainLightningVoid";
         public override bool NewPickup => false;
         public override string PickupText => "";
-        public override string DescText => "<style=cIsDamage>" + d(Chance) + "</style> chance to fire <style=cIsDamage>lightning</style> for <style=cIsDamage>" + d(TotalDamage) + "</style> TOTAL damage up to <style=cIsDamage>" + Strikes + " <style=cStack>(+" + Strikes + " per stack)</style></style> times. <style=cIsVoid>Corrupts all Ukuleles</style>.";
+        public override string DescText => "<style=cIsDamage>" + Chance + "</style> chance to fire <style=cIsDamage>lightning</style> for <style=cIsDamage>" + d(TotalDamage) + "</style> TOTAL damage up to <style=cIsDamage>" + Strikes + " <style=cStack>(+" + Strikes + " per stack)</style></style> times. <style=cIsVoid>Corrupts all Ukuleles</style>.";
 
         public override void Init()
         {

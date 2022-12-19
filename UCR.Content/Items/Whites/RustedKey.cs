@@ -17,7 +17,7 @@ namespace UltimateCustomRun.Items.Whites
 
         public override string PickupText => "";
 
-        public override string DescText => "A <style=cIsUtility>hidden cache</style> containing an item (" + d(Mathf.Round(WhiteChance / (WhiteChance + GreenChance + RedChance))) + "/<style=cIsHealing>" + d(Mathf.Round(GreenChance / (WhiteChance + GreenChance + RedChance))) + "</style>/<style=cIsHealth>" + d(Mathf.Round(RedChance / (WhiteChance + GreenChance + RedChance))) + "</style>) will appear in a random location <style=cIsUtility>on each stage</style>. Opening the cache <style=cIsUtility>consumes</style> this item.";
+        public override string DescText => "A <style=cIsUtility>hidden cache</style> containing an item (" + Mathf.Round(WhiteChance / (WhiteChance + GreenChance + RedChance) * 100) + "%/<style=cIsHealing>" + Mathf.Round(GreenChance / (WhiteChance + GreenChance + RedChance) * 100) + "%</style>/<style=cIsHealth>" + Mathf.Round(RedChance / (WhiteChance + GreenChance + RedChance) * 100) + "%</style>) will appear in a random location <style=cIsUtility>on each stage</style>. Opening the cache <style=cIsUtility>consumes</style> this item.";
 
         public override void Init()
         {

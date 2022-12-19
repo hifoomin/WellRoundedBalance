@@ -60,7 +60,7 @@ namespace UltimateCustomRun.Equipment
                     break;
 
                 default:
-                    Main.UCRLogger.LogInfo("Failed to add a Risk Of Options config for" + Name);
+                    Main.UCRLogger.LogDebug("Failed to add a Risk Of Options config for" + Name);
                     break;
             }
 
@@ -87,7 +87,6 @@ namespace UltimateCustomRun.Equipment
             {
                 LanguageAPI.Add(descriptionToken, DescText);
             }
-            Main.UCRLogger.LogInfo("Added " + Name);
         }
     }
 }

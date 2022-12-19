@@ -49,7 +49,7 @@ namespace UltimateCustomRun.Items.Greens
             noRazorwire.buffColor = Color.black;
             noRazorwire.canStack = false;
             noRazorwire.isDebuff = true;
-            noRazorwire.name = "NoRazorwire";
+            noRazorwire.name = "Razorwire Cooldown";
             noRazorwire.iconSprite = LegacyResourcesAPI.Load<Sprite>("textures/bufficons/texBuffEntangleIcon");
             noRazorwire.buffColor = new Color32();
             R2API.ContentAddition.AddBuffDef(noRazorwire);

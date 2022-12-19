@@ -99,7 +99,6 @@ namespace UltimateCustomRun
             {
                 LanguageAPI.Add(InternalName.ToUpper() + "_" + ThirdAltSpecialToken.ToUpper() + "DESCRIPTION", ThirdAltSpecialDesc);
             }
-            Main.UCRLogger.LogInfo("Added " + Name);
         }
     }
 }

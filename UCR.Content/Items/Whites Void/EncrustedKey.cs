@@ -15,7 +15,7 @@ namespace UltimateCustomRun.Items.Whites
         public override string InternalPickupToken => "treasureCacheVoid";
         public override bool NewPickup => false;
         public override string PickupText => "";
-        public override string DescText => "A <style=cIsUtility>hidden cache</style> containing an item (" + d(Mathf.Round(VoidWhiteChance / (VoidWhiteChance + VoidGreenChance + VoidRedChance))) + "/<style=cIsHealing>" + d(Mathf.Round(VoidGreenChance / (VoidWhiteChance + VoidGreenChance + VoidRedChance))) + "</style>/<style=cIsHealth>" + d(Mathf.Round(VoidRedChance / (VoidWhiteChance + VoidGreenChance + VoidRedChance))) + "</style>) will appear in a random location <style=cIsUtility>on each stage</style>. Opening the cache <style=cIsUtility>consumes</style> this item. <style=cIsVoid>Corrupts all Rusted Keys</style>.";
+        public override string DescText => "A <style=cIsUtility>hidden cache</style> containing an item (" + Mathf.Round(VoidWhiteChance / (VoidWhiteChance + VoidGreenChance + VoidRedChance) * 100) + "%/<style=cIsHealing>" + Mathf.Round(VoidGreenChance / (VoidWhiteChance + VoidGreenChance + VoidRedChance) * 100) + "%</style>/<style=cIsHealth>" + Mathf.Round(VoidRedChance / (VoidWhiteChance + VoidGreenChance + VoidRedChance) * 100) + "%</style>) will appear in a random location <style=cIsUtility>on each stage</style>. Opening the cache <style=cIsUtility>consumes</style> this item. <style=cIsVoid>Corrupts all Rusted Keys</style>.";
 
         public override void Init()
         {

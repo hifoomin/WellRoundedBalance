@@ -40,9 +40,9 @@ namespace UltimateCustomRun.Items.Greens
 
         public void AddBurn(On.RoR2.GlobalEventManager.orig_OnHitEnemy orig, GlobalEventManager self, DamageInfo damageInfo, GameObject victim)
         {
-            if (damageInfo.attacker && damageInfo.attacker.GetComponent<CharacterBody>().inventory)
+            if (damageInfo.attacker && damageInfo.attacker.GetComponent<CharacterBody>() && damageInfo.attacker.GetComponent<CharacterMaster>().inventory)
             {
-                var inv = damageInfo.attacker.GetComponent<CharacterBody>().inventory;
+                var inv = damageInfo.attacker.GetComponent<CharacterMaster>().inventory;
                 var stack = inv.GetItemCount(DLC1Content.Items.StrengthenBurn);
                 if (stack > 0)
                 {

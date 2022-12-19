@@ -6,6 +6,11 @@ using static RoR2.CombatDirector;
 using System.Collections.Generic;
 using System.Linq;
 using System;
+using RiskOfOptions;
+using RiskOfOptions.Options;
+using RiskOfOptions.OptionConfigs;
+using BepInEx.Configuration;
+using UnityEngine;
 
 namespace UltimateCustomRun.Elites
 {
@@ -27,6 +32,7 @@ namespace UltimateCustomRun.Elites
         public override void Hooks()
         {
             On.RoR2.CombatDirector.Init += Changes;
+            ModSettingsManager.SetModIcon(Main.UCR.LoadAsset<Sprite>("texUCRIcon.png"), "UltimateCustomRun.TabID.69", "UCR: Elites");
         }
 
         public static void Changes(On.RoR2.CombatDirector.orig_Init orig)
@@ -61,8 +67,12 @@ namespace UltimateCustomRun.Elites
                             {
                                 var eliteString = Language.GetString(eliteDef.modifierToken);
                                 // Main.UCRLogger.LogError("elitedef is + " + eliteString + " (honor)");
-                                float health = Main.UCREConfig.Bind("Elites : " + eliteString + " (Honor)", "Health Multiplier", eliteDef.healthBoostCoefficient, "Decimal. Vanilla is " + eliteDef.healthBoostCoefficient).Value;
-                                float damage = Main.UCREConfig.Bind("Elites : " + eliteString + " (Honor)", "Damage Multiplier", eliteDef.damageBoostCoefficient, "Decimal. Vanilla is " + eliteDef.damageBoostCoefficient).Value;
+                                ConfigEntry<float> healthConfig = Main.UCREConfig.Bind("Elites : " + eliteString + " (Honor)", "Health Multiplier", eliteDef.healthBoostCoefficient, "Decimal. Vanilla is " + eliteDef.healthBoostCoefficient);
+                                ConfigEntry<float> damageConfig = Main.UCREConfig.Bind("Elites : " + eliteString + " (Honor)", "Damage Multiplier", eliteDef.damageBoostCoefficient, "Decimal. Vanilla is " + eliteDef.damageBoostCoefficient);
+                                float health = healthConfig.Value;
+                                var damage = damageConfig.Value;
+                                ModSettingsManager.AddOption(new StepSliderOption(healthConfig, new StepSliderConfig() { restartRequired = true, increment = (float)healthConfig.DefaultValue / 10f, min = 0f, max = (float)healthConfig.DefaultValue * 10f }), "UltimateCustomRun.TabID.69", "UCR: Elites");
+                                ModSettingsManager.AddOption(new StepSliderOption(damageConfig, new StepSliderConfig() { restartRequired = true, increment = (float)damageConfig.DefaultValue / 10f, min = 0f, max = (float)damageConfig.DefaultValue * 10f }), "UltimateCustomRun.TabID.69", "UCR: Elites");
                                 eliteDef.healthBoostCoefficient = health;
                                 eliteDef.damageBoostCoefficient = damage;
                             }
@@ -70,8 +80,12 @@ namespace UltimateCustomRun.Elites
                             {
                                 var eliteString = Language.GetString(eliteDef.modifierToken);
                                 // Main.UCRLogger.LogError("elitedef is + " + eliteString);
-                                float health = Main.UCREConfig.Bind<float>("Elites : " + eliteString, "Health Multiplier", eliteDef.healthBoostCoefficient, "Decimal. Vanilla is " + eliteDef.healthBoostCoefficient).Value;
-                                float damage = Main.UCREConfig.Bind<float>("Elites : " + eliteString, "Damage Multiplier", eliteDef.damageBoostCoefficient, "Decimal. Vanilla is " + eliteDef.damageBoostCoefficient).Value;
+                                ConfigEntry<float> healthConfig = Main.UCREConfig.Bind<float>("Elites : " + eliteString, "Health Multiplier", eliteDef.healthBoostCoefficient, "Decimal. Vanilla is " + eliteDef.healthBoostCoefficient);
+                                ConfigEntry<float> damageConfig = Main.UCREConfig.Bind<float>("Elites : " + eliteString, "Damage Multiplier", eliteDef.damageBoostCoefficient, "Decimal. Vanilla is " + eliteDef.damageBoostCoefficient);
+                                float health = healthConfig.Value;
+                                var damage = damageConfig.Value;
+                                ModSettingsManager.AddOption(new StepSliderOption(healthConfig, new StepSliderConfig() { restartRequired = true, increment = (float)healthConfig.DefaultValue / 10f, min = 0f, max = (float)healthConfig.DefaultValue * 10f }), "UltimateCustomRun.TabID.69", "UCR: Elites");
+                                ModSettingsManager.AddOption(new StepSliderOption(damageConfig, new StepSliderConfig() { restartRequired = true, increment = (float)damageConfig.DefaultValue / 10f, min = 0f, max = (float)damageConfig.DefaultValue * 10f }), "UltimateCustomRun.TabID.69", "UCR: Elites");
                                 eliteDef.healthBoostCoefficient = health;
                                 eliteDef.damageBoostCoefficient = damage;
                             }

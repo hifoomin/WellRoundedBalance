@@ -53,7 +53,7 @@ namespace UltimateCustomRun.Directors
                     break;
 
                 default:
-                    Main.UCRLogger.LogInfo("Failed to add a Risk Of Options config for" + Name);
+                    Main.UCRLogger.LogDebug("Failed to add a Risk Of Options config for" + Name);
                     break;
             }
 
@@ -65,7 +65,6 @@ namespace UltimateCustomRun.Directors
         public virtual void Init()
         {
             Hooks();
-            Main.UCRLogger.LogInfo("Added " + Name);
         }
     }
 }

@@ -32,7 +32,7 @@ namespace UltimateCustomRun
      - Nkuhanas Opinion max pool, pool threshold and skull damage
      - Defense Nucleus stat boosts
      - Halcyon Seed stat boosts
-     - Queen's Gland beetle guard count
+     - Queen's Gland beetle guard count and stat boosts
      - Beads of Fealty more scavs and more lunar coins
      - Essence of Heresy debuff duration, initial hit damage, explosion damage
      - Gesture of The Drowned random equipment cooldown on every equipment activation
@@ -44,11 +44,20 @@ namespace UltimateCustomRun
      - Goobo Jr stat boosts
      - Milky Chrysalis flight speed, glide speed, boost speed and cooldown
      - Topaz Brooch percent barrier
-     - EmitDelegates for stacking chance/damage on items that don't (e.g. sticky bomb, atg)
+     - Rose Buckler updating sounds and visual for health threshold config
+     - EmitDelegates for stacking stats on items that don't (e.g. atg, chronobauble)
      - Improve descriptions for Focused Convergence and Mercurial Rachis
+
+     - Fix spikestrip adding duplicate elite key
+     - Fix Sawmerang
+
+     - Add a way to get all isc's somehow? And change their director stuff preferably per stage
+     - Add a way to change monster cards stuff
+     - Add a user friendly way to change stage spawn pools
     */
 
     [BepInDependency(R2API.R2API.PluginGUID)]
+    // swap to new later
     [BepInDependency("com.rune580.riskofoptions")]
     [BepInDependency("com.Wolfo.WolfoQualityOfLife", BepInDependency.DependencyFlags.SoftDependency)]
     [BepInDependency("com.xoxfaby.BetterUI", BepInDependency.DependencyFlags.SoftDependency)]
@@ -61,7 +70,7 @@ namespace UltimateCustomRun
         public const string PluginGUID = PluginAuthor + "." + PluginName;
         public const string PluginAuthor = "HIFU";
         public const string PluginName = "UltimateCustomRun";
-        public const string PluginVersion = "0.2.5";
+        public const string PluginVersion = "0.3.0";
         public static ConfigFile UCRConfig;
         public static ManualLogSource UCRLogger;
         public static ConfigFile UCREConfig;
