@@ -51,6 +51,9 @@ namespace UltimateCustomRun
      - Fix spikestrip adding duplicate elite key
      - Fix Sawmerang
 
+     - BIG BUG NONE OF THE STAT AND SKILLDEF CHANGES WORK
+     - I copied gigagon's code with permission and added Risk of Options, it seems that an update broke my way of doing it somehow?
+
      - Add a way to get all isc's somehow? And change their director stuff preferably per stage
      - Add a way to change monster cards stuff
      - Add a user friendly way to change stage spawn pools
