@@ -5,6 +5,7 @@ using RiskOfOptions.OptionConfigs;
 using RiskOfOptions.Options;
 using System.Text.RegularExpressions;
 using UnityEngine;
+using System;
 
 namespace WellRoundedBalance.Items
 {
@@ -23,7 +24,23 @@ namespace WellRoundedBalance.Items
         {
             return (f * 100f).ToString() + "%";
         }
-
+        
+        public T ConfigOption<T>(T value, string name, string desc) {
+            ConfigEntry<T> entry = Main.WRBConfig.Bind<T>(Name, name, value, desc);
+            if (typeof(T) == typeof(int)) {
+                ModSettingsManager.AddOption(new IntSliderOption(entry as BepInEx.Configuration.ConfigEntry<int>));
+            }
+            else if (typeof(T) == typeof(float)) {
+                ModSettingsManager.AddOption(new SliderOption(entry as BepInEx.Configuration.ConfigEntry<float>));
+            }
+            else if (typeof(T) == typeof(string)) {
+                ModSettingsManager.AddOption(new StringInputFieldOption(entry as BepInEx.Configuration.ConfigEntry<string>));
+            }
+            else if (typeof(T) == typeof(Enum)) {
+                ModSettingsManager.AddOption(new ChoiceOption(entry));
+            }
+            return entry.Value;
+        }
         public virtual void Init()
         {
             Hooks();
@@ -31,6 +48,14 @@ namespace WellRoundedBalance.Items
             string descriptionToken = "ITEM_" + InternalPickupToken.ToUpper() + "_DESC";
             LanguageAPI.Add(pickupToken, PickupText);
             LanguageAPI.Add(descriptionToken, DescText);
+        }
+
+        public string GetToken(string addressablePath) {
+            ItemDef def = Addressables.LoadAssetAsync<ItemDef>(addressablePath).WaitForCompletion();
+            string token = def.nameToken;
+            token = token.Replace("ITEM_", "");
+            token = token.Replace("_NAME", "");
+            return token;
         }
     }
 }

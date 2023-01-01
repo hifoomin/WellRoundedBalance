@@ -47,6 +47,9 @@
       <HintPath>libs\KdTreeLib.dll</HintPath>
       <Private>false</Private>
     </Reference>
+    <Reference Include="RiskOfOptions">
+      <HintPath>libs/RiskOfOptions.dll</HintPath>
+    </Reference>
     <Reference Include="KinematicCharacterController">
       <HintPath>libs\KinematicCharacterController.dll</HintPath>
     </Reference>
