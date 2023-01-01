@@ -4,7 +4,7 @@ namespace WellRoundedBalance.Global
 {
     public class GetNotMoving : GlobalBase
     {
-        public override string Name => ": Global ::::: Movement";
+        public override string Name => ": Global :::: Movement";
 
         public override void Init()
         {

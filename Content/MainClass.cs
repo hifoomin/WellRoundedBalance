@@ -21,6 +21,10 @@ namespace WellRoundedBalance
         Fix the commented out items (mostly me being lazy to remove the configs and shit)
         Make Lunar Pod give you the item directly >:)
         Implement Duh's void cradle idea
+        Make it so you can only take a couple lunar coins per run (maybe like 6?)
+        Fix combat director prespawns giving way lesser rewards than normal spawns
+        Increase prespawn count a bit
+        Make combat director spawn in quicker waves
     */
     [BepInDependency("com.Wolfo.WolfoQualityOfLife", BepInDependency.DependencyFlags.SoftDependency)]
     [BepInDependency("com.xoxfaby.BetterUI", BepInDependency.DependencyFlags.SoftDependency)]

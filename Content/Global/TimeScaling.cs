@@ -56,7 +56,7 @@ namespace WellRoundedBalance.Global
                 float timeFactor = Time * timefactormultiplier * difficultyDef.scalingValue;
                 float playerScalar = (float)Math.Pow(playerCount, playercountexponent);
 
-                float customTimeFactor = Mathf.Sqrt(Time) * 0.5f * difficultyDef.scalingValue;
+                float customTimeFactor = Mathf.Sqrt(Time) * 0.25f * difficultyDef.scalingValue;
 
                 float customFactor = 1f + 0.35f * customTimeFactor * playerScalar;
                 // previously * timeFactor instead of customTimeFactor

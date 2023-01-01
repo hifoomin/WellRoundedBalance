@@ -58,7 +58,7 @@ namespace WellRoundedBalance.Equipment
             Radar.cooldown = 30f;
 
             var Backup = Addressables.LoadAssetAsync<EquipmentDef>("RoR2/Base/DroneBackup/DroneBackup.asset").WaitForCompletion();
-            Backup.cooldown = 45f;
+            Backup.cooldown = 75f;
 
             var Helfire = Addressables.LoadAssetAsync<EquipmentDef>("RoR2/Base/BurnNearby/BurnNearby.asset").WaitForCompletion();
             Helfire.cooldown = 60f;

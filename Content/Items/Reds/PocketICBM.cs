@@ -30,21 +30,24 @@ namespace WellRoundedBalance.Items.Reds
 
         private void GlobalEventManager_OnHitEnemy(On.RoR2.GlobalEventManager.orig_OnHitEnemy orig, GlobalEventManager self, DamageInfo damageInfo, GameObject victim)
         {
-            var body = damageInfo.attacker.GetComponent<CharacterBody>();
-            if (body)
+            if (damageInfo.attacker)
             {
-                var inventory = body.inventory;
-                if (inventory)
+                var body = damageInfo.attacker.GetComponent<CharacterBody>();
+                if (body)
                 {
-                    if (!damageInfo.procChainMask.HasProc(ProcType.Missile))
+                    var inventory = body.inventory;
+                    if (inventory)
                     {
-                        var stack = inventory.GetItemCount(DLC1Content.Items.MoreMissile);
-                        if (stack > 0)
+                        if (!damageInfo.procChainMask.HasProc(ProcType.Missile))
                         {
-                            if (Util.CheckRoll(10f * damageInfo.procCoefficient * stack, body.master))
+                            var stack = inventory.GetItemCount(DLC1Content.Items.MoreMissile);
+                            if (stack > 0)
                             {
-                                float damage = Util.OnHitProcDamage(damageInfo.damage, body.damage, 3f);
-                                MissileUtils.FireMissile(body.corePosition, body, damageInfo.procChainMask, victim, damage, damageInfo.crit, GlobalEventManager.CommonAssets.missilePrefab, DamageColorIndex.Item, true);
+                                if (Util.CheckRoll(10f * damageInfo.procCoefficient * stack, body.master))
+                                {
+                                    float damage = Util.OnHitProcDamage(damageInfo.damage, body.damage, 3f);
+                                    MissileUtils.FireMissile(body.corePosition, body, damageInfo.procChainMask, victim, damage, damageInfo.crit, GlobalEventManager.CommonAssets.missilePrefab, DamageColorIndex.Item, true);
+                                }
                             }
                         }
                     }
