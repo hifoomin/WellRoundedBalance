@@ -23,7 +23,7 @@ namespace WellRoundedBalance.Mechanic.HoldoutZone
 
         private void Self_calcChargeRate(ref float rate)
         {
-            rate *= 1.5f;
+            rate *= 2f;
         }
 
         private void BossGroup_OnEnable(On.RoR2.BossGroup.orig_OnEnable orig, RoR2.BossGroup self)

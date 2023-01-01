@@ -27,6 +27,7 @@ namespace WellRoundedBalance
         Fix combat director prespawns giving way lesser rewards than normal spawns
         Increase prespawn count a bit
         Make combat director spawn in quicker waves
+        Make pillars drop items (I didn't finish it so guh)
     */
     [BepInDependency("com.Wolfo.WolfoQualityOfLife", BepInDependency.DependencyFlags.SoftDependency)]
     [BepInDependency("com.xoxfaby.BetterUI", BepInDependency.DependencyFlags.SoftDependency)]
