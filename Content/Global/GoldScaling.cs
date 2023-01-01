@@ -21,7 +21,7 @@ namespace WellRoundedBalance.Global
         {
             On.RoR2.DeathRewards.OnKilledServer += (orig, self, damageReport) =>
             {
-                self.goldReward = (uint)self.goldReward / (1 + (uint)0.3f * (uint)Run.instance.stageClearCount);
+                self.goldReward = (uint)self.goldReward / (1 + (uint)0.25f * (uint)Run.instance.stageClearCount);
                 orig(self, damageReport);
             };
         }
