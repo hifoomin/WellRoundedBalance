@@ -36,7 +36,7 @@ namespace WellRoundedBalance.Global
                 float timeFactor = Time * timefactormultiplier * difficultyDef.scalingValue;
                 float playerScalar = (float)Math.Pow(playerCount, playercountexponent);
 
-                float stageFactor = 1f + 1f * timeFactor * playerScalar;
+                float stageFactor = 1f + 0.65f * timeFactor * playerScalar;
 
                 // im not changing this chain. Cope
                 float finalDifficulty = (playerFactor + timeFactor * playerScalar) * stageFactor;

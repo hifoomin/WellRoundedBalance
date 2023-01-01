@@ -9,7 +9,7 @@ namespace WellRoundedBalance.Items.Whites
         public override string Name => ":: Items : Whites :: Medkit";
         public override string InternalPickupToken => "medkit";
 
-        public override string PickupText => "";
+        public override string PickupText => "Receive a delayed heal after taking damage.";
 
         public override string DescText => "2 seconds after getting hurt, <style=cIsHealing>heal</style> for <style=cIsHealing>20</style> plus an additional <style=cIsHealing>3.5%<style=cStack> (+3.5% per stack)</style></style> of <style=cIsHealing>maximum health</style>.";
 

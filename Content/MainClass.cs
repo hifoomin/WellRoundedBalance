@@ -10,6 +10,7 @@ using System.Reflection;
 using WellRoundedBalance.Items;
 using WellRoundedBalance.Equipment;
 using WellRoundedBalance.Global;
+using WellRoundedBalance.Interactable;
 
 namespace WellRoundedBalance
 {
@@ -18,7 +19,8 @@ namespace WellRoundedBalance
         Rework Defense Nucleus
         Rework Titanic Knurl
         Fix the commented out items (mostly me being lazy to remove the configs and shit)
-        Tweak gold and time scaling (I literally just guesstimated lmao)
+        Make Lunar Pod give you the item directly >:)
+        Implement Duh's void cradle idea
     */
     [BepInDependency("com.Wolfo.WolfoQualityOfLife", BepInDependency.DependencyFlags.SoftDependency)]
     [BepInDependency("com.xoxfaby.BetterUI", BepInDependency.DependencyFlags.SoftDependency)]
@@ -33,12 +35,21 @@ namespace WellRoundedBalance
         public const string PluginName = "WellRoundedBalance";
         public const string PluginVersion = "0.0.1";
         public static ConfigFile WRBConfig;
+        public static ConfigFile WRBItemConfig;
+        public static ConfigFile WRBGlobalConfig;
+        public static ConfigFile WRBEquipmentConfig;
+        public static ConfigFile WRBInteractableConfig;
         public static ManualLogSource WRBLogger;
 
         public void Awake()
         {
             WRBLogger = Logger;
             Main.WRBConfig = base.Config;
+
+            WRBItemConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Items.cfg", true);
+            WRBGlobalConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Global.cfg", true);
+            WRBEquipmentConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Equipment.cfg", true);
+            WRBInteractableConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Interactables.cfg", true);
 
             IEnumerable<Type> enumerable = from type in Assembly.GetExecutingAssembly().GetTypes()
                                            where !type.IsAbstract && type.IsSubclassOf(typeof(GlobalBase))
@@ -85,13 +96,29 @@ namespace WellRoundedBalance
                     based.Init();
                 }
             }
+
+            IEnumerable<Type> enumerable4 = from type in Assembly.GetExecutingAssembly().GetTypes()
+                                            where !type.IsAbstract && type.IsSubclassOf(typeof(InteractableBase))
+                                            select type;
+
+            WRBLogger.LogInfo("==+----------------==INTERACTABLES==----------------+==");
+
+            foreach (Type type in enumerable4)
+            {
+                InteractableBase based = (InteractableBase)Activator.CreateInstance(type);
+                if (ValidateInteractable(based))
+                {
+                    based.Init();
+                }
+            }
         }
 
         public bool ValidateGlobal(GlobalBase gb)
         {
             if (gb.isEnabled)
             {
-                return true;
+                bool enabledfr = WRBGlobalConfig.Bind(gb.Name, "Enable?", true, "Vanilla is false").Value;
+                if (enabledfr) return true;
             }
             return false;
         }
@@ -100,7 +127,8 @@ namespace WellRoundedBalance
         {
             if (ib.isEnabled)
             {
-                return true;
+                bool enabledfr = WRBItemConfig.Bind(ib.Name, "Enable?", true, "Vanilla is false").Value;
+                if (enabledfr) return true;
             }
             return false;
         }
@@ -109,7 +137,18 @@ namespace WellRoundedBalance
         {
             if (eqb.isEnabled)
             {
-                return true;
+                bool enabledfr = WRBEquipmentConfig.Bind(eqb.Name, "Enable?", true, "Vanilla is false").Value;
+                if (enabledfr) return true;
+            }
+            return false;
+        }
+
+        public bool ValidateInteractable(InteractableBase ib)
+        {
+            if (ib.isEnabled)
+            {
+                bool enabledfr = WRBInteractableConfig.Bind(ib.Name, "Enable?", true, "Vanilla is false").Value;
+                if (enabledfr) return true;
             }
             return false;
         }
