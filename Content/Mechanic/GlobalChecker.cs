@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WellRoundedBalance.Global
+namespace WellRoundedBalance.Mechanic
 {
     public abstract class GlobalBase<T> : GlobalBase where T : GlobalBase<T>
     {

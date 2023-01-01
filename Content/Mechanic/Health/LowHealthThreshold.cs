@@ -1,12 +1,10 @@
-﻿using MonoMod.Cil;
-using RoR2;
-using MonoMod.RuntimeDetour;
+﻿using RoR2;
 
-namespace WellRoundedBalance.Global
+namespace WellRoundedBalance.Mechanic.Health
 {
-    public class IsHealthLow : GlobalBase
+    public class LowHealthThreshold : GlobalBase
     {
-        public override string Name => ": Global ::: Health";
+        public override string Name => ": Global :: Health";
 
         public override void Init()
         {

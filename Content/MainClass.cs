@@ -11,6 +11,8 @@ using WellRoundedBalance.Items;
 using WellRoundedBalance.Equipment;
 using WellRoundedBalance.Global;
 using WellRoundedBalance.Interactable;
+using WellRoundedBalance.Mechanic;
+using WellRoundedBalance.Enemies;
 
 namespace WellRoundedBalance
 {
@@ -25,8 +27,6 @@ namespace WellRoundedBalance
         Fix combat director prespawns giving way lesser rewards than normal spawns
         Increase prespawn count a bit
         Make combat director spawn in quicker waves
-        Speed up teleporter after killing tp boss
-        Make all holdout zones slightly faster, give pillars rewards based on the pillar
     */
     [BepInDependency("com.Wolfo.WolfoQualityOfLife", BepInDependency.DependencyFlags.SoftDependency)]
     [BepInDependency("com.xoxfaby.BetterUI", BepInDependency.DependencyFlags.SoftDependency)]
@@ -45,6 +45,7 @@ namespace WellRoundedBalance
         public static ConfigFile WRBGlobalConfig;
         public static ConfigFile WRBEquipmentConfig;
         public static ConfigFile WRBInteractableConfig;
+        public static ConfigFile WRBEnemyConfig;
         public static ManualLogSource WRBLogger;
 
         public void Awake()
@@ -56,12 +57,13 @@ namespace WellRoundedBalance
             WRBGlobalConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Global.cfg", true);
             WRBEquipmentConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Equipment.cfg", true);
             WRBInteractableConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Interactables.cfg", true);
+            WRBEnemyConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Enemies.cfg", true);
 
             IEnumerable<Type> enumerable = from type in Assembly.GetExecutingAssembly().GetTypes()
                                            where !type.IsAbstract && type.IsSubclassOf(typeof(GlobalBase))
                                            select type;
 
-            WRBLogger.LogInfo("==+----------------==GLOBAL==----------------+==");
+            WRBLogger.LogInfo("==+----------------==MECHANICS==----------------+==");
 
             foreach (Type type in enumerable)
             {
@@ -117,6 +119,23 @@ namespace WellRoundedBalance
                     based.Init();
                 }
             }
+
+            IEnumerable<Type> enumerable5 = from type in Assembly.GetExecutingAssembly().GetTypes()
+                                            where !type.IsAbstract && type.IsSubclassOf(typeof(EnemyBase))
+                                            select type;
+
+            WRBLogger.LogInfo("==+----------------==ENEMIES==----------------+==");
+
+            foreach (Type type in enumerable5)
+            {
+                EnemyBase based = (EnemyBase)Activator.CreateInstance(type);
+                if (ValidateEnemy(based))
+                {
+                    based.Init();
+                }
+            }
+
+            RemoveRollOfPenisAndGesture.Based();
         }
 
         public bool ValidateGlobal(GlobalBase gb)
@@ -154,6 +173,16 @@ namespace WellRoundedBalance
             if (ib.isEnabled)
             {
                 bool enabledfr = WRBInteractableConfig.Bind(ib.Name, "Enable?", true, "Vanilla is false").Value;
+                if (enabledfr) return true;
+            }
+            return false;
+        }
+
+        public bool ValidateEnemy(EnemyBase eb)
+        {
+            if (eb.isEnabled)
+            {
+                bool enabledfr = WRBInteractableConfig.Bind(eb.Name, "Enable?", true, "Vanilla is false").Value;
                 if (enabledfr) return true;
             }
             return false;

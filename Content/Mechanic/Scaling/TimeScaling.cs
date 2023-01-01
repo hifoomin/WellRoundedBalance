@@ -2,8 +2,9 @@
 using RoR2;
 using System;
 using UnityEngine;
+using WellRoundedBalance.Global;
 
-namespace WellRoundedBalance.Global
+namespace WellRoundedBalance.Mechanic.Scaling
 {
     public class TimeScaling : GlobalBase
     {
@@ -12,7 +13,7 @@ namespace WellRoundedBalance.Global
         public static float vanillaStandardScaling;
         public static float vanillaLinearScaling;
 
-        public override string Name => ": Global : Time Scaling";
+        public override string Name => ": Global : Scaling";
 
         public override void Init()
         {

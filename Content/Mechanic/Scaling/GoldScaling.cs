@@ -1,11 +1,12 @@
 ﻿using RoR2;
 using UnityEngine;
+using WellRoundedBalance.Global;
 
-namespace WellRoundedBalance.Global
+namespace WellRoundedBalance.Mechanic.Scaling
 {
     public class GoldScaling : GlobalBase
     {
-        public override string Name => ": Global :: Gold Scaling";
+        public override string Name => ": Global : Scaling";
 
         public override void Init()
         {

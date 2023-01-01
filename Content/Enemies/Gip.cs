@@ -12,8 +12,7 @@ namespace WellRoundedBalance.Enemies
         {
             var gip = Addressables.LoadAssetAsync<GameObject>("RoR2/DLC1/Gup/GipBody.prefab").WaitForCompletion();
             var gipDeathRewards = gip.GetComponent<DeathRewards>();
-            Main.WRBLogger.LogFatal("gup gold reward is" + gipDeathRewards.goldReward);
-            Main.WRBLogger.LogFatal("gup gold reward fallback is" + gipDeathRewards.fallbackGold);
+            // get in a run then change
 
             var gipBody = gip.GetComponent<CharacterBody>();
             gipBody.baseMaxHealth = 125f;

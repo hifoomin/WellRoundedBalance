@@ -1,10 +1,10 @@
 ﻿using MonoMod.Cil;
 
-namespace WellRoundedBalance.Global
+namespace WellRoundedBalance.Mechanic.Health
 {
     public class OneShotProtection : GlobalBase
     {
-        public override string Name => ": Global ::: Health";
+        public override string Name => ": Global :: Health";
 
         public override void Init()
         {

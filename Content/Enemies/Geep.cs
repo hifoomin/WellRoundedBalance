@@ -12,8 +12,7 @@ namespace WellRoundedBalance.Enemies
         {
             var geep = Addressables.LoadAssetAsync<GameObject>("RoR2/DLC1/Gup/GeepBody.prefab").WaitForCompletion();
             var geepDeathRewards = geep.GetComponent<DeathRewards>();
-            Main.WRBLogger.LogFatal("gup gold reward is" + geepDeathRewards.goldReward);
-            Main.WRBLogger.LogFatal("gup gold reward fallback is" + geepDeathRewards.fallbackGold);
+            // get in a run then change
 
             var geepBody = geep.GetComponent<CharacterBody>();
             geepBody.baseMaxHealth = 250f;

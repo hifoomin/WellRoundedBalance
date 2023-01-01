@@ -1,10 +1,10 @@
 ﻿using MonoMod.Cil;
 
-namespace WellRoundedBalance.Global
+namespace WellRoundedBalance.Mechanic.Movement
 {
     public class GetNotMoving : GlobalBase
     {
-        public override string Name => ": Global :::: Movement";
+        public override string Name => ": Global ::: Movement";
 
         public override void Init()
         {
