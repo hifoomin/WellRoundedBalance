@@ -15,7 +15,7 @@ using WellRoundedBalance.Interactable;
 namespace WellRoundedBalance
 {
     [BepInDependency(R2API.R2API.PluginGUID)]
-    /* swap to new R2APIs later
+    /*  Swap to new R2APIs later
         Rework Defense Nucleus
         Rework Titanic Knurl
         Fix the commented out items (mostly me being lazy to remove the configs and shit)
@@ -25,6 +25,8 @@ namespace WellRoundedBalance
         Fix combat director prespawns giving way lesser rewards than normal spawns
         Increase prespawn count a bit
         Make combat director spawn in quicker waves
+        Speed up teleporter after killing tp boss
+        Make all holdout zones slightly faster, give pillars rewards based on the pillar
     */
     [BepInDependency("com.Wolfo.WolfoQualityOfLife", BepInDependency.DependencyFlags.SoftDependency)]
     [BepInDependency("com.xoxfaby.BetterUI", BepInDependency.DependencyFlags.SoftDependency)]
