@@ -14,7 +14,7 @@ namespace WellRoundedBalance.Interactable
 
         public override void Hooks()
         {
-            var scrapper = Addressables.LoadAssetAsync<InteractableSpawnCard>("RoR2/Base/Interactables/Scrapper/iscScrapper.asset").WaitForCompletion();
+            var scrapper = Addressables.LoadAssetAsync<InteractableSpawnCard>("RoR2/Base/Scrapper/iscScrapper.asset").WaitForCompletion();
             scrapper.maxSpawnsPerStage = 0;
         }
     }

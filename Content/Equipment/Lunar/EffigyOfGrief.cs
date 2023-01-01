@@ -11,14 +11,9 @@ namespace WellRoundedBalance.Equipment
         public override string Name => "::: Equipment ::: Effigy Of Grief";
         public override string InternalPickupToken => "crippleWard";
 
-        public override string PickupText => "Drop a permanent effigy that cripples ALL characters inside. Can place up to " + MaxEffigies + ".";
+        public override string PickupText => "Drop a permanent effigy that cripples ALL characters inside. Can place up to 5.";
 
-        public override string DescText => "ALL characters within are <style=cIsUtility>slowed by " + d(SpeedDebuff) + "</style> and have their <style=cIsDamage>armor reduced by " + ArmorDebuff + "</style>. Can place up to <style=cIsUtility>" + MaxEffigies + "</style>.";
-
-        public static int MaxEffigies;
-        public static float Radius;
-        public static float SpeedDebuff;
-        public static float ArmorDebuff;
+        public override string DescText => "ALL characters within are <style=cIsUtility>slowed by 100%</style> and have their <style=cIsDamage>armor reduced by -25</style>. Can place up to <style=cIsUtility>5</style>.";
 
         public static BuffDef CrippleEffigy;
 
@@ -61,7 +56,6 @@ namespace WellRoundedBalance.Equipment
         private void Changes()
         {
             var eff = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/CrippleWard/CrippleWard.prefab").WaitForCompletion().GetComponent<BuffWard>();
-            eff.radius = Radius;
             eff.buffDef = CrippleEffigy;
         }
     }

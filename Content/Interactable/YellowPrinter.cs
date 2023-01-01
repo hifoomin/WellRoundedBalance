@@ -14,7 +14,7 @@ namespace WellRoundedBalance.Interactable
 
         public override void Hooks()
         {
-            var yellowPrinter = Addressables.LoadAssetAsync<InteractableSpawnCard>("RoR2/Base/Interactables/DuplicatorWild/iscDuplicatorWild.asset").WaitForCompletion();
+            var yellowPrinter = Addressables.LoadAssetAsync<InteractableSpawnCard>("RoR2/Base/DuplicatorWild/iscDuplicatorWild.asset").WaitForCompletion();
             yellowPrinter.maxSpawnsPerStage = 1;
         }
     }

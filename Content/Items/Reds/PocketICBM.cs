@@ -25,6 +25,33 @@ namespace WellRoundedBalance.Items.Reds
         {
             IL.RoR2.MissileUtils.FireMissile_Vector3_CharacterBody_ProcChainMask_GameObject_float_bool_GameObject_DamageColorIndex_Vector3_float_bool += Changes;
             IL.RoR2.GlobalEventManager.OnHitEnemy += ChangeMissileCount;
+            On.RoR2.GlobalEventManager.OnHitEnemy += GlobalEventManager_OnHitEnemy;
+        }
+
+        private void GlobalEventManager_OnHitEnemy(On.RoR2.GlobalEventManager.orig_OnHitEnemy orig, GlobalEventManager self, DamageInfo damageInfo, GameObject victim)
+        {
+            var body = damageInfo.attacker.GetComponent<CharacterBody>();
+            if (body)
+            {
+                var inventory = body.inventory;
+                if (inventory)
+                {
+                    if (!damageInfo.procChainMask.HasProc(ProcType.Missile))
+                    {
+                        var stack = inventory.GetItemCount(DLC1Content.Items.MoreMissile);
+                        if (stack > 0)
+                        {
+                            if (Util.CheckRoll(10f * damageInfo.procCoefficient * stack, body.master))
+                            {
+                                float damage = Util.OnHitProcDamage(damageInfo.damage, body.damage, 3f);
+                                MissileUtils.FireMissile(body.corePosition, body, damageInfo.procChainMask, victim, damage, damageInfo.crit, GlobalEventManager.CommonAssets.missilePrefab, DamageColorIndex.Item, true);
+                            }
+                        }
+                    }
+                }
+            }
+
+            orig(self, damageInfo, victim);
         }
 
         private void ChangeMissileCount(ILContext il)
@@ -33,12 +60,11 @@ namespace WellRoundedBalance.Items.Reds
 
             if (c.TryGotoNext(MoveType.Before,
                x => x.MatchLdcI4(1),
-               x => x.MatchLdcR4(1f),
+               x => x.MatchBr(out _),
                x => x.MatchLdcI4(3)))
             {
-                c.Index += 3;
-                c.Remove();
-                c.Emit(OpCodes.Ldc_I4, 2);
+                c.Index += 2;
+                c.Next.Operand = 2;
             }
             else
             {

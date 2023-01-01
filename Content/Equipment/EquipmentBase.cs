@@ -15,14 +15,8 @@ namespace WellRoundedBalance.Equipment
         public abstract string PickupText { get; }
         public abstract string DescText { get; }
         public virtual bool isEnabled { get; } = true;
-        public ConfigEntryBase config;
 
         public abstract void Hooks();
-
-        public string d(float f)
-        {
-            return (f * 100f).ToString() + "%";
-        }
 
         public virtual void Init()
         {

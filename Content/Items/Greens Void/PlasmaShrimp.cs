@@ -35,6 +35,19 @@ namespace WellRoundedBalance.Items.VoidGreens
             {
                 Main.WRBLogger.LogError("Failed to apply Plasma Shrimp Damage hook");
             }
+
+            c.Index = 0;
+
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdcR4(0.2f),
+                    x => x.MatchStfld<RoR2.Orbs.GenericDamageOrb>("procCoefficient")))
+            {
+                c.Next.Operand = 0f;
+            }
+            else
+            {
+                Main.WRBLogger.LogError("Failed to apply Plasma Shrimp Proc Coefficient hook");
+            }
         }
 
         private void ChangeShield(ILContext il)

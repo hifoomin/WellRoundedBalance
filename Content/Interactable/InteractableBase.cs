@@ -12,11 +12,6 @@ namespace WellRoundedBalance.Interactable
 
         public abstract void Hooks();
 
-        public string d(float f)
-        {
-            return (f * 100f).ToString() + "%";
-        }
-
         public virtual void Init()
         {
             Hooks();
