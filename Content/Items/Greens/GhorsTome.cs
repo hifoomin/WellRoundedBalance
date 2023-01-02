@@ -10,7 +10,7 @@ namespace WellRoundedBalance.Items.Greens
         public override string InternalPickupToken => "bonusGoldPackOnKill";
 
         public override string PickupText => "Chance on kill to drop a treasure.";
-        public override string DescText => "<style=cIsUtility>7%</style> <style=cStack>(+7% on stack)</style> Chance on kill to drop a treasure worth <style=cIsUtility>$25</style>. <style=cIsUtility>Scales over time.</style>";
+        public override string DescText => "<style=cIsUtility>5%</style> <style=cStack>(+5% on stack)</style> Chance on kill to drop a treasure worth <style=cIsUtility>$50</style>. <style=cIsUtility>Scales over time.</style>";
 
         public override void Init()
         {
@@ -26,7 +26,7 @@ namespace WellRoundedBalance.Items.Greens
         public static void ChangeReward()
         {
             var gtc = LegacyResourcesAPI.Load<GameObject>("Prefabs/NetworkedObjects/BonusMoneyPack").GetComponentInChildren<MoneyPickup>();
-            gtc.baseGoldReward = 25;
+            gtc.baseGoldReward = 50;
         }
 
         public static void ChangeChance(ILContext il)
@@ -38,7 +38,7 @@ namespace WellRoundedBalance.Items.Greens
                     x => x.MatchLdcR4(4f)))
             {
                 c.Index += 1;
-                c.Next.Operand = 7f;
+                c.Next.Operand = 5f;
             }
             else
             {

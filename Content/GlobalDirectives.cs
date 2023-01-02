@@ -5,3 +5,4 @@ global using R2API;
 global using RoR2.Projectile;
 global using RoR2.CharacterAI;
 global using WellRoundedBalance.Utils;
+global using System.Collections.Generic;

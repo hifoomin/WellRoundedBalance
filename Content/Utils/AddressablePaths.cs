@@ -1,3 +1,16 @@
+namespace WellRoundedBalance.Utils {
+    public static class AddressableUtils {
+        public static T Load<T>(this string path) {
+            return Addressables.LoadAssetAsync<T>(path).WaitForCompletion();
+        }
+
+        public static T LoadComponent<T>(this string path) where T : UnityEngine.Component {
+            return Addressables.LoadAssetAsync<T>(path).WaitForCompletion().GetComponent<T>();
+        }
+    }
+}
+
+
 namespace WellRoundedBalance.Utils.Paths {
   // this class was generated from the following code
   /*

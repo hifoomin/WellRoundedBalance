@@ -1,12 +1,12 @@
 ﻿using System;
 
-namespace WellRoundedBalance.Global
+namespace WellRoundedBalance.Enemies
 {
-    public abstract class GlobalBase<T> : GlobalBase where T : GlobalBase<T>
+    public abstract class EnemyBase<T> : EnemyBase where T : EnemyBase<T>
     {
         public static T instance { get; set; }
 
-        public GlobalBase()
+        public EnemyBase()
         {
             if (instance != null)
             {

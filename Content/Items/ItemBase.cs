@@ -16,7 +16,6 @@ namespace WellRoundedBalance.Items
         public abstract string PickupText { get; }
         public abstract string DescText { get; }
         public virtual bool isEnabled { get; } = true;
-        public ConfigEntryBase config;
 
         public abstract void Hooks();
 

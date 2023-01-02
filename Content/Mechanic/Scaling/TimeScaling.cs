@@ -1,12 +1,19 @@
-﻿using RoR2;
+﻿using R2API.Utils;
+using RoR2;
 using System;
 using UnityEngine;
+using WellRoundedBalance.Global;
 
-namespace WellRoundedBalance.Global
+namespace WellRoundedBalance.Mechanic.Scaling
 {
     public class TimeScaling : GlobalBase
     {
-        public override string Name => ": Global : Time Scaling";
+        public static float timer;
+        public static float interval = 120f;
+        public static float vanillaStandardScaling;
+        public static float vanillaLinearScaling;
+
+        public override string Name => ": Global : Scaling";
 
         public override void Init()
         {
@@ -16,6 +23,19 @@ namespace WellRoundedBalance.Global
         public override void Hooks()
         {
             ChangeBehavior();
+            RoR2Application.onFixedUpdate += RoR2Application_onFixedUpdate;
+        }
+
+        private void RoR2Application_onFixedUpdate()
+        {
+            timer += Time.fixedDeltaTime;
+            if (timer >= interval && Run.instance)
+            {
+                ChatMessage.Send("Current difficulty coefficient is " + Run.instance.compensatedDifficultyCoefficient);
+                ChatMessage.Send("Vanilla standard difficulty coefficient would be " + vanillaStandardScaling);
+                ChatMessage.Send("Vanilla linear difficulty coefficient would be " + vanillaLinearScaling);
+                timer = 0f;
+            }
         }
 
         public static void ChangeBehavior()
@@ -32,14 +52,18 @@ namespace WellRoundedBalance.Global
                 var timefactormultiplier = 0.0506f;
 
                 DifficultyDef difficultyDef = DifficultyCatalog.GetDifficultyDef(self.selectedDifficulty);
+
                 float playerFactor = playerfactorbase + playerCount * playercountmultiplier;
                 float timeFactor = Time * timefactormultiplier * difficultyDef.scalingValue;
                 float playerScalar = (float)Math.Pow(playerCount, playercountexponent);
 
-                float stageFactor = 1f + 1f * timeFactor * playerScalar;
+                float customTimeFactor = Mathf.Sqrt(Time) * 0.25f * difficultyDef.scalingValue;
+
+                float customFactor = 1f + 0.35f * customTimeFactor * playerScalar;
+                // previously * timeFactor instead of customTimeFactor
 
                 // im not changing this chain. Cope
-                float finalDifficulty = (playerFactor + timeFactor * playerScalar) * stageFactor;
+                float finalDifficulty = (playerFactor + timeFactor * playerScalar) * customFactor;
                 self.compensatedDifficultyCoefficient = finalDifficulty;
                 self.difficultyCoefficient = finalDifficulty;
                 self.ambientLevel = Mathf.Min(3f * (finalDifficulty - playerFactor) + 1f, Run.ambientLevelCap);
@@ -51,6 +75,12 @@ namespace WellRoundedBalance.Global
                 {
                     self.OnAmbientLevelUp();
                 }
+
+                float stageFactor = Mathf.Pow(1.15f, self.stageClearCount);
+
+                vanillaStandardScaling = (playerFactor + timeFactor * playerScalar) * stageFactor;
+
+                vanillaLinearScaling = playerFactor + timeFactor * playerScalar;
             };
         }
     }
