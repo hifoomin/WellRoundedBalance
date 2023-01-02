@@ -29,7 +29,7 @@ namespace WellRoundedBalance.Items.VoidGreens
             if (c.TryGotoNext(MoveType.Before,
                     x => x.MatchLdcR4(0.4f)))
             {
-                c.Next.Operand = 12f;
+                c.Next.Operand = 0.12f;
             }
             else
             {
