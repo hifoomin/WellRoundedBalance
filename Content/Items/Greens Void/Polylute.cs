@@ -10,7 +10,7 @@ namespace WellRoundedBalance.Items.VoidGreens
         public override string InternalPickupToken => "chainLightningVoid";
 
         public override string PickupText => "Chance to repeatedly strike a single enemy with lightning. <style=cIsVoid>Corrupts all Ukuleles</style>.";
-        public override string DescText => "<style=cIsDamage>25%</style> chance to fire <style=cIsDamage>lightning</style> for <style=cIsDamage>30%</style> TOTAL damage up to <style=cIsDamage>3<style=cStack>(+2 per stack)</style></style> times. <style=cIsVoid>Corrupts all Ukuleles</style>.";
+        public override string DescText => "<style=cIsDamage>25%</style> chance to fire <style=cIsDamage>lightning</style> for <style=cIsDamage>30%</style> TOTAL damage up to <style=cIsDamage>3<style=cStack> (+2 per stack)</style></style> times. <style=cIsVoid>Corrupts all Ukuleles</style>.";
 
         public override void Init()
         {

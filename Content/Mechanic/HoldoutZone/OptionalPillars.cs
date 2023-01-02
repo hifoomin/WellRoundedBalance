@@ -1,12 +1,10 @@
-using RoR2;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.SceneManagement;
 using On.EntityStates.MoonElevator;
 
-namespace WellRoundedBalance.Mechanic.HoldoutZone {
-    public class OptionalPillars : GlobalBase<OptionalPillars> {
-        public override string Name => ":: Global ::: Holdout Zones ::: Optional Pillars";
+namespace WellRoundedBalance.Mechanic.HoldoutZone
+{
+    public class OptionalPillars : GlobalBase<OptionalPillars>
+    {
+        public override string Name => ":: Global :::: Holdout Zone :: Optional Pillars";
 
         public override void Hooks()
         {
@@ -14,13 +12,14 @@ namespace WellRoundedBalance.Mechanic.HoldoutZone {
             Inactive.OnEnter += EnableElevators;
         }
 
-        private void SkipPillars(On.RoR2.MoonBatteryMissionController.orig_OnEnable orig, MoonBatteryMissionController self) {
+        private void SkipPillars(On.RoR2.MoonBatteryMissionController.orig_OnEnable orig, MoonBatteryMissionController self)
+        {
             self.enabled = false;
         }
 
-        private void EnableElevators(Inactive.orig_OnEnter orig, EntityStates.MoonElevator.Inactive self) {
+        private void EnableElevators(Inactive.orig_OnEnter orig, EntityStates.MoonElevator.Inactive self)
+        {
             self.outer.SetNextState(new EntityStates.MoonElevator.InactiveToReady());
         }
-        
     }
 }

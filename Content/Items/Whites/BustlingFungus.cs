@@ -53,9 +53,9 @@ namespace WellRoundedBalance.Items.Whites
             {
                 c.Next.Operand = 0.25f;
                 c.Index += 4;
-                c.Next.Operand = 5f;
+                c.Next.Operand = 0.05f;
                 c.Index += 1;
-                c.Next.Operand = 2.5f;
+                c.Next.Operand = 0.025f;
             }
             else
             {

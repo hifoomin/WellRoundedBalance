@@ -22,7 +22,7 @@ namespace WellRoundedBalance.Mechanic.Scaling
         {
             On.RoR2.DeathRewards.OnKilledServer += (orig, self, damageReport) =>
             {
-                self.goldReward /= 1 + (uint)Run.instance.stageClearCount + 2 * (uint)Run.instance.loopClearCount;
+                self.goldReward /= 1 + (uint)Run.instance.stageClearCount + (uint)Run.instance.loopClearCount;
                 orig(self, damageReport);
             };
         }

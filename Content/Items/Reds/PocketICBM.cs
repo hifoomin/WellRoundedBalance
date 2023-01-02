@@ -14,7 +14,7 @@ namespace WellRoundedBalance.Items.Reds
 
         public override string PickupText => "All Missile items fire an additional missile. Gain a 10% chance to fire a missile.";
 
-        public override string DescText => "All missile items and equipment fire an additional <style=cIsDamage>missile</style>. Gain a <style=cIsDamage>10%</style> <style=cStack>(+10% per stack)</style> chance to fire a missile that deals <style=cIsDamage>300%</style> TOTAL damage.";
+        public override string DescText => "All missile items and equipment fire an additional <style=cIsDamage>missile</style>. Gain a <style=cIsDamage>10%</style> <style=cStack>(+10% per stack)</style> chance to fire a missile that deals <style=cIsDamage>200%</style> TOTAL damage.";
 
         public override void Init()
         {
@@ -45,7 +45,7 @@ namespace WellRoundedBalance.Items.Reds
                             {
                                 if (Util.CheckRoll(10f * damageInfo.procCoefficient * stack, body.master))
                                 {
-                                    float damage = Util.OnHitProcDamage(damageInfo.damage, body.damage, 3f);
+                                    float damage = Util.OnHitProcDamage(damageInfo.damage, body.damage, 2f);
                                     MissileUtils.FireMissile(body.corePosition, body, damageInfo.procChainMask, victim, damage, damageInfo.crit, GlobalEventManager.CommonAssets.missilePrefab, DamageColorIndex.Item, true);
                                 }
                             }

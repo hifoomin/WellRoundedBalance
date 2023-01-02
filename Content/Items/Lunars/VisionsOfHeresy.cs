@@ -1,5 +1,4 @@
-﻿/*
-using RoR2;
+﻿using RoR2;
 using RoR2.Projectile;
 using RoR2.Skills;
 using UnityEngine;
@@ -8,20 +7,6 @@ namespace WellRoundedBalance.Items.Lunars
 {
     public class VisionsOfHeresy : ItemBase
     {
-        public static int Charges;
-        public static float Cooldown;
-        public static float Duration;
-        public static float InitialHitDamage;
-        public static float InitialHitProcCoefficient;
-        public static float Recoil;
-        public static float Bloom;
-        public static float MaxSpeed;
-        public static float ProjectileSpeed;
-        public static float ExplosionDamage;
-        public static float ExplosionRadius;
-        public static float ExplosionProcCoefficient;
-        public static float Size;
-        public static bool EnableTheFeelTarlukNailgunCopeSeethePlusTwoAoeEffect;
         public static Component[] burdel;
         public static Component[] butla;
         public static Component[] kara;
@@ -30,24 +15,10 @@ namespace WellRoundedBalance.Items.Lunars
         public override string InternalPickupToken => "lunarPrimaryReplacement";
 
         public override string PickupText => "";
-        public override string DescText => "<style=cIsUtility>Replace your Primary Skill</style> with <style=cIsUtility>Hungering Gaze</style>. \n\nFire a flurry of <style=cIsUtility>tracking shards</style> that detonate after a delay, dealing <style=cIsDamage>" + d(ExplosionDamage) + "</style> base damage. Hold up to " + Charges + " Charges <style=cStack>(+" + Charges + " per stack)</style> that reload after " + Cooldown + " seconds <style=cStack>(+" + Cooldown + " per stack)</style>.";
+        public override string DescText => "<style=cIsUtility>Replace your Primary Skill</style> with <style=cIsUtility>Hungering Gaze</style>. \n\nFire a flurry of <style=cIsUtility>tracking shards</style> that detonate after a delay, dealing <style=cIsDamage>140%</style> base damage. Hold up to 5 <style=cStack>(+5 per stack)</style> charges that reload after 1.7 seconds <style=cStack>(+1.7 per stack)</style>.";
 
         public override void Init()
         {
-            Charges = ConfigOption(12, "Stock Count", "Vanilla is 12");
-            Cooldown = ConfigOption(2f, "Cooldown", "Vanilla is 2");
-            Duration = ConfigOption(0.11f, "Duration Per Shot", "Vanilla is 0.11");
-            InitialHitDamage = ConfigOption(0.05f, "Damage Coefficient of each Initial Hit", "Decimal. Vanilla is 0.05");
-            InitialHitProcCoefficient = ConfigOption(0.1f, "Proc Coefficient of each Initial Hit", "Vanilla is 0.1");
-            Recoil = ConfigOption(1.5f, "Recoil", "Vanilla is 1.5");
-            Bloom = ConfigOption(0.4f, "Spread", "Vanilla is 0.4");
-            MaxSpeed = ConfigOption(3f, "Maximum Spread", "Vanilla is 3");
-            ProjectileSpeed = ConfigOption(40f, "Projectile Speed", "Vanilla is 40");
-            ExplosionDamage = ConfigOption(24f, "Explosion Damage", "Vanilla is 24\nNote: This is a multiplier of Initial Hit's Damage");
-            ExplosionRadius = ConfigOption(2f, "Explosion Range", "Vanilla is 2");
-            ExplosionProcCoefficient = ConfigOption(10f, "Explosion Proc Coefficient", "Vanilla is 10\nNote: This is a multiplier of Initial Hit's Proc Coefficient");
-            Size = ConfigOption(1f, "Visual Size", "Vanilla is 1");
-            EnableTheFeelTarlukNailgunCopeSeethePlusTwoAoeEffect = ConfigOption(false, "Improve Visuals and Sound?", "Vanilla is false");
             base.Init();
         }
 
@@ -58,30 +29,30 @@ namespace WellRoundedBalance.Items.Lunars
 
         public static void Change()
         {
-            Vector3 configsize = new Vector3(Size, Size, Size);
+            Vector3 configsize = new Vector3(4f, 4f, 4f);
             On.EntityStates.GlobalSkills.LunarNeedle.FireLunarNeedle.OnEnter += (orig, self) =>
             {
-                EntityStates.GlobalSkills.LunarNeedle.FireLunarNeedle.baseDuration = Duration;
-                EntityStates.GlobalSkills.LunarNeedle.FireLunarNeedle.damageCoefficient = InitialHitDamage;
-                EntityStates.GlobalSkills.LunarNeedle.FireLunarNeedle.recoilAmplitude = Recoil;
-                EntityStates.GlobalSkills.LunarNeedle.FireLunarNeedle.spreadBloomValue = Bloom;
-                EntityStates.GlobalSkills.LunarNeedle.FireLunarNeedle.maxSpread = MaxSpeed;
+                EntityStates.GlobalSkills.LunarNeedle.FireLunarNeedle.baseDuration = 0.1f;
+                EntityStates.GlobalSkills.LunarNeedle.FireLunarNeedle.damageCoefficient = 0.7f;
+                EntityStates.GlobalSkills.LunarNeedle.FireLunarNeedle.recoilAmplitude = 2f;
+                EntityStates.GlobalSkills.LunarNeedle.FireLunarNeedle.spreadBloomValue = 0f;
+                EntityStates.GlobalSkills.LunarNeedle.FireLunarNeedle.maxSpread = 3f;
                 orig(self);
             };
 
             var thej = LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/LunarNeedleProjectile");
             var p1 = thej.GetComponent<ProjectileImpactExplosion>();
             var p2 = thej.GetComponent<ProjectileDirectionalTargetFinder>();
-            thej.GetComponent<ProjectileController>().procCoefficient = InitialHitProcCoefficient;
-            thej.GetComponent<ProjectileSimple>().desiredForwardSpeed = ProjectileSpeed;
-            p1.blastRadius = ExplosionRadius;
-            p1.blastDamageCoefficient = ExplosionDamage;
-            p1.blastProcCoefficient = ExplosionProcCoefficient;
+            thej.GetComponent<ProjectileController>().procCoefficient = 1f;
+            thej.GetComponent<ProjectileSimple>().desiredForwardSpeed = 70f;
+            p1.blastRadius = 6f;
+            p1.blastDamageCoefficient = 2f; // multiplier of EntityStates.GlobalSkills.LunarNeedle.FireLunarNeedle.damageCoefficient = 0.7f;
+            p1.blastProcCoefficient = 1f; // multiplier of thej.GetComponent<ProjectileController>().procCoefficient = 1f;
 
             var olbart = LegacyResourcesAPI.Load<SkillDef>("skilldefs/lunarreplacements/LunarPrimaryReplacement");
-            olbart.baseRechargeInterval = Cooldown;
-            olbart.baseMaxStock = Charges;
-            olbart.rechargeStock = Charges;
+            olbart.baseRechargeInterval = 1.7f;
+            olbart.baseMaxStock = 5;
+            olbart.rechargeStock = 5;
             olbart.fullRestockOnAssign = true;
 
             On.EntityStates.GlobalSkills.LunarNeedle.FireLunarNeedle.OnEnter += (orig, self) =>
@@ -123,4 +94,3 @@ namespace WellRoundedBalance.Items.Lunars
         }
     }
 }
-*/

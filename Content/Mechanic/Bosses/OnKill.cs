@@ -1,8 +1,10 @@
 using System;
 using UnityEngine;
 
-namespace WellRoundedBalance.Mechanic.Bosses {
-    public class OnKill : GlobalBase<OnKill> {
+namespace WellRoundedBalance.Mechanic.Bosses
+{
+    public class OnKill : GlobalBase<OnKill>
+    {
         public override string Name => ":: Global ::: Bosses ::: Kill Thresholds";
         private List<BodyIndex> acceptableBodies;
 
@@ -12,18 +14,22 @@ namespace WellRoundedBalance.Mechanic.Bosses {
             On.RoR2.BodyCatalog.Init += PopulateAcceptableBodies;
         }
 
-        private void MarkOnSpawn(On.RoR2.CharacterBody.orig_Start orig, CharacterBody self) {
+        private void MarkOnSpawn(On.RoR2.CharacterBody.orig_Start orig, CharacterBody self)
+        {
             orig(self);
-            if (!NetworkServer.active) {
+            if (!NetworkServer.active)
+            {
                 return;
             }
 
-            if (acceptableBodies.Contains(self.bodyIndex)) {
+            if (acceptableBodies.Contains(self.bodyIndex))
+            {
                 self.gameObject.AddComponent<OnKillThresholdManager>();
             }
         }
-        
-        private void PopulateAcceptableBodies(On.RoR2.BodyCatalog.orig_Init orig) { 
+
+        private void PopulateAcceptableBodies(On.RoR2.BodyCatalog.orig_Init orig)
+        {
             orig();
 
             BodyIndex mithrix = BodyCatalog.FindBodyIndex(Utils.Paths.GameObject.BrotherBody.Load<GameObject>());
@@ -53,15 +59,20 @@ namespace WellRoundedBalance.Mechanic.Bosses {
             };
         }
 
-
-        class OnKillThresholdManager : MonoBehaviour, IOnTakeDamageServerReceiver {
+        private class OnKillThresholdManager : MonoBehaviour, IOnTakeDamageServerReceiver
+        {
             private HealthComponent hc => base.GetComponent<HealthComponent>();
             private CharacterBody cb => base.GetComponent<CharacterBody>();
-            private struct Threshold {
+
+            private struct Threshold
+            {
                 public float fraction;
             }
+
             private List<Threshold> activeThresholds;
-            private void Start() {
+
+            private void Start()
+            {
                 activeThresholds = new();
                 activeThresholds.Add(new Threshold { fraction = 80 });
                 activeThresholds.Add(new Threshold { fraction = 65 });
@@ -73,27 +84,34 @@ namespace WellRoundedBalance.Mechanic.Bosses {
                 hc.onTakeDamageReceivers = base.GetComponents<IOnTakeDamageServerReceiver>();
             }
 
-            public void OnTakeDamageServer(DamageReport report) {
-                if (report.victimBody == cb && report.attackerBody) {
+            public void OnTakeDamageServer(DamageReport report)
+            {
+                if (report.victimBody == cb && report.attackerBody)
+                {
                     CharacterBody attacker = report.attackerBody;
                     List<Threshold> completed = new();
 
-                    foreach (Threshold threshold in activeThresholds) {
+                    foreach (Threshold threshold in activeThresholds)
+                    {
                         float value = threshold.fraction * 0.01f;
-                        if (hc.health < (hc.fullCombinedHealth * value)) {
+                        if (hc.health < (hc.fullCombinedHealth * value))
+                        {
                             completed.Add(threshold);
                         }
                     }
 
-                    foreach (Threshold threshold in completed) {
+                    foreach (Threshold threshold in completed)
+                    {
                         activeThresholds.Remove(threshold);
                         TriggerKill(report);
                     }
                 }
             }
 
-            private void TriggerKill(DamageReport report) {
-                if (!NetworkServer.active) {
+            private void TriggerKill(DamageReport report)
+            {
+                if (!NetworkServer.active)
+                {
                     return;
                 }
 

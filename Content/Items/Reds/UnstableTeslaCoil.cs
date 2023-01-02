@@ -10,7 +10,7 @@ namespace WellRoundedBalance.Items.Reds
 
         public override string PickupText => "Shock all nearby enemies every 0.5 seconds.";
 
-        public override string DescText => "Fire out <style=cIsDamage>lightning</style> that hits <style=cIsDamage>3</style> <style=cStack>(+2 per stack)</style> enemies for <style=cIsDamage>330%</style> damage per second. The Tesla Coil switches off every <style=cIsDamage>10 seconds</style>.";
+        public override string DescText => "Fire out <style=cIsDamage>lightning</style> that hits <style=cIsDamage>3</style> <style=cStack>(+2 per stack)</style> enemies for <style=cIsDamage>300%</style> damage per second. The Tesla Coil switches off every <style=cIsDamage>10 seconds</style>.";
 
         public override void Init()
         {
@@ -29,7 +29,7 @@ namespace WellRoundedBalance.Items.Reds
             if (c.TryGotoNext(MoveType.Before,
                 x => x.MatchLdcR4(2f)))
             {
-                c.Next.Operand = 1.65f;
+                c.Next.Operand = 1.5f;
             }
             else
             {

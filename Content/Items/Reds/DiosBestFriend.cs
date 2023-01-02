@@ -1,5 +1,7 @@
 ﻿using MonoMod.Cil;
+using RoR2;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace WellRoundedBalance.Items.Reds
 {
@@ -20,6 +22,16 @@ namespace WellRoundedBalance.Items.Reds
         public override void Hooks()
         {
             IL.RoR2.CharacterMaster.RespawnExtraLife += ChangeInvinc;
+            On.RoR2.CharacterMaster.RespawnExtraLife += CharacterMaster_RespawnExtraLife;
+        }
+
+        private void CharacterMaster_RespawnExtraLife(On.RoR2.CharacterMaster.orig_RespawnExtraLife orig, CharacterMaster self)
+        {
+            orig(self);
+            if (NetworkServer.active)
+            {
+                self.inventory.GiveItem(RoR2Content.Items.Bear);
+            }
         }
 
         private void ChangeInvinc(ILContext il)

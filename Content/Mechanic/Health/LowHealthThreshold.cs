@@ -1,6 +1,4 @@
-﻿using RoR2;
-
-namespace WellRoundedBalance.Mechanic.Health
+﻿namespace WellRoundedBalance.Mechanic.Health
 {
     public class LowHealthThreshold : GlobalBase
     {
