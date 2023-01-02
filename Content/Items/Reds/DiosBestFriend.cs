@@ -12,7 +12,7 @@ namespace WellRoundedBalance.Items.Reds
 
         public override string PickupText => "Cheat death. Consumed on use.";
 
-        public override string DescText => "<style=cIsUtility>Upon death</style>, this item will be <style=cIsUtility>consumed</style> and you will <style=cIsHealing>return to life</style> with <style=cIsHealing>5 seconds of invulnerability</style>.";
+        public override string DescText => "<style=cIsUtility>Upon death</style>, this item will be <style=cIsUtility>consumed</style>, you will <style=cIsHealing>return to life</style> with <style=cIsHealing>5 seconds of invulnerability</style> and gain <style=cIsUtility>1</style> Tougher Times.";
 
         public override void Init()
         {
@@ -31,6 +31,7 @@ namespace WellRoundedBalance.Items.Reds
             if (NetworkServer.active)
             {
                 self.inventory.GiveItem(RoR2Content.Items.Bear);
+                CharacterMasterNotificationQueue.SendTransformNotification(self, RoR2Content.Items.ExtraLife.itemIndex, RoR2Content.Items.Bear.itemIndex, CharacterMasterNotificationQueue.TransformationType.Default);
             }
         }
 

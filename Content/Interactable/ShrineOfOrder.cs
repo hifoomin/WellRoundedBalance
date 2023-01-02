@@ -29,15 +29,29 @@ namespace WellRoundedBalance.Interactable
 
             var shrineRestackGO = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/ShrineRestack/ShrineRestack.prefab").WaitForCompletion();
             var purchaseInteraction = shrineRestackGO.GetComponent<PurchaseInteraction>();
-            purchaseInteraction.cost = -3;
+            purchaseInteraction.cost = 0;
 
             var shrineRestackGO2 = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/ShrineRestack/ShrineRestackSandy Variant.prefab").WaitForCompletion();
             var purchaseInteraction2 = shrineRestackGO2.GetComponent<PurchaseInteraction>();
-            purchaseInteraction2.cost = -3;
+            purchaseInteraction2.cost = 0;
 
             var shrineRestackGO3 = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/ShrineRestack/ShrineRestackSnowy Variant.prefab").WaitForCompletion();
             var purchaseInteraction3 = shrineRestackGO3.GetComponent<PurchaseInteraction>();
-            purchaseInteraction3.cost = -3;
+            purchaseInteraction3.cost = 0;
+
+            On.RoR2.GlobalEventManager.OnInteractionBegin += GlobalEventManager_OnInteractionBegin;
+        }
+
+        private void GlobalEventManager_OnInteractionBegin(On.RoR2.GlobalEventManager.orig_OnInteractionBegin orig, GlobalEventManager self, Interactor interactor, IInteractable interactable, GameObject interactableObject)
+        {
+            if (interactableObject.name.Contains("ShrineRestack"))
+            {
+                var purchaseInteraction = interactableObject.GetComponent<PurchaseInteraction>();
+                // purchaseInteraction
+                // todo: change token to say +3 lunar coins and the display as well
+                // also make it give +3 lunar coins
+            }
+            orig(self, interactor, interactable, interactableObject);
         }
     }
 }

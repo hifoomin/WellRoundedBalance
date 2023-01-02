@@ -25,14 +25,14 @@
 	</PropertyGroup>
 	
   <ItemGroup>
-    <PackageReference Include="BepInEx.Analyzers" Version="1.0.*">
+	  <PackageReference Include="BepInEx.Analyzers" Version="1.0.*">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="BepInEx.Core" Version="5.4.19" />
-    <PackageReference Include="RiskOfRain2.GameLibs" Version="1.2.3.1-r.0" />
+    <PackageReference Include="RiskOfRain2.GameLibs" Version="1.2.4-r.0" />
     <PackageReference Include="UnityEngine.Modules" Version="2019.4.26" />
-	    <PackageReference Include="MMHOOK.RoR2" Version="2022.4.19">
+    <PackageReference Include="MMHOOK.RoR2" Version="2022.4.19">
       <NoWarn>NU1701</NoWarn>
     </PackageReference>
     <PackageReference Include="R2API" Version="4.3.5" />

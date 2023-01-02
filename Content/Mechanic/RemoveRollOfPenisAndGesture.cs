@@ -4,10 +4,10 @@
     {
         public static void Based()
         {
-            SceneDirector.onPostPopulateSceneServer += SceneDirector_onPostPopulateSceneServer;
+            Run.onRunStartGlobal += Run_onRunStartGlobal;
         }
 
-        private static void SceneDirector_onPostPopulateSceneServer(SceneDirector obj)
+        private static void Run_onRunStartGlobal(Run run)
         {
             if (Run.instance.availableItems.Contains(RoR2Content.Items.AutoCastEquipment.itemIndex))
             {
