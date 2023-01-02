@@ -58,13 +58,16 @@ namespace WellRoundedBalance.Equipment
             Radar.cooldown = 30f;
 
             var Backup = Addressables.LoadAssetAsync<EquipmentDef>("RoR2/Base/DroneBackup/DroneBackup.asset").WaitForCompletion();
-            Backup.cooldown = 75f;
+            Backup.cooldown = 90f;
 
             var Helfire = Addressables.LoadAssetAsync<EquipmentDef>("RoR2/Base/BurnNearby/BurnNearby.asset").WaitForCompletion();
             Helfire.cooldown = 60f;
 
             var Tonic = Addressables.LoadAssetAsync<EquipmentDef>("RoR2/Base/Tonic/Tonic.asset").WaitForCompletion();
             Tonic.cooldown = 75f;
+
+            var Leech = Utils.Paths.EquipmentDef.LifestealOnHit.Load<EquipmentDef>();
+            Leech.cooldown = 50f;
         }
     }
 }

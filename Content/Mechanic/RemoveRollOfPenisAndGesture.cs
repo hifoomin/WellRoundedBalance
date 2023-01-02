@@ -1,6 +1,4 @@
-﻿using RoR2;
-
-namespace WellRoundedBalance.Global
+﻿namespace WellRoundedBalance.Global
 {
     public static class RemoveRollOfPenisAndGesture
     {
@@ -9,7 +7,7 @@ namespace WellRoundedBalance.Global
             SceneDirector.onPostPopulateSceneServer += SceneDirector_onPostPopulateSceneServer;
         }
 
-        private static void SceneDirector_onPostPopulateSceneServer(RoR2.SceneDirector obj)
+        private static void SceneDirector_onPostPopulateSceneServer(SceneDirector obj)
         {
             if (Run.instance.availableItems.Contains(RoR2Content.Items.AutoCastEquipment.itemIndex))
             {
