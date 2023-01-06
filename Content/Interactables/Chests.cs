@@ -36,13 +36,13 @@ namespace WellRoundedBalance.Interactables
             smallUtility.cost = 25;
 
             var largeDamage = Utils.Paths.GameObject.CategoryChest2DamageVariant.Load<GameObject>().GetComponent<PurchaseInteraction>();
-            largeDamage.cost = 25;
+            largeDamage.cost = 50;
 
             var largeHealing = Utils.Paths.GameObject.CategoryChest2HealingVariant.Load<GameObject>().GetComponent<PurchaseInteraction>();
-            largeHealing.cost = 25;
+            largeHealing.cost = 50;
 
             var largeUtility = Utils.Paths.GameObject.CategoryChest2UtilityVariant.Load<GameObject>().GetComponent<PurchaseInteraction>();
-            largeUtility.cost = 25;
+            largeUtility.cost = 50;
         }
     }
 }
