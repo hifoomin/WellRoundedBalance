@@ -2,7 +2,7 @@
 {
     internal class CombatDirector : GlobalBase
     {
-        public override string Name => "Global ::::: Combat Director";
+        public override string Name => ":: Mechanic ::::: Combat Director";
 
         public override void Hooks()
         {

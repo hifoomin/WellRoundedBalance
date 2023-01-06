@@ -13,7 +13,7 @@ namespace WellRoundedBalance.Mechanic.Scaling
         public static float vanillaStandardScaling;
         public static float vanillaLinearScaling;
 
-        public override string Name => ": Global : Scaling";
+        public override string Name => ":: Mechanic : Scaling";
 
         public override void Init()
         {
@@ -59,7 +59,7 @@ namespace WellRoundedBalance.Mechanic.Scaling
 
                 float customTimeFactor = Mathf.Sqrt(Time) * 0.31f * difficultyDef.scalingValue;
 
-                float customFactor = 1f + 0.35f * customTimeFactor * playerScalar;
+                float customFactor = 1f + 0.375f * customTimeFactor * playerScalar;
                 // previously * timeFactor instead of customTimeFactor
 
                 // im not changing this chain. Cope

@@ -6,7 +6,7 @@ namespace WellRoundedBalance.Mechanic.HoldoutZone
     internal class PillarRewards : GlobalBase
     {
         private static float offset = 3f;
-        public override string Name => "Global :::: Holdout Zone : Pillar Rewards";
+        public override string Name => ":: Mechanic :::: Holdout Zone : Pillar Rewards";
 
         public override void Hooks()
         {

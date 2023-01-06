@@ -8,7 +8,7 @@ namespace WellRoundedBalance.Equipment
 {
     public class EffigyOfGrief : EquipmentBase
     {
-        public override string Name => "::: Equipment ::: Effigy Of Grief";
+        public override string Name => ":: Equipment ::: Effigy Of Grief";
         public override string InternalPickupToken => "crippleWard";
 
         public override string PickupText => "Drop a permanent effigy that cripples ALL characters inside. Can place up to 5.";

@@ -6,7 +6,7 @@ namespace WellRoundedBalance.Enemies
 {
     internal class Gup : EnemyBase
     {
-        public override string Name => "Enemies : Gup";
+        public override string Name => ":: Enemies : Gup";
 
         public override void Hooks()
         {

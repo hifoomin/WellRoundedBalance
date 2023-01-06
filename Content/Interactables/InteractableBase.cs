@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace WellRoundedBalance.Interactable
+namespace WellRoundedBalance.Interactables
 {
     public abstract class InteractableBase
     {

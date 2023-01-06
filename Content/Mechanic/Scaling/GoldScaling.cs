@@ -1,4 +1,5 @@
 ﻿using RoR2;
+using System;
 using UnityEngine;
 using WellRoundedBalance.Global;
 
@@ -6,7 +7,7 @@ namespace WellRoundedBalance.Mechanic.Scaling
 {
     public class GoldScaling : GlobalBase
     {
-        public override string Name => ": Global : Scaling";
+        public override string Name => ":: Mechanic : Scaling";
 
         public override void Init()
         {
@@ -22,7 +23,7 @@ namespace WellRoundedBalance.Mechanic.Scaling
         {
             On.RoR2.DeathRewards.OnKilledServer += (orig, self, damageReport) =>
             {
-                self.goldReward /= 1 + (uint)Run.instance.stageClearCount + (uint)Run.instance.loopClearCount;
+                self.goldReward = Convert.ToUInt32(0.75f * ((self.goldReward / (1 + Run.instance.stageClearCount)) + Mathf.Sqrt(4 * (1 + (Run.instance.stageClearCount * 2.2f)))));
                 orig(self, damageReport);
             };
         }

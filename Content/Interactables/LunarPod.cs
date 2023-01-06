@@ -1,11 +1,11 @@
 ﻿using RoR2;
 using UnityEngine.AddressableAssets;
 
-namespace WellRoundedBalance.Interactable
+namespace WellRoundedBalance.Interactables
 {
     public class LunarPod : InteractableBase
     {
-        public override string Name => "Interactables ::::::: Lunar Pod";
+        public override string Name => ":: Interactables ::::::: Lunar Pod";
 
         public override void Init()
         {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WellRoundedBalance.Interactable
+namespace WellRoundedBalance.Interactables
 {
     public abstract class InteractableBase<T> : InteractableBase where T : InteractableBase<T>
     {

@@ -9,14 +9,11 @@
 
         private static void Run_onRunStartGlobal(Run run)
         {
-            if (Run.instance.availableItems.Contains(RoR2Content.Items.AutoCastEquipment.itemIndex))
-            {
-                Run.instance.availableItems.Remove(RoR2Content.Items.AutoCastEquipment.itemIndex);
-            }
-            if (Run.instance.availableItems.Contains(DLC1Content.Items.GoldOnHurt.itemIndex))
-            {
-                Run.instance.availableItems.Remove(DLC1Content.Items.GoldOnHurt.itemIndex);
-            }
+            run.availableItems.Remove(RoR2Content.Items.AutoCastEquipment.itemIndex);
+            run.availableItems.Remove(DLC1Content.Items.GoldOnHurt.itemIndex);
+            run.availableTier1DropList.Remove(PickupCatalog.FindPickupIndex(DLC1Content.Items.GoldOnHurt.itemIndex));
+            run.availableLunarItemDropList.Remove(PickupCatalog.FindPickupIndex(RoR2Content.Items.AutoCastEquipment.itemIndex));
+            run.availableLunarCombinedDropList.Remove(PickupCatalog.FindPickupIndex(RoR2Content.Items.AutoCastEquipment.itemIndex));
         }
     }
 }

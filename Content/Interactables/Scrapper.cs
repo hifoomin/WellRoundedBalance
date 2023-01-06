@@ -1,11 +1,8 @@
-﻿using RoR2;
-using UnityEngine.AddressableAssets;
-
-namespace WellRoundedBalance.Interactable
+﻿namespace WellRoundedBalance.Interactables
 {
     public class Scrapper : InteractableBase
     {
-        public override string Name => "Interactables ::::::::: Scrapper";
+        public override string Name => ":: Interactables ::::: Scrapper";
 
         public override void Init()
         {

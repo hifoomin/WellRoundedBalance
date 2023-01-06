@@ -1,11 +1,8 @@
-﻿using RoR2;
-using UnityEngine.AddressableAssets;
-
-namespace WellRoundedBalance.Interactable
+﻿namespace WellRoundedBalance.Interactables
 {
     public class ScavengerBag : InteractableBase
     {
-        public override string Name => "Interactables :::::::: Scavenger Bag";
+        public override string Name => ":: Interactables ::::::: Scavenger Bag";
 
         public override void Init()
         {

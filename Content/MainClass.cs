@@ -1,16 +1,14 @@
 using BepInEx;
 using BepInEx.Configuration;
 using BepInEx.Logging;
-using R2API;
 using R2API.Utils;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using WellRoundedBalance.Items;
 using WellRoundedBalance.Equipment;
 using WellRoundedBalance.Global;
-using WellRoundedBalance.Interactable;
+using WellRoundedBalance.Interactables;
 using WellRoundedBalance.Mechanic;
 using WellRoundedBalance.Enemies;
 
@@ -24,8 +22,6 @@ namespace WellRoundedBalance
         Make Lunar Pod give you the item directly >:)
         Implement Duh's void cradle idea
         Make it so you can only take a couple lunar coins per run (maybe like 6?)
-        Fix combat director prespawns giving way lesser rewards than normal spawns
-        Increase prespawn count a bit
     */
     [BepInDependency("com.Wolfo.WolfoQualityOfLife", BepInDependency.DependencyFlags.SoftDependency)]
     [BepInDependency("com.xoxfaby.BetterUI", BepInDependency.DependencyFlags.SoftDependency)]

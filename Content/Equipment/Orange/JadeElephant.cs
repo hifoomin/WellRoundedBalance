@@ -4,7 +4,7 @@ namespace WellRoundedBalance.Equipment
 {
     public class JadeElephant : EquipmentBase
     {
-        public override string Name => "::: Equipment :: Jade Elephant";
+        public override string Name => ":: Equipment :: Jade Elephant";
         public override string InternalPickupToken => "gainArmor";
 
         public override string PickupText => "Gain massive armor for 10 seconds.";

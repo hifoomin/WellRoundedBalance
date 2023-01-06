@@ -13,7 +13,7 @@ namespace WellRoundedBalance.Items.VoidGreens
         public override string InternalPickupToken => "elementalRingVoid";
 
         public override string PickupText => "High damage hits also create unstable black holes. Recharges over time. <style=cIsVoid>Corrupts all Runald's and Kjaro's Bands</style>.";
-        public override string DescText => "Hits that deal <style=cIsDamage>more than 400% damage</style> also fire a black hole that <style=cIsUtility>draws enemies within 15m into its center</style>. Lasts <style=cIsUtility>5</style> seconds before collapsing, dealing <style=cIsDamage>80%</style> <style=cStack>(+80% per stack)</style> TOTAL damage. Recharges every <style=cIsUtility>10</style> seconds. <style=cIsVoid>Corrupts all Runald's and Kjaro's Bands</style>.";
+        public override string DescText => "Hits that deal <style=cIsDamage>more than 400% damage</style> also fire a black hole that <style=cIsUtility>draws enemies within 15m into its center</style>. Lasts <style=cIsUtility>5</style> seconds before collapsing, dealing <style=cIsDamage>75%</style> <style=cStack>(+75% per stack)</style> TOTAL damage. Recharges every <style=cIsUtility>10</style> seconds. <style=cIsVoid>Corrupts all Runald's and Kjaro's Bands</style>.";
 
         public override void Init()
         {
@@ -37,7 +37,7 @@ namespace WellRoundedBalance.Items.VoidGreens
                 x => x.MatchLdcR4(1f)))
             {
                 c.Index += 2;
-                c.Next.Operand = 0.8f;
+                c.Next.Operand = 0.75f;
             }
             else
             {

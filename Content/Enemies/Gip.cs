@@ -6,7 +6,7 @@ namespace WellRoundedBalance.Enemies
 {
     internal class Gip : EnemyBase
     {
-        public override string Name => "Enemies ::: Gip";
+        public override string Name => ":: Enemies ::: Gip";
 
         public override void Hooks()
         {

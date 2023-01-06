@@ -4,7 +4,7 @@ namespace WellRoundedBalance.Mechanic.Director
 {
     internal class SceneDirector : GlobalBase
     {
-        public override string Name => "Global :::::: Scene Director";
+        public override string Name => ":: Mechanic :::::: Scene Director";
 
         public override void Hooks()
         {

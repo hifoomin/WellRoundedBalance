@@ -1,14 +1,10 @@
-﻿using MonoMod.Cil;
-using RoR2;
-using RoR2.Projectile;
-using UnityEngine;
-using UnityEngine.AddressableAssets;
+﻿using UnityEngine;
 
 namespace WellRoundedBalance.Equipment
 {
     public class RadarScanner : EquipmentBase
     {
-        public override string Name => "::: Equipment :: Radar Scanner";
+        public override string Name => ":: Equipment :: Radar Scanner";
         public override string InternalPickupToken => "scanner";
 
         public override string PickupText => "Reveal all nearby interactables.";

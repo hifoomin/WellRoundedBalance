@@ -5,7 +5,7 @@ namespace WellRoundedBalance.Equipment
 {
     public class All : EquipmentBase
     {
-        public override string Name => "::: Equipment : All";
+        public override string Name => ":: Equipment : All";
         public override string InternalPickupToken => "guh";
 
         public override string PickupText => "";

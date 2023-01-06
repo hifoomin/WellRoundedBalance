@@ -6,7 +6,7 @@ namespace WellRoundedBalance.Enemies
 {
     internal class Geep : EnemyBase
     {
-        public override string Name => "Enemies :: Geep";
+        public override string Name => ":: Enemies :: Geep";
 
         public override void Hooks()
         {

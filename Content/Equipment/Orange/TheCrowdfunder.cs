@@ -2,7 +2,7 @@
 {
     public class TheCrowdfunder : EquipmentBase
     {
-        public override string Name => "::: Equipment :: The Crowdfunder";
+        public override string Name => ":: Equipment :: The Crowdfunder";
         public override string InternalPickupToken => "goldGat";
 
         public override string PickupText => "Toggle to fire. Costs gold per bullet.";

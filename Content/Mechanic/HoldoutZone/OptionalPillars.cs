@@ -4,7 +4,7 @@ namespace WellRoundedBalance.Mechanic.HoldoutZone
 {
     public class OptionalPillars : GlobalBase<OptionalPillars>
     {
-        public override string Name => ":: Global :::: Holdout Zone :: Optional Pillars";
+        public override string Name => ":: Mechanic :::: Holdout Zone :: Optional Pillars";
 
         public override void Hooks()
         {

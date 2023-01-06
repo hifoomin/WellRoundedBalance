@@ -11,7 +11,7 @@ namespace WellRoundedBalance.Items.Lunars
         public override string PickupText => "Teleporter events grant additional rewards... <color=#FF7F7F>BUT increase their difficulty.</color>";
 
         // this is a complicated string to ? : so maybeeee pls someone help pls
-        public override string DescText => "Increase <style=cIsUtility>teleporter event rewards</style> by <style=cIsUtility>1</style> <style=cStack>(+1 per stack)</style>. Teleporter events spawn <style=cIsUtility>100%</style> <style=cStack>(+100% per stack)</style> more bosses.";
+        public override string DescText => "Increase <style=cIsUtility>teleporter event rewards</style> by <style=cIsUtility>2</style> <style=cStack>(+2 per stack)</style>. Teleporter events spawn <style=cIsUtility>100%</style> <style=cStack>(+100% per stack)</style> more bosses.";
 
         public override void Init()
         {
@@ -41,6 +41,7 @@ namespace WellRoundedBalance.Items.Lunars
             {
                 // var bossGroup = self.bossGroup;
                 self.shrineBonusStacks += 1 * stack;
+                self.bossGroup.bonusRewardCount += 2 * stack;
             }
         }
 

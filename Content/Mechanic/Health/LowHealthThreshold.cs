@@ -2,7 +2,7 @@
 {
     public class LowHealthThreshold : GlobalBase
     {
-        public override string Name => ": Global :: Health";
+        public override string Name => ":: Mechanic :: Health";
 
         public override void Init()
         {
