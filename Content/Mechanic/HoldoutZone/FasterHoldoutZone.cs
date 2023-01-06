@@ -17,7 +17,7 @@
 
         private void Self_calcChargeRate(ref float rate)
         {
-            rate *= 2f;
+            rate *= 1.6f;
         }
     }
 }

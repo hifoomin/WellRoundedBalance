@@ -4,16 +4,13 @@
     {
         public static void Based()
         {
-            Run.onRunStartGlobal += Run_onRunStartGlobal;
-        }
+            var penis = Utils.Paths.ItemDef.GoldOnHurt.Load<ItemDef>();
+            penis.tier = ItemTier.NoTier;
+            penis.deprecatedTier = ItemTier.NoTier;
 
-        private static void Run_onRunStartGlobal(Run run)
-        {
-            run.availableItems.Remove(RoR2Content.Items.AutoCastEquipment.itemIndex);
-            run.availableItems.Remove(DLC1Content.Items.GoldOnHurt.itemIndex);
-            run.availableTier1DropList.Remove(PickupCatalog.FindPickupIndex(DLC1Content.Items.GoldOnHurt.itemIndex));
-            run.availableLunarItemDropList.Remove(PickupCatalog.FindPickupIndex(RoR2Content.Items.AutoCastEquipment.itemIndex));
-            run.availableLunarCombinedDropList.Remove(PickupCatalog.FindPickupIndex(RoR2Content.Items.AutoCastEquipment.itemIndex));
+            var gesture = Utils.Paths.ItemDef.AutoCastEquipment.Load<ItemDef>();
+            gesture.tier = ItemTier.NoTier;
+            gesture.deprecatedTier = ItemTier.NoTier;
         }
     }
 }
