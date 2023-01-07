@@ -13,7 +13,7 @@ namespace WellRoundedBalance.Items.Greens
 
         public override string PickupText => "Gain a 15% chance to ignite enemies on hit. Your ignite effects deal quadruple damage.";
 
-        public override string DescText => "Gain <style=cIsDamage>15%</style> <style=cStack>(+15% per stack)</style> chance to <style=cIsDamage>ignite</style> enemies on hit. Ignite effects deal <style=cIsDamage>+300%</style> <style=cStack>(+300% per stack)</style> more damage over time.";
+        public override string DescText => "Gain <style=cIsDamage>15%</style> chance to <style=cIsDamage>ignite</style> enemies on hit. Ignite effects deal <style=cIsDamage>+300%</style> <style=cStack>(+300% per stack)</style> more damage over time.";
 
         public override void Init()
         {
@@ -46,10 +46,11 @@ namespace WellRoundedBalance.Items.Greens
                                     attackerObject = damageInfo.attacker,
                                     victimObject = victim,
                                     dotIndex = DotController.DotIndex.Burn,
-                                    damageMultiplier = 1f
+                                    damageMultiplier = 1f,
+                                    totalDamage = damageInfo.damage * 0.5f
                                 };
-                                DotController.InflictDot(ref blaze);
                                 StrengthenBurnUtils.CheckDotForUpgrade(inventory, ref blaze);
+                                DotController.InflictDot(ref blaze);
                             }
                         }
                     }
