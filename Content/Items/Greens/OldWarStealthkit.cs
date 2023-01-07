@@ -1,7 +1,6 @@
 ﻿using Mono.Cecil.Cil;
 using MonoMod.Cil;
-using R2API;
-using RoR2;
+using RoR2.Items;
 using System;
 
 namespace WellRoundedBalance.Items.Greens
@@ -13,7 +12,7 @@ namespace WellRoundedBalance.Items.Greens
 
         public override string PickupText => "Turn invisible at low health.";
 
-        public override string DescText => "Falling below <style=cIsHealth>25% health</style> causes you to gain <style=cIsUtility>40% movement speed</style> and <style=cIsUtility>invisibility</style> for <style=cIsUtility>5s</style>. Recharges every <style=cIsUtility>30 seconds</style> <style=cStack>(-50% per stack)</style>.";
+        public override string DescText => "Falling below <style=cIsHealth>50% health</style> causes you to gain <style=cIsUtility>40% movement speed</style> and <style=cIsUtility>invisibility</style> for <style=cIsUtility>5s</style>. Recharges every <style=cIsUtility>30 seconds</style> <style=cStack>(-50% per stack)</style>.";
 
         public override void Init()
         {
@@ -22,7 +21,7 @@ namespace WellRoundedBalance.Items.Greens
 
         public override void Hooks()
         {
-            // IL.RoR2.Items.PhasingBodyBehavior.FixedUpdate += ChangeThreshold;
+            IL.RoR2.Items.PhasingBodyBehavior.FixedUpdate += ChangeThreshold;
         }
 
         private void ChangeThreshold(ILContext il)
@@ -35,9 +34,9 @@ namespace WellRoundedBalance.Items.Greens
             {
                 c.Index += 1;
                 c.Emit(OpCodes.Ldarg_0);
-                c.EmitDelegate<Func<bool, HealthComponent, bool>>((Check, self) =>
+                c.EmitDelegate<Func<bool, PhasingBodyBehavior, bool>>((Check, self) =>
                 {
-                    if ((self.health + self.shield) / self.fullCombinedHealth < 0.4f)
+                    if ((self.body.healthComponent.health + self.body.healthComponent.shield) / self.body.healthComponent.fullCombinedHealth <= 0.5f)
                     {
                         Check = true;
                         return Check;

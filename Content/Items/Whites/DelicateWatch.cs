@@ -21,7 +21,7 @@ namespace WellRoundedBalance.Items.Whites
         public override void Hooks()
         {
             IL.RoR2.HealthComponent.TakeDamage += ChangeDamage;
-            // IL.RoR2.HealthComponent.UpdateLastHitTime += ChangeThreshold;
+            IL.RoR2.HealthComponent.UpdateLastHitTime += ChangeThreshold;
         }
 
         private void ChangeThreshold(ILContext il)

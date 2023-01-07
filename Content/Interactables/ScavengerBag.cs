@@ -2,7 +2,7 @@
 {
     public class ScavengerBag : InteractableBase
     {
-        public override string Name => ":: Interactables ::::::: Scavenger Bag";
+        public override string Name => ":: Interactables :::::::: Scavenger Bag";
 
         public override void Init()
         {

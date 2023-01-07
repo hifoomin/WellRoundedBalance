@@ -2,7 +2,7 @@
 {
     internal class AllDrones : InteractableBase
     {
-        public override string Name => ":: Interactables :::::::: Drones";
+        public override string Name => ":: Interactables ::::::::: Drones";
 
         public override void Init()
         {
@@ -31,6 +31,9 @@
 
             var drone7 = Utils.Paths.InteractableSpawnCard.iscBrokenMissileDrone.Load<InteractableSpawnCard>();
             drone7.maxSpawnsPerStage = 2;
+
+            var gunnerTurret = Utils.Paths.InteractableSpawnCard.iscBrokenTurret1.Load<InteractableSpawnCard>();
+            gunnerTurret.maxSpawnsPerStage = 2;
         }
     }
 }

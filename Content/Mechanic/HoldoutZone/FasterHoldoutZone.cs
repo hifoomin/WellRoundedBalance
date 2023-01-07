@@ -2,7 +2,7 @@
 {
     internal class FasterHoldoutZone : GlobalBase
     {
-        public override string Name => ":: Mechanic :::: Holdout Zone";
+        public override string Name => ":: Mechanic :::: Holdout Zone : Faster Charge";
 
         public override void Hooks()
         {

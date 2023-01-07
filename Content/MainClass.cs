@@ -177,7 +177,7 @@ namespace WellRoundedBalance
         {
             if (eb.isEnabled)
             {
-                bool enabledfr = WRBInteractableConfig.Bind(eb.Name, "Enable?", true, "Vanilla is false").Value;
+                bool enabledfr = WRBEnemyConfig.Bind(eb.Name, "Enable?", true, "Vanilla is false").Value;
                 if (enabledfr) return true;
             }
             return false;
