@@ -15,7 +15,7 @@ namespace WellRoundedBalance.Interactables
         {
             var legendaryChest = Utils.Paths.GameObject.GoldChest.Load<GameObject>();
             var legendaryChesturchaseInteraction = legendaryChest.GetComponent<PurchaseInteraction>();
-            legendaryChesturchaseInteraction.cost = 250;
+            legendaryChesturchaseInteraction.cost = 200;
 
             var stealthedChest = Utils.Paths.InteractableSpawnCard.iscChest1Stealthed.Load<InteractableSpawnCard>();
             stealthedChest.maxSpawnsPerStage = 2;
@@ -43,6 +43,9 @@ namespace WellRoundedBalance.Interactables
 
             var largeUtility = Utils.Paths.GameObject.CategoryChest2UtilityVariant.Load<GameObject>().GetComponent<PurchaseInteraction>();
             largeUtility.cost = 50;
+
+            var equipTrishop = Utils.Paths.InteractableSpawnCard.iscTripleShopEquipment.Load<InteractableSpawnCard>();
+            equipTrishop.maxSpawnsPerStage = 2;
         }
     }
 }

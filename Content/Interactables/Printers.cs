@@ -15,7 +15,7 @@
             whitePrinter.maxSpawnsPerStage = 2;
 
             var greenPrinter = Addressables.LoadAssetAsync<InteractableSpawnCard>("RoR2/Base/DuplicatorLarge/iscDuplicatorLarge.asset").WaitForCompletion();
-            greenPrinter.directorCreditCost = 8; // down from 10
+            greenPrinter.directorCreditCost = 7; // down from 10
             greenPrinter.maxSpawnsPerStage = 2;
 
             var redPrinter = Addressables.LoadAssetAsync<InteractableSpawnCard>("RoR2/Base/DuplicatorMilitary/iscDuplicatorMilitary.asset").WaitForCompletion();

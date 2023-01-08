@@ -71,7 +71,7 @@ namespace WellRoundedBalance.Interactables
 
             var goldShrine = Utils.Paths.GameObject.ShrineGoldshoresAccess.Load<GameObject>();
             var goldShrinePurchaseInteraction = goldShrine.GetComponent<PurchaseInteraction>();
-            goldShrinePurchaseInteraction.cost = 125;
+            goldShrinePurchaseInteraction.cost = 100;
 
             var goldShrineIsc = Utils.Paths.InteractableSpawnCard.iscShrineGoldshoresAccess.Load<InteractableSpawnCard>();
             goldShrineIsc.maxSpawnsPerStage = 1;
