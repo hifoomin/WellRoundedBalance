@@ -79,10 +79,6 @@
     <Reference Include="R2API">
       <HintPath>..\..\..\..\R2API.dll</HintPath>
     </Reference>
-    <Reference Include="Rewired_Windows_Lib">
-      <HintPath>libs\Rewired_Windows_Lib.dll</HintPath>
-      <Private>false</Private>
-    </Reference>
     <Reference Include="RiskOfOptions">
       <HintPath>..\..\..\..\RiskOfOptions.dll</HintPath>
     </Reference>

@@ -13,6 +13,11 @@ namespace WellRoundedBalance.Items.Greens
 
         public override string DescText => "Release a <style=cIsHealing>healing nova </style>during the Teleporter event, <style=cIsHealing>healing</style> all nearby allies for <style=cIsHealing>30%</style> of their maximum health. Occurs <style=cIsHealing>2</style> <style=cStack>(+2 per stack)</style> times.";
 
+        public override void Init()
+        {
+            base.Init();
+        }
+
         public override void Hooks()
         {
             IL.EntityStates.TeleporterHealNovaController.TeleporterHealNovaGeneratorMain.CalculatePulseCount += TeleporterHealNovaGeneratorMain_CalculatePulseCount;
