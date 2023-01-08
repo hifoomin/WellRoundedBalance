@@ -12,7 +12,7 @@ namespace WellRoundedBalance.Items.Greens
         public override string InternalPickupToken => "missile";
 
         public override string PickupText => "Chance to fire a missile.";
-        public override string DescText => "<style=cIsDamage>10%</style> Chance to fire a missile that deals <style=cIsDamage>300%</style> <style=cStack>(+300% per stack)</style> TOTAL damage.";
+        public override string DescText => "<style=cIsDamage>10%</style> chance to fire a missile that deals <style=cIsDamage>300%</style> <style=cStack>(+300% per stack)</style> TOTAL damage.";
 
         public override void Init()
         {

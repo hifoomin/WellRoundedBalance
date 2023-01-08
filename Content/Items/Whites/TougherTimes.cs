@@ -12,7 +12,7 @@ namespace WellRoundedBalance.Items.Whites
 
         public override string PickupText => "Chance to block incoming damage.";
 
-        public override string DescText => "<style=cIsHealing>9%</style> <style=cStack>(+9% per stack)</style> Chance to <style=cIsHealing>block</style> incoming damage. <style=cIsUtility>Unaffected by luck</style>.";
+        public override string DescText => "<style=cIsHealing>9%</style> <style=cStack>(+9% per stack)</style> chance to <style=cIsHealing>block</style> incoming damage. <style=cIsUtility>Unaffected by luck</style>.";
 
         public override void Init()
         {

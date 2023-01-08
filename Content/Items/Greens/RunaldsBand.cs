@@ -11,9 +11,9 @@ namespace WellRoundedBalance.Items.Greens
         public override string Name => ":: Items :: Greens :: Runalds Band";
         public override string InternalPickupToken => "icering";
 
-        public override string PickupText => "High damage hits also blasts enemies with runic ice. Recharges over time.";
+        public override string PickupText => "High damage hits also blast enemies with runic ice. Recharges over time.";
 
-        public override string DescText => "Hits that deal <style=cIsDamage>more than 400% damage</style> also blasts enemies with a <style=cIsDamage>runic ice blast</style>, <style=cIsUtility>slowing</style> them by <style=cIsUtility>80%%</style> for <style=cIsUtility>3s</style> <style=cStack>(+3s per stack)</style> and dealing <style=cIsDamage>125%</style> <style=cStack>(+125% per stack)</style> TOTAL damage. Recharges every <style=cIsUtility>10</style> seconds.";
+        public override string DescText => "Hits that deal <style=cIsDamage>more than 400% damage</style> also blast enemies with a <style=cIsDamage>runic ice blast</style>, <style=cIsUtility>slowing</style> them by <style=cIsUtility>80%</style> for <style=cIsUtility>3s</style> <style=cStack>(+3s per stack)</style> and dealing <style=cIsDamage>125%</style> <style=cStack>(+125% per stack)</style> TOTAL damage. Recharges every <style=cIsUtility>10</style> seconds.";
 
         // slows arent accurate in ror2
         public override void Init()

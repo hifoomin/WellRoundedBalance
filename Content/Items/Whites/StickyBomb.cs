@@ -15,7 +15,7 @@ namespace WellRoundedBalance.Items.Whites
 
         public override string PickupText => "Chance on hit to attach a bomb to enemies.";
 
-        public override string DescText => "<style=cIsDamage>5%</style> <style=cStack>(+5% per stack)</style> Chance on hit to attach a <style=cIsDamage>bomb</style> to an enemy, detonating for <style=cIsDamage>180%</style> TOTAL damage.";
+        public override string DescText => "<style=cIsDamage>5%</style> <style=cStack>(+5% per stack)</style> chance on hit to attach a <style=cIsDamage>bomb</style> to an enemy, detonating for <style=cIsDamage>180%</style> TOTAL damage.";
 
         public override void Init()
         {

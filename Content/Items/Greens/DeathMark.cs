@@ -12,7 +12,7 @@ namespace WellRoundedBalance.Items.Greens
 
         public override string PickupText => "Enemies with 2 or more debuffs are marked for death, taking bonus damage.";
 
-        public override string DescText => "Enemies with <style=cIsDamage>2</style> or more debuffs are <style=cIsDamage>marked for death</style>, increasing damage taken by <style=cIsDamage>9%</style> <style=cStack>(+4% per stack)</style> per debuff from all sources for <style=cIsUtility>7</style> <style=cStack>(+7 per stack)</style> seconds .";
+        public override string DescText => "Enemies with <style=cIsDamage>2</style> or more debuffs are <style=cIsDamage>marked for death</style>, increasing damage taken by <style=cIsDamage>9%</style> <style=cStack>(+4% per stack)</style> per debuff from all sources for <style=cIsUtility>7</style> <style=cStack>(+7 per stack)</style> seconds.";
 
         public override void Init()
         {

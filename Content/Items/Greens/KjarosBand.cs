@@ -16,9 +16,9 @@ namespace WellRoundedBalance.Items.Greens
         public override string Name => ":: Items :: Greens :: Kjaros Band";
         public override string InternalPickupToken => "firering";
 
-        public override string PickupText => "High damage hits also blasts enemies with a runic flame tornado. Recharges over time.";
+        public override string PickupText => "High damage hits also blast enemies with a runic flame tornado. Recharges over time.";
 
-        public override string DescText => "Hits that deal <style=cIsDamage>more than 400% damage</style> also blasts enemies with a <style=cIsDamage>runic flame tornado</style>, dealing <style=cIsDamage>150%</style> <style=cStack>(+150% per stack)</style> TOTAL damage over time. Recharges every <style=cIsUtility>10</style> seconds.";
+        public override string DescText => "Hits that deal <style=cIsDamage>more than 400% damage</style> also blast enemies with a <style=cIsDamage>runic flame tornado</style>, dealing <style=cIsDamage>150%</style> <style=cStack>(+150% per stack)</style> TOTAL damage over time. Recharges every <style=cIsUtility>10</style> seconds.";
 
         public override void Init()
         {

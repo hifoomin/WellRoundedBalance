@@ -13,7 +13,7 @@ namespace WellRoundedBalance.Items.Whites
 
         public override string PickupText => "Gain +9% chance to bleed enemies on hit.";
 
-        public override string DescText => "<style=cIsDamage>9%</style> <style=cStack>(+9% per stack)</style> Chance to <style=cIsDamage>bleed</style> an enemy for <style=cIsDamage>240%</style> base damage.";
+        public override string DescText => "<style=cIsDamage>9%</style> <style=cStack>(+9% per stack)</style> chance to <style=cIsDamage>bleed</style> an enemy for <style=cIsDamage>240%</style> base damage.";
 
         public override void Init()
         {

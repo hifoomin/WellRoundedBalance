@@ -10,7 +10,7 @@ namespace WellRoundedBalance.Items.Reds
 
         public override string PickupText => "Activating your Equipment triggers 3 additional, random Equipment effects.";
 
-        public override string DescText => "Trigger a <style=cIsDamage>random equipment</style> effect <style=cIsDamage>3</style> <style=cStack>(+3 per stack)</style> time(s).";
+        public override string DescText => "Upon <style=cIsUtility>activating</style> your <style=cIsUtility>equipment</style>, trigger <style=cIsDamage>3</style> <style=cStack>(+3 per stack)</style> <style=cIsDamage>random equipment</style> effects.";
 
         public override void Init()
         {
