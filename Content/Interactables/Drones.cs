@@ -1,4 +1,6 @@
-﻿namespace WellRoundedBalance.Interactables
+﻿using UnityEngine;
+
+namespace WellRoundedBalance.Interactables
 {
     internal class AllDrones : InteractableBase
     {
@@ -20,14 +22,24 @@
             var drone3 = Utils.Paths.InteractableSpawnCard.iscBrokenEmergencyDrone.Load<InteractableSpawnCard>();
             drone3.maxSpawnsPerStage = 1;
 
+            var drone3purchaseInteraction = Utils.Paths.GameObject.EmergencyDroneBroken.Load<GameObject>().GetComponent<PurchaseInteraction>();
+            drone3purchaseInteraction.cost = 80;
+
             var drone4 = Utils.Paths.InteractableSpawnCard.iscBrokenEquipmentDrone.Load<InteractableSpawnCard>();
             drone4.maxSpawnsPerStage = 1;
+            drone4.directorCreditCost = 13; // down from 15
 
             var drone5 = Utils.Paths.InteractableSpawnCard.iscBrokenFlameDrone.Load<InteractableSpawnCard>();
             drone5.maxSpawnsPerStage = 2;
 
+            var drone5purchaseInteraction = Utils.Paths.GameObject.FlameDroneBroken.Load<GameObject>().GetComponent<PurchaseInteraction>();
+            drone5purchaseInteraction.cost = 80;
+
             var drone6 = Utils.Paths.InteractableSpawnCard.iscBrokenMegaDrone.Load<InteractableSpawnCard>();
             drone6.maxSpawnsPerStage = 1;
+
+            var drone6purchaseInteraction = Utils.Paths.GameObject.FlameDroneBroken.Load<GameObject>().GetComponent<PurchaseInteraction>();
+            drone6purchaseInteraction.cost = 180;
 
             var drone7 = Utils.Paths.InteractableSpawnCard.iscBrokenMissileDrone.Load<InteractableSpawnCard>();
             drone7.maxSpawnsPerStage = 2;

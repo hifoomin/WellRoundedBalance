@@ -24,7 +24,6 @@ namespace WellRoundedBalance.Mechanic.Bosses
                 args.moveSpeedMultAdd += increase * 0.3f;
                 args.attackSpeedMultAdd += increase * 0.25f;
                 args.cooldownMultAdd -= increase * 0.25f;
-                args.armorAdd += 2f * Run.instance.stageClearCount;
             }
         }
     }

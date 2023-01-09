@@ -31,7 +31,7 @@ namespace WellRoundedBalance.Equipment
             DML.cooldown = 30f;
 
             var Card = Addressables.LoadAssetAsync<EquipmentDef>("RoR2/DLC1/MultiShopCard/MultiShopCard.asset").WaitForCompletion();
-            Card.cooldown = 30f;
+            Card.cooldown = 20f;
 
             var Fruit = Addressables.LoadAssetAsync<EquipmentDef>("RoR2/Base/Fruit/Fruit.asset").WaitForCompletion();
             Fruit.cooldown = 35f;
