@@ -52,14 +52,19 @@ namespace WellRoundedBalance.Mechanic.Bazaar
                     }
                 }
 
-                var pod1 = Object.Instantiate(lunarPod, table);
-                pod1.transform.localPosition = new Vector3(1.695f, -1.307f, 1.196f);
-                var pod2 = Object.Instantiate(lunarPod, table);
-                pod2.transform.localPosition = new Vector3(0.315f, -2.07f, 1.196f);
-                var pod3 = Object.Instantiate(lunarPod, table);
-                pod3.transform.localPosition = new Vector3(-1.106f, -1.681f, 1.196f);
-
                 var table2 = Object.Instantiate(table, lunarShop);
+
+                var pod1 = Object.Instantiate(lunarPod, table);
+                pod1.transform.localPosition = new Vector3(1.695f, -1.307f, 0.78f);
+                pod1.transform.eulerAngles = new Vector3(0f, 90f, 90f);
+                var model = pod1.GetComponent<ModelLocator>().modelTransform;
+                model.localScale = new Vector3(1f, 1f, 1f);
+
+                var pod2 = Object.Instantiate(pod1, table);
+                pod2.transform.localPosition = new Vector3(0.315f, -2.07f, 0.78f);
+                var pod3 = Object.Instantiate(pod1, table);
+                pod3.transform.localPosition = new Vector3(-1.106f, -1.681f, 0.78f);
+
                 table2.transform.localPosition = new Vector3(11f, -7.5f, 9f);
                 table2.transform.eulerAngles = new Vector3(270f, 250f, 0f);
 
