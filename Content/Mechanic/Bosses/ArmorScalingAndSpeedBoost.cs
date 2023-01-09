@@ -14,7 +14,19 @@ namespace WellRoundedBalance.Mechanic.Bosses
         public override void Hooks()
         {
             RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
-            NerfHealthScaling();
+            CharacterBody.onBodyStartGlobal += CharacterBody_onBodyStartGlobal;
+        }
+
+        private void CharacterBody_onBodyStartGlobal(CharacterBody body)
+        {
+            var teamComponent = body.teamComponent;
+            if (teamComponent && teamComponent.teamIndex != TeamIndex.Player)
+            {
+                if (body.GetComponent<WRBStatComponent>() == null)
+                {
+                    body.gameObject.AddComponent<WRBStatComponent>();
+                }
+            }
         }
 
         private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
@@ -25,33 +37,23 @@ namespace WellRoundedBalance.Mechanic.Bosses
             }
         }
 
-        [SystemInitializer(typeof(BodyCatalog))]
-        private void NerfHealthScaling()
+        public class WRBStatComponent : MonoBehaviour
         {
-            if (BodyCatalog.bodyPrefabBodyComponents != null)
+            public CharacterBody body;
+
+            private void Start()
             {
-                for (int i = 0; i < BodyCatalog.bodyPrefabBodyComponents.Length; i++)
+                body = GetComponent<CharacterBody>();
+                if (body)
                 {
-                    var body = BodyCatalog.bodyPrefabBodyComponents[i];
-                    if (body != null && i < BodyCatalog.bodyPrefabBodyComponents.Length)
+                    if (body.isChampion)
                     {
-                        body.baseMoveSpeed += 1f;
-                        body.baseMoveSpeed *= 1.1f;
-                        if (body.isChampion)
-                        {
-                            body.baseMaxHealth *= 0.75f;
-                            body.levelMaxHealth *= 0.75f;
-                        }
+                        body.baseMaxHealth *= 0.75f;
+                        body.levelMaxHealth *= 0.75f;
                     }
-                    else
-                    {
-                        Main.WRBLogger.LogError("body in bodyPrefabBodyComponents is null somewhere in the middle");
-                    }
+                    body.baseMoveSpeed += 1f;
+                    body.baseMoveSpeed *= 1.1f;
                 }
-            }
-            else
-            {
-                Main.WRBLogger.LogError("bodyPrefabBodyComponents is null at the beginning");
             }
         }
     }

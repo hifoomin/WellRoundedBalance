@@ -70,9 +70,8 @@ namespace WellRoundedBalance.Mechanic.Bazaar
 
                 var slab = lunarShop.GetChild(3).gameObject;
                 slab.SetActive(false);
-
-                orig(self);
             }
+            orig(self);
         }
     }
 
