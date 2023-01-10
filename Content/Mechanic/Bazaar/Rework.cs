@@ -33,7 +33,7 @@ namespace WellRoundedBalance.Mechanic.Bazaar
 
         public override void Hooks()
         {
-            On.RoR2.SceneDirector.Start += SceneDirector_Start;
+            // On.RoR2.SceneDirector.Start += SceneDirector_Start;
         }
 
         private void SceneDirector_Start(On.RoR2.SceneDirector.orig_Start orig, SceneDirector self)

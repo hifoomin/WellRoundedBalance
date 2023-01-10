@@ -18,8 +18,8 @@ namespace WellRoundedBalance.Interactables
             lunarPod.maxSpawnsPerStage = 1;
             lunarPod.directorCreditCost = 15;
 
-            On.RoR2.PurchaseInteraction.OnInteractionBegin += PurchaseInteraction_OnInteractionBegin;
-            On.RoR2.ShopTerminalBehavior.DropPickup += ShopTerminalBehavior_DropPickup;
+            // On.RoR2.PurchaseInteraction.OnInteractionBegin += PurchaseInteraction_OnInteractionBegin;
+            // On.RoR2.ShopTerminalBehavior.DropPickup += ShopTerminalBehavior_DropPickup;
         }
 
         private void ShopTerminalBehavior_DropPickup(On.RoR2.ShopTerminalBehavior.orig_DropPickup orig, ShopTerminalBehavior self)

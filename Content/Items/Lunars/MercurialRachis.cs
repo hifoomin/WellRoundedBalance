@@ -12,7 +12,7 @@ namespace WellRoundedBalance.Items.Lunars
 
         public override string PickupText => "Randomly create a Ward of Power. ALL characters have bonus stats while in the Ward.";
 
-        public override string DescText => "Creates a Ward of Power in a random location nearby that buffs both enemies and allies within <style=cIsUtility>24m</style> <style=cStack>(+50% per stack)</style>, causing them to gain <style=cIsDamage>25%</style> attack speed and <style=cIsUtility>movement speed</style>. Enemies benefit from the ward twice as much.";
+        public override string DescText => "Creates a Ward of Power in a random location nearby that buffs both enemies and allies within <style=cIsUtility>24m</style> <style=cStack>(+50% per stack)</style>, causing them to gain <style=cIsDamage>25% attack speed</style> and <style=cIsUtility>movement speed</style>. Enemies benefit from the ward twice as much.";
 
         public static BuffDef rachisBuff;
 

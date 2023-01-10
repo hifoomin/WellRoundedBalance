@@ -2,9 +2,9 @@
 
 namespace WellRoundedBalance.Mechanic.Bosses
 {
-    internal class ArmorScalingAndSpeedBoost : GlobalBase
+    internal class BetterScaling : GlobalBase
     {
-        public override string Name => ":: Mechanic ::: Bosses :: Armor Scaling and Health Nerf : All Monsters : Movement Speed Buff";
+        public override string Name => ":: Mechanic ::: Bosses :: Better Scaling";
 
         public override void Init()
         {
@@ -14,7 +14,8 @@ namespace WellRoundedBalance.Mechanic.Bosses
         public override void Hooks()
         {
             RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
-            CharacterBody.onBodyStartGlobal += CharacterBody_onBodyStartGlobal;
+            // CharacterBody.onBodyStartGlobal += CharacterBody_onBodyStartGlobal;
+            NerfHealthScaling();
         }
 
         private void CharacterBody_onBodyStartGlobal(CharacterBody body)
@@ -34,6 +35,19 @@ namespace WellRoundedBalance.Mechanic.Bosses
             if (sender.isChampion)
             {
                 args.armorAdd += Mathf.Pow(100f - 100f / (1 + 0.07f), Run.instance.stageClearCount);
+            }
+        }
+
+        [SystemInitializer(typeof(BodyCatalog))]
+        public static void NerfHealthScaling()
+        {
+            foreach (CharacterBody body in BodyCatalog.allBodyPrefabBodyBodyComponents)
+            {
+                if (body.isChampion)
+                {
+                    body.baseMaxHealth *= 0.75f;
+                    body.levelMaxHealth *= 0.75f;
+                }
             }
         }
 

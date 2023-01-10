@@ -12,12 +12,16 @@ using WellRoundedBalance.Interactables;
 using WellRoundedBalance.Mechanic;
 using WellRoundedBalance.Enemies;
 
+[assembly: HG.Reflection.SearchableAttribute.OptIn]
+// used for BodyCatalog
+
 namespace WellRoundedBalance
 {
     [BepInDependency(R2API.R2API.PluginGUID)]
     /*  Swap to new R2APIs later
         Rework Defense Nucleus
         Rework Titanic Knurl
+        Rework Power Elixir to old riskymod (upon taking heavy damage, quickly regen and consume this item, regenerates each stage)
         Fix the commented out items (mostly me being lazy to remove the configs and shit)
         Make Lunar Pod give you the item directly >:)
         Implement Duh's void cradle idea
