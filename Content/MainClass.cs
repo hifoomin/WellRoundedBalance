@@ -53,7 +53,7 @@ namespace WellRoundedBalance
             Main.WRBConfig = base.Config;
 
             WRBItemConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Items.cfg", true);
-            WRBGlobalConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Global.cfg", true);
+            WRBGlobalConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Mechanics.cfg", true);
             WRBEquipmentConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Equipment.cfg", true);
             WRBInteractableConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Interactables.cfg", true);
             WRBEnemyConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Enemies.cfg", true);
@@ -135,6 +135,8 @@ namespace WellRoundedBalance
             }
 
             RemoveRollOfPenisAndGesture.Based();
+            Mechanic.Monster.SpeedBoost.AddSpeedBoost();
+            Mechanic.Bosses.BetterScaling.NerfHealthScaling();
         }
 
         public bool ValidateGlobal(GlobalBase gb)

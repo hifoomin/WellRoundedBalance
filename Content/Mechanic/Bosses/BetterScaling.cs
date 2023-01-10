@@ -1,36 +1,13 @@
-﻿using UnityEngine;
+﻿using BepInEx.Configuration;
+using UnityEngine;
 
 namespace WellRoundedBalance.Mechanic.Bosses
 {
-    internal class BetterScaling : GlobalBase
+    internal class BetterScaling
     {
-        public override string Name => ":: Mechanic ::: Bosses :: Better Scaling";
+        public static ConfigEntry<bool> enable { get; set; }
 
-        public override void Init()
-        {
-            base.Init();
-        }
-
-        public override void Hooks()
-        {
-            RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
-            // CharacterBody.onBodyStartGlobal += CharacterBody_onBodyStartGlobal;
-            NerfHealthScaling();
-        }
-
-        private void CharacterBody_onBodyStartGlobal(CharacterBody body)
-        {
-            var teamComponent = body.teamComponent;
-            if (teamComponent && teamComponent.teamIndex != TeamIndex.Player)
-            {
-                if (body.GetComponent<WRBStatComponent>() == null)
-                {
-                    body.gameObject.AddComponent<WRBStatComponent>();
-                }
-            }
-        }
-
-        private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
+        private static void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
             if (sender.isChampion)
             {
@@ -41,32 +18,14 @@ namespace WellRoundedBalance.Mechanic.Bosses
         [SystemInitializer(typeof(BodyCatalog))]
         public static void NerfHealthScaling()
         {
+            enable = Main.WRBGlobalConfig.Bind(":: Mechanic ::: Bosses :: Better Scaling", "Enable?", true, "Vanilla is false");
+            RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
             foreach (CharacterBody body in BodyCatalog.allBodyPrefabBodyBodyComponents)
             {
                 if (body.isChampion)
                 {
                     body.baseMaxHealth *= 0.75f;
                     body.levelMaxHealth *= 0.75f;
-                }
-            }
-        }
-
-        public class WRBStatComponent : MonoBehaviour
-        {
-            public CharacterBody body;
-
-            private void Start()
-            {
-                body = GetComponent<CharacterBody>();
-                if (body)
-                {
-                    if (body.isChampion)
-                    {
-                        body.baseMaxHealth *= 0.75f;
-                        body.levelMaxHealth *= 0.75f;
-                    }
-                    body.baseMoveSpeed += 1f;
-                    body.baseMoveSpeed *= 1.1f;
                 }
             }
         }

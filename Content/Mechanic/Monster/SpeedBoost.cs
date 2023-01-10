@@ -1,23 +1,16 @@
-﻿namespace WellRoundedBalance.Mechanic.Monster
+﻿using BepInEx.Configuration;
+
+namespace WellRoundedBalance.Mechanic.Monster
 {
-    internal class SpeedBoost : GlobalBase
+    internal class SpeedBoost
     {
-        public override string Name => ":: Mechanic ::::::: Monsters : Movement Speed Buff";
-
-        public override void Init()
-        {
-            base.Init();
-        }
-
-        public override void Hooks()
-        {
-            AddSpeedBoost();
-        }
+        public static ConfigEntry<bool> enable { get; set; }
 
         [SystemInitializer(typeof(BodyCatalog))]
         public static void AddSpeedBoost()
         {
-            foreach (CharacterBody body in BodyCatalog.allBodyPrefabBodyBodyComponents)
+            enable = Main.WRBGlobalConfig.Bind(":: Mechanic ::::::: Monsters : Movement Speed Buff", "Enable?", true, "Vanilla is false");
+            foreach (CharacterBody body in BodyCatalog.bodyPrefabBodyComponents)
             {
                 body.baseMoveSpeed += 1f;
                 body.baseMoveSpeed *= 1.1f;
