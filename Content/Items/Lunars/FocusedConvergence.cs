@@ -26,7 +26,6 @@ namespace WellRoundedBalance.Items.Lunars
 
         private void AddDifficulty(On.RoR2.TeleporterInteraction.orig_Start orig, TeleporterInteraction self)
         {
-            orig(self);
             int stack = 0;
             ReadOnlyCollection<CharacterMaster> readOnlyInstancesList = CharacterMaster.readOnlyInstancesList;
             for (int i = 0; i < readOnlyInstancesList.Count; i++)
@@ -37,6 +36,7 @@ namespace WellRoundedBalance.Items.Lunars
                     stack += characterMaster.inventory.GetItemCount(RoR2Content.Items.FocusConvergence);
                 }
             }
+            orig(self);
             if (stack > 0)
             {
                 // var bossGroup = self.bossGroup;

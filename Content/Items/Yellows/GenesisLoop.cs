@@ -10,7 +10,7 @@ namespace WellRoundedBalance.Items.Yellows
         public override string Name => ":: Items :::: Yellows :: Genesis Loop";
         public override string InternalPickupToken => "novaOnLowHealth";
 
-        public override string PickupText => "";
+        public override string PickupText => "Fire an electric nova at low health.";
 
         public override string DescText => "Falling below <style=cIsHealth>50% health</style> causes you to explode, dealing <style=cIsDamage>5000% base damage</style>. Recharges every <style=cIsUtility>30 seconds</style> <style=cStack>(-33% per stack)</style>.";
 

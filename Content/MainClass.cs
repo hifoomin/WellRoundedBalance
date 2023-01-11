@@ -12,12 +12,16 @@ using WellRoundedBalance.Interactables;
 using WellRoundedBalance.Mechanic;
 using WellRoundedBalance.Enemies;
 
+[assembly: HG.Reflection.SearchableAttribute.OptIn]
+// used for BodyCatalog
+
 namespace WellRoundedBalance
 {
     [BepInDependency(R2API.R2API.PluginGUID)]
     /*  Swap to new R2APIs later
         Rework Defense Nucleus
         Rework Titanic Knurl
+        Rework Power Elixir to old riskymod (upon taking heavy damage, quickly regen and consume this item, regenerates each stage)
         Fix the commented out items (mostly me being lazy to remove the configs and shit)
         Make Lunar Pod give you the item directly >:)
         Implement Duh's void cradle idea
@@ -49,7 +53,7 @@ namespace WellRoundedBalance
             Main.WRBConfig = base.Config;
 
             WRBItemConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Items.cfg", true);
-            WRBGlobalConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Global.cfg", true);
+            WRBGlobalConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Mechanics.cfg", true);
             WRBEquipmentConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Equipment.cfg", true);
             WRBInteractableConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Interactables.cfg", true);
             WRBEnemyConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Enemies.cfg", true);
@@ -131,6 +135,8 @@ namespace WellRoundedBalance
             }
 
             RemoveRollOfPenisAndGesture.Based();
+            Mechanic.Monster.SpeedBoost.AddSpeedBoost();
+            Mechanic.Bosses.BetterScaling.NerfHealthScaling();
         }
 
         public bool ValidateGlobal(GlobalBase gb)

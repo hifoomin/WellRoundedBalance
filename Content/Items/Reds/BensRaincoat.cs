@@ -23,6 +23,9 @@ namespace WellRoundedBalance.Items.Reds
             braincoatSpeed.isDebuff = false;
             braincoatSpeed.iconSprite = Sprite.Create(whip, new Rect(0f, 0f, (float)whip.width, (float)whip.height), new Vector2(0f, 0f));
             braincoatSpeed.canStack = false;
+
+            ContentAddition.AddBuffDef(braincoatSpeed);
+
             base.Init();
         }
 
