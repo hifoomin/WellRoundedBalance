@@ -6,6 +6,7 @@ using RiskOfOptions.Options;
 using System.Text.RegularExpressions;
 using UnityEngine;
 using System;
+using BepInEx.Logging;
 
 namespace WellRoundedBalance.Items
 {
@@ -16,6 +17,7 @@ namespace WellRoundedBalance.Items
         public abstract string PickupText { get; }
         public abstract string DescText { get; }
         public virtual bool isEnabled { get; } = true;
+        public ManualLogSource Logger => Main.WRBLogger;
 
         public abstract void Hooks();
 
