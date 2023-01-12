@@ -54,10 +54,10 @@ namespace WellRoundedBalance.Mechanic.Scaling
                 DifficultyDef difficultyDef = DifficultyCatalog.GetDifficultyDef(self.selectedDifficulty);
 
                 float playerFactor = playerfactorbase + playerCount * playercountmultiplier;
-                float timeFactor = Time * timefactormultiplier * difficultyDef.scalingValue;
+                float timeFactor = Time * timefactormultiplier * (1.2f * Mathf.Sqrt(difficultyDef.scalingValue));
                 float playerScalar = (float)Math.Pow(playerCount, playercountexponent);
 
-                float customTimeFactor = Mathf.Sqrt(Time) * 0.31f * difficultyDef.scalingValue;
+                float customTimeFactor = Mathf.Sqrt(Time) * 0.41f * difficultyDef.scalingValue;
 
                 float customFactor = 1f + 0.375f * customTimeFactor * playerScalar;
                 // previously * timeFactor instead of customTimeFactor

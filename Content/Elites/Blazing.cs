@@ -42,10 +42,10 @@ namespace WellRoundedBalance.Elites
         {
             if (body.HasBuff(RoR2Content.Buffs.AffixRed))
             {
-                var sfp = body.GetComponent<SpawnFirePools>();
+                var sfp = body.GetComponent<BlazingController>();
                 if (sfp == null)
                 {
-                    body.gameObject.AddComponent<SpawnFirePools>();
+                    body.gameObject.AddComponent<BlazingController>();
                 }
             }
         }
@@ -104,7 +104,7 @@ namespace WellRoundedBalance.Elites
         }
     }
 
-    public class SpawnFirePools : MonoBehaviour
+    public class BlazingController : MonoBehaviour
     {
         public CharacterBody body;
         public GameObject projectile = Projectiles.Molotov.prefab;
@@ -114,8 +114,16 @@ namespace WellRoundedBalance.Elites
         public void Start()
         {
             body = GetComponent<CharacterBody>();
-            interval = 5f;
-            timer = 3f;
+            if (Run.instance.selectedDifficulty >= DifficultyIndex.Eclipse3)
+            {
+                interval = 3f;
+                timer = 1f;
+            }
+            else
+            {
+                interval = 5f;
+                timer = 3f;
+            }
         }
 
         public void FixedUpdate()

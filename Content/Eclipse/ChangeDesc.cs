@@ -1,0 +1,19 @@
+﻿namespace WellRoundedBalance.Eclipse
+{
+    internal class ChangeDesc : GamemodeBase
+    {
+        public override string Name => ":: Gamemode : Eclipse";
+
+        public override void Hooks()
+        {
+            LanguageAPI.Add("ECLIPSE_1_DESCRIPTION", "Starts at baseline Monsoon difficulty.<style=cSub>\n\n<mspace=0.5em>(1)</mspace> Enemy Aim: <style=cIsHealth>Improved</style></style>");
+            LanguageAPI.Add("ECLIPSE_2_DESCRIPTION", "Starts at baseline Monsoon difficulty.<style=cSub>\n\n<mspace=0.5em>(1)</mspace> Enemy Aim: <style=cIsHealth>Improved</style>\n<mspace=0.5em>(2)</mspace> Enemies: <style=cIsHealth>Predictive</style></style>");
+            LanguageAPI.Add("ECLIPSE_3_DESCRIPTION", "Starts at baseline Monsoon difficulty.<style=cSub>\n\n<mspace=0.5em>(1)</mspace> Enemy Aim: <style=cIsHealth>Improved</style>\n<mspace=0.5em>(2)</mspace> Enemies: <style=cIsHealth>Predictive</style>\n<mspace=0.5em>(3)</mspace> Elite Enemies: <style=cIsHealth>Stronger</style></style>");
+            LanguageAPI.Add("ECLIPSE_4_DESCRIPTION", "Starts at baseline Monsoon difficulty.<style=cSub>\n\n<mspace=0.5em>(1)</mspace> Enemy Aim: <style=cIsHealth>Improved</style>\n<mspace=0.5em>(2)</mspace> Enemies: <style=cIsHealth>Predictive</style>\n<mspace=0.5em>(3)</mspace> Elite Enemies: <style=cIsHealth>Stronger</style>\n<mspace=0.5em>(4)</mspace> Enemy Speed: <style=cIsHealth>+40%</style></style>");
+            LanguageAPI.Add("ECLIPSE_5_DESCRIPTION", "Starts at baseline Monsoon difficulty.<style=cSub>\n\n<mspace=0.5em>(1)</mspace> Enemy Aim: <style=cIsHealth>Improved</style>\n<mspace=0.5em>(2)</mspace> Enemies: <style=cIsHealth>Predictive</style>\n<mspace=0.5em>(3)</mspace> Elite Enemies: <style=cIsHealth>Stronger</style>\n<mspace=0.5em>(4)</mspace> Enemy Speed: <style=cIsHealth>+40%</style>\n<mspace=0.5em>(5)</mspace> Environments: <style=cIsHealth>Unstable</style></style>");
+            LanguageAPI.Add("ECLIPSE_6_DESCRIPTION", "Starts at baseline Monsoon difficulty.<style=cSub>\n\n<mspace=0.5em>(1)</mspace> Enemy Aim: <style=cIsHealth>Improved</style>\n<mspace=0.5em>(2)</mspace> Enemies: <style=cIsHealth>Predictive</style>\n<mspace=0.5em>(3)</mspace> Elite Enemies: <style=cIsHealth>Stronger</style>\n<mspace=0.5em>(4)</mspace> Enemy Speed: <style=cIsHealth>+40%</style>\n<mspace=0.5em>(5)</mspace> Environments: <style=cIsHealth>Unstable</style>\n<mspace=0.5em>(6)</mspace> Bosses: <style=cIsHealth>Frenzied</style></style>");
+            LanguageAPI.Add("ECLIPSE_7_DESCRIPTION", "Starts at baseline Monsoon difficulty.<style=cSub>\n\n<mspace=0.5em>(1)</mspace> Enemy Aim: <style=cIsHealth>Improved</style>\n<mspace=0.5em>(2)</mspace> Enemies: <style=cIsHealth>Predictive</style>\n<mspace=0.5em>(3)</mspace> Elite Enemies: <style=cIsHealth>Stronger</style>\n<mspace=0.5em>(4)</mspace> Enemy Speed: <style=cIsHealth>+40%</style>\n<mspace=0.5em>(5)</mspace> Environments: <style=cIsHealth>Unstable</style>\n<mspace=0.5em>(6)</mspace> Bosses: <style=cIsHealth>Frenzied</style>\n<mspace=0.5em>(7)</mspace> Enemy Cooldowns: <style=cIsHealth>-50%</style></style>");
+            LanguageAPI.Add("ECLIPSE_8_DESCRIPTION", "\"You only celebrate in the light... because I allow it.\" \n\nStarts at baseline Monsoon difficulty.<style=cSub>\n\n<mspace=0.5em>(1)</mspace> Enemy Aim: <style=cIsHealth>Improved</style>\n<mspace=0.5em>(2)</mspace> Enemies: <style=cIsHealth>Predictive</style>\n<mspace=0.5em>(3)</mspace> Elite Enemies: <style=cIsHealth>Stronger</style>\n<mspace=0.5em>(4)</mspace> Enemy Speed: <style=cIsHealth>+40%</style>\n<mspace=0.5em>(5)</mspace> Environments: <style=cIsHealth>Unstable</style>\n<mspace=0.5em>(6)</mspace> Bosses: <style=cIsHealth>Frenzied</style>\n<mspace=0.5em>(7)</mspace> Enemy Cooldowns: <style=cIsHealth>-50%</style> \n<mspace=0.5em>(8)</mspace> Allies recieve <style=cIsHealth>permanent damage</style></style>");
+        }
+    }
+}

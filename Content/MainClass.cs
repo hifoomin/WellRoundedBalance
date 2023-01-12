@@ -12,6 +12,7 @@ using WellRoundedBalance.Interactables;
 using WellRoundedBalance.Mechanic;
 using WellRoundedBalance.Enemies;
 using WellRoundedBalance.Projectiles;
+using WellRoundedBalance.Eclipse;
 
 [assembly: HG.Reflection.SearchableAttribute.OptIn]
 // used for BodyCatalog
@@ -46,6 +47,7 @@ namespace WellRoundedBalance
         public static ConfigFile WRBEquipmentConfig;
         public static ConfigFile WRBInteractableConfig;
         public static ConfigFile WRBEnemyConfig;
+        public static ConfigFile WRBGamemodeConfig;
         public static ManualLogSource WRBLogger;
 
         public void Awake()
@@ -58,6 +60,7 @@ namespace WellRoundedBalance
             WRBEquipmentConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Equipment.cfg", true);
             WRBInteractableConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Interactables.cfg", true);
             WRBEnemyConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Enemies.cfg", true);
+            WRBGamemodeConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Gamemodes.cfg", true);
 
             Molotov.Create();
 
@@ -137,6 +140,21 @@ namespace WellRoundedBalance
                 }
             }
 
+            IEnumerable<Type> enumerable6 = from type in Assembly.GetExecutingAssembly().GetTypes()
+                                            where !type.IsAbstract && type.IsSubclassOf(typeof(GamemodeBase))
+                                            select type;
+
+            WRBLogger.LogInfo("==+----------------==GAMEMODES==----------------+==");
+
+            foreach (Type type in enumerable6)
+            {
+                GamemodeBase based = (GamemodeBase)Activator.CreateInstance(type);
+                if (ValidateGamemode(based))
+                {
+                    based.Init();
+                }
+            }
+
             RemoveRollOfPenisAndGesture.Based();
             Mechanic.Monster.SpeedBoost.AddSpeedBoost();
             Mechanic.Bosses.BetterScaling.NerfHealthScaling();
@@ -187,6 +205,16 @@ namespace WellRoundedBalance
             if (eb.isEnabled)
             {
                 bool enabledfr = WRBEnemyConfig.Bind(eb.Name, "Enable?", true, "Vanilla is false").Value;
+                if (enabledfr) return true;
+            }
+            return false;
+        }
+
+        public bool ValidateGamemode(GamemodeBase gmb)
+        {
+            if (gmb.isEnabled)
+            {
+                bool enabledfr = WRBEnemyConfig.Bind(gmb.Name, "Enable?", true, "Vanilla is false").Value;
                 if (enabledfr) return true;
             }
             return false;

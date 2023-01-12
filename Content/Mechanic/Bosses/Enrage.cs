@@ -21,9 +21,18 @@ namespace WellRoundedBalance.Mechanic.Bosses
             if (sender.isChampion && sender.healthComponent)
             {
                 var increase = Mathf.Clamp01(1f - sender.healthComponent.combinedHealthFraction);
-                args.moveSpeedMultAdd += increase * 0.3f;
-                args.attackSpeedMultAdd += increase * 0.25f;
-                args.cooldownMultAdd -= increase * 0.25f;
+                if (Run.instance.selectedDifficulty >= DifficultyIndex.Eclipse6)
+                {
+                    args.moveSpeedMultAdd += increase * 0.6f;
+                    args.attackSpeedMultAdd += increase * 0.5f;
+                    args.cooldownMultAdd -= increase * 0.5f;
+                }
+                else
+                {
+                    args.moveSpeedMultAdd += increase * 0.3f;
+                    args.attackSpeedMultAdd += increase * 0.25f;
+                    args.cooldownMultAdd -= increase * 0.25f;
+                }
             }
         }
     }

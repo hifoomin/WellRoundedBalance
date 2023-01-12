@@ -10,38 +10,50 @@ namespace WellRoundedBalance.Elites
     internal class Overloading : EnemyBase<Overloading>
     {
         public override string Name => "Elites ::: Overloading";
+
         public override void Hooks()
         {
-            On.RoR2.Projectile.ProjectileController.Start += (orig, self) => {
+            On.RoR2.Projectile.ProjectileController.Start += (orig, self) =>
+            {
                 orig(self);
-                if (self.gameObject.name.Contains("LightningStake")) {
+                if (self.gameObject.name.Contains("LightningStake"))
+                {
                     GameObject.DestroyImmediate(self.gameObject);
                 }
             };
 
-            On.RoR2.CharacterBody.RecalculateStats += (orig, self) => {
+            On.RoR2.CharacterBody.RecalculateStats += (orig, self) =>
+            {
                 orig(self);
-                if (NetworkServer.active && self.HasBuff(RoR2Content.Buffs.AffixBlue)) {
+                if (NetworkServer.active && self.HasBuff(RoR2Content.Buffs.AffixBlue))
+                {
                     self.moveSpeed *= 1.5f;
-                    if (!self.GetComponent<OverloadingController>()) {
+                    if (!self.GetComponent<OverloadingController>())
+                    {
                         self.gameObject.AddComponent<OverloadingController>();
                     }
                 }
-                if (!self.HasBuff(RoR2Content.Buffs.AffixBlue)) {
-                    if (self.GetComponent<OverloadingController>()) {
+                if (!self.HasBuff(RoR2Content.Buffs.AffixBlue))
+                {
+                    if (self.GetComponent<OverloadingController>())
+                    {
                         self.gameObject.RemoveComponent<OverloadingController>();
                     }
                 }
             };
         }
-        private class OverloadingController : MonoBehaviour, IOnTakeDamageServerReceiver {
+
+        private class OverloadingController : MonoBehaviour, IOnTakeDamageServerReceiver
+        {
             private float stopwatch = 0f;
             private float teleportCooldown = 5f;
             private bool isOnCooldown = false;
             private SphereSearch search;
             private HealthComponent hc => GetComponent<HealthComponent>();
             private CharacterBody cb => GetComponent<CharacterBody>();
-            private void Start() {
+
+            private void Start()
+            {
                 List<IOnTakeDamageServerReceiver> receivers = hc.onTakeDamageReceivers.ToList();
                 receivers.Add(this);
                 hc.onTakeDamageReceivers = receivers.ToArray();
@@ -51,14 +63,18 @@ namespace WellRoundedBalance.Elites
                 search.queryTriggerInteraction = QueryTriggerInteraction.Ignore;
             }
 
-            public void OnTakeDamageServer(DamageReport report) {
-                if (NetworkServer.active && report.victimBody && report.victimBody == cb && !isOnCooldown) {
+            public void OnTakeDamageServer(DamageReport report)
+            {
+                if (NetworkServer.active && report.victimBody && report.victimBody == cb && !isOnCooldown)
+                {
                     NodeGraph nodes = SceneInfo.instance.groundNodes;
-                    if (nodes) {
+                    if (nodes)
+                    {
                         List<NodeGraph.Node> validNodes = nodes.nodes.Where(x => Vector3.Distance(cb.corePosition, x.position) < 30).ToList();
                         NodeGraph.Node node = validNodes.GetRandom(Run.instance.spawnRng);
                         Vector3 position = node.position;
-                        EffectManager.SpawnEffect(Utils.Paths.GameObject.ParentTeleportEffect.Load<GameObject>(), new EffectData {
+                        EffectManager.SpawnEffect(Utils.Paths.GameObject.ParentTeleportEffect.Load<GameObject>(), new EffectData
+                        {
                             origin = cb.corePosition,
                             scale = 2f,
                         }, true);
@@ -69,8 +85,10 @@ namespace WellRoundedBalance.Elites
                 }
             }
 
-            private void BuffNearby() {
-                EffectManager.SpawnEffect(Utils.Paths.GameObject.LunarSecondaryExplosion.Load<GameObject>(), new EffectData {
+            private void BuffNearby()
+            {
+                EffectManager.SpawnEffect(Utils.Paths.GameObject.LunarSecondaryExplosion.Load<GameObject>(), new EffectData
+                {
                     origin = cb.corePosition,
                     scale = 2f,
                 }, true);
@@ -81,19 +99,24 @@ namespace WellRoundedBalance.Elites
                 search.FilterCandidatesByDistinctHurtBoxEntities();
                 search.OrderCandidatesByDistance();
                 HurtBox[] boxes = search.GetHurtBoxes();
-                foreach (HurtBox box in boxes) {
-                    if (box.teamIndex == cb.teamComponent.teamIndex && NetworkServer.active) {
-                        if (box.healthComponent) {
-                            LightningOrb orb = new();
-                            orb.lightningType = LightningOrb.LightningType.Tesla;
-                            orb.bouncesRemaining = 1;
-                            orb.targetsToFindPerBounce = 1;
-                            orb.attacker = base.gameObject;
-                            orb.teamIndex = cb.teamComponent.teamIndex;
-                            orb.damageValue = 0;
-                            orb.damageType = DamageType.Silent;
-                            orb.origin = cb.corePosition;
-                            orb.range = float.PositiveInfinity;
+                foreach (HurtBox box in boxes)
+                {
+                    if (box.teamIndex == cb.teamComponent.teamIndex && NetworkServer.active)
+                    {
+                        if (box.healthComponent)
+                        {
+                            LightningOrb orb = new()
+                            {
+                                lightningType = LightningOrb.LightningType.Tesla,
+                                bouncesRemaining = 1,
+                                targetsToFindPerBounce = 1,
+                                attacker = base.gameObject,
+                                teamIndex = cb.teamComponent.teamIndex,
+                                damageValue = 0,
+                                damageType = DamageType.Silent,
+                                origin = cb.corePosition,
+                                range = float.PositiveInfinity
+                            };
 
                             OrbManager.instance.AddOrb(orb);
                             Debug.Log("added orb");
@@ -103,11 +126,14 @@ namespace WellRoundedBalance.Elites
                 }
             }
 
-            private void FixedUpdate() {
-                if (isOnCooldown) {
+            private void FixedUpdate()
+            {
+                if (isOnCooldown)
+                {
                     stopwatch += Time.fixedDeltaTime;
 
-                    if (stopwatch >= teleportCooldown) {
+                    if (stopwatch >= teleportCooldown)
+                    {
                         stopwatch = 0f;
                         isOnCooldown = false;
                     }
