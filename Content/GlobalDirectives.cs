@@ -7,3 +7,4 @@ global using RoR2.CharacterAI;
 global using WellRoundedBalance.Utils;
 global using System.Collections.Generic;
 global using UnityEngine;
+global using System.Linq;
