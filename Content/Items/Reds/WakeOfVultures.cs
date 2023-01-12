@@ -27,29 +27,39 @@ namespace WellRoundedBalance.Items.Reds
             On.RoR2.HealthComponent.TakeDamage += ReduceDamage;
         }
 
-        private void ReduceDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damage) {
-            if (NetworkServer.active) {
-                if (damage.attacker && damage.attacker.GetComponent<CharacterBody>()) {
+        private void ReduceDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damage)
+        {
+            if (NetworkServer.active)
+            {
+                if (damage.attacker && damage.attacker.GetComponent<CharacterBody>())
+                {
                     CharacterBody attacker = damage.attacker.GetComponent<CharacterBody>();
-                    if (attacker.isElite && self.body.inventory && self.body.inventory.GetItemCount(RoR2Content.Items.HeadHunter) > 0) {
+                    if (attacker.isElite && self.body.inventory && self.body.inventory.GetItemCount(RoR2Content.Items.HeadHunter) > 0)
+                    {
                         List<BuffIndex> currentEliteBuffs = new();
-                        foreach (BuffIndex buff in attacker.activeBuffsList) {
-                            if (BuffCatalog.eliteBuffIndices.Contains(buff)) {
+                        foreach (BuffIndex buff in attacker.activeBuffsList)
+                        {
+                            if (BuffCatalog.eliteBuffIndices.Contains(buff))
+                            {
                                 currentEliteBuffs.Add(buff);
                             }
                         }
 
                         List<BuffIndex> currentEliteBuffsVictim = new();
-                        foreach (BuffIndex buff in self.body.activeBuffsList) {
-                            if (BuffCatalog.eliteBuffIndices.Contains(buff)) {
+                        foreach (BuffIndex buff in self.body.activeBuffsList)
+                        {
+                            if (BuffCatalog.eliteBuffIndices.Contains(buff))
+                            {
                                 currentEliteBuffsVictim.Add(buff);
                             }
                         }
 
                         bool hasAtLeastOne = false;
 
-                        foreach (BuffIndex index in currentEliteBuffsVictim) {
-                            if (currentEliteBuffs.Contains(index)) {
+                        foreach (BuffIndex index in currentEliteBuffsVictim)
+                        {
+                            if (currentEliteBuffs.Contains(index))
+                            {
                                 hasAtLeastOne = true;
                                 break;
                             }
@@ -57,7 +67,8 @@ namespace WellRoundedBalance.Items.Reds
 
                         float mult = Mathf.Pow((1 - 0.2f), self.body.inventory.GetItemCount(RoR2Content.Items.HeadHunter));
                         Debug.Log(mult);
-                        if (hasAtLeastOne) {
+                        if (hasAtLeastOne)
+                        {
                             damage.damage *= mult;
                         }
                     }
@@ -66,50 +77,67 @@ namespace WellRoundedBalance.Items.Reds
             orig(self, damage);
         }
 
-        private void DisableVanilla(ILContext context) {
+        private void DisableVanilla(ILContext context)
+        {
             ILCursor c = new(context);
             bool found = c.TryGotoNext(MoveType.After,
                 x => x.MatchLdloc(69),
                 x => x.MatchLdcI4(0)
             );
 
-            if (found) {
+            if (found)
+            {
                 c.Prev.Operand = int.MaxValue;
-            } else {
+            }
+            else
+            {
                 Logger.LogError("Could not apply Wake of Vultures IL hook");
             }
         }
 
-        private void Killed(DamageReport report) {
-            if (NetworkServer.active) {
-                if (report.victimIsElite && report.attackerBody) {
+        private void Killed(DamageReport report)
+        {
+            if (NetworkServer.active)
+            {
+                if (report.victimIsElite && report.attackerBody)
+                {
                     Debug.Log("killed elite");
                     int stack = report.attackerBody.inventory.GetItemCount(RoR2Content.Items.HeadHunter);
-                    List<BuffIndex> currentEliteBuffs = new();
-                    foreach (BuffIndex buff in report.attackerBody.activeBuffsList) {
-                        if (BuffCatalog.eliteBuffIndices.Contains(buff)) {
-                            currentEliteBuffs.Add(buff);
+                    if (stack > 0)
+                    {
+                        List<BuffIndex> currentEliteBuffs = new();
+                        foreach (BuffIndex buff in report.attackerBody.activeBuffsList)
+                        {
+                            if (BuffCatalog.eliteBuffIndices.Contains(buff))
+                            {
+                                currentEliteBuffs.Add(buff);
+                            }
                         }
-                    }
 
-                    BuffIndex eliteIndex = 0;
-                    foreach (BuffIndex buff in report.victimBody.activeBuffsList) {
-                        if (BuffCatalog.eliteBuffIndices.Contains(buff) && !currentEliteBuffs.Contains(buff)) {
-                            Debug.Log("giving elite buff");
-                            eliteIndex = buff;
-                            break;
+                        BuffIndex eliteIndex = 0;
+                        foreach (BuffIndex buff in report.victimBody.activeBuffsList)
+                        {
+                            if (BuffCatalog.eliteBuffIndices.Contains(buff) && !currentEliteBuffs.Contains(buff))
+                            {
+                                Debug.Log("giving elite buff");
+                                eliteIndex = buff;
+                                break;
+                            }
                         }
-                    }
 
-                    if (eliteIndex != 0) {
-                        report.attackerBody.AddBuff(eliteIndex);
-                    }
+                        if (eliteIndex != 0)
+                        {
+                            report.attackerBody.AddBuff(eliteIndex);
+                        }
 
-                    if (currentEliteBuffs.Count > stack) {
-                        Debug.Log("has too many elite buffs");
-                        for (int i = 0; i < currentEliteBuffs.Count - stack; i++) {
-                            report.attackerBody.RemoveBuff(currentEliteBuffs[i]);
-                            Debug.Log("removing buff");
+                        if (currentEliteBuffs.Count > stack)
+                        {
+                            Debug.Log("has too many elite buffs");
+                            for (int i = 0; i < currentEliteBuffs.Count - stack; i++)
+                            {
+                                report.attackerBody.RemoveBuff(currentEliteBuffs[i]);
+                                Debug.Log("removing buff");
+                            }
                         }
                     }
                 }

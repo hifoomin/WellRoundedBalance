@@ -11,7 +11,7 @@ namespace WellRoundedBalance.Items.Whites
 
         public override string PickupText => "Receive flat damage reduction from all attacks.";
 
-        public override string DescText => "Reduce all <style=cIsDamage>incoming damage</style> by <style=cIsDamage>4<style=cStack> (+4 per stack)</style></style>. Cannot be reduced below <style=cIsDamage>8</style>.";
+        public override string DescText => "Reduce all <style=cIsDamage>incoming damage</style> by <style=cIsDamage>5<style=cStack> (+5 per stack)</style></style>. Cannot be reduced below <style=cIsDamage>8</style>.";
 
         public override void Init()
         {
@@ -25,6 +25,7 @@ namespace WellRoundedBalance.Items.Whites
 
         public static void Changes(ILContext il)
         {
+            /*
             ILCursor c = new(il);
             if (c.TryGotoNext(MoveType.Before,
                     x => x.MatchLdcR4(1),
@@ -40,7 +41,7 @@ namespace WellRoundedBalance.Items.Whites
             }
 
             c.Index = 0;
-
+            */
             if (c.TryGotoNext(MoveType.Before,
                //x => x.MatchLdflda<HealthComponent>("itemCounts"),
                //x => x.MatchLdfld<HealthComponent>("armorPlate"),

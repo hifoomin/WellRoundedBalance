@@ -1,5 +1,6 @@
 ﻿using Mono.Cecil.Cil;
 using MonoMod.Cil;
+using R2API.Utils;
 using System;
 using UnityEngine;
 using WellRoundedBalance.Enemies;
@@ -30,7 +31,10 @@ namespace WellRoundedBalance.Elites
 
         private void CharacterBody_UpdateFireTrail(On.RoR2.CharacterBody.orig_UpdateFireTrail orig, CharacterBody self)
         {
-            self.fireTrail.radius = 5f * self.radius;
+            if (self && self.fireTrail)
+            {
+                self.fireTrail.radius = 5f * self.radius;
+            }
             orig(self);
         }
 
@@ -84,20 +88,53 @@ namespace WellRoundedBalance.Elites
             var trailPS = trailVFX.GetComponent<ParticleSystem>();
             var trailDoT = trailVFX.GetComponent<DestroyOnTimer>();
 
-            trail.pointLifetime = 5f;
+            trail.pointLifetime = 6f;
             // trail.radius = 5f;
 
-            trailDoT.duration = 5.1f;
+            trailDoT.duration = 6.6f;
 
             var main = trailPS.main;
-            main.duration = 5f;
+            main.duration = 6.5f;
             var startSize = main.startSize;
             startSize.mode = ParticleSystemCurveMode.Constant;
             startSize.constant = 5f;
+
+            var shape = trailPS.shape;
+            shape.scale = new Vector3(2f, 0f, 2f);
         }
     }
 
     public class SpawnFirePools : MonoBehaviour
     {
+        public CharacterBody body;
+        public GameObject projectile = Projectiles.Molotov.prefab;
+        private float timer;
+        public float interval;
+
+        public void Start()
+        {
+            body = GetComponent<CharacterBody>();
+            interval = 5f;
+            timer = 3f;
+        }
+
+        public void FixedUpdate()
+        {
+            timer += Time.fixedDeltaTime;
+            var angle = body.inputBank.GetAimRay().direction;
+            if (timer >= interval)
+            {
+                var fpi = new FireProjectileInfo
+                {
+                    owner = gameObject,
+                    rotation = Util.QuaternionSafeLookRotation(angle),
+                    projectilePrefab = projectile,
+                    crit = Util.CheckRoll(body.crit, body.master),
+                    position = body.corePosition,
+                };
+                ProjectileManager.instance.FireProjectile(fpi);
+                timer = 0f;
+            }
+        }
     }
 }

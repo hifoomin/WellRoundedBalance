@@ -11,6 +11,7 @@ using WellRoundedBalance.Global;
 using WellRoundedBalance.Interactables;
 using WellRoundedBalance.Mechanic;
 using WellRoundedBalance.Enemies;
+using WellRoundedBalance.Projectiles;
 
 [assembly: HG.Reflection.SearchableAttribute.OptIn]
 // used for BodyCatalog
@@ -57,6 +58,8 @@ namespace WellRoundedBalance
             WRBEquipmentConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Equipment.cfg", true);
             WRBInteractableConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Interactables.cfg", true);
             WRBEnemyConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Enemies.cfg", true);
+
+            Molotov.Create();
 
             IEnumerable<Type> enumerable = from type in Assembly.GetExecutingAssembly().GetTypes()
                                            where !type.IsAbstract && type.IsSubclassOf(typeof(GlobalBase))
