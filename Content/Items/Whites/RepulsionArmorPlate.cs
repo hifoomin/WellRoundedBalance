@@ -25,8 +25,8 @@ namespace WellRoundedBalance.Items.Whites
 
         public static void Changes(ILContext il)
         {
-            /*
             ILCursor c = new(il);
+            /*
             if (c.TryGotoNext(MoveType.Before,
                     x => x.MatchLdcR4(1),
                     x => x.MatchLdloc(out _),
