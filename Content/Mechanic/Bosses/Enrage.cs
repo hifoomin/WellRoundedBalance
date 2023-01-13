@@ -2,7 +2,7 @@
 
 namespace WellRoundedBalance.Mechanic.Bosses
 {
-    internal class Enrage : GlobalBase
+    internal class Enrage : MechanicBase
     {
         public override string Name => ":: Mechanic ::: Bosses : Enrage";
 

@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using RoR2.Navigation;
+﻿using RoR2.Navigation;
 using RoR2.Orbs;
-using WellRoundedBalance.Enemies;
 
 namespace WellRoundedBalance.Elites
 {
-    internal class Overloading : EnemyBase<Overloading>
+    internal class Overloading : EliteBase
     {
-        public override string Name => "Elites ::: Overloading";
+        public override bool isEnabled => false;
+        public override string Name => ":: Elites ::: Overloading";
 
         public override void Hooks()
         {

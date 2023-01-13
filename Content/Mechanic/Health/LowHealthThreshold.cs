@@ -1,6 +1,6 @@
 ﻿namespace WellRoundedBalance.Mechanic.Health
 {
-    public class LowHealthThreshold : GlobalBase
+    public class LowHealthThreshold : MechanicBase
     {
         public override string Name => ":: Mechanic :: Health";
 

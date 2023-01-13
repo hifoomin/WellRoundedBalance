@@ -1,14 +1,13 @@
 ﻿using Mono.Cecil.Cil;
 using MonoMod.Cil;
-using WellRoundedBalance.Enemies;
 
 namespace WellRoundedBalance.Elites
 {
-    internal class Voidtouched : EnemyBase
+    internal class Voidtouched : EliteBase
     {
         public static BuffDef useless;
         public static BuffDef voidCurse;
-        public override string Name => "::: Elites ::::: Voidtouched";
+        public override string Name => ":: Elites ::::: Voidtouched";
 
         public override void Init()
         {

@@ -1,12 +1,12 @@
 ﻿using System;
 
-namespace WellRoundedBalance.Mechanic
+namespace WellRoundedBalance.Elites
 {
-    public abstract class MechanicBase<T> : MechanicBase where T : MechanicBase<T>
+    public abstract class EliteBase<T> : EliteBase where T : EliteBase<T>
     {
         public static T instance { get; set; }
 
-        public MechanicBase()
+        public EliteBase()
         {
             if (instance != null)
             {

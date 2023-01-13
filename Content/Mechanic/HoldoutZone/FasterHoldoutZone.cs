@@ -1,6 +1,6 @@
 ﻿namespace WellRoundedBalance.Mechanic.HoldoutZone
 {
-    internal class FasterHoldoutZone : GlobalBase
+    internal class FasterHoldoutZone : MechanicBase
     {
         public override string Name => ":: Mechanic :::: Holdout Zone : Faster Charge";
 

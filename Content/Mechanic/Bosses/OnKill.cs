@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace WellRoundedBalance.Mechanic.Bosses
 {
-    public class OnKill : GlobalBase<OnKill>
+    public class OnKill : MechanicBase<OnKill>
     {
         public override string Name => ":: Mechanic ::: Bosses ::: On Kill Thresholds";
         private List<BodyIndex> acceptableBodies;

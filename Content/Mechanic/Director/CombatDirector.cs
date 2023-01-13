@@ -1,6 +1,6 @@
 ﻿namespace WellRoundedBalance.Mechanic.Director
 {
-    internal class CombatDirector : GlobalBase
+    internal class CombatDirector : MechanicBase
     {
         public override string Name => ":: Mechanic ::::: Combat Director";
 

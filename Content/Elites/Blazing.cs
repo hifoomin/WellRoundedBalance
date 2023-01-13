@@ -7,10 +7,10 @@ using WellRoundedBalance.Enemies;
 
 namespace WellRoundedBalance.Elites
 {
-    internal class Blazing : EnemyBase
+    internal class Blazing : EliteBase
     {
         public static BuffDef useless;
-        public override string Name => "::: Elites :: Blazing";
+        public override string Name => ":: Elites :: Blazing";
 
         public override void Init()
         {

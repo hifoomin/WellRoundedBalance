@@ -26,7 +26,7 @@
             // constantForce.force = new Vector3(0f, -800f, 0f);
 
             // WHY DOES IT IGNORE COLLISION????????
-
+            /*
             var rigidBody = prefab.GetComponent<Rigidbody>();
             rigidBody.collisionDetectionMode = CollisionDetectionMode.Continuous;
             rigidBody.useGravity = true;
@@ -35,7 +35,7 @@
             projectileStickOnImpact.ignoreCharacters = true;
             projectileStickOnImpact.ignoreWorld = false;
             projectileStickOnImpact.alignNormals = false;
-
+            */
             var ghost = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.NullifierPreBombGhost.Load<GameObject>(), "VoidtouchedEliteSingleProjectileGhost", false);
             ghost.transform.localScale = new Vector3(5f, 5f, 5f);
 

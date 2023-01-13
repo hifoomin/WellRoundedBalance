@@ -2,7 +2,7 @@ using On.EntityStates.MoonElevator;
 
 namespace WellRoundedBalance.Mechanic.HoldoutZone
 {
-    public class OptionalPillars : GlobalBase<OptionalPillars>
+    public class OptionalPillars : MechanicBase<OptionalPillars>
     {
         public override string Name => ":: Mechanic :::: Holdout Zone :: Optional Pillars";
 

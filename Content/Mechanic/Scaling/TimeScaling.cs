@@ -1,12 +1,9 @@
 ﻿using R2API.Utils;
-using RoR2;
 using System;
-using UnityEngine;
-using WellRoundedBalance.Global;
 
 namespace WellRoundedBalance.Mechanic.Scaling
 {
-    public class TimeScaling : GlobalBase
+    public class TimeScaling : MechanicBase
     {
         public static float timer;
         public static float interval = 120f;
@@ -57,7 +54,7 @@ namespace WellRoundedBalance.Mechanic.Scaling
                 float timeFactor = Time * timefactormultiplier * (1.2f * Mathf.Sqrt(difficultyDef.scalingValue));
                 float playerScalar = (float)Math.Pow(playerCount, playercountexponent);
 
-                float customTimeFactor = Mathf.Sqrt(Time) * 0.41f * difficultyDef.scalingValue;
+                float customTimeFactor = Mathf.Sqrt(Time) * 0.42f * difficultyDef.scalingValue;
 
                 float customFactor = 1f + 0.375f * customTimeFactor * playerScalar;
                 // previously * timeFactor instead of customTimeFactor

@@ -3,7 +3,7 @@ using EntityStates.Missions.Moon;
 
 namespace WellRoundedBalance.Mechanic.HoldoutZone
 {
-    internal class PillarRewards : GlobalBase
+    internal class PillarRewards : MechanicBase
     {
         private static float offset = 3f;
         public override string Name => ":: Mechanic :::: Holdout Zone ::: Pillar Rewards";

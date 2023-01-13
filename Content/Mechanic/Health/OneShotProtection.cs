@@ -2,7 +2,7 @@
 
 namespace WellRoundedBalance.Mechanic.Health
 {
-    public class OneShotProtection : GlobalBase
+    public class OneShotProtection : MechanicBase
     {
         public override string Name => ":: Mechanic :: Health";
 

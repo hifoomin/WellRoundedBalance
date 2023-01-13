@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 
 namespace WellRoundedBalance.Mechanic.Bazaar
 {
-    internal class Rework : GlobalBase
+    internal class Rework : MechanicBase
     {
         public static GameObject lunarPod;
         public static GameObject heresyStation;

@@ -1,6 +1,6 @@
-﻿namespace WellRoundedBalance.Mechanic
+﻿namespace WellRoundedBalance.Elites
 {
-    public abstract class MechanicBase
+    public abstract class EliteBase
     {
         public abstract string Name { get; }
         public virtual bool isEnabled { get; } = true;

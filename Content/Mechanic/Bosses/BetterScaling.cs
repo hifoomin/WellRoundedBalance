@@ -18,7 +18,7 @@ namespace WellRoundedBalance.Mechanic.Bosses
         [SystemInitializer(typeof(BodyCatalog))]
         public static void NerfHealthScaling()
         {
-            enable = Main.WRBGlobalConfig.Bind(":: Mechanic ::: Bosses :: Better Scaling", "Enable?", true, "Vanilla is false");
+            enable = Main.WRBMechanicConfig.Bind(":: Mechanic ::: Bosses :: Better Scaling", "Enable?", true, "Vanilla is false");
             RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
             foreach (CharacterBody body in BodyCatalog.allBodyPrefabBodyBodyComponents)
             {

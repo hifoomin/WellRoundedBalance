@@ -39,7 +39,7 @@
             var projectileControllerPool = firePool.GetComponent<ProjectileController>();
             projectileControllerPool.startSound = "Play_fireballsOnHit_impact";
 
-            projectileDotZonePool.damageCoefficient = 0.15f;
+            projectileDotZonePool.damageCoefficient = 0.25f;
             projectileDotZonePool.overlapProcCoefficient = 0f;
             projectileDotZonePool.lifetime = 8f;
             projectileDotZonePool.fireFrequency = 12f;

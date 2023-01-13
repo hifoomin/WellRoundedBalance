@@ -14,6 +14,7 @@ using WellRoundedBalance.Enemies;
 using WellRoundedBalance.Projectiles;
 using WellRoundedBalance.Eclipse;
 using System.Runtime.CompilerServices;
+using WellRoundedBalance.Elites;
 
 [assembly: HG.Reflection.SearchableAttribute.OptIn]
 // used for BodyCatalog
@@ -47,10 +48,11 @@ namespace WellRoundedBalance
         public const string PluginVersion = "0.0.1";
         public static ConfigFile WRBConfig;
         public static ConfigFile WRBItemConfig;
-        public static ConfigFile WRBGlobalConfig;
+        public static ConfigFile WRBMechanicConfig;
         public static ConfigFile WRBEquipmentConfig;
         public static ConfigFile WRBInteractableConfig;
         public static ConfigFile WRBEnemyConfig;
+        public static ConfigFile WRBEliteConfig;
         public static ConfigFile WRBGamemodeConfig;
         public static ManualLogSource WRBLogger;
 
@@ -64,10 +66,11 @@ namespace WellRoundedBalance
             Main.WRBConfig = base.Config;
 
             WRBItemConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Items.cfg", true);
-            WRBGlobalConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Mechanics.cfg", true);
+            WRBMechanicConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Mechanics.cfg", true);
             WRBEquipmentConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Equipment.cfg", true);
             WRBInteractableConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Interactables.cfg", true);
             WRBEnemyConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Enemies.cfg", true);
+            WRBEliteConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Elites.cfg", true);
             WRBGamemodeConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Gamemodes.cfg", true);
 
             InfernoLoaded = BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("HIFU.Inferno");
@@ -77,15 +80,15 @@ namespace WellRoundedBalance
             VoidBall.Create();
 
             IEnumerable<Type> enumerable = from type in Assembly.GetExecutingAssembly().GetTypes()
-                                           where !type.IsAbstract && type.IsSubclassOf(typeof(GlobalBase))
+                                           where !type.IsAbstract && type.IsSubclassOf(typeof(MechanicBase))
                                            select type;
 
             WRBLogger.LogInfo("==+----------------==MECHANICS==----------------+==");
 
             foreach (Type type in enumerable)
             {
-                GlobalBase based = (GlobalBase)Activator.CreateInstance(type);
-                if (ValidateGlobal(based))
+                MechanicBase based = (MechanicBase)Activator.CreateInstance(type);
+                if (ValidateMechanic(based))
                 {
                     based.Init();
                 }
@@ -153,12 +156,27 @@ namespace WellRoundedBalance
             }
 
             IEnumerable<Type> enumerable6 = from type in Assembly.GetExecutingAssembly().GetTypes()
+                                            where !type.IsAbstract && type.IsSubclassOf(typeof(EnemyBase))
+                                            select type;
+
+            WRBLogger.LogInfo("==+----------------==ELITES==----------------+==");
+
+            foreach (Type type in enumerable6)
+            {
+                EliteBase based = (EliteBase)Activator.CreateInstance(type);
+                if (ValidateElite(based))
+                {
+                    based.Init();
+                }
+            }
+
+            IEnumerable<Type> enumerable7 = from type in Assembly.GetExecutingAssembly().GetTypes()
                                             where !type.IsAbstract && type.IsSubclassOf(typeof(GamemodeBase))
                                             select type;
 
             WRBLogger.LogInfo("==+----------------==GAMEMODES==----------------+==");
 
-            foreach (Type type in enumerable6)
+            foreach (Type type in enumerable7)
             {
                 GamemodeBase based = (GamemodeBase)Activator.CreateInstance(type);
                 if (ValidateGamemode(based))
@@ -172,11 +190,11 @@ namespace WellRoundedBalance
             Mechanic.Bosses.BetterScaling.NerfHealthScaling();
         }
 
-        public bool ValidateGlobal(GlobalBase gb)
+        public bool ValidateMechanic(MechanicBase gb)
         {
             if (gb.isEnabled)
             {
-                bool enabledfr = WRBGlobalConfig.Bind(gb.Name, "Enable?", true, "Vanilla is false").Value;
+                bool enabledfr = WRBMechanicConfig.Bind(gb.Name, "Enable?", true, "Vanilla is false").Value;
                 if (enabledfr) return true;
             }
             return false;
@@ -212,11 +230,21 @@ namespace WellRoundedBalance
             return false;
         }
 
-        public bool ValidateEnemy(EnemyBase eb)
+        public bool ValidateEnemy(EnemyBase enb)
         {
-            if (eb.isEnabled)
+            if (enb.isEnabled)
             {
-                bool enabledfr = WRBEnemyConfig.Bind(eb.Name, "Enable?", true, "Vanilla is false").Value;
+                bool enabledfr = WRBEnemyConfig.Bind(enb.Name, "Enable?", true, "Vanilla is false").Value;
+                if (enabledfr) return true;
+            }
+            return false;
+        }
+
+        public bool ValidateElite(EliteBase elb)
+        {
+            if (elb.isEnabled)
+            {
+                bool enabledfr = WRBEliteConfig.Bind(elb.Name, "Enable?", true, "Vanilla is false").Value;
                 if (enabledfr) return true;
             }
             return false;
