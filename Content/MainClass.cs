@@ -15,7 +15,6 @@ using WellRoundedBalance.Projectiles;
 using WellRoundedBalance.Eclipse;
 using System.Runtime.CompilerServices;
 using WellRoundedBalance.Elites;
-
 [assembly: HG.Reflection.SearchableAttribute.OptIn]
 // used for BodyCatalog
 
