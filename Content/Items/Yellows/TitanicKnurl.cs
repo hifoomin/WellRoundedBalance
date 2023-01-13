@@ -10,7 +10,7 @@ namespace WellRoundedBalance.Items.Yellows
 
         public override string PickupText => "Boosts health and regeneration.";
 
-        public override string DescText => "<style=cIsHealing>Increase maximum health</style> by <style=cIsHealing>100</style> <style=cStack>(+100 per stack)</style> and <style=cIsHealing>base health regeneration</style> by <style=cIsHealing>+2.4 hp/s</style> <style=cStack>(+2.4 hp/s per stack</style>)";
+        public override string DescText => "<style=cIsHealing>Increase maximum health</style> by <style=cIsHealing>100</style> <style=cStack>(+100 per stack)</style> and <style=cIsHealing>base health regeneration</style> by <style=cIsHealing>+2.4 hp/s</style> <style=cStack>(+2.4 hp/s per stack)</style>.";
 
         public override void Init()
         {

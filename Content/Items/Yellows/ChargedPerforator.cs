@@ -20,6 +20,7 @@ namespace WellRoundedBalance.Items.Yellows
         public override void Hooks()
         {
             IL.RoR2.GlobalEventManager.OnHitEnemy += Changes;
+            Changes();
         }
 
         private void Changes(ILContext il)
@@ -52,6 +53,11 @@ namespace WellRoundedBalance.Items.Yellows
             {
                 Main.WRBLogger.LogError("Failed to apply Charged Perforator Proc Coefficient hook");
             }
+        }
+
+        private void Changes()
+        {
+            LanguageAPI.Add("ITEM_lightningStrikeOnHit_NAME".ToUpper(), "Charged Peripherator");
         }
     }
 }

@@ -25,6 +25,7 @@ namespace WellRoundedBalance.Items.Yellows
         {
             IL.RoR2.GlobalEventManager.OnHitEnemy += Changes;
             ChangeProcCoefficient();
+            Changes();
         }
 
         private void Changes(ILContext il)
@@ -48,6 +49,11 @@ namespace WellRoundedBalance.Items.Yellows
         {
             var m = LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/firemeatball").GetComponent<ProjectileController>();
             m.procCoefficient = 0f;
+        }
+
+        private void Changes()
+        {
+            LanguageAPI.Add("ITEM_fireballsOnHit_NAME".ToUpper(), "Molten Peripherator");
         }
     }
 }
