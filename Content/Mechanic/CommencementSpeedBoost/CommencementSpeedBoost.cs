@@ -17,6 +17,9 @@ namespace WellRoundedBalance.Mechanic.CommencementSpeedBoost
             commencementSpeed.iconSprite = Sprite.Create(genericSpeed, new Rect(0, 0, (float)genericSpeed.width, (float)genericSpeed.height), new Vector2(0f, 0f));
             commencementSpeed.canStack = false;
             commencementSpeed.isDebuff = false;
+
+            ContentAddition.AddBuffDef(commencementSpeed);
+
             base.Init();
         }
 

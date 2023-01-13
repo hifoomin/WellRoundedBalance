@@ -6,24 +6,27 @@ namespace WellRoundedBalance.Items.Greens
 {
     internal class Chronobauble : ItemBase
     {
-        public static BuffDef slow40;
+        public static BuffDef slow50;
         public override string Name => ":: Items :: Greens :: Chronobauble";
 
         public override string InternalPickupToken => "slowOnHit";
 
         public override string PickupText => "Slow enemies on hit.";
 
-        public override string DescText => "<style=cIsUtility>Slow</style> enemies on hit for <style=cIsUtility>-40%</style> <style=cStack>(+10% per stack)</style> <style=cIsUtility>movement speed</style> and <style=cIsDamage>-10%</style> <style=cStack>(+5% per stack)</style> <style=cIsDamage>attack speed</style> for <style=cIsUtility>5s</style></style>.";
+        public override string DescText => "<style=cIsUtility>Slow</style> enemies on hit for <style=cIsUtility>-50%</style> <style=cStack>(+10% per stack)</style> <style=cIsUtility>movement speed</style> and <style=cIsDamage>-10%</style> <style=cStack>(+5% per stack)</style> <style=cIsDamage>attack speed</style> for <style=cIsUtility>5s</style></style>.";
 
         public override void Init()
         {
             var slowIcon = Utils.Paths.Texture2D.texBuffSlow50Icon.Load<Texture2D>();
 
-            slow40 = ScriptableObject.CreateInstance<BuffDef>();
-            slow40.isHidden = false;
-            slow40.canStack = false;
-            slow40.buffColor = new Color32(173, 156, 105, 255);
-            slow40.iconSprite = Sprite.Create(slowIcon, new Rect(0f, 0f, (float)slowIcon.width, (float)slowIcon.height), new Vector2(0f, 0f));
+            slow50 = ScriptableObject.CreateInstance<BuffDef>();
+            slow50.isHidden = false;
+            slow50.canStack = false;
+            slow50.buffColor = new Color32(173, 156, 105, 255);
+            slow50.iconSprite = Sprite.Create(slowIcon, new Rect(0f, 0f, (float)slowIcon.width, (float)slowIcon.height), new Vector2(0f, 0f));
+
+            ContentAddition.AddBuffDef(slow50);
+
             base.Init();
         }
 
@@ -38,9 +41,9 @@ namespace WellRoundedBalance.Items.Greens
             if (sender.inventory)
             {
                 var stack = sender.inventory.GetItemCount(RoR2Content.Items.SlowOnHit);
-                if (sender.HasBuff(slow40))
+                if (sender.HasBuff(slow50) && stack > 0)
                 {
-                    args.moveSpeedReductionMultAdd += Util.ConvertAmplificationPercentageIntoReductionPercentage(40f + 10f * (stack - 1));
+                    args.moveSpeedReductionMultAdd += 0.4f;
                     args.baseAttackSpeedAdd -= 0.1f + 0.05f * (stack - 1);
                 }
             }
@@ -54,10 +57,9 @@ namespace WellRoundedBalance.Items.Greens
                 x => x.MatchLdcR4(2f)))
             {
                 c.Remove();
-                c.Emit<Chronobauble>(OpCodes.Ldsfld, nameof(slow40));
-                c.Index += 1;
+                c.Emit<Chronobauble>(OpCodes.Ldsfld, nameof(slow50));
                 c.Next.Operand = 5f;
-                c.Index += 2;
+                c.Index += 1;
                 c.EmitDelegate<Func<float, float>>((useless) =>
                 {
                     return 1f;

@@ -13,6 +13,9 @@ namespace WellRoundedBalance.Elites
             useless = ScriptableObject.CreateInstance<BuffDef>();
             useless.name = "Useless Buff";
             useless.isHidden = true;
+
+            ContentAddition.AddBuffDef(useless);
+
             base.Init();
         }
 

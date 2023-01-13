@@ -22,6 +22,10 @@ namespace WellRoundedBalance.Elites
             voidCurse.iconSprite = Sprite.Create(curse, new Rect(0, 0, (float)curse.width, (float)curse.height), new Vector2(0f, 0f));
             voidCurse.buffColor = new Color32(255, 75, 74, 255);
             voidCurse.isDebuff = true;
+
+            ContentAddition.AddBuffDef(useless);
+            ContentAddition.AddBuffDef(voidCurse);
+
             base.Init();
         }
 
