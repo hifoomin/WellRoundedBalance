@@ -43,6 +43,9 @@
       <HintPath>libs\Facepunch.Steamworks.dll</HintPath>
       <Private>false</Private>
     </Reference>
+    <Reference Include="Inferno">
+      <HintPath>..\..\..\..\Inferno.dll</HintPath>
+    </Reference>
     <Reference Include="KdTreeLib">
       <HintPath>libs\KdTreeLib.dll</HintPath>
       <Private>false</Private>
@@ -81,6 +84,9 @@
     </Reference>
     <Reference Include="RiskOfOptions">
       <HintPath>..\..\..\..\RiskOfOptions.dll</HintPath>
+    </Reference>
+    <Reference Include="Risky_Artifacts">
+      <HintPath>..\..\..\..\Risky_Artifacts.dll</HintPath>
     </Reference>
     <Reference Include="RoR2">
       <HintPath>..\..\..\..\..\..\.nuget\packages\riskofrain2.gamelibs\1.2.3.1-r.0\lib\netstandard2.0\RoR2.dll</HintPath>

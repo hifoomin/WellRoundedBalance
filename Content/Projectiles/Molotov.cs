@@ -36,14 +36,21 @@
 
             var firePool = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.MolotovProjectileDotZone.Load<GameObject>(), "BlazingElitePoolProjectile");
             var projectileDotZonePool = firePool.GetComponent<ProjectileDotZone>();
-            projectileDotZonePool.damageCoefficient = 0.12f;
+            var projectileControllerPool = firePool.GetComponent<ProjectileController>();
+            projectileControllerPool.startSound = "Play_fireballsOnHit_impact";
+
+            projectileDotZonePool.damageCoefficient = 0.15f;
             projectileDotZonePool.overlapProcCoefficient = 0f;
             projectileDotZonePool.lifetime = 8f;
-            projectileDotZonePool.resetFrequency = 12f;
+            projectileDotZonePool.fireFrequency = 12f;
+            projectileDotZonePool.resetFrequency = 5f;
 
             projectileImpactExplosionChild.childrenProjectilePrefab = firePool;
 
             projectileImpactExplosion.childrenProjectilePrefab = molotovChild;
+
+            var hitbox = firePool.transform.GetChild(0).GetChild(2);
+            hitbox.localScale = new Vector3(1.41f, 0.8f, 1.41f);
 
             PrefabAPI.RegisterNetworkPrefab(firePool);
             PrefabAPI.RegisterNetworkPrefab(molotovChild);

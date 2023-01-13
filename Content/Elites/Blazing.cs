@@ -139,6 +139,7 @@ namespace WellRoundedBalance.Elites
                     projectilePrefab = projectile,
                     crit = Util.CheckRoll(body.crit, body.master),
                     position = body.corePosition,
+                    damage = body.damage
                 };
                 ProjectileManager.instance.FireProjectile(fpi);
                 timer = 0f;

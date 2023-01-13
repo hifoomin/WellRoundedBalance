@@ -13,12 +13,15 @@ using WellRoundedBalance.Mechanic;
 using WellRoundedBalance.Enemies;
 using WellRoundedBalance.Projectiles;
 using WellRoundedBalance.Eclipse;
+using System.Runtime.CompilerServices;
 
 [assembly: HG.Reflection.SearchableAttribute.OptIn]
 // used for BodyCatalog
 
 namespace WellRoundedBalance
 {
+    [BepInDependency("HIFU.Inferno", BepInDependency.DependencyFlags.SoftDependency)]
+    [BepInDependency("com.Moffein.RiskyArtifacts", BepInDependency.DependencyFlags.SoftDependency)]
     [BepInDependency(R2API.R2API.PluginGUID)]
     /*  Swap to new R2APIs later
         Rework Defense Nucleus
@@ -50,6 +53,10 @@ namespace WellRoundedBalance
         public static ConfigFile WRBGamemodeConfig;
         public static ManualLogSource WRBLogger;
 
+        public static bool InfernoLoaded = false;
+        public static bool RiskyArtifactsLoaded = false;
+        public static DifficultyDef InfernoDef = null;
+
         public void Awake()
         {
             WRBLogger = Logger;
@@ -62,7 +69,11 @@ namespace WellRoundedBalance
             WRBEnemyConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Enemies.cfg", true);
             WRBGamemodeConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Gamemodes.cfg", true);
 
+            InfernoLoaded = BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("HIFU.Inferno");
+            RiskyArtifactsLoaded = BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("com.Moffein.RiskyArtifacts");
+
             Molotov.Create();
+            VoidBall.Create();
 
             IEnumerable<Type> enumerable = from type in Assembly.GetExecutingAssembly().GetTypes()
                                            where !type.IsAbstract && type.IsSubclassOf(typeof(GlobalBase))
@@ -214,8 +225,7 @@ namespace WellRoundedBalance
         {
             if (gmb.isEnabled)
             {
-                bool enabledfr = WRBEnemyConfig.Bind(gmb.Name, "Enable?", true, "Vanilla is false").Value;
-                if (enabledfr) return true;
+                return true;
             }
             return false;
         }
@@ -226,6 +236,47 @@ namespace WellRoundedBalance
             return input;
 
             // TODO - doesnt do anything currently, cant figure out a way to sort item names, etc alphabetically including the semicolons, so whites are first, then greens etc.
+        }
+
+        private void InfernoCompat()
+        {
+            if (InfernoLoaded)
+            {
+                InfernoDef = GetInfernoDef();
+            }
+        }
+
+        public static float GetProjectileSimpleModifiers(float speed)
+        {
+            if (InfernoLoaded) speed *= GetInfernoProjectileSpeedMult();
+            if (RiskyArtifactsLoaded) speed *= GetRiskyArtifactsWarfareProjectileSpeedMult();
+            return speed;
+        }
+
+        [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)]
+        public static float GetRiskyArtifactsWarfareProjectileSpeedMult()
+        {
+            if (RunArtifactManager.instance && RunArtifactManager.instance.IsArtifactEnabled(Risky_Artifacts.Artifacts.Warfare.artifact))
+            {
+                return Risky_Artifacts.Artifacts.Warfare.projSpeed;
+            }
+            return 1f;
+        }
+
+        [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)]
+        public static DifficultyDef GetInfernoDef()
+        {
+            return Inferno.Main.InfernoDiffDef;
+        }
+
+        [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)]
+        public static float GetInfernoProjectileSpeedMult()
+        {
+            if (Run.instance && DifficultyCatalog.GetDifficultyDef(Run.instance.selectedDifficulty) == InfernoDef)
+            {
+                return Inferno.Main.ProjectileSpeed.Value;
+            }
+            return 1f;
         }
     }
 }

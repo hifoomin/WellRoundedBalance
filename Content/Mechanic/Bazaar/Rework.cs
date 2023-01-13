@@ -22,7 +22,7 @@ namespace WellRoundedBalance.Mechanic.Bazaar
 
             Object.Destroy(heresyStation.GetComponent<ShopTerminalBehavior>());
 
-            var drops = new HeresyDropTable();
+            var drops = ScriptableObject.CreateInstance<HeresyDropTable>();
 
             var chestBehavior = heresyStation.AddComponent<ChestBehavior>();
             chestBehavior.dropTable = drops;

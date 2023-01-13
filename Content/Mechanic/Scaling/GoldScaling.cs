@@ -21,7 +21,7 @@ namespace WellRoundedBalance.Mechanic.Scaling
         {
             On.RoR2.DeathRewards.OnKilledServer += (orig, self, damageReport) =>
             {
-                self.goldReward = Convert.ToUInt32(Mathf.Min(self.goldReward * 0.75f, 0.75f * ((self.goldReward / (1 + Run.instance.stageClearCount)) + Mathf.Sqrt(4 * (1 + (Run.instance.stageClearCount * 15f + Run.instance.loopClearCount * 200f))))));
+                self.goldReward = Convert.ToUInt32(Mathf.Min(self.goldReward * 0.5f, 0.5f * ((self.goldReward / (1 + Run.instance.stageClearCount)) + Mathf.Sqrt(4 * (1 + (Run.instance.stageClearCount * 15f + Run.instance.loopClearCount * 200f))))));
                 orig(self, damageReport);
             };
         }

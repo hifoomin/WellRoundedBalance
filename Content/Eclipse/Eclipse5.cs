@@ -1,7 +1,4 @@
 ﻿using MonoMod.Cil;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace WellRoundedBalance.Eclipse
 {
@@ -48,17 +45,15 @@ namespace WellRoundedBalance.Eclipse
             var currentTime = (int)self.time;
             if (currentTime - previousTime > 300 && self.selectedDifficulty >= DifficultyIndex.Eclipse5)
             {
-                foreach (CharacterBody body in CharacterBody.readOnlyInstancesList)
+                var playerList = CharacterBody.readOnlyInstancesList.Where(x => x.isPlayerControlled).ToArray();
+                for (int i = 0; i < playerList.Length; i++)
                 {
-                    if (body.isPlayerControlled)
-                    {
-                        var meteorStormController = Instantiate(LegacyResourcesAPI.Load<GameObject>("Prefabs/NetworkedObjects/MeteorStorm"), body.corePosition, Quaternion.identity).GetComponent<MeteorStormController>();
-                        meteorStormController.owner = null;
-                        meteorStormController.ownerDamage = body.damage;
-                        meteorStormController.isCrit = Util.CheckRoll(body.crit, body.master);
-                        NetworkServer.Spawn(meteorStormController.gameObject);
-                        previousTime = 0;
-                    }
+                    var meteorStormController = Instantiate(LegacyResourcesAPI.Load<GameObject>("Prefabs/NetworkedObjects/MeteorStorm"), playerList[i].corePosition, Quaternion.identity).GetComponent<MeteorStormController>();
+                    meteorStormController.owner = null;
+                    meteorStormController.ownerDamage = 8f + Mathf.Sqrt(Run.instance.ambientLevel * 200f);
+                    meteorStormController.isCrit = false;
+                    NetworkServer.Spawn(meteorStormController.gameObject);
+                    previousTime = 0;
                 }
             }
         }
