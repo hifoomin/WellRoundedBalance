@@ -1,4 +1,6 @@
-﻿namespace WellRoundedBalance.Projectiles
+﻿using RoR2;
+
+namespace WellRoundedBalance.Projectiles
 {
     public static class Molotov
     {
@@ -34,10 +36,14 @@
             projectileImpactExplosionChild.dotIndex = DotController.DotIndex.None;
             projectileImpactExplosionChild.destroyOnEnemy = false;
 
+            projectileImpactExplosionChild.impactEffect.GetComponent<EffectComponent>().soundName = "Play_fireballsOnHit_impact";
+
             var firePool = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.MolotovProjectileDotZone.Load<GameObject>(), "BlazingElitePoolProjectile");
             var projectileDotZonePool = firePool.GetComponent<ProjectileDotZone>();
             var projectileControllerPool = firePool.GetComponent<ProjectileController>();
             projectileControllerPool.startSound = "Play_fireballsOnHit_impact";
+
+            firePool.transform.localScale = new Vector3(2f, 2f, 2f);
 
             projectileDotZonePool.damageCoefficient = 0.25f;
             projectileDotZonePool.overlapProcCoefficient = 0f;
@@ -49,8 +55,15 @@
 
             projectileImpactExplosion.childrenProjectilePrefab = molotovChild;
 
+            var hitboxGroup = firePool.GetComponent<HitBoxGroup>();
+
             var hitbox = firePool.transform.GetChild(0).GetChild(2);
-            hitbox.localScale = new Vector3(1.41f, 0.8f, 1.41f);
+            hitbox.localScale = new Vector3(1.41f, 0.45f, 1.41f);
+
+            var hitbox2 = Object.Instantiate(hitbox, firePool.transform.GetChild(0));
+            hitbox2.localEulerAngles = new Vector3(0f, 45f, 0f);
+
+            hitboxGroup.hitBoxes = new HitBox[] { hitbox.GetComponent<HitBox>(), hitbox2.GetComponent<HitBox>() };
 
             PrefabAPI.RegisterNetworkPrefab(firePool);
             PrefabAPI.RegisterNetworkPrefab(molotovChild);

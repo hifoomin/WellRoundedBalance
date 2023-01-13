@@ -12,7 +12,7 @@ namespace WellRoundedBalance.Items.Lunars
 
         public override string PickupText => "Randomly create a Ward of Power. ALL characters have bonus stats while in the Ward.";
 
-        public override string DescText => "Creates a Ward of Power in a random location nearby that buffs both enemies and allies within <style=cIsUtility>24m</style> <style=cStack>(+50% per stack)</style>, causing them to gain <style=cIsDamage>25% attack speed</style> and <style=cIsUtility>movement speed</style>. Enemies benefit from the ward twice as much.";
+        public override string DescText => "Creates a Ward of Power in a random location nearby that buffs both enemies and allies within <style=cIsUtility>30m</style> <style=cStack>(+50% per stack)</style>, causing them to gain <style=cIsDamage>35% attack speed</style> and <style=cIsUtility>movement speed</style>. Enemies benefit from the ward twice as much.";
 
         public static BuffDef rachisBuff;
 
@@ -33,13 +33,13 @@ namespace WellRoundedBalance.Items.Lunars
         {
             if (sender && sender.teamComponent._teamIndex == TeamIndex.Player && sender.HasBuff(rachisBuff))
             {
-                args.baseAttackSpeedAdd += 0.25f;
-                args.moveSpeedMultAdd += 0.25f;
+                args.baseAttackSpeedAdd += 0.35f;
+                args.moveSpeedMultAdd += 0.35f;
             }
             if (sender && sender.teamComponent._teamIndex != TeamIndex.Player && sender.HasBuff(rachisBuff))
             {
-                args.baseAttackSpeedAdd += 0.5f;
-                args.moveSpeedMultAdd += 0.5f;
+                args.baseAttackSpeedAdd += 0.7f;
+                args.moveSpeedMultAdd += 0.7f;
             }
         }
 
@@ -58,7 +58,7 @@ namespace WellRoundedBalance.Items.Lunars
 
         private void RandomDamageZoneBodyBehavior_FixedUpdate(On.RoR2.Items.RandomDamageZoneBodyBehavior.orig_FixedUpdate orig, RoR2.Items.RandomDamageZoneBodyBehavior self)
         {
-            RoR2.Items.RandomDamageZoneBodyBehavior.baseWardRadius = 24f;
+            RoR2.Items.RandomDamageZoneBodyBehavior.baseWardRadius = 30f;
             RoR2.Items.RandomDamageZoneBodyBehavior.wardDuration = 25f;
             RoR2.Items.RandomDamageZoneBodyBehavior.wardRadiusMultiplierPerStack = 1 + 0.5f;
             orig(self);

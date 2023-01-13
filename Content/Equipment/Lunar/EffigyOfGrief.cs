@@ -50,7 +50,7 @@ namespace WellRoundedBalance.Equipment
             CrippleEffigy.isDebuff = true;
             CrippleEffigy.name = "Effigy of Grief Cripple";
             CrippleEffigy.iconSprite = Sprite.Create(crippleIcon, new Rect(0f, 0f, (float)crippleIcon.width, (float)crippleIcon.height), new Vector2(0f, 0f));
-            R2API.ContentAddition.AddBuffDef(CrippleEffigy);
+            ContentAddition.AddBuffDef(CrippleEffigy);
         }
 
         private void Changes()

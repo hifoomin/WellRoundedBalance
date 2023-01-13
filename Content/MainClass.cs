@@ -155,7 +155,7 @@ namespace WellRoundedBalance
             }
 
             IEnumerable<Type> enumerable6 = from type in Assembly.GetExecutingAssembly().GetTypes()
-                                            where !type.IsAbstract && type.IsSubclassOf(typeof(EnemyBase))
+                                            where !type.IsAbstract && type.IsSubclassOf(typeof(EliteBase))
                                             select type;
 
             WRBLogger.LogInfo("==+----------------==ELITES==----------------+==");
