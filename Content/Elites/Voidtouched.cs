@@ -164,7 +164,7 @@ namespace WellRoundedBalance.Elites
 
         public void OnTakeDamageServer(DamageReport damageReport)
         {
-            if (body && damageReport.attacker && damageReport.attackerBody.HasBuff(DLC1Content.Buffs.EliteVoid))
+            if (body && damageReport.attacker && damageReport.attackerBody && damageReport.attackerBody.HasBuff(DLC1Content.Buffs.EliteVoid))
             {
                 switch (body.teamComponent.teamIndex)
                 {
