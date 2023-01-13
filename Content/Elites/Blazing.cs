@@ -1,9 +1,5 @@
 ﻿using Mono.Cecil.Cil;
 using MonoMod.Cil;
-using R2API.Utils;
-using System;
-using UnityEngine;
-using WellRoundedBalance.Enemies;
 
 namespace WellRoundedBalance.Elites
 {

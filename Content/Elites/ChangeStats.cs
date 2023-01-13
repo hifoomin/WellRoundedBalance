@@ -5,12 +5,12 @@ using WellRoundedBalance.Enemies;
 
 namespace WellRoundedBalance.Elites
 {
-    public class ChangeStats : EnemyBase
+    public class ChangeStats : EliteBase
     {
         public static float Tier1Cost;
         public static float Tier1HonorCost;
         public static float Tier2Cost;
-        public override string Name => "::: Elites : Stat Changes";
+        public override string Name => ":: Elites : Stat Changes";
 
         public override void Init()
         {
