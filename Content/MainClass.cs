@@ -27,10 +27,11 @@ namespace WellRoundedBalance
         Rework Defense Nucleus
         Rework Titanic Knurl
         Rework Power Elixir to old riskymod (upon taking heavy damage, quickly regen and consume this item, regenerates each stage)
-        Fix the commented out items (mostly me being lazy to remove the configs and shit)
         Make Lunar Pod give you the item directly >:)
         Implement Duh's void cradle idea
         Make it so you can only take a couple lunar coins per run (maybe like 6?)
+        Make it so shrine of order gives you 1-3 lunar coins
+        Make it so void cradles give x% curse instead of costing %max hp
     */
     [BepInDependency("com.Wolfo.WolfoQualityOfLife", BepInDependency.DependencyFlags.SoftDependency)]
     // [BepInDependency("com.xoxfaby.BetterUI", BepInDependency.DependencyFlags.SoftDependency)]
