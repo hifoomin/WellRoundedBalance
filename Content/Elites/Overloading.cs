@@ -5,7 +5,6 @@ namespace WellRoundedBalance.Elites
 {
     internal class Overloading : EliteBase
     {
-        public override bool isEnabled => false;
         public override string Name => ":: Elites ::: Overloading";
 
         public override void Hooks()

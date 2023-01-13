@@ -12,8 +12,11 @@ namespace WellRoundedBalance.Mechanic.Monster
             enable = Main.WRBMechanicConfig.Bind(":: Mechanic ::::::: Monsters : Movement Speed Buff", "Enable?", true, "Vanilla is false");
             foreach (CharacterBody body in BodyCatalog.bodyPrefabBodyComponents)
             {
-                body.baseMoveSpeed += 1f;
-                body.baseMoveSpeed *= 1.1f;
+                if (SurvivorCatalog.FindSurvivorDefFromBody(body.gameObject) == null)
+                {
+                    body.baseMoveSpeed += 1f;
+                    body.baseMoveSpeed *= 1.1f;
+                }
             }
         }
     }
