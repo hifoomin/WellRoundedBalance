@@ -60,6 +60,7 @@ namespace WellRoundedBalance.Items.Whites
                     EffectManager.SpawnEffect(LegacyResourcesAPI.Load<GameObject>("Prefabs/Effects/HealingPotionEffect"), effectData, true);
                 }
             }
+            orig(self, damageValue, damagePosition, damageIsSilent, attacker);
         }
 
         private void Stage_Start(On.RoR2.Stage.orig_Start orig, Stage self)

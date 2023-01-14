@@ -12,7 +12,7 @@ namespace WellRoundedBalance.Mechanic.Bosses
         {
             if (sender.isChampion)
             {
-                args.armorAdd += 150 - (150 / Mathf.Pow(1 + 0.045f, Run.instance.stageClearCount));
+                args.armorAdd += 150 - (150 / Mathf.Pow(1 + 0.055f, Run.instance.stageClearCount));
             }
         }
 

@@ -21,18 +21,18 @@ namespace WellRoundedBalance.Items.Reds
 
         public override void Hooks()
         {
-            On.RoR2.CharacterBody.FixedUpdate += ChangeBarrierDecay;
+            On.RoR2.CharacterBody.RecalculateStats += CharacterBody_RecalculateStats;
             IL.RoR2.HealthComponent.Heal += ChangeOverheal;
         }
 
-        public static void ChangeBarrierDecay(On.RoR2.CharacterBody.orig_FixedUpdate orig, CharacterBody self)
+        private void CharacterBody_RecalculateStats(On.RoR2.CharacterBody.orig_RecalculateStats orig, CharacterBody self)
         {
             if (self.inventory)
             {
                 var stack = self.inventory.GetItemCount(RoR2Content.Items.BarrierOnOverHeal);
                 if (stack > 0)
                 {
-                    self.barrierDecayRate /= 2f;
+                    self.barrierDecayRate *= 0.5f;
                 }
             }
             orig(self);
