@@ -1,4 +1,5 @@
 ﻿using BepInEx.Configuration;
+using System;
 using UnityEngine;
 
 namespace WellRoundedBalance.Mechanic.Bosses
@@ -11,7 +12,7 @@ namespace WellRoundedBalance.Mechanic.Bosses
         {
             if (sender.isChampion)
             {
-                args.armorAdd += Mathf.Pow(100f - 100f / (1 + 0.07f), Run.instance.stageClearCount);
+                args.armorAdd += 150 - (150 / Mathf.Pow(1 + 0.045f, Run.instance.stageClearCount));
             }
         }
 
@@ -19,13 +20,16 @@ namespace WellRoundedBalance.Mechanic.Bosses
         public static void NerfHealthScaling()
         {
             enable = Main.WRBMechanicConfig.Bind(":: Mechanic ::: Bosses :: Better Scaling", "Enable?", true, "Vanilla is false");
-            RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
-            foreach (CharacterBody body in BodyCatalog.allBodyPrefabBodyBodyComponents)
+            if (enable.Value)
             {
-                if (body.isChampion)
+                RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
+                foreach (CharacterBody body in BodyCatalog.allBodyPrefabBodyBodyComponents)
                 {
-                    body.baseMaxHealth *= 0.75f;
-                    body.levelMaxHealth *= 0.75f;
+                    if (body.isChampion)
+                    {
+                        body.baseMaxHealth *= 0.75f;
+                        body.levelMaxHealth *= 0.75f;
+                    }
                 }
             }
         }

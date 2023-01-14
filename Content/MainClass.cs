@@ -186,7 +186,7 @@ namespace WellRoundedBalance
                 }
             }
 
-            RemoveRollOfPenisAndGesture.Based();
+            RemoveGesture.Based();
             Mechanic.Monster.SpeedBoost.AddSpeedBoost();
             Mechanic.Bosses.BetterScaling.NerfHealthScaling();
         }
