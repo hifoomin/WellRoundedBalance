@@ -15,6 +15,7 @@ using WellRoundedBalance.Projectiles;
 using WellRoundedBalance.Eclipse;
 using System.Runtime.CompilerServices;
 using WellRoundedBalance.Elites;
+
 [assembly: HG.Reflection.SearchableAttribute.OptIn]
 // used for BodyCatalog
 
@@ -25,7 +26,6 @@ namespace WellRoundedBalance
     [BepInDependency(R2API.R2API.PluginGUID)]
     /*  Swap to new R2APIs later
         Rework Defense Nucleus
-        Rework Titanic Knurl
         Rework Power Elixir to old riskymod (upon taking heavy damage, quickly regen and consume this item, regenerates each stage)
         Make Lunar Pod give you the item directly >:)
         Implement Duh's void cradle idea
@@ -77,6 +77,8 @@ namespace WellRoundedBalance
 
             Molotov.Create();
             VoidBall.Create();
+            DucleusLaser.Create();
+            TitanFist.Create();
 
             IEnumerable<Type> enumerable = from type in Assembly.GetExecutingAssembly().GetTypes()
                                            where !type.IsAbstract && type.IsSubclassOf(typeof(MechanicBase))
@@ -253,7 +255,8 @@ namespace WellRoundedBalance
         {
             if (gmb.isEnabled)
             {
-                return true;
+                bool enabledfr = WRBGamemodeConfig.Bind(gmb.Name, "Enable?", true, "Vanilla is false").Value;
+                if (enabledfr) return true;
             }
             return false;
         }

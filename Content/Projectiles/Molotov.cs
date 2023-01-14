@@ -45,7 +45,7 @@ namespace WellRoundedBalance.Projectiles
 
             firePool.transform.localScale = new Vector3(2f, 2f, 2f);
 
-            projectileDotZonePool.damageCoefficient = 0.25f;
+            projectileDotZonePool.damageCoefficient = 0.3f;
             projectileDotZonePool.overlapProcCoefficient = 0f;
             projectileDotZonePool.lifetime = 8f;
             projectileDotZonePool.fireFrequency = 12f;
@@ -58,7 +58,7 @@ namespace WellRoundedBalance.Projectiles
             var hitboxGroup = firePool.GetComponent<HitBoxGroup>();
 
             var hitbox = firePool.transform.GetChild(0).GetChild(2);
-            hitbox.localScale = new Vector3(1.41f, 0.45f, 1.41f);
+            hitbox.localScale = new Vector3(1.41f, 0.55f, 1.41f);
 
             var hitbox2 = Object.Instantiate(hitbox, firePool.transform.GetChild(0));
             hitbox2.localEulerAngles = new Vector3(0f, 45f, 0f);

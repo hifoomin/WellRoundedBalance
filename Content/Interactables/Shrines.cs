@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace WellRoundedBalance.Interactables
 {
@@ -32,28 +33,31 @@ namespace WellRoundedBalance.Interactables
             shrineCombat3.maxSpawnsPerStage = 2;
 
             var shrineRestack = Addressables.LoadAssetAsync<InteractableSpawnCard>("RoR2/Base/ShrineRestack/iscShrineRestack.asset").WaitForCompletion();
-            shrineRestack.maxSpawnsPerStage = 2;
-            shrineRestack.directorCreditCost = 25;
+            shrineRestack.maxSpawnsPerStage = 1;
+            shrineRestack.directorCreditCost = 0;
 
             var shrineRestack2 = Addressables.LoadAssetAsync<InteractableSpawnCard>("RoR2/Base/ShrineRestack/iscShrineRestackSandy.asset").WaitForCompletion();
-            shrineRestack2.maxSpawnsPerStage = 2;
-            shrineRestack2.directorCreditCost = 25;
+            shrineRestack2.maxSpawnsPerStage = 1;
+            shrineRestack2.directorCreditCost = 0;
 
             var shrineRestack3 = Addressables.LoadAssetAsync<InteractableSpawnCard>("RoR2/Base/ShrineRestack/iscShrineRestackSnowy.asset").WaitForCompletion();
-            shrineRestack3.maxSpawnsPerStage = 2;
-            shrineRestack3.directorCreditCost = 25;
+            shrineRestack3.maxSpawnsPerStage = 1;
+            shrineRestack3.directorCreditCost = 0;
 
             var shrineRestackGO = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/ShrineRestack/ShrineRestack.prefab").WaitForCompletion();
             var purchaseInteraction = shrineRestackGO.GetComponent<PurchaseInteraction>();
-            purchaseInteraction.cost = 0;
+            purchaseInteraction.costType = CostTypeIndex.None;
+            purchaseInteraction.contextToken = "WRB_SHRINE_RESTACK_CONTEXT";
 
             var shrineRestackGO2 = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/ShrineRestack/ShrineRestackSandy Variant.prefab").WaitForCompletion();
             var purchaseInteraction2 = shrineRestackGO2.GetComponent<PurchaseInteraction>();
-            purchaseInteraction2.cost = 0;
+            purchaseInteraction2.costType = CostTypeIndex.None;
+            purchaseInteraction2.contextToken = "WRB_SHRINE_RESTACK_CONTEXT";
 
             var shrineRestackGO3 = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/ShrineRestack/ShrineRestackSnowy Variant.prefab").WaitForCompletion();
             var purchaseInteraction3 = shrineRestackGO3.GetComponent<PurchaseInteraction>();
-            purchaseInteraction3.cost = 0;
+            purchaseInteraction3.costType = CostTypeIndex.None;
+            purchaseInteraction3.contextToken = "WRB_SHRINE_RESTACK_CONTEXT";
 
             var shrineWood = Utils.Paths.InteractableSpawnCard.iscShrineHealing.Load<InteractableSpawnCard>();
             shrineWood.maxSpawnsPerStage = 2;
@@ -76,19 +80,41 @@ namespace WellRoundedBalance.Interactables
             var goldShrineIsc = Utils.Paths.InteractableSpawnCard.iscShrineGoldshoresAccess.Load<InteractableSpawnCard>();
             goldShrineIsc.maxSpawnsPerStage = 1;
 
-            On.RoR2.GlobalEventManager.OnInteractionBegin += GlobalEventManager_OnInteractionBegin;
+            GlobalEventManager.OnInteractionsGlobal += GlobalEventManager_OnInteractionsGlobal;
+
+            LanguageAPI.Add("WRB_SHRINE_RESTACK_CONTEXT", "Offer to Shrine of Order (+3 Lunar Coins)");
+
+            AddShrineOfOrderToMoreStages();
         }
 
-        private void GlobalEventManager_OnInteractionBegin(On.RoR2.GlobalEventManager.orig_OnInteractionBegin orig, GlobalEventManager self, Interactor interactor, IInteractable interactable, GameObject interactableObject)
+        private void GlobalEventManager_OnInteractionsGlobal(Interactor interactor, IInteractable interactable, GameObject interactableObject)
         {
             if (interactableObject.name.Contains("ShrineRestack"))
             {
-                var purchaseInteraction = interactableObject.GetComponent<PurchaseInteraction>();
-                // purchaseInteraction
-                // todo: change token to say +3 lunar coins and the display as well
-                // also make it give +3 lunar coins
+                var symbol = interactableObject.transform.GetChild(2);
+                PickupDropletController.CreatePickupDroplet(PickupCatalog.FindPickupIndex(RoR2Content.MiscPickups.LunarCoin.miscPickupIndex), symbol.transform.position, Vector3.up * 10f);
+                PickupDropletController.CreatePickupDroplet(PickupCatalog.FindPickupIndex(RoR2Content.MiscPickups.LunarCoin.miscPickupIndex), symbol.transform.position + new Vector3(-3f, 0f, 0f), Vector3.up * 10f);
+                PickupDropletController.CreatePickupDroplet(PickupCatalog.FindPickupIndex(RoR2Content.MiscPickups.LunarCoin.miscPickupIndex), symbol.transform.position + new Vector3(3f, 0f, 0f), Vector3.up * 10f);
             }
-            orig(self, interactor, interactable, interactableObject);
+        }
+
+        private void AddShrineOfOrderToMoreStages()
+        {
+            var shrineOfOrder = Utils.Paths.InteractableSpawnCard.iscShrineRestack.Load<InteractableSpawnCard>();
+            var shrineOfOrderCard = new DirectorCard { spawnCard = shrineOfOrder, minimumStageCompletions = 0, selectionWeight = 40 };
+            var shrineOfOrderCardHolder = new DirectorAPI.DirectorCardHolder { Card = shrineOfOrderCard, InteractableCategory = DirectorAPI.InteractableCategory.Shrines };
+
+            var wetlandDCCS = Utils.Paths.DirectorCardCategorySelection.dccsFoggySwampInteractables.Load<DirectorCardCategorySelection>();
+            var wetlandDCCSDLC = Utils.Paths.DirectorCardCategorySelection.dccsFoggySwampInteractablesDLC1.Load<DirectorCardCategorySelection>();
+
+            DirectorAPI.AddCard(wetlandDCCS, shrineOfOrderCardHolder);
+            DirectorAPI.AddCard(wetlandDCCSDLC, shrineOfOrderCardHolder);
+
+            var sirensDCCS = Utils.Paths.DirectorCardCategorySelection.dccsShipgraveyardInteractables.Load<DirectorCardCategorySelection>();
+            var sirensDCCSDLC = Utils.Paths.DirectorCardCategorySelection.dccsShipgraveyardInteractablesDLC1.Load<DirectorCardCategorySelection>();
+
+            DirectorAPI.AddCard(sirensDCCS, shrineOfOrderCardHolder);
+            DirectorAPI.AddCard(sirensDCCSDLC, shrineOfOrderCardHolder);
         }
     }
 }

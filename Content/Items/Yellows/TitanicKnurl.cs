@@ -1,4 +1,5 @@
 ﻿using MonoMod.Cil;
+using R2API.Utils;
 using UnityEngine.UIElements;
 
 namespace WellRoundedBalance.Items.Yellows
@@ -8,9 +9,9 @@ namespace WellRoundedBalance.Items.Yellows
         public override string Name => ":: Items :::: Yellows :: Titanic Knurl";
         public override string InternalPickupToken => "knurl";
 
-        public override string PickupText => "Boosts health and regeneration.";
+        public override string PickupText => "Gain a 10% chance on hit to summon a stone fist.";
 
-        public override string DescText => "<style=cIsHealing>Increase maximum health</style> by <style=cIsHealing>100</style> <style=cStack>(+100 per stack)</style> and <style=cIsHealing>base health regeneration</style> by <style=cIsHealing>+2.4 hp/s</style> <style=cStack>(+2.4 hp/s per stack)</style>.";
+        public override string DescText => "Gain a <style=cIsDamage>10%</style> <style=cStack>(+10% per stack)</style> chance on hit to summon a stone fist that deals <style=cIsDamage>300%</style> damage and <style=cIsUtility>knocks up</style> enemies in a small radius.";
 
         public override void Init()
         {
@@ -20,6 +21,43 @@ namespace WellRoundedBalance.Items.Yellows
         public override void Hooks()
         {
             IL.RoR2.CharacterBody.RecalculateStats += Changes;
+            GlobalEventManager.onServerDamageDealt += GlobalEventManager_onServerDamageDealt;
+        }
+
+        private void GlobalEventManager_onServerDamageDealt(DamageReport damageReport)
+        {
+            var master = damageReport.attackerMaster;
+            var body = damageReport.attackerBody;
+
+            var victimBody = damageReport.victimBody;
+
+            if (body && master)
+            {
+                var inventory = body.inventory;
+                if (inventory)
+                {
+                    var stack = inventory.GetItemCount(RoR2Content.Items.Knurl);
+                    if (stack > 0)
+                    {
+                        if (Util.CheckRoll(10f * damageReport.damageInfo.procCoefficient * stack, master))
+                        {
+                            var aimRotation = body.inputBank.GetAimRay().direction;
+                            var fpi = new FireProjectileInfo
+                            {
+                                owner = body.gameObject,
+                                damage = body.damage * 3f,
+                                position = victimBody.footPosition,
+                                rotation = Util.QuaternionSafeLookRotation(aimRotation),
+                                crit = body.RollCrit(),
+                                projectilePrefab = Projectiles.TitanFist.prefab,
+                                damageColorIndex = DamageColorIndex.Default,
+                                damageTypeOverride = DamageType.Generic
+                            };
+                            ProjectileManager.instance.FireProjectile(fpi);
+                        }
+                    }
+                }
+            }
         }
 
         public static void Changes(ILContext il)
@@ -32,7 +70,7 @@ namespace WellRoundedBalance.Items.Yellows
                     x => x.MatchMul()))
             {
                 c.Index += 1;
-                c.Next.Operand = 100f;
+                c.Next.Operand = 0f;
             }
             else
             {
@@ -47,7 +85,7 @@ namespace WellRoundedBalance.Items.Yellows
                     x => x.MatchMul()))
             {
                 c.Index += 1;
-                c.Next.Operand = 2.4f;
+                c.Next.Operand = 0f;
             }
             else
             {

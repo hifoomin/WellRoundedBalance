@@ -34,6 +34,7 @@ namespace WellRoundedBalance.Items.Reds
             IL.RoR2.Items.ImmuneToDebuffBehavior.TryApplyOverride += Changes;
             RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
             On.RoR2.Items.ImmuneToDebuffBehavior.OnDisable += ImmuneToDebuffBehavior_OnDisable;
+            Changess();
         }
 
         private void ImmuneToDebuffBehavior_OnDisable(On.RoR2.Items.ImmuneToDebuffBehavior.orig_OnDisable orig, RoR2.Items.ImmuneToDebuffBehavior self)
@@ -89,6 +90,12 @@ namespace WellRoundedBalance.Items.Reds
             {
                 Main.WRBLogger.LogError("Failed to apply Ben's Raincoat Recharge hook");
             }
+        }
+
+        private void Changess()
+        {
+            var braincoat = Utils.Paths.ItemDef.ImmuneToDebuff.Load<ItemDef>();
+            braincoat.tags = new ItemTag[] { ItemTag.Utility };
         }
     }
 }
