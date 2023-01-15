@@ -11,7 +11,7 @@ namespace WellRoundedBalance.Elites
         public override void Init()
         {
             useless = ScriptableObject.CreateInstance<BuffDef>();
-            useless.name = "Useless Buff";
+            useless.name = "Blazing Deletion";
             useless.isHidden = true;
 
             ContentAddition.AddBuffDef(useless);

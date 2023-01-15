@@ -35,7 +35,7 @@ namespace WellRoundedBalance.Items.Whites
                     var master = self.gameObject.GetComponent<CharacterMaster>();
                     if (master)
                     {
-                        master.GiveMoney(25);
+                        master.GiveMoney((uint)Run.instance.GetDifficultyScaledCost(25));
                     }
                 }
             }
@@ -53,7 +53,7 @@ namespace WellRoundedBalance.Items.Whites
                         var stack = master.inventory.GetItemCount(DLC1Content.Items.GoldOnHurt);
                         if (stack > 0)
                         {
-                            master.GiveMoney(15 + 10 * ((uint)stack - 1));
+                            master.GiveMoney((uint)Run.instance.GetDifficultyScaledCost(15 + 10 * (stack - 1)));
                         }
                     }
                 }

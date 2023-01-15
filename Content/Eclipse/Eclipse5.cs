@@ -4,6 +4,8 @@ namespace WellRoundedBalance.Eclipse
 {
     internal class Eclipse5 : GamemodeBase
     {
+        public static float timer;
+        public static float previousTime;
         public override string Name => ":: Gamemode : Eclipse";
 
         public override void Init()
@@ -13,9 +15,35 @@ namespace WellRoundedBalance.Eclipse
 
         public override void Hooks()
         {
-            On.RoR2.CharacterMaster.OnServerStageBegin += MeteorStormBehavior.CharacterMaster_OnServerStageBegin;
-            On.RoR2.Run.FixedUpdate += MeteorStormBehavior.Run_FixedUpdate;
+            Stage.onServerStageBegin += Stage_onServerStageBegin;
+            On.RoR2.Run.FixedUpdate += Run_FixedUpdate;
             IL.RoR2.HealthComponent.Heal += HealthComponent_Heal;
+        }
+
+        private void Run_FixedUpdate(On.RoR2.Run.orig_FixedUpdate orig, Run self)
+        {
+            orig(self);
+            timer += Time.fixedDeltaTime;
+            var currentTime = (int)self.time;
+            if (currentTime - previousTime > 300 && timer > 300 && self.selectedDifficulty >= DifficultyIndex.Eclipse5)
+            {
+                for (int i = 0; i < 4 + Run.instance.participatingPlayerCount; i++)
+                {
+                    var meteorStormController = Object.Instantiate(LegacyResourcesAPI.Load<GameObject>("Prefabs/NetworkedObjects/MeteorStorm"), new Vector3(0f, 0f, 0f), Quaternion.identity).GetComponent<MeteorStormController>();
+                    meteorStormController.owner = null;
+                    meteorStormController.ownerDamage = 8f + Mathf.Sqrt(Run.instance.ambientLevel * 100f);
+                    meteorStormController.isCrit = false;
+                    NetworkServer.Spawn(meteorStormController.gameObject);
+                }
+
+                previousTime = 0;
+                timer = 0;
+            }
+        }
+
+        private void Stage_onServerStageBegin(Stage stage)
+        {
+            previousTime = (int)stage.entryTime.t;
         }
 
         private void HealthComponent_Heal(ILContext il)
@@ -32,36 +60,6 @@ namespace WellRoundedBalance.Eclipse
             {
                 Main.WRBLogger.LogError("Failed to apply Eclipse 5 hook");
             }
-        }
-    }
-
-    public class MeteorStormBehavior : MonoBehaviour
-    {
-        public static int previousTime;
-
-        public static void Run_FixedUpdate(On.RoR2.Run.orig_FixedUpdate orig, Run self)
-        {
-            orig(self);
-            var currentTime = (int)self.time;
-            if (currentTime - previousTime > 300 && self.selectedDifficulty >= DifficultyIndex.Eclipse5)
-            {
-                var playerList = CharacterBody.readOnlyInstancesList.Where(x => x.isPlayerControlled).ToArray();
-                for (int i = 0; i < playerList.Length; i++)
-                {
-                    var meteorStormController = Instantiate(LegacyResourcesAPI.Load<GameObject>("Prefabs/NetworkedObjects/MeteorStorm"), playerList[i].corePosition, Quaternion.identity).GetComponent<MeteorStormController>();
-                    meteorStormController.owner = null;
-                    meteorStormController.ownerDamage = 8f + Mathf.Sqrt(Run.instance.ambientLevel * 200f);
-                    meteorStormController.isCrit = false;
-                    NetworkServer.Spawn(meteorStormController.gameObject);
-                    previousTime = 0;
-                }
-            }
-        }
-
-        public static void CharacterMaster_OnServerStageBegin(On.RoR2.CharacterMaster.orig_OnServerStageBegin orig, CharacterMaster self, Stage stage)
-        {
-            previousTime = (int)stage.entryTime.t;
-            orig(self, stage);
         }
     }
 }

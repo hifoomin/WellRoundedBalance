@@ -25,6 +25,7 @@ namespace WellRoundedBalance.Items.Whites
             regen.canStack = false;
             regen.buffColor = new Color32(255, 132, 115, 255);
             regen.iconSprite = Sprite.Create(medkitIcon, new Rect(0f, 0f, (float)medkitIcon.width, (float)medkitIcon.height), new Vector2(0f, 0f));
+            regen.name = "Power Elixir Regen";
 
             ContentAddition.AddBuffDef(regen);
 
@@ -52,7 +53,7 @@ namespace WellRoundedBalance.Items.Whites
 
                     self.body.AddTimedBuff(regen, 4f);
 
-                    EffectData effectData = new EffectData
+                    EffectData effectData = new()
                     {
                         origin = self.transform.position
                     };

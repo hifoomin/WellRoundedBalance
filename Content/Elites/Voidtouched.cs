@@ -12,7 +12,7 @@ namespace WellRoundedBalance.Elites
         public override void Init()
         {
             useless = ScriptableObject.CreateInstance<BuffDef>();
-            useless.name = "Useless Buff";
+            useless.name = "Voidtouched Deletion";
             useless.isHidden = true;
 
             var curse = Utils.Paths.Texture2D.texBuffPermanentCurse.Load<Texture2D>();
@@ -22,6 +22,8 @@ namespace WellRoundedBalance.Elites
             voidCurse.iconSprite = Sprite.Create(curse, new Rect(0, 0, (float)curse.width, (float)curse.height), new Vector2(0f, 0f));
             voidCurse.buffColor = new Color32(255, 75, 74, 255);
             voidCurse.isDebuff = true;
+
+            voidCurse.name = "Void Curse";
 
             ContentAddition.AddBuffDef(useless);
             ContentAddition.AddBuffDef(voidCurse);

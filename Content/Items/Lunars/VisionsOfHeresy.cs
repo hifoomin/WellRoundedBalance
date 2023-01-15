@@ -15,7 +15,7 @@ namespace WellRoundedBalance.Items.Lunars
         public override string InternalPickupToken => "lunarPrimaryReplacement";
 
         public override string PickupText => "";
-        public override string DescText => "<style=cIsUtility>Replace your Primary Skill</style> with <style=cIsUtility>Hungering Gaze</style>. \n\nFire a flurry of <style=cIsUtility>tracking shards</style> that detonate after a delay, dealing <style=cIsDamage>140%</style> base damage. Hold up to 5 <style=cStack>(+5 per stack)</style> charges that reload after 1.7 seconds <style=cStack>(+1.7 per stack)</style>.";
+        public override string DescText => "<style=cIsUtility>Replace your Primary Skill</style> with <style=cIsUtility>Hungering Gaze</style>. \n\nFire a flurry of <style=cIsUtility>tracking shards</style> that deal <style=cIsDamage>70%</style> damage each, then explode for <style=cIsDamage>140%</style> base damage. Hold up to <style=cIsUtility>5</style> <style=cStack>(+5 per stack)</style> <style=cIsUtility>charges</style> that reload after <style=cIsUtility>1.7</style> <style=cStack>(+1.7 per stack)</style> seconds.";
 
         public override void Init()
         {

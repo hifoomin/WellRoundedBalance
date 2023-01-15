@@ -1,4 +1,5 @@
-﻿using MonoMod.Cil;
+﻿using HG;
+using MonoMod.Cil;
 
 namespace WellRoundedBalance.Items.VoidGreens
 {
@@ -32,6 +33,21 @@ namespace WellRoundedBalance.Items.VoidGreens
             else
             {
                 Main.WRBLogger.LogError("Failed to apply Voidsent Flame Knockback hook");
+            }
+
+            c.Index = 0;
+
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdcR4(12f),
+                    x => x.MatchLdcR4(2.4f)))
+            {
+                c.Next.Operand = 12f;
+                c.Index += 1;
+                c.Next.Operand = 0f;
+            }
+            else
+            {
+                Main.WRBLogger.LogError("Failed to apply Voidsent Flame Radius hook");
             }
 
             c.Index = 0;

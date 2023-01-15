@@ -24,6 +24,8 @@ namespace WellRoundedBalance.Items.Reds
             braincoatSpeed.iconSprite = Sprite.Create(whip, new Rect(0f, 0f, (float)whip.width, (float)whip.height), new Vector2(0f, 0f));
             braincoatSpeed.canStack = false;
 
+            braincoatSpeed.name = "Ben's Raincoat Speed Boost";
+
             ContentAddition.AddBuffDef(braincoatSpeed);
 
             base.Init();

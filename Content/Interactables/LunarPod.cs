@@ -18,11 +18,11 @@ namespace WellRoundedBalance.Interactables
             lunarPod.maxSpawnsPerStage = 1;
             lunarPod.directorCreditCost = 15;
 
-            // On.RoR2.PurchaseInteraction.OnInteractionBegin += PurchaseInteraction_OnInteractionBegin;
-            // On.RoR2.ShopTerminalBehavior.DropPickup += ShopTerminalBehavior_DropPickup;
+            On.RoR2.PurchaseInteraction.OnInteractionBegin += PurchaseInteraction_OnInteractionBegin;
+            On.RoR2.ChestBehavior.ItemDrop += ChestBehavior_ItemDrop;
         }
 
-        private void ShopTerminalBehavior_DropPickup(On.RoR2.ShopTerminalBehavior.orig_DropPickup orig, ShopTerminalBehavior self)
+        private void ChestBehavior_ItemDrop(On.RoR2.ChestBehavior.orig_ItemDrop orig, ChestBehavior self)
         {
             if (NetworkServer.active)
             {
@@ -44,15 +44,25 @@ namespace WellRoundedBalance.Interactables
             if (self.displayNameToken == "LUNAR_CHEST_NAME")
             {
                 var body = activator.GetComponent<CharacterBody>();
-                var shopTerminalBehavior = self.GetComponent<ShopTerminalBehavior>();
+                var chestBehavior = self.GetComponent<ChestBehavior>();
                 if (body)
                 {
                     var inventory = body.inventory;
-                    var pickupIndex = PickupCatalog.GetPickupDef(shopTerminalBehavior.pickupIndex);
+                    var pickupIndex = PickupCatalog.GetPickupDef(chestBehavior.dropPickup);
                     if (inventory)
                     {
-                        inventory.GiveItem(pickupIndex.itemIndex, 1);
-                        shopTerminalBehavior.hasBeenPurchased = true;
+                        if (pickupIndex.equipmentIndex != EquipmentIndex.None)
+                        {
+                            inventory.SetEquipmentIndex(chestBehavior.dropPickup.equipmentIndex);
+                            CharacterMasterNotificationQueue.PushEquipmentNotification(body.master, chestBehavior.dropPickup.equipmentIndex);
+                        }
+                        else
+                        {
+                            inventory.GiveItem(pickupIndex.itemIndex, 1);
+                            CharacterMasterNotificationQueue.PushItemNotification(body.master, chestBehavior.dropPickup.itemIndex);
+                            //chestBehavior.HasRolledPickup = true;
+                        }
+
                         self.lastActivator = null;
                     }
                 }

@@ -33,6 +33,16 @@ namespace WellRoundedBalance.Items.Greens
         {
             AddRazorwireCooldown();
             IL.RoR2.HealthComponent.TakeDamage += ChangeBehavior;
+            On.RoR2.Orbs.LightningOrb.Begin += LightningOrb_Begin;
+        }
+
+        private void LightningOrb_Begin(On.RoR2.Orbs.LightningOrb.orig_Begin orig, LightningOrb self)
+        {
+            if (self.lightningType is LightningOrb.LightningType.RazorWire)
+            {
+                self.procCoefficient = 0f;
+            }
+            orig(self);
         }
 
         public static void AddRazorwireCooldown()
@@ -45,7 +55,7 @@ namespace WellRoundedBalance.Items.Greens
             noRazorwire.name = "Razorwire Cooldown :smirk_cat:";
             noRazorwire.buffColor = new Color32();
             noRazorwire.isHidden = true;
-            R2API.ContentAddition.AddBuffDef(noRazorwire);
+            ContentAddition.AddBuffDef(noRazorwire);
         }
 
         public static void ChangeBehavior(ILContext il)
