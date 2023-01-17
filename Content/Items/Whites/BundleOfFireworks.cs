@@ -49,9 +49,24 @@ namespace WellRoundedBalance.Items.Whites
 
         public static void Changes()
         {
-            var croppa = LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/FireworkProjectile");
-            var msm = croppa.GetComponent<ProjectileImpactExplosion>();
-            msm.blastRadius = 6f; // vanilla 5f
+            var firework = Utils.Paths.GameObject.FireworkProjectile.Load<GameObject>();
+            var projectileImpactExplosion = firework.GetComponent<ProjectileImpactExplosion>();
+            projectileImpactExplosion.blastRadius = 6f; // vanilla 5f
+
+            var fireworkController = firework.GetComponent<MissileController>();
+            fireworkController.acceleration = 3f;
+            fireworkController.giveupTimer = 30f;
+            fireworkController.deathTimer = 30f;
+            fireworkController.turbulence = 0f;
+            fireworkController.maxSeekDistance = 10000f;
+
+            var missile = Utils.Paths.GameObject.MissileProjectile.Load<GameObject>();
+            var missileController = missile.GetComponent<MissileController>();
+            missileController.maxSeekDistance = 10000f;
+            missileController.turbulence = 0f;
+            missileController.deathTimer = 30f;
+            missileController.giveupTimer = 30f;
+            missileController.delayTimer = 0f;
         }
     }
 }

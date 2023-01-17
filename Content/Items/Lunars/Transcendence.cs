@@ -1,53 +1,52 @@
-﻿/*
+﻿using Mono.Cecil.Cil;
 using MonoMod.Cil;
+using System;
 
 namespace WellRoundedBalance.Items.Lunars
 {
     public class Transcendence : ItemBase
     {
-        public static float HpIncrease;
-        public static float StackHpIncrease;
-        public static float ShieldTimerIncrease;
-
         public override string Name => ":: Items ::::: Lunars :: Transcendence";
         public override string InternalPickupToken => "shieldOnly";
 
-        public override string PickupText => "";
-        public override string DescText => "<style=cIsHealing>Convert</style> all but <style=cIsHealing>1 health</style> into <style=cIsHealing>regenerating shields</style>. <style=cIsHealing>Gain " + d(HpIncrease) + " <style=cStack>(+" + d(StackHpIncrease) + " per stack)</style> maximum health</style>.";
+        public override string PickupText => "Convert all your health into shield and increase maximum health... <color=#FF7F7F>BUT increase shield cooldown time.</color>\\n";
+        public override string DescText => "<style=cIsHealing>Convert</style> all but <style=cIsHealing>1 health</style> into <style=cIsHealing>regenerating shields</style>. <style=cIsHealing>Gain 50% <style=cStack>(+25% per stack)</style> maximum health</style>. Increase <style=cIsUtility>shield cooldown time</style> by <style=cIsUtility>1s</style> <style=cStack>(+1s per stack)</style>.";
 
         public override void Init()
         {
-            HpIncrease = ConfigOption(0.5f, "Base Max HP Increase", "Decimal. Vanilla is 0.5");
-            StackHpIncrease = ConfigOption(0.25f, "Stack Max HP Increase", "Decimal. Per Stack. Vanilla is 0.25");
             base.Init();
         }
 
         public override void Hooks()
         {
-            IL.RoR2.CharacterBody.RecalculateStats += ChangeHealth;
+            IL.RoR2.CharacterBody.FixedUpdate += CharacterBody_FixedUpdate;
         }
 
-        private void ChangeHealth(ILContext il)
+        private void CharacterBody_FixedUpdate(ILContext il)
         {
             ILCursor c = new(il);
-
-            if (c.TryGotoNext(MoveType.Before,
-                    x => x.MatchLdcR4(1.5f),
-                    x => x.MatchLdloc(out _),
-                    x => x.MatchLdcI4(1),
-                    x => x.MatchSub(),
-                    x => x.MatchConvR4(),
-                    x => x.MatchLdcR4(0.25f)))
+            if (c.TryGotoNext(MoveType.After,
+                 x => x.MatchLdfld<CharacterBody>("outOfDangerStopwatch"),
+                 x => x.MatchLdcR4(7f)))
             {
-                c.Next.Operand = 1f + HpIncrease;
-                c.Index += 5;
-                c.Next.Operand = StackHpIncrease;
+                c.Emit(OpCodes.Ldarg_0);
+                c.EmitDelegate<Func<float, CharacterBody, float>>((outOfDangerDelay, self) =>
+                {
+                    if (self.inventory)
+                    {
+                        var stack = self.inventory.GetItemCount(RoR2Content.Items.ShieldOnly);
+                        if (stack > 0)
+                        {
+                            outOfDangerDelay += 1f * stack;
+                        }
+                    }
+                    return outOfDangerDelay;
+                });
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Transcendence Health hook");
+                Main.WRBLogger.LogError("Failed to apply Transcendence Shield Timer hook");
             }
         }
     }
 }
-*/

@@ -1,44 +1,74 @@
-﻿/*
-using MonoMod.Cil;
-using RoR2;
-using UnityEngine;
+﻿using MonoMod.Cil;
 
 namespace WellRoundedBalance.Items.Lunars
 {
     public class StoneFluxPauldron : ItemBase
     {
-        public static float HpIncrease;
-        public static float SpeedDecrease;
-        public static float MassIncrease;
-
         public override string Name => ":: Items ::::: Lunars :: Stone Flux Pauldron";
         public override string InternalPickupToken => "halfSpeedDoubleHealth";
 
-        public override string PickupText => "Increase your health by " + d(HpIncrease) + (MassIncrease > 0 ? " and reduce knockback" : "") +
-                                             "... <color=#FF7F7F>BUT reduce your speed by " + Mathf.Round(Util.ConvertAmplificationPercentageIntoReductionPercentage(SpeedDecrease * 100f)) + "%.</color>";
+        public override string PickupText => "Pull enemies on hit... <color=#FF7F7F>BUT enemies pull you on hit.</color>\n";
 
-        public override string DescText => "Increase <style=cIsHealing>max health</style> by <style=cIsHealing>" + d(HpIncrease) + " <style=cStack>(+" + d(HpIncrease) + " per stack)</style></style>" + (MassIncrease > 0 ? " and reduce <style=cIsUtility>knockback</style>." : ".") +
-                                           " Reduce <style=cIsUtility>movement speed</style> by <style=cIsUtility>" + Util.ConvertAmplificationPercentageIntoReductionPercentage(SpeedDecrease * 100f) + "%</style> <style=cStack>(+" + (Util.ConvertAmplificationPercentageIntoReductionPercentage(SpeedDecrease * 100f)) + "% per stack)</style>.";
+        public override string DescText => "Pull enemies on hit. Enemies pull you on hit. <style=cStack>(Pull strength increases per stack)</style>.";
 
         // slows aren't accurate in ror2
         public override void Init()
         {
-            HpIncrease = ConfigOption(1f, "Max HP Increase", "Decimal. Per Stack. Vanilla is 1");
-            SpeedDecrease = ConfigOption(1f, "Move Speed Decrease", "Decimal. Per Stack. Vanilla is 1");
-            MassIncrease = ConfigOption(0f, "Mass Increase", "Per Stack. Vanilla is 0");
             base.Init();
         }
 
         public override void Hooks()
         {
             IL.RoR2.CharacterBody.RecalculateStats += Changes;
-            On.RoR2.CharacterBody.OnInventoryChanged += AddBehavior;
+            On.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
+            GlobalEventManager.onServerDamageDealt += GlobalEventManager_onServerDamageDealt;
         }
 
-        private void AddBehavior(On.RoR2.CharacterBody.orig_OnInventoryChanged orig, CharacterBody self)
+        // player pulling enemies on hit
+        private void GlobalEventManager_onServerDamageDealt(DamageReport damageReport)
         {
-            orig(self);
-            self.AddItemBehavior<WRB_MassComponent>(self.inventory.GetItemCount(DLC1Content.Items.HalfSpeedDoubleHealth));
+            var body = damageReport.attackerBody;
+            if (body)
+            {
+                var inventory = body.inventory;
+                if (inventory)
+                {
+                    var damageInfo = damageReport.damageInfo;
+                    var stack = inventory.GetItemCount(DLC1Content.Items.HalfSpeedDoubleHealth);
+                    float force = -4000f * damageInfo.procCoefficient * stack;
+                    damageInfo.force = Vector3.Scale(damageInfo.force, -Vector3.one);
+                    damageInfo.force += body.inputBank.GetAimRay().direction * force;
+                    damageInfo.canRejectForce = false;
+                    Main.WRBLogger.LogFatal("ERTHUEDUTGFRHUODRTGHJUOIDZSRGTJHUIDRG IT SHOULD BE FUCKING WORKING IM HITTING THE ENEMY");
+                    Main.WRBLogger.LogFatal("damageInfo.force is " + damageInfo.force);
+                }
+            }
+        }
+
+        // enemies pulling player on hit
+        private void HealthComponent_TakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo)
+        {
+            if (damageInfo.attacker)
+            {
+                var body = self.body;
+                if (body)
+                {
+                    var inventory = body.inventory;
+                    var attackerBody = damageInfo.attacker.GetComponent<CharacterBody>();
+                    if (inventory && attackerBody)
+                    {
+                        var stack = inventory.GetItemCount(DLC1Content.Items.HalfSpeedDoubleHealth);
+                        float mass;
+                        if (self.body.characterMotor) mass = self.body.characterMotor.mass;
+                        else if (self.body.rigidbody) mass = self.body.rigidbody.mass;
+                        else mass = 1f;
+
+                        var force = 40f * stack;
+                        damageInfo.force += Vector3.Normalize(attackerBody.corePosition - self.body.corePosition) * force * mass;
+                    }
+                }
+            }
+            orig(self, damageInfo);
         }
 
         private void Changes(ILContext il)
@@ -52,7 +82,7 @@ namespace WellRoundedBalance.Items.Lunars
                     x => x.MatchLdcR4(1f)))
             {
                 c.Index += 3;
-                c.Next.Operand = SpeedDecrease;
+                c.Next.Operand = 0f;
             }
             else
             {
@@ -68,7 +98,7 @@ namespace WellRoundedBalance.Items.Lunars
                x => x.MatchLdcR4(1f)))
             {
                 c.Index += 3;
-                c.Next.Operand = HpIncrease;
+                c.Next.Operand = 0f;
             }
             else
             {
@@ -76,21 +106,4 @@ namespace WellRoundedBalance.Items.Lunars
             }
         }
     }
-
-    public class WRB_MassComponent : CharacterBody.ItemBehavior
-    {
-        public CharacterMotor motor;
-        public Inventory inv;
-
-        public void Start()
-        {
-            motor = body.gameObject.GetComponent<CharacterMotor>();
-            inv = body.master.GetComponent<Inventory>();
-            if (motor != null)
-            {
-                motor.mass += StoneFluxPauldron.MassIncrease * stack;
-            }
-        }
-    }
 }
-*/
