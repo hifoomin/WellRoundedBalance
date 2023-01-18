@@ -65,7 +65,7 @@ namespace WellRoundedBalance.Items.Lunars
                             // enemies pulling player on hit
                             var stack = inventory.GetItemCount(DLC1Content.Items.HalfAttackSpeedHalfCooldowns);
                             var bodyMotor = body.characterMotor;
-                            if (bodyMotor)
+                            if (bodyMotor && stack > 0)
                             {
                                 bodyMotor.velocity.y = Mathf.Min(bodyMotor.velocity.y, -40f - 30f * (stack - 1));
                             }
