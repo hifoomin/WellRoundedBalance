@@ -13,9 +13,9 @@ namespace WellRoundedBalance.Mechanic.Director
 
         private void SceneDirector_onPrePopulateMonstersSceneServer(RoR2.SceneDirector sd)
         {
-            sd.expRewardCoefficient *= 2.5f; // holy fuck why is it so low (literally like 0.0667)
+            sd.expRewardCoefficient *= 3f; // holy fuck why is it so low (literally like 0.0667)
             sd.monsterCredit = Convert.ToInt32(sd.monsterCredit * 2.5f);
-            sd.eliteBias = 1f; // down from 2
+            sd.eliteBias = 0.8f; // down from 2
         }
     }
 }

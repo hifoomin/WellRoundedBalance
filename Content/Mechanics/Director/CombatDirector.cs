@@ -21,6 +21,8 @@
         {
             self.minRerollSpawnInterval /= 1.35f;
             self.maxRerollSpawnInterval /= 1.35f;
+            self.creditMultiplier += 0.25f;
+            self.eliteBias *= 0.9f;
             orig(self);
         }
     }

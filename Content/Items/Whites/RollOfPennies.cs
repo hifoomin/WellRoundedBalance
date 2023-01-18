@@ -11,7 +11,7 @@ namespace WellRoundedBalance.Items.Whites
 
         public override string PickupText => "Gain gold at the beginning of each stage.";
 
-        public override string DescText => "Gain <style=cIsUtility>25</style> gold on pickup. At the beginning of every stage, gain <style=cIsUtility>15 <style=cStack>(+10 per stack)</style> gold</style>. <style=cIsUtility>Scales over time.</style>";
+        public override string DescText => "Gain <style=cIsUtility>10</style> gold on pickup. At the beginning of every stage, gain <style=cIsUtility>25 <style=cStack>(+15 per stack)</style> gold</style>. <style=cIsUtility>Scales over time.</style>";
 
         public override void Init()
         {
@@ -23,6 +23,7 @@ namespace WellRoundedBalance.Items.Whites
             IL.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
             On.RoR2.Inventory.GiveItem_ItemIndex_int += Inventory_GiveItem_ItemIndex_int;
             On.RoR2.Stage.Start += Stage_Start;
+            Changes();
         }
 
         private void Inventory_GiveItem_ItemIndex_int(On.RoR2.Inventory.orig_GiveItem_ItemIndex_int orig, Inventory self, ItemIndex itemIndex, int count)
@@ -35,7 +36,7 @@ namespace WellRoundedBalance.Items.Whites
                     var master = self.gameObject.GetComponent<CharacterMaster>();
                     if (master)
                     {
-                        master.GiveMoney((uint)Run.instance.GetDifficultyScaledCost(25));
+                        master.GiveMoney((uint)Run.instance.GetDifficultyScaledCost(10));
                     }
                 }
             }
@@ -53,7 +54,7 @@ namespace WellRoundedBalance.Items.Whites
                         var stack = master.inventory.GetItemCount(DLC1Content.Items.GoldOnHurt);
                         if (stack > 0)
                         {
-                            master.GiveMoney((uint)Run.instance.GetDifficultyScaledCost(15 + 10 * (stack - 1)));
+                            master.GiveMoney((uint)Run.instance.GetDifficultyScaledCost(25 + 15 * (stack - 1)));
                         }
                     }
                 }
@@ -75,6 +76,12 @@ namespace WellRoundedBalance.Items.Whites
             {
                 Main.WRBLogger.LogError("Failed to apply Roll of Pennies Gold hook");
             }
+        }
+
+        private void Changes()
+        {
+            var rollOfPenis = Utils.Paths.ItemDef.GoldOnHurt.Load<ItemDef>();
+            rollOfPenis.tags = new ItemTag[] { ItemTag.Utility, ItemTag.CannotDuplicate, ItemTag.OnStageBeginEffect };
         }
     }
 }

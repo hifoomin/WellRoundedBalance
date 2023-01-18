@@ -9,7 +9,7 @@ namespace WellRoundedBalance.Mechanic.Monster
         [SystemInitializer(typeof(BodyCatalog))]
         public static void AddSpeedBoost()
         {
-            enable = Main.WRBMechanicConfig.Bind(":: Mechanics ::::::: Monsters : Movement Speed Buff", "Enable?", true, "Vanilla is false");
+            enable = Main.WRBMechanicConfig.Bind(":: Mechanics ::::::: Monster Movement Speed Buff", "Enable?", true, "Vanilla is false");
             foreach (CharacterBody body in BodyCatalog.bodyPrefabBodyComponents)
             {
                 if (SurvivorCatalog.FindSurvivorDefFromBody(body.gameObject) == null)
