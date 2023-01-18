@@ -45,7 +45,7 @@ namespace WellRoundedBalance.Projectiles
 
             firePool.transform.localScale = new Vector3(2f, 2f, 2f);
 
-            projectileDotZonePool.damageCoefficient = 0.3f;
+            projectileDotZonePool.damageCoefficient = 0.5f;
             projectileDotZonePool.overlapProcCoefficient = 0f;
             projectileDotZonePool.lifetime = 8f;
             projectileDotZonePool.fireFrequency = 12f;
