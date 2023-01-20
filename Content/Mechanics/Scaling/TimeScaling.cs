@@ -45,7 +45,9 @@ namespace WellRoundedBalance.Mechanic.Scaling
                 var playerfactorbase = 0.7f;
                 var playercountmultiplier = 0.3f;
                 var playercountexponent = 0.2f;
+                #pragma warning disable
                 var exponentialstagescalingbase = 1f;
+                #pragma warning restore
                 var timefactormultiplier = 0.0506f;
 
                 DifficultyDef difficultyDef = DifficultyCatalog.GetDifficultyDef(self.selectedDifficulty);
