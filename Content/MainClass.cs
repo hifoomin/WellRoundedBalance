@@ -15,6 +15,7 @@ using WellRoundedBalance.Projectiles;
 using WellRoundedBalance.Eclipse;
 using System.Runtime.CompilerServices;
 using WellRoundedBalance.Elites;
+using R2API.ContentManagement;
 
 [assembly: HG.Reflection.SearchableAttribute.OptIn]
 // used for BodyCatalog
@@ -23,28 +24,19 @@ namespace WellRoundedBalance
 {
     [BepInDependency("HIFU.Inferno", BepInDependency.DependencyFlags.SoftDependency)]
     [BepInDependency("com.Moffein.RiskyArtifacts", BepInDependency.DependencyFlags.SoftDependency)]
-    [BepInDependency(R2API.R2API.PluginGUID)]
-    /*  Swap to new R2APIs later
-        Rework Defense Nucleus
-        Rework Power Elixir to old riskymod (upon taking heavy damage, quickly regen and consume this item, regenerates each stage)
-        Make Lunar Pod give you the item directly >:)
-        Implement Duh's void cradle idea
-        Make it so you can only take a couple lunar coins per run (maybe like 6?)
-        Make it so shrine of order gives you 1-3 lunar coins
-        Make it so void cradles give x% curse instead of costing %max hp
-    */
-    // [BepInDependency("com.Wolfo.WolfoQualityOfLife", BepInDependency.DependencyFlags.SoftDependency)]
-    // [BepInDependency("com.xoxfaby.BetterUI", BepInDependency.DependencyFlags.SoftDependency)]
-    // [BepInDependency("dev.ontrigger.itemstats", BepInDependency.DependencyFlags.SoftDependency)]
-    // [BepInDependency("Withor.FixedDescriptions", BepInDependency.DependencyFlags.SoftDependency)] // may thy name shall not curse mine project
+    [BepInDependency(LanguageAPI.PluginGUID)]
+    [BepInDependency(RecalculateStatsAPI.PluginGUID)]
+    [BepInDependency(DirectorAPI.PluginGUID)]
+    [BepInDependency(PrefabAPI.PluginGUID)]
+    [BepInDependency(R2APIContentManager.PluginGUID)]
+    [BepInDependency(ItemAPI.PluginGUID)]
     [BepInPlugin(PluginGUID, PluginName, PluginVersion)]
-    [R2APISubmoduleDependency(nameof(LanguageAPI), nameof(RecalculateStatsAPI), nameof(LoadoutAPI), nameof(DirectorAPI), nameof(PrefabAPI), nameof(ItemAPI))]
     public class Main : BaseUnityPlugin
     {
         public const string PluginGUID = PluginAuthor + "." + PluginName;
         public const string PluginAuthor = "BALLS";
         public const string PluginName = "WellRoundedBalance";
-        public const string PluginVersion = "0.0.1";
+        public const string PluginVersion = "1.0.0";
         public static ConfigFile WRBConfig;
         public static ConfigFile WRBItemConfig;
         public static ConfigFile WRBMechanicConfig;
