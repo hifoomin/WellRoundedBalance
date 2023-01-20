@@ -67,6 +67,7 @@ namespace WellRoundedBalance
             InfernoLoaded = BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("HIFU.Inferno");
             RiskyArtifactsLoaded = BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("com.Moffein.RiskyArtifacts");
 
+            BlazingProjectileVFX.Create();
             Molotov.Create();
             VoidBall.Create();
             DucleusLaser.Create();

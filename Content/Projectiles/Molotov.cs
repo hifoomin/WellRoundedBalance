@@ -8,10 +8,17 @@ namespace WellRoundedBalance.Projectiles
 
         public static void Create()
         {
-            var ghostPrefab = Utils.Paths.GameObject.FireballGhost.Load<GameObject>();
+            var ghostPrefab = BlazingProjectileVFX.prefab;
             prefab = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.MolotovClusterProjectile.Load<GameObject>(), "BlazingEliteClusterProjectile");
             var projectileController = prefab.GetComponent<ProjectileController>();
             var projectileImpactExplosion = prefab.GetComponent<ProjectileImpactExplosion>();
+            var projectileSimple = prefab.GetComponent<ProjectileSimple>();
+            var applyTorqueOnStart = prefab.AddComponent<ApplyTorqueOnStart>();
+
+            projectileSimple.lifetime = 35f;
+
+            applyTorqueOnStart.localTorque = new Vector3(0f, 50f, 0f);
+            applyTorqueOnStart.randomize = false;
 
             projectileController.ghostPrefab = ghostPrefab;
             projectileController.startSound = "Play_fireballsOnHit_shoot";
@@ -25,11 +32,17 @@ namespace WellRoundedBalance.Projectiles
 
             var molotovChild = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.MolotovSingleProjectile.Load<GameObject>(), "BlazingEliteSingleProjectile");
             var projectileControllerChild = molotovChild.GetComponent<ProjectileController>();
+            var projectileImpactExplosionChild = molotovChild.GetComponent<ProjectileImpactExplosion>();
+            var projectileSimpleChild = molotovChild.GetComponent<ProjectileSimple>();
+            // var applyTorqueOnStartChild = molotovChild.AddComponent<ApplyTorqueOnStart>();
 
             projectileControllerChild.ghostPrefab = ghostPrefab;
             projectileControllerChild.startSound = "Play_fireballsOnHit_shoot";
 
-            var projectileImpactExplosionChild = molotovChild.GetComponent<ProjectileImpactExplosion>();
+            projectileSimpleChild.lifetime = 35f;
+
+            // applyTorqueOnStartChild.localTorque = new Vector3(0f, 50f, 0f);
+            // applyTorqueOnStartChild.randomize = false;
 
             projectileImpactExplosionChild.blastDamageCoefficient = 0f;
             projectileImpactExplosionChild.blastProcCoefficient = 0f;
@@ -45,7 +58,7 @@ namespace WellRoundedBalance.Projectiles
 
             firePool.transform.localScale = new Vector3(2f, 2f, 2f);
 
-            projectileDotZonePool.damageCoefficient = 0.5f;
+            projectileDotZonePool.damageCoefficient = 1f;
             projectileDotZonePool.overlapProcCoefficient = 0f;
             projectileDotZonePool.lifetime = 8f;
             projectileDotZonePool.fireFrequency = 12f;

@@ -1,5 +1,6 @@
 ﻿using Mono.Cecil.Cil;
 using MonoMod.Cil;
+using WellRoundedBalance.Eclipse;
 
 namespace WellRoundedBalance.Elites
 {
@@ -62,10 +63,10 @@ namespace WellRoundedBalance.Elites
             ILCursor c = new(il);
 
             if (c.TryGotoNext(MoveType.Before,
-                x => x.MatchLdsfld("RoR2.DLC1Content/Buffs", "EliteVoid")))
+                x => x.MatchLdsfld(typeof(DLC1Content.Buffs), "EliteVoid")))
             {
                 c.Remove();
-                c.Emit<Blazing>(OpCodes.Ldsfld, nameof(useless));
+                c.Emit<Voidtouched>(OpCodes.Ldsfld, nameof(useless));
             }
             else
             {
@@ -115,7 +116,7 @@ namespace WellRoundedBalance.Elites
         private void Start()
         {
             body = GetComponent<CharacterBody>();
-            if (Run.instance.selectedDifficulty >= DifficultyIndex.Eclipse3)
+            if (Run.instance.selectedDifficulty >= DifficultyIndex.Eclipse3 && Eclipse3.instance.isEnabled)
             {
                 ballCount = 5;
             }
@@ -138,11 +139,11 @@ namespace WellRoundedBalance.Elites
                         var fpi = new FireProjectileInfo
                         {
                             projectilePrefab = prefab,
-                            damage = body.damage * 1.5f,
+                            damage = Run.instance ? 5f + Mathf.Sqrt(Run.instance.ambientLevel * 200f) : 0f,
                             rotation = Quaternion.identity,
                             owner = gameObject,
                             crit = body.RollCrit(),
-                            position = Util.ApplySpread(playerList[i].footPosition, 4f * j, 6f * j, 1f, 0f)
+                            position = Util.ApplySpread(playerList[i].footPosition, 5f * j, 7f * j, 1f, 0.08f)
                         };
                         ProjectileManager.instance.FireProjectile(fpi);
                         timer = 0f;

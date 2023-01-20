@@ -26,17 +26,20 @@ namespace WellRoundedBalance.Mechanic.Monster
                 {
                     foreach (GameObject attacker in controller.attackers)
                     {
-                        report.attacker = attacker;
-                        report.attackerBody = attacker.GetComponent<CharacterBody>();
-                        report.attackerBodyIndex = attacker.GetComponent<CharacterBody>().bodyIndex;
-                        report.attackerTeamIndex = attacker.GetComponent<CharacterBody>().teamComponent.teamIndex;
-                        report.attackerMaster = attacker.GetComponent<CharacterBody>().master;
-                        if (report.attackerMaster && report.attackerMaster.minionOwnership && report.attackerMaster.minionOwnership.ownerMaster)
+                        if (attacker)
                         {
-                            report.attackerOwnerMaster = report.attackerMaster.minionOwnership.ownerMaster;
-                            if (report.attackerMaster.minionOwnership.ownerMaster.GetBody())
+                            report.attacker = attacker;
+                            report.attackerBody = attacker.GetComponent<CharacterBody>();
+                            report.attackerBodyIndex = attacker.GetComponent<CharacterBody>().bodyIndex;
+                            report.attackerTeamIndex = attacker.GetComponent<CharacterBody>().teamComponent.teamIndex;
+                            report.attackerMaster = attacker.GetComponent<CharacterBody>().master;
+                            if (report.attackerMaster && report.attackerMaster.minionOwnership && report.attackerMaster.minionOwnership.ownerMaster)
                             {
-                                report.attackerOwnerBodyIndex = report.attackerMaster.minionOwnership.ownerMaster.GetBody().bodyIndex;
+                                report.attackerOwnerMaster = report.attackerMaster.minionOwnership.ownerMaster;
+                                if (report.attackerMaster.minionOwnership.ownerMaster.GetBody())
+                                {
+                                    report.attackerOwnerBodyIndex = report.attackerMaster.minionOwnership.ownerMaster.GetBody().bodyIndex;
+                                }
                             }
                         }
 

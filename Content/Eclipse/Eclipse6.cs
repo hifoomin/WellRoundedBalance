@@ -2,7 +2,7 @@
 
 namespace WellRoundedBalance.Eclipse
 {
-    internal class Eclipse6 : GamemodeBase
+    internal class Eclipse6 : GamemodeBase<Eclipse6>
     {
         // look at Mechanic>Bosses>Enrage
         public override string Name => ":: Gamemode : Eclipse";

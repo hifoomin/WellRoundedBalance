@@ -2,7 +2,7 @@
 
 namespace WellRoundedBalance.Eclipse
 {
-    internal class Eclipse5 : GamemodeBase
+    internal class Eclipse5 : GamemodeBase<Eclipse5>
     {
         public static float timer;
         public static float previousTime;

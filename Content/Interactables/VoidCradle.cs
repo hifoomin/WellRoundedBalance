@@ -18,35 +18,43 @@ namespace WellRoundedBalance.Interactables
             interaction.costType = CostTypeIndex.None;
             interaction.cost = 0;
             interaction.contextToken = "WRB_VOIDCHEST_CONTEXT";
-            LanguageAPI.Add("WRB_VOIDCHEST_CONTEXT", "Open? (<style=cDeath>5% Curse</style>)");
+            LanguageAPI.Add("WRB_VOIDCHEST_CONTEXT", "Open? (<style=cDeath> 10% Curse</style>)");
             VoidCradle.AddComponent<CurseController>();
         }
 
-        private class CurseController : MonoBehaviour {
+        private class CurseController : MonoBehaviour
+        {
             public PurchaseInteraction interaction => GetComponent<PurchaseInteraction>();
 
-            private void Start() {
+            private void Start()
+            {
                 interaction.onPurchase.AddListener(OnPurchase);
 
-                if (TeleporterInteraction.instance) {
+                if (TeleporterInteraction.instance)
+                {
                     TeleporterInteraction.onTeleporterBeginChargingGlobal += Explode;
                 }
             }
 
-            public void OnPurchase(Interactor interactor) {
-                if (interactor.GetComponent<CharacterBody>()) {
+            public void OnPurchase(Interactor interactor)
+            {
+                if (interactor.GetComponent<CharacterBody>())
+                {
                     CharacterBody body = interactor.GetComponent<CharacterBody>();
-                    float amount = body.healthComponent.fullCombinedHealth * 0.05f;
+                    float amount = body.healthComponent.fullCombinedHealth * 0.1f;
                     float curse = Mathf.RoundToInt(amount / body.healthComponent.fullCombinedHealth * 100f);
-                    for (int i = 0; i < curse; i++) {
+                    for (int i = 0; i < curse; i++)
+                    {
                         body.AddBuff(RoR2Content.Buffs.PermanentCurse);
                     }
                 }
             }
 
-            public void Explode(TeleporterInteraction instance) {
+            public void Explode(TeleporterInteraction instance)
+            {
                 TeleporterInteraction.onTeleporterBeginChargingGlobal -= Explode;
-                EffectManager.SpawnEffect(Utils.Paths.GameObject.CritGlassesVoidExecuteEffect.Load<GameObject>(), new EffectData {
+                EffectManager.SpawnEffect(Utils.Paths.GameObject.CritGlassesVoidExecuteEffect.Load<GameObject>(), new EffectData
+                {
                     origin = base.transform.position,
                     scale = 3f
                 }, true);

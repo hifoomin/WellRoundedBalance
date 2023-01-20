@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using WellRoundedBalance.Eclipse;
 
 namespace WellRoundedBalance.Mechanic.Bosses
 {
@@ -21,7 +22,7 @@ namespace WellRoundedBalance.Mechanic.Bosses
             if (sender.isChampion && sender.healthComponent)
             {
                 var increase = Mathf.Clamp01(1f - sender.healthComponent.combinedHealthFraction);
-                if (Run.instance.selectedDifficulty >= DifficultyIndex.Eclipse6)
+                if (Run.instance.selectedDifficulty >= DifficultyIndex.Eclipse6 && Eclipse6.instance.isEnabled)
                 {
                     args.moveSpeedMultAdd += increase * 0.6f;
                     args.attackSpeedMultAdd += increase * 0.5f;

@@ -1,5 +1,7 @@
 ﻿using Mono.Cecil.Cil;
 using MonoMod.Cil;
+using System;
+using WellRoundedBalance.Eclipse;
 
 namespace WellRoundedBalance.Elites
 {
@@ -56,7 +58,11 @@ namespace WellRoundedBalance.Elites
             if (c.TryGotoNext(MoveType.Before,
                 x => x.MatchLdcR4(1.5f)))
             {
-                c.Next.Operand = 1.75f;
+                c.Index += 1;
+                c.EmitDelegate<Func<float, float>>((useless) =>
+                {
+                    return Run.instance ? Mathf.Sqrt(Run.instance.ambientLevel * 1.2f) : 0f;
+                });
             }
             else
             {
@@ -87,13 +93,13 @@ namespace WellRoundedBalance.Elites
             var trailPS = trailVFX.GetComponent<ParticleSystem>();
             var trailDoT = trailVFX.GetComponent<DestroyOnTimer>();
 
-            trail.pointLifetime = 6f;
+            trail.pointLifetime = 10f;
             // trail.radius = 5f;
 
-            trailDoT.duration = 6.6f;
+            trailDoT.duration = 10.6f;
 
             var main = trailPS.main;
-            main.duration = 6.5f;
+            main.duration = 10.5f;
             var startSize = main.startSize;
             startSize.mode = ParticleSystemCurveMode.Constant;
             startSize.constant = 5f;
@@ -113,10 +119,10 @@ namespace WellRoundedBalance.Elites
         public void Start()
         {
             body = GetComponent<CharacterBody>();
-            if (Run.instance.selectedDifficulty >= DifficultyIndex.Eclipse3)
+            if (Run.instance.selectedDifficulty >= DifficultyIndex.Eclipse3 && Eclipse3.instance.isEnabled)
             {
-                interval = 3f;
-                timer = 1f;
+                interval = 4f;
+                timer = 2f;
             }
             else
             {
@@ -138,7 +144,7 @@ namespace WellRoundedBalance.Elites
                     projectilePrefab = projectile,
                     crit = Util.CheckRoll(body.crit, body.master),
                     position = body.corePosition,
-                    damage = body.damage
+                    damage = Run.instance ? Mathf.Sqrt(Run.instance.ambientLevel * 10f) : 0f
                 };
                 ProjectileManager.instance.FireProjectile(fpi);
                 timer = 0f;

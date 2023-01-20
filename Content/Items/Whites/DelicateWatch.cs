@@ -27,6 +27,7 @@ namespace WellRoundedBalance.Items.Whites
             watchDamage.isDebuff = false;
             watchDamage.buffColor = new Color32(208, 165, 136, 255);
             watchDamage.iconSprite = Sprite.Create(damageIcon, new Rect(0f, 0f, (float)damageIcon.width, (float)damageIcon.height), new Vector2(0f, 0f));
+            watchDamage.name = "Delicate Watch Damage Boost";
 
             watchSpeed = ScriptableObject.CreateInstance<BuffDef>();
             watchSpeed.isHidden = false;
@@ -34,6 +35,7 @@ namespace WellRoundedBalance.Items.Whites
             watchSpeed.isDebuff = false;
             watchSpeed.buffColor = new Color32(208, 165, 136, 255);
             watchSpeed.iconSprite = Sprite.Create(speedIcon, new Rect(0f, 0f, (float)damageIcon.width, (float)damageIcon.height), new Vector2(0f, 0f));
+            watchSpeed.name = "Delicate Watch Speed Boost";
 
             ContentAddition.AddBuffDef(watchDamage);
             ContentAddition.AddBuffDef(watchSpeed);

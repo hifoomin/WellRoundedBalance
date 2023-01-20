@@ -5,7 +5,7 @@ using Util = WellRoundedBalance.Eclipse.PredictionUtils;
 
 namespace WellRoundedBalance.Eclipse
 {
-    internal class Eclipse2 : GamemodeBase
+    internal class Eclipse2 : GamemodeBase<Eclipse2>
     {
         public override string Name => ":: Gamemode : Eclipse";
 

@@ -1,11 +1,39 @@
-﻿using RoR2.Navigation;
+﻿using Mono.Cecil.Cil;
+using MonoMod.Cil;
+using RoR2.Navigation;
 using RoR2.Orbs;
+using WellRoundedBalance.Eclipse;
 
 namespace WellRoundedBalance.Elites
 {
     internal class Overloading : EliteBase
     {
+        public static BuffDef overloadingSpeedBuff;
+        public static BuffDef useless;
         public override string Name => ":: Elites ::: Overloading";
+
+        public override void Init()
+        {
+            var speedBuff = Utils.Paths.Texture2D.texBuffKillMoveSpeed.Load<Texture2D>();
+
+            overloadingSpeedBuff = ScriptableObject.CreateInstance<BuffDef>();
+            overloadingSpeedBuff.isHidden = false;
+            overloadingSpeedBuff.isDebuff = false;
+            overloadingSpeedBuff.canStack = false;
+            overloadingSpeedBuff.buffColor = new Color32(66, 98, 219, 255);
+            overloadingSpeedBuff.iconSprite = Sprite.Create(speedBuff, new Rect(0f, 0f, (float)speedBuff.width, (float)speedBuff.height), new Vector2(0f, 0f));
+
+            useless = ScriptableObject.CreateInstance<BuffDef>();
+            useless.name = "Overloading Deletion";
+            useless.isHidden = true;
+            useless.isDebuff = false;
+            useless.canStack = false;
+
+            ContentAddition.AddBuffDef(overloadingSpeedBuff);
+            ContentAddition.AddBuffDef(useless);
+
+            base.Init();
+        }
 
         public override void Hooks()
         {
@@ -37,12 +65,35 @@ namespace WellRoundedBalance.Elites
                     }
                 }
             };
+
+            RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
+            IL.RoR2.CharacterBody.RecalculateStats += CharacterBody_RecalculateStats;
+        }
+
+        private void CharacterBody_RecalculateStats(ILContext il)
+        {
+            ILCursor c = new(il);
+
+            if (c.TryGotoNext(MoveType.Before,
+                x => x.MatchLdsfld(typeof(RoR2Content.Buffs), "AffixBlue")))
+            {
+                c.Remove();
+                c.Emit<Overloading>(OpCodes.Ldsfld, nameof(useless));
+            }
+        }
+
+        private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
+        {
+            if (sender && sender.HasBuff(overloadingSpeedBuff))
+            {
+                args.moveSpeedMultAdd += 0.5f;
+            }
         }
 
         private class OverloadingController : MonoBehaviour, IOnTakeDamageServerReceiver
         {
             private float stopwatch = 0f;
-            private float teleportCooldown = 5f;
+            private float teleportCooldown = 6f;
             private bool isOnCooldown = false;
             private SphereSearch search;
             private HealthComponent hc => GetComponent<HealthComponent>();
@@ -83,6 +134,7 @@ namespace WellRoundedBalance.Elites
 
             private void BuffNearby()
             {
+                bool e3 = Run.instance.selectedDifficulty >= DifficultyIndex.Eclipse3 && Eclipse3.instance.isEnabled;
                 EffectManager.SpawnEffect(Utils.Paths.GameObject.LunarSecondaryExplosion.Load<GameObject>(), new EffectData
                 {
                     origin = cb.corePosition,
@@ -104,19 +156,19 @@ namespace WellRoundedBalance.Elites
                             LightningOrb orb = new()
                             {
                                 lightningType = LightningOrb.LightningType.Tesla,
-                                bouncesRemaining = 1,
-                                targetsToFindPerBounce = 1,
+                                bouncesRemaining = e3 ? 4 : 3,
+                                targetsToFindPerBounce = Run.instance.selectedDifficulty >= DifficultyIndex.Eclipse3 ? 4 : 3,
                                 attacker = base.gameObject,
                                 teamIndex = cb.teamComponent.teamIndex,
                                 damageValue = 0,
                                 damageType = DamageType.Silent,
                                 origin = cb.corePosition,
-                                range = float.PositiveInfinity
+                                range = 10000f
                             };
 
                             OrbManager.instance.AddOrb(orb);
-                            Debug.Log("added orb");
-                            box.healthComponent.body.AddTimedBuff(DLC1Content.Buffs.KillMoveSpeed, 5f);
+                            // Debug.Log("added orb");
+                            box.healthComponent.body.AddTimedBuff(overloadingSpeedBuff, 6f);
                         }
                     }
                 }

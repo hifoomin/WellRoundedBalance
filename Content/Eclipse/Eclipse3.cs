@@ -2,9 +2,9 @@
 
 namespace WellRoundedBalance.Eclipse
 {
-    internal class Eclipse3 : GamemodeBase
+    internal class Eclipse3 : GamemodeBase<Eclipse3>
     {
-        // look at Elites folder, though I have no idea what to do for overloading
+        // look at Elites folder
         public override string Name => ":: Gamemode : Eclipse";
 
         public override void Init()
