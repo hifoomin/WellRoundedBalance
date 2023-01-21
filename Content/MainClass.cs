@@ -30,6 +30,7 @@ namespace WellRoundedBalance
     [BepInDependency(PrefabAPI.PluginGUID)]
     [BepInDependency(R2APIContentManager.PluginGUID)]
     [BepInDependency(ItemAPI.PluginGUID)]
+    [BepInDependency(DamageAPI.PluginGUID)]
     [BepInPlugin(PluginGUID, PluginName, PluginVersion)]
     public class Main : BaseUnityPlugin
     {

@@ -1,4 +1,5 @@
 ﻿using HG;
+using Mono.Cecil.Cil;
 using MonoMod.Cil;
 
 namespace WellRoundedBalance.Items.VoidGreens
@@ -9,7 +10,7 @@ namespace WellRoundedBalance.Items.VoidGreens
         public override string InternalPickupToken => "explodeOnDeathVoid";
 
         public override string PickupText => "Full health enemies also detonate on hit. <style=cIsVoid>Corrupts all Will-o'-the-wisps</style>.";
-        public override string DescText => "Upon hitting an enemy at <style=cIsDamage>100% health</style>, <style=cIsDamage>detonate</style> them in a <style=cIsDamage>12m</style> radius burst for <style=cIsDamage>150%</style> <style=cStack>(+75% per stack)</style> base damage. <style=cIsVoid>Corrupts all Will-o'-the-wisps</style>.";
+        public override string DescText => "Upon hitting an enemy at <style=cIsDamage>100% health</style>, <style=cIsDamage>detonate</style> them in a <style=cIsDamage>12m</style> radius burst for <style=cIsDamage>125%</style> <style=cStack>(+60% per stack)</style> base damage. <style=cIsVoid>Corrupts all Will-o'-the-wisps</style>.";
 
         public override void Init()
         {
@@ -61,9 +62,9 @@ namespace WellRoundedBalance.Items.VoidGreens
                     x => x.MatchConvR4(),
                     x => x.MatchLdcR4(0.6f)))
             {
-                c.Next.Operand = 1.5f;
+                c.Next.Operand = 1.25f;
                 c.Index += 6;
-                c.Next.Operand = 0.5f;
+                c.Next.Operand = 0.48f;
             }
             else
             {
@@ -76,7 +77,8 @@ namespace WellRoundedBalance.Items.VoidGreens
                 x => x.MatchLdcI4(2),
                 x => x.MatchStfld("RoR2.DelayBlast", "falloffModel")))
             {
-                c.Next.Operand = 0;
+                c.Remove();
+                c.Emit(OpCodes.Ldc_I4, 0);
             }
             else
             {

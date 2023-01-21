@@ -8,7 +8,7 @@ namespace WellRoundedBalance.Items.Greens
         public override string InternalPickupToken => "squidTurret";
 
         public override string PickupText => "Activating an interactable summons a Squid Turret nearby.";
-        public override string DescText => "Activating an interactable summons a <style=cIsDamage>Squid Turret</style> that attacks nearby enemies at <style=cIsDamage>100% <style=cStack>(+100% per stack)</style> attack speed</style>. Lasts <style=cIsUtility>45</style> seconds.";
+        public override string DescText => "Activating an interactable summons a <style=cIsDamage>Squid Turret</style> that attacks nearby enemies at <style=cIsDamage>100% <style=cStack>(+100% per stack)</style> attack speed</style>. Lasts <style=cIsUtility>60</style> seconds.";
 
         public override void Init()
         {
@@ -29,7 +29,7 @@ namespace WellRoundedBalance.Items.Greens
                 if (body.bodyIndex == BodyCatalog.FindBodyIndex("SquidTurretBody"))
                 {
                     self.inventory.RemoveItem(RoR2Content.Items.HealthDecay, self.inventory.GetItemCount(RoR2Content.Items.HealthDecay));
-                    self.inventory.GiveItem(RoR2Content.Items.HealthDecay, 45);
+                    self.inventory.GiveItem(RoR2Content.Items.HealthDecay, 60);
                 }
             };
         }

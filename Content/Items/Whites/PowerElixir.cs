@@ -45,7 +45,7 @@ namespace WellRoundedBalance.Items.Whites
             if (self.itemCounts.healingPotion > 0 && !self.body.HasBuff(regen))
             {
                 float healthFraction = self.health / self.fullHealth;
-                if (healthFraction <= 0.5f)
+                if (healthFraction < 0.5f)
                 {
                     self.body.inventory.RemoveItem(DLC1Content.Items.HealingPotion, 1);
                     self.body.inventory.GiveItem(DLC1Content.Items.HealingPotionConsumed, 1);

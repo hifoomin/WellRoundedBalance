@@ -53,6 +53,7 @@
 	<PackageReference Include="R2API.Items" Version="1.0.1" />
 	<PackageReference Include="R2API.ContentManagement" Version="1.0.1" />
 	<PackageReference Include="R2API.Core" Version="5.0.4" />
+	<PackageReference Include="R2API.DamageType" Version="1.0.0" />
   </ItemGroup>
 
   <ItemGroup>

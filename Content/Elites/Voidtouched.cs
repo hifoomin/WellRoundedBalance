@@ -8,7 +8,7 @@ namespace WellRoundedBalance.Elites
     {
         public static BuffDef useless;
         public static BuffDef voidCurse;
-        public override string Name => ":: Elites ::::: Voidtouched";
+        public override string Name => ":: Elites :::::: Voidtouched";
 
         public override void Init()
         {

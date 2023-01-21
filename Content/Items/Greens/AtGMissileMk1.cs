@@ -27,7 +27,7 @@ namespace WellRoundedBalance.Items.Greens
         public static void ChangeProc()
         {
             var mp = LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/MissileProjectile").GetComponent<ProjectileController>();
-            mp.procCoefficient = 0.2f;
+            mp.procCoefficient = 0f;
         }
     }
 }

@@ -11,7 +11,7 @@ namespace WellRoundedBalance.Items.Greens
 
         public override string PickupText => "Periodically release a healing nova during the Teleporter event.";
 
-        public override string DescText => "Release a <style=cIsHealing>healing nova </style>during the Teleporter event, <style=cIsHealing>healing</style> all nearby allies for <style=cIsHealing>30%</style> of their maximum health. Occurs <style=cIsHealing>2</style> <style=cStack>(+2 per stack)</style> times.";
+        public override string DescText => "Release a <style=cIsHealing>healing nova </style>during the Teleporter event, <style=cIsHealing>healing</style> all nearby allies for <style=cIsHealing>35%</style> of their maximum health. Occurs <style=cIsHealing>2</style> <style=cStack>(+2 per stack)</style> times.";
 
         public override void Init()
         {
@@ -31,7 +31,7 @@ namespace WellRoundedBalance.Items.Greens
             if (c.TryGotoNext(MoveType.Before,
                 x => x.MatchLdcR4(0.5f)))
             {
-                c.Next.Operand = 0.3f;
+                c.Next.Operand = 0.35f;
             }
             else
             {

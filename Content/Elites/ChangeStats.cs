@@ -58,6 +58,7 @@ namespace WellRoundedBalance.Elites
                                 // eliteDef.healthBoostCoefficient = health;
                                 // left default for now
                                 eliteDef.damageBoostCoefficient = 1f;
+                                eliteDef.healthBoostCoefficient = Mathf.Min(eliteDef.healthBoostCoefficient, 4f);
                             }
                             else
                             {
@@ -66,6 +67,7 @@ namespace WellRoundedBalance.Elites
                                 // eliteDef.healthBoostCoefficient = health;
                                 // left default for now
                                 eliteDef.damageBoostCoefficient = 1f;
+                                eliteDef.healthBoostCoefficient = Mathf.Min(eliteDef.healthBoostCoefficient, 4f);
                             }
                         }
                     }

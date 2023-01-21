@@ -13,7 +13,7 @@ namespace WellRoundedBalance.Items.Greens
 
         public override string PickupText => "Detonate enemies on kill.";
 
-        public override string DescText => "On killing an enemy, spawn a <style=cIsDamage>lava pillar</style> in a <style=cIsDamage>12m</style> radius for <style=cIsDamage>350%</style> <style=cStack>(+175% per stack)</style> base damage.";
+        public override string DescText => "On killing an enemy, spawn a <style=cIsDamage>lava pillar</style> in a <style=cIsDamage>12m</style> radius for <style=cIsDamage>300%</style> <style=cStack>(+150% per stack)</style> base damage.";
 
         public override void Init()
         {
@@ -31,13 +31,18 @@ namespace WellRoundedBalance.Items.Greens
             ILCursor c = new(il);
 
             if (c.TryGotoNext(MoveType.Before,
-                x => x.MatchConvR4(),
-                x => x.MatchLdcR4(0.8f)))
+                    x => x.MatchLdcR4(3.5f),
+                    x => x.MatchLdcR4(1f),
+                    x => x.MatchLdloc(out _),
+                    x => x.MatchLdcI4(1),
+                    x => x.MatchSub(),
+                    x => x.MatchConvR4(),
+                    x => x.MatchLdcR4(0.8f)))
             {
-                c.Index += 1;
+                c.Next.Operand = 3f;
+                c.Index += 6;
                 c.Next.Operand = 0.5f;
             }
-            // ik this is guh huge but i wanted to uhh Change all this stupid shit
             else
             {
                 Main.WRBLogger.LogError("Failed to apply Will o' The Wisp Damage hook");
@@ -78,7 +83,8 @@ namespace WellRoundedBalance.Items.Greens
                 x => x.MatchLdcI4(2),
                 x => x.MatchStfld("RoR2.DelayBlast", "falloffModel")))
             {
-                c.Next.Operand = 0;
+                c.Remove();
+                c.Emit(OpCodes.Ldc_I4, 0);
             }
             else
             {

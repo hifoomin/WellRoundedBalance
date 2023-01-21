@@ -11,8 +11,6 @@
             var flames = prefab.transform.GetChild(0);
             var flamesParticleSystemRenderer = flames.GetComponent<ParticleSystemRenderer>();
             flamesParticleSystemRenderer.material.SetColor("_TintColor", new Color32(255, 134, 105, 255));
-
-            PrefabAPI.RegisterNetworkPrefab(prefab);
         }
     }
 }
