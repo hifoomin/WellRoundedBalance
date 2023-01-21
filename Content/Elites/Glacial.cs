@@ -10,15 +10,12 @@ namespace WellRoundedBalance.Elites
     {
         public static BuffDef useless;
         public static BuffDef slow;
-        public static ModdedDamageType slowDamageType;
         public static GameObject iceExplosionPrefab;
         public override string Name => ":: Elites :::: Glacial";
 
         public override void Init()
         {
             iceExplosionPrefab = Utils.Paths.GameObject.AffixWhiteExplosion.Load<GameObject>();
-
-            slowDamageType = ReserveDamageType();
 
             var slow80 = Utils.Paths.Texture2D.texBuffSlow50Icon.Load<Texture2D>();
 
@@ -57,36 +54,12 @@ namespace WellRoundedBalance.Elites
                 {
                     if (attackerBody.HasBuff(RoR2Content.Buffs.AffixWhite))
                     {
-                        ProcChainMask blastAttackMask = new();
-                        blastAttackMask.AddProc(ProcType.LoaderLightning);
-
-                        BlastAttack blastAttack = new()
+                        var procType = (ProcType)1258907;
+                        if (!damageInfo.procChainMask.HasProc(procType))
                         {
-                            attacker = attacker,
-                            baseDamage = 0f,
-                            baseForce = 0f,
-                            crit = attackerBody.RollCrit(),
-                            damageType = DamageType.Generic,
-                            procCoefficient = 0f,
-                            radius = 4f,
-                            falloffModel = BlastAttack.FalloffModel.None,
-                            position = damageInfo.position,
-                            attackerFiltering = AttackerFiltering.NeverHitSelf,
-                            teamIndex = attackerBody.teamComponent.teamIndex,
-                            procChainMask = blastAttackMask
-                        };
-
-                        EffectManager.SpawnEffect(iceExplosionPrefab, new EffectData { scale = 4f, origin = damageInfo.position }, true);
-
-                        DamageAPI.AddModdedDamageType(blastAttack, slowDamageType);
-
-                        blastAttack.Fire();
-
-                        var victimBody = hitObject.GetComponent<CharacterBody>();
-
-                        if (DamageAPI.HasModdedDamageType(blastAttack, slowDamageType) && victimBody)
-                        {
-                            victimBody.AddTimedBuff(slow, 1.5f * damageInfo.procCoefficient);
+                            ProcChainMask mask = new();
+                            mask.AddProc(procType);
+                            DebuffSphere(slow.buffIndex, attackerBody.teamComponent.teamIndex, damageInfo.position, 4f, 1.5f, iceExplosionPrefab, null, false, true, null);
                         }
                     }
                 }
@@ -135,6 +108,70 @@ namespace WellRoundedBalance.Elites
             else
             {
                 Main.WRBLogger.LogError("Failed to apply Glacial Elite On Hit hook");
+            }
+        }
+
+        private void DebuffSphere(BuffIndex buff, TeamIndex team, Vector3 position, float radius, float debuffDuration, GameObject effect, GameObject hitEffect, bool ignoreImmunity, bool falloff, NetworkSoundEventDef buffSound)
+        {
+            if (!NetworkServer.active)
+            {
+                return;
+            }
+
+            if (effect != null)
+            {
+                EffectManager.SpawnEffect(effect, new EffectData
+                {
+                    origin = position,
+                    scale = radius
+                }, true);
+            }
+            float radiusHalfwaySqr = radius * radius * 0.25f;
+            List<HealthComponent> healthComponentList = new();
+            Collider[] colliders = Physics.OverlapSphere(position, radius, LayerIndex.entityPrecise.mask);
+            for (int i = 0; i < colliders.Length; i++)
+            {
+                HurtBox hurtBox = colliders[i].GetComponent<HurtBox>();
+                if (hurtBox)
+                {
+                    var healthComponent = hurtBox.healthComponent;
+                    var projectileController = colliders[i].GetComponentInParent<ProjectileController>();
+                    if (healthComponent && !projectileController && !healthComponentList.Contains(healthComponent))
+                    {
+                        healthComponentList.Add(healthComponent);
+                        if (healthComponent.body.teamComponent && healthComponent.body.teamComponent.teamIndex != team)
+                        {
+                            if (ignoreImmunity || (!healthComponent.body.HasBuff(RoR2Content.Buffs.Immune) && !healthComponent.body.HasBuff(RoR2Content.Buffs.HiddenInvincibility)))
+                            {
+                                float effectiveness = 1f;
+                                if (falloff)
+                                {
+                                    float distSqr = (position - hurtBox.collider.ClosestPoint(position)).sqrMagnitude;
+                                    if (distSqr > radiusHalfwaySqr)  //Reduce effectiveness when over half the radius away
+                                    {
+                                        effectiveness *= 0.5f;  //0.25 is vanilla sweetspot
+                                    }
+                                }
+                                bool alreadyHasBuff = healthComponent.body.HasBuff(buff);
+                                healthComponent.body.AddTimedBuff(buff, effectiveness * debuffDuration);
+                                if (!alreadyHasBuff)
+                                {
+                                    if (hitEffect != null)
+                                    {
+                                        EffectManager.SpawnEffect(hitEffect, new EffectData
+                                        {
+                                            origin = healthComponent.body.corePosition
+                                        }, true);
+                                    }
+                                    if (buffSound != null)
+                                    {
+                                        EffectManager.SimpleSoundEffect(buffSound.index, healthComponent.body.corePosition, true);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }
