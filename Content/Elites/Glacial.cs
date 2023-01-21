@@ -1,6 +1,7 @@
 ﻿using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using System;
+using UnityEngine.UI;
 using static R2API.DamageAPI;
 
 namespace WellRoundedBalance.Elites
@@ -56,6 +57,9 @@ namespace WellRoundedBalance.Elites
                 {
                     if (attackerBody.HasBuff(RoR2Content.Buffs.AffixWhite))
                     {
+                        ProcChainMask blastAttackMask = new();
+                        blastAttackMask.AddProc(ProcType.LoaderLightning);
+
                         BlastAttack blastAttack = new()
                         {
                             attacker = attacker,
@@ -68,22 +72,26 @@ namespace WellRoundedBalance.Elites
                             falloffModel = BlastAttack.FalloffModel.None,
                             position = damageInfo.position,
                             attackerFiltering = AttackerFiltering.NeverHitSelf,
-                            teamIndex = attackerBody.teamComponent.teamIndex
+                            teamIndex = attackerBody.teamComponent.teamIndex,
+                            procChainMask = blastAttackMask
                         };
 
-                        // EffectManager.SpawnEffect(iceExplosionPrefab, new EffectData { scale = 4f, origin = damageReport.damageInfo.position }, true);
-                        // DamageAPI.AddModdedDamageType(blastAttack, slowDamageType);
+                        EffectManager.SpawnEffect(iceExplosionPrefab, new EffectData { scale = 4f, origin = damageInfo.position }, true);
+
+                        DamageAPI.AddModdedDamageType(blastAttack, slowDamageType);
+
                         blastAttack.Fire();
-                        /*
-                        if (DamageAPI.HasModdedDamageType(blastAttack, slowDamageType))
+
+                        var victimBody = hitObject.GetComponent<CharacterBody>();
+
+                        if (DamageAPI.HasModdedDamageType(blastAttack, slowDamageType) && victimBody)
                         {
-                            victimBody.AddTimedBuff(slow, 1.5f * damageReport.damageInfo.procCoefficient);
+                            victimBody.AddTimedBuff(slow, 1.5f * damageInfo.procCoefficient);
                         }
-                        */
                     }
                 }
+                orig(self, damageInfo, hitObject);
             }
-            orig(self, damageInfo, hitObject);
         }
 
         private void CharacterModel_UpdateOverlays(ILContext il)
