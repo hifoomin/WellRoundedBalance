@@ -10,7 +10,7 @@ namespace WellRoundedBalance.Items.Greens
 
         public override string PickupText => "Instantly kill low health Elite monsters.";
 
-        public override string DescText => "Instantly kill Elite monsters below <style=cIsHealth>26% <style=cStack>(+26% per stack)</style> health</style>.";
+        public override string DescText => "Instantly kill Elite monsters below <style=cIsHealth>25% <style=cStack>(+25% per stack)</style> health</style>.";
 
         public override void Init()
         {
@@ -29,7 +29,7 @@ namespace WellRoundedBalance.Items.Greens
             if (c.TryGotoNext(MoveType.Before,
                     x => x.MatchLdcR4(13f)))
             {
-                c.Next.Operand = 26f;
+                c.Next.Operand = 25f;
             }
             else
             {

@@ -12,7 +12,7 @@ namespace WellRoundedBalance.Items.Greens
 
         public override string PickupText => "Enemies with 2 or more debuffs are marked for death, taking bonus damage.";
 
-        public override string DescText => "Enemies with <style=cIsDamage>2</style> or more debuffs are <style=cIsDamage>marked for death</style>, increasing damage taken by <style=cIsDamage>9%</style> <style=cStack>(+4% per stack)</style> per debuff from all sources for <style=cIsUtility>7</style> <style=cStack>(+7 per stack)</style> seconds.";
+        public override string DescText => "Enemies with <style=cIsDamage>2</style> or more debuffs are <style=cIsDamage>marked for death</style>, increasing damage taken by <style=cIsDamage>7%</style> <style=cStack>(+2% per stack)</style> per debuff from all sources for <style=cIsUtility>7</style> <style=cStack>(+7 per stack)</style> seconds.";
 
         public override void Init()
         {
@@ -67,10 +67,10 @@ namespace WellRoundedBalance.Items.Greens
                                 }
                             }
                         }
-                        float damageBonus = debuffCount * 0.09f;
+                        float damageBonus = debuffCount * 0.07f;
                         if (DeathMarkCount > 0)
                         {
-                            return 1f + damageBonus + (0.04f * damageBonus * ((float)DeathMarkCount - 1f));
+                            return 1f + damageBonus + (0.02f * damageBonus * ((float)DeathMarkCount - 1f));
                         }
                         return 1f + damageBonus;
                     }

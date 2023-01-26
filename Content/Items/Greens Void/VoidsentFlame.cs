@@ -10,7 +10,7 @@ namespace WellRoundedBalance.Items.VoidGreens
         public override string InternalPickupToken => "explodeOnDeathVoid";
 
         public override string PickupText => "Full health enemies also detonate on hit. <style=cIsVoid>Corrupts all Will-o'-the-wisps</style>.";
-        public override string DescText => "Upon hitting an enemy at <style=cIsDamage>100% health</style>, <style=cIsDamage>detonate</style> them in a <style=cIsDamage>12m</style> radius burst for <style=cIsDamage>125%</style> <style=cStack>(+60% per stack)</style> base damage. <style=cIsVoid>Corrupts all Will-o'-the-wisps</style>.";
+        public override string DescText => "Upon hitting an enemy at <style=cIsDamage>100% health</style>, <style=cIsDamage>detonate</style> them in a <style=cIsDamage>12m</style> radius burst for <style=cIsDamage>100%</style> <style=cStack>(+40% per stack)</style> base damage. <style=cIsVoid>Corrupts all Will-o'-the-wisps</style>.";
 
         public override void Init()
         {
@@ -62,9 +62,9 @@ namespace WellRoundedBalance.Items.VoidGreens
                     x => x.MatchConvR4(),
                     x => x.MatchLdcR4(0.6f)))
             {
-                c.Next.Operand = 1.25f;
+                c.Next.Operand = 1f;
                 c.Index += 6;
-                c.Next.Operand = 0.48f;
+                c.Next.Operand = 0.4f;
             }
             else
             {
