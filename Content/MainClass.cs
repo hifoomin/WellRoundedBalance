@@ -94,14 +94,25 @@ namespace WellRoundedBalance
                                             select type;
 
             WRBLogger.LogInfo("==+----------------==ITEMS==----------------+==");
+            List<ItemBase> baseds = new();
 
             foreach (Type type in enumerable2)
             {
-                ItemBase based = (ItemBase)Activator.CreateInstance(type);
+                /*ItemBase based = (ItemBase)Activator.CreateInstance(type);
                 if (ValidateItem(based))
                 {
                     based.Init();
                     // i would really really like to sort everything alphabetically but i have no idea how, please help
+                }*/
+
+                // done alphabetically
+                baseds.Add((ItemBase)Activator.CreateInstance(type));
+            }
+
+            foreach (ItemBase itemBased in baseds.OrderBy(x => (char)x.InternalPickupToken.ToLower()[0])) {
+                Debug.Log(itemBased.InternalPickupToken);
+                if (ValidateItem(itemBased)) {
+                    itemBased.Init();
                 }
             }
 
