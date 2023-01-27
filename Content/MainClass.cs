@@ -109,8 +109,9 @@ namespace WellRoundedBalance
                 baseds.Add((ItemBase)Activator.CreateInstance(type));
             }
 
+            // nvm this breaks the entire game what
             foreach (ItemBase itemBased in baseds.OrderBy(x => (char)x.InternalPickupToken.ToLower()[0])) {
-                Debug.Log(itemBased.InternalPickupToken);
+                // Debug.Log(itemBased.InternalPickupToken);
                 if (ValidateItem(itemBased)) {
                     itemBased.Init();
                 }

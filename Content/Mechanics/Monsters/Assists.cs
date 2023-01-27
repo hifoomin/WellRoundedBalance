@@ -10,7 +10,7 @@ namespace WellRoundedBalance.Mechanic.Monster
             On.RoR2.CharacterBody.Start += (orig, self) =>
             {
                 orig(self);
-                if (NetworkServer.active)
+                if (NetworkServer.active && !self.isPlayerControlled)
                 {
                     self.gameObject.AddComponent<AssistController>();
                 }
@@ -24,8 +24,9 @@ namespace WellRoundedBalance.Mechanic.Monster
                 AssistController controller = report.victimBody.GetComponent<AssistController>();
                 if (controller.attackers.Count >= 2)
                 {
-                    foreach (GameObject attacker in controller.attackers)
+                    foreach (AssistController.Attacker attackerStr in controller.attackers)
                     {
+                        GameObject attacker = attackerStr.attacker;
                         if (attacker)
                         {
                             report.attacker = attacker;
@@ -60,7 +61,11 @@ namespace WellRoundedBalance.Mechanic.Monster
         public class AssistController : MonoBehaviour, IOnTakeDamageServerReceiver
         {
             public HealthComponent hc => GetComponent<HealthComponent>();
-            public List<GameObject> attackers;
+            public List<Attacker> attackers;
+            public class Attacker {
+                public GameObject attacker;
+                public float timeValid;
+            }
 
             private void Start()
             {
@@ -72,10 +77,18 @@ namespace WellRoundedBalance.Mechanic.Monster
 
             public void OnTakeDamageServer(DamageReport report)
             {
-                if (report.attacker && !attackers.Contains(report.attacker))
+                if (report.attacker && attackers.Where(x => x.attacker == report.attacker).Count() == 0)
                 {
-                    attackers.Add(report.attacker);
+                    attackers.Add(new Attacker {
+                        attacker = report.attacker,
+                        timeValid = 5
+                    });
                 }
+            }
+
+            public void FixedUpdate() {
+                attackers.ForEach(x => x.timeValid -= Time.fixedDeltaTime);
+                attackers.RemoveAll(x => x.timeValid <= 0);
             }
         }
     }

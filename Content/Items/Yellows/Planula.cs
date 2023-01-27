@@ -1,4 +1,4 @@
-﻿using Mono.Cecil.Cil;
+﻿/*using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using RoR2;
 using RoR2.Items;
@@ -82,7 +82,7 @@ namespace WellRoundedBalance.Items.Yellows
             /*if (sunTeamFilter)
             {
                 sunTeamFilter.teamIndex = body.teamComponent.teamIndex;
-            }*/
+            }
         }
 
         private void OnDisable()
@@ -99,4 +99,4 @@ namespace WellRoundedBalance.Items.Yellows
 
         private TeamFilter sunTeamFilter;
     }
-}
+}*/
