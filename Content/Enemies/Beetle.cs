@@ -12,7 +12,11 @@
 
         private void CharacterMaster_onStartGlobal(CharacterMaster master)
         {
-            if (Run.instance.selectedDifficulty != Inferno.Main.InfernoDiffIndex)
+            if (Main.IsInfernoDef())
+            {
+                // pass
+            }
+            else
             {
                 switch (master.name)
                 {
@@ -30,7 +34,11 @@
 
         private void HeadbuttState_FixedUpdate(On.EntityStates.BeetleMonster.HeadbuttState.orig_FixedUpdate orig, EntityStates.BeetleMonster.HeadbuttState self)
         {
-            if (Run.instance.selectedDifficulty != Inferno.Main.InfernoDiffIndex)
+            if (Main.IsInfernoDef())
+            {
+                // pass
+            }
+            else
             {
                 EntityStates.BeetleMonster.HeadbuttState.baseDuration = 2.5f;
                 if (self.isAuthority)

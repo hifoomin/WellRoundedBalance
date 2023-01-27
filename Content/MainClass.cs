@@ -306,6 +306,16 @@ namespace WellRoundedBalance
         }
 
         [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)]
+        public static bool IsInfernoDef()
+        {
+            if (InfernoLoaded && Run.instance)
+            {
+                if (DifficultyCatalog.GetDifficultyDef(Run.instance.selectedDifficulty) == InfernoDef) return true;
+            }
+            return false;
+        }
+
+        [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)]
         public static float GetInfernoProjectileSpeedMult()
         {
             if (Run.instance && DifficultyCatalog.GetDifficultyDef(Run.instance.selectedDifficulty) == InfernoDef)

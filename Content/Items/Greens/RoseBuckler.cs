@@ -14,7 +14,7 @@ namespace WellRoundedBalance.Items.Greens
 
         public override string PickupText => "Reduce incoming damage while sprinting.";
 
-        public override string DescText => "<style=cIsHealing>Increase armor</style> by <style=cIsHealing>20</style> <style=cStack>(+20 per stack)</style> while <style=cIsUtility>sprinting</style>.";
+        public override string DescText => "<style=cIsHealing>Increase armor</style> by <style=cIsHealing>25</style> <style=cStack>(+15 per stack)</style> while <style=cIsUtility>sprinting</style>.";
 
         public override void Init()
         {
@@ -30,19 +30,22 @@ namespace WellRoundedBalance.Items.Greens
         {
             ILCursor c = new(il);
             if (c.TryGotoNext(MoveType.Before,
-                    x => x.MatchCallOrCallvirt<RoR2.CharacterBody>("get_armor"),
+                    x => x.MatchCallOrCallvirt<CharacterBody>("get_armor"),
                     x => x.MatchLdloc(out _),
                     x => x.MatchLdcI4(30)))
             {
-                c.Index += 3;
-                c.EmitDelegate<Func<int, int>>((sdfgsdfhgsghdfv) =>
+                c.Index += 2;
+                c.Remove();
+                c.Emit(OpCodes.Ldc_I4, 15);
+                c.Index += 1;
+                c.EmitDelegate<Func<int, int>>((self) =>
                 {
-                    return 20;
+                    return self + 10;
                 });
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Rose Buckler Conditional Armor hook");
+                Main.WRBLogger.LogError("Failed to apply Rose Buckler Armor hook");
             }
         }
     }

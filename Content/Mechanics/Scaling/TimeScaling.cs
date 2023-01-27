@@ -9,6 +9,9 @@ namespace WellRoundedBalance.Mechanic.Scaling
         public static float interval = 120f;
         public static float vanillaStandardScaling;
         public static float vanillaLinearScaling;
+        public static float ambientLevel;
+        public static float vanillaStandardAmbientLevel;
+        public static float vanillaLinearAmbientLevel;
 
         public override string Name => ":: Mechanics : Scaling";
 
@@ -28,9 +31,9 @@ namespace WellRoundedBalance.Mechanic.Scaling
             timer += Time.fixedDeltaTime;
             if (timer >= interval && Run.instance)
             {
-                ChatMessage.Send("Current difficulty coefficient is " + Run.instance.compensatedDifficultyCoefficient);
-                ChatMessage.Send("Vanilla standard difficulty coefficient would be " + vanillaStandardScaling);
-                ChatMessage.Send("Vanilla linear difficulty coefficient would be " + vanillaLinearScaling);
+                ChatMessage.Send("Current difficulty coefficient is " + Run.instance.compensatedDifficultyCoefficient + " (Ambient Level " + ambientLevel + ")");
+                ChatMessage.Send("Vanilla standard difficulty coefficient would be " + vanillaStandardScaling + " (Ambient Level " + vanillaStandardAmbientLevel + ")");
+                ChatMessage.Send("Vanilla linear difficulty coefficient would be " + vanillaLinearScaling + " (Ambient Level " + vanillaLinearAmbientLevel + ")");
                 timer = 0f;
             }
         }
@@ -45,9 +48,6 @@ namespace WellRoundedBalance.Mechanic.Scaling
                 var playerfactorbase = 0.7f;
                 var playercountmultiplier = 0.3f;
                 var playercountexponent = 0.2f;
-                #pragma warning disable
-                var exponentialstagescalingbase = 1f;
-                #pragma warning restore
                 var timefactormultiplier = 0.0506f;
 
                 DifficultyDef difficultyDef = DifficultyCatalog.GetDifficultyDef(self.selectedDifficulty);
@@ -76,10 +76,15 @@ namespace WellRoundedBalance.Mechanic.Scaling
                 }
 
                 float stageFactor = Mathf.Pow(1.15f, self.stageClearCount);
+                float vanillaTimeFactor = Time * timefactormultiplier * difficultyDef.scalingValue;
 
-                vanillaStandardScaling = (playerFactor + timeFactor * playerScalar) * stageFactor;
+                vanillaStandardScaling = (playerFactor + vanillaTimeFactor * playerScalar) * stageFactor;
 
-                vanillaLinearScaling = playerFactor + timeFactor * playerScalar;
+                vanillaLinearScaling = playerFactor + vanillaTimeFactor * playerScalar;
+
+                ambientLevel = self.ambientLevel;
+                vanillaStandardAmbientLevel = 3 * (vanillaStandardScaling - playerFactor) + 1;
+                vanillaLinearAmbientLevel = 3 * (vanillaLinearScaling - playerFactor) + 1;
             };
         }
     }
