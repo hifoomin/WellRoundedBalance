@@ -70,7 +70,7 @@ namespace WellRoundedBalance
 
             BlazingProjectileVFX.Create();
             Molotov.Create();
-            VoidBall.Create();
+            VoidLaser.Create();
             DucleusLaser.Create();
             TitanFist.Create();
 

@@ -12,7 +12,7 @@ namespace WellRoundedBalance.Items.Yellows
 
         public override string PickupText => "Fire an electric nova at low health.";
 
-        public override string DescText => "Falling below <style=cIsHealth>50% health</style> causes you to explode, dealing <style=cIsDamage>5000% base damage</style>. Recharges every <style=cIsUtility>30 seconds</style> <style=cStack>(-33% per stack)</style>.";
+        public override string DescText => "Falling below <style=cIsHealth>50% health</style> causes you to explode, dealing <style=cIsDamage>4000% base damage</style>. Recharges every <style=cIsUtility>30 seconds</style> <style=cStack>(-33% per stack)</style>.";
 
         public override void Init()
         {
@@ -60,13 +60,11 @@ namespace WellRoundedBalance.Items.Yellows
             {
                 Main.WRBLogger.LogError("Failed to apply Genesis Loop Threshold hook");
             }
-
-            // This is very janky, seems to not work?
         }
 
         public static void Changes(On.EntityStates.VagrantNovaItem.DetonateState.orig_OnEnter orig, DetonateState self)
         {
-            DetonateState.blastDamageCoefficient = 50f;
+            DetonateState.blastDamageCoefficient = 40f;
             orig(self);
         }
     }

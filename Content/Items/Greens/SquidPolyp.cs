@@ -29,7 +29,7 @@ namespace WellRoundedBalance.Items.Greens
                 if (body.bodyIndex == BodyCatalog.FindBodyIndex("SquidTurretBody"))
                 {
                     self.inventory.RemoveItem(RoR2Content.Items.HealthDecay, self.inventory.GetItemCount(RoR2Content.Items.HealthDecay));
-                    self.inventory.GiveItem(RoR2Content.Items.HealthDecay, 60);
+                    self.inventory.GiveItem(RoR2Content.Items.HealthDecay, 45);
                 }
             };
         }

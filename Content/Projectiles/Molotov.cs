@@ -16,6 +16,7 @@ namespace WellRoundedBalance.Projectiles
             var applyTorqueOnStart = prefab.AddComponent<ApplyTorqueOnStart>();
 
             projectileSimple.lifetime = 35f;
+            projectileSimple.desiredForwardSpeed = 60f;
 
             applyTorqueOnStart.localTorque = new Vector3(0f, 50f, 0f);
             applyTorqueOnStart.randomize = false;
@@ -40,6 +41,7 @@ namespace WellRoundedBalance.Projectiles
             projectileControllerChild.startSound = "Play_fireballsOnHit_shoot";
 
             projectileSimpleChild.lifetime = 35f;
+            projectileSimpleChild.desiredForwardSpeed = 25f;
 
             // applyTorqueOnStartChild.localTorque = new Vector3(0f, 50f, 0f);
             // applyTorqueOnStartChild.randomize = false;

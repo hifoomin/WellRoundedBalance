@@ -13,9 +13,9 @@ namespace WellRoundedBalance.Items.Reds
         public override string Name => ":: Items ::: Reds :: Symbiotic Scorpion";
         public override string InternalPickupToken => "permanentDebuffOnHit";
 
-        public override string PickupText => "Chance to inflict venom on hit.";
+        public override string PickupText => "Inflict venom on hit.";
 
-        public override string DescText => "Gain a <style=cIsDamage>15%</style> chance on hit to inflict <style=cIsDamage>venom</style>, which deals <style=cIsDamage>1000%</style> base damage over 5s and steals <style=cIsHealing>20</style> <style=cStack>(+10 per stack)</style> <style=cIsHealing>armor</style> for 5s.";
+        public override string DescText => "Inflict <style=cIsDamage>venom</style> on hit, dealing <style=cIsDamage>1000%</style> base damage over 5s and steals <style=cIsHealing>20</style> <style=cStack>(+10 per stack)</style> <style=cIsHealing>armor</style> for 5s.";
 
         public override void Init()
         {
@@ -90,7 +90,7 @@ namespace WellRoundedBalance.Items.Reds
                     if (inventory)
                     {
                         var stack = inventory.GetItemCount(DLC1Content.Items.PermanentDebuffOnHit);
-                        if (stack > 0 && Util.CheckRoll(15f, damageReport.attackerMaster))
+                        if (stack > 0)
                         {
                             victimBody.AddTimedBuff(armorReduction, 5f);
                             attackerBody.AddTimedBuff(armorGain, 5f);

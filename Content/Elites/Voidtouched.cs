@@ -1,6 +1,7 @@
 ﻿using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using WellRoundedBalance.Eclipse;
+using WellRoundedBalance.Projectiles;
 
 namespace WellRoundedBalance.Elites
 {
@@ -97,59 +98,117 @@ namespace WellRoundedBalance.Elites
             orig(self, body);
             if (body.HasBuff(DLC1Content.Buffs.EliteVoid))
             {
-                if (body.GetComponent<VoidtouchedBallsManager>() == null)
+                if (body.GetComponent<VoidtouchedSpinnyManager>() == null)
                 {
-                    body.gameObject.AddComponent<VoidtouchedBallsManager>();
+                    body.gameObject.AddComponent<VoidtouchedSpinnyManager>();
                 }
             }
         }
     }
 
-    public class VoidtouchedBallsManager : MonoBehaviour
+    public class VoidtouchedSpinnyManager : MonoBehaviour
     {
         public CharacterBody body;
-        public GameObject prefab = Projectiles.VoidBall.prefab;
-        private float timer;
-        public float interval = 5f;
-        public int ballCount;
+        public int spinniesCount;
+        public float spinnyHitFrequency = 1f / 10f;
+        public float spinnyRadius = 3f;
+        public float spinnyLength = 50f;
+        public float rotationsPerSecond = 0.6f;
+        public float timer;
+        public GameObject spinnyLaser;
+        public GameObject spinnyInstance;
+        public bool shouldFireVFX;
+        public Transform[] muzzles;
 
         private void Start()
         {
             body = GetComponent<CharacterBody>();
+            spinnyLaser = VoidLaser.laserPrefab;
+            spinnyInstance = spinnyLaser;
             if (Run.instance.selectedDifficulty >= DifficultyIndex.Eclipse3 && Eclipse3.instance.isEnabled)
             {
-                ballCount = 5;
+                spinniesCount = 3;
             }
             else
             {
-                ballCount = 3;
+                spinniesCount = 2;
             }
+
+            var muzzleString = "VoidtouchedSpinnyMuzzle";
+            float angle = 360f / spinniesCount;
+            for (int i = 0; i < spinniesCount; i++)
+            {
+                GameObject muzzle = new(muzzleString + i);
+                muzzle.transform.parent = body.coreTransform;
+                var evenRotation = Quaternion.AngleAxis(angle, Vector3.forward);
+                muzzle.transform.eulerAngles = evenRotation.eulerAngles;
+            }
+        }
+
+        private Ray GetSpinnyRay(CharacterBody body)
+        {
+            // make this thing work with muzzles somehow?
+            var forward = body.corePosition;
+            var corePosition = body.corePosition;
+            forward.y = body.corePosition.y;
+            return new Ray(forward, corePosition);
         }
 
         private void FixedUpdate()
         {
             timer += Time.fixedDeltaTime;
-            if (timer >= interval)
+            if (timer >= spinnyHitFrequency)
             {
-                var playerList = CharacterBody.readOnlyInstancesList.Where(x => x.isPlayerControlled).ToArray();
-                for (int i = 0; i < playerList.Length; i++)
+                BulletAttack ba = new()
                 {
-                    for (int j = 0; j < ballCount; j++)
-                    {
-                        var fpi = new FireProjectileInfo
-                        {
-                            projectilePrefab = prefab,
-                            damage = Run.instance ? 5f + Mathf.Sqrt(Run.instance.ambientLevel * 200f) : 0f,
-                            rotation = Quaternion.identity,
-                            owner = gameObject,
-                            crit = body.RollCrit(),
-                            position = Util.ApplySpread(playerList[i].footPosition, 5f * j, 7f * j, 1f, 0.08f)
-                        };
-                        ProjectileManager.instance.FireProjectile(fpi);
-                        timer = 0f;
-                    }
-                }
+                    origin = GetSpinnyRay(body).origin,
+                    aimVector = GetSpinnyRay(body).direction,
+                    // make this thing work with muzzles somehow?
+                    minSpread = 0f,
+                    maxSpread = 0f,
+                    maxDistance = spinnyLength,
+                    hitMask = LayerIndex.CommonMasks.bullet,
+                    stopperMask = LayerIndex.world.intVal,
+                    bulletCount = 1U,
+                    radius = spinnyRadius,
+                    smartCollision = false,
+                    procCoefficient = 0f,
+                    owner = gameObject,
+                    weapon = gameObject,
+                    damage = Run.instance ? Mathf.Sqrt(Run.instance.ambientLevel) : 0f,
+                    damageColorIndex = DamageColorIndex.Default,
+                    falloffModel = BulletAttack.FalloffModel.None,
+                    force = 0f,
+                    hitEffectPrefab = VoidLaser.impactPrefab,
+                    tracerEffectPrefab = VoidLaser.laserPrefab,
+                    isCrit = false,
+                    HitEffectNormal = false,
+                };
+
+                if (Util.HasEffectiveAuthority(gameObject)) ba.Fire();
+
+                Fire();
+
+                timer = 0f;
             }
+            if (timer <= 0)
+            {
+                shouldFireVFX = false;
+                Unfire();
+            }
+        }
+
+        private void Unfire()
+        {
+            GameObject.Destroy(spinnyInstance);
+            spinnyInstance = null;
+        }
+
+        private void Fire()
+        {
+            if (shouldFireVFX) return;
+            spinnyInstance = GameObject.Instantiate(spinnyLaser, body.transform);
+            shouldFireVFX = true;
         }
     }
 

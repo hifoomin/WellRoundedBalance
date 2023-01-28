@@ -11,7 +11,7 @@ namespace WellRoundedBalance.Items.Yellows
 
         public override string PickupText => "Gain a 10% chance on hit to summon a stone fist.";
 
-        public override string DescText => "Gain a <style=cIsDamage>10%</style> <style=cStack>(+10% per stack)</style> chance on hit to summon a stone fist that deals <style=cIsDamage>300%</style> damage and <style=cIsUtility>knocks up</style> enemies in a small radius.";
+        public override string DescText => "Gain a <style=cIsDamage>10%</style> <style=cStack>(+10% per stack)</style> chance on hit to summon a stone fist that deals <style=cIsDamage>350%</style> damage and <style=cIsUtility>knocks up</style> enemies in a small radius.";
 
         public override void Init()
         {
@@ -45,7 +45,7 @@ namespace WellRoundedBalance.Items.Yellows
                             var fpi = new FireProjectileInfo
                             {
                                 owner = body.gameObject,
-                                damage = body.damage * 3f,
+                                damage = body.damage * 3.5f,
                                 position = victimBody.footPosition,
                                 rotation = Util.QuaternionSafeLookRotation(aimRotation),
                                 crit = body.RollCrit(),

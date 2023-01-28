@@ -137,16 +137,17 @@ namespace WellRoundedBalance.Elites
             var angle = body.inputBank.GetAimRay().direction;
             if (timer >= interval)
             {
+                Vector3 randomVector = new(Run.instance.runRNG.RangeInt(0, 360), 0f, Run.instance.runRNG.RangeInt(0, 360));
                 var fpi = new FireProjectileInfo
                 {
                     owner = gameObject,
-                    rotation = Util.QuaternionSafeLookRotation(angle),
+                    rotation = Util.QuaternionSafeLookRotation(randomVector),
                     projectilePrefab = projectile,
                     crit = Util.CheckRoll(body.crit, body.master),
                     position = body.corePosition,
                     damage = Run.instance ? Mathf.Sqrt(Run.instance.ambientLevel * 10f) : 0f
                 };
-                ProjectileManager.instance.FireProjectile(fpi);
+                if (Util.HasEffectiveAuthority(gameObject)) ProjectileManager.instance.FireProjectile(fpi);
                 timer = 0f;
             }
         }

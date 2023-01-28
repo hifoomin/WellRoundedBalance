@@ -36,16 +36,16 @@ namespace WellRoundedBalance.Items.Lunars
                     stack += characterMaster.inventory.GetItemCount(RoR2Content.Items.FocusConvergence);
                 }
             }
-            orig(self);
             if (stack > 0)
             {
                 // var bossGroup = self.bossGroup;
                 self.shrineBonusStacks += 1 * stack;
                 self.bossGroup.bonusRewardCount += 2 * stack;
             }
+            orig(self);
         }
 
-        private void Changes(On.RoR2.HoldoutZoneController.FocusConvergenceController.orig_Awake orig, UnityEngine.MonoBehaviour self)
+        private void Changes(On.RoR2.HoldoutZoneController.FocusConvergenceController.orig_Awake orig, MonoBehaviour self)
         {
             orig(self);
             HoldoutZoneController.FocusConvergenceController.convergenceRadiusDivisor = 1f;
