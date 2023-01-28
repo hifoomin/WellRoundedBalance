@@ -2,13 +2,13 @@
 using MonoMod.Cil;
 using System;
 using UnityEngine.UI;
+using WellRoundedBalance.Buffs;
 using static R2API.DamageAPI;
 
 namespace WellRoundedBalance.Elites
 {
     internal class Glacial : EliteBase
     {
-        public static BuffDef useless;
         public static BuffDef slow;
         public static GameObject iceExplosionPrefab;
         public override string Name => ":: Elites :::: Glacial";
@@ -19,10 +19,6 @@ namespace WellRoundedBalance.Elites
 
             var slow80 = Utils.Paths.Texture2D.texBuffSlow50Icon.Load<Texture2D>();
 
-            useless = ScriptableObject.CreateInstance<BuffDef>();
-            useless.isHidden = true;
-            useless.name = "Glacial Deletion";
-
             slow = ScriptableObject.CreateInstance<BuffDef>();
             slow.name = "Glacial Elite Slow";
             slow.buffColor = new Color32(165, 222, 237, 255);
@@ -31,7 +27,6 @@ namespace WellRoundedBalance.Elites
             slow.canStack = false;
             slow.isHidden = false;
 
-            ContentAddition.AddBuffDef(useless);
             ContentAddition.AddBuffDef(slow);
             base.Init();
         }
@@ -103,7 +98,7 @@ namespace WellRoundedBalance.Elites
                 x => x.MatchLdsfld(typeof(RoR2Content.Buffs), "AffixWhite")))
             {
                 c.Remove();
-                c.Emit<Glacial>(OpCodes.Ldsfld, nameof(useless));
+                c.Emit<Useless>(OpCodes.Ldsfld, nameof(Useless.uselessBuff));
             }
             else
             {

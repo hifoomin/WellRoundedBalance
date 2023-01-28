@@ -1,23 +1,17 @@
 ﻿using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using System;
+using WellRoundedBalance.Buffs;
 using WellRoundedBalance.Eclipse;
 
 namespace WellRoundedBalance.Elites
 {
     internal class Blazing : EliteBase
     {
-        public static BuffDef useless;
         public override string Name => ":: Elites :: Blazing";
 
         public override void Init()
         {
-            useless = ScriptableObject.CreateInstance<BuffDef>();
-            useless.name = "Blazing Deletion";
-            useless.isHidden = true;
-
-            ContentAddition.AddBuffDef(useless);
-
             base.Init();
         }
 
@@ -78,7 +72,7 @@ namespace WellRoundedBalance.Elites
                 x => x.MatchLdsfld(typeof(RoR2Content.Buffs), "AffixRed")))
             {
                 c.Remove();
-                c.Emit<Blazing>(OpCodes.Ldsfld, nameof(useless));
+                c.Emit<Useless>(OpCodes.Ldsfld, nameof(Useless.uselessBuff));
             }
             else
             {

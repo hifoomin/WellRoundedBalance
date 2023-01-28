@@ -1,5 +1,6 @@
 ﻿using Mono.Cecil.Cil;
 using MonoMod.Cil;
+using WellRoundedBalance.Buffs;
 using WellRoundedBalance.Eclipse;
 using WellRoundedBalance.Projectiles;
 
@@ -7,7 +8,6 @@ namespace WellRoundedBalance.Elites
 {
     internal class Voidtouched : EliteBase
     {
-        public static BuffDef useless;
         public static BuffDef voidCurse;
         public override string Name => ":: Elites :::::: Voidtouched";
         public static GameObject DeathBomb;
@@ -15,10 +15,6 @@ namespace WellRoundedBalance.Elites
 
         public override void Init()
         {
-            useless = ScriptableObject.CreateInstance<BuffDef>();
-            useless.name = "Voidtouched Deletion";
-            useless.isHidden = true;
-
             var curse = Utils.Paths.Texture2D.texBuffPermanentCurse.Load<Texture2D>();
             voidCurse = ScriptableObject.CreateInstance<BuffDef>();
             voidCurse.isHidden = false;
@@ -29,7 +25,6 @@ namespace WellRoundedBalance.Elites
 
             voidCurse.name = "Void Curse";
 
-            ContentAddition.AddBuffDef(useless);
             ContentAddition.AddBuffDef(voidCurse);
 
             DeathBomb = Utils.Paths.GameObject.NullifierDeathBombProjectile.Load<GameObject>().InstantiateClone("VoidtouchedExplosion", true);
@@ -118,7 +113,7 @@ namespace WellRoundedBalance.Elites
                 x => x.MatchCallOrCallvirt<CharacterBody>("AddBuff")))
             {
                 c.Remove();
-                c.Emit<Voidtouched>(OpCodes.Ldsfld, nameof(useless));
+                c.Emit<Useless>(OpCodes.Ldsfld, nameof(Useless.uselessBuff));
             }
             else
             {
@@ -131,16 +126,19 @@ namespace WellRoundedBalance.Elites
             ILCursor c = new(il);
 
             if (c.TryGotoNext(MoveType.Before,
-                x => x.MatchLdcI4(10),
-                x => x.MatchAdd()))
+                x => x.MatchLdsfld("RoR2.DLC1Content/Buffs", "EliteVoid"),
+                x => x.MatchCallOrCallvirt<CharacterBody>("HasBuff")))
             {
                 c.Remove();
-                c.Emit(OpCodes.Ldc_I4_S, 0);
+                c.Emit<Useless>(OpCodes.Ldsfld, nameof(Useless.uselessBuff));
             }
             else
             {
                 Main.WRBLogger.LogError("Failed to apply Voidtouched Elite Needletick hook");
             }
+
+            // HOPOO GAMES ! !
+            // why does it get the buff after I replace it lol
         }
 
         private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)

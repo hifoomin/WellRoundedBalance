@@ -53,19 +53,11 @@ namespace WellRoundedBalance.Elites
                         {
                             if (eliteDef.name.IndexOf("honor", StringComparison.OrdinalIgnoreCase) >= 0)
                             {
-                                var eliteString = Language.GetString(eliteDef.modifierToken);
-                                // Main.WRBLogger.LogError("elitedef is + " + eliteString + " (honor)");
-                                // eliteDef.healthBoostCoefficient = health;
-                                // left default for now
                                 eliteDef.damageBoostCoefficient = 1f;
                                 eliteDef.healthBoostCoefficient = Mathf.Min(eliteDef.healthBoostCoefficient, 4f);
                             }
                             else
                             {
-                                var eliteString = Language.GetString(eliteDef.modifierToken);
-                                // Main.WRBLogger.LogError("elitedef is + " + eliteString);
-                                // eliteDef.healthBoostCoefficient = health;
-                                // left default for now
                                 eliteDef.damageBoostCoefficient = 1f;
                                 eliteDef.healthBoostCoefficient = Mathf.Min(eliteDef.healthBoostCoefficient, 4f);
                             }

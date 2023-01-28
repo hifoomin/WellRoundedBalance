@@ -2,6 +2,7 @@
 using MonoMod.Cil;
 using RoR2.Navigation;
 using RoR2.Orbs;
+using WellRoundedBalance.Buffs;
 using WellRoundedBalance.Eclipse;
 
 namespace WellRoundedBalance.Elites
@@ -9,7 +10,6 @@ namespace WellRoundedBalance.Elites
     internal class Overloading : EliteBase
     {
         public static BuffDef overloadingSpeedBuff;
-        public static BuffDef useless;
         public override string Name => ":: Elites ::: Overloading";
 
         public override void Init()
@@ -23,14 +23,7 @@ namespace WellRoundedBalance.Elites
             overloadingSpeedBuff.buffColor = new Color32(66, 98, 219, 255);
             overloadingSpeedBuff.iconSprite = Sprite.Create(speedBuff, new Rect(0f, 0f, (float)speedBuff.width, (float)speedBuff.height), new Vector2(0f, 0f));
 
-            useless = ScriptableObject.CreateInstance<BuffDef>();
-            useless.name = "Overloading Deletion";
-            useless.isHidden = true;
-            useless.isDebuff = false;
-            useless.canStack = false;
-
             ContentAddition.AddBuffDef(overloadingSpeedBuff);
-            ContentAddition.AddBuffDef(useless);
 
             base.Init();
         }
@@ -78,7 +71,7 @@ namespace WellRoundedBalance.Elites
                 x => x.MatchLdsfld(typeof(RoR2Content.Buffs), "AffixBlue")))
             {
                 c.Remove();
-                c.Emit<Overloading>(OpCodes.Ldsfld, nameof(useless));
+                c.Emit<Useless>(OpCodes.Ldsfld, nameof(Useless.uselessBuff));
             }
         }
 

@@ -12,6 +12,7 @@
 
             laserPrefab = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.VoidRaidCrabSpinBeamVFX.Load<GameObject>(), "VoidtouchedSpinnyGhost", false);
             laserPrefab.transform.localScale = new Vector3(5f, 5f, 2.5f);
+            laserPrefab.AddComponent<EffectComponent>();
 
             ContentAddition.AddEffect(impactPrefab);
             ContentAddition.AddEffect(laserPrefab);

@@ -1,9 +1,7 @@
 using BepInEx;
 using BepInEx.Configuration;
 using BepInEx.Logging;
-using R2API.Utils;
 using System;
-using System.Linq;
 using System.Reflection;
 using WellRoundedBalance.Items;
 using WellRoundedBalance.Equipment;
@@ -67,6 +65,8 @@ namespace WellRoundedBalance
 
             InfernoLoaded = BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("HIFU.Inferno");
             RiskyArtifactsLoaded = BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("com.Moffein.RiskyArtifacts");
+
+            Buffs.Useless.Create();
 
             BlazingProjectileVFX.Create();
             Molotov.Create();
