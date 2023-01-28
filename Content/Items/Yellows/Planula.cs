@@ -1,9 +1,4 @@
-﻿/*
- *
- *
- *
- * Crashes the game???
-using Mono.Cecil.Cil;
+﻿/*using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using RoR2;
 using RoR2.Items;
@@ -74,8 +69,8 @@ namespace WellRoundedBalance.Items.Yellows
             {
                 if (condition)
                 {
-                    sunGameObject = Instantiate(sunPrefab, body.footPosition + new Vector3(0f, 300f, 0f), Quaternion.identity);
-                    sunTeamFilter = sunGameObject.GetComponent<TeamFilter>();
+                    sunGameObject = Instantiate(sunPrefab, body.footPosition + new Vector3(0f, 200f, 0f), Quaternion.identity);
+                    sunGameObject.GetComponent<GenericOwnership>().ownerObject = base.gameObject;
                     NetworkServer.Spawn(sunGameObject);
                 }
                 else
@@ -84,7 +79,7 @@ namespace WellRoundedBalance.Items.Yellows
                     sunGameObject = null;
                 }
             }
-            if (sunTeamFilter)
+            /*if (sunTeamFilter)
             {
                 sunTeamFilter.teamIndex = body.teamComponent.teamIndex;
             }
@@ -104,5 +99,4 @@ namespace WellRoundedBalance.Items.Yellows
 
         private TeamFilter sunTeamFilter;
     }
-}
-*/
+}*/

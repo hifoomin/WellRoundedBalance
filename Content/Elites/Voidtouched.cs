@@ -10,6 +10,8 @@ namespace WellRoundedBalance.Elites
         public static BuffDef useless;
         public static BuffDef voidCurse;
         public override string Name => ":: Elites :::::: Voidtouched";
+        public static GameObject DeathBomb;
+        public static DamageAPI.ModdedDamageType NullifierDeath = DamageAPI.ReserveDamageType();
 
         public override void Init()
         {
@@ -30,16 +32,72 @@ namespace WellRoundedBalance.Elites
             ContentAddition.AddBuffDef(useless);
             ContentAddition.AddBuffDef(voidCurse);
 
+            DeathBomb = Utils.Paths.GameObject.NullifierDeathBombProjectile.Load<GameObject>().InstantiateClone("VoidtouchedExplosion", true);
+            DeathBomb.GetComponent<ProjectileDamage>().damageType = DamageType.Silent;
+            DeathBomb.GetComponent<ProjectileImpactExplosion>().blastDamageCoefficient = 0f;
+            DamageAPI.ModdedDamageTypeHolderComponent com = DeathBomb.AddComponent<DamageAPI.ModdedDamageTypeHolderComponent>();
+            com.Add(NullifierDeath);
+            ContentAddition.AddProjectile(DeathBomb);
             base.Init();
         }
 
         public override void Hooks()
         {
             On.RoR2.CharacterMaster.OnBodyStart += CharacterMaster_OnBodyStart;
-            On.RoR2.HealthComponent.Awake += HealthComponent_Awake;
+            On.RoR2.GlobalEventManager.OnHitEnemy += NullifierMoment;
             RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
             IL.RoR2.GlobalEventManager.OnHitEnemy += GlobalEventManager_OnHitEnemy;
             IL.RoR2.AffixVoidBehavior.FixedUpdate += AffixVoidBehavior_FixedUpdate;
+            On.RoR2.GlobalEventManager.OnCharacterDeath += EnactNullifierMoment;
+        }
+
+        private void EnactNullifierMoment(On.RoR2.GlobalEventManager.orig_OnCharacterDeath orig, GlobalEventManager self, DamageReport report) {
+            orig(self, report);
+            if (NetworkServer.active && report.victimBody && report.victimBody.HasBuff(DLC1Content.Buffs.EliteVoid)) {
+                Debug.Log("firing projectile");
+                FireProjectileInfo info = new();
+                info.projectilePrefab = DeathBomb;
+                info.position = report.damageInfo.position;
+                info.damage = 0;
+                info.rotation = Quaternion.identity;
+                info.owner = report.victimBody.gameObject;
+                ProjectileManager.instance.FireProjectile(info);
+            }
+        }
+
+        private void NullifierMoment(On.RoR2.GlobalEventManager.orig_OnHitEnemy orig, GlobalEventManager self, DamageInfo info, GameObject victim) {
+            orig(self, info, victim);
+            if (NetworkServer.active && info.HasModdedDamageType(NullifierDeath)) {
+                CharacterBody victimBody = victim.GetComponent<CharacterBody>();
+                if (victimBody && !victimBody.isPlayerControlled && !victimBody.bodyFlags.HasFlag(CharacterBody.BodyFlags.Mechanical)) {
+                    CharacterMaster victimMaster = victimBody.master;
+                    victimMaster.teamIndex = TeamIndex.Void;
+                    victimBody.teamComponent.teamIndex = TeamIndex.Void;
+                    victimBody.inventory.SetEquipmentIndex(DLC1Content.Equipment.EliteVoidEquipment.equipmentIndex);
+                    BaseAI ai = victimMaster.GetComponent<BaseAI>();
+                    if (ai) {
+                        ai.enemyAttention = 0;
+                        ai.ForceAcquireNearestEnemyIfNoCurrentEnemy();
+                    }
+                    EffectManager.SpawnEffect(Utils.Paths.GameObject.ElementalRingVoidImplodeEffect.Load<GameObject>(), new EffectData {
+                        origin = info.position
+                    }, true);
+                }
+            }
+
+            if (NetworkServer.active && info.attacker) {
+                CharacterBody attackerBody = info.attacker.GetComponent<CharacterBody>();
+                CharacterBody victimBody = info.attacker.GetComponent<CharacterBody>();
+
+                if (attackerBody.HasBuff(DLC1Content.Buffs.EliteVoid)) {
+                    float takenDamagePercent = info.damage / victimBody.healthComponent.fullCombinedHealth * 100f;
+                    int permanentDamage = Mathf.FloorToInt(takenDamagePercent * 40 / 100f);
+                    for (int l = 0; l < permanentDamage; l++)
+                    {
+                        victimBody.AddBuff(RoR2Content.Buffs.PermanentCurse);
+                    }
+                }
+            }
         }
 
         private void AffixVoidBehavior_FixedUpdate(ILContext il)
@@ -73,12 +131,6 @@ namespace WellRoundedBalance.Elites
             {
                 Main.WRBLogger.LogError("Failed to apply Voidtouched Elite Needletick hook");
             }
-        }
-
-        private void HealthComponent_Awake(On.RoR2.HealthComponent.orig_Awake orig, HealthComponent self)
-        {
-            self.gameObject.AddComponent<VoidtouchedPermanentDamageController>();
-            orig(self);
         }
 
         private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
