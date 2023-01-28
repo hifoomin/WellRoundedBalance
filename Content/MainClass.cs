@@ -70,7 +70,7 @@ namespace WellRoundedBalance
 
             BlazingProjectileVFX.Create();
             Molotov.Create();
-            VoidLaser.Create();
+            VoidLaserProjectileVFX.Create();
             DucleusLaser.Create();
             TitanFist.Create();
 
@@ -110,9 +110,11 @@ namespace WellRoundedBalance
             }
 
             // nvm this breaks the entire game what
-            foreach (ItemBase itemBased in baseds.OrderBy(x => (char)x.InternalPickupToken.ToLower()[0])) {
+            foreach (ItemBase itemBased in baseds.OrderBy(x => (char)x.InternalPickupToken.ToLower()[0]))
+            {
                 // Debug.Log(itemBased.InternalPickupToken);
-                if (ValidateItem(itemBased)) {
+                if (ValidateItem(itemBased))
+                {
                     itemBased.Init();
                 }
             }

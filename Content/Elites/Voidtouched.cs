@@ -51,9 +51,11 @@ namespace WellRoundedBalance.Elites
             On.RoR2.GlobalEventManager.OnCharacterDeath += EnactNullifierMoment;
         }
 
-        private void EnactNullifierMoment(On.RoR2.GlobalEventManager.orig_OnCharacterDeath orig, GlobalEventManager self, DamageReport report) {
+        private void EnactNullifierMoment(On.RoR2.GlobalEventManager.orig_OnCharacterDeath orig, GlobalEventManager self, DamageReport report)
+        {
             orig(self, report);
-            if (NetworkServer.active && report.victimBody && report.victimBody.HasBuff(DLC1Content.Buffs.EliteVoid)) {
+            if (NetworkServer.active && report.victimBody && report.victimBody.HasBuff(DLC1Content.Buffs.EliteVoid))
+            {
                 Debug.Log("firing projectile");
                 FireProjectileInfo info = new();
                 info.projectilePrefab = DeathBomb;
@@ -65,31 +67,38 @@ namespace WellRoundedBalance.Elites
             }
         }
 
-        private void NullifierMoment(On.RoR2.GlobalEventManager.orig_OnHitEnemy orig, GlobalEventManager self, DamageInfo info, GameObject victim) {
+        private void NullifierMoment(On.RoR2.GlobalEventManager.orig_OnHitEnemy orig, GlobalEventManager self, DamageInfo info, GameObject victim)
+        {
             orig(self, info, victim);
-            if (NetworkServer.active && info.HasModdedDamageType(NullifierDeath)) {
+            if (NetworkServer.active && info.HasModdedDamageType(NullifierDeath))
+            {
                 CharacterBody victimBody = victim.GetComponent<CharacterBody>();
-                if (victimBody && !victimBody.isPlayerControlled && !victimBody.bodyFlags.HasFlag(CharacterBody.BodyFlags.Mechanical)) {
+                if (victimBody && !victimBody.isPlayerControlled && !victimBody.bodyFlags.HasFlag(CharacterBody.BodyFlags.Mechanical))
+                {
                     CharacterMaster victimMaster = victimBody.master;
                     victimMaster.teamIndex = TeamIndex.Void;
                     victimBody.teamComponent.teamIndex = TeamIndex.Void;
                     victimBody.inventory.SetEquipmentIndex(DLC1Content.Equipment.EliteVoidEquipment.equipmentIndex);
                     BaseAI ai = victimMaster.GetComponent<BaseAI>();
-                    if (ai) {
+                    if (ai)
+                    {
                         ai.enemyAttention = 0;
                         ai.ForceAcquireNearestEnemyIfNoCurrentEnemy();
                     }
-                    EffectManager.SpawnEffect(Utils.Paths.GameObject.ElementalRingVoidImplodeEffect.Load<GameObject>(), new EffectData {
+                    EffectManager.SpawnEffect(Utils.Paths.GameObject.ElementalRingVoidImplodeEffect.Load<GameObject>(), new EffectData
+                    {
                         origin = info.position
                     }, true);
                 }
             }
 
-            if (NetworkServer.active && info.attacker) {
+            if (NetworkServer.active && info.attacker)
+            {
                 CharacterBody attackerBody = info.attacker.GetComponent<CharacterBody>();
                 CharacterBody victimBody = info.attacker.GetComponent<CharacterBody>();
 
-                if (attackerBody.HasBuff(DLC1Content.Buffs.EliteVoid)) {
+                if (attackerBody.HasBuff(DLC1Content.Buffs.EliteVoid))
+                {
                     float takenDamagePercent = info.damage / victimBody.healthComponent.fullCombinedHealth * 100f;
                     int permanentDamage = Mathf.FloorToInt(takenDamagePercent * 40 / 100f);
                     for (int l = 0; l < permanentDamage; l++)
@@ -109,7 +118,7 @@ namespace WellRoundedBalance.Elites
                 x => x.MatchCallOrCallvirt<CharacterBody>("AddBuff")))
             {
                 c.Remove();
-                c.Emit<Blazing>(OpCodes.Ldsfld, nameof(useless));
+                c.Emit<Voidtouched>(OpCodes.Ldsfld, nameof(useless));
             }
             else
             {
@@ -122,10 +131,11 @@ namespace WellRoundedBalance.Elites
             ILCursor c = new(il);
 
             if (c.TryGotoNext(MoveType.Before,
-                x => x.MatchLdsfld(typeof(DLC1Content.Buffs), "EliteVoid")))
+                x => x.MatchLdcI4(10),
+                x => x.MatchAdd()))
             {
                 c.Remove();
-                c.Emit<Voidtouched>(OpCodes.Ldsfld, nameof(useless));
+                c.Emit(OpCodes.Ldc_I4_S, 0);
             }
             else
             {
@@ -175,7 +185,7 @@ namespace WellRoundedBalance.Elites
         private void Start()
         {
             body = GetComponent<CharacterBody>();
-            spinnyLaser = VoidLaser.laserPrefab;
+            spinnyLaser = VoidLaserProjectileVFX.laserPrefab;
             spinnyInstance = spinnyLaser;
             if (Run.instance.selectedDifficulty >= DifficultyIndex.Eclipse3 && Eclipse3.instance.isEnabled)
             {
@@ -194,16 +204,17 @@ namespace WellRoundedBalance.Elites
                 muzzle.transform.parent = body.coreTransform;
                 var evenRotation = Quaternion.AngleAxis(angle, Vector3.forward);
                 muzzle.transform.eulerAngles = evenRotation.eulerAngles;
+                muzzles[i] = muzzle.transform;
+                muzzles[i].transform.eulerAngles = muzzle.transform.eulerAngles;
             }
         }
 
-        private Ray GetSpinnyRay(CharacterBody body)
+        private Ray GetSpinnyRay(int muzzleIndex)
         {
-            // make this thing work with muzzles somehow?
-            var forward = body.corePosition;
-            var corePosition = body.corePosition;
-            forward.y = body.corePosition.y;
-            return new Ray(forward, corePosition);
+            var muzzle = muzzles[muzzleIndex];
+            var rayDirection = muzzle.transform.rotation;
+            var rayOrigin = muzzle.transform.position;
+            return new Ray(rayOrigin, rayDirection.eulerAngles);
         }
 
         private void FixedUpdate()
@@ -211,35 +222,38 @@ namespace WellRoundedBalance.Elites
             timer += Time.fixedDeltaTime;
             if (timer >= spinnyHitFrequency)
             {
-                BulletAttack ba = new()
+                for (int i = 0; i < spinniesCount; i++)
                 {
-                    origin = GetSpinnyRay(body).origin,
-                    aimVector = GetSpinnyRay(body).direction,
-                    // make this thing work with muzzles somehow?
-                    minSpread = 0f,
-                    maxSpread = 0f,
-                    maxDistance = spinnyLength,
-                    hitMask = LayerIndex.CommonMasks.bullet,
-                    stopperMask = LayerIndex.world.intVal,
-                    bulletCount = 1U,
-                    radius = spinnyRadius,
-                    smartCollision = false,
-                    procCoefficient = 0f,
-                    owner = gameObject,
-                    weapon = gameObject,
-                    damage = Run.instance ? Mathf.Sqrt(Run.instance.ambientLevel) : 0f,
-                    damageColorIndex = DamageColorIndex.Default,
-                    falloffModel = BulletAttack.FalloffModel.None,
-                    force = 0f,
-                    hitEffectPrefab = VoidLaser.impactPrefab,
-                    tracerEffectPrefab = VoidLaser.laserPrefab,
-                    isCrit = false,
-                    HitEffectNormal = false,
-                };
+                    BulletAttack ba = new()
+                    {
+                        origin = GetSpinnyRay(i).origin,
+                        aimVector = GetSpinnyRay(i).direction,
+                        // make this thing work with muzzles somehow?
+                        minSpread = 0f,
+                        maxSpread = 0f,
+                        maxDistance = spinnyLength,
+                        hitMask = LayerIndex.CommonMasks.bullet,
+                        stopperMask = LayerIndex.world.intVal,
+                        bulletCount = 1U,
+                        radius = spinnyRadius,
+                        smartCollision = false,
+                        procCoefficient = 0f,
+                        owner = gameObject,
+                        weapon = gameObject,
+                        damage = Run.instance ? Mathf.Sqrt(Run.instance.ambientLevel) : 0f,
+                        damageColorIndex = DamageColorIndex.Default,
+                        falloffModel = BulletAttack.FalloffModel.None,
+                        force = 0f,
+                        hitEffectPrefab = VoidLaserProjectileVFX.impactPrefab,
+                        tracerEffectPrefab = VoidLaserProjectileVFX.laserPrefab,
+                        isCrit = false,
+                        HitEffectNormal = false,
+                    };
 
-                if (Util.HasEffectiveAuthority(gameObject)) ba.Fire();
+                    if (Util.HasEffectiveAuthority(gameObject)) ba.Fire();
 
-                Fire();
+                    Fire();
+                }
 
                 timer = 0f;
             }

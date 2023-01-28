@@ -1,6 +1,6 @@
 ﻿namespace WellRoundedBalance.Projectiles
 {
-    public static class VoidLaser
+    public static class VoidLaserProjectileVFX
     {
         public static GameObject laserPrefab;
         public static GameObject impactPrefab;
@@ -12,6 +12,9 @@
 
             laserPrefab = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.VoidRaidCrabSpinBeamVFX.Load<GameObject>(), "VoidtouchedSpinnyGhost", false);
             laserPrefab.transform.localScale = new Vector3(5f, 5f, 2.5f);
+
+            ContentAddition.AddEffect(impactPrefab);
+            ContentAddition.AddEffect(laserPrefab);
         }
     }
 }
