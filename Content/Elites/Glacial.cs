@@ -49,11 +49,11 @@ namespace WellRoundedBalance.Elites
             rigidbody.mass = 1000;
 
             SphereCollider collider = ShieldPrefab.AddComponent<SphereCollider>();
-            collider.radius = 0.3f;
+            collider.radius = 1f;
             
             ProjectileImpactExplosion impact = ShieldPrefab.AddComponent<ProjectileImpactExplosion>();
             impact.blastRadius = 3;
-            impact.lifetime = 10000;
+            impact.lifetime = 5;
             impact.destroyOnEnemy = false;
             impact.destroyOnWorld = false;
             impact.impactOnWorld = false;
@@ -124,7 +124,7 @@ namespace WellRoundedBalance.Elites
             public Transform target;
             private float speed = 360 / 12;
             private Vector3 initialRadial;
-            private float offset = 2;
+            private float offset = 0.5f;
             private float distance = 3;
             private float initialTime;
             private float initialDegrees = UnityEngine.Random.Range(0, 360);
@@ -143,13 +143,11 @@ namespace WellRoundedBalance.Elites
 
             public void FixedUpdate() {
                 if (!target && targetComponent.target) {
-                    Debug.Log("target isnt realr");
                     target = targetComponent.target;
                     initialRadial = Quaternion.AngleAxis(initialDegrees, Vector3.up) * target.forward;
                 }
 
                 if (target) {
-                    Debug.Log("target is realr");
                     float angle = (Run.instance.GetRunStopwatch() - initialTime) * speed;
                     Vector3 pos = target.position + new Vector3(0, offset, 0) + Quaternion.AngleAxis(angle, Vector3.up) * initialRadial * distance;
                     Vector3 newPos = Vector3.Lerp(rb.position, pos, 30 * Time.fixedDeltaTime);
