@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Linq;
+using IL.RoR2.UI;
 
 namespace WellRoundedBalance.Mechanic.Bazaar
 {
@@ -12,15 +13,20 @@ namespace WellRoundedBalance.Mechanic.Bazaar
 
         public override void Init()
         {
-            lunarPod = Utils.Paths.GameObject.LunarChest.Load<GameObject>();
+            lunarPod = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.LunarChest.Load<GameObject>(), "WellRoundedBalanceLunarPod");
             heresyStation = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.LunarShopTerminal.Load<GameObject>(), "HeresyStation");
 
-            var drops = ScriptableObject.CreateInstance<HeresyDropTable>();
+            var lunarDropTable = ScriptableObject.CreateInstance<LunarDropTable>();
+            var chestBehavior = lunarPod.GetComponent<ChestBehavior>();
+            chestBehavior.dropTable = lunarDropTable;
+
+            var heresyDropTable = ScriptableObject.CreateInstance<HeresyDropTable>();
 
             var shopBehavior = heresyStation.GetComponent<ShopTerminalBehavior>();
-            shopBehavior.dropTable = drops;
+            shopBehavior.dropTable = heresyDropTable;
 
             PrefabAPI.RegisterNetworkPrefab(heresyStation);
+            PrefabAPI.RegisterNetworkPrefab(lunarPod);
             base.Init();
         }
 
@@ -39,7 +45,7 @@ namespace WellRoundedBalance.Mechanic.Bazaar
                 List<PurchaseInteraction> interactions = GameObject.FindObjectsOfType<PurchaseInteraction>().Where(x => x.gameObject.name.Contains("LunarShopTerminal")).ToList();
                 for (int i = 0; i < 5; i++)
                 {
-                    if (i == 0 || i == 3)
+                    if (i == 0 || i == 5)
                     {
                         GameObject.Destroy(interactions[i].gameObject);
                         continue;
@@ -47,18 +53,22 @@ namespace WellRoundedBalance.Mechanic.Bazaar
 
                     Vector3 position = interactions[i].transform.position;
                     GameObject.Destroy(interactions[i].gameObject);
-                    GameObject.Instantiate(lunarPod, position, Quaternion.identity);
+                    var lunarPodServer = Object.Instantiate(lunarPod, position, Quaternion.identity);
+                    NetworkServer.Spawn(lunarPodServer);
                 }
 
-                var table2 = Object.Instantiate(table, lunarShop);
+                var table2Server = Object.Instantiate(table, lunarShop);
+                table2Server.transform.localPosition = new Vector3(11f, -7.5f, 9f);
+                table2Server.transform.eulerAngles = new Vector3(270f, 250f, 0f);
+                NetworkServer.Spawn(table2Server.gameObject);
 
-                table2.transform.localPosition = new Vector3(11f, -7.5f, 9f);
-                table2.transform.eulerAngles = new Vector3(270f, 250f, 0f);
+                var heresyItemServer = Object.Instantiate(heresyStation, table2Server);
+                heresyItemServer.transform.localPosition = new Vector3(1.695f, -1.307f, 1.196f);
+                NetworkServer.Spawn(heresyItemServer);
 
-                var object1 = Object.Instantiate(heresyStation, table2);
-                object1.transform.localPosition = new Vector3(1.695f, -1.307f, 1.196f);
-                var object2 = Object.Instantiate(heresyStation, table2);
-                object2.transform.localPosition = new Vector3(0.315f, -2.07f, 1.196f);
+                var heresyItemServer2 = Object.Instantiate(heresyStation, table2Server);
+                heresyItemServer2.transform.localPosition = new Vector3(0.315f, -2.07f, 1.196f);
+                NetworkServer.Spawn(heresyItemServer2);
 
                 var slab = lunarShop.GetChild(3).gameObject;
                 slab.SetActive(false);
@@ -83,6 +93,48 @@ namespace WellRoundedBalance.Mechanic.Bazaar
             weighted.AddChoice(PickupCatalog.FindPickupIndex(RoR2Content.Items.LunarSecondaryReplacement.itemIndex), 1f);
             weighted.AddChoice(PickupCatalog.FindPickupIndex(RoR2Content.Items.LunarUtilityReplacement.itemIndex), 1f);
             weighted.AddChoice(PickupCatalog.FindPickupIndex(RoR2Content.Items.LunarSpecialReplacement.itemIndex), 1f);
+        }
+
+        public override PickupIndex[] GenerateUniqueDropsPreReplacement(int maxDrops, Xoroshiro128Plus rng)
+        {
+            GenerateWeightedSelection();
+            return GenerateUniqueDropsFromWeightedSelection(maxDrops, rng, weighted);
+        }
+
+        public override PickupIndex GenerateDropPreReplacement(Xoroshiro128Plus rng)
+        {
+            GenerateWeightedSelection();
+            Debug.Log(GenerateDropFromWeightedSelection(rng, weighted));
+            return GenerateDropFromWeightedSelection(rng, weighted);
+        }
+    }
+
+    public class LunarDropTable : PickupDropTable
+    {
+        public WeightedSelection<PickupIndex> weighted = new();
+
+        public override int GetPickupCount()
+        {
+            return weighted.Count;
+        }
+
+        public void GenerateWeightedSelection()
+        {
+            weighted.Clear();
+            for (int i = 0; i < Run.instance.availableLunarCombinedDropList.Count; i++)
+            {
+                var availableChoices = Run.instance.availableLunarCombinedDropList[i];
+                weighted.AddChoice(availableChoices.pickupDef.pickupIndex, 1f);
+            }
+
+            for (int j = 0; j < weighted.choices.Length; j++)
+            {
+                var currentChoices = weighted.choices[j];
+                if (currentChoices.value.pickupDef.internalName.ToLower().Contains("replacement") || currentChoices.value.pickupDef.nameToken.ToLower().Contains("replacement"))
+                {
+                    weighted.RemoveChoice(currentChoices.value.value);
+                }
+            }
         }
 
         public override PickupIndex[] GenerateUniqueDropsPreReplacement(int maxDrops, Xoroshiro128Plus rng)

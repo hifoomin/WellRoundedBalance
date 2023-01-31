@@ -34,7 +34,7 @@ namespace WellRoundedBalance.Mechanic.CommencementSpeedBoost
         {
             if (sender.HasBuff(commencementSpeed))
             {
-                args.moveSpeedMultAdd += 0.6f;
+                args.moveSpeedMultAdd += 0.75f;
             }
         }
 

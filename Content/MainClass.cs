@@ -67,7 +67,7 @@ namespace WellRoundedBalance
             RiskyArtifactsLoaded = BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("com.Moffein.RiskyArtifacts");
 
             Buffs.Useless.Create();
-
+            VoidBall.Create();
             BlazingProjectileVFX.Create();
             Molotov.Create();
             VoidLaserProjectileVFX.Create();

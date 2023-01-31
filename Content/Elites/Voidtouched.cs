@@ -2,19 +2,21 @@
 using MonoMod.Cil;
 using WellRoundedBalance.Buffs;
 using WellRoundedBalance.Eclipse;
-using WellRoundedBalance.Projectiles;
 
 namespace WellRoundedBalance.Elites
 {
     internal class Voidtouched : EliteBase
     {
+        public static BuffDef useless;
         public static BuffDef voidCurse;
         public override string Name => ":: Elites :::::: Voidtouched";
-        public static GameObject DeathBomb;
-        public static DamageAPI.ModdedDamageType NullifierDeath = DamageAPI.ReserveDamageType();
 
         public override void Init()
         {
+            useless = ScriptableObject.CreateInstance<BuffDef>();
+            useless.name = "Voidtouched Deletion";
+            useless.isHidden = true;
+
             var curse = Utils.Paths.Texture2D.texBuffPermanentCurse.Load<Texture2D>();
             voidCurse = ScriptableObject.CreateInstance<BuffDef>();
             voidCurse.isHidden = false;
@@ -25,83 +27,19 @@ namespace WellRoundedBalance.Elites
 
             voidCurse.name = "Void Curse";
 
+            ContentAddition.AddBuffDef(useless);
             ContentAddition.AddBuffDef(voidCurse);
 
-            DeathBomb = Utils.Paths.GameObject.NullifierDeathBombProjectile.Load<GameObject>().InstantiateClone("VoidtouchedExplosion", true);
-            DeathBomb.GetComponent<ProjectileDamage>().damageType = DamageType.Silent;
-            DeathBomb.GetComponent<ProjectileImpactExplosion>().blastDamageCoefficient = 0f;
-            DamageAPI.ModdedDamageTypeHolderComponent com = DeathBomb.AddComponent<DamageAPI.ModdedDamageTypeHolderComponent>();
-            com.Add(NullifierDeath);
-            ContentAddition.AddProjectile(DeathBomb);
             base.Init();
         }
 
         public override void Hooks()
         {
             On.RoR2.CharacterMaster.OnBodyStart += CharacterMaster_OnBodyStart;
-            On.RoR2.GlobalEventManager.OnHitEnemy += NullifierMoment;
+            On.RoR2.HealthComponent.Awake += HealthComponent_Awake;
             RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
             IL.RoR2.GlobalEventManager.OnHitEnemy += GlobalEventManager_OnHitEnemy;
             IL.RoR2.AffixVoidBehavior.FixedUpdate += AffixVoidBehavior_FixedUpdate;
-            On.RoR2.GlobalEventManager.OnCharacterDeath += EnactNullifierMoment;
-        }
-
-        private void EnactNullifierMoment(On.RoR2.GlobalEventManager.orig_OnCharacterDeath orig, GlobalEventManager self, DamageReport report)
-        {
-            orig(self, report);
-            if (NetworkServer.active && report.victimBody && report.victimBody.HasBuff(DLC1Content.Buffs.EliteVoid))
-            {
-                Debug.Log("firing projectile");
-                FireProjectileInfo info = new();
-                info.projectilePrefab = DeathBomb;
-                info.position = report.damageInfo.position;
-                info.damage = 0;
-                info.rotation = Quaternion.identity;
-                info.owner = report.victimBody.gameObject;
-                ProjectileManager.instance.FireProjectile(info);
-            }
-        }
-
-        private void NullifierMoment(On.RoR2.GlobalEventManager.orig_OnHitEnemy orig, GlobalEventManager self, DamageInfo info, GameObject victim)
-        {
-            orig(self, info, victim);
-            if (NetworkServer.active && info.HasModdedDamageType(NullifierDeath))
-            {
-                CharacterBody victimBody = victim.GetComponent<CharacterBody>();
-                if (victimBody && !victimBody.isPlayerControlled && !victimBody.bodyFlags.HasFlag(CharacterBody.BodyFlags.Mechanical))
-                {
-                    CharacterMaster victimMaster = victimBody.master;
-                    victimMaster.teamIndex = TeamIndex.Void;
-                    victimBody.teamComponent.teamIndex = TeamIndex.Void;
-                    victimBody.inventory.SetEquipmentIndex(DLC1Content.Equipment.EliteVoidEquipment.equipmentIndex);
-                    BaseAI ai = victimMaster.GetComponent<BaseAI>();
-                    if (ai)
-                    {
-                        ai.enemyAttention = 0;
-                        ai.ForceAcquireNearestEnemyIfNoCurrentEnemy();
-                    }
-                    EffectManager.SpawnEffect(Utils.Paths.GameObject.ElementalRingVoidImplodeEffect.Load<GameObject>(), new EffectData
-                    {
-                        origin = info.position
-                    }, true);
-                }
-            }
-
-            if (NetworkServer.active && info.attacker)
-            {
-                CharacterBody attackerBody = info.attacker.GetComponent<CharacterBody>();
-                CharacterBody victimBody = info.attacker.GetComponent<CharacterBody>();
-
-                if (attackerBody.HasBuff(DLC1Content.Buffs.EliteVoid))
-                {
-                    float takenDamagePercent = info.damage / victimBody.healthComponent.fullCombinedHealth * 100f;
-                    int permanentDamage = Mathf.FloorToInt(takenDamagePercent * 40 / 100f);
-                    for (int l = 0; l < permanentDamage; l++)
-                    {
-                        victimBody.AddBuff(RoR2Content.Buffs.PermanentCurse);
-                    }
-                }
-            }
         }
 
         private void AffixVoidBehavior_FixedUpdate(ILContext il)
@@ -126,8 +64,7 @@ namespace WellRoundedBalance.Elites
             ILCursor c = new(il);
 
             if (c.TryGotoNext(MoveType.Before,
-                x => x.MatchLdsfld("RoR2.DLC1Content/Buffs", "EliteVoid"),
-                x => x.MatchCallOrCallvirt<CharacterBody>("HasBuff")))
+                x => x.MatchLdsfld(typeof(DLC1Content.Buffs), "EliteVoid")))
             {
                 c.Remove();
                 c.Emit<Useless>(OpCodes.Ldsfld, nameof(Useless.uselessBuff));
@@ -136,9 +73,12 @@ namespace WellRoundedBalance.Elites
             {
                 Main.WRBLogger.LogError("Failed to apply Voidtouched Elite Needletick hook");
             }
+        }
 
-            // HOPOO GAMES ! !
-            // why does it get the buff after I replace it lol
+        private void HealthComponent_Awake(On.RoR2.HealthComponent.orig_Awake orig, HealthComponent self)
+        {
+            self.gameObject.AddComponent<VoidtouchedPermanentDamageController>();
+            orig(self);
         }
 
         private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
@@ -158,121 +98,59 @@ namespace WellRoundedBalance.Elites
             orig(self, body);
             if (body.HasBuff(DLC1Content.Buffs.EliteVoid))
             {
-                if (body.GetComponent<VoidtouchedSpinnyManager>() == null)
+                if (body.GetComponent<VoidtouchedBallsManager>() == null)
                 {
-                    body.gameObject.AddComponent<VoidtouchedSpinnyManager>();
+                    body.gameObject.AddComponent<VoidtouchedBallsManager>();
                 }
             }
         }
     }
 
-    public class VoidtouchedSpinnyManager : MonoBehaviour
+    public class VoidtouchedBallsManager : MonoBehaviour
     {
         public CharacterBody body;
-        public int spinniesCount;
-        public float spinnyHitFrequency = 1f / 10f;
-        public float spinnyRadius = 3f;
-        public float spinnyLength = 50f;
-        public float rotationsPerSecond = 0.6f;
-        public float timer;
-        public GameObject spinnyLaser;
-        public GameObject spinnyInstance;
-        public bool shouldFireVFX;
-        public Transform[] muzzles;
+        public GameObject prefab = Projectiles.VoidBall.prefab;
+        private float timer;
+        public float interval = 5f;
+        public int ballCount;
 
         private void Start()
         {
             body = GetComponent<CharacterBody>();
-            spinnyLaser = VoidLaserProjectileVFX.laserPrefab;
-            spinnyInstance = spinnyLaser;
             if (Run.instance.selectedDifficulty >= DifficultyIndex.Eclipse3 && Eclipse3.instance.isEnabled)
             {
-                spinniesCount = 3;
+                ballCount = 5;
             }
             else
             {
-                spinniesCount = 2;
+                ballCount = 3;
             }
-
-            var muzzleString = "VoidtouchedSpinnyMuzzle";
-            float angle = 360f / spinniesCount;
-            for (int i = 0; i < spinniesCount; i++)
-            {
-                GameObject muzzle = new(muzzleString + i);
-                muzzle.transform.parent = body.coreTransform;
-                var evenRotation = Quaternion.AngleAxis(angle, Vector3.forward);
-                muzzle.transform.eulerAngles = evenRotation.eulerAngles;
-                muzzles[i] = muzzle.transform;
-                muzzles[i].transform.eulerAngles = muzzle.transform.eulerAngles;
-            }
-        }
-
-        private Ray GetSpinnyRay(int muzzleIndex)
-        {
-            var muzzle = muzzles[muzzleIndex];
-            var rayDirection = muzzle.transform.rotation;
-            var rayOrigin = muzzle.transform.position;
-            return new Ray(rayOrigin, rayDirection.eulerAngles);
         }
 
         private void FixedUpdate()
         {
             timer += Time.fixedDeltaTime;
-            if (timer >= spinnyHitFrequency)
+            if (timer >= interval)
             {
-                for (int i = 0; i < spinniesCount; i++)
+                var playerList = CharacterBody.readOnlyInstancesList.Where(x => x.isPlayerControlled).ToArray();
+                for (int i = 0; i < playerList.Length; i++)
                 {
-                    BulletAttack ba = new()
+                    for (int j = 0; j < ballCount; j++)
                     {
-                        origin = GetSpinnyRay(i).origin,
-                        aimVector = GetSpinnyRay(i).direction,
-                        // make this thing work with muzzles somehow?
-                        minSpread = 0f,
-                        maxSpread = 0f,
-                        maxDistance = spinnyLength,
-                        hitMask = LayerIndex.CommonMasks.bullet,
-                        stopperMask = LayerIndex.world.intVal,
-                        bulletCount = 1U,
-                        radius = spinnyRadius,
-                        smartCollision = false,
-                        procCoefficient = 0f,
-                        owner = gameObject,
-                        weapon = gameObject,
-                        damage = Run.instance ? Mathf.Sqrt(Run.instance.ambientLevel) : 0f,
-                        damageColorIndex = DamageColorIndex.Default,
-                        falloffModel = BulletAttack.FalloffModel.None,
-                        force = 0f,
-                        hitEffectPrefab = VoidLaserProjectileVFX.impactPrefab,
-                        tracerEffectPrefab = VoidLaserProjectileVFX.laserPrefab,
-                        isCrit = false,
-                        HitEffectNormal = false,
-                    };
-
-                    if (Util.HasEffectiveAuthority(gameObject)) ba.Fire();
-
-                    Fire();
+                        var fpi = new FireProjectileInfo
+                        {
+                            projectilePrefab = prefab,
+                            damage = Run.instance ? 5f + Mathf.Sqrt(Run.instance.ambientLevel * 200f) : 0f,
+                            rotation = Quaternion.identity,
+                            owner = gameObject,
+                            crit = body.RollCrit(),
+                            position = Util.ApplySpread(playerList[i].footPosition, 5f * j, 7f * j, 1f, 0.08f)
+                        };
+                        ProjectileManager.instance.FireProjectile(fpi);
+                        timer = 0f;
+                    }
                 }
-
-                timer = 0f;
             }
-            if (timer <= 0)
-            {
-                shouldFireVFX = false;
-                Unfire();
-            }
-        }
-
-        private void Unfire()
-        {
-            GameObject.Destroy(spinnyInstance);
-            spinnyInstance = null;
-        }
-
-        private void Fire()
-        {
-            if (shouldFireVFX) return;
-            spinnyInstance = GameObject.Instantiate(spinnyLaser, body.transform);
-            shouldFireVFX = true;
         }
     }
 
