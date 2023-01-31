@@ -50,7 +50,7 @@ namespace WellRoundedBalance.Elites
 
             SphereCollider collider = ShieldPrefab.AddComponent<SphereCollider>();
             collider.radius = 1f;
-            
+
             ProjectileImpactExplosion impact = ShieldPrefab.AddComponent<ProjectileImpactExplosion>();
             impact.blastRadius = 3;
             impact.lifetime = 5;
@@ -66,15 +66,16 @@ namespace WellRoundedBalance.Elites
             ProjectileTargetComponent target = ShieldPrefab.AddComponent<ProjectileTargetComponent>();
 
             GlacialRotationController glacialRotation = ShieldPrefab.AddComponent<GlacialRotationController>();
-            
+
             ShieldPrefab.layer = LayerIndex.entityPrecise.intVal;
-            
+
             PrefabAPI.RegisterNetworkPrefab(ShieldPrefab);
             ContentAddition.AddProjectile(ShieldPrefab);
             base.Init();
         }
 
-        public class GlacialShieldsController : MonoBehaviour {
+        public class GlacialShieldsController : MonoBehaviour
+        {
             private float stopwatch = 0f;
             private float delay = 3f;
             private float stopwatchClear = 0f;
@@ -82,20 +83,26 @@ namespace WellRoundedBalance.Elites
             private TeamIndex index;
             private List<CharacterBody> bodies = new();
 
-            public void Start() {
+            public void Start()
+            {
                 index = GetComponent<TeamComponent>().teamIndex;
             }
 
-            public void FixedUpdate() {
+            public void FixedUpdate()
+            {
                 stopwatch += Time.fixedDeltaTime;
                 stopwatchClear += Time.fixedDeltaTime;
-                if (stopwatch >= delay) {
+                if (stopwatch >= delay)
+                {
                     stopwatch = 0f;
                     Collider[] cols = Physics.OverlapSphere(base.transform.position, 25).Where(x => x.GetComponent<CharacterBody>()).ToArray();
-                    foreach (Collider col in cols) {
+                    foreach (Collider col in cols)
+                    {
                         CharacterBody body = col.GetComponent<CharacterBody>();
-                        if (body.teamComponent.teamIndex == index && body != base.GetComponent<CharacterBody>() && !bodies.Contains(body)) {
-                            for (int i = 0; i < 3; i++) {
+                        if (body.teamComponent.teamIndex == index && body != base.GetComponent<CharacterBody>() && !bodies.Contains(body))
+                        {
+                            for (int i = 0; i < 3; i++)
+                            {
                                 FireProjectileInfo info = new();
                                 info.damage = 0;
                                 info.position = body.corePosition;
@@ -112,14 +119,16 @@ namespace WellRoundedBalance.Elites
                     }
                 }
 
-                if (stopwatchClear >= delayClear) {
+                if (stopwatchClear >= delayClear)
+                {
                     stopwatchClear = 0f;
                     bodies.Clear();
                 }
             }
         }
 
-        public class GlacialRotationController : MonoBehaviour {
+        public class GlacialRotationController : MonoBehaviour
+        {
             public ProjectileTargetComponent targetComponent => GetComponent<ProjectileTargetComponent>();
             public Transform target;
             private float speed = 360 / 12;
@@ -130,8 +139,10 @@ namespace WellRoundedBalance.Elites
             private float initialDegrees = UnityEngine.Random.Range(0, 360);
             private Rigidbody rb;
 
-            public void Start() {
-                if (targetComponent.target) {
+            public void Start()
+            {
+                if (targetComponent.target)
+                {
                     target = targetComponent.target;
                     initialRadial = Quaternion.AngleAxis(initialDegrees, Vector3.up) * target.forward;
                 }
@@ -141,13 +152,16 @@ namespace WellRoundedBalance.Elites
                 rb = GetComponent<Rigidbody>();
             }
 
-            public void FixedUpdate() {
-                if (!target && targetComponent.target) {
+            public void FixedUpdate()
+            {
+                if (!target && targetComponent.target)
+                {
                     target = targetComponent.target;
                     initialRadial = Quaternion.AngleAxis(initialDegrees, Vector3.up) * target.forward;
                 }
 
-                if (target) {
+                if (target)
+                {
                     float angle = (Run.instance.GetRunStopwatch() - initialTime) * speed;
                     Vector3 pos = target.position + new Vector3(0, offset, 0) + Quaternion.AngleAxis(angle, Vector3.up) * initialRadial * distance;
                     Vector3 newPos = Vector3.Lerp(rb.position, pos, 30 * Time.fixedDeltaTime);
@@ -217,11 +231,14 @@ namespace WellRoundedBalance.Elites
             bool flag = sender.HasBuff(RoR2Content.Buffs.AffixWhite);
             GlacialShieldsController controller = sender.GetComponent<GlacialShieldsController>();
 
-            if (flag != controller) {
-                if (flag) {
+            if (flag != controller)
+            {
+                if (flag)
+                {
                     sender.gameObject.AddComponent<GlacialShieldsController>();
                 }
-                else {
+                else
+                {
                     sender.gameObject.RemoveComponent<GlacialShieldsController>();
                 }
             }

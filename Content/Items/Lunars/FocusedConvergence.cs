@@ -9,9 +9,7 @@ namespace WellRoundedBalance.Items.Lunars
         public override string InternalPickupToken => "focusedConvergence";
 
         public override string PickupText => "Teleporter events grant additional rewards... <color=#FF7F7F>BUT increase their difficulty.</color>";
-
-        // this is a complicated string to ? : so maybeeee pls someone help pls
-        public override string DescText => "Increase <style=cIsUtility>teleporter event rewards</style> by <style=cIsUtility>2</style> <style=cStack>(+2 per stack)</style>. Teleporter events spawn <style=cIsUtility>100%</style> <style=cStack>(+100% per stack)</style> more bosses.";
+        public override string DescText => "Increase <style=cIsUtility>teleporter event rewards</style> by <style=cIsUtility>2</style> <style=cStack>(+2 per stack)</style>. Teleporter events are <style=cIsUtility>200%</style> <style=cStack>(+200% per stack)</style> harder.";
 
         public override void Init()
         {
@@ -31,16 +29,21 @@ namespace WellRoundedBalance.Items.Lunars
             for (int i = 0; i < readOnlyInstancesList.Count; i++)
             {
                 CharacterMaster characterMaster = readOnlyInstancesList[i];
-                if (characterMaster.teamIndex == TeamIndex.Player)
+                if (characterMaster.inventory) // funnier eulogy, no team check
                 {
                     stack += characterMaster.inventory.GetItemCount(RoR2Content.Items.FocusConvergence);
                 }
             }
-            if (stack > 0)
+            if (NetworkServer.active && stack > 0)
             {
-                // var bossGroup = self.bossGroup;
+                for (int i = 0; i < stack * 2; i++)
+                {
+                    self.AddShrineStack();
+                }
+                /*
                 self.shrineBonusStacks += 1 * stack;
                 self.bossGroup.bonusRewardCount += 2 * stack;
+                */
             }
             orig(self);
         }

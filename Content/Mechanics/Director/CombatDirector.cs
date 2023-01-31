@@ -4,6 +4,11 @@
     {
         public override string Name => ":: Mechanics ::::: Combat Director";
 
+        public override void Init()
+        {
+            base.Init();
+        }
+
         public override void Hooks()
         {
             On.RoR2.CombatDirector.OnEnable += CombatDirector_OnEnable;
@@ -30,6 +35,16 @@
             self.maxRerollSpawnInterval /= 1.35f;
             self.creditMultiplier += 0.25f;
             self.eliteBias *= 0.9f;
+            var teleporter = TeleporterInteraction.instance;
+            if (teleporter != null)
+            {
+                for (int i = 0; i < teleporter.shrineBonusStacks; i++)
+                {
+                    self.creditMultiplier *= 1.05f;
+                    self.expRewardCoefficient *= 0.94f;
+                    self.goldRewardCoefficient *= 0.94f;
+                }
+            }
             orig(self);
         }
     }

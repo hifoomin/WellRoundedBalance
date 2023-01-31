@@ -11,7 +11,7 @@ namespace WellRoundedBalance.Items.Lunars
 
         public override string PickupText => "Replace your Special Skill with 'Ruin'.";
 
-        public override string DescText => "<style=cIsUtility>Replace your Special Skill</style> with <style=cIsUtility>Ruin</style>. \n\nDealing damage adds a stack of <style=cIsDamage>Ruin</style> for 5 <style=cStack>(+5 per stack)</style> seconds. Activating the skill <style=cIsDamage>detonates</style> all Ruin stacks at unlimited range, dealing <style=cIsDamage>300% damage</style> plus <style=cIsDamage>120% damage per stack of Ruin</style>. Recharges after 8 <style=cStack>(+8 per stack)</style> seconds.";
+        public override string DescText => "<style=cIsUtility>Replace your Special Skill</style> with <style=cIsUtility>Ruin</style>. \n\nDealing damage has a <style=cIsDamage>50%</style> chance to add a stack of <style=cIsDamage>Ruin</style> for 10 <style=cStack>(+10 per stack)</style> seconds. Activating the skill <style=cIsDamage>detonates</style> all Ruin stacks at unlimited range, dealing <style=cIsDamage>300% damage</style> plus <style=cIsDamage>120% damage per stack of Ruin</style>. Recharges after 8 <style=cStack>(+8 per stack)</style> seconds.";
 
         public override void Init()
         {
@@ -28,9 +28,9 @@ namespace WellRoundedBalance.Items.Lunars
             ILCursor c = new(il);
 
             if (c.TryGotoNext(MoveType.Before,
-                x => x.MatchLdcR4(10f)))
+                x => x.MatchLdcR4(100f)))
             {
-                c.Next.Operand = 5f;
+                c.Next.Operand = 50f;
             }
             else
             {
