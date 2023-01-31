@@ -53,7 +53,7 @@ namespace WellRoundedBalance.Interactables
             public void Explode(TeleporterInteraction instance)
             {
                 TeleporterInteraction.onTeleporterBeginChargingGlobal -= Explode;
-                EffectManager.SpawnEffect(Utils.Paths.GameObject.CritGlassesVoidExecuteEffect.Load<GameObject>(), new EffectData
+                EffectManager.SpawnEffect(Utils.Paths.GameObject.ExplodeOnDeathVoidExplosionEffect.Load<GameObject>(), new EffectData
                 {
                     origin = base.transform.position,
                     scale = 3f

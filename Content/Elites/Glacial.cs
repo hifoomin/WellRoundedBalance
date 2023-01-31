@@ -12,6 +12,9 @@ namespace WellRoundedBalance.Elites
         public static BuffDef slow;
         public static GameObject iceExplosionPrefab;
         public override string Name => ":: Elites :::: Glacial";
+        public static GameObject ShieldPrefab;
+        public static GameObject ShieldGhostPrefab;
+        public static GameObject mdlGlacialShield;
 
         public override void Init()
         {
@@ -28,7 +31,129 @@ namespace WellRoundedBalance.Elites
             slow.isHidden = false;
 
             ContentAddition.AddBuffDef(slow);
+
+            ShieldPrefab = PrefabAPI.InstantiateClone(new(""), "GlacialShield");
+            ShieldGhostPrefab = PrefabAPI.InstantiateClone(new(""), "GlacialShieldGhost");
+            mdlGlacialShield = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.mdlAegis.Load<GameObject>(), "mdlGlacialShield");
+            ShieldPrefab.AddComponent<TeamFilter>();
+            ShieldPrefab.AddComponent<NetworkIdentity>();
+            ProjectileController controller = ShieldPrefab.AddComponent<ProjectileController>();
+            controller.ghostPrefab = ShieldGhostPrefab;
+            controller.procCoefficient = 0;
+            controller.allowPrediction = false;
+
+            Rigidbody rigidbody = ShieldPrefab.AddComponent<Rigidbody>();
+            rigidbody.useGravity = false;
+            rigidbody.isKinematic = false;
+            rigidbody.drag = 0;
+            rigidbody.mass = 1000;
+
+            SphereCollider collider = ShieldPrefab.AddComponent<SphereCollider>();
+            collider.radius = 1f;
+            
+            ProjectileImpactExplosion impact = ShieldPrefab.AddComponent<ProjectileImpactExplosion>();
+            impact.blastRadius = 3;
+            impact.lifetime = 5;
+            impact.destroyOnEnemy = false;
+            impact.destroyOnWorld = false;
+            impact.impactOnWorld = false;
+            impact.impactEffect = Utils.Paths.GameObject.IceRingExplosion.Load<GameObject>();
+
+            mdlGlacialShield.transform.SetParent(ShieldPrefab.transform);
+            mdlGlacialShield.GetComponentInChildren<MeshRenderer>().material = Utils.Paths.Material.matIceOrbCore.Load<Material>();
+            mdlGlacialShield.transform.localScale *= 0.6f;
+
+            ProjectileTargetComponent target = ShieldPrefab.AddComponent<ProjectileTargetComponent>();
+
+            GlacialRotationController glacialRotation = ShieldPrefab.AddComponent<GlacialRotationController>();
+            
+            ShieldPrefab.layer = LayerIndex.entityPrecise.intVal;
+            
+            PrefabAPI.RegisterNetworkPrefab(ShieldPrefab);
+            ContentAddition.AddProjectile(ShieldPrefab);
             base.Init();
+        }
+
+        public class GlacialShieldsController : MonoBehaviour {
+            private float stopwatch = 0f;
+            private float delay = 3f;
+            private float stopwatchClear = 0f;
+            private float delayClear = 9f;
+            private TeamIndex index;
+            private List<CharacterBody> bodies = new();
+
+            public void Start() {
+                index = GetComponent<TeamComponent>().teamIndex;
+            }
+
+            public void FixedUpdate() {
+                stopwatch += Time.fixedDeltaTime;
+                stopwatchClear += Time.fixedDeltaTime;
+                if (stopwatch >= delay) {
+                    stopwatch = 0f;
+                    Collider[] cols = Physics.OverlapSphere(base.transform.position, 25).Where(x => x.GetComponent<CharacterBody>()).ToArray();
+                    foreach (Collider col in cols) {
+                        CharacterBody body = col.GetComponent<CharacterBody>();
+                        if (body.teamComponent.teamIndex == index && body != base.GetComponent<CharacterBody>() && !bodies.Contains(body)) {
+                            for (int i = 0; i < 3; i++) {
+                                FireProjectileInfo info = new();
+                                info.damage = 0;
+                                info.position = body.corePosition;
+                                info.owner = base.gameObject;
+                                info.rotation = Quaternion.identity;
+                                info.crit = false;
+                                info.target = body.gameObject;
+                                info.projectilePrefab = ShieldPrefab;
+
+                                ProjectileManager.instance.FireProjectile(info);
+                            }
+                            bodies.Add(body);
+                        }
+                    }
+                }
+
+                if (stopwatchClear >= delayClear) {
+                    stopwatchClear = 0f;
+                    bodies.Clear();
+                }
+            }
+        }
+
+        public class GlacialRotationController : MonoBehaviour {
+            public ProjectileTargetComponent targetComponent => GetComponent<ProjectileTargetComponent>();
+            public Transform target;
+            private float speed = 360 / 12;
+            private Vector3 initialRadial;
+            private float offset = 0.5f;
+            private float distance = 3;
+            private float initialTime;
+            private float initialDegrees = UnityEngine.Random.Range(0, 360);
+            private Rigidbody rb;
+
+            public void Start() {
+                if (targetComponent.target) {
+                    target = targetComponent.target;
+                    initialRadial = Quaternion.AngleAxis(initialDegrees, Vector3.up) * target.forward;
+                }
+
+                initialTime = Run.instance.GetRunStopwatch();
+
+                rb = GetComponent<Rigidbody>();
+            }
+
+            public void FixedUpdate() {
+                if (!target && targetComponent.target) {
+                    target = targetComponent.target;
+                    initialRadial = Quaternion.AngleAxis(initialDegrees, Vector3.up) * target.forward;
+                }
+
+                if (target) {
+                    float angle = (Run.instance.GetRunStopwatch() - initialTime) * speed;
+                    Vector3 pos = target.position + new Vector3(0, offset, 0) + Quaternion.AngleAxis(angle, Vector3.up) * initialRadial * distance;
+                    Vector3 newPos = Vector3.Lerp(rb.position, pos, 30 * Time.fixedDeltaTime);
+                    rb.MovePosition(newPos);
+                }
+            }
         }
 
         public override void Hooks()
@@ -87,6 +212,18 @@ namespace WellRoundedBalance.Elites
             if (sender.HasBuff(slow))
             {
                 args.moveSpeedReductionMultAdd += 0.8f;
+            }
+
+            bool flag = sender.HasBuff(RoR2Content.Buffs.AffixWhite);
+            GlacialShieldsController controller = sender.GetComponent<GlacialShieldsController>();
+
+            if (flag != controller) {
+                if (flag) {
+                    sender.gameObject.AddComponent<GlacialShieldsController>();
+                }
+                else {
+                    sender.gameObject.RemoveComponent<GlacialShieldsController>();
+                }
             }
         }
 
