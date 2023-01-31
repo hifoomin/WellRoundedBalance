@@ -30,14 +30,7 @@ namespace WellRoundedBalance.Elites
 
         public override void Hooks()
         {
-            On.RoR2.Projectile.ProjectileController.Start += (orig, self) =>
-            {
-                orig(self);
-                if (self.gameObject.name.Contains("LightningStake"))
-                {
-                    GameObject.DestroyImmediate(self.gameObject);
-                }
-            };
+            On.RoR2.Projectile.ProjectileController.Start += ProjectileController_Start;
 
             On.RoR2.CharacterBody.RecalculateStats += (orig, self) =>
             {
@@ -61,6 +54,15 @@ namespace WellRoundedBalance.Elites
 
             RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
             IL.RoR2.CharacterBody.RecalculateStats += CharacterBody_RecalculateStats;
+        }
+
+        private void ProjectileController_Start(On.RoR2.Projectile.ProjectileController.orig_Start orig, ProjectileController self)
+        {
+            orig(self);
+            if (self.gameObject.name.Contains("LightningStake"))
+            {
+                GameObject.DestroyImmediate(self.gameObject);
+            }
         }
 
         private void CharacterBody_RecalculateStats(ILContext il)

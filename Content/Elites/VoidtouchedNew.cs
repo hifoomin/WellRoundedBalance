@@ -114,7 +114,7 @@ namespace WellRoundedBalance.Elites
                 x => x.MatchCallOrCallvirt<CharacterBody>("AddBuff")))
             {
                 c.Remove();
-                c.Emit<Useless>(OpCodes.Ldsfld, nameof(Useless.uselessBuff));
+                c.Emit<Useless>(OpCodes.Ldsfld, nameof(Useless.voidtouchedSaferSpaces));
             }
             else
             {

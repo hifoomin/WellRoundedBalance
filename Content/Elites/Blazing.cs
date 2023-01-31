@@ -55,7 +55,7 @@ namespace WellRoundedBalance.Elites
                 c.Index += 1;
                 c.EmitDelegate<Func<float, float>>((useless) =>
                 {
-                    return Run.instance ? Mathf.Sqrt(Run.instance.ambientLevel * 0.9f) : 0f;
+                    return Run.instance ? Mathf.Sqrt(Run.instance.ambientLevel * 0.2f) : 0f;
                 });
             }
             else
@@ -139,7 +139,7 @@ namespace WellRoundedBalance.Elites
                     projectilePrefab = projectile,
                     crit = Util.CheckRoll(body.crit, body.master),
                     position = body.corePosition,
-                    damage = Run.instance ? Mathf.Sqrt(Run.instance.ambientLevel * 8f) : 0f
+                    damage = Run.instance ? Mathf.Sqrt(Run.instance.ambientLevel * 9f) : 0f
                 };
                 if (Util.HasEffectiveAuthority(gameObject)) ProjectileManager.instance.FireProjectile(fpi);
                 timer = 0f;

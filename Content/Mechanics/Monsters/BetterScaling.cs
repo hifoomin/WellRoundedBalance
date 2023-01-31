@@ -10,7 +10,8 @@ namespace WellRoundedBalance.Mechanics.Monsters
 
         private static void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
-            args.armorAdd += 150 - 150 / Mathf.Pow(1 + 0.055f, Run.instance.stageClearCount);
+            if (sender.teamComponent.teamIndex != TeamIndex.Player)
+                args.armorAdd += 150 - 150 / Mathf.Pow(1 + 0.055f, Run.instance.stageClearCount);
         }
 
         [SystemInitializer(typeof(BodyCatalog))]
@@ -22,8 +23,11 @@ namespace WellRoundedBalance.Mechanics.Monsters
                 RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
                 foreach (CharacterBody body in BodyCatalog.allBodyPrefabBodyBodyComponents)
                 {
-                    body.baseMaxHealth *= 0.75f;
-                    body.levelMaxHealth *= 0.75f;
+                    if (SurvivorCatalog.FindSurvivorDefFromBody(body.gameObject) == null)
+                    {
+                        body.baseMaxHealth *= 0.75f;
+                        body.levelMaxHealth *= 0.75f;
+                    }
                 }
             }
         }
