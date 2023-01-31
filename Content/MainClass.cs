@@ -14,6 +14,7 @@ using WellRoundedBalance.Eclipse;
 using System.Runtime.CompilerServices;
 using WellRoundedBalance.Elites;
 using R2API.ContentManagement;
+using WellRoundedBalance.Mechanics.Monsters;
 
 [assembly: HG.Reflection.SearchableAttribute.OptIn]
 // used for BodyCatalog
@@ -196,7 +197,7 @@ namespace WellRoundedBalance
 
             RemoveGesture.Based();
             Mechanic.Monster.SpeedBoost.AddSpeedBoost();
-            Mechanic.Bosses.BetterScaling.NerfHealthScaling();
+            BetterScaling.NerfHealthScaling();
         }
 
         public bool ValidateMechanic(MechanicBase gb)

@@ -15,7 +15,7 @@ namespace WellRoundedBalance.Items.Reds
 
         public override string PickupText => "Inflict venom on hit.";
 
-        public override string DescText => "Inflict <style=cIsDamage>venom</style> on hit, dealing <style=cIsDamage>1000%</style> base damage over 5s and steals <style=cIsHealing>20</style> <style=cStack>(+10 per stack)</style> <style=cIsHealing>armor</style> for 5s.";
+        public override string DescText => "Inflict <style=cIsDamage>venom</style> on hit, dealing <style=cIsDamage>750%</style> base damage over 5s and stealing <style=cIsHealing>20</style> <style=cStack>(+10 per stack)</style> <style=cIsHealing>armor</style> for 5s.";
 
         public override void Init()
         {
@@ -139,12 +139,12 @@ namespace WellRoundedBalance.Items.Reds
     {
         public float interval = 0.2f;
         public float timer;
-        public float damageCoefficient = 0.4f;
+        public float damageCoefficient = 0.3f;
         public float duration = 5f;
         public HealthComponent victimHealthComponent;
         public CharacterBody attackerBody;
         public DamageInfo info;
-        // ticks 5 times a second for 50% damage per tick for 4 seconds in total
+        // ticks 5 times a second for 30% damage per tick for 5 seconds in total
 
         private void Start()
         {

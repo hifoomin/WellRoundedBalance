@@ -33,8 +33,8 @@ namespace WellRoundedBalance.Elites
             ContentAddition.AddBuffDef(slow);
 
             ShieldPrefab = PrefabAPI.InstantiateClone(new(""), "GlacialShield");
-            ShieldGhostPrefab = PrefabAPI.InstantiateClone(new(""), "GlacialShieldGhost");
-            mdlGlacialShield = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.mdlAegis.Load<GameObject>(), "mdlGlacialShield");
+            ShieldGhostPrefab = PrefabAPI.InstantiateClone(new(""), "GlacialShieldGhost", false);
+            mdlGlacialShield = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.mdlAegis.Load<GameObject>(), "mdlGlacialShield", false);
             ShieldPrefab.AddComponent<TeamFilter>();
             ShieldPrefab.AddComponent<NetworkIdentity>();
             ProjectileController controller = ShieldPrefab.AddComponent<ProjectileController>();

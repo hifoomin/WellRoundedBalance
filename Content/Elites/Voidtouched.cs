@@ -51,7 +51,7 @@ namespace WellRoundedBalance.Elites
                 x => x.MatchCallOrCallvirt<CharacterBody>("AddBuff")))
             {
                 c.Remove();
-                c.Emit<Useless>(OpCodes.Ldsfld, nameof(Useless.uselessBuff));
+                c.Emit<Useless>(OpCodes.Ldsfld, nameof(Useless.voidtouchedSaferSpaces));
             }
             else
             {
@@ -144,7 +144,7 @@ namespace WellRoundedBalance.Elites
                             rotation = Quaternion.identity,
                             owner = gameObject,
                             crit = body.RollCrit(),
-                            position = Util.ApplySpread(playerList[i].footPosition, 5f * j, 7f * j, 1f, 0.08f)
+                            position = Util.ApplySpread(playerList[i].footPosition, 6f * j, 7f * j, 1f, 0.08f)
                         };
                         ProjectileManager.instance.FireProjectile(fpi);
                         timer = 0f;

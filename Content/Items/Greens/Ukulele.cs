@@ -99,11 +99,24 @@ namespace WellRoundedBalance.Items.Greens
                     x => x.MatchLdcR4(0.2f)))
             {
                 c.Index += 4;
-                c.Next.Operand = 0.2f;
+                c.Next.Operand = 0f;
             }
             else
             {
                 Main.WRBLogger.LogError("Failed to apply Ukulele Proc Coefficient hook");
+            }
+
+            c.Index = 0;
+
+            if (c.TryGotoNext(MoveType.Before,
+                x => x.MatchLdcR4(0.2f),
+                x => x.MatchStfld<VoidLightningOrb>("procCoefficient")))
+            {
+                c.Next.Operand = 0f;
+            }
+            else
+            {
+                Main.WRBLogger.LogError("Failed to apply Polylute Proc Coefficient hook");
             }
         }
 

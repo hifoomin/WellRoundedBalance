@@ -21,14 +21,15 @@ namespace WellRoundedBalance.Items.Whites
 
         private void GlobalEventManager_onCharacterDeathGlobal(DamageReport damageReport)
         {
-            var attacker = damageReport.attackerBody;
+            var attacker = damageReport.attacker;
             var victim = damageReport.victim;
             if (attacker && victim)
             {
-                var stack = attacker.inventory.GetItemCount(RoR2Content.Items.BarrierOnKill);
-                if (stack > 0 && NetworkServer.active && attacker.healthComponent)
+                var attackerBody = damageReport.attackerBody;
+                var stack = attackerBody.inventory.GetItemCount(RoR2Content.Items.BarrierOnKill);
+                if (stack > 0 && NetworkServer.active && attackerBody.healthComponent)
                 {
-                    attacker.healthComponent.AddBarrier(attacker.healthComponent.combinedHealthFraction * 0.015f);
+                    attackerBody.healthComponent.AddBarrier(attackerBody.healthComponent.combinedHealthFraction * 0.015f);
                 }
             }
         }
