@@ -13,12 +13,12 @@ namespace WellRoundedBalance.Mechanic.Bazaar
 
         public override void Init()
         {
-            lunarPod = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.LunarChest.Load<GameObject>(), "WellRoundedBalanceLunarPod");
+            lunarPod = Utils.Paths.GameObject.LunarChest.Load<GameObject>();
             heresyStation = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.LunarShopTerminal.Load<GameObject>(), "HeresyStation");
 
             var lunarDropTable = ScriptableObject.CreateInstance<LunarDropTable>();
             var chestBehavior = lunarPod.GetComponent<ChestBehavior>();
-            chestBehavior.dropTable = lunarDropTable;
+            // chestBehavior.dropTable = lunarDropTable;
 
             var heresyDropTable = ScriptableObject.CreateInstance<HeresyDropTable>();
 
@@ -26,7 +26,6 @@ namespace WellRoundedBalance.Mechanic.Bazaar
             shopBehavior.dropTable = heresyDropTable;
 
             PrefabAPI.RegisterNetworkPrefab(heresyStation);
-            PrefabAPI.RegisterNetworkPrefab(lunarPod);
             base.Init();
         }
 
@@ -45,7 +44,7 @@ namespace WellRoundedBalance.Mechanic.Bazaar
                 List<PurchaseInteraction> interactions = GameObject.FindObjectsOfType<PurchaseInteraction>().Where(x => x.gameObject.name.Contains("LunarShopTerminal")).ToList();
                 for (int i = 0; i < 5; i++)
                 {
-                    if (i == 0 || i == 5)
+                    if (i == 1 || i == 5)
                     {
                         GameObject.Destroy(interactions[i].gameObject);
                         continue;

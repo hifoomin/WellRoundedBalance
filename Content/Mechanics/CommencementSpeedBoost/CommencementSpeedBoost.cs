@@ -46,7 +46,7 @@ namespace WellRoundedBalance.Mechanic.CommencementSpeedBoost
                 {
                     if (body.isPlayerControlled)
                     {
-                        body.AddTimedBuff(commencementSpeed, 15f);
+                        body.AddTimedBuff(commencementSpeed, 30f);
                     }
                 }
             }

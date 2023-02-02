@@ -34,11 +34,11 @@ namespace WellRoundedBalance.Mechanics.Shrines
         private void CharacterBody_onBodyStartGlobal(CharacterBody body)
         {
             var teleporter = TeleporterInteraction.instance;
-            if (teleporter != null)
+            if (teleporter != null && teleporter.isCharging)
             {
                 for (int i = 0; i < teleporter.shrineBonusStacks; i++)
                 {
-                    body.AddBuff(mountainShrineBuff);
+                    if (body.teamComponent.teamIndex != TeamIndex.Player) body.AddBuff(mountainShrineBuff);
                 }
             }
         }
