@@ -30,8 +30,8 @@ namespace WellRoundedBalance.Items.Lunars
             {
                 if (self is EntityStates.GlobalSkills.LunarNeedle.ThrowLunarSecondary)
                 {
-                    self.minDamageCoefficient = 2.6f;
-                    self.maxDamageCoefficient = 4f;
+                    self.minDamageCoefficient = 2f;
+                    self.maxDamageCoefficient = 3f;
                 }
                 orig(self);
             };

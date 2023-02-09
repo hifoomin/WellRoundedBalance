@@ -1,5 +1,5 @@
-﻿using Inferno.Stat_AI;
-using MonoMod.Cil;
+﻿using MonoMod.Cil;
+using System;
 
 namespace WellRoundedBalance.Items.Whites
 {
@@ -70,7 +70,11 @@ namespace WellRoundedBalance.Items.Whites
                 x => x.MatchStloc(out _),
                 x => x.MatchNewobj("RoR2.Orbs.GoldOrb")))
             {
-                c.Next.Operand = 0f;
+                c.Index += 1;
+                c.EmitDelegate<Func<int, int>>((useless) =>
+                {
+                    return 0;
+                });
             }
             else
             {

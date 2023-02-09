@@ -1,5 +1,3 @@
-using System;
-
 namespace WellRoundedBalance.Interactables
 {
     internal class VoidCradle : InteractableBase
@@ -18,11 +16,11 @@ namespace WellRoundedBalance.Interactables
             interaction.costType = CostTypeIndex.None;
             interaction.cost = 0;
             interaction.contextToken = "WRB_VOIDCHEST_CONTEXT";
-            LanguageAPI.Add("WRB_VOIDCHEST_CONTEXT", "Open? (<style=cDeath> 10% Curse</style>)");
-            VoidCradle.AddComponent<CurseController>();
+            LanguageAPI.Add("WRB_VOIDCHEST_CONTEXT", "Open? (<style=cDeath>10% Curse</style>)");
+            VoidCradle.AddComponent<CradleManager>();
         }
 
-        private class CurseController : MonoBehaviour
+        private class CradleManager : MonoBehaviour
         {
             public PurchaseInteraction interaction => GetComponent<PurchaseInteraction>();
 
@@ -52,7 +50,11 @@ namespace WellRoundedBalance.Interactables
 
             public void Explode(TeleporterInteraction instance)
             {
-                TeleporterInteraction.onTeleporterBeginChargingGlobal -= Explode;
+                if (TeleporterInteraction.instance)
+                {
+                    TeleporterInteraction.onTeleporterBeginChargingGlobal -= Explode;
+                }
+
                 EffectManager.SpawnEffect(Utils.Paths.GameObject.ExplodeOnDeathVoidExplosionEffect.Load<GameObject>(), new EffectData
                 {
                     origin = base.transform.position,

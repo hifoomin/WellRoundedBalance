@@ -15,6 +15,7 @@ using System.Runtime.CompilerServices;
 using WellRoundedBalance.Elites;
 using R2API.ContentManagement;
 using WellRoundedBalance.Mechanics.Monsters;
+using WellRoundedBalance.Misc;
 
 [assembly: HG.Reflection.SearchableAttribute.OptIn]
 // used for BodyCatalog
@@ -67,6 +68,8 @@ namespace WellRoundedBalance
             InfernoLoaded = BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("HIFU.Inferno");
             RiskyArtifactsLoaded = BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("com.Moffein.RiskyArtifacts");
 
+            FunnyLabel.Hooks();
+            Useless.Create();
             Buffs.Useless.Create();
             VoidBall.Create();
             BlazingProjectileVFX.Create();

@@ -1,7 +1,4 @@
-﻿using RoR2;
-using UnityEngine.AddressableAssets;
-
-namespace WellRoundedBalance.Interactables
+﻿namespace WellRoundedBalance.Interactables
 {
     public class LunarPod : InteractableBase
     {
@@ -14,59 +11,60 @@ namespace WellRoundedBalance.Interactables
 
         public override void Hooks()
         {
-            var lunarPod = Addressables.LoadAssetAsync<InteractableSpawnCard>("RoR2/Base/LunarChest/iscLunarChest.asset").WaitForCompletion();
-            lunarPod.maxSpawnsPerStage = 1;
-            lunarPod.directorCreditCost = 15;
+            var iscLunarPod = Utils.Paths.InteractableSpawnCard.iscLunarChest.Load<InteractableSpawnCard>();
+            iscLunarPod.maxSpawnsPerStage = 1;
+            iscLunarPod.directorCreditCost = 15;
 
-            On.RoR2.PurchaseInteraction.OnInteractionBegin += PurchaseInteraction_OnInteractionBegin;
-            On.RoR2.ChestBehavior.ItemDrop += ChestBehavior_ItemDrop;
+            var lunarPod = Utils.Paths.GameObject.LunarChest.Load<GameObject>();
+            Object.Destroy(lunarPod.GetComponent<ChestBehavior>());
+            var optionChestBehavior = lunarPod.AddComponent<OptionChestBehavior>();
+
+            var lunarPodDropTable = ScriptableObject.CreateInstance<LunarPodDropTable>();
+
+            optionChestBehavior.dropTable = lunarPodDropTable;
+            // optionChestBehavior.dropTransform =
+            optionChestBehavior.dropUpVelocityStrength = 20f;
+            optionChestBehavior.dropForwardVelocityStrength = 3f;
+            optionChestBehavior.openState = new(typeof(EntityStates.Barrel.OpeningLunar));
+            optionChestBehavior.pickupPrefab = Utils.Paths.GameObject.OptionPickup.Load<GameObject>();
+            optionChestBehavior.numOptions = 2;
+            optionChestBehavior.displayTier = ItemTier.Lunar;
+        }
+    }
+
+    public class LunarPodDropTable : PickupDropTable
+    {
+        public WeightedSelection<PickupIndex> weighted = new();
+
+        public override int GetPickupCount()
+        {
+            return weighted.Count;
         }
 
-        private void ChestBehavior_ItemDrop(On.RoR2.ChestBehavior.orig_ItemDrop orig, ChestBehavior self)
+        public void GenerateWeightedSelection()
         {
-            if (NetworkServer.active)
+            weighted.Clear();
+            foreach (ItemDef itemDef in ItemCatalog.itemDefs.Where(x => x.deprecatedTier == ItemTier.Lunar))
             {
-                var purchaseInteraction = self.GetComponent<PurchaseInteraction>();
-                if (purchaseInteraction)
+                if (itemDef.name.ToLower().Contains("replacement") || itemDef.name.ToLower().Contains("heresy"))
                 {
-                    if (purchaseInteraction.displayNameToken == "LUNAR_CHEST_NAME" && purchaseInteraction.lastActivator == null)
-                    {
-                        return;
-                    }
+                    continue;
                 }
+                weighted.AddChoice(PickupCatalog.FindPickupIndex(itemDef.itemIndex), 1);
             }
-            orig(self);
         }
 
-        private void PurchaseInteraction_OnInteractionBegin(On.RoR2.PurchaseInteraction.orig_OnInteractionBegin orig, PurchaseInteraction self, Interactor activator)
+        public override PickupIndex[] GenerateUniqueDropsPreReplacement(int maxDrops, Xoroshiro128Plus rng)
         {
-            orig(self, activator);
-            if (self.displayNameToken == "LUNAR_CHEST_NAME")
-            {
-                var body = activator.GetComponent<CharacterBody>();
-                var chestBehavior = self.GetComponent<ChestBehavior>();
-                if (body)
-                {
-                    var inventory = body.inventory;
-                    var pickupIndex = PickupCatalog.GetPickupDef(chestBehavior.dropPickup);
-                    if (inventory)
-                    {
-                        if (pickupIndex.equipmentIndex != EquipmentIndex.None)
-                        {
-                            inventory.SetEquipmentIndex(chestBehavior.dropPickup.equipmentIndex);
-                            CharacterMasterNotificationQueue.PushEquipmentNotification(body.master, chestBehavior.dropPickup.equipmentIndex);
-                        }
-                        else
-                        {
-                            inventory.GiveItem(pickupIndex.itemIndex, 1);
-                            CharacterMasterNotificationQueue.PushItemNotification(body.master, chestBehavior.dropPickup.itemIndex);
-                            //chestBehavior.HasRolledPickup = true;
-                        }
+            GenerateWeightedSelection();
+            return GenerateUniqueDropsFromWeightedSelection(maxDrops, rng, weighted);
+        }
 
-                        self.lastActivator = null;
-                    }
-                }
-            }
+        public override PickupIndex GenerateDropPreReplacement(Xoroshiro128Plus rng)
+        {
+            GenerateWeightedSelection();
+            Debug.Log(GenerateDropFromWeightedSelection(rng, weighted));
+            return GenerateDropFromWeightedSelection(rng, weighted);
         }
     }
 }

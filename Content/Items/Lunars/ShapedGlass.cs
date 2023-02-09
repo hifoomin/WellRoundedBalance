@@ -8,8 +8,6 @@ namespace WellRoundedBalance.Items.Lunars
 {
     public class ShapedGlass : ItemBase
     {
-        public static ItemDef a;
-
         public override string Name => ":: Items ::::: Lunars :: Shaped Glass";
         public override string InternalPickupToken => "lunarDagger";
 
@@ -18,12 +16,6 @@ namespace WellRoundedBalance.Items.Lunars
 
         public override void Init()
         {
-            a = ScriptableObject.CreateInstance<ItemDef>();
-            a.nameToken = "WRB_USELESS_STUPID_ITEM";
-            a.deprecatedTier = ItemTier.NoTier;
-            a.name = "WRB_stupid_item";
-            LanguageAPI.Add("WRB_USELESS_STUPID_ITEM", "WRB Stupid Item");
-            ContentAddition.AddItemDef(a);
             base.Init();
         }
 
@@ -52,7 +44,7 @@ namespace WellRoundedBalance.Items.Lunars
             if (c.TryGotoNext(x => x.MatchLdsfld(typeof(RoR2Content.Items), "LunarDagger")))
             {
                 c.Remove();
-                c.Emit<ShapedGlass>(OpCodes.Ldsfld, nameof(a));
+                c.Emit<Useless>(OpCodes.Ldsfld, nameof(Useless.uselessItem));
             }
             else
             {

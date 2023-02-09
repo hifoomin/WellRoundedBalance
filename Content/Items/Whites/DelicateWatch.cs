@@ -8,18 +8,16 @@ namespace WellRoundedBalance.Items.Whites
     public class DelicateWatch : ItemBase
     {
         public static BuffDef watchDamage;
-        public static BuffDef watchSpeed;
 
         public override string Name => ":: Items : Whites :: Delicate Watch";
         public override string InternalPickupToken => "fragileDamageBonus";
 
-        public override string PickupText => "Every 12 seconds, switch between dealing bonus damage and moving faster. Breaks at low health.";
-        public override string DescText => "Every <style=cIsUtility>12</style> seconds, switch between increasing damage by <style=cIsDamage>12%</style> <style=cStack>(+12% per stack)</style> and increasing movement speed by <style=cIsUtility>12%</style> <style=cStack>(+12% per stack)</style>. Taking damage to below <style=cIsHealth>25% health</style> <style=cIsUtility>breaks</style> this item.";
+        public override string PickupText => "Deal bonus damage out of danger.";
+        public override string DescText => "<style=cIsDamage>Increase damage</style> by <style=cIsDamage>15%</style> <style=cStack>(+15% per stack)</style> while out of danger.";
 
         public override void Init()
         {
             var damageIcon = Utils.Paths.Texture2D.texBuffFullCritIcon.Load<Texture2D>();
-            var speedIcon = Utils.Paths.Texture2D.texBuffKillMoveSpeed.Load<Texture2D>();
 
             watchDamage = ScriptableObject.CreateInstance<BuffDef>();
             watchDamage.isHidden = false;
@@ -29,16 +27,7 @@ namespace WellRoundedBalance.Items.Whites
             watchDamage.iconSprite = Sprite.Create(damageIcon, new Rect(0f, 0f, (float)damageIcon.width, (float)damageIcon.height), new Vector2(0f, 0f));
             watchDamage.name = "Delicate Watch Damage Boost";
 
-            watchSpeed = ScriptableObject.CreateInstance<BuffDef>();
-            watchSpeed.isHidden = false;
-            watchSpeed.canStack = false;
-            watchSpeed.isDebuff = false;
-            watchSpeed.buffColor = new Color32(208, 165, 136, 255);
-            watchSpeed.iconSprite = Sprite.Create(speedIcon, new Rect(0f, 0f, (float)damageIcon.width, (float)damageIcon.height), new Vector2(0f, 0f));
-            watchSpeed.name = "Delicate Watch Speed Boost";
-
             ContentAddition.AddBuffDef(watchDamage);
-            ContentAddition.AddBuffDef(watchSpeed);
 
             base.Init();
         }
@@ -56,13 +45,9 @@ namespace WellRoundedBalance.Items.Whites
             if (sender.inventory)
             {
                 var stack = sender.inventory.GetItemCount(DLC1Content.Items.FragileDamageBonus);
-                if (sender.HasBuff(watchSpeed))
-                {
-                    args.moveSpeedMultAdd += 0.12f * stack;
-                }
                 if (sender.HasBuff(watchDamage))
                 {
-                    args.damageMultAdd += 0.12f * stack;
+                    args.damageMultAdd += 0.15f * stack;
                 }
             }
         }
@@ -92,7 +77,7 @@ namespace WellRoundedBalance.Items.Whites
                 c.Emit(OpCodes.Ldarg_0);
                 c.EmitDelegate<Func<bool, HealthComponent, bool>>((Check, self) =>
                 {
-                    if ((self.health + self.shield) / self.fullCombinedHealth < 0.25f)
+                    if ((self.health + self.shield) / self.fullCombinedHealth < -float.MaxValue)
                     {
                         Check = true;
                         return Check;
@@ -133,37 +118,15 @@ namespace WellRoundedBalance.Items.Whites
 
     public class DelicateWatchController : CharacterBody.ItemBehavior
     {
-        public float currentTime;
-        public float interval = 12f;
-
-        public void Start()
-        {
-            currentTime = 11f + 59 / 60f;
-        }
-
         public void FixedUpdate()
         {
-            currentTime += Time.fixedDeltaTime;
-            if (currentTime >= interval)
+            if (body.HasBuff(DelicateWatch.watchDamage) && !body.outOfDanger)
             {
-                if (body.HasBuff(DelicateWatch.watchDamage))
-                {
-                    body.RemoveBuff(DelicateWatch.watchDamage);
-                }
-                else
-                {
-                    body.AddBuff(DelicateWatch.watchDamage);
-                }
-
-                if (body.HasBuff(DelicateWatch.watchSpeed))
-                {
-                    body.RemoveBuff(DelicateWatch.watchSpeed);
-                }
-                else if (!body.HasBuff(DelicateWatch.watchDamage))
-                {
-                    body.AddBuff(DelicateWatch.watchSpeed);
-                }
-                currentTime = 0;
+                body.RemoveBuff(DelicateWatch.watchDamage);
+            }
+            if (!body.HasBuff(DelicateWatch.watchDamage) && body.outOfDanger)
+            {
+                body.AddBuff(DelicateWatch.watchDamage);
             }
         }
     }

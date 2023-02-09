@@ -37,7 +37,12 @@ namespace WellRoundedBalance.Items.Yellows
                     x => x.MatchLdcR4(3f),
                     x => x.MatchLdloc(17)))
             {
-                c.Next.Operand = 1.7f;
+                c.Index += 1;
+                c.Emit(OpCodes.Ldarg_0);
+                c.EmitDelegate<Func<float, CharacterBody, float>>((useless, self) =>
+                {
+                    return 1.7f + 0.6f * (self.inventory.GetItemCount(RoR2Content.Items.FireballsOnHit) - 1);
+                });
             }
             else
             {

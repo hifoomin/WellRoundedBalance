@@ -8,7 +8,7 @@ namespace WellRoundedBalance.Items.VoidWhites
         public override string InternalPickupToken => "bearVoid";
 
         public override string PickupText => "Block the next source of damage. <style=cIsVoid>Corrupts all Tougher Times</style>.";
-        public override string DescText => "<style=cIsHealing>Blocks</style> incoming damage once. Recharges after <style=cIsUtility>30 seconds</style> <style=cStack>(-8% per stack)</style>. <style=cIsVoid>Corrupts all Tougher Times</style>.";
+        public override string DescText => "<style=cIsHealing>Blocks</style> incoming damage once. Recharges after <style=cIsUtility>30 seconds</style> <style=cStack>(-3% per stack)</style>. <style=cIsVoid>Corrupts all Tougher Times</style>.";
 
         public override void Init()
         {
@@ -30,7 +30,7 @@ namespace WellRoundedBalance.Items.VoidWhites
             {
                 c.Next.Operand = 30f;
                 c.Index += 1;
-                c.Next.Operand = 0.92f;
+                c.Next.Operand = 0.97f;
             }
             else
             {

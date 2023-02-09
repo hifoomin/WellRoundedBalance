@@ -10,7 +10,7 @@ namespace WellRoundedBalance.Items.Greens
 
         public override string PickupText => "Dealing damage heals you.";
 
-        public override string DescText => "Dealing damage <style=cIsHealing>heals</style> you for <style=cIsHealing>1 <style=cStack>(+1 per stack)</style> health</style>, plus an additional <style=cIsHealing>0.5</style> <style=cStack>(+0.5 per stack)</style> <style=cIsHealing>health</style> regardless of source.";
+        public override string DescText => "Dealing damage <style=cIsHealing>heals</style> you for <style=cIsHealing>1 <style=cStack>(+1 per stack)</style> health</style>, plus an additional <style=cIsHealing>0.7</style> <style=cStack>(+0.35 per stack)</style> <style=cIsHealing>health</style> regardless of source.";
 
         public override void Init()
         {
@@ -33,7 +33,7 @@ namespace WellRoundedBalance.Items.Greens
                     var Stack = AB.inventory.GetItemCount(RoR2Content.Items.Seed);
                     if (Stack > 0)
                     {
-                        AB.healthComponent.Heal(0.5f + 0.5f * (Stack - 1), HealMask, true);
+                        AB.healthComponent.Heal(0.75f + 0.35f * (Stack - 1), HealMask, true);
                     }
                 }
             }

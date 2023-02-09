@@ -1,5 +1,6 @@
-﻿using MonoMod.Cil;
-using RoR2;
+﻿using Mono.Cecil.Cil;
+using MonoMod.Cil;
+using System;
 
 namespace WellRoundedBalance.Items.Yellows
 {
@@ -31,8 +32,12 @@ namespace WellRoundedBalance.Items.Yellows
                x => x.MatchCallOrCallvirt<CharacterBody>("get_damage"),
                x => x.MatchLdcR4(5f)))
             {
-                c.Index += 1;
-                c.Next.Operand = 4f;
+                c.Index += 2;
+                c.Emit(OpCodes.Ldarg_0);
+                c.EmitDelegate<Func<float, CharacterBody, float>>((useless, self) =>
+                {
+                    return 4f + 1.5f * (self.inventory.GetItemCount(RoR2Content.Items.LightningStrikeOnHit) - 1);
+                });
             }
             else
             {

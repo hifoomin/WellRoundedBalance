@@ -30,38 +30,48 @@ namespace WellRoundedBalance.Elites
 
         public override void Hooks()
         {
-            On.RoR2.Projectile.ProjectileController.Start += ProjectileController_Start;
-
-            On.RoR2.CharacterBody.RecalculateStats += (orig, self) =>
-            {
-                orig(self);
-                if (NetworkServer.active && self.HasBuff(RoR2Content.Buffs.AffixBlue))
-                {
-                    self.moveSpeed *= 1.5f;
-                    if (!self.GetComponent<OverloadingController>())
-                    {
-                        self.gameObject.AddComponent<OverloadingController>();
-                    }
-                }
-                if (!self.HasBuff(RoR2Content.Buffs.AffixBlue))
-                {
-                    if (self.GetComponent<OverloadingController>())
-                    {
-                        self.gameObject.RemoveComponent<OverloadingController>();
-                    }
-                }
-            };
+            IL.RoR2.GlobalEventManager.OnHitAll += GlobalEventManager_OnHitAll;
+            On.RoR2.CharacterBody.RecalculateStats += CharacterBody_RecalculateStats1;
 
             RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
             IL.RoR2.CharacterBody.RecalculateStats += CharacterBody_RecalculateStats;
         }
 
-        private void ProjectileController_Start(On.RoR2.Projectile.ProjectileController.orig_Start orig, ProjectileController self)
+        private void GlobalEventManager_OnHitAll(ILContext il)
+        {
+            ILCursor c = new(il);
+
+            if (c.TryGotoNext(MoveType.Before,
+                x => x.MatchLdcI4(1),
+                x => x.MatchLdcI4(0),
+                x => x.MatchBle(out _),
+                x => x.MatchLdcR4(0.5f)))
+            {
+                c.Next.Operand = 0;
+            }
+            else
+            {
+                Main.WRBLogger.LogError("Failed to apply Overloading Deletion 2 hook");
+            }
+        }
+
+        private void CharacterBody_RecalculateStats1(On.RoR2.CharacterBody.orig_RecalculateStats orig, CharacterBody self)
         {
             orig(self);
-            if (self.gameObject.name.Contains("LightningStake"))
+            if (NetworkServer.active && self.HasBuff(RoR2Content.Buffs.AffixBlue))
             {
-                GameObject.DestroyImmediate(self.gameObject);
+                self.moveSpeed *= 1.5f;
+                if (!self.GetComponent<OverloadingController>())
+                {
+                    self.gameObject.AddComponent<OverloadingController>();
+                }
+            }
+            if (!self.HasBuff(RoR2Content.Buffs.AffixBlue))
+            {
+                if (self.GetComponent<OverloadingController>())
+                {
+                    self.gameObject.RemoveComponent<OverloadingController>();
+                }
             }
         }
 
@@ -74,6 +84,10 @@ namespace WellRoundedBalance.Elites
             {
                 c.Remove();
                 c.Emit<Useless>(OpCodes.Ldsfld, nameof(Useless.uselessBuff));
+            }
+            else
+            {
+                Main.WRBLogger.LogError("Failed to apply Overloading Deletion 1 hook");
             }
         }
 

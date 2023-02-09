@@ -36,7 +36,7 @@ namespace WellRoundedBalance.Items.Greens
                 c.Emit(OpCodes.Ldarg_0);
                 c.EmitDelegate<Func<bool, PhasingBodyBehavior, bool>>((Check, self) =>
                 {
-                    if ((self.body.healthComponent.health + self.body.healthComponent.shield) / self.body.healthComponent.fullCombinedHealth <= 0.5f)
+                    if ((self.body.healthComponent.health + self.body.healthComponent.shield) / self.body.healthComponent.fullCombinedHealth < 0.5f)
                     {
                         Check = true;
                         return Check;

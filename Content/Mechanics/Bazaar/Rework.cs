@@ -16,10 +16,6 @@ namespace WellRoundedBalance.Mechanic.Bazaar
             lunarPod = Utils.Paths.GameObject.LunarChest.Load<GameObject>();
             heresyStation = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.LunarShopTerminal.Load<GameObject>(), "HeresyStation");
 
-            var lunarDropTable = ScriptableObject.CreateInstance<LunarDropTable>();
-            var chestBehavior = lunarPod.GetComponent<ChestBehavior>();
-            // chestBehavior.dropTable = lunarDropTable;
-
             var heresyDropTable = ScriptableObject.CreateInstance<HeresyDropTable>();
 
             var shopBehavior = heresyStation.GetComponent<ShopTerminalBehavior>();
@@ -92,48 +88,6 @@ namespace WellRoundedBalance.Mechanic.Bazaar
             weighted.AddChoice(PickupCatalog.FindPickupIndex(RoR2Content.Items.LunarSecondaryReplacement.itemIndex), 1f);
             weighted.AddChoice(PickupCatalog.FindPickupIndex(RoR2Content.Items.LunarUtilityReplacement.itemIndex), 1f);
             weighted.AddChoice(PickupCatalog.FindPickupIndex(RoR2Content.Items.LunarSpecialReplacement.itemIndex), 1f);
-        }
-
-        public override PickupIndex[] GenerateUniqueDropsPreReplacement(int maxDrops, Xoroshiro128Plus rng)
-        {
-            GenerateWeightedSelection();
-            return GenerateUniqueDropsFromWeightedSelection(maxDrops, rng, weighted);
-        }
-
-        public override PickupIndex GenerateDropPreReplacement(Xoroshiro128Plus rng)
-        {
-            GenerateWeightedSelection();
-            Debug.Log(GenerateDropFromWeightedSelection(rng, weighted));
-            return GenerateDropFromWeightedSelection(rng, weighted);
-        }
-    }
-
-    public class LunarDropTable : PickupDropTable
-    {
-        public WeightedSelection<PickupIndex> weighted = new();
-
-        public override int GetPickupCount()
-        {
-            return weighted.Count;
-        }
-
-        public void GenerateWeightedSelection()
-        {
-            weighted.Clear();
-            for (int i = 0; i < Run.instance.availableLunarCombinedDropList.Count; i++)
-            {
-                var availableChoices = Run.instance.availableLunarCombinedDropList[i];
-                weighted.AddChoice(availableChoices.pickupDef.pickupIndex, 1f);
-            }
-
-            for (int j = 0; j < weighted.choices.Length; j++)
-            {
-                var currentChoices = weighted.choices[j];
-                if (currentChoices.value.pickupDef.internalName.ToLower().Contains("replacement") || currentChoices.value.pickupDef.nameToken.ToLower().Contains("replacement"))
-                {
-                    weighted.RemoveChoice(currentChoices.value.value);
-                }
-            }
         }
 
         public override PickupIndex[] GenerateUniqueDropsPreReplacement(int maxDrops, Xoroshiro128Plus rng)
