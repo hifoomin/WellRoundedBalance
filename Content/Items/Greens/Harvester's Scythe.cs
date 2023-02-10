@@ -12,6 +12,7 @@ namespace WellRoundedBalance.Items.Greens
 
         public override string DescText => "<style=cIsDamage>Backstabs</style> <style=cIsHealing>heal</style> for <style=cIsHealing>3%</style> <style=cStack>(+1.5% per stack)</style> of your <style=cIsHealing>missing health</style>.";
 
+        private static ProcType Backstab = (ProcType)38921;
         public override void Init()
         {
             base.Init();
@@ -19,9 +20,9 @@ namespace WellRoundedBalance.Items.Greens
 
         public override void Hooks()
         {
-            CharacterBody.onBodyInventoryChangedGlobal += CharacterBody_onBodyInventoryChangedGlobal;
             IL.RoR2.GlobalEventManager.OnCrit += GlobalEventManager_OnCrit;
             IL.RoR2.CharacterBody.RecalculateStats += CharacterBody_RecalculateStats;
+            On.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
         }
 
         private void CharacterBody_RecalculateStats(ILContext il)
@@ -60,48 +61,35 @@ namespace WellRoundedBalance.Items.Greens
             }
         }
 
-        private void CharacterBody_onBodyInventoryChangedGlobal(CharacterBody characterBody)
-        {
-            if (NetworkServer.active)
-            {
-                var stack = characterBody.inventory.GetItemCount(RoR2Content.Items.HealOnCrit);
-                characterBody.AddItemBehavior<HarvestersScytheController>(stack);
+        private void HealthComponent_TakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo info) {
+            orig(self, info);
+
+            if (!info.attacker || info.procChainMask.HasProc(Backstab)) {
+                return;
             }
-        }
-    }
 
-    public class HarvestersScytheController : CharacterBody.ItemBehavior
-    {
-        private void Start()
-        {
-            On.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
-        }
+            CharacterBody attacker = info.attacker.GetComponent<CharacterBody>();
 
-        private void HealthComponent_TakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo)
-        {
-            var attacker = damageInfo.attacker;
-            if (attacker)
-            {
-                var characterBody = attacker.GetComponent<CharacterBody>();
-                if (stack > 0 && characterBody)
-                {
-                    var healthComponent = characterBody.healthComponent;
-                    var vector = characterBody.corePosition - damageInfo.position;
-                    ProcType procType = (ProcType)1239867;
-                    if ((damageInfo.damageType & DamageType.DoT) != DamageType.DoT && (damageInfo.procChainMask.HasProc(procType) || BackstabManager.IsBackstab(-vector, self.body)))
-                    {
-                        damageInfo.damageColorIndex = DamageColorIndex.Fragile;
-                        damageInfo.procChainMask.AddProc(procType);
+            if (!attacker || info.damageType.HasFlag(DamageType.DoT)) {
+                return;
+            }
 
-                        if (NetworkServer.active)
-                            healthComponent.Heal((healthComponent.fullHealth - healthComponent.health) * (0.03f + 0.015f * (stack - 1)) * damageInfo.procCoefficient, damageInfo.procChainMask, true);
+            int stack =  attacker.inventory.GetItemCount(RoR2Content.Items.HealOnCrit);
 
-                        Util.PlaySound("Play_item_proc_crit_heal", body.gameObject);
-                    }
+            Vector3 vector = (attacker.corePosition - info.position) * -1;
+
+            if (BackstabManager.IsBackstab(vector, self.body) && stack > 0) {
+                info.damageColorIndex = DamageColorIndex.CritHeal;
+                info.procChainMask.AddProc(Backstab);
+
+                HealthComponent hc = attacker.healthComponent;
+
+                float health = (hc.fullHealth - hc.health) * (0.03f + (0.015f * stack));
+
+                if (NetworkServer.active) {
+                    hc.Heal(health, info.procChainMask, true);
                 }
             }
-
-            orig(self, damageInfo);
         }
     }
 }

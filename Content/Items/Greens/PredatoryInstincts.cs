@@ -12,7 +12,7 @@ namespace WellRoundedBalance.Items.Greens
         public override string PickupText => "'Backstabs' increase attack speed up to 3 times.";
 
         public override string DescText => "<style=cIsDamage>Backstabs</style> increase <style=cIsDamage>attack speed</style> by <style=cIsDamage>12%</style> up to <style=cIsDamage>4</style> <style=cStack>(+2 per stack)</style> times for <style=cIsDamage>3</style> seconds.";
-
+        private static ProcType Backstab = (ProcType)38922;
         public override void Init()
         {
             var attackSpeedOnCritBuffIcon = Utils.Paths.Texture2D.texBuffAttackSpeedOnCritIcon.Load<Texture2D>();
@@ -32,7 +32,7 @@ namespace WellRoundedBalance.Items.Greens
         public override void Hooks()
         {
             IL.RoR2.CharacterBody.AddTimedBuff_BuffDef_float += CharacterBody_AddTimedBuff_BuffDef_float;
-            CharacterBody.onBodyInventoryChangedGlobal += CharacterBody_onBodyInventoryChangedGlobal;
+            On.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
             RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
             IL.RoR2.CharacterBody.RecalculateStats += CharacterBody_RecalculateStats;
         }
@@ -71,14 +71,6 @@ namespace WellRoundedBalance.Items.Greens
             }
         }
 
-        private void CharacterBody_onBodyInventoryChangedGlobal(CharacterBody characterBody)
-        {
-            if (NetworkServer.active)
-            {
-                var stack = characterBody.inventory.GetItemCount(RoR2Content.Items.AttackSpeedOnCrit);
-                characterBody.AddItemBehavior<PredatoryInstinctsController>(stack);
-            }
-        }
 
         private void CharacterBody_AddTimedBuff_BuffDef_float(ILContext il)
         {
@@ -109,52 +101,47 @@ namespace WellRoundedBalance.Items.Greens
                 Main.WRBLogger.LogError("Failed to apply Predatory Instincts Deletion 2 hook");
             }
         }
-    }
 
-    public class PredatoryInstinctsController : CharacterBody.ItemBehavior
-    {
-        private void Start()
-        {
-            On.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
-        }
+        private void HealthComponent_TakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo info) {
+            orig(self, info);
 
-        private void HealthComponent_TakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo)
-        {
-            var attacker = damageInfo.attacker;
-            if (attacker)
-            {
-                var characterBody = attacker.GetComponent<CharacterBody>();
-                if (stack > 0 && characterBody)
-                {
-                    var vector = characterBody.corePosition - damageInfo.position;
-                    ProcType procType = (ProcType)2358697;
-                    if ((damageInfo.damageType & DamageType.DoT) != DamageType.DoT && (damageInfo.procChainMask.HasProc(procType) || BackstabManager.IsBackstab(-vector, self.body)))
-                    {
-                        damageInfo.damageColorIndex = DamageColorIndex.Fragile;
-                        damageInfo.procChainMask.AddProc(procType);
-                        characterBody.AddTimedBuff(PredatoryInstincts.attackSpeedBuff, 3f, 4 + 2 * (stack - 1));
-
-                        var childLocator = characterBody.modelLocator.modelTransform.GetComponent<ChildLocator>();
-                        if (childLocator)
-                        {
-                            var handL = childLocator.FindChild("HandL");
-                            var handR = childLocator.FindChild("HandR");
-                            GameObject gameObject = LegacyResourcesAPI.Load<GameObject>("Prefabs/Effects/WolfProcEffect");
-                            if (handL)
-                            {
-                                EffectManager.SimpleMuzzleFlash(gameObject, base.gameObject, "HandL", true);
-                            }
-                            if (handR)
-                            {
-                                EffectManager.SimpleMuzzleFlash(gameObject, base.gameObject, "HandR", true);
-                            }
-                        }
-                        Util.PlaySound("Play_item_proc_crit_attack_speed2", attacker.gameObject); // Play_item_proc_crit_attack_speed1 Play_item_proc_crit_attack_speed2 Play_item_proc_crit_attack_speed3
-                    }
-                }
+            if (!info.attacker || info.procChainMask.HasProc(Backstab)) {
+                return;
             }
 
-            orig(self, damageInfo);
+            CharacterBody attacker = info.attacker.GetComponent<CharacterBody>();
+
+            if (!attacker || info.damageType.HasFlag(DamageType.DoT)) {
+                return;
+            }
+
+            int stack =  attacker.inventory.GetItemCount(RoR2Content.Items.AttackSpeedOnCrit);
+
+            Vector3 vector = (attacker.corePosition - info.position) * -1;
+
+            if (BackstabManager.IsBackstab(vector, self.body) && stack > 0) {
+                info.damageColorIndex = DamageColorIndex.Fragile;
+                info.procChainMask.AddProc(Backstab);
+
+                if (NetworkServer.active) {
+                    attacker.AddTimedBuff(PredatoryInstincts.attackSpeedBuff, 3f, 4 + 2 * (stack - 1));
+                }
+
+                ChildLocator locator = attacker.modelLocator?.modelTransform?.GetComponent<ChildLocator>() ?? null;
+                if (locator) {
+                    Transform right = locator.FindChild("HandR");
+                    Transform left = locator.FindChild("HandL");
+
+                    if (!left || !right) {
+                        return;
+                    }
+
+                    GameObject vfx = Utils.Paths.GameObject.WolfProcEffect.Load<GameObject>();
+
+                    EffectManager.SimpleMuzzleFlash(vfx, info.attacker, "HandR", true);
+                    EffectManager.SimpleMuzzleFlash(vfx, info.attacker, "HandL", true);
+                }
+            }
         }
     }
 }
