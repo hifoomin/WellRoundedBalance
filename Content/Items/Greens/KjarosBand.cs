@@ -35,7 +35,7 @@ namespace WellRoundedBalance.Items.Greens
             ILCursor c = new(il);
 
             if (c.TryGotoNext(MoveType.Before,
-                x => x.MatchLdfld<RoR2.Projectile.ProjectileSimple>("lifetime"),
+                x => x.MatchLdfld<ProjectileSimple>("lifetime"),
                 x => x.MatchStloc(out _),
                 x => x.MatchLdcR4(3f)))
             {

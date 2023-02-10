@@ -1,4 +1,6 @@
-﻿using Mono.Cecil.Cil;
+﻿using IL.RoR2.Achievements.Huntress;
+using Inferno.Stat_AI;
+using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using System;
 using UnityEngine.UI;
@@ -65,109 +67,19 @@ namespace WellRoundedBalance.Elites
 
             ProjectileTargetComponent target = ShieldPrefab.AddComponent<ProjectileTargetComponent>();
 
-            GlacialRotationController glacialRotation = ShieldPrefab.AddComponent<GlacialRotationController>();
+            // GlacialRotationController glacialRotation = ShieldPrefab.AddComponent<GlacialRotationController>();
+
+            var shieldCharacterBody = ShieldPrefab.AddComponent<CharacterBody>();
+            shieldCharacterBody.baseMaxHealth = 60;
+            shieldCharacterBody.levelMaxHealth = 18;
+            var skillLocator = ShieldPrefab.AddComponent<SkillLocator>();
+            var shieldHealthComponent = ShieldPrefab.AddComponent<HealthComponent>();
 
             ShieldPrefab.layer = LayerIndex.entityPrecise.intVal;
 
             PrefabAPI.RegisterNetworkPrefab(ShieldPrefab);
             ContentAddition.AddProjectile(ShieldPrefab);
             base.Init();
-        }
-
-        public class GlacialShieldsController : MonoBehaviour
-        {
-            private float stopwatch = 0f;
-            private float delay = 3f;
-            private float stopwatchClear = 0f;
-            private float delayClear = 9f;
-            private TeamIndex index;
-            private List<CharacterBody> bodies = new();
-
-            public void Start()
-            {
-                index = GetComponent<TeamComponent>().teamIndex;
-            }
-
-            public void FixedUpdate()
-            {
-                stopwatch += Time.fixedDeltaTime;
-                stopwatchClear += Time.fixedDeltaTime;
-                if (stopwatch >= delay)
-                {
-                    stopwatch = 0f;
-                    Collider[] cols = Physics.OverlapSphere(base.transform.position, 25).Where(x => x.GetComponent<CharacterBody>()).ToArray();
-                    foreach (Collider col in cols)
-                    {
-                        CharacterBody body = col.GetComponent<CharacterBody>();
-                        if (body.teamComponent.teamIndex == index && body != base.GetComponent<CharacterBody>() && !bodies.Contains(body))
-                        {
-                            for (int i = 0; i < 3; i++)
-                            {
-                                FireProjectileInfo info = new();
-                                info.damage = 0;
-                                info.position = body.corePosition;
-                                info.owner = base.gameObject;
-                                info.rotation = Quaternion.identity;
-                                info.crit = false;
-                                info.target = body.gameObject;
-                                info.projectilePrefab = ShieldPrefab;
-
-                                ProjectileManager.instance.FireProjectile(info);
-                            }
-                            bodies.Add(body);
-                        }
-                    }
-                }
-
-                if (stopwatchClear >= delayClear)
-                {
-                    stopwatchClear = 0f;
-                    bodies.Clear();
-                }
-            }
-        }
-
-        public class GlacialRotationController : MonoBehaviour
-        {
-            public ProjectileTargetComponent targetComponent => GetComponent<ProjectileTargetComponent>();
-            public Transform target;
-            private float speed = 360 / 12;
-            private Vector3 initialRadial;
-            private float offset = 0.5f;
-            private float distance = 3;
-            private float initialTime;
-            private float initialDegrees = UnityEngine.Random.Range(0, 360);
-            private Rigidbody rb;
-
-            public void Start()
-            {
-                if (targetComponent.target)
-                {
-                    target = targetComponent.target;
-                    initialRadial = Quaternion.AngleAxis(initialDegrees, Vector3.up) * target.forward;
-                }
-
-                initialTime = Run.instance.GetRunStopwatch();
-
-                rb = GetComponent<Rigidbody>();
-            }
-
-            public void FixedUpdate()
-            {
-                if (!target && targetComponent.target)
-                {
-                    target = targetComponent.target;
-                    initialRadial = Quaternion.AngleAxis(initialDegrees, Vector3.up) * target.forward;
-                }
-
-                if (target)
-                {
-                    float angle = (Run.instance.GetRunStopwatch() - initialTime) * speed;
-                    Vector3 pos = target.position + new Vector3(0, offset, 0) + Quaternion.AngleAxis(angle, Vector3.up) * initialRadial * distance;
-                    Vector3 newPos = Vector3.Lerp(rb.position, pos, 30 * Time.fixedDeltaTime);
-                    rb.MovePosition(newPos);
-                }
-            }
         }
 
         public override void Hooks()
@@ -324,4 +236,181 @@ namespace WellRoundedBalance.Elites
             }
         }
     }
+
+    public class GlacialShieldsController : MonoBehaviour
+    {
+        private float stopwatch = 0f;
+        private float delay = 3f;
+        private float stopwatchClear = 0f;
+        private float delayClear = 9f;
+        private TeamIndex index;
+        private List<CharacterBody> bodies = new();
+
+        public void Start()
+        {
+            index = GetComponent<TeamComponent>().teamIndex;
+        }
+
+        public void FixedUpdate()
+        {
+            stopwatch += Time.fixedDeltaTime;
+            stopwatchClear += Time.fixedDeltaTime;
+            if (stopwatch >= delay)
+            {
+                Main.WRBLogger.LogFatal("stopwatch is past delay");
+                stopwatch = 0f;
+                Collider[] cols = Physics.OverlapSphere(transform.position, 25).Where(x => x.GetComponent<CharacterBody>()).ToArray();
+                foreach (Collider col in cols)
+                {
+                    CharacterBody body = col.GetComponent<CharacterBody>();
+                    if (body.teamComponent.teamIndex == index && body != GetComponent<CharacterBody>() && !bodies.Contains(body))
+                    {
+                        Main.WRBLogger.LogFatal("found body, initializing orbiter");
+                        bodies.Add(body);
+                        var projectileOwnerOrbiter = body.gameObject.AddComponent<ProjectileOwnerOrbiter>();
+                        var lunarSunProjectileController = body.gameObject.AddComponent<LunarSunProjectileController>();
+                        InitializeOrbiter(body, projectileOwnerOrbiter, lunarSunProjectileController);
+                    }
+                }
+            }
+
+            if (stopwatchClear >= delayClear)
+            {
+                Main.WRBLogger.LogFatal("deleting bodies");
+                stopwatchClear = 0f;
+                bodies.Clear();
+            }
+        }
+
+        public void InitializeOrbiter(CharacterBody body, ProjectileOwnerOrbiter orbiter, LunarSunProjectileController controller)
+        {
+            float randomRadius = body.radius + 2f + UnityEngine.Random.Range(0.25f, 0.25f);
+            float what = randomRadius / 2f;
+            what *= what;
+            float degreesPerSecond = 180f * Mathf.Pow(0.9f, what);
+            Quaternion quaternion = Quaternion.AngleAxis(UnityEngine.Random.Range(0f, 360f), Vector3.up);
+            Quaternion quaternion2 = Quaternion.AngleAxis(UnityEngine.Random.Range(0f, 0f), Vector3.forward);
+            Vector3 planeNormal = quaternion * quaternion2 * Vector3.up;
+            float initialDegreesFromOwnerForward = UnityEngine.Random.Range(0f, 360f);
+            orbiter.Initialize(planeNormal, randomRadius, degreesPerSecond, initialDegreesFromOwnerForward);
+            onDisabled += DestroyOrbiter;
+            Main.WRBLogger.LogFatal("initialized orbiter");
+            void DestroyOrbiter(GlacialShieldsController glacialShield)
+            {
+                if (controller)
+                {
+                    Main.WRBLogger.LogFatal("trying to detonate lunarSunProjectileController");
+                    controller.Detonate();
+                }
+            }
+        }
+
+        public event Action<GlacialShieldsController> onDisabled;
+
+        public void OnDestroy()
+        {
+            Main.WRBLogger.LogFatal("ondisabled event called in ondestroy");
+            onDisabled?.Invoke(this);
+            onDisabled = null;
+        }
+    }
+
+    /* old code
+
+    public class GlacialShieldsController : MonoBehaviour
+        {
+            private float stopwatch = 0f;
+            private float delay = 3f;
+            private float stopwatchClear = 0f;
+            private float delayClear = 9f;
+            private TeamIndex index;
+            private List<CharacterBody> bodies = new();
+
+            public void Start()
+            {
+                index = GetComponent<TeamComponent>().teamIndex;
+            }
+
+            public void FixedUpdate()
+            {
+                stopwatch += Time.fixedDeltaTime;
+                stopwatchClear += Time.fixedDeltaTime;
+                if (stopwatch >= delay)
+                {
+                    stopwatch = 0f;
+                    Collider[] cols = Physics.OverlapSphere(base.transform.position, 25).Where(x => x.GetComponent<CharacterBody>()).ToArray();
+                    foreach (Collider col in cols)
+                    {
+                        CharacterBody body = col.GetComponent<CharacterBody>();
+                        if (body.teamComponent.teamIndex == index && body != base.GetComponent<CharacterBody>() && !bodies.Contains(body))
+                        {
+                            for (int i = 0; i < 3; i++)
+                            {
+                                FireProjectileInfo info = new();
+                                info.damage = 0;
+                                info.position = body.corePosition;
+                                info.owner = base.gameObject;
+                                info.rotation = Quaternion.identity;
+                                info.crit = false;
+                                info.target = body.gameObject;
+                                info.projectilePrefab = ShieldPrefab;
+
+                                ProjectileManager.instance.FireProjectile(info);
+                            }
+                            bodies.Add(body);
+                        }
+                    }
+                }
+
+                if (stopwatchClear >= delayClear)
+                {
+                    stopwatchClear = 0f;
+                    bodies.Clear();
+                }
+            }
+        }
+
+        public class GlacialRotationController : MonoBehaviour
+        {
+            public ProjectileTargetComponent targetComponent => GetComponent<ProjectileTargetComponent>();
+            public Transform target;
+            private float speed = 360 / 12;
+            private Vector3 initialRadial;
+            private float offset = 0.5f;
+            private float distance = 3;
+            private float initialTime;
+            private float initialDegrees = UnityEngine.Random.Range(0, 360);
+            private Rigidbody rb;
+
+            public void Start()
+            {
+                if (targetComponent.target)
+                {
+                    target = targetComponent.target;
+                    initialRadial = Quaternion.AngleAxis(initialDegrees, Vector3.up) * target.forward;
+                }
+
+                initialTime = Run.instance.GetRunStopwatch();
+
+                rb = GetComponent<Rigidbody>();
+            }
+
+            public void FixedUpdate()
+            {
+                if (!target && targetComponent.target)
+                {
+                    target = targetComponent.target;
+                    initialRadial = Quaternion.AngleAxis(initialDegrees, Vector3.up) * target.forward;
+                }
+
+                if (target)
+                {
+                    float angle = (Run.instance.GetRunStopwatch() - initialTime) * speed;
+                    Vector3 pos = target.position + new Vector3(0, offset, 0) + Quaternion.AngleAxis(angle, Vector3.up) * initialRadial * distance;
+                    Vector3 newPos = Vector3.Lerp(rb.position, pos, 30 * Time.fixedDeltaTime);
+                    rb.MovePosition(newPos);
+                }
+            }
+        }
+    */
 }

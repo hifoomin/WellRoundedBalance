@@ -103,29 +103,5 @@ namespace WellRoundedBalance.Items.Greens
 
             orig(self, damageInfo);
         }
-
-        public static bool IsBackstab(Vector3 attackerCorePositionToHitPosition, CharacterBody victimBody)
-        {
-            if (!victimBody.canReceiveBackstab)
-            {
-                return false;
-            }
-            Vector3? bodyForward = GetBodyForward(victimBody);
-            return bodyForward != null && Vector3.Dot(attackerCorePositionToHitPosition, bodyForward.Value) > 0f;
-        }
-
-        private static Vector3? GetBodyForward(CharacterBody characterBody)
-        {
-            Vector3? vector = null;
-            if (characterBody.characterDirection)
-            {
-                vector = new Vector3?(characterBody.characterDirection.forward);
-            }
-            else
-            {
-                vector = new Vector3?(characterBody.transform.forward);
-            }
-            return vector;
-        }
     }
 }

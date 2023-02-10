@@ -207,7 +207,7 @@ namespace WellRoundedBalance
         {
             if (gb.isEnabled)
             {
-                bool enabledfr = WRBMechanicConfig.Bind(gb.Name, "Enable?", true, "Vanilla is false").Value;
+                bool enabledfr = WRBMechanicConfig.Bind(gb.Name, "Enable Changes?", true, "Vanilla is false").Value;
                 if (enabledfr) return true;
             }
             return false;
@@ -217,7 +217,7 @@ namespace WellRoundedBalance
         {
             if (ib.isEnabled)
             {
-                bool enabledfr = WRBItemConfig.Bind(ib.Name, "Enable?", true, "Vanilla is false").Value;
+                bool enabledfr = WRBItemConfig.Bind(ib.Name, "Enable Changes?", true, "Vanilla is false").Value;
                 if (enabledfr) return true;
             }
             return false;
@@ -227,7 +227,7 @@ namespace WellRoundedBalance
         {
             if (eqb.isEnabled)
             {
-                bool enabledfr = WRBEquipmentConfig.Bind(eqb.Name, "Enable?", true, "Vanilla is false").Value;
+                bool enabledfr = WRBEquipmentConfig.Bind(eqb.Name, "Enable Changes?", true, "Vanilla is false").Value;
                 if (enabledfr) return true;
             }
             return false;
@@ -237,7 +237,7 @@ namespace WellRoundedBalance
         {
             if (ib.isEnabled)
             {
-                bool enabledfr = WRBInteractableConfig.Bind(ib.Name, "Enable?", true, "Vanilla is false").Value;
+                bool enabledfr = WRBInteractableConfig.Bind(ib.Name, "Enable Changes?", true, "Vanilla is false").Value;
                 if (enabledfr) return true;
             }
             return false;
@@ -247,7 +247,7 @@ namespace WellRoundedBalance
         {
             if (enb.isEnabled)
             {
-                bool enabledfr = WRBEnemyConfig.Bind(enb.Name, "Enable?", true, "Vanilla is false").Value;
+                bool enabledfr = WRBEnemyConfig.Bind(enb.Name, "Enable Changes?", true, "Vanilla is false").Value;
                 if (enabledfr) return true;
             }
             return false;
@@ -257,7 +257,7 @@ namespace WellRoundedBalance
         {
             if (elb.isEnabled)
             {
-                bool enabledfr = WRBEliteConfig.Bind(elb.Name, "Enable?", true, "Vanilla is false").Value;
+                bool enabledfr = WRBEliteConfig.Bind(elb.Name, "Enable Changes?", true, "Vanilla is false").Value;
                 if (enabledfr) return true;
             }
             return false;
@@ -267,7 +267,7 @@ namespace WellRoundedBalance
         {
             if (gmb.isEnabled)
             {
-                bool enabledfr = WRBGamemodeConfig.Bind(gmb.Name, "Enable?", true, "Vanilla is false").Value;
+                bool enabledfr = WRBGamemodeConfig.Bind(gmb.Name, "Enable Changes?", true, "Vanilla is false").Value;
                 if (enabledfr) return true;
             }
             return false;
