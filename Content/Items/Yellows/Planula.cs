@@ -1,46 +1,48 @@
-﻿/*using Mono.Cecil.Cil;
-using MonoMod.Cil;
-using RoR2;
-using RoR2.Items;
-using RoR2.Projectile;
-using System;
-using UnityEngine;
+﻿using MonoMod.Cil;
+using EntityStates.GrandParent;
+using UnityEngine.Rendering.PostProcessing;
 
 namespace WellRoundedBalance.Items.Yellows
 {
     public class Planula : ItemBase
     {
+        public static GameObject sunPrefabLessPP;
         public override string Name => ":: Items :::: Yellows :: Planula";
         public override string InternalPickupToken => "parentEgg";
 
-        public override string PickupText => "Summon the unmatched power of the sun after standing still for 0.5 seconds.";
+        public override string PickupText => "Summon the unmatched power of the sun after standing still for 1 second.";
 
-        public override string DescText => "After standing still for <style=cIsHealing>0.5</style> seconds, summon a miniature sun for <style=cIsUtility>10</style> seconds that damages all monsters. Recharges every <style=cIsUtility>60</style> <style=cStack>(-33% per stack)</style> seconds.";
+        public override string DescText => "After standing still for <style=cIsDamage>1</style> second, summon <style=cIsDamage>the unmatched power of the sun</style> that increasingly ignites enemies.";
 
         public override void Init()
         {
-            Init();
+            sunPrefabLessPP = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.GrandParentSun.Load<GameObject>(), "THEFUCKINGSUN");
+            var postProcessingObject = sunPrefabLessPP.transform.GetChild(0).GetChild(0);
+            var postProcessVolume = postProcessingObject.GetComponent<PostProcessVolume>();
+            postProcessVolume.weight = 0.1f;
+
+            PrefabAPI.RegisterNetworkPrefab(sunPrefabLessPP);
+            base.Init();
         }
 
         public override void Hooks()
         {
             IL.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
             CharacterBody.onBodyInventoryChangedGlobal += CharacterBody_onBodyInventoryChangedGlobal;
+            Changes();
         }
 
         private void CharacterBody_onBodyInventoryChangedGlobal(CharacterBody body)
         {
             if (NetworkServer.active)
             {
-                var stack = body.inventory.GetItemCount(RoR2Content.Items.ParentEgg);
-                body.AddItemBehavior<PlanulaBehavior>(stack);
+                body.AddItemBehavior<PlanulaSunBehavior>(body.inventory.GetItemCount(RoR2Content.Items.ParentEgg));
             }
         }
 
         private void HealthComponent_TakeDamage(ILContext il)
         {
             ILCursor c = new(il);
-
             if (c.TryGotoNext(MoveType.Before,
                 x => x.MatchLdcR4(15f),
                 x => x.MatchMul()))
@@ -52,51 +54,135 @@ namespace WellRoundedBalance.Items.Yellows
                 Main.WRBLogger.LogError("Failed to apply Planula Healing hook");
             }
         }
+
+        private void Changes()
+        {
+            var planula = Utils.Paths.ItemDef.ParentEgg.Load<ItemDef>();
+            planula.tags = new ItemTag[] { ItemTag.Damage, ItemTag.CannotCopy };
+        }
     }
 
-    public class PlanulaBehavior : CharacterBody.ItemBehavior
+    public class PlanulaSunBehavior : CharacterBody.ItemBehavior
     {
+        private float timer = 0;
+        private float burnDistanceBase = 10000;
+        private float burnInterval = 0.2f;
+        private float burnDuration = 15f;
+
+        private GameObject sunInstance;
+
+        public Vector3? sunSpawnPosition;
+
+        private static float sunPrefabDiameter = 50f;
+        private float sunPlacementMinDistance = 5f;
+        private static float sunPlacementIdealAltitudeBonus = 50f;
+
+        private void Start()
+        {
+            sunPlacementMinDistance += body.radius;
+            sunPlacementIdealAltitudeBonus += body.radius;
+        }
+
         private void FixedUpdate()
         {
             if (!NetworkServer.active)
             {
                 return;
             }
+            var what = stack > 0 && body.notMovingStopwatch >= 1f;
 
-            var condition = stack > 0 && body.GetNotMoving();
-
-            if (sunGameObject != condition)
+            if (what)
             {
-                if (condition)
+                if (sunInstance)
                 {
-                    sunGameObject = Instantiate(sunPrefab, body.footPosition + new Vector3(0f, 200f, 0f), Quaternion.identity);
-                    sunGameObject.GetComponent<GenericOwnership>().ownerObject = base.gameObject;
-                    NetworkServer.Spawn(sunGameObject);
+                    timer += Time.fixedDeltaTime;
+                    while (timer > burnInterval)
+                    {
+                        timer -= burnInterval;
+                    }
                 }
                 else
                 {
-                    Destroy(sunGameObject);
-                    sunGameObject = null;
+                    sunSpawnPosition = FindSunSpawnPosition(body.corePosition);
+
+                    if (sunSpawnPosition != null)
+                    {
+                        sunInstance = CreateSun(sunSpawnPosition.Value);
+                    }
+                    var teamFilter = sunInstance.GetComponent<TeamFilter>();
+                    teamFilter.teamIndex = body.teamComponent.teamIndex;
+
+                    var grandParentSunController = sunInstance.GetComponent<GrandParentSunController>();
+                    grandParentSunController.burnDuration = burnInterval * stack;
+                    grandParentSunController.nearBuffDuration = burnDuration;
+                    grandParentSunController.maxDistance = burnDistanceBase;
+                    grandParentSunController.minimumStacksBeforeApplyingBurns = 0;
+                    grandParentSunController.cycleInterval = burnInterval;
+
+                    var areaIndicator = sunInstance.transform.Find("AreaIndicator");
+                    if (areaIndicator)
+                    {
+                        areaIndicator.localScale = Vector3.one * burnDistanceBase / 5;
+                    }
+
+                    timer = 0;
                 }
             }
-            /*if (sunTeamFilter)
+            else
             {
-                sunTeamFilter.teamIndex = body.teamComponent.teamIndex;
+                DestroySun();
+            }
+
+            if (sunInstance != what)
+            {
+                if (what)
+                {
+                }
+                else
+                {
+                    DestroySun();
+                }
             }
         }
 
         private void OnDisable()
         {
-            if (sunGameObject)
+            DestroySun();
+        }
+
+        private void DestroySun()
+        {
+            if (sunInstance)
             {
-                Destroy(sunGameObject);
+                Destroy(sunInstance);
+                sunInstance = null;
             }
         }
 
-        private static GameObject sunPrefab = Utils.Paths.GameObject.GrandParentSun.Load<GameObject>();
+        private GameObject CreateSun(Vector3 sunSpawnPosition)
+        {
+            var sun = Instantiate(Planula.sunPrefabLessPP, sunSpawnPosition, Quaternion.identity);
+            sun.GetComponent<GenericOwnership>().ownerObject = gameObject;
+            NetworkServer.Spawn(sun);
+            return sun;
+        }
 
-        private GameObject sunGameObject;
-
-        private TeamFilter sunTeamFilter;
+        public static Vector3? FindSunSpawnPosition(Vector3 searchOrigin)
+        {
+            Vector3? vector = searchOrigin;
+            if (vector != null)
+            {
+                Vector3 value = vector.Value;
+                var maxPos = sunPlacementIdealAltitudeBonus;
+                var halfDiameter = sunPrefabDiameter * 0.5f;
+                if (Physics.Raycast(value, Vector3.up, out RaycastHit raycastHit, ChannelSun.sunPlacementIdealAltitudeBonus + halfDiameter, LayerIndex.world.mask, QueryTriggerInteraction.Ignore))
+                {
+                    maxPos = Mathf.Clamp(raycastHit.distance - halfDiameter, 0f, maxPos);
+                }
+                value.y += maxPos;
+                return new Vector3?(value);
+            }
+            return null;
+        }
     }
-}*/
+}

@@ -1,4 +1,5 @@
-﻿using MonoMod.Cil;
+﻿using Inferno.Stat_AI;
+using MonoMod.Cil;
 using R2API;
 using RoR2;
 using UnityEngine;
@@ -12,7 +13,7 @@ namespace WellRoundedBalance.Items.Reds
 
         public override string PickupText => "Healing past full grants you a temporary barrier.";
 
-        public override string DescText => "Halve <style=cIsHealing>barrier decay</style>. Healing past full grants you a <style=cIsHealing>temporary barrier</style> for <style=cIsHealing>75% <style=cStack>(+75% per stack)</style></style> of the amount you <style=cIsHealing>healed</style>.";
+        public override string DescText => "<style=cIsHealing>Increase armor</style> by <style=cIsHealing>30</style> while you have <style=cIsHealing>barrier</style>. Healing past full grants you a <style=cIsHealing>temporary barrier</style> for <style=cIsHealing>75% <style=cStack>(+75% per stack)</style></style> of the amount you <style=cIsHealing>healed</style>.";
 
         public override void Init()
         {
@@ -21,21 +22,39 @@ namespace WellRoundedBalance.Items.Reds
 
         public override void Hooks()
         {
-            On.RoR2.CharacterBody.RecalculateStats += CharacterBody_RecalculateStats;
+            RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
             IL.RoR2.HealthComponent.Heal += ChangeOverheal;
+            HealthComponent.onCharacterHealServer += HealthComponent_onCharacterHealServer;
         }
 
-        private void CharacterBody_RecalculateStats(On.RoR2.CharacterBody.orig_RecalculateStats orig, CharacterBody self)
+        private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
-            if (self.inventory)
+            var inventory = sender.inventory;
+            if (inventory)
             {
-                var stack = self.inventory.GetItemCount(RoR2Content.Items.BarrierOnOverHeal);
-                if (stack > 0)
+                var stack = inventory.GetItemCount(RoR2Content.Items.BarrierOnOverHeal);
+                if (stack > 0 && sender.healthComponent.barrier > 0f)
                 {
-                    self.barrierDecayRate *= 0.5f;
+                    args.armorAdd += 30f;
                 }
             }
-            orig(self);
+        }
+
+        private void HealthComponent_onCharacterHealServer(HealthComponent healthComponent, float amount, ProcChainMask procChainMask)
+        {
+            var body = healthComponent.body;
+            if (body)
+            {
+                var inventory = body.inventory;
+                if (inventory)
+                {
+                    var stack = inventory.GetItemCount(RoR2Content.Items.BarrierOnOverHeal);
+                    if (stack > 0 && healthComponent.barrier > 0f)
+                    {
+                        body.statsDirty = true;
+                    }
+                }
+            }
         }
 
         public static void ChangeOverheal(ILContext il)

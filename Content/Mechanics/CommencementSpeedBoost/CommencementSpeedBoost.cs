@@ -30,6 +30,18 @@ namespace WellRoundedBalance.Mechanic.CommencementSpeedBoost
             RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
         }
 
+        private void CharacterBody_onBodyStartGlobal(CharacterBody characterBody)
+        {
+            if (SceneManager.GetActiveScene().name == "moon2")
+            {
+                var commencementSpeedBuffController = characterBody.GetComponent<CommencementSpeedBuffController>();
+                if (characterBody.isPlayerControlled && commencementSpeedBuffController == null)
+                {
+                    characterBody.gameObject.AddComponent<CommencementSpeedBuffController>();
+                }
+            }
+        }
+
         private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
             if (sender.HasBuff(commencementSpeed))
@@ -37,18 +49,20 @@ namespace WellRoundedBalance.Mechanic.CommencementSpeedBoost
                 args.moveSpeedMultAdd += 0.75f;
             }
         }
+    }
 
-        private void CharacterBody_onBodyStartGlobal(CharacterBody guh)
+    public class CommencementSpeedBuffController : MonoBehaviour
+    {
+        private bool wasGiven = false;
+        private CharacterBody characterBody;
+
+        private void Start()
         {
-            if (SceneManager.GetActiveScene().name == "moon2")
+            characterBody = GetComponent<CharacterBody>();
+            if (!wasGiven)
             {
-                foreach (CharacterBody body in CharacterBody.readOnlyInstancesList)
-                {
-                    if (body.isPlayerControlled)
-                    {
-                        body.AddTimedBuff(commencementSpeed, 30f);
-                    }
-                }
+                characterBody.AddTimedBuff(CommencementSpeedBoost.commencementSpeed, 45f);
+                wasGiven = true;
             }
         }
     }

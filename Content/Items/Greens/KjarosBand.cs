@@ -18,7 +18,7 @@ namespace WellRoundedBalance.Items.Greens
 
         public override string PickupText => "High damage hits also blast enemies with a runic flame tornado. Recharges over time.";
 
-        public override string DescText => "Hits that deal <style=cIsDamage>more than 400% damage</style> also blast enemies with a <style=cIsDamage>runic flame tornado</style>, dealing <style=cIsDamage>150%</style> <style=cStack>(+150% per stack)</style> TOTAL damage over time. Recharges every <style=cIsUtility>10</style> seconds.";
+        public override string DescText => "Hits that deal <style=cIsDamage>more than 400% damage</style> also blast enemies for <style=cIsDamage>200%</style> <style=cStack>(+100% per stack)</style> TOTAL damage over time. Recharges every <style=cIsUtility>10</style> seconds.";
 
         public override void Init()
         {
@@ -35,12 +35,19 @@ namespace WellRoundedBalance.Items.Greens
             ILCursor c = new(il);
 
             if (c.TryGotoNext(MoveType.Before,
-                x => x.MatchLdfld<ProjectileSimple>("lifetime"),
                 x => x.MatchStloc(out _),
-                x => x.MatchLdcR4(3f)))
+                x => x.MatchLdcR4(3f),
+                x => x.MatchLdloc(out _),
+                x => x.MatchConvR4(),
+                x => x.MatchMul()))
             {
-                c.Index += 2;
-                c.Next.Operand = 1.5f;
+                c.Index += 1;
+                c.Next.Operand = 1f;
+                c.Index += 4;
+                c.EmitDelegate<Func<float, float>>((self) =>
+                {
+                    return self + 1f;
+                });
             }
             else
             {

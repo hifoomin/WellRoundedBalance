@@ -90,7 +90,7 @@ namespace WellRoundedBalance.Items.Reds
                     if (inventory)
                     {
                         var stack = inventory.GetItemCount(DLC1Content.Items.PermanentDebuffOnHit);
-                        if (stack > 0)
+                        if (stack > 0 && damageReport.damageInfo.procCoefficient > 0)
                         {
                             victimBody.AddTimedBuff(armorReduction, 5f);
                             attackerBody.AddTimedBuff(armorGain, 5f);

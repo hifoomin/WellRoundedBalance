@@ -13,7 +13,7 @@ namespace WellRoundedBalance.Items.Greens
 
         public override string PickupText => "Slow enemies on hit.";
 
-        public override string DescText => "<style=cIsUtility>Slow</style> enemies on hit for <style=cIsUtility>-50%</style> <style=cStack>(+10% per stack)</style> <style=cIsUtility>movement speed</style> and <style=cIsDamage>-10%</style> <style=cStack>(+5% per stack)</style> <style=cIsDamage>attack speed</style> for <style=cIsUtility>5s</style></style>.";
+        public override string DescText => "<style=cIsUtility>Slow</style> enemies on hit for <style=cIsUtility>-33.3%</style> <style=cIsUtility>movement speed</style> and <style=cIsDamage>-10%</style> <style=cStack>(-5% per stack)</style> <style=cIsDamage>attack speed</style> for <style=cIsUtility>5s</style></style>.";
 
         public override void Init()
         {
@@ -45,8 +45,9 @@ namespace WellRoundedBalance.Items.Greens
                 var stack = sender.inventory.GetItemCount(RoR2Content.Items.SlowOnHit);
                 if (sender.HasBuff(slow50) && stack > 0)
                 {
-                    args.moveSpeedReductionMultAdd += 0.4f;
-                    args.baseAttackSpeedAdd -= 0.1f + 0.05f * (stack - 1);
+                    args.moveSpeedReductionMultAdd += 0.5f;
+                    // 1 - (1/(1+0.5)) for actual slow
+                    args.attackSpeedReductionMultAdd += 0.15f + 0.075f * (stack - 1);
                 }
             }
         }

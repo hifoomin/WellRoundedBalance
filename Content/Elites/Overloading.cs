@@ -42,12 +42,10 @@ namespace WellRoundedBalance.Elites
             ILCursor c = new(il);
 
             if (c.TryGotoNext(MoveType.Before,
-                x => x.MatchLdcI4(1),
-                x => x.MatchLdcI4(0),
-                x => x.MatchBle(out _),
-                x => x.MatchLdcR4(0.5f)))
+                x => x.MatchLdsfld(typeof(RoR2Content.Buffs), "AffixBlue")))
             {
-                c.Next.Operand = 0;
+                c.Remove();
+                c.Emit<Useless>(OpCodes.Ldsfld, nameof(Useless.uselessBuff));
             }
             else
             {

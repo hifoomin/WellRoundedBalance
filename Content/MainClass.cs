@@ -16,6 +16,7 @@ using WellRoundedBalance.Elites;
 using R2API.ContentManagement;
 using WellRoundedBalance.Mechanics.Monsters;
 using WellRoundedBalance.Misc;
+using WellRoundedBalance.Artifacts;
 
 [assembly: HG.Reflection.SearchableAttribute.OptIn]
 // used for BodyCatalog
@@ -46,6 +47,7 @@ namespace WellRoundedBalance
         public static ConfigFile WRBEnemyConfig;
         public static ConfigFile WRBEliteConfig;
         public static ConfigFile WRBGamemodeConfig;
+        public static ConfigFile WRBArtifactConfig;
         public static ManualLogSource WRBLogger;
 
         public static bool InfernoLoaded = false;
@@ -64,6 +66,7 @@ namespace WellRoundedBalance
             WRBEnemyConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Enemies.cfg", true);
             WRBEliteConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Elites.cfg", true);
             WRBGamemodeConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Gamemodes.cfg", true);
+            WRBArtifactConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Artifacts.cfg", true);
 
             InfernoLoaded = BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("HIFU.Inferno");
             RiskyArtifactsLoaded = BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("com.Moffein.RiskyArtifacts");
@@ -198,6 +201,21 @@ namespace WellRoundedBalance
                 }
             }
 
+            IEnumerable<Type> enumerable8 = from type in Assembly.GetExecutingAssembly().GetTypes()
+                                            where !type.IsAbstract && type.IsSubclassOf(typeof(ArtifactBase))
+                                            select type;
+
+            WRBLogger.LogInfo("==+----------------==ARTIFACTS==----------------+==");
+
+            foreach (Type type in enumerable8)
+            {
+                ArtifactBase based = (ArtifactBase)Activator.CreateInstance(type);
+                if (ValidateArtifact(based))
+                {
+                    based.Init();
+                }
+            }
+
             RemoveGesture.Based();
             Mechanic.Monster.SpeedBoost.AddSpeedBoost();
             BetterScaling.NerfHealthScaling();
@@ -268,6 +286,16 @@ namespace WellRoundedBalance
             if (gmb.isEnabled)
             {
                 bool enabledfr = WRBGamemodeConfig.Bind(gmb.Name, "Enable Changes?", true, "Vanilla is false").Value;
+                if (enabledfr) return true;
+            }
+            return false;
+        }
+
+        public bool ValidateArtifact(ArtifactBase ab)
+        {
+            if (ab.isEnabled)
+            {
+                bool enabledfr = WRBArtifactConfig.Bind(ab.Name, "Enable Changes?", true, "Vanilla is false").Value;
                 if (enabledfr) return true;
             }
             return false;

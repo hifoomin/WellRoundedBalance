@@ -17,62 +17,58 @@ namespace WellRoundedBalance.Artifacts
             IL.RoR2.Artifacts.SacrificeArtifactManager.OnServerCharacterDeath += SacrificeArtifactManager_OnServerCharacterDeath;
         }
 
-        public float normalChance = 4f;
-        public float swarmsChance = 2f;
-        public float maxNormalChance = 7f;
-        public float maxSwarmsChance = 3.5f;
+        public float baseDropChance = 4f;
+        public float swarmDropChance = 2f;
+        public float maxBaseDropChance = 7f;
+        public float maxSwarmDropChance = 3.5f;
 
         private void SacrificeArtifactManager_OnServerCharacterDeath(ILContext il)
         {
             ILCursor c = new(il);
 
-            if (c.TryGotoNext(MoveType.Before,
-                x => x.MatchLdcR4(5f)))
+            //Change base drop chance
+            c.GotoNext(MoveType.After,
+                x => x.MatchLdcR4(5f)
+                );
+            c.EmitDelegate<Func<float, float>>(orig =>
             {
-                c.EmitDelegate<Func<float, float>>((useless) =>
-                {
-                    return RunArtifactManager.instance.IsArtifactEnabled(RoR2Content.Artifacts.swarmsArtifactDef) ? swarmsChance : normalChance;
-                });
+                return RunArtifactManager.instance.IsArtifactEnabled(RoR2Content.Artifacts.swarmsArtifactDef) ? swarmDropChance : baseDropChance;
+            });
 
-                if (c.TryGotoNext(MoveType.Before,
-                    x => x.MatchStloc(0)))
+            //Clamp final drop chance
+            c.GotoNext(
+                x => x.MatchStloc(0) //Called after GetExpAdjustedDropChancePercent
+                );
+            c.EmitDelegate<Func<float, float>>(orig =>
+            {
+                float finalDropChance = orig;
+
+                if (orig > 0f)
                 {
-                    c.EmitDelegate<Func<float, float>>((vanillaChance) =>
+                    bool swarmsEnabled = RunArtifactManager.instance.IsArtifactEnabled(RoR2Content.Artifacts.swarmsArtifactDef);
+
+                    float baseChance = baseDropChance;
+                    float maxChance = maxBaseDropChance;
+
+                    if (swarmsEnabled)
                     {
-                        if (vanillaChance > 0f)
-                        {
-                            var newNormalChance = normalChance;
-                            var newMaxNormalChance = maxNormalChance;
+                        baseChance = swarmDropChance;
+                        maxChance = maxSwarmDropChance;
+                    }
 
-                            if (RunArtifactManager.instance.IsArtifactEnabled(RoR2Content.Artifacts.swarmsArtifactDef))
-                            {
-                                newNormalChance = swarmsChance;
-                                newMaxNormalChance = maxSwarmsChance;
-                            }
+                    if (finalDropChance < baseChance)
+                    {
+                        finalDropChance = baseChance;
+                    }
 
-                            if (vanillaChance < newNormalChance)
-                            {
-                                vanillaChance = newNormalChance;
-                            }
-
-                            if (vanillaChance > newMaxNormalChance)
-                            {
-                                vanillaChance = newMaxNormalChance;
-                            }
-                        }
-
-                        return vanillaChance;
-                    });
+                    if (finalDropChance > maxChance)
+                    {
+                        finalDropChance = maxChance;
+                    }
                 }
-                else
-                {
-                    Main.WRBLogger.LogError("Failed to apply Sacrifice All Drop Chances hook");
-                }
-            }
-            else
-            {
-                Main.WRBLogger.LogError("Failed to apply Sacrifice Base Drop Chance hook");
-            }
+
+                return finalDropChance;
+            });
         }
     }
 }

@@ -91,7 +91,7 @@ namespace WellRoundedBalance.Items.Reds
             }
             else
             {
-                Logger.LogError("Could not apply Wake of Vultures IL hook");
+                Main.WRBLogger.LogError("Failed to apply Wake of Vultures Deletion hook");
             }
         }
 
@@ -101,7 +101,7 @@ namespace WellRoundedBalance.Items.Reds
             {
                 if (report.victimIsElite && report.attackerBody)
                 {
-                    Debug.Log("killed elite");
+                    // Debug.Log("killed elite");
                     int stack = report.attackerBody.inventory.GetItemCount(RoR2Content.Items.HeadHunter);
                     if (stack > 0)
                     {

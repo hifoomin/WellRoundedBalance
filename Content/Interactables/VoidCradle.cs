@@ -57,10 +57,10 @@ namespace WellRoundedBalance.Interactables
 
                 EffectManager.SpawnEffect(Utils.Paths.GameObject.ExplodeOnDeathVoidExplosionEffect.Load<GameObject>(), new EffectData
                 {
-                    origin = base.transform.position,
+                    origin = transform.position,
                     scale = 3f
                 }, true);
-                GameObject.Destroy(base.gameObject);
+                Destroy(gameObject);
             }
         }
     }

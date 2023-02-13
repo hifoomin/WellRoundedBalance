@@ -52,7 +52,7 @@ namespace WellRoundedBalance.Elites
 
             SphereCollider collider = ShieldPrefab.AddComponent<SphereCollider>();
             collider.radius = 1f;
-
+            /*
             ProjectileImpactExplosion impact = ShieldPrefab.AddComponent<ProjectileImpactExplosion>();
             impact.blastRadius = 3;
             impact.lifetime = 5;
@@ -60,7 +60,7 @@ namespace WellRoundedBalance.Elites
             impact.destroyOnWorld = false;
             impact.impactOnWorld = false;
             impact.impactEffect = Utils.Paths.GameObject.IceRingExplosion.Load<GameObject>();
-
+            */
             mdlGlacialShield.transform.SetParent(ShieldPrefab.transform);
             mdlGlacialShield.GetComponentInChildren<MeshRenderer>().material = Utils.Paths.Material.matIceOrbCore.Load<Material>();
             mdlGlacialShield.transform.localScale *= 0.6f;
@@ -239,6 +239,7 @@ namespace WellRoundedBalance.Elites
 
     public class GlacialShieldsController : MonoBehaviour
     {
+        /*
         private float stopwatch = 0f;
         private float delay = 3f;
         private float stopwatchClear = 0f;
@@ -313,6 +314,7 @@ namespace WellRoundedBalance.Elites
             onDisabled?.Invoke(this);
             onDisabled = null;
         }
+        */
     }
 
     /* old code

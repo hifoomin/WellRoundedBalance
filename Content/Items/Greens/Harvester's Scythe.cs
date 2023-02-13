@@ -10,9 +10,10 @@ namespace WellRoundedBalance.Items.Greens
 
         public override string PickupText => "'Backstabs' heal a percentage of missing health.";
 
-        public override string DescText => "<style=cIsDamage>Backstabs</style> <style=cIsHealing>heal</style> for <style=cIsHealing>3%</style> <style=cStack>(+1.5% per stack)</style> of your <style=cIsHealing>missing health</style>.";
+        public override string DescText => "<style=cIsDamage>Backstabs</style> <style=cIsHealing>heal</style> for <style=cIsHealing>1.5%</style> <style=cStack>(+0.75% per stack)</style> of your <style=cIsHealing>missing health</style>.";
 
         private static ProcType Backstab = (ProcType)38921;
+
         public override void Init()
         {
             base.Init();
@@ -61,32 +62,37 @@ namespace WellRoundedBalance.Items.Greens
             }
         }
 
-        private void HealthComponent_TakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo info) {
+        private void HealthComponent_TakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo info)
+        {
             orig(self, info);
 
-            if (!info.attacker || info.procChainMask.HasProc(Backstab)) {
+            if (!info.attacker || info.procChainMask.HasProc(Backstab))
+            {
                 return;
             }
 
             CharacterBody attacker = info.attacker.GetComponent<CharacterBody>();
 
-            if (!attacker || info.damageType.HasFlag(DamageType.DoT)) {
+            if (!attacker || info.damageType.HasFlag(DamageType.DoT))
+            {
                 return;
             }
 
-            int stack =  attacker.inventory.GetItemCount(RoR2Content.Items.HealOnCrit);
+            int stack = attacker.inventory.GetItemCount(RoR2Content.Items.HealOnCrit);
 
             Vector3 vector = (attacker.corePosition - info.position) * -1;
 
-            if (BackstabManager.IsBackstab(vector, self.body) && stack > 0) {
+            if (BackstabManager.IsBackstab(vector, self.body) && stack > 0)
+            {
                 info.damageColorIndex = DamageColorIndex.CritHeal;
                 info.procChainMask.AddProc(Backstab);
 
                 HealthComponent hc = attacker.healthComponent;
 
-                float health = (hc.fullHealth - hc.health) * (0.03f + (0.015f * stack));
+                float health = (hc.fullHealth - hc.health) * (0.015f + (0.0075f * stack));
 
-                if (NetworkServer.active) {
+                if (NetworkServer.active)
+                {
                     hc.Heal(health, info.procChainMask, true);
                 }
             }

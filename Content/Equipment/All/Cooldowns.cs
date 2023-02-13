@@ -68,6 +68,9 @@ namespace WellRoundedBalance.Equipment
 
             var Leech = Utils.Paths.EquipmentDef.LifestealOnHit.Load<EquipmentDef>();
             Leech.cooldown = 50f;
+
+            var Vase = Utils.Paths.EquipmentDef.Gateway.Load<EquipmentDef>();
+            Vase.cooldown = 35f;
         }
     }
 }

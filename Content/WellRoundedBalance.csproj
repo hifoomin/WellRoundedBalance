@@ -47,13 +47,13 @@
       <NoWarn>NU1701</NoWarn>
     </PackageReference>
 	<PackageReference Include="R2API.Language" Version="1.0.0" />
-	<PackageReference Include="R2API.RecalculateStats" Version="1.0.0" />
+	<PackageReference Include="R2API.RecalculateStats" Version="1.1.0" />
 	<PackageReference Include="R2API.Director" Version="1.0.0" />
 	<PackageReference Include="R2API.Prefab" Version="1.0.1" />
 	<PackageReference Include="R2API.Items" Version="1.0.1" />
 	<PackageReference Include="R2API.ContentManagement" Version="1.0.1" />
 	<PackageReference Include="R2API.Core" Version="5.0.4" />
-	<PackageReference Include="R2API.DamageType" Version="1.0.0" />
+	<PackageReference Include="R2API.DamageType" Version="1.0.2" />
   </ItemGroup>
 
   <ItemGroup>
@@ -111,6 +111,9 @@
     <Reference Include="SimpleJSON">
       <HintPath>libs\SimpleJSON.dll</HintPath>
       <Private>false</Private>
+    </Reference>
+    <Reference Include="Unity.Postprocessing.Runtime">
+      <HintPath>..\..\..\..\Unity.Postprocessing.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="Wwise">
       <HintPath>libs\Wwise.dll</HintPath>

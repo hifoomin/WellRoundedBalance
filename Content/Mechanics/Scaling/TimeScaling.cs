@@ -6,7 +6,7 @@ namespace WellRoundedBalance.Mechanic.Scaling
     public class TimeScaling : MechanicBase
     {
         public static float timer;
-        public static float interval = 120f;
+        public static float interval = 180f;
         public static float vanillaStandardScaling;
         public static float vanillaLinearScaling;
         public static float ambientLevel;
@@ -31,9 +31,9 @@ namespace WellRoundedBalance.Mechanic.Scaling
             timer += Time.fixedDeltaTime;
             if (timer >= interval && Run.instance)
             {
-                ChatMessage.Send("Current difficulty coefficient is " + Run.instance.compensatedDifficultyCoefficient + " (Ambient Level " + ambientLevel + ")");
-                ChatMessage.Send("Vanilla standard difficulty coefficient would be " + vanillaStandardScaling + " (Ambient Level " + vanillaStandardAmbientLevel + ")");
-                ChatMessage.Send("Vanilla linear difficulty coefficient would be " + vanillaLinearScaling + " (Ambient Level " + vanillaLinearAmbientLevel + ")");
+                ChatMessage.Send("Current ambient level: " + ambientLevel);
+                ChatMessage.Send("Vanilla ambient level would be: " + vanillaStandardAmbientLevel);
+                ChatMessage.Send("Vanilla linear ambient level would be: " + vanillaLinearAmbientLevel);
                 timer = 0f;
             }
         }

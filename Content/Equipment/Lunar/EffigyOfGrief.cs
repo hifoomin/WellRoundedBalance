@@ -13,7 +13,7 @@ namespace WellRoundedBalance.Equipment
 
         public override string PickupText => "Drop a permanent effigy that cripples ALL characters inside. Can place up to 5.";
 
-        public override string DescText => "ALL characters within are <style=cIsUtility>slowed by 100%</style> and have their <style=cIsDamage>armor reduced by -25</style>. Can place up to <style=cIsUtility>5</style>.";
+        public override string DescText => "ALL characters within are <style=cIsUtility>slowed by 50%</style> and have their <style=cIsDamage>armor reduced by -25</style>. Can place up to <style=cIsUtility>5</style>.";
 
         public static BuffDef CrippleEffigy;
 
