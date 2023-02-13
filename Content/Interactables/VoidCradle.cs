@@ -60,7 +60,8 @@ namespace WellRoundedBalance.Interactables
                     origin = transform.position,
                     scale = 3f
                 }, true);
-                Destroy(gameObject);
+                
+                gameObject.SetActive(false);
             }
         }
     }

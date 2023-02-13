@@ -4,6 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>preview</LangVersion>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -113,7 +114,8 @@
       <Private>false</Private>
     </Reference>
     <Reference Include="Unity.Postprocessing.Runtime">
-      <HintPath>..\..\..\..\Unity.Postprocessing.Runtime.dll</HintPath>
+      <HintPath>./libs/Unity.Postprocessing.Runtime.dll</HintPath>
+      <Private>true</Private>
     </Reference>
     <Reference Include="Wwise">
       <HintPath>libs\Wwise.dll</HintPath>
