@@ -34,13 +34,16 @@
         }
     }
 
-    public class UnityTechnologies : MonoBehaviour {
-        public void Start() {
+    public class UnityTechnologies : MonoBehaviour
+    {
+        public void Start()
+        {
             // have to do this in a component because Unity Technologies
             GetComponent<PurchaseInteraction>().onPurchase.AddListener(Open);
         }
 
-        public void Open(Interactor interactor) {
+        public void Open(Interactor interactor)
+        {
             GetComponent<OptionChestBehavior>().Open();
         }
     }
@@ -57,9 +60,11 @@
         public void GenerateWeightedSelection()
         {
             weighted.Clear();
-            foreach (PickupIndex index in Run.instance.availableLunarCombinedDropList) {
+            foreach (PickupIndex index in Run.instance.availableLunarCombinedDropList)
+            {
                 ItemDef def = ItemCatalog.GetItemDef(index.itemIndex);
-                if (def && !string.IsNullOrEmpty(def.name) && !def.name.ToLower().Contains("replacement")) {
+                if (def && !string.IsNullOrEmpty(def.name) && !def.name.ToLower().Contains("replacement"))
+                {
                     weighted.AddChoice(index, 1f);
                 }
             }
@@ -69,8 +74,9 @@
         {
             GenerateWeightedSelection();
             PickupIndex[] drops = GenerateUniqueDropsFromWeightedSelection(maxDrops, rng, weighted);
-            foreach (PickupIndex index in drops) {
-                Debug.Log(index);
+            foreach (PickupIndex index in drops)
+            {
+                // Debug.Log(index);
             }
             return drops;
         }

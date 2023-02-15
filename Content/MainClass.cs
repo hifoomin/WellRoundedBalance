@@ -105,22 +105,22 @@ namespace WellRoundedBalance
                                             select type;
 
             WRBLogger.LogInfo("==+----------------==ITEMS==----------------+==");
-            List<ItemBase> baseds = new();
+            // List<ItemBase> baseds = new();
 
             foreach (Type type in enumerable2)
             {
-                /*ItemBase based = (ItemBase)Activator.CreateInstance(type);
+                ItemBase based = (ItemBase)Activator.CreateInstance(type);
                 if (ValidateItem(based))
                 {
                     based.Init();
-                    // i would really really like to sort everything alphabetically but i have no idea how, please help
-                }*/
+                }
 
                 // done alphabetically
-                baseds.Add((ItemBase)Activator.CreateInstance(type));
+                // baseds.Add((ItemBase)Activator.CreateInstance(type));
             }
 
             // nvm this breaks the entire game what
+            /*
             foreach (ItemBase itemBased in baseds.OrderBy(x => (char)x.InternalPickupToken.ToLower()[0]))
             {
                 // Debug.Log(itemBased.InternalPickupToken);
@@ -129,6 +129,7 @@ namespace WellRoundedBalance
                     itemBased.Init();
                 }
             }
+            */
 
             IEnumerable<Type> enumerable3 = from type in Assembly.GetExecutingAssembly().GetTypes()
                                             where !type.IsAbstract && type.IsSubclassOf(typeof(EquipmentBase))
@@ -221,7 +222,7 @@ namespace WellRoundedBalance
             }
 
             RemoveGesture.Based();
-            Mechanic.Monster.SpeedBoost.AddSpeedBoost();
+            Mechanic.Monsters.SpeedBoost.AddSpeedBoost();
             BetterScaling.NerfHealthScaling();
         }
 

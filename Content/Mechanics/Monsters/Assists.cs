@@ -1,4 +1,4 @@
-namespace WellRoundedBalance.Mechanic.Monster
+namespace WellRoundedBalance.Mechanic.Monsters
 {
     public class Assists : MechanicBase<Assists>
     {
@@ -62,7 +62,9 @@ namespace WellRoundedBalance.Mechanic.Monster
         {
             public HealthComponent hc => GetComponent<HealthComponent>();
             public List<Attacker> attackers;
-            public class Attacker {
+
+            public class Attacker
+            {
                 public GameObject attacker;
                 public float timeValid;
             }
@@ -79,14 +81,16 @@ namespace WellRoundedBalance.Mechanic.Monster
             {
                 if (report.attacker && attackers.Where(x => x.attacker == report.attacker).Count() == 0)
                 {
-                    attackers.Add(new Attacker {
+                    attackers.Add(new Attacker
+                    {
                         attacker = report.attacker,
                         timeValid = 5
                     });
                 }
             }
 
-            public void FixedUpdate() {
+            public void FixedUpdate()
+            {
                 attackers.ForEach(x => x.timeValid -= Time.fixedDeltaTime);
                 attackers.RemoveAll(x => x.timeValid <= 0);
             }

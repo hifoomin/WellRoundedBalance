@@ -1,4 +1,4 @@
-﻿namespace WellRoundedBalance.Mechanic.Monster
+﻿namespace WellRoundedBalance.Mechanic.Monsters
 {
     internal class LoopScaling : MechanicBase
     {
