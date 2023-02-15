@@ -29,6 +29,19 @@
             optionChestBehavior.pickupPrefab = Utils.Paths.GameObject.OptionPickup.Load<GameObject>();
             optionChestBehavior.numOptions = 2;
             optionChestBehavior.displayTier = ItemTier.Lunar;
+
+            lunarPod.AddComponent<UnityTechnologies>();
+        }
+    }
+
+    public class UnityTechnologies : MonoBehaviour {
+        public void Start() {
+            // have to do this in a component because Unity Technologies
+            GetComponent<PurchaseInteraction>().onPurchase.AddListener(Open);
+        }
+
+        public void Open(Interactor interactor) {
+            GetComponent<OptionChestBehavior>().Open();
         }
     }
 
@@ -44,20 +57,22 @@
         public void GenerateWeightedSelection()
         {
             weighted.Clear();
-            foreach (ItemDef itemDef in ItemCatalog.itemDefs.Where(x => x.deprecatedTier == ItemTier.Lunar))
-            {
-                if (itemDef.name.ToLower().Contains("replacement") || itemDef.name.ToLower().Contains("heresy"))
-                {
-                    continue;
+            foreach (PickupIndex index in Run.instance.availableLunarCombinedDropList) {
+                ItemDef def = ItemCatalog.GetItemDef(index.itemIndex);
+                if (def && !string.IsNullOrEmpty(def.name) && !def.name.ToLower().Contains("replacement")) {
+                    weighted.AddChoice(index, 1f);
                 }
-                weighted.AddChoice(PickupCatalog.FindPickupIndex(itemDef.itemIndex), 1);
             }
         }
 
         public override PickupIndex[] GenerateUniqueDropsPreReplacement(int maxDrops, Xoroshiro128Plus rng)
         {
             GenerateWeightedSelection();
-            return GenerateUniqueDropsFromWeightedSelection(maxDrops, rng, weighted);
+            PickupIndex[] drops = GenerateUniqueDropsFromWeightedSelection(maxDrops, rng, weighted);
+            foreach (PickupIndex index in drops) {
+                Debug.Log(index);
+            }
+            return drops;
         }
 
         public override PickupIndex GenerateDropPreReplacement(Xoroshiro128Plus rng)
