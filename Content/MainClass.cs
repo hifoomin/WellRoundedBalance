@@ -50,6 +50,8 @@ namespace WellRoundedBalance
         public static ConfigFile WRBArtifactConfig;
         public static ManualLogSource WRBLogger;
 
+        public static AssetBundle wellroundedbalance;
+
         public static bool InfernoLoaded = false;
         public static bool RiskyArtifactsLoaded = false;
         public static DifficultyDef InfernoDef = null;
@@ -58,6 +60,8 @@ namespace WellRoundedBalance
         {
             WRBLogger = Logger;
             Main.WRBConfig = base.Config;
+
+            wellroundedbalance = AssetBundle.LoadFromFile(Assembly.GetExecutingAssembly().Location.Replace("WellRoundedBalance.dll", "wellroundedbalance"));
 
             WRBItemConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Items.cfg", true);
             WRBMechanicConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Mechanics.cfg", true);
