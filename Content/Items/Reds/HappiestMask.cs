@@ -10,9 +10,9 @@ namespace WellRoundedBalance.Items.Reds
         public override string Name => ":: Items ::: Reds :: Happiest Mask";
         public override string InternalPickupToken => "ghostOnKill";
 
-        public override string PickupText => "Chance on killing an enemy to summon a ghost.";
+        public override string PickupText => "Summon a ghost upon killing an enemy. Recharges over time.";
 
-        public override string DescText => "Killing enemies has a <style=cIsDamage>30%</style> chance to <style=cIsDamage>spawn a ghost</style> of the killed enemy with <style=cIsDamage>1500%</style> damage. Lasts <style=cIsDamage>30s</style> <style=cStack>(+30s per stack)</style>.";
+        public override string DescText => "Killing an enemy <style=cIsDamage>spawns a ghost</style> with <style=cIsDamage>1200%</style> <style=cStack>(+400% per stack)</style> damage that lasts <style=cIsDamage>30s</style>. Recharges every <style=cIsDamage>20s</style>.";
 
         public override void Init()
         {
@@ -22,7 +22,7 @@ namespace WellRoundedBalance.Items.Reds
             happiestMaskReady.isDebuff = false;
             happiestMaskReady.buffColor = new Color32();
             happiestMaskReady.iconSprite = Main.wellroundedbalance.LoadAsset<Sprite>("texBuffHappiestMaskReady.png");
-            happiestMaskReady.buffColor = new Color32(190, 171, 165, 255);
+            happiestMaskReady.buffColor = new Color32(227, 228, 227, 255);
             happiestMaskReady.name = "Happiest Mask Ready";
 
             happiestMaskCooldown = ScriptableObject.CreateInstance<BuffDef>();
@@ -44,6 +44,15 @@ namespace WellRoundedBalance.Items.Reds
         {
             IL.RoR2.GlobalEventManager.OnCharacterDeath += GlobalEventManager_OnCharacterDeath;
             GlobalEventManager.onCharacterDeathGlobal += GlobalEventManager_onCharacterDeathGlobal;
+            CharacterBody.onBodyInventoryChangedGlobal += CharacterBody_onBodyInventoryChangedGlobal;
+        }
+
+        private void CharacterBody_onBodyInventoryChangedGlobal(CharacterBody characterBody)
+        {
+            if (NetworkServer.active)
+            {
+                characterBody.AddItemBehavior<HappiestMaskController>(characterBody.inventory.GetItemCount(RoR2Content.Items.GhostOnKill));
+            }
         }
 
         private void GlobalEventManager_onCharacterDeathGlobal(DamageReport damageReport)
