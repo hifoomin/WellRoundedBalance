@@ -14,6 +14,7 @@ namespace WellRoundedBalance.Interactables
 
         public virtual void Init()
         {
+            ConfigManager.HandleConfigAttributes(this.GetType(), Name, Main.WRBInteractableConfig);
             Hooks();
         }
     }

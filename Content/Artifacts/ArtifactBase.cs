@@ -9,6 +9,7 @@
 
         public virtual void Init()
         {
+            ConfigManager.HandleConfigAttributes(this.GetType(), Name, Main.WRBArtifactConfig);
             Hooks();
         }
     }
