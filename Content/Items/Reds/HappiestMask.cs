@@ -227,7 +227,7 @@ namespace WellRoundedBalance.Items.Reds
         {
             if (stack <= 0) return false;
 
-            var maxGhosts = 3;
+            var maxGhosts = 500;
             return activeGhosts.Count < maxGhosts;
         }
 
