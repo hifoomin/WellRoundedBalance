@@ -50,6 +50,7 @@ namespace WellRoundedBalance.Items
 
         public virtual void Init()
         {
+            ConfigManager.HandleConfigAttributes(this.GetType(), Name, Main.WRBItemConfig);
             Hooks();
             string pickupToken = "ITEM_" + InternalPickupToken.ToUpper() + "_PICKUP";
             string descriptionToken = "ITEM_" + InternalPickupToken.ToUpper() + "_DESC";

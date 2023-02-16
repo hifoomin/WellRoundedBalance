@@ -20,6 +20,7 @@ namespace WellRoundedBalance.Equipment
 
         public virtual void Init()
         {
+            ConfigManager.HandleConfigAttributes(this.GetType(), Name, Main.WRBEquipmentConfig);
             Hooks();
             string pickupToken = "EQUIPMENT_" + InternalPickupToken.ToUpper() + "_PICKUP";
             string descriptionToken = "EQUIPMENT_" + InternalPickupToken.ToUpper() + "_DESC";
