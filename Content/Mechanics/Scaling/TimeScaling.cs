@@ -3,7 +3,7 @@ using System;
 
 namespace WellRoundedBalance.Mechanic.Scaling
 {
-    public class TimeScaling : MechanicBase
+    public class TimeScaling : MechanicBase<TimeScaling>
     {
         public static float timer;
         public static float interval = 180f;
