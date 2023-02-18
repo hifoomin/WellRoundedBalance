@@ -10,7 +10,7 @@ namespace WellRoundedBalance.Items.Lunars
         public override string InternalPickupToken => "shieldOnly";
 
         public override string PickupText => "Convert all your health into shield and increase maximum health... <color=#FF7F7F>BUT increase shield cooldown time.</color>\\n";
-        public override string DescText => "<style=cIsHealing>Convert</style> all but <style=cIsHealing>1 health</style> into <style=cIsHealing>regenerating shields</style>. <style=cIsHealing>Gain 50% <style=cStack>(+25% per stack)</style> maximum health</style>. Increase <style=cIsUtility>shield cooldown time</style> by <style=cIsUtility>1s</style> <style=cStack>(+1s per stack)</style>.";
+        public override string DescText => "<style=cIsHealing>Convert</style> all but <style=cIsHealing>1 health</style> into <style=cIsHealing>regenerating shields</style>. <style=cIsHealing>Gain 50% <style=cStack>(+25% per stack)</style> maximum health</style>. Increase <style=cIsUtility>shield cooldown time</style> by <style=cIsUtility>1.5s</style> <style=cStack>(+1s per stack)</style>.";
 
         public override void Init()
         {
@@ -37,7 +37,7 @@ namespace WellRoundedBalance.Items.Lunars
                         var stack = self.inventory.GetItemCount(RoR2Content.Items.ShieldOnly);
                         if (stack > 0)
                         {
-                            outOfDangerDelay += 1f * stack;
+                            outOfDangerDelay += 1.5f + 1f * (stack - 1);
                         }
                     }
                     return outOfDangerDelay;

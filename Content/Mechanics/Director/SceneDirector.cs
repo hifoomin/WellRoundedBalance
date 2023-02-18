@@ -1,10 +1,10 @@
 ﻿using System;
 
-namespace WellRoundedBalance.Mechanic.Director
+namespace WellRoundedBalance.Mechanics.Director
 {
     internal class SceneDirector : MechanicBase
     {
-        public override string Name => ":: Mechanics :::::: Scene Director";
+        public override string Name => ":: Mechanics :::: Scene Director";
 
         public override void Hooks()
         {

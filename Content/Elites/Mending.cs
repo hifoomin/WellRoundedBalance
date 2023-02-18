@@ -6,6 +6,11 @@ namespace WellRoundedBalance.Elites {
         public override string Name => "Elites :::: Mending";
         public GameObject AffixEarthAttachment;
 
+        public override void Init()
+        {
+            base.Init();
+        }
+
         public override void Hooks()
         {
             On.RoR2.AffixEarthBehavior.FixedUpdate += Disable;
@@ -29,7 +34,7 @@ namespace WellRoundedBalance.Elites {
             private float delay = 1f;
             private TeamIndex team;
             private CharacterBody body;
-            
+
             private void Start() {
                 vfxOrigin = base.gameObject.AddComponent<TetherVfxOrigin>();
                 vfxOrigin.tetherPrefab = Utils.Paths.GameObject.AffixEarthTetherVFX.Load<GameObject>();

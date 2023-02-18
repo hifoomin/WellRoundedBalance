@@ -1,11 +1,11 @@
 ﻿using UnityEngine.SceneManagement;
 
-namespace WellRoundedBalance.Mechanic.CommencementSpeedBoost
+namespace WellRoundedBalance.Mechanics.CommencementSpeedBoost
 {
     internal class CommencementSpeedBoost : MechanicBase
     {
         public static BuffDef commencementSpeed;
-        public override string Name => ":: Mechanics ::::::::: Commencement Speed Boost";
+        public override string Name => ":: Mechanics ::::::: Commencement Speed Boost";
 
         public override void Init()
         {

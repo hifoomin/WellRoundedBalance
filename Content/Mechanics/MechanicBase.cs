@@ -1,4 +1,4 @@
-﻿namespace WellRoundedBalance.Mechanic
+﻿namespace WellRoundedBalance.Mechanics
 {
     public abstract class MechanicBase
     {

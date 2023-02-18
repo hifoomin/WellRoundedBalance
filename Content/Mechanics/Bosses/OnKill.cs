@@ -1,12 +1,17 @@
 using System;
 using UnityEngine;
 
-namespace WellRoundedBalance.Mechanic.Bosses
+namespace WellRoundedBalance.Mechanics.Bosses
 {
     public class OnKill : MechanicBase<OnKill>
     {
-        public override string Name => ":: Mechanics ::: Bosses ::: On Kill Thresholds";
+        public override string Name => ":: Mechanics ::::: Boss On Kill";
         private List<BodyIndex> acceptableBodies;
+
+        public override void Init()
+        {
+            base.Init();
+        }
 
         public override void Hooks()
         {

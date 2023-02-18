@@ -1,11 +1,11 @@
 ﻿using System;
 using UnityEngine;
 
-namespace WellRoundedBalance.Mechanic.Scaling
+namespace WellRoundedBalance.Mechanics.Scaling
 {
     public class GoldScaling : MechanicBase
     {
-        public override string Name => ":: Mechanics : Scaling";
+        public override string Name => ":: Mechanics : Gold Scaling";
 
         public override void Init()
         {

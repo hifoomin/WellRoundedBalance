@@ -40,7 +40,7 @@ namespace WellRoundedBalance.Items.Lunars
             c.Index = 0;
 
             if (c.TryGotoNext(MoveType.Before,
-                    x => x.MatchLdfld<RoR2.HealthComponent>("repeatHealComponent"),
+                    x => x.MatchLdfld<HealthComponent>("repeatHealComponent"),
                     x => x.MatchLdcR4(0.1f)))
             {
                 c.Index += 1;

@@ -1,6 +1,4 @@
-﻿using HG;
-using Mono.Cecil.Cil;
-using MonoMod.Cil;
+﻿using MonoMod.Cil;
 
 namespace WellRoundedBalance.Items.VoidGreens
 {
@@ -10,7 +8,7 @@ namespace WellRoundedBalance.Items.VoidGreens
         public override string InternalPickupToken => "explodeOnDeathVoid";
 
         public override string PickupText => "Full health enemies also detonate on hit. <style=cIsVoid>Corrupts all Will-o'-the-wisps</style>.";
-        public override string DescText => "Upon hitting an enemy at <style=cIsDamage>100% health</style>, <style=cIsDamage>detonate</style> them in a <style=cIsDamage>12m</style> radius burst for <style=cIsDamage>80%</style> <style=cStack>(+20% per stack)</style> base damage. <style=cIsVoid>Corrupts all Will-o'-the-wisps</style>.";
+        public override string DescText => "Upon hitting an enemy at <style=cIsDamage>100% health</style>, <style=cIsDamage>detonate</style> them in a <style=cIsDamage>12m</style> radius burst for <style=cIsDamage>50%</style> <style=cStack>(+10% per stack)</style> base damage. <style=cIsVoid>Corrupts all Will-o'-the-wisps</style>.";
 
         public override void Init()
         {
@@ -19,10 +17,11 @@ namespace WellRoundedBalance.Items.VoidGreens
 
         public override void Hooks()
         {
-            IL.RoR2.HealthComponent.TakeDamage += Changes;
+            IL.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
+            Changes();
         }
 
-        private void Changes(ILContext il)
+        private void HealthComponent_TakeDamage(ILContext il)
         {
             ILCursor c = new(il);
 
@@ -62,7 +61,7 @@ namespace WellRoundedBalance.Items.VoidGreens
                     x => x.MatchConvR4(),
                     x => x.MatchLdcR4(0.6f)))
             {
-                c.Next.Operand = 0.8f;
+                c.Next.Operand = 0.5f;
                 c.Index += 6;
                 c.Next.Operand = 0.2f;
             }
@@ -70,20 +69,13 @@ namespace WellRoundedBalance.Items.VoidGreens
             {
                 Main.WRBLogger.LogError("Failed to apply Voidsent Flame Damage hook");
             }
+        }
 
-            c.Index = 0;
-
-            if (c.TryGotoNext(MoveType.Before,
-                x => x.MatchLdcI4(2),
-                x => x.MatchStfld("RoR2.DelayBlast", "falloffModel")))
-            {
-                c.Remove();
-                c.Emit(OpCodes.Ldc_I4, 0);
-            }
-            else
-            {
-                Main.WRBLogger.LogError("Failed to apply Voidsent Flame Falloff hook");
-            }
+        private void Changes()
+        {
+            var hopooGames = Utils.Paths.GameObject.ExplodeOnDeathVoidExplosion.Load<GameObject>();
+            var delayBlast = hopooGames.GetComponent<DelayBlast>();
+            delayBlast.procCoefficient = 0f;
         }
     }
 }

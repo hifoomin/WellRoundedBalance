@@ -1,6 +1,6 @@
 ﻿using MonoMod.Cil;
 
-namespace WellRoundedBalance.Mechanic.Movement
+namespace WellRoundedBalance.Mechanics.Movement
 {
     public class GetNotMoving : MechanicBase
     {

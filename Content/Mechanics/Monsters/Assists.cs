@@ -1,8 +1,8 @@
-namespace WellRoundedBalance.Mechanic.Monsters
+namespace WellRoundedBalance.Mechanics.Monsters
 {
     public class Assists : MechanicBase<Assists>
     {
-        public override string Name => ":: Mechanics ::: Assists";
+        public override string Name => ":: Mechanics :::::::: Assists";
 
         public override void Hooks()
         {

@@ -1,7 +1,7 @@
 ﻿using R2API.Utils;
 using System;
 
-namespace WellRoundedBalance.Mechanic.Scaling
+namespace WellRoundedBalance.Mechanics.Scaling
 {
     public class TimeScaling : MechanicBase<TimeScaling>
     {
@@ -13,7 +13,7 @@ namespace WellRoundedBalance.Mechanic.Scaling
         public static float vanillaStandardAmbientLevel;
         public static float vanillaLinearAmbientLevel;
 
-        public override string Name => ":: Mechanics : Scaling";
+        public override string Name => ":: Mechanics : Time Scaling";
 
         public override void Init()
         {

@@ -47,7 +47,6 @@ namespace WellRoundedBalance.Items.Lunars
             }
         }
 
-        // enemies pulling player on hit
         private void HealthComponent_TakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo)
         {
             var attacker = damageInfo.attacker;
@@ -67,7 +66,7 @@ namespace WellRoundedBalance.Items.Lunars
                             var bodyMotor = body.characterMotor;
                             if (bodyMotor && stack > 0)
                             {
-                                bodyMotor.velocity.y = Mathf.Min(bodyMotor.velocity.y, -50f - 35f * (stack - 1));
+                                bodyMotor.velocity.y = Mathf.Min(bodyMotor.velocity.y, -20f * stack);
                             }
                         }
                     }

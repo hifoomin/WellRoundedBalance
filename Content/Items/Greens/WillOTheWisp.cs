@@ -13,7 +13,7 @@ namespace WellRoundedBalance.Items.Greens
 
         public override string PickupText => "Detonate enemies on kill.";
 
-        public override string DescText => "On killing an enemy, spawn a <style=cIsDamage>lava pillar</style> in a <style=cIsDamage>12m</style> radius for <style=cIsDamage>220%</style> <style=cStack>(+110% per stack)</style> base damage.";
+        public override string DescText => "On killing an enemy, spawn a <style=cIsDamage>lava pillar</style> in a <style=cIsDamage>12m</style> radius for <style=cIsDamage>150%</style> <style=cStack>(+40% per stack)</style> base damage.";
 
         public override void Init()
         {
@@ -39,9 +39,9 @@ namespace WellRoundedBalance.Items.Greens
                     x => x.MatchConvR4(),
                     x => x.MatchLdcR4(0.8f)))
             {
-                c.Next.Operand = 2.2f;
+                c.Next.Operand = 1.5f;
                 c.Index += 6;
-                c.Next.Operand = 0.5f;
+                c.Next.Operand = 0.266666667f;
             }
             else
             {
@@ -61,34 +61,6 @@ namespace WellRoundedBalance.Items.Greens
             else
             {
                 Main.WRBLogger.LogError("Failed to apply Will o' The Wisp Range hook");
-            }
-
-            c.Index = 0;
-
-            if (c.TryGotoNext(MoveType.Before,
-               x => x.MatchLdloc(55),
-               x => x.MatchLdcR4(2000f)))
-            {
-                c.Index += 1;
-                c.Next.Operand = 0f;
-            }
-            else
-            {
-                Main.WRBLogger.LogError("Failed to apply Will o' The Wisp Knockback hook");
-            }
-
-            c.Index = 0;
-
-            if (c.TryGotoNext(MoveType.Before,
-                x => x.MatchLdcI4(2),
-                x => x.MatchStfld("RoR2.DelayBlast", "falloffModel")))
-            {
-                c.Remove();
-                c.Emit(OpCodes.Ldc_I4, 0);
-            }
-            else
-            {
-                Main.WRBLogger.LogError("Failed to apply Will o' The Wisp Falloff hook");
             }
         }
 

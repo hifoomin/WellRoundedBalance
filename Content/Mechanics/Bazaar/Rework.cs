@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 using System.Linq;
 using IL.RoR2.UI;
 
-namespace WellRoundedBalance.Mechanic.Bazaar
+namespace WellRoundedBalance.Mechanics.Bazaar
 {
     internal class Rework : MechanicBase
     {

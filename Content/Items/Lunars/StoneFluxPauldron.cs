@@ -46,7 +46,7 @@ namespace WellRoundedBalance.Items.Lunars
                             else if (self.body.rigidbody) mass = self.body.rigidbody.mass;
                             else mass = 1f;
 
-                            var force = 50f * stack;
+                            var force = 30f * stack;
                             damageInfo.force += Vector3.Normalize(attackerBody.corePosition - self.body.corePosition) * force * mass;
                         }
                         if (inventory2)
@@ -59,7 +59,10 @@ namespace WellRoundedBalance.Items.Lunars
                             else mass = 1f;
 
                             var force = 6f * stack;
-                            if (!attackerBody.isChampion) damageInfo.force += Vector3.Normalize(attackerBody.corePosition - self.body.corePosition) * force * Mathf.Pow(mass, 1.1f);
+                            if (!attackerBody.isChampion || !attackerBody.isBoss)
+                            {
+                                damageInfo.force += Vector3.Normalize(attackerBody.corePosition - self.body.corePosition) * force * Mathf.Pow(mass, 1.1f);
+                            }
                         }
                     }
                 }

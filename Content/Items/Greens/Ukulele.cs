@@ -11,7 +11,7 @@ namespace WellRoundedBalance.Items.Greens
         public override string InternalPickupToken => "chainLightning";
 
         public override string PickupText => "...and his music was electric.";
-        public override string DescText => "<style=cIsDamage>25%</style> Chance to fire <style=cIsDamage>chain lightning</style> for <style=cIsDamage>55%</style> TOTAL damage on up to <style=cIsDamage>3 <style=cStack>(+2 per stack)</style></style> targets within <style=cIsDamage>12m</style> <style=cStack>(+4m per stack)</style>.";
+        public override string DescText => "<style=cIsDamage>25%</style> Chance to fire <style=cIsDamage>chain lightning</style> for <style=cIsDamage>50%</style> TOTAL damage on up to <style=cIsDamage>3 <style=cStack>(+2 per stack)</style></style> targets within <style=cIsDamage>12m</style> <style=cStack>(+4m per stack)</style>.";
 
         public override void Init()
         {
@@ -51,7 +51,7 @@ namespace WellRoundedBalance.Items.Greens
                 x => x.MatchLdcR4(0.8f)))
             {
                 c.Index += 2;
-                c.Next.Operand = 0.55f;
+                c.Next.Operand = 0.5f;
             }
             else
             {

@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace WellRoundedBalance.Mechanic.Monsters
+namespace WellRoundedBalance.Mechanics.Monsters
 {
     internal class NoHealOnLevelUp : MechanicBase
     {
-        public override string Name => ":: Mechanics :::::::::: No Levelup Heal";
+        public override string Name => ":: Mechanics :::::::: No Levelup Heal";
 
         public override void Init()
         {

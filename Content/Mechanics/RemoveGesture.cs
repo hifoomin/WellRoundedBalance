@@ -1,4 +1,4 @@
-﻿namespace WellRoundedBalance.Global
+﻿namespace WellRoundedBalance.Mechanics.RemoveGesture
 {
     public static class RemoveGesture
     {

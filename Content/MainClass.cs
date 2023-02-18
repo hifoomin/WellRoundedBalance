@@ -5,9 +5,7 @@ using System;
 using System.Reflection;
 using WellRoundedBalance.Items;
 using WellRoundedBalance.Equipment;
-using WellRoundedBalance.Global;
 using WellRoundedBalance.Interactables;
-using WellRoundedBalance.Mechanic;
 using WellRoundedBalance.Enemies;
 using WellRoundedBalance.Projectiles;
 using WellRoundedBalance.Eclipse;
@@ -17,9 +15,10 @@ using R2API.ContentManagement;
 using WellRoundedBalance.Mechanics.Monsters;
 using WellRoundedBalance.Misc;
 using WellRoundedBalance.Artifacts;
+using WellRoundedBalance.Mechanics;
+using WellRoundedBalance.Mechanics.RemoveGesture;
 
 [assembly: HG.Reflection.SearchableAttribute.OptIn]
-// used for BodyCatalog
 
 namespace WellRoundedBalance
 {
@@ -221,9 +220,10 @@ namespace WellRoundedBalance
                 }
             }
 
-            RemoveGesture.Based();
-            Mechanic.Monsters.SpeedBoost.AddSpeedBoost();
-            BetterScaling.NerfHealthScaling();
+            // RemoveGesture.Based();
+            SpeedBoost.Init();
+            BetterScaling.Init();
+            ChangeStats.Init();
         }
 
         public bool ValidateMechanic(MechanicBase gb)

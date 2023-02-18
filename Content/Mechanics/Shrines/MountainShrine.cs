@@ -1,13 +1,9 @@
-﻿using System;
-using WellRoundedBalance.Items.Whites;
-using WellRoundedBalance.Mechanic;
-
-namespace WellRoundedBalance.Mechanics.Shrines
+﻿namespace WellRoundedBalance.Mechanics.Shrines
 {
     internal class MountainShrine : MechanicBase
     {
         public static BuffDef mountainShrineBuff;
-        public override string Name => ":: Mechanics :::::::::::: Mountain Shrine";
+        public override string Name => ":: Mechanics :::::: Mountain Shrine";
 
         public override void Init()
         {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WellRoundedBalance.Mechanic
+namespace WellRoundedBalance.Mechanics
 {
     public abstract class MechanicBase<T> : MechanicBase where T : MechanicBase<T>
     {

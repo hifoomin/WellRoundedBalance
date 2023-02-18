@@ -78,22 +78,28 @@ namespace WellRoundedBalance.Items.Greens
                 return;
             }
 
-            int stack = attacker.inventory.GetItemCount(RoR2Content.Items.HealOnCrit);
+            var inventory = attacker.inventory;
+            if (!inventory)
+            {
+                return;
+            }
 
-            Vector3 vector = (attacker.corePosition - info.position) * -1;
+            var stack = inventory.GetItemCount(RoR2Content.Items.HealOnCrit);
+
+            var vector = (attacker.corePosition - info.position) * -1;
 
             if (BackstabManager.IsBackstab(vector, self.body) && stack > 0)
             {
-                info.damageColorIndex = DamageColorIndex.CritHeal;
+                info.damageColorIndex = DamageColorIndex.WeakPoint;
                 info.procChainMask.AddProc(Backstab);
 
-                HealthComponent hc = attacker.healthComponent;
+                var healthComponent = attacker.healthComponent;
 
-                float health = (hc.fullHealth - hc.health) * (0.015f + (0.0075f * stack));
+                var healing = (healthComponent.fullHealth - healthComponent.health) * (0.015f + (0.0075f * stack));
 
                 if (NetworkServer.active)
                 {
-                    hc.Heal(health, info.procChainMask, true);
+                    healthComponent.Heal(healing, info.procChainMask, true);
                 }
             }
         }

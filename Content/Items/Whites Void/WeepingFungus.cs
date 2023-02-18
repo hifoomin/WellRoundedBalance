@@ -1,4 +1,6 @@
-﻿using MonoMod.Cil;
+﻿using Mono.Cecil.Cil;
+using MonoMod.Cil;
+using System;
 
 namespace WellRoundedBalance.Items.VoidWhites
 {
@@ -8,7 +10,7 @@ namespace WellRoundedBalance.Items.VoidWhites
         public override string InternalPickupToken => "mushroomVoid";
 
         public override string PickupText => "Heal while sprinting. <style=cIsVoid>Corrupts all Bustling Fungi</style>.";
-        public override string DescText => "<style=cIsHealing>Heals</style> for <style=cIsHealing>1%</style> <style=cStack>(+1% per stack)</style> of your <style=cIsHealing>health</style> every second <style=cIsUtility>while sprinting</style>. <style=cIsVoid>Corrupts all Bustling Fungi</style>.";
+        public override string DescText => "<style=cIsHealing>Heals</style> for <style=cIsHealing>1.5%</style> <style=cStack>(+0.5% per stack)</style> of your <style=cIsHealing>health</style> every second <style=cIsUtility>while sprinting</style>. <style=cIsVoid>Corrupts all Bustling Fungi</style>.";
 
         public override void Init()
         {
@@ -24,10 +26,20 @@ namespace WellRoundedBalance.Items.VoidWhites
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.Before,
-                x => x.MatchLdcR4(0.01f)
-            );
-            c.Next.Operand = 0.01f * 0.5f;
+            if (c.TryGotoNext(MoveType.Before,
+                x => x.MatchLdcR4(0.01f)))
+            {
+                c.Index += 1;
+                c.Emit(OpCodes.Ldarg_0);
+                c.EmitDelegate<Func<float, MushroomVoidBehavior, float>>((useless, self) =>
+                {
+                    return (0.015f + 0.005f * (self.stack - 1)) * 0.5f;
+                });
+            }
+            else
+            {
+                Main.WRBLogger.LogError("Failed to apply Weeping Fungus Healing hook");
+            }
         }
     }
 }

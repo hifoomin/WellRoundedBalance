@@ -1,12 +1,11 @@
-﻿using UnityEngine;
-using EntityStates.Missions.Moon;
+﻿using EntityStates.Missions.Moon;
 
-namespace WellRoundedBalance.Mechanic.HoldoutZone
+namespace WellRoundedBalance.Mechanics.HoldoutZone
 {
     internal class PillarRewards : MechanicBase
     {
         private static float offset = 3f;
-        public override string Name => ":: Mechanics :::: Holdout Zone ::: Pillar Rewards";
+        public override string Name => ":: Mechanics :::::: Pillar Rewards";
 
         public override void Hooks()
         {

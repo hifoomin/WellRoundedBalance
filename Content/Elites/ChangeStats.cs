@@ -1,65 +1,56 @@
 ﻿using static RoR2.CombatDirector;
-using System.Linq;
 using System;
-using WellRoundedBalance.Enemies;
+using BepInEx.Configuration;
 
 namespace WellRoundedBalance.Elites
 {
-    public class ChangeStats : EliteBase
+    public class ChangeStats
     {
-        public static float Tier1Cost;
-        public static float Tier1HonorCost;
-        public static float Tier2Cost;
-        public override string Name => ":: Elites : Stat Changes";
+        public static ConfigEntry<bool> enable { get; set; }
 
-        public override void Init()
+        public static void Init()
         {
-            base.Init();
-        }
-
-        public override void Hooks()
-        {
-            On.RoR2.CombatDirector.Init += Changes;
-        }
-
-        public static void Changes(On.RoR2.CombatDirector.orig_Init orig)
-        {
-            orig();
-            foreach (EliteTierDef eliteTierDef in eliteTiers)
+            enable = Main.WRBEliteConfig.Bind(":: Elites : Stat Changes", "Enable?", true, "Vanilla is false");
+            if (enable.Value)
             {
-                if (eliteTierDef != null && eliteTierDef.eliteTypes.Length > 0)
+                Main.WRBLogger.LogFatal("elite stat changes enabled");
+                On.RoR2.CombatDirector.Init += CombatDirector_Init;
+            }
+        }
+
+        public static void CombatDirector_Init(On.RoR2.CombatDirector.orig_Init orig)
+        {
+            Main.WRBLogger.LogError("combat director init pre orig ran");
+            orig();
+            Main.WRBLogger.LogError("combat director init post orig ran");
+            for (int i = 0; i < eliteTiers.Length; i++)
+            {
+                Main.WRBLogger.LogError("iterating through every elite tier");
+                var eliteTierDef = eliteTiers[i];
+                if (eliteTierDef != null)
                 {
-                    List<EliteDef> eliteDefList = eliteTierDef.eliteTypes.ToList();
-                    /*
-                    if (eliteDefList.Contains(RoR2Content.Elites.Fire))
+                    Main.WRBLogger.LogError("iterating through every every elite tier def in elite tier array");
+                    for (int j = 0; j < eliteTierDef.eliteTypes.Length; j++)
                     {
-                        eliteTierDef.costMultiplier = Tier1Cost;
-                    }
-
-                    if (eliteDefList.Contains(RoR2Content.Elites.FireHonor))
-                    {
-                        eliteTierDef.costMultiplier = Tier1HonorCost;
-                    }
-
-                    if (eliteDefList.Contains(RoR2Content.Elites.Poison))
-                    {
-                        eliteTierDef.costMultiplier = Tier2Cost;
-                    }
-                    */
-                    // costs might be changed later
-                    foreach (EliteDef eliteDef in eliteDefList)
-                    {
+                        var eliteDef = eliteTierDef.eliteTypes[i];
+                        Main.WRBLogger.LogFatal("iterating through every elite def in elite def array");
                         if (eliteDef != null)
                         {
                             if (eliteDef.name.IndexOf("honor", StringComparison.OrdinalIgnoreCase) >= 0)
                             {
+                                Main.WRBLogger.LogFatal("found honor elite");
                                 eliteDef.damageBoostCoefficient = 1f;
                                 eliteDef.healthBoostCoefficient = Mathf.Min(eliteDef.healthBoostCoefficient, 4f);
+                                Main.WRBLogger.LogFatal("HONOR elitedef damage boost is " + eliteDef.damageBoostCoefficient);
+                                Main.WRBLogger.LogFatal("HONOR elitedef HEALTH boost is " + eliteDef.healthBoostCoefficient);
                             }
                             else
                             {
+                                Main.WRBLogger.LogFatal("found STANDARD elite");
                                 eliteDef.damageBoostCoefficient = 1f;
                                 eliteDef.healthBoostCoefficient = Mathf.Min(eliteDef.healthBoostCoefficient, 4f);
+                                Main.WRBLogger.LogFatal("STANDARD elitedef damage boost is " + eliteDef.damageBoostCoefficient);
+                                Main.WRBLogger.LogFatal("STANDARD elitedef HEALTH boost is " + eliteDef.healthBoostCoefficient);
                             }
                         }
                     }

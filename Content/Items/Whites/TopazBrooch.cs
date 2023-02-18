@@ -26,10 +26,17 @@ namespace WellRoundedBalance.Items.Whites
             if (attacker && victim)
             {
                 var attackerBody = damageReport.attackerBody;
-                var stack = attackerBody.inventory.GetItemCount(RoR2Content.Items.BarrierOnKill);
-                if (stack > 0 && NetworkServer.active && attackerBody.healthComponent)
+                if (attackerBody)
                 {
-                    attackerBody.healthComponent.AddBarrier(attackerBody.healthComponent.combinedHealthFraction * 0.015f);
+                    var inventory = attackerBody.inventory;
+                    if (inventory)
+                    {
+                        var stack = inventory.GetItemCount(RoR2Content.Items.BarrierOnKill);
+                        if (stack > 0 && NetworkServer.active && attackerBody.healthComponent)
+                        {
+                            attackerBody.healthComponent.AddBarrier(attackerBody.healthComponent.combinedHealthFraction * 0.015f);
+                        }
+                    }
                 }
             }
         }
@@ -39,7 +46,7 @@ namespace WellRoundedBalance.Items.Whites
             ILCursor c = new(il);
 
             if (c.TryGotoNext(MoveType.Before,
-                    x => x.MatchCallOrCallvirt<RoR2.CharacterBody>("get_healthComponent"),
+                    x => x.MatchCallOrCallvirt<CharacterBody>("get_healthComponent"),
                     x => x.MatchLdcR4(15f)))
             {
                 c.Index += 1;

@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 using WellRoundedBalance.Eclipse;
 
-namespace WellRoundedBalance.Mechanic.Bosses
+namespace WellRoundedBalance.Mechanics.Bosses
 {
     internal class Enrage : MechanicBase
     {
-        public override string Name => ":: Mechanics ::: Bosses : Enrage";
+        public override string Name => ":: Mechanics ::::: Boss Enrage";
 
         public override void Init()
         {

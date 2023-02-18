@@ -4,7 +4,6 @@ namespace WellRoundedBalance.Items.Lunars
 {
     internal class EssenceOfHeresy : ItemBase
     {
-        // TODO: Make it only apply up to 10-15 stacks per victim
         public override string Name => ":: Items ::::: Lunars :: Essence of Heresy";
 
         public override string InternalPickupToken => "lunarSpecialReplacement";
