@@ -17,6 +17,7 @@ using WellRoundedBalance.Misc;
 using WellRoundedBalance.Artifacts;
 using WellRoundedBalance.Mechanics;
 using WellRoundedBalance.Mechanics.RemoveGesture;
+using WellRoundedBalance.Items.ConsistentCategories;
 
 [assembly: HG.Reflection.SearchableAttribute.OptIn]
 
@@ -226,6 +227,7 @@ namespace WellRoundedBalance
             // RemoveGesture.Based();
             SpeedBoost.Init();
             BetterScaling.Init();
+            BetterItemCategories.Init();
         }
 
         private void ItemCatalog_Init(On.RoR2.ItemCatalog.orig_Init orig)

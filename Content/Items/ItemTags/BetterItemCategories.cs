@@ -1,5 +1,7 @@
 ﻿using BepInEx.Configuration;
 using System;
+using static Mono.Security.X509.X520;
+using System.Reflection;
 
 namespace WellRoundedBalance.Items.ConsistentCategories
 {
@@ -17,15 +19,21 @@ namespace WellRoundedBalance.Items.ConsistentCategories
 
         public static ConfigEntry<bool> enable { get; set; }
 
-        private void ReplaceWithDefense(string itemName)
+        private static void ReplaceWithDefense(string itemName)
         {
-            var item = Utils.Paths.ItemDef.itemName.Load<ItemDef>();
-            for (int i = 0; i < item.tags.Length; i++)
+            FieldInfo[] fields = typeof(Utils.Paths.ItemDef).GetFields();
+            FieldInfo field = fields.FirstOrDefault(x => (x.GetValue(null) as string).Contains(itemName));
+            if (!field.Equals(default(FieldInfo)))
             {
-                var itemTag = item.tags[i];
-                if (itemTag == ItemTag.Utility || itemTag == ItemTag.Healing)
+                ItemDef def = (field.GetValue(null) as string).Load<ItemDef>();
+                if (def.ContainsTag(ItemTag.Healing) || (def.ContainsTag(ItemTag.Healing) && def.ContainsTag(ItemTag.Utility)))
                 {
-                    // uhh remove
+                    List<ItemTag> tags = def.tags.ToList();
+                    tags.Remove(ItemTag.Healing);
+                    tags.Remove(ItemTag.Utility);
+                    def.tags = tags.ToArray();
+
+                    ItemAPI.ApplyTagToItem("Defense", def);
                 }
             }
         }
@@ -45,9 +53,12 @@ namespace WellRoundedBalance.Items.ConsistentCategories
             // removals and defense additions
 
             var repulsionArmorPlate = Utils.Paths.ItemDef.ArmorPlate.Load<ItemDef>();
-            repulsionArmorPlate.tags = new ItemTag[] { };
-            ItemAPI.ApplyTagToItem("Defense", repulsionArmorPlate);
+            // repulsionArmorPlate.tags = new ItemTag[] { };
+            // ItemAPI.ApplyTagToItem("Defense", repulsionArmorPlate);
+            ReplaceWithDefense("ArmorPlate");
 
+            Main.WRBLogger.LogFatal("repulsion armor plate has " + repulsionArmorPlate.tags.Length + " tags");
+            /*
             var topazBrooch = Utils.Paths.ItemDef.BarrierOnKill.Load<ItemDef>();
             topazBrooch.tags = new ItemTag[] { ItemTag.OnKillEffect };
             ItemAPI.ApplyTagToItem("Defense", topazBrooch);
@@ -59,6 +70,7 @@ namespace WellRoundedBalance.Items.ConsistentCategories
             var tougherTimes = Utils.Paths.ItemDef.Bear.Load<ItemDef>();
             tougherTimes.tags = new ItemTag[] { ItemTag.BrotherBlacklist };
             ItemAPI.ApplyTagToItem("Defense", tougherTimes);
+            */
         }
     }
 }
