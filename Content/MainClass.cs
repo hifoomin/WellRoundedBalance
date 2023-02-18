@@ -31,6 +31,7 @@ namespace WellRoundedBalance
     [BepInDependency(R2APIContentManager.PluginGUID)]
     [BepInDependency(ItemAPI.PluginGUID)]
     [BepInDependency(DamageAPI.PluginGUID)]
+    [BepInDependency(EliteAPI.PluginGUID)]
     [BepInPlugin(PluginGUID, PluginName, PluginVersion)]
     public class Main : BaseUnityPlugin
     {
@@ -83,6 +84,8 @@ namespace WellRoundedBalance
             VoidLaserProjectileVFX.Create();
             DucleusLaser.Create();
             TitanFist.Create();
+
+            On.RoR2.ItemCatalog.Init += ItemCatalog_Init;
 
             IEnumerable<Type> enumerable = from type in Assembly.GetExecutingAssembly().GetTypes()
                                            where !type.IsAbstract && type.IsSubclassOf(typeof(MechanicBase))
@@ -223,7 +226,12 @@ namespace WellRoundedBalance
             // RemoveGesture.Based();
             SpeedBoost.Init();
             BetterScaling.Init();
-            ChangeStats.Init();
+        }
+
+        private void ItemCatalog_Init(On.RoR2.ItemCatalog.orig_Init orig)
+        {
+            ItemAPI.AddItemTag("Defense");
+            orig();
         }
 
         public bool ValidateMechanic(MechanicBase gb)

@@ -4,21 +4,24 @@ using BepInEx.Configuration;
 
 namespace WellRoundedBalance.Elites
 {
-    public class ChangeStats
+    public class ChangeStats : EliteBase
     {
         public static ConfigEntry<bool> enable { get; set; }
 
-        public static void Init()
+        public override string Name => ":: Elites : Stat Changes";
+
+        public override void Init()
         {
-            enable = Main.WRBEliteConfig.Bind(":: Elites : Stat Changes", "Enable?", true, "Vanilla is false");
-            if (enable.Value)
-            {
-                Main.WRBLogger.LogFatal("elite stat changes enabled");
-                On.RoR2.CombatDirector.Init += CombatDirector_Init;
-            }
+            base.Init();
         }
 
-        public static void CombatDirector_Init(On.RoR2.CombatDirector.orig_Init orig)
+        public override void Hooks()
+        {
+            EliteAPI.
+            On.RoR2.CombatDirector.Init += CombatDirector_Init;
+        }
+
+        private void CombatDirector_Init(On.RoR2.CombatDirector.orig_Init orig)
         {
             Main.WRBLogger.LogError("combat director init pre orig ran");
             orig();

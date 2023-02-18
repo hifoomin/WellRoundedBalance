@@ -15,7 +15,7 @@ namespace WellRoundedBalance.Items.Reds
 
         public override string PickupText => "Inflict venom on hit.";
 
-        public override string DescText => "Inflict <style=cIsDamage>venom</style> on hit, dealing <style=cIsDamage>750%</style> base damage over 5s and stealing <style=cIsHealing>20</style> <style=cStack>(+10 per stack)</style> <style=cIsHealing>armor</style> for 5s.";
+        public override string DescText => "Inflict <style=cIsDamage>venom</style> on hit, dealing <style=cIsDamage>750%</style> <style=cStack>(+100% per stack)</style> base damage over 5s and stealing <style=cIsHealing>20</style> <style=cStack>(+10 per stack)</style> <style=cIsHealing>armor</style> for 5s.";
 
         public override void Init()
         {
@@ -150,6 +150,11 @@ namespace WellRoundedBalance.Items.Reds
         {
             attackerBody = GetComponent<CharacterBody>();
             victimHealthComponent = attackerBody.GetComponent<HealthComponent>();
+            var inventory = attackerBody.inventory;
+            if (inventory)
+            {
+                damageCoefficient = 0.3f + 0.04f * (inventory.GetItemCount(DLC1Content.Items.PermanentDebuffOnHit) - 1);
+            }
         }
 
         private void FixedUpdate()
