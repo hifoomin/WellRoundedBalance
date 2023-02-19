@@ -55,7 +55,6 @@ namespace WellRoundedBalance.Items.Reds
             IL.RoR2.HealthComponent.TakeDamage += ChangeChance;
             GlobalEventManager.onServerDamageDealt += GlobalEventManager_onServerDamageDealt;
             RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
-            Changes();
         }
 
         private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
@@ -126,12 +125,6 @@ namespace WellRoundedBalance.Items.Reds
             {
                 Main.WRBLogger.LogError("Failed to apply Symbiotic Scorpion Chance hook");
             }
-        }
-
-        private void Changes()
-        {
-            var scorpion = Utils.Paths.ItemDef.PermanentDebuffOnHit.Load<ItemDef>();
-            scorpion.tags = new ItemTag[] { ItemTag.Damage, ItemTag.Damage, ItemTag.AIBlacklist, ItemTag.BrotherBlacklist };
         }
     }
 

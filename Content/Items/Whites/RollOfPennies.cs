@@ -23,7 +23,6 @@ namespace WellRoundedBalance.Items.Whites
             IL.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
             On.RoR2.Inventory.GiveItem_ItemIndex_int += Inventory_GiveItem_ItemIndex_int;
             On.RoR2.Stage.Start += Stage_Start;
-            Changes();
         }
 
         private void Inventory_GiveItem_ItemIndex_int(On.RoR2.Inventory.orig_GiveItem_ItemIndex_int orig, Inventory self, ItemIndex itemIndex, int count)
@@ -80,12 +79,6 @@ namespace WellRoundedBalance.Items.Whites
             {
                 Main.WRBLogger.LogError("Failed to apply Roll of Pennies Gold hook");
             }
-        }
-
-        private void Changes()
-        {
-            var rollOfPenis = Utils.Paths.ItemDef.GoldOnHurt.Load<ItemDef>();
-            rollOfPenis.tags = new ItemTag[] { ItemTag.Utility, ItemTag.CannotDuplicate, ItemTag.OnStageBeginEffect };
         }
     }
 }

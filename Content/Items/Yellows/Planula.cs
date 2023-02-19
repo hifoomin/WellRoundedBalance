@@ -29,7 +29,6 @@ namespace WellRoundedBalance.Items.Yellows
         {
             IL.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
             CharacterBody.onBodyInventoryChangedGlobal += CharacterBody_onBodyInventoryChangedGlobal;
-            Changes();
         }
 
         private void CharacterBody_onBodyInventoryChangedGlobal(CharacterBody body)
@@ -53,12 +52,6 @@ namespace WellRoundedBalance.Items.Yellows
             {
                 Main.WRBLogger.LogError("Failed to apply Planula Healing hook");
             }
-        }
-
-        private void Changes()
-        {
-            var planula = Utils.Paths.ItemDef.ParentEgg.Load<ItemDef>();
-            planula.tags = new ItemTag[] { ItemTag.Damage, ItemTag.CannotCopy };
         }
     }
 

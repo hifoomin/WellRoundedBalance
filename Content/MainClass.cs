@@ -16,7 +16,6 @@ using WellRoundedBalance.Mechanics.Monsters;
 using WellRoundedBalance.Misc;
 using WellRoundedBalance.Artifacts;
 using WellRoundedBalance.Mechanics;
-using WellRoundedBalance.Mechanics.RemoveGesture;
 using WellRoundedBalance.Items.ConsistentCategories;
 
 [assembly: HG.Reflection.SearchableAttribute.OptIn]
@@ -234,6 +233,7 @@ namespace WellRoundedBalance
         {
             ItemAPI.AddItemTag("Defense");
             orig();
+            BetterItemCategories.BetterAIBlacklist();
         }
 
         public bool ValidateMechanic(MechanicBase gb)

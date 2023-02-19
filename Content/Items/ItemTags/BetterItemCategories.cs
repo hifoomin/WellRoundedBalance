@@ -82,6 +82,9 @@ namespace WellRoundedBalance.Items.ConsistentCategories
             var hooksOfHeresy = Utils.Paths.ItemDef.LunarSecondaryReplacement.Load<ItemDef>();
             hooksOfHeresy.tags = new ItemTag[] { ItemTag.Damage, ItemTag.Utility, ItemTag.AIBlacklist, ItemTag.CannotSteal };
 
+            var nkuhanasOpinion = Utils.Paths.ItemDef.NovaOnHeal.Load<ItemDef>();
+            nkuhanasOpinion.tags = new ItemTag[] { ItemTag.Damage, ItemTag.AIBlacklist };
+
             var empathyCores = Utils.Paths.ItemDef.RoboBallBuddy.Load<ItemDef>();
             empathyCores.tags = new ItemTag[] { ItemTag.Damage, ItemTag.Utility, ItemTag.CannotCopy };
 
@@ -115,12 +118,21 @@ namespace WellRoundedBalance.Items.ConsistentCategories
             var bottledChaos = Utils.Paths.ItemDef.RandomEquipmentTrigger.Load<ItemDef>();
             bottledChaos.tags = new ItemTag[] { ItemTag.Damage, ItemTag.Utility, ItemTag.EquipmentRelated };
 
-            // special cases
+            var planula = Utils.Paths.ItemDef.ParentEgg.Load<ItemDef>();
+            planula.tags = new ItemTag[] { ItemTag.Damage, ItemTag.CannotCopy };
 
+            var rollofPennies = Utils.Paths.ItemDef.GoldOnHurt.Load<ItemDef>();
+            rollofPennies.tags = new ItemTag[] { ItemTag.Utility, ItemTag.CannotDuplicate, ItemTag.OnStageBeginEffect };
+
+            var bisonSteak = Utils.Paths.ItemDef.FlatHealth.Load<ItemDef>();
+            bisonSteak.tags = new ItemTag[] { ItemTag.Utility };
+
+            // special cases (NREs at any point)
+            /*
             var irradiantPearl = Utils.Paths.ItemDef.ShinyPearl.Load<ItemDef>();
             irradiantPearl.tags = new ItemTag[] { ItemTag.Damage, ItemTag.Utility };
             ItemAPI.ApplyTagToItem("Defense", irradiantPearl);
-            /*
+
             var oldWarStealthkit = Utils.Paths.ItemDef.Phasing.Load<ItemDef>();
             oldWarStealthkit.tags = new ItemTag[] { ItemTag.Utility, ItemTag.LowHealth };
             ItemAPI.ApplyTagToItem("Defense", oldWarStealthkit);
@@ -149,6 +161,7 @@ namespace WellRoundedBalance.Items.ConsistentCategories
             ItemAPI.ApplyTagToItem("Defense", plasmaShrimp);
 
             var symbioticScorpion = Utils.Paths.ItemDef.PermanentDebuffOnHit.Load<ItemDef>();
+            symbioticScorpion.tags = new ItemTag[] { ItemTag.Damage, ItemTag.AIBlacklist, ItemTag.BrotherBlacklist };
             ItemAPI.ApplyTagToItem("Defense", symbioticScorpion);
 
             var newlyHatchedZoea = Utils.Paths.ItemDef.VoidMegaCrabItem.Load<ItemDef>();
@@ -199,25 +212,21 @@ namespace WellRoundedBalance.Items.ConsistentCategories
             largeHealingChestDropTable.requiredItemTags = new ItemTag[] { ItemAPI.FindItemTagByName("Defense") };
             LanguageAPI.Add("CATEGORYCHEST2_HEALING_NAME", "Large Chest - Defense");
             LanguageAPI.Add("CATEGORYCHEST2_HEALING_CONTEXT", "Open Large Chest - Defense");
+            */
+        }
 
-            // better AI blacklist
-            /*
-            foreach (ItemDef itemDef in ItemCatalog.allItemDefs)
+        public static void BetterAIBlacklist()
+        {
+            foreach (ItemDef itemDef in ItemCatalog.itemDefs)
             {
                 if ((itemDef.tags.Contains(ItemTag.OnKillEffect) || itemDef.tags.Contains(ItemTag.InteractableRelated) || itemDef.tags.Contains(ItemTag.SprintRelated) || itemDef.tags.Contains(ItemTag.EquipmentRelated) || itemDef.tags.Contains(ItemTag.HoldoutZoneRelated) || itemDef.tags.Contains(ItemTag.OnStageBeginEffect)) && !itemDef.tags.Contains(ItemTag.AIBlacklist))
                 {
                     List<ItemTag> tags = itemDef.tags.ToList();
                     tags.Add(ItemTag.AIBlacklist);
                     itemDef.tags = tags.ToArray();
-                }
-
-                Main.WRBLogger.LogError("::::::: Item " + Language.GetString(itemDef.nameToken) + " has the following tags:");
-                for (int i = 0; i < itemDef.tags.Length; i++)
-                {
-                    Main.WRBLogger.LogError(itemDef.tags[i].ToString());
+                    Main.WRBLogger.LogError("Added AI Blacklist to " + Language.GetString(itemDef.nameToken));
                 }
             }
-            */
         }
     }
 }
