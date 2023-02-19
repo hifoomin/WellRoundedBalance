@@ -1,4 +1,5 @@
-﻿using Mono.Cecil.Cil;
+﻿using Inferno.Stat_AI;
+using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using System;
 using WellRoundedBalance.Buffs;
@@ -17,11 +18,27 @@ namespace WellRoundedBalance.Elites
 
         public override void Hooks()
         {
-            CharacterBody.onBodyStartGlobal += CharacterBody_onBodyStartGlobal;
             IL.RoR2.GlobalEventManager.OnHitEnemy += GlobalEventManager_OnHitEnemy;
             On.RoR2.CharacterBody.UpdateFireTrail += CharacterBody_UpdateFireTrail;
             IL.RoR2.CharacterBody.UpdateFireTrail += CharacterBody_UpdateFireTrail1;
+            CharacterBody.onBodyInventoryChangedGlobal += CharacterBody_onBodyInventoryChangedGlobal;
             Changes();
+        }
+
+        private void CharacterBody_onBodyInventoryChangedGlobal(CharacterBody characterBody)
+        {
+            var sfp = characterBody.GetComponent<BlazingController>();
+            if (characterBody.HasBuff(RoR2Content.Buffs.AffixRed))
+            {
+                if (sfp == null)
+                {
+                    characterBody.gameObject.AddComponent<BlazingController>();
+                }
+            }
+            else if (sfp != null)
+            {
+                characterBody.gameObject.RemoveComponent<BlazingController>();
+            }
         }
 
         private void CharacterBody_UpdateFireTrail(On.RoR2.CharacterBody.orig_UpdateFireTrail orig, CharacterBody self)
@@ -31,18 +48,6 @@ namespace WellRoundedBalance.Elites
                 self.fireTrail.radius = 5f * self.radius;
             }
             orig(self);
-        }
-
-        private void CharacterBody_onBodyStartGlobal(CharacterBody body)
-        {
-            if (body.HasBuff(RoR2Content.Buffs.AffixRed))
-            {
-                var sfp = body.GetComponent<BlazingController>();
-                if (sfp == null)
-                {
-                    body.gameObject.AddComponent<BlazingController>();
-                }
-            }
         }
 
         private void CharacterBody_UpdateFireTrail1(ILContext il)
@@ -55,7 +60,7 @@ namespace WellRoundedBalance.Elites
                 c.Index += 1;
                 c.EmitDelegate<Func<float, float>>((useless) =>
                 {
-                    return Run.instance ? Mathf.Sqrt(Run.instance.ambientLevel * 0.2f) : 0f;
+                    return Run.instance ? 2f + Mathf.Sqrt(Run.instance.ambientLevel * 0.22f) : 0f;
                 });
             }
             else
@@ -139,7 +144,7 @@ namespace WellRoundedBalance.Elites
                     projectilePrefab = projectile,
                     crit = Util.CheckRoll(body.crit, body.master),
                     position = body.corePosition,
-                    damage = Run.instance ? Mathf.Sqrt(Run.instance.ambientLevel * 9f) : 0f
+                    damage = Run.instance ? Mathf.Sqrt(Run.instance.ambientLevel * 9.05f) : 0f
                 };
                 if (Util.HasEffectiveAuthority(gameObject)) ProjectileManager.instance.FireProjectile(fpi);
                 timer = 0f;

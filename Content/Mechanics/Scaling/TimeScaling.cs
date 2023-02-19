@@ -58,10 +58,8 @@ namespace WellRoundedBalance.Mechanics.Scaling
 
                 float customTimeFactor = Mathf.Sqrt(Time) * 0.42f * difficultyDef.scalingValue;
 
-                float customFactor = 1f + 0.375f * customTimeFactor * playerScalar;
-                // previously * timeFactor instead of customTimeFactor
+                float customFactor = 1f + 0.31f * customTimeFactor * playerScalar;
 
-                // im not changing this chain. Cope
                 float finalDifficulty = (playerFactor + timeFactor * playerScalar) * customFactor;
                 self.compensatedDifficultyCoefficient = finalDifficulty;
                 self.difficultyCoefficient = finalDifficulty;

@@ -167,7 +167,7 @@ namespace WellRoundedBalance.Items.Reds
                         force = Vector3.zero,
                         procCoefficient = 0f,
                         damageType = DamageType.Generic,
-                        position = attackerBody.corePosition,
+                        position = victimHealthComponent.body.corePosition,
                         dotIndex = DotIndex.None,
                         inflictor = gameObject
                     };
