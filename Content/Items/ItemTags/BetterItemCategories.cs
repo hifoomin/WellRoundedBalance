@@ -1,8 +1,5 @@
 ﻿using BepInEx.Configuration;
-using System;
-using static Mono.Security.X509.X520;
 using System.Reflection;
-using IL.RoR2.Artifacts;
 
 namespace WellRoundedBalance.Items.ConsistentCategories
 {
@@ -127,8 +124,11 @@ namespace WellRoundedBalance.Items.ConsistentCategories
             var bisonSteak = Utils.Paths.ItemDef.FlatHealth.Load<ItemDef>();
             bisonSteak.tags = new ItemTag[] { ItemTag.Utility };
 
+            var defenseTag = ItemAPI.FindItemTagByName("Defense");
+            Main.WRBLogger.LogError("ItemAPI.FindItemTagByName(\"Defense\") tag returns " + defenseTag);
+
             // special cases (NREs at any point)
-            /*
+
             var irradiantPearl = Utils.Paths.ItemDef.ShinyPearl.Load<ItemDef>();
             irradiantPearl.tags = new ItemTag[] { ItemTag.Damage, ItemTag.Utility };
             ItemAPI.ApplyTagToItem("Defense", irradiantPearl);
@@ -170,37 +170,37 @@ namespace WellRoundedBalance.Items.ConsistentCategories
 
             // removals and defense additions
 
-            ReplaceWithDefense("ArmorPlate");
-            ReplaceWithDefense("BarrierOnKill");
-            ReplaceWithDefense("BarrierOnOverHeal");
-            ReplaceWithDefense("Bear");
-            ReplaceWithDefense("BeetleGland");
-            ReplaceWithDefense("CaptainDefenseMatrix");
-            ReplaceWithDefense("ExtraLife");
-            ReplaceWithDefense("FlatHealth");
-            ReplaceWithDefense("GhostOnKill");
-            ReplaceWithDefense("HeadHunter");
-            ReplaceWithDefense("HealOnCrit");
-            ReplaceWithDefense("HealWhileSafe");
-            ReplaceWithDefense("IncreaseHealing");
+            ReplaceWithDefense("ArmorPlate"); // Repulsion Armor Plate
+            ReplaceWithDefense("BarrierOnKill"); // Topaz Brooch
+            ReplaceWithDefense("BarrierOnOverHeal"); // Aegis
+            ReplaceWithDefense("Bear"); // Tougher Times
+            ReplaceWithDefense("BeetleGland"); // Queen's Gland
+            ReplaceWithDefense("CaptainDefenseMatrix"); // Defensive Microbots
+            ReplaceWithDefense("ExtraLife"); // Dio's Best Friend
+            ReplaceWithDefense("FlatHealth"); // Bison Steak
+            ReplaceWithDefense("GhostOnKill"); // Happiest Mask
+            ReplaceWithDefense("HeadHunter"); // Wake of Vultures
+            ReplaceWithDefense("HealOnCrit"); // Harvester's Scythe
+            ReplaceWithDefense("HealWhileSafe"); // Cautious Slug
+            ReplaceWithDefense("IncreaseHealing"); // Rejuvenation Rack
             ReplaceWithDefense("Infusion");
             ReplaceWithDefense("Medkit");
-            ReplaceWithDefense("Mushroom");
+            ReplaceWithDefense("Mushroom"); // Bustling Fungus
             ReplaceWithDefense("Pearl");
-            ReplaceWithDefense("PersonalShield");
-            ReplaceWithDefense("Plant");
-            ReplaceWithDefense("RepeatHeal");
-            ReplaceWithDefense("RoboBallBuddy");
-            ReplaceWithDefense("Seed");
-            ReplaceWithDefense("ShieldOnly");
-            ReplaceWithDefense("SprintArmor");
-            ReplaceWithDefense("Tooth");
-            ReplaceWithDefense("TPHealingNova");
-            ReplaceWithDefense("BearVoid");
-            ReplaceWithDefense("ExtraLifeVoid");
-            ReplaceWithDefense("HealingPotion");
-            ReplaceWithDefense("MushroomVoid");
-            ReplaceWithDefense("OutOfCombatArmor");
+            ReplaceWithDefense("PersonalShield"); // Personal Shield Generator
+            ReplaceWithDefense("Plant"); // Interstellar Desk Plant
+            ReplaceWithDefense("RepeatHeal"); // Corpsebloom
+            ReplaceWithDefense("RoboBallBuddy"); // Empathy Cores
+            ReplaceWithDefense("Seed"); // Leeching Seed
+            ReplaceWithDefense("ShieldOnly"); // Transcendence
+            ReplaceWithDefense("SprintArmor"); // Rose Buckler
+            ReplaceWithDefense("Tooth"); // Monster Tooth
+            ReplaceWithDefense("TPHealingNova"); // Lepton Daisy
+            ReplaceWithDefense("BearVoid"); // Safer Spaces
+            ReplaceWithDefense("ExtraLifeVoid"); // Pluripotent Larva
+            ReplaceWithDefense("HealingPotion"); // Power Elixir
+            ReplaceWithDefense("MushroomVoid"); // Weeping Fungus
+            ReplaceWithDefense("OutOfCombatArmor"); // Oddly-shaped Opal
 
             // category chest changes
             var smallHealingChestDropTable = Utils.Paths.BasicPickupDropTable.dtSmallChestHealing.Load<BasicPickupDropTable>();
@@ -212,7 +212,6 @@ namespace WellRoundedBalance.Items.ConsistentCategories
             largeHealingChestDropTable.requiredItemTags = new ItemTag[] { ItemAPI.FindItemTagByName("Defense") };
             LanguageAPI.Add("CATEGORYCHEST2_HEALING_NAME", "Large Chest - Defense");
             LanguageAPI.Add("CATEGORYCHEST2_HEALING_CONTEXT", "Open Large Chest - Defense");
-            */
         }
 
         public static void BetterAIBlacklist()
@@ -224,7 +223,7 @@ namespace WellRoundedBalance.Items.ConsistentCategories
                     List<ItemTag> tags = itemDef.tags.ToList();
                     tags.Add(ItemTag.AIBlacklist);
                     itemDef.tags = tags.ToArray();
-                    Main.WRBLogger.LogError("Added AI Blacklist to " + Language.GetString(itemDef.nameToken));
+                    // Main.WRBLogger.LogError("Added AI Blacklist to " + Language.GetString(itemDef.nameToken));
                 }
             }
         }

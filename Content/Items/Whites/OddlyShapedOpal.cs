@@ -34,6 +34,28 @@ namespace WellRoundedBalance.Items.Whites
         {
             RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
             CharacterBody.onBodyInventoryChangedGlobal += CharacterBody_onBodyInventoryChangedGlobal;
+            IL.RoR2.CharacterBody.RecalculateStats += CharacterBody_RecalculateStats;
+        }
+
+        private void CharacterBody_RecalculateStats(ILContext il)
+        {
+            ILCursor c = new(il);
+
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchLdsfld("RoR2.DLC1Content/Buffs", "OutOfCombatArmorBuff"),
+                    x => x.MatchCallOrCallvirt<CharacterBody>("HasBuff"),
+                    x => x.MatchBrtrue(out _),
+                    x => x.MatchLdcR4(0.0f),
+                    x => x.MatchBr(out _),
+                    x => x.MatchLdcR4(100f)))
+            {
+                c.Index += 5;
+                c.Next.Operand = 0f;
+            }
+            else
+            {
+                Main.WRBLogger.LogError("Failed to apply Oddly-shaped Opal Armor hook");
+            }
         }
 
         private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)

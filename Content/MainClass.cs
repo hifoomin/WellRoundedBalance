@@ -226,12 +226,12 @@ namespace WellRoundedBalance
             // RemoveGesture.Based();
             SpeedBoost.Init();
             BetterScaling.Init();
-            BetterItemCategories.Init();
         }
 
         private void ItemCatalog_Init(On.RoR2.ItemCatalog.orig_Init orig)
         {
-            ItemAPI.AddItemTag("Defense");
+            WRBLogger.LogError("ItemAPI.AddItemTag(\"Defense\") returns " + ItemAPI.AddItemTag("Defense"));
+            BetterItemCategories.Init();
             orig();
             BetterItemCategories.BetterAIBlacklist();
         }
