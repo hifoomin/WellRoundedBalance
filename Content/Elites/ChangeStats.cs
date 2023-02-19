@@ -18,7 +18,6 @@ namespace WellRoundedBalance.Elites
         public override void Hooks()
         {
             On.RoR2.CombatDirector.Init += CombatDirector_Init;
-            // epic broken because eliteapi doesnt call orig, gotta use systeminitializer to change it after that but idk how lol
         }
 
         private void CombatDirector_Init(On.RoR2.CombatDirector.orig_Init orig)
@@ -26,16 +25,16 @@ namespace WellRoundedBalance.Elites
             Main.WRBLogger.LogError("combat director init pre orig ran");
             orig();
             Main.WRBLogger.LogError("combat director init post orig ran");
-            for (int i = 0; i < eliteTiers.Length - 1; i++)
+            for (int i = 0; i < eliteTiers.Length; i++)
             {
                 Main.WRBLogger.LogError("iterating through every elite tier");
                 var eliteTierDef = eliteTiers[i];
                 if (eliteTierDef != null)
                 {
                     Main.WRBLogger.LogError("iterating through every every elite tier def in elite tier array");
-                    for (int j = 0; j < eliteTierDef.eliteTypes.Length - 1; j++)
+                    for (int j = 0; j < eliteTierDef.eliteTypes.Length; j++)
                     {
-                        var eliteDef = eliteTierDef.eliteTypes[i];
+                        var eliteDef = eliteTierDef.eliteTypes[j];
                         Main.WRBLogger.LogFatal("iterating through every elite def in elite def array");
                         if (eliteDef != null)
                         {
