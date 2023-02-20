@@ -24,41 +24,41 @@ namespace WellRoundedBalance.Elites
         {
             // Main.WRBLogger.LogError("combat director init pre orig ran");
             orig();
-            // Main.WRBLogger.LogError("combat director init post orig ran");
-            for (int i = 0; i < eliteTiers.Length; i++)
+            foreach (EliteTierDef eliteTierDef in eliteTiers)
             {
-                // Main.WRBLogger.LogError("iterating through every elite tier");
-                var eliteTierDef = eliteTiers[i];
-                if (eliteTierDef != null)
+                if (eliteTierDef != null && eliteTierDef.eliteTypes.Length > 0)
                 {
-                    // Main.WRBLogger.LogError("iterating through every every elite tier def in elite tier array");
-                    for (int j = 0; j < eliteTierDef.eliteTypes.Length; j++)
+                    List<EliteDef> eliteDefList = eliteTierDef.eliteTypes.ToList();
+
+                    if (eliteDefList.Contains(RoR2Content.Elites.Fire))
                     {
-                        var eliteDef = eliteTierDef.eliteTypes[j];
-                        // Main.WRBLogger.LogFatal("iterating through every elite def in elite def array");
+                        eliteTierDef.costMultiplier = 8f;
+                    }
+
+                    if (eliteDefList.Contains(RoR2Content.Elites.FireHonor))
+                    {
+                        eliteTierDef.costMultiplier = 4.66666f;
+                    }
+
+                    if (eliteDefList.Contains(RoR2Content.Elites.Poison))
+                    {
+                        eliteTierDef.costMultiplier = 48f;
+                    }
+                    // havent tested t2 or honor lol, but t1 elites were too frequent based on playtesting
+
+                    foreach (EliteDef eliteDef in eliteDefList)
+                    {
                         if (eliteDef != null)
                         {
                             if (eliteDef.name.IndexOf("honor", StringComparison.OrdinalIgnoreCase) >= 0)
                             {
-                                // Main.WRBLogger.LogFatal("found honor elite");
-
                                 eliteDef.damageBoostCoefficient = 1f;
                                 eliteDef.healthBoostCoefficient = Mathf.Min(eliteDef.healthBoostCoefficient, 4.5f);
-                                // no damage boost, t2 has 4.5x hp on honor
-
-                                // Main.WRBLogger.LogFatal("HONOR elitedef damage boost is " + eliteDef.damageBoostCoefficient);
-                                // Main.WRBLogger.LogFatal("HONOR elitedef HEALTH boost is " + eliteDef.healthBoostCoefficient);
                             }
                             else
                             {
-                                // Main.WRBLogger.LogFatal("found STANDARD elite");
-
                                 eliteDef.damageBoostCoefficient = 1f;
                                 eliteDef.healthBoostCoefficient = Mathf.Min(eliteDef.healthBoostCoefficient, 6f);
-                                // no damage boost, t2 has 6x hp normally
-
-                                // Main.WRBLogger.LogFatal("STANDARD elitedef damage boost is " + eliteDef.damageBoostCoefficient);
-                                // Main.WRBLogger.LogFatal("STANDARD elitedef HEALTH boost is " + eliteDef.healthBoostCoefficient);
                             }
                         }
                     }

@@ -8,7 +8,7 @@ namespace WellRoundedBalance.Mechanics.Monsters
 
         public static void Init()
         {
-            enable = Main.WRBMechanicConfig.Bind(":: Mechanics :::::::: Monster Movement Speed Buff", "Enable?", true, "Vanilla is false");
+            enable = Main.WRBMechanicConfig.Bind(":: Mechanics ::::::::: Monster Movement Speed Buff", "Enable?", true, "Vanilla is false");
             if (enable.Value)
             {
                 RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;

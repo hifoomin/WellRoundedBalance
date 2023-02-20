@@ -2,7 +2,7 @@
 {
     internal class LoopScaling : MechanicBase
     {
-        public override string Name => ":: Mechanics :::::::: Monster Loop Armor";
+        public override string Name => ":: Mechanics ::::::::: Monster Loop Armor";
 
         public override void Init()
         {

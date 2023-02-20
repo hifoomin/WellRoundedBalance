@@ -5,7 +5,7 @@ namespace WellRoundedBalance.Items.Whites
 {
     internal class TopazBrooch : ItemBase
     {
-        public override string Name => ":: Items : Whites : Topaz Brooch";
+        public override string Name => ":: Items : Whites :: Topaz Brooch";
 
         public override string InternalPickupToken => "barrierOnKill";
 

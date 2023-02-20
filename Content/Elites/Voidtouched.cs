@@ -39,8 +39,10 @@ namespace WellRoundedBalance.Elites
             var projectileImpactExplosion = DeathBomb.GetComponent<ProjectileImpactExplosion>();
 
             projectileImpactExplosion.blastDamageCoefficient = 0f;
+            projectileImpactExplosion.blastRadius = 11f;
 
             var impactEffect = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.NullifierDeathBombExplosion.Load<GameObject>(), "VoidtouchedExplosionImpactEffect", false);
+            impactEffect.transform.localScale = new Vector3(10.266f, 10.266f, 10.266f); // 14m scale for 15m radius
 
             var effectComponent = impactEffect.GetComponent<EffectComponent>();
             effectComponent.soundName = "Play_voidRaid_fog_explode";
@@ -51,6 +53,14 @@ namespace WellRoundedBalance.Elites
 
             var projectileController = DeathBomb.GetComponent<ProjectileController>();
             projectileController.flightSoundLoop = Utils.Paths.LoopSoundDef.lsdVoidCampCenter.Load<LoopSoundDef>();
+
+            var ghostPrefab = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.NullifierDeathBombGhost.Load<GameObject>(), "VoidtouchedExplosionGhost");
+            var scale = ghostPrefab.transform.GetChild(0);
+            scale.transform.localScale = new Vector3(11f, 11f, 11f);
+
+            ContentAddition.AddEffect(ghostPrefab);
+
+            projectileController.ghostPrefab = ghostPrefab;
 
             DamageAPI.ModdedDamageTypeHolderComponent com = DeathBomb.AddComponent<DamageAPI.ModdedDamageTypeHolderComponent>();
             com.Add(NullifierDeath);

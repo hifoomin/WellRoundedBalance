@@ -6,7 +6,7 @@ namespace WellRoundedBalance.Mechanics.Monsters
 {
     internal class NoHealOnLevelUp : MechanicBase
     {
-        public override string Name => ":: Mechanics :::::::: No Levelup Heal";
+        public override string Name => ":: Mechanics ::::::::: Monster No Levelup Heal";
 
         public override void Init()
         {
