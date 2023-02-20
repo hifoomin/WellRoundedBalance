@@ -13,7 +13,7 @@ namespace WellRoundedBalance.Items.Greens
 
         public override string PickupText => "Detonate enemies on kill.";
 
-        public override string DescText => "On killing an enemy, spawn a <style=cIsDamage>lava pillar</style> in a <style=cIsDamage>12m</style> radius for <style=cIsDamage>150%</style> <style=cStack>(+40% per stack)</style> base damage.";
+        public override string DescText => "On killing an enemy, spawn a <style=cIsDamage>lava pillar</style> in a <style=cIsDamage>12m</style> radius for <style=cIsDamage>180%</style> <style=cStack>(+90% per stack)</style> base damage.";
 
         public override void Init()
         {
@@ -39,9 +39,9 @@ namespace WellRoundedBalance.Items.Greens
                     x => x.MatchConvR4(),
                     x => x.MatchLdcR4(0.8f)))
             {
-                c.Next.Operand = 1.5f;
+                c.Next.Operand = 1.8f;
                 c.Index += 6;
-                c.Next.Operand = 0.266666667f;
+                c.Next.Operand = 0.5f;
             }
             else
             {

@@ -168,6 +168,9 @@ namespace WellRoundedBalance.Items.ConsistentCategories
             newlyHatchedZoea.tags = new ItemTag[] { ItemTag.Damage };
             ItemAPI.ApplyTagToItem("Defense", newlyHatchedZoea);
 
+            var warHorn = Utils.Paths.ItemDef.EnergizedOnEquipmentUse.Load<ItemDef>();
+            ItemAPI.ApplyTagToItem("Defense", warHorn);
+
             // removals and defense additions
 
             ReplaceWithDefense("ArmorPlate"); // Repulsion Armor Plate

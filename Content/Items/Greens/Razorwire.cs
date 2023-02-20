@@ -1,88 +1,105 @@
 ﻿using Mono.Cecil.Cil;
 using MonoMod.Cil;
-using R2API;
-using RoR2;
 using RoR2.Orbs;
-using System;
-using UnityEngine;
 
 namespace WellRoundedBalance.Items.Greens
 {
     public class Razorwire : ItemBase
     {
-        // ////////////
-        //
-        // Thanks to Borbo
-        //
-        // ///////////////
-
-        public static BuffDef noRazorwire;
+        public static BuffDef razorwireCooldown;
 
         public override string Name => ":: Items :: Greens :: Razorwire";
         public override string InternalPickupToken => "thorns";
 
-        public override string PickupText => "Retaliate in a burst of razors on taking damage.";
-        public override string DescText => "Getting hit causes you to explode in a burst of razors, dealing <style=cIsDamage>160% damage</style>. Hits up to <style=cIsDamage>5</style> <style=cStack>(+2 per stack)</style> targets in a <style=cIsDamage>25m</style> <style=cStack>(+10m per stack)</style> radius.";
+        public override string PickupText => "Retaliate upon taking damage.";
+        public override string DescText => "Getting hit causes a razor to <style=cIsDamage>retaliate</style>, dealing <style=cIsDamage>400%</style> <style=cStack>(+200% per stack)</style> damage.";
 
         public override void Init()
         {
+            razorwireCooldown = ScriptableObject.CreateInstance<BuffDef>();
+
+            razorwireCooldown.isHidden = true;
+            razorwireCooldown.isCooldown = false;
+            razorwireCooldown.isDebuff = false;
+            razorwireCooldown.canStack = false;
+            razorwireCooldown.name = "Razorwire Cooldown";
+
+            ContentAddition.AddBuffDef(razorwireCooldown);
+
             base.Init();
         }
 
         public override void Hooks()
         {
-            AddRazorwireCooldown();
-            IL.RoR2.HealthComponent.TakeDamage += ChangeBehavior;
-            On.RoR2.Orbs.LightningOrb.Begin += LightningOrb_Begin;
+            IL.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
+            On.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage1;
         }
 
-        private void LightningOrb_Begin(On.RoR2.Orbs.LightningOrb.orig_Begin orig, LightningOrb self)
+        private void HealthComponent_TakeDamage1(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo)
         {
-            if (self.lightningType is LightningOrb.LightningType.RazorWire)
+            var victimBody = self.body;
+
+            if (victimBody)
             {
-                self.procCoefficient = 0f;
+                var attacker = damageInfo.attacker;
+                if (attacker)
+                {
+                    var inventory = victimBody.inventory;
+                    if (inventory)
+                    {
+                        var stack = inventory.GetItemCount(RoR2Content.Items.Thorns);
+                        if (stack > 0 && !damageInfo.procChainMask.HasProc(ProcType.Thorns))
+                        {
+                            var attackerHurtBox = Util.FindBodyMainHurtBox(attacker);
+                            if (attackerHurtBox && !victimBody.HasBuff(razorwireCooldown))
+                            {
+                                LightningOrb lightningOrb = new()
+                                {
+                                    attacker = self.body.gameObject,
+                                    bouncedObjects = null,
+                                    bouncesRemaining = 0,
+                                    damageCoefficientPerBounce = 1f,
+                                    damageColorIndex = DamageColorIndex.Item,
+                                    damageValue = self.body.damage * 4f + 2f * (stack - 1),
+                                    isCrit = victimBody.RollCrit(),
+                                    lightningType = LightningOrb.LightningType.RazorWire,
+                                    origin = damageInfo.position,
+                                    procChainMask = default,
+                                    procCoefficient = 0f,
+                                    range = 100000f,
+                                    teamIndex = victimBody.teamComponent.teamIndex,
+                                    target = attackerHurtBox,
+                                };
+                                lightningOrb.procChainMask.AddProc(ProcType.Thorns);
+
+                                OrbManager.instance.AddOrb(lightningOrb);
+
+                                victimBody.AddTimedBuff(razorwireCooldown, 1f, 1);
+                            }
+                        }
+                    }
+                }
             }
-            orig(self);
+
+            orig(self, damageInfo);
         }
 
-        public static void AddRazorwireCooldown()
-        {
-            noRazorwire = ScriptableObject.CreateInstance<BuffDef>();
-
-            noRazorwire.buffColor = Color.black;
-            noRazorwire.canStack = false;
-            noRazorwire.isDebuff = true;
-            noRazorwire.name = "Razorwire Cooldown :smirk_cat:";
-            noRazorwire.buffColor = new Color32();
-            noRazorwire.isHidden = true;
-            ContentAddition.AddBuffDef(noRazorwire);
-        }
-
-        public static void ChangeBehavior(ILContext il)
+        private void HealthComponent_TakeDamage(ILContext il)
         {
             ILCursor c = new(il);
 
-            c.GotoNext(MoveType.After,
-                x => x.MatchLdflda<HealthComponent>("itemCounts"),
-                x => x.MatchLdfld<HealthComponent.ItemCounts>("thorns"),
-                x => x.MatchLdcI4(0)
-                );
-            c.Index--;
-            c.Emit(OpCodes.Ldarg_0);
-            c.EmitDelegate<Func<Int32, HealthComponent, Int32>>((itemCount, hc) =>
+            if (c.TryGotoNext(MoveType.Before,
+                 x => x.MatchLdfld(typeof(HealthComponent.ItemCounts), "thorns"),
+                 x => x.MatchLdcI4(0)))
             {
-                CharacterBody body = hc.body;
-                if (body.HasBuff(noRazorwire))
-                {
-                    itemCount = 0;
-                }
-                else if (itemCount > 0)
-                {
-                    body.AddTimedBuffAuthority(noRazorwire.buffIndex, 0.5f);
-                }
-
-                return itemCount;
-            });
+                c.Index += 1;
+                c.Remove();
+                c.Emit(OpCodes.Ldc_I4, int.MaxValue);
+            }
+            else
+            {
+                Main.WRBLogger.LogError("Failed to apply Razorwire Deletion hook");
+            }
         }
     }
 }
