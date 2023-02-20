@@ -9,7 +9,7 @@ namespace WellRoundedBalance.Items.Reds
 
         public override string PickupText => "Your drones fire faster, have less cooldowns, shoot missiles, and gain a bonus chaingun.";
 
-        public override string DescText => "Gain Col. Droneman. Drones gain +50% (+50% per stack) attack speed and cooldown reduction. Drones gain 10% chance to fire a missile on hit, dealing 300% TOTAL damage. Drones gain an automatic chain gun that deals 6x100% damage.";
+        public override string DescText => "Gain Col. Droneman. Drones gain +50% (+50% per stack) attack speed and cooldown reduction. Drones gain 10% chance to fire a missile on hit, dealing 300% TOTAL damage. Drones gain an automatic chain gun that deals 6x40% damage.";
 
         public override void Init()
         {
@@ -24,6 +24,7 @@ namespace WellRoundedBalance.Items.Reds
         public static void ChaingunChanges(On.EntityStates.DroneWeaponsChainGun.FireChainGun.orig_OnEnter orig, EntityStates.DroneWeaponsChainGun.FireChainGun self)
         {
             self.additionalBounces = 0;
+            self.damageCoefficient = 0.4f;
             orig(self);
         }
     }

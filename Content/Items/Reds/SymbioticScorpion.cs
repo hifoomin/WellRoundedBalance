@@ -1,6 +1,4 @@
 ﻿using MonoMod.Cil;
-using System.Data;
-using UnityEngine.UIElements;
 using static RoR2.DotController;
 
 namespace WellRoundedBalance.Items.Reds
