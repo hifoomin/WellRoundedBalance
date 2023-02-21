@@ -25,6 +25,10 @@ namespace WellRoundedBalance.Utils
 
         public static T GetRandom<T>(this List<T> list, Xoroshiro128Plus rng = null)
         {
+            if (list.Count == 0)
+            {
+                return default(T);
+            }
             if (rng == null)
             {
                 return list[UnityEngine.Random.RandomRangeInt(0, list.Count)];
@@ -38,6 +42,13 @@ namespace WellRoundedBalance.Utils
         public static string ToPercentage(this float self)
         {
             return (self * 100).ToString() + "%";
+        }
+
+        public static bool CheckLoS(Vector3 victimPosition, Vector3 attackerPosition, float maxRange)
+        {
+            var vector = victimPosition - attackerPosition;
+            if (vector.magnitude >= maxRange) return false; // < 120m + LoS check
+            return !Physics.Raycast(victimPosition, vector, out RaycastHit raycastHit, vector.magnitude, LayerIndex.world.mask, QueryTriggerInteraction.Ignore);
         }
     }
 }

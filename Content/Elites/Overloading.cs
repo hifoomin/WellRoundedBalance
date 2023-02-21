@@ -119,7 +119,7 @@ namespace WellRoundedBalance.Elites
 
             public void OnTakeDamageServer(DamageReport report)
             {
-                if (NetworkServer.active && report.victimBody && report.victimBody == cb && !isOnCooldown)
+                if (cb && NetworkServer.active && report.victimBody && report.victimBody == cb && !isOnCooldown)
                 {
                     NodeGraph nodes = SceneInfo.instance.groundNodes;
                     if (nodes)

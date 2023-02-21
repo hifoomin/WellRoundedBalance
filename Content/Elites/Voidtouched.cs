@@ -11,8 +11,7 @@ namespace WellRoundedBalance.Elites
     {
         public static BuffDef useless;
         public static BuffDef voidCurse;
-        public static GameObject DeathBomb;
-        public static DamageAPI.ModdedDamageType NullifierDeath = DamageAPI.ReserveDamageType();
+
         public override string Name => ":: Elites :::::: Voidtouched";
 
         public override void Init()
@@ -34,50 +33,16 @@ namespace WellRoundedBalance.Elites
             ContentAddition.AddBuffDef(useless);
             ContentAddition.AddBuffDef(voidCurse);
 
-            DeathBomb = Utils.Paths.GameObject.NullifierDeathBombProjectile.Load<GameObject>().InstantiateClone("VoidtouchedExplosion", true);
-            DeathBomb.GetComponent<ProjectileDamage>().damageType = DamageType.Silent;
-            var projectileImpactExplosion = DeathBomb.GetComponent<ProjectileImpactExplosion>();
-
-            projectileImpactExplosion.blastDamageCoefficient = 0f;
-            projectileImpactExplosion.blastRadius = 11f;
-
-            var impactEffect = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.NullifierDeathBombExplosion.Load<GameObject>(), "VoidtouchedExplosionImpactEffect", false);
-            impactEffect.transform.localScale = new Vector3(10.266f, 10.266f, 10.266f); // 14m scale for 15m radius
-
-            var effectComponent = impactEffect.GetComponent<EffectComponent>();
-            effectComponent.soundName = "Play_voidRaid_fog_explode";
-
-            ContentAddition.AddEffect(impactEffect);
-
-            projectileImpactExplosion.impactEffect = impactEffect;
-
-            var projectileController = DeathBomb.GetComponent<ProjectileController>();
-            projectileController.flightSoundLoop = Utils.Paths.LoopSoundDef.lsdVoidCampCenter.Load<LoopSoundDef>();
-
-            var ghostPrefab = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.NullifierDeathBombGhost.Load<GameObject>(), "VoidtouchedExplosionGhost");
-            var scale = ghostPrefab.transform.GetChild(0);
-            scale.transform.localScale = new Vector3(11f, 11f, 11f);
-
-            ContentAddition.AddEffect(ghostPrefab);
-
-            projectileController.ghostPrefab = ghostPrefab;
-
-            DamageAPI.ModdedDamageTypeHolderComponent com = DeathBomb.AddComponent<DamageAPI.ModdedDamageTypeHolderComponent>();
-            com.Add(NullifierDeath);
-            ContentAddition.AddProjectile(DeathBomb);
-
             base.Init();
         }
 
         public override void Hooks()
         {
-            On.RoR2.HealthComponent.Awake += HealthComponent_Awake;
             RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
             IL.RoR2.GlobalEventManager.OnHitEnemy += GlobalEventManager_OnHitEnemy;
             IL.RoR2.AffixVoidBehavior.FixedUpdate += AffixVoidBehavior_FixedUpdate;
             On.RoR2.GlobalEventManager.OnHitEnemy += GlobalEventManager_OnHitEnemy1;
-            On.RoR2.GlobalEventManager.OnCharacterDeath += GlobalEventManager_OnCharacterDeath;
-            RoR2.CharacterBody.onBodyInventoryChangedGlobal += CharacterBody_onBodyInventoryChangedGlobal;
+            CharacterBody.onBodyInventoryChangedGlobal += CharacterBody_onBodyInventoryChangedGlobal;
         }
 
         private void CharacterBody_onBodyInventoryChangedGlobal(CharacterBody characterBody)
@@ -96,47 +61,9 @@ namespace WellRoundedBalance.Elites
             }
         }
 
-        private void GlobalEventManager_OnCharacterDeath(On.RoR2.GlobalEventManager.orig_OnCharacterDeath orig, GlobalEventManager self, DamageReport report)
-        {
-            orig(self, report);
-            if (NetworkServer.active && report.victimBody && report.victimBody.HasBuff(DLC1Content.Buffs.EliteVoid))
-            {
-                FireProjectileInfo info = new()
-                {
-                    projectilePrefab = DeathBomb,
-                    position = report.damageInfo.position,
-                    damage = 0,
-                    rotation = Quaternion.identity,
-                    owner = report.victimBody.gameObject
-                };
-                ProjectileManager.instance.FireProjectile(info);
-            }
-        }
-
         private void GlobalEventManager_OnHitEnemy1(On.RoR2.GlobalEventManager.orig_OnHitEnemy orig, GlobalEventManager self, DamageInfo info, GameObject victim)
         {
             orig(self, info, victim);
-            if (NetworkServer.active && info.HasModdedDamageType(NullifierDeath))
-            {
-                CharacterBody victimBody = victim.GetComponent<CharacterBody>();
-                if (victimBody && !victimBody.isPlayerControlled && !victimBody.bodyFlags.HasFlag(CharacterBody.BodyFlags.Mechanical))
-                {
-                    CharacterMaster victimMaster = victimBody.master;
-                    victimMaster.teamIndex = TeamIndex.Void;
-                    victimBody.teamComponent.teamIndex = TeamIndex.Void;
-                    victimBody.inventory.SetEquipmentIndex(DLC1Content.Equipment.EliteVoidEquipment.equipmentIndex);
-                    BaseAI ai = victimMaster.GetComponent<BaseAI>();
-                    if (ai)
-                    {
-                        ai.enemyAttention = 0;
-                        ai.ForceAcquireNearestEnemyIfNoCurrentEnemy();
-                    }
-                    EffectManager.SpawnEffect(Utils.Paths.GameObject.ElementalRingVoidImplodeEffect.Load<GameObject>(), new EffectData
-                    {
-                        origin = info.position
-                    }, true);
-                }
-            }
 
             if (NetworkServer.active && info.attacker)
             {
@@ -188,12 +115,6 @@ namespace WellRoundedBalance.Elites
             }
         }
 
-        private void HealthComponent_Awake(On.RoR2.HealthComponent.orig_Awake orig, HealthComponent self)
-        {
-            self.gameObject.AddComponent<VoidtouchedPermanentDamageController>();
-            orig(self);
-        }
-
         private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
             if (sender)
@@ -224,7 +145,7 @@ namespace WellRoundedBalance.Elites
             }
             else
             {
-                ballCount = 3;
+                ballCount = 4;
             }
         }
 
@@ -246,55 +167,22 @@ namespace WellRoundedBalance.Elites
             {
                 for (int j = 0; j < count; j++)
                 {
-                    var fpi = new FireProjectileInfo
+                    if (Util.HasEffectiveAuthority(gameObject) && Extensions.CheckLoS(playerList[i].transform.position, gameObject.transform.position, 120f))
                     {
-                        projectilePrefab = prefab,
-                        damage = Run.instance ? 5f + Mathf.Sqrt(Run.instance.ambientLevel * 200f) : 0f,
-                        rotation = Quaternion.identity,
-                        owner = gameObject,
-                        crit = body.RollCrit(),
-                        //position = Util.ApplySpread(playerList[i].footPosition, 7f * j, 10f * j, 1f, 0.08f)
-                        position = new Vector3(playerList[i].footPosition.x + Run.instance.treasureRng.RangeFloat(-15f * j, 15f * j), playerList[i].footPosition.y, playerList[i].footPosition.z + Run.instance.runRNG.RangeFloat(-15f * j, 15f * j))
-                    };
-                    ProjectileManager.instance.FireProjectile(fpi);
-                    yield return new WaitForSeconds(delay);
-                }
-            }
-        }
-    }
-
-    public class VoidtouchedPermanentDamageController : MonoBehaviour, IOnTakeDamageServerReceiver
-    {
-        public HealthComponent hc;
-        public CharacterBody body;
-
-        public void Start()
-        {
-            hc = GetComponent<HealthComponent>();
-            if (!hc)
-            {
-                Object.Destroy(this);
-                return;
-            }
-            body = hc.body;
-        }
-
-        public void OnTakeDamageServer(DamageReport damageReport)
-        {
-            if (body && damageReport.attacker && damageReport.attackerBody && damageReport.attackerBody.HasBuff(DLC1Content.Buffs.EliteVoid))
-            {
-                switch (body.teamComponent.teamIndex)
-                {
-                    case TeamIndex.Player:
+                        var fpi = new FireProjectileInfo
                         {
-                            float takenDamagePercent = damageReport.damageDealt / hc.fullCombinedHealth * 100f;
-                            int permanentDamage = Mathf.FloorToInt(takenDamagePercent * 40 / 100f);
-                            for (int l = 0; l < permanentDamage; l++)
-                            {
-                                body.AddBuff(RoR2Content.Buffs.PermanentCurse);
-                            }
-                        }
-                        break;
+                            projectilePrefab = prefab,
+                            damage = Run.instance ? 5f + Mathf.Sqrt(Run.instance.ambientLevel * 200f) / Mathf.Sqrt(Run.instance.participatingPlayerCount) : 0f,
+                            rotation = Quaternion.identity,
+                            owner = gameObject,
+                            crit = body.RollCrit(),
+                            //position = Util.ApplySpread(playerList[i].footPosition, 7f * j, 10f * j, 1f, 0.08f)
+                            position = new Vector3(playerList[i].footPosition.x + Run.instance.treasureRng.RangeFloat(-15f * j, 15f * j), playerList[i].footPosition.y, playerList[i].footPosition.z + Run.instance.runRNG.RangeFloat(-15f * j, 15f * j))
+                        };
+                        ProjectileManager.instance.FireProjectile(fpi);
+                    }
+
+                    yield return new WaitForSeconds(delay);
                 }
             }
         }

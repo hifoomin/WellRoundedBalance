@@ -22,16 +22,14 @@ namespace WellRoundedBalance.Interactables
 
         private class CradleManager : MonoBehaviour
         {
+            public float timer;
+            public float interval = 1f;
+            public bool wasDisabled = false;
             public PurchaseInteraction interaction => GetComponent<PurchaseInteraction>();
 
             private void Start()
             {
                 interaction.onPurchase.AddListener(OnPurchase);
-
-                if (TeleporterInteraction.instance)
-                {
-                    TeleporterInteraction.onTeleporterBeginChargingGlobal += Explode;
-                }
             }
 
             public void OnPurchase(Interactor interactor)
@@ -48,20 +46,25 @@ namespace WellRoundedBalance.Interactables
                 }
             }
 
-            public void Explode(TeleporterInteraction instance)
+            public void FixedUpdate()
             {
-                if (TeleporterInteraction.instance)
+                timer += Time.fixedDeltaTime;
+                if (timer >= interval)
                 {
-                    TeleporterInteraction.onTeleporterBeginChargingGlobal -= Explode;
-                }
+                    var teleporter = TeleporterInteraction.instance;
+                    if (teleporter && teleporter.activationState == TeleporterInteraction.ActivationState.Charged && !wasDisabled)
+                    {
+                        EffectManager.SpawnEffect(Utils.Paths.GameObject.ExplodeOnDeathVoidExplosionEffect.Load<GameObject>(), new EffectData
+                        {
+                            origin = transform.position,
+                            scale = 3f
+                        }, true);
 
-                EffectManager.SpawnEffect(Utils.Paths.GameObject.ExplodeOnDeathVoidExplosionEffect.Load<GameObject>(), new EffectData
-                {
-                    origin = transform.position,
-                    scale = 3f
-                }, true);
-                
-                gameObject.SetActive(false);
+                        gameObject.SetActive(false);
+
+                        wasDisabled = true;
+                    }
+                }
             }
         }
     }

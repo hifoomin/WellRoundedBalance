@@ -1,5 +1,6 @@
-﻿using MonoMod.Cil;
-using System;
+﻿using Inferno.Stat_AI;
+using Mono.Cecil.Cil;
+using MonoMod.Cil;
 
 namespace WellRoundedBalance.Items.Whites
 {
@@ -32,11 +33,7 @@ namespace WellRoundedBalance.Items.Whites
             {
                 if (itemIndex == DLC1Content.Items.GoldOnHurt.itemIndex)
                 {
-                    var master = self.gameObject.GetComponent<CharacterMaster>();
-                    if (master)
-                    {
-                        master.GiveMoney((uint)Run.instance.GetDifficultyScaledCost(10));
-                    }
+                    TeamManager.instance.GiveTeamMoney(TeamIndex.Player, (uint)Run.instance.GetDifficultyScaledCost(10));
                 }
             }
         }
@@ -44,19 +41,19 @@ namespace WellRoundedBalance.Items.Whites
         private void Stage_Start(On.RoR2.Stage.orig_Start orig, Stage self)
         {
             orig(self);
-            if (CharacterMaster.instancesList != null)
+            int stack = 0;
+            var readOnlyInstancesList = CharacterMaster.readOnlyInstancesList;
+            for (int i = 0; i < readOnlyInstancesList.Count; i++)
             {
-                foreach (CharacterMaster master in CharacterMaster.instancesList)
+                CharacterMaster characterMaster = readOnlyInstancesList[i];
+                if (characterMaster.inventory)
                 {
-                    if (master.inventory)
-                    {
-                        var stack = master.inventory.GetItemCount(DLC1Content.Items.GoldOnHurt);
-                        if (stack > 0)
-                        {
-                            master.GiveMoney((uint)Run.instance.GetDifficultyScaledCost(25 + 15 * (stack - 1)));
-                        }
-                    }
+                    stack += characterMaster.inventory.GetItemCount(DLC1Content.Items.GoldOnHurt);
                 }
+            }
+            if (stack > 0)
+            {
+                TeamManager.instance.GiveTeamMoney(TeamIndex.Player, (uint)Run.instance.GetDifficultyScaledCost(25 + 15 * (stack - 1)));
             }
         }
 
@@ -65,15 +62,12 @@ namespace WellRoundedBalance.Items.Whites
             ILCursor c = new(il);
 
             if (c.TryGotoNext(MoveType.Before,
-                x => x.MatchLdcI4(3),
-                x => x.MatchStloc(out _),
-                x => x.MatchNewobj("RoR2.Orbs.GoldOrb")))
+                x => x.MatchLdfld(typeof(HealthComponent.ItemCounts), "goldOnHurt"),
+                x => x.MatchLdcI4(0)))
             {
                 c.Index += 1;
-                c.EmitDelegate<Func<int, int>>((useless) =>
-                {
-                    return 0;
-                });
+                c.Remove();
+                c.Emit(OpCodes.Ldc_I4, int.MaxValue);
             }
             else
             {

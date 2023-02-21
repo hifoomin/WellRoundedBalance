@@ -46,7 +46,7 @@ namespace WellRoundedBalance.Elites
         {
             if (NetworkServer.active && self.HasBuff(CelestineBoost))
             {
-                args.attackSpeedMultAdd += 0.3f;
+                args.baseAttackSpeedAdd += 0.4f;
                 args.armorAdd += 20;
             }
         }

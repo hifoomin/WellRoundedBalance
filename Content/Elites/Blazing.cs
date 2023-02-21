@@ -60,7 +60,7 @@ namespace WellRoundedBalance.Elites
                 c.Index += 1;
                 c.EmitDelegate<Func<float, float>>((useless) =>
                 {
-                    return Run.instance ? 2f + Mathf.Sqrt(Run.instance.ambientLevel * 0.22f) : 0f;
+                    return Run.instance ? 2f + Mathf.Sqrt(Run.instance.ambientLevel * 0.22f) / Mathf.Sqrt(Run.instance.participatingPlayerCount) : 0f;
                 });
             }
             else
@@ -137,16 +137,20 @@ namespace WellRoundedBalance.Elites
             if (timer >= interval)
             {
                 Vector3 randomVector = new(Run.instance.runRNG.RangeInt(0, 360), 0f, Run.instance.runRNG.RangeInt(0, 360));
-                var fpi = new FireProjectileInfo
+                if (Util.HasEffectiveAuthority(gameObject))
                 {
-                    owner = gameObject,
-                    rotation = Util.QuaternionSafeLookRotation(randomVector),
-                    projectilePrefab = projectile,
-                    crit = Util.CheckRoll(body.crit, body.master),
-                    position = body.corePosition,
-                    damage = Run.instance ? Mathf.Sqrt(Run.instance.ambientLevel * 9.05f) : 0f
-                };
-                if (Util.HasEffectiveAuthority(gameObject)) ProjectileManager.instance.FireProjectile(fpi);
+                    var fpi = new FireProjectileInfo
+                    {
+                        owner = gameObject,
+                        rotation = Util.QuaternionSafeLookRotation(randomVector),
+                        projectilePrefab = projectile,
+                        crit = Util.CheckRoll(body.crit, body.master),
+                        position = body.corePosition,
+                        damage = Run.instance ? Mathf.Sqrt(Run.instance.ambientLevel * 9.08f) / Mathf.Sqrt(Run.instance.participatingPlayerCount) : 0f
+                    };
+                    ProjectileManager.instance.FireProjectile(fpi);
+                }
+
                 timer = 0f;
             }
         }
