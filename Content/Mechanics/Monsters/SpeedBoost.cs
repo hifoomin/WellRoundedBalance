@@ -19,7 +19,6 @@ namespace WellRoundedBalance.Mechanics.Monsters
         {
             if (sender.teamComponent.teamIndex != TeamIndex.Player)
             {
-                args.armorAdd += 150 - 150 / Mathf.Pow(1 + 0.055f, Run.instance.stageClearCount);
                 if (Main.IsInfernoDef())
                 {
                     // pass

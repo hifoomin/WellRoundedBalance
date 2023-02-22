@@ -38,7 +38,7 @@ namespace WellRoundedBalance.Interactables
             var drone6 = Utils.Paths.InteractableSpawnCard.iscBrokenMegaDrone.Load<InteractableSpawnCard>();
             drone6.maxSpawnsPerStage = 1;
 
-            var drone6purchaseInteraction = Utils.Paths.GameObject.FlameDroneBroken.Load<GameObject>().GetComponent<PurchaseInteraction>();
+            var drone6purchaseInteraction = Utils.Paths.GameObject.MegaDroneBroken.Load<GameObject>().GetComponent<PurchaseInteraction>();
             drone6purchaseInteraction.cost = 160;
 
             var drone7 = Utils.Paths.InteractableSpawnCard.iscBrokenMissileDrone.Load<InteractableSpawnCard>();

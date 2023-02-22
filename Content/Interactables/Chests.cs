@@ -21,11 +21,6 @@ namespace WellRoundedBalance.Interactables
             stealthedChest.maxSpawnsPerStage = 2;
             stealthedChest.directorCreditCost = 1;
 
-            var stealthedChestGO = Utils.Paths.GameObject.Chest1StealthedVariant.Load<GameObject>();
-            var chestBehavior = stealthedChestGO.GetComponent<ChestBehavior>();
-            chestBehavior.tier1Chance = 0.6f;
-            chestBehavior.tier2Chance = 0.4f;
-
             var smallDamage = Utils.Paths.GameObject.CategoryChestDamage.Load<GameObject>().GetComponent<PurchaseInteraction>();
             smallDamage.cost = 25;
 

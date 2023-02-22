@@ -62,9 +62,16 @@
             weighted.Clear();
             foreach (PickupIndex index in Run.instance.availableLunarCombinedDropList)
             {
-                ItemDef def = ItemCatalog.GetItemDef(index.itemIndex);
-                if (def && !string.IsNullOrEmpty(def.name) && !def.name.ToLower().Contains("replacement"))
+                ItemDef itemDef = ItemCatalog.GetItemDef(index.itemIndex);
+                EquipmentDef equipmentDef = EquipmentCatalog.GetEquipmentDef(index.equipmentIndex);
+                if (itemDef && !string.IsNullOrEmpty(itemDef.name) && !itemDef.name.ToLower().Contains("replacement"))
                 {
+                    // Main.WRBLogger.LogError("Adding Item: " + Language.GetString(itemDef.nameToken));
+                    weighted.AddChoice(index, 1f);
+                }
+                if (equipmentDef)
+                {
+                    // Main.WRBLogger.LogError("Adding Equipment: " + Language.GetString(equipmentDef.nameToken));
                     weighted.AddChoice(index, 1f);
                 }
             }

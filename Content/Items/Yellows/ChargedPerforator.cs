@@ -11,7 +11,7 @@ namespace WellRoundedBalance.Items.Yellows
 
         public override string PickupText => "Chance on hit to call down a lightning strike.";
 
-        public override string DescText => "<style=cIsDamage>10%</style> chance on hit to call down a lightning strike, dealing <style=cIsDamage>400%</style> <style=cStack>(+400% per stack)</style> TOTAL damage.";
+        public override string DescText => "<style=cIsDamage>10%</style> chance on hit to call down a lightning strike, dealing <style=cIsDamage>400%</style> <style=cStack>(+150% per stack)</style> TOTAL damage.";
 
         public override void Init()
         {

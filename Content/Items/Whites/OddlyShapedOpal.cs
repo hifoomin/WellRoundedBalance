@@ -1,4 +1,5 @@
-﻿using MonoMod.Cil;
+﻿using Mono.Cecil.Cil;
+using MonoMod.Cil;
 
 namespace WellRoundedBalance.Items.Whites
 {
@@ -42,15 +43,10 @@ namespace WellRoundedBalance.Items.Whites
             ILCursor c = new(il);
 
             if (c.TryGotoNext(MoveType.Before,
-                    x => x.MatchLdsfld("RoR2.DLC1Content/Buffs", "OutOfCombatArmorBuff"),
-                    x => x.MatchCallOrCallvirt<CharacterBody>("HasBuff"),
-                    x => x.MatchBrtrue(out _),
-                    x => x.MatchLdcR4(0.0f),
-                    x => x.MatchBr(out _),
-                    x => x.MatchLdcR4(100f)))
+                    x => x.MatchLdsfld("RoR2.DLC1Content/Buffs", "OutOfCombatArmorBuff")))
             {
-                c.Index += 5;
-                c.Next.Operand = 0f;
+                c.Remove();
+                c.Emit<Useless>(OpCodes.Ldsfld, nameof(Useless.uselessItem));
             }
             else
             {
