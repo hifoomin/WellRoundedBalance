@@ -14,7 +14,7 @@ namespace WellRoundedBalance.Items.Yellows
 
         public override string PickupText => "Chance on hit to fire magma balls.";
 
-        public override string DescText => "<style=cIsDamage>10%</style> chance on hit to call forth <style=cIsDamage>3 magma balls</style> from an enemy, dealing <style=cIsDamage>170%</style> <style=cStack>(+60% per stack)</style> TOTAL damage and <style=cIsDamage>igniting</style> all enemies.";
+        public override string DescText => "<style=cIsDamage>10%</style> chance on hit to call forth <style=cIsDamage>3 magma balls</style> from an enemy, dealing <style=cIsDamage>190%</style> <style=cStack>(+60% per stack)</style> TOTAL damage and <style=cIsDamage>igniting</style> all enemies.";
 
         public override void Init()
         {
@@ -32,21 +32,25 @@ namespace WellRoundedBalance.Items.Yellows
         {
             ILCursor c = new(il);
 
-            if (c.TryGotoNext(MoveType.Before,
-                    //x => x.MatchStloc(117),
-                    x => x.MatchLdcR4(3f),
-                    x => x.MatchLdloc(17)))
+            float initialDamage = 1.9f - 0.6f;
+
+            bool error = true;
+
+            if (c.TryGotoNext(x => x.MatchLdsfld(typeof(RoR2Content.Items), "FireballsOnHit")) &&
+            c.TryGotoNext(x => x.MatchLdfld<DamageInfo>("damage")))
             {
-                c.Index += 1;
-                c.Emit(OpCodes.Ldarg_0);
-                c.EmitDelegate<Func<float, CharacterBody, float>>((useless, self) =>
+                c.Index -= 6;
+                c.Next.Operand = 0.6f;
+                c.Index += 4;
+                c.EmitDelegate<Func<float, float>>((damageCoefficient) =>
                 {
-                    return 1.7f + 0.6f * (self.inventory.GetItemCount(RoR2Content.Items.FireballsOnHit) - 1);
+                    return damageCoefficient + initialDamage;
                 });
+                error = false;
             }
-            else
+            if (error)
             {
-                Main.WRBLogger.LogError("Failed to apply Molten Perforator Damage hook");
+                Main.WRBLogger.LogError("Failed to apply Molten Perforator hook");
             }
         }
 
