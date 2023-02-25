@@ -1,7 +1,4 @@
 ﻿using MonoMod.Cil;
-using R2API;
-using RoR2;
-using UnityEngine;
 
 namespace WellRoundedBalance.Items.Whites
 {
@@ -12,7 +9,10 @@ namespace WellRoundedBalance.Items.Whites
 
         public override string PickupText => "Gain 45 max health.";
 
-        public override string DescText => "Increases <style=cIsHealing>maximum health</style> by <style=cIsHealing>45</style> <style=cStack>(+45 per stack)</style>.";
+        public override string DescText => "Increases <style=cIsHealing>maximum health</style> by <style=cIsHealing>" + maximumHealthGain + "</style> <style=cStack>(+" + maximumHealthGain + " per stack)</style>.";
+
+        [ConfigField("Maximum Health Gain", "", 45f)]
+        public static float maximumHealthGain;
 
         public override void Init()
         {
@@ -21,10 +21,10 @@ namespace WellRoundedBalance.Items.Whites
 
         public override void Hooks()
         {
-            IL.RoR2.CharacterBody.RecalculateStats += ChangeHealth;
+            IL.RoR2.CharacterBody.RecalculateStats += CharacterBody_RecalculateStats;
         }
 
-        public static void ChangeHealth(ILContext il)
+        private void CharacterBody_RecalculateStats(ILContext il)
         {
             ILCursor c = new(il);
             if (c.TryGotoNext(MoveType.Before,
@@ -32,7 +32,7 @@ namespace WellRoundedBalance.Items.Whites
                     x => x.MatchLdcR4(25f)))
             {
                 c.Index += 1;
-                c.Next.Operand = 45f;
+                c.Next.Operand = maximumHealthGain;
             }
             else
             {

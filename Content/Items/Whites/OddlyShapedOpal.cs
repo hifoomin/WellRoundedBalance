@@ -11,7 +11,10 @@ namespace WellRoundedBalance.Items.Whites
 
         public override string PickupText => "Reduce damage the first time you are hit.";
 
-        public override string DescText => "<style=cIsHealing>Increase armor</style> by <style=cIsHealing>40</style> <style=cStack>(+40 per stack)</style> while out of combat.";
+        public override string DescText => "<style=cIsHealing>Increase armor</style> by <style=cIsHealing>" + armorGain + "</style> <style=cStack>(+" + armorGain + " per stack)</style> while out of combat.";
+
+        [ConfigField("Armor Gain", "", 40f)]
+        public static float armorGain;
 
         public override void Init()
         {
@@ -60,7 +63,7 @@ namespace WellRoundedBalance.Items.Whites
             if (sender.HasBuff(opalArmor) && inventory)
             {
                 var stack = inventory.GetItemCount(DLC1Content.Items.OutOfCombatArmor);
-                args.armorAdd += 40f * stack;
+                args.armorAdd += armorGain * stack;
             }
         }
 

@@ -1,6 +1,5 @@
 ﻿using Mono.Cecil.Cil;
 using MonoMod.Cil;
-using RoR2;
 using System;
 
 namespace WellRoundedBalance.Items.Whites
@@ -13,7 +12,10 @@ namespace WellRoundedBalance.Items.Whites
         public override string InternalPickupToken => "fragileDamageBonus";
 
         public override string PickupText => "Deal bonus damage out of danger.";
-        public override string DescText => "<style=cIsDamage>Increase damage</style> by <style=cIsDamage>15%</style> <style=cStack>(+15% per stack)</style> while out of danger.";
+        public override string DescText => "<style=cIsDamage>Increase base damage</style> by <style=cIsDamage>" + d(damageIncrease) + "</style> <style=cStack>(+" + d(damageIncrease) + " per stack)</style> while out of danger.";
+
+        [ConfigField("Damage Increase", "Decimal.", 0.15f)]
+        public static float damageIncrease;
 
         public override void Init()
         {
@@ -47,7 +49,7 @@ namespace WellRoundedBalance.Items.Whites
                 var stack = sender.inventory.GetItemCount(DLC1Content.Items.FragileDamageBonus);
                 if (sender.HasBuff(watchDamage))
                 {
-                    args.damageMultAdd += 0.15f * stack;
+                    args.damageMultAdd += damageIncrease * stack;
                 }
             }
         }

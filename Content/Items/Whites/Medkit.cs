@@ -1,6 +1,4 @@
 ﻿using MonoMod.Cil;
-using RoR2;
-using UnityEngine;
 
 namespace WellRoundedBalance.Items.Whites
 {
@@ -11,7 +9,13 @@ namespace WellRoundedBalance.Items.Whites
 
         public override string PickupText => "Receive a delayed heal after taking damage.";
 
-        public override string DescText => "2 seconds after getting hurt, <style=cIsHealing>heal</style> for <style=cIsHealing>20</style> plus an additional <style=cIsHealing>3.5%<style=cStack> (+3.5% per stack)</style></style> of <style=cIsHealing>maximum health</style>.";
+        public override string DescText => "2 seconds after getting hurt, <style=cIsHealing>heal</style> for <style=cIsHealing>" + flatHealing + "</style> plus an additional <style=cIsHealing>" + d(percentHealing) + "<style=cStack> (+" + d(percentHealing) + " per stack)</style></style> of <style=cIsHealing>maximum health</style>.";
+
+        [ConfigField("Flat Healing", "", 20f)]
+        public static float flatHealing;
+
+        [ConfigField("Percent Healing", "Decimal.", 0.035f)]
+        public static float percentHealing;
 
         public override void Init()
         {
@@ -20,21 +24,17 @@ namespace WellRoundedBalance.Items.Whites
 
         public override void Hooks()
         {
-            IL.RoR2.CharacterBody.RemoveBuff_BuffIndex += Changes;
+            IL.RoR2.CharacterBody.RemoveBuff_BuffIndex += CharacterBody_RemoveBuff_BuffIndex;
         }
 
-        public static void Changes(ILContext il)
+        private void CharacterBody_RemoveBuff_BuffIndex(ILContext il)
         {
             ILCursor c = new(il);
-            /*
+
             if (c.TryGotoNext(MoveType.Before,
-                    x => x.MatchLdsfld(typeof(RoR2Content.Items), "Medkit"),
-                    x => x.MatchCallOrCallvirt<Inventory>("GetItemCount"),
-                    x => x.MatchStloc(0),
                     x => x.MatchLdcR4(20f)))
             {
-                c.Index += 3;
-                c.Next.Operand = 20f;
+                c.Next.Operand = flatHealing;
             }
             else
             {
@@ -42,15 +42,11 @@ namespace WellRoundedBalance.Items.Whites
             }
 
             c.Index = 0;
-            */
 
             if (c.TryGotoNext(MoveType.Before,
-                    x => x.MatchLdarg(0),
-                    x => x.MatchCallOrCallvirt(typeof(CharacterBody).GetMethod("get_maxHealth")),
                     x => x.MatchLdcR4(0.05f)))
             {
-                c.Index += 2;
-                c.Next.Operand = 0.035f;
+                c.Next.Operand = percentHealing;
             }
             else
             {

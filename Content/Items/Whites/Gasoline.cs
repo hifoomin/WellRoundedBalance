@@ -1,8 +1,4 @@
-﻿using HG;
-using MonoMod.Cil;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using MonoMod.Cil;
 
 namespace WellRoundedBalance.Items.Whites
 {
@@ -14,7 +10,30 @@ namespace WellRoundedBalance.Items.Whites
 
         public override string PickupText => "Killing an enemy ignites other nearby enemies.";
 
-        public override string DescText => "Killing an enemy <style=cIsDamage>ignites</style> all enemies within <style=cIsDamage>12m</style> for <style=cIsDamage>100%</style> base damage. Additionally, enemies <style=cIsDamage>burn</style> for <style=cIsDamage>200%</style> <style=cStack>(+200% per stack)</style> base damage.";
+        public override string DescText => "Killing an enemy <style=cIsDamage>ignites</style> all enemies within <style=cIsDamage>" + baseRange + "m</style>" +
+                                           (rangePerStack > 0 ? " <style=cStack>(+" + rangePerStack + "m per stack)</style>" : "") +
+                                           " for <style=cIsDamage>" + d(explosionDamage) + "</style> base damage." +
+                                           "Additionally, enemies <style=cIsDamage>burn</style> for <style=cIsDamage>" + d(burnDamagePerStack * (baseBurnDamage + 1)) + "</style> <style=cStack>(" + d(burnDamagePerStack * (baseBurnDamage + 2)) + " per stack)</style> base damage.";
+
+        [ConfigField("Explosion Damage", "Decimal.", 1f)]
+        public static float explosionDamage;
+
+        [ConfigField("Base Burn Damage", "Decimal. Formula for burn damage: Burn Damage Per Stack * (Base Burn Damage + Gasoline)", 1)]
+        public static int baseBurnDamage;
+
+        [ConfigField("Burn Damage Per Stack", "Decimal. Formula for burn damage: Burn Damage Per Stack * (Base Burn Damage + Gasoline)", 1f)]
+        public static float burnDamagePerStack;
+
+        [ConfigField("Base Range", "", 12f)]
+        public static float baseRange;
+
+        [ConfigField("Range Per Stack", "", 0f)]
+        public static float rangePerStack;
+
+        public override void Init()
+        {
+            base.Init();
+        }
 
         public override void Hooks()
         {
@@ -32,9 +51,9 @@ namespace WellRoundedBalance.Items.Whites
                     x => x.MatchConvR4(),
                     x => x.MatchLdcR4(0.75f)))
             {
-                // c.Next.Operand = 1;
+                c.Next.Operand = baseBurnDamage;
                 c.Index += 4;
-                c.Next.Operand = 1f;
+                c.Next.Operand = burnDamagePerStack;
             }
             else
             {
@@ -49,7 +68,7 @@ namespace WellRoundedBalance.Items.Whites
                x => x.MatchLdcR4(1.5f)))
             {
                 c.Index += 2;
-                c.Next.Operand = 1f;
+                c.Next.Operand = explosionDamage;
             }
             else
             {
@@ -62,9 +81,9 @@ namespace WellRoundedBalance.Items.Whites
                 x => x.MatchLdcR4(8f),
                 x => x.MatchLdcR4(4f)))
             {
-                c.Next.Operand = 12f;
+                c.Next.Operand = baseRange - rangePerStack;
                 c.Index += 1;
-                c.Next.Operand = 0f;
+                c.Next.Operand = rangePerStack;
             }
             else
             {

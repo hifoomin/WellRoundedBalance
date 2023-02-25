@@ -1,5 +1,4 @@
 ﻿using MonoMod.Cil;
-using RoR2;
 
 namespace WellRoundedBalance.Items.Whites
 {
@@ -8,9 +7,31 @@ namespace WellRoundedBalance.Items.Whites
         public override string Name => ":: Items : Whites :: Bustling Fungus";
         public override string InternalPickupToken => "mushroom";
 
-        public override string PickupText => "Heal all nearby allies after standing still for 0.5 seconds.";
+        public override string PickupText => "Heal all nearby allies after standing still for " + standingStillDuration + " second" +
+                                             (standingStillDuration != 1 ? "s." : ".");
 
-        public override string DescText => "After standing still for <style=cIsHealing>0.5</style> seconds, create a zone that <style=cIsHealing>heals</style> for <style=cIsHealing>5%</style> <style=cStack>(+2.5% per stack)</style> of your <style=cIsHealing>health</style> every second to all allies within <style=cIsHealing>13m</style>.";
+        public override string DescText => "After standing still for <style=cIsHealing>" + standingStillDuration + "</style> second" +
+                                           (standingStillDuration != 1 ? "s," : ",") +
+                                           " create a zone that <style=cIsHealing>heals</style> for <style=cIsHealing>" + d(baseHealing) + "</style> <style=cStack>(+" + d(healingPerStack) + " per stack)</style> of your <style=cIsHealing>health</style> every second to all allies within <style=cIsHealing>" + baseRadius + "m</style>" +
+                                           (radiusPerStack > 0 ? " <style=cStack>(+" + radiusPerStack + "m per stack)</style>." : ".");
+
+        [ConfigField("Base Radius", "", 13f)]
+        public static float baseRadius;
+
+        [ConfigField("Radius Per Stack", "", 0f)]
+        public static float radiusPerStack;
+
+        [ConfigField("Base Healing", "Decimal.", 0.05f)]
+        public static float baseHealing;
+
+        [ConfigField("Healing Per Stack", "Decimal.", 0f)]
+        public static float healingPerStack;
+
+        [ConfigField("Standing Still Duration", "", 0.5f)]
+        public static float standingStillDuration;
+
+        [ConfigField("Healing Interval", "", 0.25f)]
+        public static float healingInterval;
 
         public override void Init()
         {
@@ -32,9 +53,9 @@ namespace WellRoundedBalance.Items.Whites
                     x => x.MatchLdcR4(1.5f)))
             {
                 c.Index += 1;
-                c.Next.Operand = 13f;
+                c.Next.Operand = baseRadius;
                 c.Index += 2;
-                c.Next.Operand = 0f;
+                c.Next.Operand = radiusPerStack;
             }
             else
             {
@@ -51,11 +72,11 @@ namespace WellRoundedBalance.Items.Whites
                     x => x.MatchLdcR4(0.045f),
                     x => x.MatchLdcR4(0.0225f)))
             {
-                c.Next.Operand = 0.25f;
+                c.Next.Operand = healingInterval;
                 c.Index += 4;
-                c.Next.Operand = 0.05f;
+                c.Next.Operand = baseHealing;
                 c.Index += 1;
-                c.Next.Operand = 0.025f;
+                c.Next.Operand = healingPerStack;
             }
             else
             {

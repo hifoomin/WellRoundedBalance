@@ -8,8 +8,14 @@ namespace WellRoundedBalance.Items.Whites
         public override string Name => ":: Items : Whites :: Crowbar";
         public override string InternalPickupToken => "crowbar";
 
-        public override string PickupText => "Deal bonus damage to enemies above 85% health.";
-        public override string DescText => "Deal <style=cIsDamage>+40%</style> <style=cStack>(+40% per stack)</style> damage to enemies above <style=cIsDamage>85% health</style>.";
+        public override string PickupText => "Deal bonus damage to enemies above " + d(healthThreshold) + " health.";
+        public override string DescText => "Deal <style=cIsDamage>" + d(damageIncrease) + "</style> <style=cStack>(+" + d(damageIncrease) + " per stack)</style> damage to enemies above <style=cIsDamage>" + d(healthThreshold) + " health</style>.";
+
+        [ConfigField("Damage Increase", "Decimal.", 0.4f)]
+        public static float damageIncrease;
+
+        [ConfigField("Health Threshold", "Decimal.", 0.85f)]
+        public static float healthThreshold;
 
         public override void Init()
         {
@@ -29,7 +35,7 @@ namespace WellRoundedBalance.Items.Whites
                 x => x.MatchLdcR4(0.75f)))
             {
                 c.Index += 1;
-                c.Next.Operand = 0.4f;
+                c.Next.Operand = damageIncrease;
             }
             else
             {
@@ -44,7 +50,7 @@ namespace WellRoundedBalance.Items.Whites
                x => x.MatchLdcR4(0.9f)))
             {
                 c.Index += 2;
-                c.Next.Operand = 0.85f;
+                c.Next.Operand = healthThreshold;
             }
             else
             {
