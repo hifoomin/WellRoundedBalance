@@ -110,13 +110,13 @@ namespace WellRoundedBalance.Items.ConsistentCategories
             delicateWatch.tags = new ItemTag[] { ItemTag.Damage };
 
             var egocentrism = Utils.Paths.ItemDef.LunarSun.Load<ItemDef>();
-            egocentrism.tags = new ItemTag[] { ItemTag.Damage, ItemTag.AIBlacklist };
+            egocentrism.tags = new ItemTag[] { ItemTag.Damage, ItemTag.AIBlacklist, ItemTag.BrotherBlacklist };
 
             var bottledChaos = Utils.Paths.ItemDef.RandomEquipmentTrigger.Load<ItemDef>();
             bottledChaos.tags = new ItemTag[] { ItemTag.Damage, ItemTag.Utility, ItemTag.EquipmentRelated };
 
             var planula = Utils.Paths.ItemDef.ParentEgg.Load<ItemDef>();
-            planula.tags = new ItemTag[] { ItemTag.Damage, ItemTag.CannotCopy };
+            planula.tags = new ItemTag[] { ItemTag.Damage, ItemTag.CannotCopy, ItemTag.BrotherBlacklist };
 
             var rollofPennies = Utils.Paths.ItemDef.GoldOnHurt.Load<ItemDef>();
             rollofPennies.tags = new ItemTag[] { ItemTag.Utility, ItemTag.CannotDuplicate, ItemTag.OnStageBeginEffect };
@@ -124,8 +124,11 @@ namespace WellRoundedBalance.Items.ConsistentCategories
             var bisonSteak = Utils.Paths.ItemDef.FlatHealth.Load<ItemDef>();
             bisonSteak.tags = new ItemTag[] { ItemTag.Utility };
 
+            var shuriken = Utils.Paths.ItemDef.PrimarySkillShuriken.Load<ItemDef>();
+            shuriken.tags = new ItemTag[] { ItemTag.Damage, ItemTag.AIBlacklist, ItemTag.BrotherBlacklist };
+
             var defenseTag = ItemAPI.FindItemTagByName("Defense");
-            Main.WRBLogger.LogError("ItemAPI.FindItemTagByName(\"Defense\") tag returns " + defenseTag);
+            Main.WRBLogger.LogDebug("ItemAPI.FindItemTagByName(\"Defense\") tag returns " + defenseTag);
 
             // special cases (NREs at any point)
 

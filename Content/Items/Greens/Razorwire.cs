@@ -44,6 +44,10 @@ namespace WellRoundedBalance.Items.Greens
                 var attacker = damageInfo.attacker;
                 if (attacker)
                 {
+                    if (attacker == self.gameObject)
+                    {
+                        return;
+                    }
                     var inventory = victimBody.inventory;
                     if (inventory)
                     {

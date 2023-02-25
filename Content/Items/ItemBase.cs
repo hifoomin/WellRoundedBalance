@@ -1,10 +1,6 @@
 ﻿using BepInEx.Configuration;
-using R2API;
 using RiskOfOptions;
-using RiskOfOptions.OptionConfigs;
 using RiskOfOptions.Options;
-using System.Text.RegularExpressions;
-using UnityEngine;
 using System;
 using BepInEx.Logging;
 
@@ -31,15 +27,15 @@ namespace WellRoundedBalance.Items
             ConfigEntry<T> entry = Main.WRBConfig.Bind<T>(Name, name, value, desc);
             if (typeof(T) == typeof(int))
             {
-                ModSettingsManager.AddOption(new IntSliderOption(entry as BepInEx.Configuration.ConfigEntry<int>));
+                ModSettingsManager.AddOption(new IntSliderOption(entry as ConfigEntry<int>));
             }
             else if (typeof(T) == typeof(float))
             {
-                ModSettingsManager.AddOption(new SliderOption(entry as BepInEx.Configuration.ConfigEntry<float>));
+                ModSettingsManager.AddOption(new SliderOption(entry as ConfigEntry<float>));
             }
             else if (typeof(T) == typeof(string))
             {
-                ModSettingsManager.AddOption(new StringInputFieldOption(entry as BepInEx.Configuration.ConfigEntry<string>));
+                ModSettingsManager.AddOption(new StringInputFieldOption(entry as ConfigEntry<string>));
             }
             else if (typeof(T) == typeof(Enum))
             {
@@ -50,10 +46,14 @@ namespace WellRoundedBalance.Items
 
         public virtual void Init()
         {
-            ConfigManager.HandleConfigAttributes(this.GetType(), Name, Main.WRBItemConfig);
+            ConfigManager.HandleConfigAttributes(GetType(), Name, Main.WRBItemConfig);
             Hooks();
-            string pickupToken = "ITEM_" + InternalPickupToken.ToUpper() + "_PICKUP";
-            string descriptionToken = "ITEM_" + InternalPickupToken.ToUpper() + "_DESC";
+            string pickupToken;
+            string descriptionToken;
+
+            pickupToken = "ITEM_" + InternalPickupToken.ToUpper() + "_PICKUP";
+            descriptionToken = "ITEM_" + InternalPickupToken.ToUpper() + "_DESC";
+
             LanguageAPI.Add(pickupToken, PickupText);
             LanguageAPI.Add(descriptionToken, DescText);
         }
