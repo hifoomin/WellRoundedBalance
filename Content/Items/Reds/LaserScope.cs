@@ -21,59 +21,77 @@ namespace WellRoundedBalance.Items.Reds
         public override void Hooks()
         {
             RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
-            // IL.RoR2.CharacterBody.RecalculateStats += CharacterBody_RecalculateStats;
-            IL.RoR2.BulletAttack.CalcFalloffFactor += BulletAttack_CalcFalloffFactor;
+            IL.RoR2.BulletAttack.DefaultHitCallbackImplementation += BulletAttack_DefaultHitCallbackImplementation;
         }
 
-        private void BulletAttack_CalcFalloffFactor(ILContext il)
+        private void BulletAttack_DefaultHitCallbackImplementation(ILContext il)
         {
             ILCursor c = new(il);
 
             if (c.TryGotoNext(MoveType.Before,
-                x => x.MatchLdcR4(0.5f),
-                x => x.MatchMul()))
+                x => x.MatchLdfld(typeof(BulletAttack), "damage"),
+                x => x.MatchLdloc(out _)))
             {
-                c.Next.Operand = 1f;
+                c.Index += 2;
+                c.Emit(OpCodes.Ldarg_0);
+                c.EmitDelegate<Func<float, DamageInfo, float>>((self, damageInfo) =>
+                {
+                    var attackerBody = damageInfo.attacker.GetComponent<CharacterBody>();
+                    if (attackerBody)
+                    {
+                        var inventory = attackerBody.inventory;
+                        if (inventory)
+                        {
+                            return inventory.GetItemCount(DLC1Content.Items.CritDamage) > 0 ? 1f : self;
+                        }
+                        else
+                        {
+                            return self;
+                        }
+                    }
+                    else
+                    {
+                        return self;
+                    }
+                });
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Laser Scope Falloff Removal 1 hook");
+                Main.WRBLogger.LogError("Failed to apply Laser Scope Bullet Falloff Removal 1 hook");
             }
 
             c.Index = 0;
 
             if (c.TryGotoNext(MoveType.Before,
-                x => x.MatchLdcR4(0.75f),
-                x => x.MatchMul()))
+                x => x.MatchLdfld(typeof(BulletAttack), "force"),
+                x => x.MatchLdloc(out _)))
             {
-                c.Next.Operand = 1f;
-            }
-            else
-            {
-                Main.WRBLogger.LogError("Failed to apply Laser Scope Falloff Removal 2 hook");
-            }
-        }
-
-        private void CharacterBody_RecalculateStats(ILContext il)
-        {
-            ILCursor c = new(il);
-
-            if (c.TryGotoNext(MoveType.Before,
-                x => x.MatchCallOrCallvirt<CharacterBody>("set_attackSpeed"),
-                x => x.MatchLdarg(0),
-                x => x.MatchLdcR4(2f),
-                x => x.MatchLdcR4(1f)))
-            {
-                c.Index += 4;
+                c.Index += 2;
                 c.Emit(OpCodes.Ldarg_0);
-                c.EmitDelegate<Func<float, CharacterBody, float>>((useless, self) =>
+                c.EmitDelegate<Func<float, DamageInfo, float>>((self, damageInfo) =>
                 {
-                    return 2f + 1f * (self.inventory.GetItemCount(DLC1Content.Items.CritDamage) - 1);
+                    var attackerBody = damageInfo.attacker.GetComponent<CharacterBody>();
+                    if (attackerBody)
+                    {
+                        var inventory = attackerBody.inventory;
+                        if (inventory)
+                        {
+                            return inventory.GetItemCount(DLC1Content.Items.CritDamage) > 0 ? 1f : self;
+                        }
+                        else
+                        {
+                            return self;
+                        }
+                    }
+                    else
+                    {
+                        return self;
+                    }
                 });
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Laser Scope Crit Damage hook");
+                Main.WRBLogger.LogError("Failed to apply Laser Scope Bullet Falloff Removal 2 hook");
             }
         }
 
@@ -84,7 +102,7 @@ namespace WellRoundedBalance.Items.Reds
                 var stack = sender.inventory.GetItemCount(DLC1Content.Items.CritDamage);
                 if (stack > 0)
                 {
-                    args.critAdd += 5f;
+                    args.critAdd += 10f;
                 }
             }
         }

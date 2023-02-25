@@ -5,8 +5,6 @@ namespace WellRoundedBalance.Mechanics.Scaling
 {
     public class TimeScaling : MechanicBase<TimeScaling>
     {
-        public static float timer;
-        public static float interval = 180f;
         public static float vanillaStandardScaling;
         public static float vanillaLinearScaling;
         public static float ambientLevel;
@@ -23,18 +21,18 @@ namespace WellRoundedBalance.Mechanics.Scaling
         public override void Hooks()
         {
             ChangeBehavior();
-            RoR2Application.onFixedUpdate += RoR2Application_onFixedUpdate;
+            RoR2Application.onUpdate += RoR2Application_onUpdate;
         }
 
-        private void RoR2Application_onFixedUpdate()
+        private void RoR2Application_onUpdate()
         {
-            timer += Time.fixedDeltaTime;
-            if (timer >= interval && Run.instance)
+            if (Input.GetKeyDown(";") && Run.instance)
             {
+                ChatMessage.Send("\n");
                 ChatMessage.Send("Current ambient level: " + ambientLevel);
                 ChatMessage.Send("Vanilla ambient level would be: " + vanillaStandardAmbientLevel);
                 ChatMessage.Send("Vanilla linear ambient level would be: " + vanillaLinearAmbientLevel);
-                timer = 0f;
+                ChatMessage.Send("\n");
             }
         }
 

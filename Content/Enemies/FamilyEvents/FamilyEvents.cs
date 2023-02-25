@@ -1,4 +1,5 @@
-﻿using BepInEx.Configuration;
+﻿/*
+using BepInEx.Configuration;
 using System;
 
 namespace WellRoundedBalance.Enemies.FamilyEvents
@@ -18,6 +19,8 @@ namespace WellRoundedBalance.Enemies.FamilyEvents
 
             AddBossFamilyEvent();
             On.RoR2.ClassicStageInfo.OnEnable += ClassicStageInfo_OnEnable;
+
+            // ok so uh it works perfectly fine, looks perfectly fine at runtime except it doesnt do anything with 100% chance and really high selection weight idk why
         }
 
         private static void ClassicStageInfo_OnEnable(On.RoR2.ClassicStageInfo.orig_OnEnable orig, ClassicStageInfo self)
@@ -29,10 +32,11 @@ namespace WellRoundedBalance.Enemies.FamilyEvents
 
         private static void AddBossFamilyEvent()
         {
-            var bossFamilyEvent = ScriptableObject.CreateInstance<FamilyDirectorCardCategorySelection>();
-            bossFamilyEvent.minimumStageCompletion = 3;
-            bossFamilyEvent.maximumStageCompletion = int.MaxValue;
-            bossFamilyEvent.AddCategory("Champions", 1f);
+            bossFamilyDCCS = ScriptableObject.CreateInstance<FamilyDirectorCardCategorySelection>();
+            bossFamilyDCCS.selectionChatString = "FAMILY_BOSS";
+            bossFamilyDCCS.minimumStageCompletion = 3;
+            bossFamilyDCCS.maximumStageCompletion = int.MaxValue;
+            bossFamilyDCCS.AddCategory("Champions", 1f);
 
             var beetleQueenDirectorCard = new DirectorCard()
             {
@@ -194,9 +198,7 @@ namespace WellRoundedBalance.Enemies.FamilyEvents
                 xiConstructSpawnCard
             };
 
-            bossFamilyEvent.categories[0].cards = cards.ToArray();
-
-            Main.WRBLogger.LogError("bossFamilyEvent cards in first category has " + bossFamilyEvent.categories[0].cards.Length + " elements");
+            bossFamilyDCCS.categories[0].cards = cards.ToArray();
 
             bossFamily = new ClassicStageInfo.MonsterFamily()
             {
@@ -207,9 +209,8 @@ namespace WellRoundedBalance.Enemies.FamilyEvents
                 selectionWeight = 1f
             };
 
-            Main.WRBLogger.LogError("bossFamily monsterfamily is " + bossFamily);
-
             LanguageAPI.Add("FAMILY_BOSS", "You feel an ominous presence...");
         }
     }
 }
+*/

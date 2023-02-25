@@ -17,7 +17,8 @@ using WellRoundedBalance.Misc;
 using WellRoundedBalance.Artifacts;
 using WellRoundedBalance.Mechanics;
 using WellRoundedBalance.Items.ConsistentCategories;
-using WellRoundedBalance.Enemies.FamilyEvents;
+
+// using WellRoundedBalance.Enemies.FamilyEvents;
 
 [assembly: HG.Reflection.SearchableAttribute.OptIn]
 
@@ -228,7 +229,7 @@ namespace WellRoundedBalance
 
             SpeedBoost.Init();
             BetterScaling.Init();
-            FamilyEvents.Init();
+            // FamilyEvents.Init();
         }
 
         private void ItemCatalog_Init(On.RoR2.ItemCatalog.orig_Init orig)
