@@ -1,20 +1,79 @@
-/*using System;
+using System;
 
 namespace WellRoundedBalance.Elites {
     internal class Mending : EliteBase
     {
         public override string Name => "Elites :::: Mending";
-        public GameObject AffixEarthAttachment;
-
+        [ConfigField("Radius", "The targeting radius for a mending tether", 25)]
+        public static float radius;
+        [ConfigField("Heal Coefficient", "The percentage of the targets health to heal every second", 3)]
+        public static float healFraction;
+        [ConfigField("Heal Nova Radius", "The radius of the temporary healing nova", 5)]
+        public static float healNovaRadius;
+        private static GameObject healNovaPrefab;
         public override void Init()
         {
             base.Init();
+            healNovaPrefab = Utils.Paths.GameObject.RailgunnerMineAltDetonated.Load<GameObject>().InstantiateClone("HealNova");
+            healNovaPrefab.RemoveComponent<SlowDownProjectiles>();
+            
+            Transform areaIndicator = healNovaPrefab.transform.Find("AreaIndicator");
+            Transform softGlow = areaIndicator.Find("SoftGlow");
+            Transform sphere = areaIndicator.Find("Sphere");
+            Transform light = areaIndicator.Find("Point Light");
+            Transform core = areaIndicator.Find("Core");
+
+            core.gameObject.SetActive(false);
+            softGlow.gameObject.SetActive(false);
+
+            Light plight = light.GetComponent<Light>();
+            plight.color = Color.green;
+
+            MeshRenderer renderer = sphere.GetComponent<MeshRenderer>();
+            Material[] mats = renderer.sharedMaterials;
+            mats[0] = Utils.Paths.Material.matAffixEarthSphereIndicator.Load<Material>();
+            mats[1] = Utils.Paths.Material.matAffixEarthSphereIndicator.Load<Material>();
+            renderer.SetSharedMaterials(mats, 2);
+
+
+            healNovaPrefab.RemoveComponent<BuffWard>();
+
+            SphereZone zone = healNovaPrefab.AddComponent<SphereZone>();
+            zone.rangeIndicator = areaIndicator;
+            zone.radius = healNovaRadius;
+
+            healNovaPrefab.AddComponent<HealNovaController>();
+
+            ContentAddition.AddProjectile(healNovaPrefab);
         }
 
         public override void Hooks()
         {
             On.RoR2.AffixEarthBehavior.FixedUpdate += Disable;
             On.RoR2.AffixEarthBehavior.Start += Overwrite;
+            On.RoR2.GlobalEventManager.OnHitEnemy += Imbue;
+        }
+
+        private static void Imbue(On.RoR2.GlobalEventManager.orig_OnHitEnemy orig, GlobalEventManager self, DamageInfo info, GameObject victim) {
+            orig(self, info, victim);
+            if (NetworkServer.active && info.attacker) {
+                MendingController controller = info.attacker.GetComponent<MendingController>();
+                if (!controller) {
+                    return;
+                }
+
+                if (Util.CheckRoll(100 * info.procCoefficient)) {
+                    FireProjectileInfo pinfo = new();
+                    pinfo.position = info.position;
+                    pinfo.projectilePrefab = healNovaPrefab;
+                    pinfo.owner = info.attacker;
+                    ProjectileManager.instance.FireProjectile(pinfo);
+                }
+
+                if (controller.target) {
+                    controller.target.body.AddTimedBuff(RoR2Content.Buffs.CrocoRegen, 1f);
+                }
+            }
         }
 
         private static void Disable(On.RoR2.AffixEarthBehavior.orig_FixedUpdate orig, AffixEarthBehavior self) {
@@ -28,7 +87,7 @@ namespace WellRoundedBalance.Elites {
 
         private class MendingController : MonoBehaviour {
             private TetherVfxOrigin vfxOrigin;
-            private float healRate = 1f;
+            private float healRate => healFraction;
             public HealthComponent target;
             private float stopwatch = 0f;
             private float delay = 1f;
@@ -54,6 +113,11 @@ namespace WellRoundedBalance.Elites {
                     if (target) {
                         vfxOrigin.SetTetheredTransforms(new() { target.transform });
                     }
+                    else {
+                        if (vfxOrigin.tetheredTransforms != null && vfxOrigin.tetheredTransforms.Count > 0) {
+                            vfxOrigin.RemoveTetherAt(0);
+                        }
+                    }
 
                     if (!body.HasBuff(DLC1Content.Buffs.EliteEarth)) {
                         Destroy(vfxOrigin);
@@ -65,14 +129,15 @@ namespace WellRoundedBalance.Elites {
             private HealthComponent FetchTarget() {
                 SphereSearch search = new();
                 search.origin = base.transform.position;
-                search.radius = 25f;
+                search.radius = radius;
+                search.mask = LayerIndex.entityPrecise.mask;
                 search.RefreshCandidates();
-                search.FilterCandidatesByDistinctColliderEntities();
+                search.OrderCandidatesByDistance();
+                search.FilterCandidatesByDistinctHurtBoxEntities();
                 return search.GetHurtBoxes().FirstOrDefault(x => CheckIsValid(x.healthComponent))?.healthComponent ?? null;
             }
 
             private bool CheckIsValid(HealthComponent com) {
-                Debug.Log(com);
                 if (com.body == body) {
                     return false;
                 }
@@ -91,5 +156,58 @@ namespace WellRoundedBalance.Elites {
                 return true;
             }
         }
+
+        private class HealNovaController : MonoBehaviour {
+            private float radius;
+            private float maxRadius;
+            private float radiusPerSecond => maxRadius / 1.5f;
+            private float stopwatch = 0f;
+            private float lifespan = 5f;
+            private SphereZone zone;
+            private float damage;
+            private float healStopwatch;
+            private float delay = 1f / 3f;
+            private TeamIndex index;
+            private GameObject owner;
+            private void Start() {
+                zone = GetComponent<SphereZone>();
+                maxRadius = healNovaRadius;
+                index = GetComponent<TeamFilter>().teamIndex;
+                owner = GetComponent<ProjectileController>().owner;
+
+            }
+
+            private void FixedUpdate() {
+                stopwatch += Time.fixedDeltaTime;
+
+                if (stopwatch <= lifespan && radius < maxRadius) {
+                    radius += radiusPerSecond * Time.fixedDeltaTime;
+                    zone.radius = radius;
+                }
+                else if (stopwatch >= lifespan) {
+                    radius -= radiusPerSecond * Time.fixedDeltaTime;
+                    zone.radius = radius;
+                    if (radius <= 0) {
+                        Destroy(base.gameObject);
+                    }
+                }
+
+                if (!NetworkServer.active) {
+                    return;
+                }
+
+                healStopwatch += Time.fixedDeltaTime;
+                if (healStopwatch >= delay) {
+                    healStopwatch = 0f;
+                    List<TeamComponent> healed = new();
+
+                    foreach (TeamComponent com in TeamComponent.GetTeamMembers(index)) {
+                        if (!healed.Contains(com) && com.body && zone.IsInBounds(com.body.corePosition)) {
+                            com.body.healthComponent.HealFraction(healFraction * 0.005f, new());
+                        }
+                    }
+                }
+            }
+        }
     }
-}*/
+}
