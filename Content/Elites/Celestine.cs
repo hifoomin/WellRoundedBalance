@@ -34,9 +34,11 @@ namespace WellRoundedBalance.Elites
             ContentAddition.AddBuffDef(CelestineBoost);
 
             Blindness = ScriptableObject.CreateInstance<BuffDef>();
-            Blindness.buffColor = Color.blue;
+            Blindness.buffColor = new Color(124f / 255f, 78f / 255f, 222f / 255f);
+            Blindness.iconSprite = Utils.Paths.BuffDef.bdCloak.Load<BuffDef>().iconSprite;
             Blindness.canStack = false;
             Blindness.isHidden = false;
+            Blindness.isDebuff = true;
             Blindness.name = "Blindness";
 
             ContentAddition.AddBuffDef(Blindness);
