@@ -14,7 +14,7 @@ namespace WellRoundedBalance.Items.Whites
         public override string PickupText => "Quickly regenerate upon taking heavy damage. Recharges each stage.";
 
         public override string DescText => "Taking damage to below <style=cIsHealth>" + d(healthThreshold) + " health</style> <style=cIsUtility>consumes</style> this item, <style=cIsHealing>healing</style> you for <style=cIsHealing>" + d(percentHealing) + "</style> of your <style=cIsHealing>maximum health</style> over <style=cIsUtility>" + healingTime + "s</style>." +
-                                           (refillEveryStage ? "<style=cIsUtility>Refills every stage</style>." : "");
+                                           (refillEveryStage ? " <style=cIsUtility>Refills every stage</style>." : "");
 
         [ConfigField("Health Threshold", "Decimal.", 0.5f)]
         public static float healthThreshold;

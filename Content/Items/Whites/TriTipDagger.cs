@@ -11,9 +11,12 @@ namespace WellRoundedBalance.Items.Whites
         public override string Name => ":: Items : Whites :: Tri Tip Dagger";
         public override string InternalPickupToken => "bleedOnHit";
 
-        public override string PickupText => "Gain +9% chance to bleed enemies on hit.";
+        public override string PickupText => "Gain +" + bleedChance + "% chance to bleed enemies on hit.";
 
-        public override string DescText => "<style=cIsDamage>9%</style> <style=cStack>(+9% per stack)</style> chance to <style=cIsDamage>bleed</style> an enemy for <style=cIsDamage>240%</style> base damage.";
+        public override string DescText => "<style=cIsDamage>" + bleedChance + "%</style> <style=cStack>(+" + bleedChance + "% per stack)</style> chance to <style=cIsDamage>bleed</style> an enemy for <style=cIsDamage>240%</style> base damage.";
+
+        [ConfigField("Bleed Chance", "", 9f)]
+        public static float bleedChance;
 
         public override void Init()
         {

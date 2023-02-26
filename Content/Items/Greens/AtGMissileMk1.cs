@@ -1,9 +1,5 @@
-﻿using Mono.Cecil.Cil;
-using MonoMod.Cil;
-using RoR2;
-using RoR2.Projectile;
+﻿using MonoMod.Cil;
 using System;
-using UnityEngine;
 
 namespace WellRoundedBalance.Items.Greens
 {
@@ -13,7 +9,13 @@ namespace WellRoundedBalance.Items.Greens
         public override string InternalPickupToken => "missile";
 
         public override string PickupText => "Chance to fire a missile.";
-        public override string DescText => "<style=cIsDamage>10%</style> chance to fire a missile that deals <style=cIsDamage>300%</style> <style=cStack>(+200% per stack)</style> TOTAL damage.";
+        public override string DescText => "<style=cIsDamage>10%</style> chance to fire a missile that deals <style=cIsDamage>" + d(baseTotalDamage) + "</style> <style=cStack>(+" + d(totalDamagePerStack) + " per stack)</style> TOTAL damage.";
+
+        [ConfigField("Base TOTAL Damage", "Decimal.", 3f)]
+        public static float baseTotalDamage;
+
+        [ConfigField("TOTAL Damage Per Stack", "Decimal.", 2f)]
+        public static float totalDamagePerStack;
 
         public override void Init()
         {
@@ -38,10 +40,11 @@ namespace WellRoundedBalance.Items.Greens
                 x => x.MatchMul()))
             {
                 c.Index += 1;
-                c.Next.Operand = 2f;
+                c.Next.Operand = totalDamagePerStack;
                 c.Index += 4;
                 c.EmitDelegate<Func<float, float>>((self) =>
                 {
+                    Main.WRBLogger.LogFatal("ATG self is " + self);
                     return self + 1f;
                 });
             }

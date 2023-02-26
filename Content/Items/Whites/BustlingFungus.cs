@@ -24,7 +24,7 @@ namespace WellRoundedBalance.Items.Whites
         [ConfigField("Base Healing", "Decimal.", 0.05f)]
         public static float baseHealing;
 
-        [ConfigField("Healing Per Stack", "Decimal.", 0f)]
+        [ConfigField("Healing Per Stack", "Decimal.", 0.025f)]
         public static float healingPerStack;
 
         [ConfigField("Standing Still Duration", "", 0.5f)]

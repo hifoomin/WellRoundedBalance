@@ -1,5 +1,4 @@
 ﻿using MonoMod.Cil;
-using System.Threading;
 
 namespace WellRoundedBalance.Items.Whites
 {
@@ -11,13 +10,14 @@ namespace WellRoundedBalance.Items.Whites
 
         public override string PickupText => "Gain a temporary barrier on kill.";
 
-        public override string DescText => "Gain a <style=cIsHealing>temporary barrier</style> on kill for <style=cIsHealing>10</style> <style=cStack>(+10 per stack)</style> plus an additional <style=cIsHealing>2%</style> of <style=cIsHealing>maximum health</style>.";
+        public override string DescText => "Gain a <style=cIsHealing>temporary barrier</style> on kill for <style=cIsHealing>" + flatBarrierGain + "</style> <style=cStack>(+" + flatBarrierGain + " per stack)</style>" +
+                                           (percentBarrierGain > 0 ? " plus an additional <style=cIsHealing>" + d(percentBarrierGain) + "</style> of <style=cIsHealing>maximum health</style>." : ".");
 
         [ConfigField("Percent Barrier Gain", "Decimal.", 0.02f)]
-        public static int percentBarrierGain;
+        public static float percentBarrierGain;
 
         [ConfigField("Flat Barrier Gain", "", 10f)]
-        public static int flatBarrierGain;
+        public static float flatBarrierGain;
 
         public override void Hooks()
         {

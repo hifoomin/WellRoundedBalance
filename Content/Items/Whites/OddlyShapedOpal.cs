@@ -1,5 +1,6 @@
 ﻿using Mono.Cecil.Cil;
 using MonoMod.Cil;
+using WellRoundedBalance.Buffs;
 
 namespace WellRoundedBalance.Items.Whites
 {
@@ -49,11 +50,11 @@ namespace WellRoundedBalance.Items.Whites
                     x => x.MatchLdsfld("RoR2.DLC1Content/Buffs", "OutOfCombatArmorBuff")))
             {
                 c.Remove();
-                c.Emit<Useless>(OpCodes.Ldsfld, nameof(Useless.uselessItem));
+                c.Emit<Buffs.Useless>(OpCodes.Ldsfld, nameof(Buffs.Useless.oddlyShapedOpalUseless));
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Oddly-shaped Opal Armor hook");
+                Main.WRBLogger.LogError("Failed to apply Oddly-shaped Opal Removal hook");
             }
         }
 

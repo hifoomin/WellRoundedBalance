@@ -13,7 +13,19 @@ namespace WellRoundedBalance.Items.Whites
 
         public override string PickupText => "Drop a Warbanner on level up or starting the Teleporter event. Grants allies movement speed and attack speed.";
 
-        public override string DescText => "On <style=cIsUtility>level up</style> or starting the <style=cIsUtility>Teleporter event</style>, drop a banner that strengthens all allies within <style=cIsUtility>20m</style>. Raise <style=cIsUtility>movement speed</style> and <style=cIsDamage>attack speed</style> by <style=cIsDamage>30%</style> <style=cStack>(+10% per stack)</style>.";
+        public override string DescText => "On <style=cIsUtility>level up</style> or starting the <style=cIsUtility>Teleporter event</style>, drop a banner that strengthens all allies within <style=cIsUtility>" + baseRadius + "m</style>" +
+                                           (radiusPerStack > 0 ? " <style=cStack>(+ " + radiusPerStack + "m per stack)</style>." : ".") +
+                                           " Raise <style=cIsUtility>movement speed</style> and <style=cIsDamage>attack speed</style> by <style=cIsDamage>30%</style> " +
+                                           (attackSpeedAndMovementSpeedPerStack > 0 ? "<style=cStack>(+" + d(attackSpeedAndMovementSpeedPerStack) + " per stack)</style>." : ".");
+
+        [ConfigField("Base Radius", "", 20f)]
+        public static float baseRadius;
+
+        [ConfigField("Radius Per Stack", "", 0f)]
+        public static float radiusPerStack;
+
+        [ConfigField("Attack Speed and Movement Speed Per Stack", "Decimal.", 0.1f)]
+        public static float attackSpeedAndMovementSpeedPerStack;
 
         public override void Init()
         {
@@ -34,8 +46,8 @@ namespace WellRoundedBalance.Items.Whites
                 var stack = sender.inventory.GetItemCount(RoR2Content.Items.WardOnLevel);
                 if (sender.HasBuff(RoR2Content.Buffs.Warbanner.buffIndex))
                 {
-                    args.baseAttackSpeedAdd += 0.1f * (stack - 1);
-                    args.moveSpeedMultAdd += 0.1f * (stack - 1);
+                    args.baseAttackSpeedAdd += attackSpeedAndMovementSpeedPerStack * (stack - 1);
+                    args.moveSpeedMultAdd += attackSpeedAndMovementSpeedPerStack * (stack - 1);
                 }
             }
         }
@@ -47,13 +59,13 @@ namespace WellRoundedBalance.Items.Whites
                     x => x.MatchLdcR4(8),
                     x => x.MatchLdcR4(8)))
             {
-                c.Next.Operand = 20f;
+                c.Next.Operand = baseRadius - radiusPerStack;
                 c.Index += 1;
-                c.Next.Operand = 0f;
+                c.Next.Operand = radiusPerStack;
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Warbanner Radius1 hook");
+                Main.WRBLogger.LogError("Failed to apply Warbanner Radius 1 hook");
             }
         }
 
@@ -64,13 +76,13 @@ namespace WellRoundedBalance.Items.Whites
                     x => x.MatchLdcR4(8),
                     x => x.MatchLdcR4(8)))
             {
-                c.Next.Operand = 20f;
+                c.Next.Operand = baseRadius - radiusPerStack;
                 c.Index += 1;
-                c.Next.Operand = 0f;
+                c.Next.Operand = radiusPerStack;
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Warbanner Radius2 hook");
+                Main.WRBLogger.LogError("Failed to apply Warbanner Radius 2 hook");
             }
         }
     }

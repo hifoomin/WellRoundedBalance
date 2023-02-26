@@ -1,6 +1,4 @@
 ﻿using MonoMod.Cil;
-using RoR2;
-using UnityEngine;
 
 namespace WellRoundedBalance.Items.Greens
 {
@@ -10,7 +8,13 @@ namespace WellRoundedBalance.Items.Greens
         public override string InternalPickupToken => "bonusGoldPackOnKill";
 
         public override string PickupText => "Chance on kill to drop a treasure.";
-        public override string DescText => "<style=cIsUtility>5%</style> <style=cStack>(+5% on stack)</style> chance on kill to drop a treasure worth <style=cIsUtility>$25</style>. <style=cIsUtility>Scales over time.</style>";
+        public override string DescText => "<style=cIsUtility>" + goldPackDropChance + "%</style> <style=cStack>(+" + goldPackDropChance + "% on stack)</style> chance on kill to drop a treasure worth <style=cIsUtility>$" + goldPackGoldGain + "</style>. <style=cIsUtility>Scales over time.</style>";
+
+        [ConfigField("Gold Pack Drop Chance", "", 5f)]
+        public static float goldPackDropChance;
+
+        [ConfigField("Gold Pack Gold Gain", "", 25)]
+        public static int goldPackGoldGain;
 
         public override void Init()
         {
@@ -19,17 +23,11 @@ namespace WellRoundedBalance.Items.Greens
 
         public override void Hooks()
         {
-            //ChangeReward();
-            IL.RoR2.GlobalEventManager.OnCharacterDeath += ChangeChance;
+            Changes();
+            IL.RoR2.GlobalEventManager.OnCharacterDeath += GlobalEventManager_OnCharacterDeath;
         }
 
-        public static void ChangeReward()
-        {
-            var gtc = LegacyResourcesAPI.Load<GameObject>("Prefabs/NetworkedObjects/BonusMoneyPack").GetComponentInChildren<MoneyPickup>();
-            gtc.baseGoldReward = 35;
-        }
-
-        public static void ChangeChance(ILContext il)
+        private void GlobalEventManager_OnCharacterDeath(ILContext il)
         {
             ILCursor c = new(il);
 
@@ -38,12 +36,18 @@ namespace WellRoundedBalance.Items.Greens
                     x => x.MatchLdcR4(4f)))
             {
                 c.Index += 1;
-                c.Next.Operand = 5f;
+                c.Next.Operand = goldPackDropChance;
             }
             else
             {
                 Main.WRBLogger.LogError("Failed to apply Ghor's Tome Chance hook");
             }
+        }
+
+        private void Changes()
+        {
+            var gtc = LegacyResourcesAPI.Load<GameObject>("Prefabs/NetworkedObjects/BonusMoneyPack").GetComponentInChildren<MoneyPickup>();
+            gtc.baseGoldReward = goldPackGoldGain;
         }
     }
 }

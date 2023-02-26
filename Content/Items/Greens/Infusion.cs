@@ -1,7 +1,5 @@
 ﻿using Mono.Cecil.Cil;
 using MonoMod.Cil;
-using R2API;
-using RoR2;
 using System;
 
 namespace WellRoundedBalance.Items.Greens
@@ -19,7 +17,13 @@ namespace WellRoundedBalance.Items.Greens
 
         public override string PickupText => "Killing an enemy permanently increases your maximum health.";
 
-        public override string DescText => "Killing an enemy increases your <style=cIsHealing>health permanently</style> by <style=cIsHealing>1</style> <style=cStack>(+1 per stack)</style>, up to a <style=cIsHealing>maximum</style> of <style=cIsHealing>30 <style=cStack>(+7.5 per level per stack)</style> health</style>.";
+        public override string DescText => "Killing an enemy increases your <style=cIsHealing>health permanently</style> by <style=cIsHealing>1</style> <style=cStack>(+1 per stack)</style>, up to a <style=cIsHealing>maximum</style> of <style=cIsHealing>" + baseMaximumHealthCap + " <style=cStack>(+" + ((baseMaximumHealthCap * (1 + levelBonusMultiplier * (2 - 1))) - baseMaximumHealthCap) + " per level per stack)</style> health</style>.";
+
+        [ConfigField("Base Maximum Health Cap", "Formula for maximum health gain: Base Maximum Health Cap * (1 + Level Bonus Multiplier * (Current Level - 1)) * Infusion", 30f)]
+        public static float baseMaximumHealthCap;
+
+        [ConfigField("Level Bonus Multiplier", "Formula for maximum health gain: Base Maximum Health Cap * (1 + Level Bonus * (Current Level - 1)) * Infusion", 0.25f)]
+        public static float levelBonusMultiplier;
 
         public override void Init()
         {
@@ -56,9 +60,9 @@ namespace WellRoundedBalance.Items.Greens
 
                 if (body != null)
                 {
-                    float levelBonus = 1 + 0.25f * (body.level - 1);
+                    float levelBonus = 1 + levelBonusMultiplier * (body.level - 1);
 
-                    newInfusionCap = 30f * levelBonus * infusionCount;
+                    newInfusionCap = baseMaximumHealthCap * levelBonus * infusionCount;
                 }
 
                 return (int)newInfusionCap;

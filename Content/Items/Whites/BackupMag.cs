@@ -8,7 +8,7 @@
         public override string PickupText => "Add an extra charge of your Secondary skill and reduce its cooldown.";
 
         public override string DescText => "Add <style=cIsUtility>+1</style> <style=cStack>(+1 per stack)</style> charge of your <style=cIsUtility>Secondary skill</style>." +
-                                           (secondarySkillCooldownReduction > 0 ? "Reduce your <style=cIsUtility>secondary skill cooldown</style> by <style=cIsUtility>" + d(secondarySkillCooldownReduction) + "</style> <style=cStack>(+" + d(secondarySkillCooldownReduction) + " per stack)</style>." : "");
+                                           (secondarySkillCooldownReduction > 0 ? " Reduce your <style=cIsUtility>secondary skill cooldown</style> by <style=cIsUtility>" + d(secondarySkillCooldownReduction) + "</style> <style=cStack>(+" + d(secondarySkillCooldownReduction) + " per stack)</style>." : "");
 
         [ConfigField("Secondary Skill Cooldown Reduction", "Decimal.", 0.05f)]
         public static float secondarySkillCooldownReduction;
