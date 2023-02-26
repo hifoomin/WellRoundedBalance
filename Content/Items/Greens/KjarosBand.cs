@@ -7,18 +7,18 @@ namespace WellRoundedBalance.Items.Greens
 {
     public class KjarosBand : ItemBase
     {
-        // ////////////
-        //
-        // Thanks to Borbo
-        //
-        // ///////////////
-
         public override string Name => ":: Items :: Greens :: Kjaros Band";
         public override string InternalPickupToken => "firering";
 
         public override string PickupText => "High damage hits also blast enemies with a runic flame tornado. Recharges over time.";
 
-        public override string DescText => "Hits that deal <style=cIsDamage>more than 400% damage</style> also blast enemies for <style=cIsDamage>200%</style> <style=cStack>(+100% per stack)</style> TOTAL damage over time. Recharges every <style=cIsUtility>10</style> seconds.";
+        public override string DescText => "Hits that deal <style=cIsDamage>more than 400% damage</style> also blast enemies for <style=cIsDamage>" + d(baseTotalDamage) + "</style> <style=cStack>(+" + d(totalDamagePerStack) + " per stack)</style> TOTAL damage over time. Recharges every <style=cIsUtility>10</style> seconds.";
+
+        [ConfigField("Base TOTAL Damage", "Decimal.", 2f)]
+        public static float baseTotalDamage;
+
+        [ConfigField("TOTAL Damage Per Stack", "Decimal.", 1f)]
+        public static float totalDamagePerStack;
 
         public override void Init()
         {
@@ -42,11 +42,11 @@ namespace WellRoundedBalance.Items.Greens
                 x => x.MatchMul()))
             {
                 c.Index += 1;
-                c.Next.Operand = 1f;
+                c.Next.Operand = totalDamagePerStack;
                 c.Index += 4;
-                c.EmitDelegate<Func<float, float>>((self) =>
+                c.EmitDelegate<Func<float, float>>((useless) =>
                 {
-                    return self + 1f;
+                    return totalDamagePerStack + (baseTotalDamage - totalDamagePerStack);
                 });
             }
             else

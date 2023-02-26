@@ -13,7 +13,7 @@ namespace WellRoundedBalance.Items.Greens
 
         public override string PickupText => "Slow enemies on hit.";
 
-        public override string DescText => "<style=cIsUtility>Slow</style> enemies on hit for <style=cIsUtility>-" + d(slowPercent) + "</style> <style=cIsUtility>movement speed</style> " +
+        public override string DescText => "<style=cIsUtility>Slow</style> enemies on hit for <style=cIsUtility>-" + (Mathf.Round(slowPercent)) * 100f + "%</style> <style=cIsUtility>movement speed</style> " +
                                            (baseAttackSpeedReduction > 0 || attackSpeedReductionPerStack > 0 ? "and <style=cIsDamage>-" + d(baseAttackSpeedReduction) + "</style> <style=cStack>(-" + d(attackSpeedReductionPerStack) + " per stack)</style> <style=cIsDamage>attack speed</style> for <style=cIsUtility>" + debuffDuration + "s</style></style>." : ".");
 
         [ConfigField("Slow Percent", "Decimal.", 1f / 3f)]

@@ -1,5 +1,4 @@
 ﻿using MonoMod.Cil;
-using RoR2;
 using RoR2.Orbs;
 using System;
 
@@ -11,7 +10,25 @@ namespace WellRoundedBalance.Items.Greens
         public override string InternalPickupToken => "chainLightning";
 
         public override string PickupText => "...and his music was electric.";
-        public override string DescText => "<style=cIsDamage>25%</style> Chance to fire <style=cIsDamage>chain lightning</style> for <style=cIsDamage>50%</style> TOTAL damage on up to <style=cIsDamage>3 <style=cStack>(+2 per stack)</style></style> targets within <style=cIsDamage>12m</style> <style=cStack>(+4m per stack)</style>.";
+        public override string DescText => "<style=cIsDamage>" + chance + "%</style> Chance to fire <style=cIsDamage>chain lightning</style> for <style=cIsDamage>" + d(totalDamage) + "</style> TOTAL damage on up to <style=cIsDamage>" + baseMaxTargets + " <style=cStack>(+" + maxTargetsPerStack + " per stack)</style></style> targets within <style=cIsDamage>" + baseRange + "m</style> <style=cStack>(+" + rangePerStack + "m per stack)</style>.";
+
+        [ConfigField("TOTAL Damage", "Decimal.", 0.5f)]
+        public static float totalDamage;
+
+        [ConfigField("Chance", "", 25f)]
+        public static float chance;
+
+        [ConfigField("Base Max Targets", "", 3)]
+        public static int baseMaxTargets;
+
+        [ConfigField("Max Targets Per Stack", "", 2)]
+        public static int maxTargetsPerStack;
+
+        [ConfigField("Base Range", "", 12f)]
+        public static float baseRange;
+
+        [ConfigField("Range Per Stack", "", 4f)]
+        public static float rangePerStack;
 
         public override void Init()
         {
@@ -21,8 +38,7 @@ namespace WellRoundedBalance.Items.Greens
         public override void Hooks()
         {
             IL.RoR2.GlobalEventManager.OnHitEnemy += Changes;
-            ChangeTargetCountBase();
-            ChangeRangeBase();
+            Changes();
         }
 
         public static void Changes(ILContext il)
@@ -36,7 +52,7 @@ namespace WellRoundedBalance.Items.Greens
                     x => x.MatchLdcR4(25f)))
             {
                 c.Index += 3;
-                c.Next.Operand = 25f;
+                c.Next.Operand = chance;
             }
             else
             {
@@ -51,7 +67,7 @@ namespace WellRoundedBalance.Items.Greens
                 x => x.MatchLdcR4(0.8f)))
             {
                 c.Index += 2;
-                c.Next.Operand = 0.5f;
+                c.Next.Operand = totalDamage;
             }
             else
             {
@@ -68,7 +84,7 @@ namespace WellRoundedBalance.Items.Greens
                     x => x.MatchLdcI4(2)))
             {
                 c.Index += 2;
-                c.Next.Operand = 2;
+                c.Next.Operand = maxTargetsPerStack;
             }
             else
             {
@@ -82,7 +98,7 @@ namespace WellRoundedBalance.Items.Greens
                     x => x.MatchLdcI4(2)))
             {
                 c.Index += 1;
-                c.Next.Operand = 4f;
+                c.Next.Operand = rangePerStack;
             }
             else
             {
@@ -105,43 +121,17 @@ namespace WellRoundedBalance.Items.Greens
             {
                 Main.WRBLogger.LogError("Failed to apply Ukulele Proc Coefficient hook");
             }
-
-            c.Index = 0;
-
-            if (c.TryGotoNext(MoveType.Before,
-                x => x.MatchLdcR4(0.2f),
-                x => x.MatchStfld<VoidLightningOrb>("procCoefficient")))
-            {
-                c.Next.Operand = 0f;
-            }
-            else
-            {
-                Main.WRBLogger.LogError("Failed to apply Polylute Proc Coefficient hook");
-            }
         }
 
-        public static void ChangeTargetCountBase()
+        private void Changes()
         {
             On.RoR2.Orbs.LightningOrb.Begin += (orig, self) =>
             {
                 orig(self);
                 if (self.lightningType is LightningOrb.LightningType.Ukulele)
                 {
-                    self.bouncesRemaining = 3;
-                }
-            };
-        }
-
-        public static void ChangeRangeBase()
-        {
-            On.RoR2.Orbs.LightningOrb.Begin += (orig, self) =>
-            {
-                orig(self);
-                if (self.lightningType is LightningOrb.LightningType.Ukulele)
-                {
-                    self.range = 12f;
-                    // self.canBounceOnSameTarget = :TROLLGE:
-                    // im scared of the warning :IL:
+                    self.bouncesRemaining = baseMaxTargets;
+                    self.range = baseRange;
                 }
             };
         }

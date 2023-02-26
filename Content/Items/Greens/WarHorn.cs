@@ -13,6 +13,18 @@ namespace WellRoundedBalance.Items.Greens
 
         public override string DescText => "Activating your Equipment gives you <style=cIsDamage>+30% attack speed</style> <style=cStack>(+15% per stack)</style> and <style=cIsHealing>+3 hp/s</style> <style=cStack>(+1.5 hp/s per stack)</style> <style=cIsHealing>base health regeneration</style> for <style=cIsDamage>12s</style>.";
 
+        [ConfigField("Base Attack Speed Gain", "", 0.3f)]
+        public static float baseAttackSpeedGain;
+
+        [ConfigField("Attack Speed Gain Per Stack", "", 0.15f)]
+        public static float attackSpeedGainPerStack;
+
+        [ConfigField("Base Regeneration Gain", "", 3f)]
+        public static float baseRegenerationGain;
+
+        [ConfigField("Regeneration Gain Per Stack", "", 1.5f)]
+        public static float regenerationGainPerStack;
+
         public override void Init()
         {
             var warhornIcon = Utils.Paths.Texture2D.texBuffWarHornIcon.Load<Texture2D>();

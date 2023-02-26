@@ -17,10 +17,10 @@ namespace WellRoundedBalance.Items.Greens
         public static int minimumDebuffs;
 
         [ConfigField("Base Damage Increase Per Debuff", "Decimal.", 0.07f)]
-        public static int baseDamageIncreasePerDebuff;
+        public static float baseDamageIncreasePerDebuff;
 
         [ConfigField("Damage Increase Per Debuff Per Stack", "Decimal.", 0.03f)]
-        public static int damageIncreasePerDebuffPerStack;
+        public static float damageIncreasePerDebuffPerStack;
 
         public override void Init()
         {

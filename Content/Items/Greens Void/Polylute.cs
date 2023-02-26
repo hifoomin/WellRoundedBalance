@@ -1,6 +1,5 @@
 ﻿using Mono.Cecil.Cil;
 using MonoMod.Cil;
-using RoR2;
 using RoR2.Orbs;
 using System;
 
@@ -58,6 +57,19 @@ namespace WellRoundedBalance.Items.VoidGreens
             else
             {
                 Main.WRBLogger.LogError("Failed to apply Polylute Count hook");
+            }
+
+            c.Index = 0;
+
+            if (c.TryGotoNext(MoveType.Before,
+                x => x.MatchLdcR4(0.2f),
+                x => x.MatchStfld<VoidLightningOrb>("procCoefficient")))
+            {
+                c.Next.Operand = 0f;
+            }
+            else
+            {
+                Main.WRBLogger.LogError("Failed to apply Polylute Proc Coefficient hook");
             }
         }
     }

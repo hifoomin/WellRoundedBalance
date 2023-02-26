@@ -1,9 +1,5 @@
-﻿using Mono.Cecil.Cil;
-using MonoMod.Cil;
-using RoR2;
+﻿using MonoMod.Cil;
 using System;
-using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace WellRoundedBalance.Items.Greens
 {
@@ -14,7 +10,16 @@ namespace WellRoundedBalance.Items.Greens
 
         public override string PickupText => "High damage hits also blast enemies with runic ice. Recharges over time.";
 
-        public override string DescText => "Hits that deal <style=cIsDamage>more than 400% damage</style> also blast enemies for <style=cIsDamage>50%</style> TOTAL damage, plus an additional <style=cIsDamage>1300%</style> <style=cStack>(+650% per stack)</style> base damage and <style=cIsUtility>slow</style> them down by <style=cIsUtility>45%</style> for <style=cIsUtility>3s</style>.";
+        public override string DescText => "Hits that deal <style=cIsDamage>more than 400% damage</style> also blast enemies for <style=cIsDamage>" + d(totalDamage) + "</style> TOTAL damage, plus an additional <style=cIsDamage>" + d(baseDamage) + "</style> <style=cStack>(+" + d(damagePerStack) + " per stack)</style> base damage and <style=cIsUtility>slow</style> them down by <style=cIsUtility>45%</style> for <style=cIsUtility>3s</style>.";
+
+        [ConfigField("TOTAL Damage", "Decimal.", 0.5f)]
+        public static float totalDamage;
+
+        [ConfigField("Base Damage", "Decimal.", 13f)]
+        public static float baseDamage;
+
+        [ConfigField("Damage Per Stack", "Decimal.", 6.5f)]
+        public static float damagePerStack;
 
         public override void Init()
         {
@@ -39,7 +44,7 @@ namespace WellRoundedBalance.Items.Greens
                 x => x.MatchMul()))
             {
                 c.Index += 1;
-                c.Next.Operand = 0.5f;
+                c.Next.Operand = totalDamage;
                 c.Index += 3;
                 c.EmitDelegate<Func<float, float>>((useless) =>
                 {
@@ -116,7 +121,7 @@ namespace WellRoundedBalance.Items.Greens
                         {
                             DamageInfo baseDamageProc = new()
                             {
-                                damage = attackerBody.damage * (13f + 6.5f * (stack - 1)),
+                                damage = attackerBody.damage * (baseDamage + damagePerStack * (stack - 1)),
                                 damageColorIndex = DamageColorIndex.Item,
                                 damageType = DamageType.Generic,
                                 attacker = damageInfo.attacker,

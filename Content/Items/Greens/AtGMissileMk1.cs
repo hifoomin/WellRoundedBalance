@@ -42,10 +42,9 @@ namespace WellRoundedBalance.Items.Greens
                 c.Index += 1;
                 c.Next.Operand = totalDamagePerStack;
                 c.Index += 4;
-                c.EmitDelegate<Func<float, float>>((self) =>
+                c.EmitDelegate<Func<float, float>>((useless) =>
                 {
-                    Main.WRBLogger.LogFatal("ATG self is " + self);
-                    return self + 1f;
+                    return totalDamagePerStack + (baseTotalDamage - totalDamagePerStack);
                 });
             }
             else

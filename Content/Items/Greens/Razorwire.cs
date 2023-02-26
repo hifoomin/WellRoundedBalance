@@ -12,7 +12,13 @@ namespace WellRoundedBalance.Items.Greens
         public override string InternalPickupToken => "thorns";
 
         public override string PickupText => "Retaliate upon taking damage.";
-        public override string DescText => "Getting hit causes a razor to <style=cIsDamage>retaliate</style>, dealing <style=cIsDamage>400%</style> <style=cStack>(+200% per stack)</style> damage.";
+        public override string DescText => "Getting hit causes a razor to <style=cIsDamage>retaliate</style>, dealing <style=cIsDamage>" + d(baseDamage) + "</style> <style=cStack>(+" + d(damagePerStack) + " per stack)</style> damage.";
+
+        [ConfigField("Base Damage", "Decimal.", 4f)]
+        public static float baseDamage;
+
+        [ConfigField("Damage Per Stack", "Decimal.", 2f)]
+        public static float damagePerStack;
 
         public override void Init()
         {
@@ -62,7 +68,7 @@ namespace WellRoundedBalance.Items.Greens
                                         bouncesRemaining = 0,
                                         damageCoefficientPerBounce = 1f,
                                         damageColorIndex = DamageColorIndex.Item,
-                                        damageValue = self.body.damage * 4f + 2f * (stack - 1),
+                                        damageValue = self.body.damage * baseDamage + damagePerStack * (stack - 1),
                                         isCrit = victimBody.RollCrit(),
                                         lightningType = LightningOrb.LightningType.RazorWire,
                                         origin = damageInfo.position,
