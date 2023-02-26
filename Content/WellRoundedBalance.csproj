@@ -127,8 +127,4 @@
     </Reference>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Items\Reds Void\" />
-  </ItemGroup>
-
 </Project>
