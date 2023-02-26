@@ -12,10 +12,13 @@ namespace WellRoundedBalance.Items.Whites
         public override string InternalPickupToken => "fragileDamageBonus";
 
         public override string PickupText => "Deal bonus damage out of danger.";
-        public override string DescText => "<style=cIsDamage>Increase base damage</style> by <style=cIsDamage>" + d(damageIncrease) + "</style> <style=cStack>(+" + d(damageIncrease) + " per stack)</style> while out of danger.";
+        public override string DescText => "<style=cIsDamage>Increase base damage</style> by <style=cIsDamage>" + d(damageIncrease) + "</style> <style=cStack>(+" + d(damageIncreaseStack) + " per stack)</style> while out of danger.";
 
         [ConfigField("Damage Increase", "Decimal.", 0.15f)]
         public static float damageIncrease;
+
+        [ConfigField("Damage Increase per Stack", "Decimal.", 0.15f)]
+        public static float damageIncreaseStack;
 
         public override void Init()
         {
@@ -49,7 +52,7 @@ namespace WellRoundedBalance.Items.Whites
                 var stack = sender.inventory.GetItemCount(DLC1Content.Items.FragileDamageBonus);
                 if (sender.HasBuff(watchDamage))
                 {
-                    args.damageMultAdd += damageIncrease * stack;
+                    args.damageMultAdd += (damageIncreaseStack * (stack - 1)) + damageIncrease;
                 }
             }
         }

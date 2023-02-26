@@ -22,6 +22,25 @@ namespace WellRoundedBalance.Items
             return (f * 100f).ToString() + "%";
         }
 
+        public string s(float f, string suffix)
+        {
+            return f + " " + suffix + (Mathf.Abs(f) > 1 ? "s" : "");
+        }
+
+        public static string StackDesc(float init, float stack, Func<float, string> initFn, Func<float, string> stackFn)
+        {
+            if (init <= 0 && stack <= 0) return "";
+            string ret = initFn(init);
+            if (stack > 0) ret = ret.Replace("{Stack}", " <style=cStack>(" + (stack > 0 ? "+" : "") + stackFn(stack) + " per stack)</style>");
+            return ret;
+        }
+
+        public static float StackAmount(float init, float stack, float count)
+        {
+            if (count <= 0) return 0;
+            return init + (stack * (count - 1));
+        }
+
         public T ConfigOption<T>(T value, string name, string desc)
         {
             ConfigEntry<T> entry = Main.WRBConfig.Bind<T>(Name, name, value, desc);

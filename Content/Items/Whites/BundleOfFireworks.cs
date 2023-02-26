@@ -13,16 +13,24 @@ namespace WellRoundedBalance.Items.Whites
 
         public override string PickupText => "Activating an interactable launches fireworks at nearby enemies.";
 
-        public override string DescText => "Activating an interactable <style=cIsDamage>launches 8 <style=cStack>(+" + fireworksPerStack + " per stack)</style> fireworks</style> that deal <style=cIsDamage>300%</style> base damage.";
+        public override string DescText => StackDesc(fireworks, fireworksStack,
+            init => $"Activating an interactable <style=cIsDamage>launches {s(fireworks, "{Stack} firework")} that deal <style=cIsDamage>{d(blastDamageCoefficient)}</style> base damage.</style>",
+            stack => stack.ToString());
+
+        [ConfigField("Fireworks", "", 8)]
+        public static int fireworks;
 
         [ConfigField("Fireworks Per Stack", "", 8)]
-        public static int fireworksPerStack;
+        public static int fireworksStack;
 
         [ConfigField("Improve targeting?", "", true)]
         public static bool improveTargeting;
 
         [ConfigField("Blast Radius", "", 6f)]
         public static float blastRadius;
+
+        [ConfigField("Blast Damage Coefficient", "", 3f)]
+        public static float blastDamageCoefficient;
 
         public override void Init()
         {
@@ -38,11 +46,11 @@ namespace WellRoundedBalance.Items.Whites
         public static void ChangeCount(ILContext il)
         {
             ILCursor c = new(il);
-            if (c.TryGotoNext(x => x.MatchStfld<FireworkLauncher>("remaining")))
+            if (c.TryGotoNext(x => x.MatchStfld<FireworkLauncher>(nameof(FireworkLauncher.remaining))))
             {
                 c.EmitDelegate<Func<int, int>>((val) =>
                 {
-                    return 8 - fireworksPerStack + ((val - fireworksPerStack) / fireworksPerStack) * fireworksPerStack;
+                    return fireworks - fireworksStack + ((val - fireworksStack) / fireworksStack) * fireworksStack;
                     // 8 - 4 + ((val - 4) / 4) * 4;
                 });
             }
@@ -57,6 +65,7 @@ namespace WellRoundedBalance.Items.Whites
             var firework = Utils.Paths.GameObject.FireworkProjectile.Load<GameObject>();
             var projectileImpactExplosion = firework.GetComponent<ProjectileImpactExplosion>();
             projectileImpactExplosion.blastRadius = blastRadius; // vanilla 5f
+            projectileImpactExplosion.blastDamageCoefficient = blastDamageCoefficient;
 
             if (improveTargeting)
             {

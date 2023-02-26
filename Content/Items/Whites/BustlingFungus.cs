@@ -7,13 +7,13 @@ namespace WellRoundedBalance.Items.Whites
         public override string Name => ":: Items : Whites :: Bustling Fungus";
         public override string InternalPickupToken => "mushroom";
 
-        public override string PickupText => "Heal all nearby allies after standing still for " + standingStillDuration + " second" +
-                                             (standingStillDuration != 1 ? "s." : ".");
+        public override string PickupText => $"Heal all nearby allies after standing still for {s(standingStillDuration, "second")}.";
 
-        public override string DescText => "After standing still for <style=cIsHealing>" + standingStillDuration + "</style> second" +
-                                           (standingStillDuration != 1 ? "s," : ",") +
-                                           " create a zone that <style=cIsHealing>heals</style> for <style=cIsHealing>" + d(baseHealing) + "</style> <style=cStack>(+" + d(healingPerStack) + " per stack)</style> of your <style=cIsHealing>health</style> every second to all allies within <style=cIsHealing>" + baseRadius + "m</style>" +
-                                           (radiusPerStack > 0 ? " <style=cStack>(+" + radiusPerStack + "m per stack)</style>." : ".");
+        public override string DescText => $"After standing still for <style=cIsHealing>{s(standingStillDuration, "</style> second")}, create a zone" + StackDesc(baseHealing, healingPerStack,
+                init => $"that <style=cIsHealing>heals</style> for <style=cIsHealing>{d(init)}</style>{{Stack}} of your <style=cIsHealing>health</style> every second to all allies",
+                stack => d(stack)) + StackDesc(baseRadius, radiusPerStack,
+                    init => $"within <style=cIsHealing>{init}m</style>{{Stack}}.",
+                    stack => stack + "m");
 
         [ConfigField("Base Radius", "", 13f)]
         public static float baseRadius;
@@ -24,7 +24,7 @@ namespace WellRoundedBalance.Items.Whites
         [ConfigField("Base Healing", "Decimal.", 0.05f)]
         public static float baseHealing;
 
-        [ConfigField("Healing Per Stack", "Decimal.", 0f)]
+        [ConfigField("Healing Per Stack", "Decimal.", 0.025f)]
         public static float healingPerStack;
 
         [ConfigField("Standing Still Duration", "", 0.5f)]

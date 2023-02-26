@@ -9,10 +9,15 @@ namespace WellRoundedBalance.Items.Whites
 
         public override string PickupText => "Gain 45 max health.";
 
-        public override string DescText => "Increases <style=cIsHealing>maximum health</style> by <style=cIsHealing>" + maximumHealthGain + "</style> <style=cStack>(+" + maximumHealthGain + " per stack)</style>.";
+        public override string DescText => StackDesc(maximumHealthGain, maximumHealthGainStack, 
+            init => $"Increases <style=cIsHealing>maximum health</style> by <style=cIsHealing>{init}</style>{{Stack}}.", 
+            stack => stack.ToString());
 
         [ConfigField("Maximum Health Gain", "", 45f)]
         public static float maximumHealthGain;
+
+        [ConfigField("Maximum Health Gain per Stack", "", 45f)]
+        public static float maximumHealthGainStack;
 
         public override void Init()
         {
@@ -21,22 +26,15 @@ namespace WellRoundedBalance.Items.Whites
 
         public override void Hooks()
         {
-            IL.RoR2.CharacterBody.RecalculateStats += CharacterBody_RecalculateStats;
+            RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
         }
 
-        private void CharacterBody_RecalculateStats(ILContext il)
+        private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
-            ILCursor c = new(il);
-            if (c.TryGotoNext(MoveType.Before,
-                    x => x.MatchConvR4(),
-                    x => x.MatchLdcR4(25f)))
+            if (sender.inventory)
             {
-                c.Index += 1;
-                c.Next.Operand = maximumHealthGain;
-            }
-            else
-            {
-                Main.WRBLogger.LogError("Failed to apply Bison Steak Health hook");
+                args.baseHealthAdd += StackAmount(maximumHealthGain - 25, maximumHealthGainStack - 25,
+                    sender.inventory.GetItemCount(RoR2Content.Items.FlatHealth));
             }
         }
     }
