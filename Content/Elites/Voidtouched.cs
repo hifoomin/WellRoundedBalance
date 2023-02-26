@@ -72,8 +72,8 @@ namespace WellRoundedBalance.Elites
 
                 if (attackerBody.HasBuff(DLC1Content.Buffs.EliteVoid))
                 {
-                    float takenDamagePercent = info.damage / victimBody.healthComponent.fullCombinedHealth * 100f;
-                    int permanentDamage = Mathf.FloorToInt(takenDamagePercent * 40 / 100f);
+                    float takenDamagePercent = (info.damage / victimBody.healthComponent.fullCombinedHealth * 100f) * info.procCoefficient;
+                    int permanentDamage = Mathf.FloorToInt(takenDamagePercent * 50 / 100f);
                     for (int l = 0; l < permanentDamage; l++)
                     {
                         victimBody.AddBuff(RoR2Content.Buffs.PermanentCurse);

@@ -1,26 +1,32 @@
-using System;
-
-namespace WellRoundedBalance.Elites {
+namespace WellRoundedBalance.Elites
+{
     public class Malachite : EliteBase<Malachite>
     {
         public override string Name => "Elites :::: Malachite";
+
         [ConfigField("Turret Count", "The number of Malachite Turrets to be given to the elite.", 2)]
         public static float TurretCount;
+
         [ConfigField("Safe Zone Radius", "The radius of the malachite safe zone.", 50f)]
         public static float SafeZoneRadius;
+
         [ConfigField("Healing Multiplier", "The multiplier to healing when outside of a malachite safe zone.", 0.5f)]
         public static float HealingMultiplier;
+
         internal static GameObject MalachiteTurret;
         internal static GameObject MalachiteDebuffZone;
 
         public override void Hooks()
         {
-            On.RoR2.CharacterBody.UpdateAffixPoison += (orig, self, delta) => {
-                if (self.HasBuff(RoR2Content.Buffs.AffixPoison) && !self.GetComponent<TurretSpawner>()) {
+            On.RoR2.CharacterBody.UpdateAffixPoison += (orig, self, delta) =>
+            {
+                if (self.HasBuff(RoR2Content.Buffs.AffixPoison) && !self.GetComponent<TurretSpawner>())
+                {
                     self.gameObject.AddComponent<TurretSpawner>();
                 }
 
-                if (!self.HasBuff(RoR2Content.Buffs.AffixPoison) && self.GetComponent<TurretSpawner>()) {
+                if (!self.HasBuff(RoR2Content.Buffs.AffixPoison) && self.GetComponent<TurretSpawner>())
+                {
                     self.gameObject.RemoveComponent<TurretSpawner>();
                 }
             };
@@ -37,10 +43,12 @@ namespace WellRoundedBalance.Elites {
             turretMdl.transform.rotation = Quaternion.Euler(-90, 0, 0);
             SkinnedMeshRenderer srenderer = turretMdl.GetComponentInChildren<SkinnedMeshRenderer>();
             MeshRenderer mrenderer = turretMdl.GetComponentInChildren<MeshRenderer>();
-            if (srenderer) {
+            if (srenderer)
+            {
                 srenderer.material = Utils.Paths.Material.matEliteUrchinCrown.Load<Material>();
             }
-            if (mrenderer) {
+            if (mrenderer)
+            {
                 mrenderer.material = Utils.Paths.Material.matEliteUrchinCrown.Load<Material>();
             }
             PrefabAPI.RegisterNetworkPrefab(MalachiteTurret);
@@ -74,15 +82,19 @@ namespace WellRoundedBalance.Elites {
             MalachiteDebuffZone.AddComponent<ZoneController>();
         }
 
-        internal class TurretSpawner : MonoBehaviour {
+        internal class TurretSpawner : MonoBehaviour
+        {
             private List<TurretController> activeTurrets = new();
             private float startTime;
             private CharacterBody body;
             private GameObject zoneInstance;
-            private void Start() {
+
+            private void Start()
+            {
                 body = GetComponent<CharacterBody>();
                 startTime = Run.instance.GetRunStopwatch();
-                for (int i = 0; i < TurretCount; i++) {
+                for (int i = 0; i < TurretCount; i++)
+                {
                     GameObject turret = GameObject.Instantiate(MalachiteTurret);
                     TurretController controller = turret.GetComponent<TurretController>();
                     controller.owner = body;
@@ -94,9 +106,12 @@ namespace WellRoundedBalance.Elites {
                 NetworkServer.Spawn(zoneInstance);
             }
 
-            private void FixedUpdate() {
-                for (int i = 0; i < TurretCount; i++) {
-                    if (!activeTurrets[i].rb) {
+            private void FixedUpdate()
+            {
+                for (int i = 0; i < TurretCount; i++)
+                {
+                    if (!activeTurrets[i].rb)
+                    {
                         continue;
                     }
 
@@ -106,7 +121,7 @@ namespace WellRoundedBalance.Elites {
 
                     Vector3 targetPosition = (body.footPosition + new Vector3(0, 2, 0)) + Quaternion.AngleAxis(360 / TurretCount * i + elapsed / 10 * 360, plane1) * plane2 * (3);
                     float vel = body.isSprinting ? body.moveSpeed * body.sprintingSpeedMultiplier * 1.35f : body.moveSpeed * 1.35f;
-                    
+
                     Vector3 currentPos = activeTurrets[i].rb.position;
                     Vector3 lerpedPosition = Vector3.Lerp(currentPos, targetPosition, vel * Time.fixedDeltaTime);
 
@@ -114,44 +129,55 @@ namespace WellRoundedBalance.Elites {
                 }
             }
 
-            private void OnDestroy() {
-                for (int i = 0; i < activeTurrets.Count; i++) {
+            private void OnDestroy()
+            {
+                for (int i = 0; i < activeTurrets.Count; i++)
+                {
                     activeTurrets[i].Suicide();
                 }
 
-                if (zoneInstance) {
+                if (zoneInstance)
+                {
                     Destroy(zoneInstance);
                 }
             }
 
-            private void OnDisable() {
-                for (int i = 0; i < activeTurrets.Count; i++) {
+            private void OnDisable()
+            {
+                for (int i = 0; i < activeTurrets.Count; i++)
+                {
                     activeTurrets[i].Suicide();
                 }
 
-                if (zoneInstance) {
+                if (zoneInstance)
+                {
                     Destroy(zoneInstance);
                 }
             }
         }
 
-        internal class TurretController : MonoBehaviour {
+        internal class TurretController : MonoBehaviour
+        {
             public HurtBox target;
             internal CharacterBody owner;
             internal Rigidbody rb;
             private float stopwatch = 0f;
             private float delay = 1.2f;
 
-            private void Start() {
+            private void Start()
+            {
                 rb = GetComponent<Rigidbody>();
             }
 
-            private void FixedUpdate() {
+            private void FixedUpdate()
+            {
                 stopwatch += Time.fixedDeltaTime;
-                if (stopwatch >= delay) {
+                if (stopwatch >= delay)
+                {
                     stopwatch = 0f;
                     RefreshTarget();
-                    if (target) {
+                    if (target)
+                    {
                         Vector3 aim = (target.transform.position - base.transform.position).normalized;
                         FireProjectileInfo info = new();
                         info.damage = owner.damage * 2;
@@ -166,7 +192,8 @@ namespace WellRoundedBalance.Elites {
                 }
             }
 
-            private void RefreshTarget() {
+            private void RefreshTarget()
+            {
                 SphereSearch search = new();
                 search.radius = 30f;
                 search.origin = owner.footPosition;
@@ -177,26 +204,33 @@ namespace WellRoundedBalance.Elites {
                 target = search.GetHurtBoxes().FirstOrDefault();
             }
 
-            internal void Suicide() {
+            internal void Suicide()
+            {
                 Destroy(base.gameObject);
             }
         }
 
-        internal class ZoneController : MonoBehaviour {
+        internal class ZoneController : MonoBehaviour
+        {
             private SphereZone zone;
-            private void Start() {
+
+            private void Start()
+            {
                 zone = GetComponent<SphereZone>();
                 On.RoR2.HealthComponent.Heal += Reduce;
             }
 
-            private float Reduce(On.RoR2.HealthComponent.orig_Heal orig, HealthComponent self, float amount, ProcChainMask mask, bool regen) {
-                if (zone && zone.IsInBounds(self.body.footPosition)) {
+            private float Reduce(On.RoR2.HealthComponent.orig_Heal orig, HealthComponent self, float amount, ProcChainMask mask, bool regen)
+            {
+                if (zone && zone.IsInBounds(self.body.footPosition))
+                {
                     amount *= HealingMultiplier;
                 }
                 return orig(self, amount, mask, regen);
             }
 
-            private void OnDestroy() {
+            private void OnDestroy()
+            {
                 On.RoR2.HealthComponent.Heal -= Reduce;
             }
         }

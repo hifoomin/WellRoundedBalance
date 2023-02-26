@@ -1,5 +1,4 @@
-﻿using Inferno.Stat_AI;
-using Mono.Cecil.Cil;
+﻿using Mono.Cecil.Cil;
 using MonoMod.Cil;
 
 namespace WellRoundedBalance.Items.Whites
@@ -12,7 +11,16 @@ namespace WellRoundedBalance.Items.Whites
 
         public override string PickupText => "Gain gold at the beginning of each stage.";
 
-        public override string DescText => "Gain <style=cIsUtility>10</style> gold on pickup. At the beginning of every stage, gain <style=cIsUtility>25 <style=cStack>(+15 per stack)</style> gold</style>. <style=cIsUtility>Scales over time.</style>";
+        public override string DescText => "Gain <style=cIsUtility>" + goldOnPickup + "</style> gold on pickup. At the beginning of every stage, gain <style=cIsUtility>" + baseGoldPerStage + " <style=cStack>(+" + goldPerStagePerStack + " per stack)</style> gold</style>. <style=cIsUtility>Scales over time.</style>";
+
+        [ConfigField("Gold On Pickup", "", 10)]
+        public static int goldOnPickup;
+
+        [ConfigField("Base Gold Per Stage", "", 25)]
+        public static int baseGoldPerStage;
+
+        [ConfigField("Gold Per Stage Per Stack", "", 15)]
+        public static int goldPerStagePerStack;
 
         public override void Init()
         {
@@ -33,7 +41,7 @@ namespace WellRoundedBalance.Items.Whites
             {
                 if (itemIndex == DLC1Content.Items.GoldOnHurt.itemIndex)
                 {
-                    TeamManager.instance.GiveTeamMoney(TeamIndex.Player, (uint)Run.instance.GetDifficultyScaledCost(10));
+                    TeamManager.instance.GiveTeamMoney(TeamIndex.Player, (uint)Run.instance.GetDifficultyScaledCost(goldOnPickup));
                 }
             }
         }
@@ -53,7 +61,7 @@ namespace WellRoundedBalance.Items.Whites
             }
             if (stack > 0)
             {
-                TeamManager.instance.GiveTeamMoney(TeamIndex.Player, (uint)Run.instance.GetDifficultyScaledCost(25 + 15 * (stack - 1)));
+                TeamManager.instance.GiveTeamMoney(TeamIndex.Player, (uint)Run.instance.GetDifficultyScaledCost(baseGoldPerStage + goldPerStagePerStack * (stack - 1)));
             }
         }
 

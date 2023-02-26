@@ -66,7 +66,7 @@ namespace WellRoundedBalance.Items.Reds
                         }
 
                         float mult = Mathf.Pow((1 - 0.2f), self.body.inventory.GetItemCount(RoR2Content.Items.HeadHunter));
-                        Debug.Log(mult);
+                        // Debug.Log(mult);
                         if (hasAtLeastOne)
                         {
                             damage.damage *= mult;
@@ -119,7 +119,7 @@ namespace WellRoundedBalance.Items.Reds
                         {
                             if (BuffCatalog.eliteBuffIndices.Contains(buff) && !currentEliteBuffs.Contains(buff))
                             {
-                                Debug.Log("giving elite buff");
+                                // Debug.Log("giving elite buff");
                                 eliteIndex = buff;
                                 break;
                             }
@@ -132,11 +132,11 @@ namespace WellRoundedBalance.Items.Reds
 
                         if (currentEliteBuffs.Count > stack)
                         {
-                            Debug.Log("has too many elite buffs");
+                            // Debug.Log("has too many elite buffs");
                             for (int i = 0; i < currentEliteBuffs.Count - stack; i++)
                             {
                                 report.attackerBody.RemoveBuff(currentEliteBuffs[i]);
-                                Debug.Log("removing buff");
+                                // Debug.Log("removing buff");
                             }
                         }
                     }

@@ -11,7 +11,7 @@ namespace WellRoundedBalance.Items.Yellows
 
         public override string PickupText => "Chance on hit to call down a lightning strike.";
 
-        public override string DescText => "<style=cIsDamage>10%</style> chance on hit to call down a lightning strike, dealing <style=cIsDamage>400%</style> <style=cStack>(+400% per stack)</style> TOTAL damage.";
+        public override string DescText => "<style=cIsDamage>10%</style> chance on hit to call down a lightning strike, dealing <style=cIsDamage>400%</style> <style=cStack>(+150% per stack)</style> TOTAL damage.";
 
         public override void Init()
         {
@@ -28,35 +28,33 @@ namespace WellRoundedBalance.Items.Yellows
         {
             ILCursor c = new(il);
 
-            if (c.TryGotoNext(MoveType.Before,
-               x => x.MatchCallOrCallvirt<CharacterBody>("get_damage"),
-               x => x.MatchLdcR4(5f)))
+            float initialDamage = 4f - 1.5f;
+
+            bool error = true;
+            if (c.TryGotoNext(x => x.MatchLdsfld(typeof(RoR2Content.Items), "LightningStrikeOnHit")) &&
+                c.TryGotoNext(x => x.MatchLdfld<DamageInfo>("damage")))
             {
-                c.Index += 2;
-                c.Emit(OpCodes.Ldarg_0);
-                c.EmitDelegate<Func<float, CharacterBody, float>>((useless, self) =>
+                c.Index += 3;
+                c.Next.Operand = 1.5f;
+                c.Index += 4;
+                c.EmitDelegate<Func<float, float>>((damageCoefficient) =>
                 {
-                    return 4f + 1.5f * (self.inventory.GetItemCount(RoR2Content.Items.LightningStrikeOnHit) - 1);
+                    return damageCoefficient + initialDamage;
                 });
-            }
-            else
-            {
-                Main.WRBLogger.LogError("Failed to apply Charged Perforator Damage hook");
-            }
 
-            c.Index = 0;
-
-            if (c.TryGotoNext(MoveType.Before,
-               x => x.MatchStfld("RoR2.Orbs.GenericDamageOrb", "procChainMask"),
-               x => x.MatchDup(),
-               x => x.MatchLdcR4(1f)))
-            {
-                c.Index += 2;
-                c.Next.Operand = 0f;
+                if (c.TryGotoNext(x => x.MatchCallvirt<RoR2.Orbs.OrbManager>("AddOrb")))
+                {
+                    c.EmitDelegate<Func<RoR2.Orbs.SimpleLightningStrikeOrb, RoR2.Orbs.SimpleLightningStrikeOrb>>((orb) =>
+                    {
+                        orb.procCoefficient = 0f;
+                        return orb;
+                    });
+                }
+                error = false;
             }
-            else
+            if (error)
             {
-                Main.WRBLogger.LogError("Failed to apply Charged Perforator Proc Coefficient hook");
+                Main.WRBLogger.LogError("Failed to apply Charged Perforator hook");
             }
         }
 

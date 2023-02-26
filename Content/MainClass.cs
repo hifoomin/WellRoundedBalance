@@ -18,12 +18,16 @@ using WellRoundedBalance.Artifacts;
 using WellRoundedBalance.Mechanics;
 using WellRoundedBalance.Items.ConsistentCategories;
 
+// using WellRoundedBalance.Enemies.FamilyEvents;
+
 [assembly: HG.Reflection.SearchableAttribute.OptIn]
 
 namespace WellRoundedBalance
 {
     [BepInDependency("HIFU.Inferno", BepInDependency.DependencyFlags.SoftDependency)]
     [BepInDependency("com.Moffein.RiskyArtifacts", BepInDependency.DependencyFlags.SoftDependency)]
+    [BepInDependency("com.Moffein.AI_Blacklist", BepInDependency.DependencyFlags.SoftDependency)]
+    [BepInDependency("com.Wolfo.WolfoQualityOfLife", BepInDependency.DependencyFlags.SoftDependency)]
     [BepInDependency(LanguageAPI.PluginGUID)]
     [BepInDependency(RecalculateStatsAPI.PluginGUID)]
     [BepInDependency(DirectorAPI.PluginGUID)]
@@ -223,14 +227,14 @@ namespace WellRoundedBalance
                 }
             }
 
-            // RemoveGesture.Based();
             SpeedBoost.Init();
             BetterScaling.Init();
+            // FamilyEvents.Init();
         }
 
         private void ItemCatalog_Init(On.RoR2.ItemCatalog.orig_Init orig)
         {
-            WRBLogger.LogError("ItemAPI.AddItemTag(\"Defense\") returns " + ItemAPI.AddItemTag("Defense"));
+            WRBLogger.LogDebug("ItemAPI.AddItemTag(\"Defense\") returns " + ItemAPI.AddItemTag("Defense"));
             BetterItemCategories.Init();
             orig();
             BetterItemCategories.BetterAIBlacklist();

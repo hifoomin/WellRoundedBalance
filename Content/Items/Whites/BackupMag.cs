@@ -1,7 +1,4 @@
-﻿using R2API;
-using RoR2;
-
-namespace WellRoundedBalance.Items.Whites
+﻿namespace WellRoundedBalance.Items.Whites
 {
     public class BackupMag : ItemBase
     {
@@ -10,7 +7,11 @@ namespace WellRoundedBalance.Items.Whites
 
         public override string PickupText => "Add an extra charge of your Secondary skill and reduce its cooldown.";
 
-        public override string DescText => "Add <style=cIsUtility>+1</style> <style=cStack>(+1 per stack)</style> charge of your <style=cIsUtility>Secondary skill</style>. Reduce your <style=cIsUtility>secondary skill cooldown</style> by <style=cIsUtility>5%</style> <style=cStack>(+5% per stack)</style>.";
+        public override string DescText => "Add <style=cIsUtility>+1</style> <style=cStack>(+1 per stack)</style> charge of your <style=cIsUtility>Secondary skill</style>." +
+                                           (secondarySkillCooldownReduction > 0 ? "Reduce your <style=cIsUtility>secondary skill cooldown</style> by <style=cIsUtility>" + d(secondarySkillCooldownReduction) + "</style> <style=cStack>(+" + d(secondarySkillCooldownReduction) + " per stack)</style>." : "");
+
+        [ConfigField("Secondary Skill Cooldown Reduction", "Decimal.", 0.05f)]
+        public static float secondarySkillCooldownReduction;
 
         public override void Init()
         {
@@ -19,17 +20,17 @@ namespace WellRoundedBalance.Items.Whites
 
         public override void Hooks()
         {
-            RecalculateStatsAPI.GetStatCoefficients += AddBehavior;
+            RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
         }
 
-        public static void AddBehavior(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
+        private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
             if (sender.inventory)
             {
                 var stack = sender.inventory.GetItemCount(RoR2Content.Items.SecondarySkillMagazine);
                 if (stack > 0)
                 {
-                    args.secondaryCooldownMultAdd -= 0.05f * stack;
+                    args.secondaryCooldownMultAdd -= secondarySkillCooldownReduction * stack;
                 }
             }
         }

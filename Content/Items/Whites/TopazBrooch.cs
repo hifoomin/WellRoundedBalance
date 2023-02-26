@@ -11,7 +11,13 @@ namespace WellRoundedBalance.Items.Whites
 
         public override string PickupText => "Gain a temporary barrier on kill.";
 
-        public override string DescText => "Gain a <style=cIsHealing>temporary barrier</style> on kill for <style=cIsHealing>10</style> <style=cStack>(+10 per stack)</style> plus an additional <style=cIsHealing>1.5%</style> of <style=cIsHealing>maximum health</style>.";
+        public override string DescText => "Gain a <style=cIsHealing>temporary barrier</style> on kill for <style=cIsHealing>10</style> <style=cStack>(+10 per stack)</style> plus an additional <style=cIsHealing>2%</style> of <style=cIsHealing>maximum health</style>.";
+
+        [ConfigField("Percent Barrier Gain", "Decimal.", 0.02f)]
+        public static int percentBarrierGain;
+
+        [ConfigField("Flat Barrier Gain", "", 10f)]
+        public static int flatBarrierGain;
 
         public override void Hooks()
         {
@@ -34,7 +40,7 @@ namespace WellRoundedBalance.Items.Whites
                         var stack = inventory.GetItemCount(RoR2Content.Items.BarrierOnKill);
                         if (stack > 0 && NetworkServer.active && attackerBody.healthComponent)
                         {
-                            attackerBody.healthComponent.AddBarrier(attackerBody.healthComponent.combinedHealthFraction * 0.015f);
+                            attackerBody.healthComponent.AddBarrier(attackerBody.healthComponent.combinedHealthFraction * percentBarrierGain);
                         }
                     }
                 }
@@ -50,7 +56,7 @@ namespace WellRoundedBalance.Items.Whites
                     x => x.MatchLdcR4(15f)))
             {
                 c.Index += 1;
-                c.Next.Operand = 10f;
+                c.Next.Operand = flatBarrierGain;
             }
             else
             {

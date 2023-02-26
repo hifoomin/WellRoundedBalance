@@ -13,7 +13,20 @@ namespace WellRoundedBalance.Items.Whites
 
         public override string PickupText => "Quickly regenerate upon taking heavy damage. Recharges each stage.";
 
-        public override string DescText => "Taking damage to below <style=cIsHealth>50% health</style> <style=cIsUtility>consumes</style> this item, <style=cIsHealing>healing</style> you for <style=cIsHealing>25%</style> of your <style=cIsHealing>maximum health</style> over <style=cIsUtility>4s</style>. <style=cIsUtility>Refills every stage</style>.";
+        public override string DescText => "Taking damage to below <style=cIsHealth>" + d(healthThreshold) + " health</style> <style=cIsUtility>consumes</style> this item, <style=cIsHealing>healing</style> you for <style=cIsHealing>" + d(percentHealing) + "</style> of your <style=cIsHealing>maximum health</style> over <style=cIsUtility>" + healingTime + "s</style>." +
+                                           (refillEveryStage ? "<style=cIsUtility>Refills every stage</style>." : "");
+
+        [ConfigField("Health Threshold", "Decimal.", 0.5f)]
+        public static float healthThreshold;
+
+        [ConfigField("Percent Healing", "Decimal.", 0.25f)]
+        public static float percentHealing;
+
+        [ConfigField("Healing Time", "", 4f)]
+        public static float healingTime;
+
+        [ConfigField("Refill Every Stage?", "", true)]
+        public static bool refillEveryStage;
 
         public override void Init()
         {
@@ -45,13 +58,13 @@ namespace WellRoundedBalance.Items.Whites
             if (self.itemCounts.healingPotion > 0 && !self.body.HasBuff(regen))
             {
                 float healthFraction = self.health / self.fullHealth;
-                if (healthFraction < 0.5f)
+                if (healthFraction < healthThreshold)
                 {
                     self.body.inventory.RemoveItem(DLC1Content.Items.HealingPotion, 1);
                     self.body.inventory.GiveItem(DLC1Content.Items.HealingPotionConsumed, 1);
                     CharacterMasterNotificationQueue.SendTransformNotification(self.body.master, DLC1Content.Items.HealingPotion.itemIndex, DLC1Content.Items.HealingPotionConsumed.itemIndex, CharacterMasterNotificationQueue.TransformationType.Default);
 
-                    self.body.AddTimedBuff(regen, 4f);
+                    self.body.AddTimedBuff(regen, healingTime);
 
                     EffectData effectData = new()
                     {
@@ -67,7 +80,7 @@ namespace WellRoundedBalance.Items.Whites
         private void Stage_Start(On.RoR2.Stage.orig_Start orig, Stage self)
         {
             orig(self);
-            if (CharacterMaster.instancesList != null)
+            if (CharacterMaster.instancesList != null && refillEveryStage)
             {
                 foreach (CharacterMaster cm in CharacterMaster.instancesList)
                 {
@@ -97,7 +110,7 @@ namespace WellRoundedBalance.Items.Whites
                 {
                     if (self.body.HasBuff(regen))
                     {
-                        regenAccumulator += Time.fixedDeltaTime * 0.0625f * self.fullHealth;
+                        regenAccumulator += Time.fixedDeltaTime * (percentHealing / healingTime) * self.fullHealth;
                     }
                     return regenAccumulator;
                 });

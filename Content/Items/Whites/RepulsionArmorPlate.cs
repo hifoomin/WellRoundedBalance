@@ -1,6 +1,4 @@
 ﻿using MonoMod.Cil;
-using R2API;
-using RoR2;
 
 namespace WellRoundedBalance.Items.Whites
 {
@@ -11,7 +9,13 @@ namespace WellRoundedBalance.Items.Whites
 
         public override string PickupText => "Receive flat damage reduction from all attacks.";
 
-        public override string DescText => "Reduce all <style=cIsDamage>incoming damage</style> by <style=cIsDamage>5<style=cStack> (+5 per stack)</style></style>. Cannot be reduced below <style=cIsDamage>8</style>.";
+        public override string DescText => "Reduce all <style=cIsDamage>incoming damage</style> by <style=cIsDamage>" + flatDamageReduction + "<style=cStack> (+" + flatDamageReduction + " per stack)</style></style>. Cannot be reduced below <style=cIsDamage>" + minimumDamage + "</style>.";
+
+        [ConfigField("Flat Damage Reduction", "", 5f)]
+        public static float flatDamageReduction;
+
+        [ConfigField("Minimum Damage", "", 8f)]
+        public static float minimumDamage;
 
         public override void Init()
         {
@@ -26,14 +30,14 @@ namespace WellRoundedBalance.Items.Whites
         public static void Changes(ILContext il)
         {
             ILCursor c = new(il);
-            /*
+
             if (c.TryGotoNext(MoveType.Before,
                     x => x.MatchLdcR4(1),
                     x => x.MatchLdloc(out _),
                     x => x.MatchLdcR4(5)))
             {
                 c.Index += 2;
-                c.Next.Operand = 4f;
+                c.Next.Operand = flatDamageReduction;
             }
             else
             {
@@ -41,16 +45,15 @@ namespace WellRoundedBalance.Items.Whites
             }
 
             c.Index = 0;
-            */
+
             if (c.TryGotoNext(MoveType.Before,
-               //x => x.MatchLdflda<HealthComponent>("itemCounts"),
-               //x => x.MatchLdfld<HealthComponent>("armorPlate"),
+
                x => x.MatchLdcI4(0),
                x => x.MatchBle(out _),
                x => x.MatchLdcR4(1)))
             {
                 c.Index += 2;
-                c.Next.Operand = 8f;
+                c.Next.Operand = minimumDamage;
             }
             else
             {

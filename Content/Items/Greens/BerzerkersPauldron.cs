@@ -37,12 +37,6 @@ namespace WellRoundedBalance.Items.Greens
                 c.Index += 1;
                 c.Remove();
                 c.Emit(OpCodes.Ldc_I4, 3);
-                /* c.Emit(OpCodes.Ldarg_0);
-                c.EmitDelegate<Func<int, int>>((useless) =>
-                {
-                    return KillRequirement;
-                });
-                */
             }
             else
             {

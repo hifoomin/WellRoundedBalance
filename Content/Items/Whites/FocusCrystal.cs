@@ -11,7 +11,10 @@ namespace WellRoundedBalance.Items.Whites
 
         public override string PickupText => "Deal bonus damage to nearby enemies.";
 
-        public override string DescText => "Increase damage to enemies within <style=cIsDamage>13m</style> by <style=cIsDamage>15%</style> <style=cStack>(+15% per stack)</style>.";
+        public override string DescText => "Increase damage to enemies within <style=cIsDamage>13m</style> by <style=cIsDamage>" + d(damageIncrease) + "</style> <style=cStack>(+" + d(damageIncrease) + " per stack)</style>.";
+
+        [ConfigField("Damage Increase", "Decimal.", 0.15f)]
+        public static float damageIncrease;
 
         public override void Init()
         {
@@ -35,7 +38,7 @@ namespace WellRoundedBalance.Items.Whites
                 x => x.MatchLdcR4(0.2f)))
             {
                 c.Index += 5;
-                c.Next.Operand = 0.15f;
+                c.Next.Operand = damageIncrease;
             }
             else
             {

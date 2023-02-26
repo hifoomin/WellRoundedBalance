@@ -23,7 +23,7 @@ namespace WellRoundedBalance.Items.Greens
         public override void Hooks()
         {
             IL.RoR2.GlobalEventManager.OnHitEnemy += GlobalEventManager_OnHitEnemy;
-            ChangeProc();
+            Changes();
         }
 
         private void GlobalEventManager_OnHitEnemy(ILContext il)
@@ -51,10 +51,18 @@ namespace WellRoundedBalance.Items.Greens
             }
         }
 
-        public static void ChangeProc()
+        public static void Changes()
         {
-            var mp = LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/MissileProjectile").GetComponent<ProjectileController>();
-            mp.procCoefficient = 0f;
+            var missileProjectile = Utils.Paths.GameObject.MissileProjectile.Load<GameObject>();
+            var missileProjectileController = missileProjectile.GetComponent<ProjectileController>();
+            missileProjectileController.procCoefficient = 0f;
+
+            var missileController = missileProjectile.GetComponent<MissileController>();
+            missileController.maxSeekDistance = 10000f;
+            missileController.turbulence = 0f;
+            missileController.deathTimer = 30f;
+            missileController.giveupTimer = 30f;
+            missileController.delayTimer = 0f;
         }
     }
 }

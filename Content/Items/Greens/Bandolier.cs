@@ -9,7 +9,7 @@ namespace WellRoundedBalance.Items.Greens
 
         public override string PickupText => "Chance on kill to drop an ammo pack that resets all skill cooldowns.";
 
-        public override string DescText => "<style=cIsUtility>10%</style> <style=cStack>(+8% per stack)</style> chance on kill to drop an ammo pack that <style=cIsUtility>resets all skill cooldowns</style>.";
+        public override string DescText => "<style=cIsUtility>11%</style> <style=cStack>(+7% per stack)</style> chance on kill to drop an ammo pack that <style=cIsUtility>resets all skill cooldowns</style>.";
 
         public override void Init()
         {
@@ -33,7 +33,7 @@ namespace WellRoundedBalance.Items.Greens
                     x => x.MatchLdcI4(1)))
             {
                 c.Index += 3;
-                c.Next.Operand = 0.72f;
+                c.Next.Operand = 0.9f;
             }
             else
             {
@@ -48,7 +48,7 @@ namespace WellRoundedBalance.Items.Greens
                     x => x.MatchLdcR4(0.33f)))
             {
                 c.Index += 2;
-                c.Next.Operand = 0.3f;
+                c.Next.Operand = 0.18f;
             }
             else
             {
