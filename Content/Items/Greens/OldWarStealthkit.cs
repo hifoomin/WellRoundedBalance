@@ -12,7 +12,10 @@ namespace WellRoundedBalance.Items.Greens
 
         public override string PickupText => "Turn invisible at low health.";
 
-        public override string DescText => "Falling below <style=cIsHealth>50% health</style> causes you to gain <style=cIsUtility>40% movement speed</style> and <style=cIsUtility>invisibility</style> for <style=cIsUtility>5s</style>. Recharges every <style=cIsUtility>30 seconds</style> <style=cStack>(-50% per stack)</style>.";
+        public override string DescText => "Falling below <style=cIsHealth>" + d(healthThreshold) + " health</style> causes you to gain <style=cIsUtility>40% movement speed</style> and <style=cIsUtility>invisibility</style> for <style=cIsUtility>5s</style>. Recharges every <style=cIsUtility>30 seconds</style> <style=cStack>(-50% per stack)</style>.";
+
+        [ConfigField("Health Threshold", "Decimal.", 0.5f)]
+        public static float healthThreshold;
 
         public override void Init()
         {
@@ -36,7 +39,7 @@ namespace WellRoundedBalance.Items.Greens
                 c.Emit(OpCodes.Ldarg_0);
                 c.EmitDelegate<Func<bool, PhasingBodyBehavior, bool>>((Check, self) =>
                 {
-                    if ((self.body.healthComponent.health + self.body.healthComponent.shield) / self.body.healthComponent.fullCombinedHealth < 0.5f)
+                    if ((self.body.healthComponent.health + self.body.healthComponent.shield) / self.body.healthComponent.fullCombinedHealth < healthThreshold)
                     {
                         Check = true;
                         return Check;
@@ -52,8 +55,6 @@ namespace WellRoundedBalance.Items.Greens
             {
                 Main.WRBLogger.LogError("Failed to apply Old War Stealthkit Threshold hook");
             }
-
-            // this NREs
         }
     }
 }

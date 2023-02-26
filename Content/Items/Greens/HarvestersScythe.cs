@@ -10,9 +10,15 @@ namespace WellRoundedBalance.Items.Greens
 
         public override string PickupText => "'Backstabs' heal a percentage of missing health.";
 
-        public override string DescText => "<style=cIsDamage>Backstabs</style> <style=cIsHealing>heal</style> for <style=cIsHealing>1.5%</style> <style=cStack>(+0.75% per stack)</style> of your <style=cIsHealing>missing health</style>.";
+        public override string DescText => "<style=cIsDamage>Backstabs</style> <style=cIsHealing>heal</style> for <style=cIsHealing>" + d(baseMissingHealthHealingPercent) + "</style> <style=cStack>(+" + d(missingHealthHealingPercentPerStack) + " per stack)</style> of your <style=cIsHealing>missing health</style>.";
 
         private static ProcType Backstab = (ProcType)38921;
+
+        [ConfigField("Base Missing Health Healing Percent", "Decimal.", 0.015f)]
+        public static float baseMissingHealthHealingPercent;
+
+        [ConfigField("Missing Health Healing Percent Per Stack", "Decimal.", 0.0075f)]
+        public static float missingHealthHealingPercentPerStack;
 
         public override void Init()
         {
@@ -95,7 +101,7 @@ namespace WellRoundedBalance.Items.Greens
 
                 var healthComponent = attacker.healthComponent;
 
-                var healing = (healthComponent.fullHealth - healthComponent.health) * (0.015f + (0.0075f * stack));
+                var healing = (healthComponent.fullHealth - healthComponent.health) * (baseMissingHealthHealingPercent + (missingHealthHealingPercentPerStack * stack));
 
                 if (NetworkServer.active)
                 {

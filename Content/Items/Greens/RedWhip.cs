@@ -8,7 +8,10 @@ namespace WellRoundedBalance.Items.Greens
         public override string InternalPickupToken => "sprintOutOfCombat";
 
         public override string PickupText => "Move fast out of combat.";
-        public override string DescText => "Leaving combat boosts your <style=cIsUtility>movement speed</style> by <style=cIsUtility>35%</style> <style=cStack>(+35% per stack)</style>.";
+        public override string DescText => "Leaving combat boosts your <style=cIsUtility>movement speed</style> by <style=cIsUtility>" + d(movementSpeedGain) + "</style> <style=cStack>(+" + d(movementSpeedGain) + " per stack)</style>.";
+
+        [ConfigField("Movement Speed Gain", "Decimal.", 0.35f)]
+        public static float movementSpeedGain;
 
         public override void Init()
         {
@@ -33,7 +36,7 @@ namespace WellRoundedBalance.Items.Greens
                     x => x.MatchLdcR4(0.3f)))
             {
                 c.Index += 5;
-                c.Next.Operand = 0.35f;
+                c.Next.Operand = movementSpeedGain;
             }
             else
             {

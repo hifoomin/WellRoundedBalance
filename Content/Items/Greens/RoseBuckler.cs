@@ -1,8 +1,5 @@
 ﻿using Mono.Cecil.Cil;
 using MonoMod.Cil;
-using R2API;
-using R2API.Utils;
-using RoR2;
 using System;
 
 namespace WellRoundedBalance.Items.Greens
@@ -14,7 +11,13 @@ namespace WellRoundedBalance.Items.Greens
 
         public override string PickupText => "Reduce incoming damage while sprinting.";
 
-        public override string DescText => "<style=cIsHealing>Increase armor</style> by <style=cIsHealing>25</style> <style=cStack>(+15 per stack)</style> while <style=cIsUtility>sprinting</style>.";
+        public override string DescText => "<style=cIsHealing>Increase armor</style> by <style=cIsHealing>" + baseArmorGain + "</style> <style=cStack>(+" + armorGainPerStack + " per stack)</style> while <style=cIsUtility>sprinting</style>.";
+
+        [ConfigField("Base Armor Gain", "", 25)]
+        public static int baseArmorGain;
+
+        [ConfigField("Armor Gain Per Stack", "", 15)]
+        public static int armorGainPerStack;
 
         public override void Init()
         {
@@ -36,11 +39,11 @@ namespace WellRoundedBalance.Items.Greens
             {
                 c.Index += 2;
                 c.Remove();
-                c.Emit(OpCodes.Ldc_I4, 15);
+                c.Emit(OpCodes.Ldc_I4, armorGainPerStack);
                 c.Index += 1;
-                c.EmitDelegate<Func<int, int>>((self) =>
+                c.EmitDelegate<Func<int, int>>((useless) =>
                 {
-                    return self + 10;
+                    return armorGainPerStack + (baseArmorGain - armorGainPerStack);
                 });
             }
             else

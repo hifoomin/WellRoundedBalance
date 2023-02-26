@@ -13,7 +13,7 @@ namespace WellRoundedBalance.Items.Whites
         public override string DescText => "Killing an enemy <style=cIsDamage>ignites</style> all enemies within <style=cIsDamage>" + baseRange + "m</style>" +
                                            (rangePerStack > 0 ? " <style=cStack>(+" + rangePerStack + "m per stack)</style>" : "") +
                                            " for <style=cIsDamage>" + d(explosionDamage) + "</style> base damage." +
-                                           "Additionally, enemies <style=cIsDamage>burn</style> for <style=cIsDamage>" + d(burnDamagePerStack * (baseBurnDamage + 1)) + "</style> <style=cStack>(" + d(burnDamagePerStack * (baseBurnDamage + 2)) + " per stack)</style> base damage.";
+                                           " Additionally, enemies <style=cIsDamage>burn</style> for <style=cIsDamage>" + d(burnDamagePerStack * (baseBurnDamage + 1)) + "</style> <style=cStack>(+" + (baseBurnDamage != 1 ? d(burnDamagePerStack * (baseBurnDamage + 2)) : d(burnDamagePerStack * (baseBurnDamage + 1)) + " per stack)</style> base damage.");
 
         [ConfigField("Explosion Damage", "Decimal.", 1f)]
         public static float explosionDamage;

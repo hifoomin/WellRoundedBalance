@@ -1,9 +1,6 @@
 ﻿using Mono.Cecil.Cil;
 using MonoMod.Cil;
-using R2API;
 using R2API.Utils;
-using RoR2;
-using System;
 
 namespace WellRoundedBalance.Items.Greens
 {
@@ -12,9 +9,12 @@ namespace WellRoundedBalance.Items.Greens
         public override string Name => ":: Items :: Greens :: Berzerkers Pauldron";
         public override string InternalPickupToken => "warCryOnMultiKill";
 
-        public override string PickupText => "Enter a frenzy after killing 3 enemies in quick succession.";
+        public override string PickupText => "Enter a frenzy after killing " + killCount + " enemies in quick succession.";
 
-        public override string DescText => "<style=cIsDamage>Killing 3 enemies</style> within <style=cIsDamage>1</style> second sends you into a <style=cIsDamage>frenzy</style> for <style=cIsDamage>6s</style> <style=cStack>(+4s per stack)</style>, which increases <style=cIsUtility>movement speed</style> by <style=cIsUtility>50%</style> and <style=cIsDamage>attack speed</style> by <style=cIsDamage>100%</style>.";
+        public override string DescText => "<style=cIsDamage>Killing " + killCount + " enemies</style> within <style=cIsDamage>1</style> second sends you into a <style=cIsDamage>frenzy</style> for <style=cIsDamage>6s</style> <style=cStack>(+4s per stack)</style>, which increases <style=cIsUtility>movement speed</style> by <style=cIsUtility>50%</style> and <style=cIsDamage>attack speed</style> by <style=cIsDamage>100%</style>.";
+
+        [ConfigField("Kill Count", "", 3)]
+        public static int killCount;
 
         public override void Init()
         {
@@ -23,10 +23,10 @@ namespace WellRoundedBalance.Items.Greens
 
         public override void Hooks()
         {
-            IL.RoR2.CharacterBody.AddMultiKill += Changes;
+            IL.RoR2.CharacterBody.AddMultiKill += CharacterBody_AddMultiKill;
         }
 
-        public static void Changes(ILContext il)
+        private void CharacterBody_AddMultiKill(ILContext il)
         {
             ILCursor c = new(il);
 
@@ -36,7 +36,7 @@ namespace WellRoundedBalance.Items.Greens
             {
                 c.Index += 1;
                 c.Remove();
-                c.Emit(OpCodes.Ldc_I4, 3);
+                c.Emit(OpCodes.Ldc_I4, killCount);
             }
             else
             {

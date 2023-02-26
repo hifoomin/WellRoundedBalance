@@ -1,7 +1,4 @@
-﻿using MonoMod.Cil;
-using RoR2;
-
-namespace WellRoundedBalance.Items.Greens
+﻿namespace WellRoundedBalance.Items.Greens
 {
     public class LeechingSeed : ItemBase
     {
@@ -10,7 +7,13 @@ namespace WellRoundedBalance.Items.Greens
 
         public override string PickupText => "Dealing damage heals you.";
 
-        public override string DescText => "Dealing damage <style=cIsHealing>heals</style> you for <style=cIsHealing>1 <style=cStack>(+1 per stack)</style> health</style>, plus an additional <style=cIsHealing>0.7</style> <style=cStack>(+0.35 per stack)</style> <style=cIsHealing>health</style> regardless of source.";
+        public override string DescText => "Dealing damage <style=cIsHealing>heals</style> you for <style=cIsHealing>1 <style=cStack>(+1 per stack)</style> health</style>, plus an additional <style=cIsHealing>" + baseHealingRegardlessOfSource + "</style> <style=cStack>(+" + healingRegardlessOfSourcePerStack + " per stack)</style> <style=cIsHealing>health</style> regardless of source.";
+
+        [ConfigField("Base Healing Regardless of Source", "Decimal.", 0.7f)]
+        public static float baseHealingRegardlessOfSource;
+
+        [ConfigField("Healing Regardless of Source Per Stack", "Decimal.", 0.35f)]
+        public static float healingRegardlessOfSourcePerStack;
 
         public override void Init()
         {
@@ -19,21 +22,21 @@ namespace WellRoundedBalance.Items.Greens
 
         public override void Hooks()
         {
-            GlobalEventManager.onServerDamageDealt += AddUnconditionalHealing;
+            GlobalEventManager.onServerDamageDealt += GlobalEventManager_onServerDamageDealt;
         }
 
-        public static void AddUnconditionalHealing(DamageReport report)
+        private void GlobalEventManager_onServerDamageDealt(DamageReport damageReport)
         {
-            var AB = report.attackerBody;
-            if (report != null && AB != null)
+            var attackerBody = damageReport.attackerBody;
+            if (damageReport != null && attackerBody != null)
             {
-                var HealMask = report.damageInfo.procChainMask;
-                if (AB.inventory)
+                var HealMask = damageReport.damageInfo.procChainMask;
+                if (attackerBody.inventory)
                 {
-                    var Stack = AB.inventory.GetItemCount(RoR2Content.Items.Seed);
-                    if (Stack > 0)
+                    var stack = attackerBody.inventory.GetItemCount(RoR2Content.Items.Seed);
+                    if (stack > 0)
                     {
-                        AB.healthComponent.Heal(0.75f + 0.35f * (Stack - 1), HealMask, true);
+                        attackerBody.healthComponent.Heal(baseHealingRegardlessOfSource + healingRegardlessOfSourcePerStack * (stack - 1), HealMask, true);
                     }
                 }
             }

@@ -1,6 +1,5 @@
 ﻿using Mono.Cecil.Cil;
 using MonoMod.Cil;
-using RoR2;
 using System;
 
 namespace WellRoundedBalance.Items.Greens
@@ -10,9 +9,18 @@ namespace WellRoundedBalance.Items.Greens
         public override string Name => ":: Items :: Greens :: Death Mark";
         public override string InternalPickupToken => "deathMark";
 
-        public override string PickupText => "Enemies with 2 or more debuffs are marked for death, taking bonus damage.";
+        public override string PickupText => "Enemies with " + minimumDebuffs + " or more debuffs are marked for death, taking bonus damage.";
 
-        public override string DescText => "Enemies with <style=cIsDamage>2</style> or more debuffs are <style=cIsDamage>marked for death</style>, increasing damage taken by <style=cIsDamage>7%</style> <style=cStack>(+3% per stack)</style> per debuff from all sources for <style=cIsUtility>7</style> seconds.";
+        public override string DescText => "Enemies with <style=cIsDamage>" + minimumDebuffs + "</style> or more debuffs are <style=cIsDamage>marked for death</style>, increasing damage taken by <style=cIsDamage>" + d(baseDamageIncreasePerDebuff) + "</style> <style=cStack>(+" + d(damageIncreasePerDebuffPerStack) + " per stack)</style> per debuff from all sources for <style=cIsUtility>7</style> seconds.";
+
+        [ConfigField("Minimum Debuffs", "", 2)]
+        public static int minimumDebuffs;
+
+        [ConfigField("Base Damage Increase Per Debuff", "Decimal.", 0.07f)]
+        public static float baseDamageIncreasePerDebuff;
+
+        [ConfigField("Damage Increase Per Debuff Per Stack", "Decimal.", 0.03f)]
+        public static float damageIncreasePerDebuffPerStack;
 
         public override void Init()
         {
@@ -67,10 +75,10 @@ namespace WellRoundedBalance.Items.Greens
                                 }
                             }
                         }
-                        float damageBonus = debuffCount * 0.07f;
+                        float damageBonus = debuffCount * baseDamageIncreasePerDebuff;
                         if (DeathMarkCount > 0)
                         {
-                            return 1f + damageBonus + (0.03f * damageBonus * ((float)DeathMarkCount - 1f));
+                            return 1f + damageBonus + (damageIncreasePerDebuffPerStack * damageBonus * ((float)DeathMarkCount - 1f));
                         }
                         return 1f + damageBonus;
                     }
@@ -93,7 +101,7 @@ namespace WellRoundedBalance.Items.Greens
             {
                 c.Index += 2;
                 c.Emit(OpCodes.Pop);
-                c.Emit(OpCodes.Ldc_I4, 2);
+                c.Emit(OpCodes.Ldc_I4, minimumDebuffs);
             }
             else
             {

@@ -9,7 +9,13 @@ namespace WellRoundedBalance.Items.Greens
 
         public override string PickupText => "Chance on kill to drop an ammo pack that resets all skill cooldowns.";
 
-        public override string DescText => "<style=cIsUtility>11%</style> <style=cStack>(+7% per stack)</style> chance on kill to drop an ammo pack that <style=cIsUtility>resets all skill cooldowns</style>.";
+        public override string DescText => "<style=cIsUtility>" + (Mathf.Round(1 - (1 / (Mathf.Pow(baseValue + 1, exponent))))) * 100f + "%</style> <style=cStack>(+" + ((Mathf.Round(1 - (1 / (Mathf.Pow(baseValue + 2, exponent)))) - Mathf.Round(1 - (1 / (Mathf.Pow(baseValue + 1, exponent)))))) * 100f + "% per stack)</style> chance on kill to drop an ammo pack that <style=cIsUtility>resets all skill cooldowns</style>.";
+
+        [ConfigField("Base Value", "Formula for drop chance: 1 - 1 / (Base Value + Bandolier) ^ Exponent", 0.9f)]
+        public static float baseValue;
+
+        [ConfigField("Exponent", "Formula for drop chance: 1 - 1 / (Base Value + Bandolier) ^ Exponent", 0.18f)]
+        public static float exponent;
 
         public override void Init()
         {
@@ -18,11 +24,10 @@ namespace WellRoundedBalance.Items.Greens
 
         public override void Hooks()
         {
-            IL.RoR2.GlobalEventManager.OnCharacterDeath += Changes;
+            IL.RoR2.GlobalEventManager.OnCharacterDeath += GlobalEventManager_OnCharacterDeath;
         }
 
-        public static void
-        Changes(ILContext il)
+        private void GlobalEventManager_OnCharacterDeath(ILContext il)
         {
             ILCursor c = new(il);
 
@@ -33,7 +38,7 @@ namespace WellRoundedBalance.Items.Greens
                     x => x.MatchLdcI4(1)))
             {
                 c.Index += 3;
-                c.Next.Operand = 0.9f;
+                c.Next.Operand = baseValue;
             }
             else
             {
@@ -48,7 +53,7 @@ namespace WellRoundedBalance.Items.Greens
                     x => x.MatchLdcR4(0.33f)))
             {
                 c.Index += 2;
-                c.Next.Operand = 0.18f;
+                c.Next.Operand = exponent;
             }
             else
             {

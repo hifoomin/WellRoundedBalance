@@ -14,7 +14,7 @@ namespace WellRoundedBalance.Items.Yellows
 
         public override string PickupText => "Chance on hit to fire magma balls.";
 
-        public override string DescText => "<style=cIsDamage>10%</style> chance on hit to call forth <style=cIsDamage>3 magma balls</style> from an enemy, dealing <style=cIsDamage>190%</style> <style=cStack>(+60% per stack)</style> TOTAL damage and <style=cIsDamage>igniting</style> all enemies.";
+        public override string DescText => "<style=cIsDamage>10%</style> chance on hit to call forth <style=cIsDamage>3 magma balls</style> from an enemy, dealing <style=cIsDamage>190%</style> <style=cStack>(+60% per stack)</style> TOTAL damage.";
 
         public override void Init()
         {

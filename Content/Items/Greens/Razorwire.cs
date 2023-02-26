@@ -12,7 +12,13 @@ namespace WellRoundedBalance.Items.Greens
         public override string InternalPickupToken => "thorns";
 
         public override string PickupText => "Retaliate upon taking damage.";
-        public override string DescText => "Getting hit causes a razor to <style=cIsDamage>retaliate</style>, dealing <style=cIsDamage>400%</style> <style=cStack>(+200% per stack)</style> damage.";
+        public override string DescText => "Getting hit causes a razor to <style=cIsDamage>retaliate</style>, dealing <style=cIsDamage>" + d(baseDamage) + "</style> <style=cStack>(+" + d(damagePerStack) + " per stack)</style> damage.";
+
+        [ConfigField("Base Damage", "Decimal.", 4f)]
+        public static float baseDamage;
+
+        [ConfigField("Damage Per Stack", "Decimal.", 2f)]
+        public static float damagePerStack;
 
         public override void Init()
         {
@@ -44,41 +50,40 @@ namespace WellRoundedBalance.Items.Greens
                 var attacker = damageInfo.attacker;
                 if (attacker)
                 {
-                    if (attacker == self.gameObject)
+                    if (attacker != self.gameObject)
                     {
-                        return;
-                    }
-                    var inventory = victimBody.inventory;
-                    if (inventory)
-                    {
-                        var stack = inventory.GetItemCount(RoR2Content.Items.Thorns);
-                        if (stack > 0 && !damageInfo.procChainMask.HasProc(ProcType.Thorns))
+                        var inventory = victimBody.inventory;
+                        if (inventory)
                         {
-                            var attackerHurtBox = Util.FindBodyMainHurtBox(attacker);
-                            if (attackerHurtBox && !victimBody.HasBuff(razorwireCooldown))
+                            var stack = inventory.GetItemCount(RoR2Content.Items.Thorns);
+                            if (stack > 0 && !damageInfo.procChainMask.HasProc(ProcType.Thorns))
                             {
-                                LightningOrb lightningOrb = new()
+                                var attackerHurtBox = Util.FindBodyMainHurtBox(attacker);
+                                if (attackerHurtBox && !victimBody.HasBuff(razorwireCooldown))
                                 {
-                                    attacker = self.body.gameObject,
-                                    bouncedObjects = null,
-                                    bouncesRemaining = 0,
-                                    damageCoefficientPerBounce = 1f,
-                                    damageColorIndex = DamageColorIndex.Item,
-                                    damageValue = self.body.damage * 4f + 2f * (stack - 1),
-                                    isCrit = victimBody.RollCrit(),
-                                    lightningType = LightningOrb.LightningType.RazorWire,
-                                    origin = damageInfo.position,
-                                    procChainMask = default,
-                                    procCoefficient = 0f,
-                                    range = 100000f,
-                                    teamIndex = victimBody.teamComponent.teamIndex,
-                                    target = attackerHurtBox,
-                                };
-                                lightningOrb.procChainMask.AddProc(ProcType.Thorns);
+                                    LightningOrb lightningOrb = new()
+                                    {
+                                        attacker = self.body.gameObject,
+                                        bouncedObjects = null,
+                                        bouncesRemaining = 0,
+                                        damageCoefficientPerBounce = 1f,
+                                        damageColorIndex = DamageColorIndex.Item,
+                                        damageValue = self.body.damage * baseDamage + damagePerStack * (stack - 1),
+                                        isCrit = victimBody.RollCrit(),
+                                        lightningType = LightningOrb.LightningType.RazorWire,
+                                        origin = damageInfo.position,
+                                        procChainMask = default,
+                                        procCoefficient = 0f,
+                                        range = 100000f,
+                                        teamIndex = victimBody.teamComponent.teamIndex,
+                                        target = attackerHurtBox,
+                                    };
+                                    lightningOrb.procChainMask.AddProc(ProcType.Thorns);
 
-                                OrbManager.instance.AddOrb(lightningOrb);
+                                    OrbManager.instance.AddOrb(lightningOrb);
 
-                                victimBody.AddTimedBuff(razorwireCooldown, 1f, 1);
+                                    victimBody.AddTimedBuff(razorwireCooldown, 1f, 1);
+                                }
                             }
                         }
                     }

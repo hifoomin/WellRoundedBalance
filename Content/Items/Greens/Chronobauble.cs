@@ -13,7 +13,20 @@ namespace WellRoundedBalance.Items.Greens
 
         public override string PickupText => "Slow enemies on hit.";
 
-        public override string DescText => "<style=cIsUtility>Slow</style> enemies on hit for <style=cIsUtility>-33.3%</style> <style=cIsUtility>movement speed</style> and <style=cIsDamage>-10%</style> <style=cStack>(-5% per stack)</style> <style=cIsDamage>attack speed</style> for <style=cIsUtility>5s</style></style>.";
+        public override string DescText => "<style=cIsUtility>Slow</style> enemies on hit for <style=cIsUtility>-" + (Mathf.Round(slowPercent)) * 100f + "%</style> <style=cIsUtility>movement speed</style> " +
+                                           (baseAttackSpeedReduction > 0 || attackSpeedReductionPerStack > 0 ? "and <style=cIsDamage>-" + d(baseAttackSpeedReduction) + "</style> <style=cStack>(-" + d(attackSpeedReductionPerStack) + " per stack)</style> <style=cIsDamage>attack speed</style> for <style=cIsUtility>" + debuffDuration + "s</style></style>." : ".");
+
+        [ConfigField("Slow Percent", "Decimal.", 1f / 3f)]
+        public static float slowPercent;
+
+        [ConfigField("Debuff Duration", "", 5f)]
+        public static float debuffDuration;
+
+        [ConfigField("Base Attack Speed Reduction", "Decimal.", 0.15f)]
+        public static float baseAttackSpeedReduction;
+
+        [ConfigField("Attack Speed Reduction Per Stack", "Decimal.", 0.05f)]
+        public static float attackSpeedReductionPerStack;
 
         public override void Init()
         {
@@ -45,9 +58,9 @@ namespace WellRoundedBalance.Items.Greens
                 var stack = sender.inventory.GetItemCount(RoR2Content.Items.SlowOnHit);
                 if (sender.HasBuff(slow50) && stack > 0)
                 {
-                    args.moveSpeedReductionMultAdd += 0.5f;
-                    // 1 - (1/(1+0.5)) for actual slow
-                    args.attackSpeedReductionMultAdd += 0.15f + 0.075f * (stack - 1);
+                    args.moveSpeedReductionMultAdd += Mathf.Abs(1 - (1 / (1 - slowPercent)));
+                    // 1 - (1/(1+0.6)) for actual slow in vanilla
+                    args.attackSpeedReductionMultAdd += baseAttackSpeedReduction + attackSpeedReductionPerStack * (stack - 1);
                 }
             }
         }
@@ -65,7 +78,7 @@ namespace WellRoundedBalance.Items.Greens
                 c.Index += 1;
                 c.EmitDelegate<Func<float, float>>((useless) =>
                 {
-                    return 1f;
+                    return debuffDuration;
                 });
             }
             else

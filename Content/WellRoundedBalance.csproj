@@ -11,7 +11,7 @@
     <OutputPath>bin\</OutputPath>
     <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
     <WarningLevel>7</WarningLevel>
-    <NoWarn>0414</NoWarn>
+    <NoWarn>0414,0649</NoWarn>
     <Optimize>False</Optimize>
   </PropertyGroup>
 
@@ -33,7 +33,7 @@
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
       <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
       <WarningLevel>7</WarningLevel>
-      <NoWarn>0414</NoWarn>
+      <NoWarn>0414,0649</NoWarn>
     </PropertyGroup>
 	
   <ItemGroup>

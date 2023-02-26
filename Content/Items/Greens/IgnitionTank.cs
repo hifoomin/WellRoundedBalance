@@ -1,8 +1,4 @@
 ﻿using MonoMod.Cil;
-using RoR2;
-using RoR2.Projectile;
-using System;
-using UnityEngine;
 
 namespace WellRoundedBalance.Items.Greens
 {
@@ -11,9 +7,17 @@ namespace WellRoundedBalance.Items.Greens
         public override string Name => ":: Items :: Greens :: Ignition Tank";
         public override string InternalPickupToken => "strengthenBurn";
 
-        public override string PickupText => "Gain a 15% chance to ignite enemies on hit. Your ignite effects deal triple damage.";
+        public override string PickupText => (igniteChanceOnHit > 0 ? "Gain a " + igniteChanceOnHit + "% chance to ignite enemies on hit. " : "") +
+                                             "Your ignite effects deal " + igniteDamageIncrease + "x damage.";
 
-        public override string DescText => "Gain <style=cIsDamage>15%</style> chance to <style=cIsDamage>ignite</style> enemies on hit. Ignite effects deal <style=cIsDamage>+200%</style> <style=cStack>(+200% per stack)</style> more damage over time.";
+        public override string DescText => (igniteChanceOnHit > 0 ? "Gain <style=cIsDamage>" + igniteChanceOnHit + "%</style> chance to <style=cIsDamage>ignite</style> enemies on hit. " : "") +
+                                           "Ignite effects deal <style=cIsDamage>+" + d(igniteDamageIncrease) + "</style> <style=cStack>(+" + d(igniteDamageIncrease) + " per stack)</style> more damage over time.";
+
+        [ConfigField("Ignite Chance On Hit", "", 15f)]
+        public static float igniteChanceOnHit;
+
+        [ConfigField("Ignite Damage Increase", "Decimal.", 2)]
+        public static int igniteDamageIncrease;
 
         public override void Init()
         {
@@ -34,7 +38,7 @@ namespace WellRoundedBalance.Items.Greens
                     x => x.MatchLdcI4(3)))
             {
                 c.Index += 1;
-                c.Next.Operand = 2;
+                c.Next.Operand = igniteDamageIncrease;
             }
             else
             {
@@ -56,7 +60,7 @@ namespace WellRoundedBalance.Items.Greens
                         var stack = inventory.GetItemCount(DLC1Content.Items.StrengthenBurn);
                         if (stack > 0)
                         {
-                            if (Util.CheckRoll(15f * damageInfo.procCoefficient, damageInfo.attacker.GetComponent<CharacterBody>().master.luck))
+                            if (Util.CheckRoll(igniteChanceOnHit * damageInfo.procCoefficient, damageInfo.attacker.GetComponent<CharacterBody>().master.luck))
                             {
                                 InflictDotInfo blaze = new()
                                 {

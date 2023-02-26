@@ -1,15 +1,7 @@
-﻿using MonoMod.Cil;
-using RoR2;
-using RoR2.Projectile;
-using UnityEngine;
-
-namespace WellRoundedBalance.Items.Whites
+﻿namespace WellRoundedBalance.Items.Whites
 {
     public class StickyBomb : ItemBase
     {
-        public static float Delay;
-        public static int Falloff;
-
         public override string Name => ":: Items : Whites :: Sticky Bomb";
         public override string InternalPickupToken => "stickyBomb";
 

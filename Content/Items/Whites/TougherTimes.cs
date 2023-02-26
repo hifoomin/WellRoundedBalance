@@ -12,7 +12,10 @@ namespace WellRoundedBalance.Items.Whites
 
         public override string PickupText => "Chance to block incoming damage.";
 
-        public override string DescText => "<style=cIsHealing>9%</style> <style=cStack>(+9% per stack)</style> chance to <style=cIsHealing>block</style> incoming damage. <style=cIsUtility>Unaffected by luck</style>.";
+        public override string DescText => "<style=cIsHealing>" + blockChance + "%</style> <style=cStack>(+" + blockChance + "% per stack)</style> chance to <style=cIsHealing>block</style> incoming damage. <style=cIsUtility>Unaffected by luck</style>.";
+
+        [ConfigField("Block Chance", "", 9f)]
+        public static float blockChance;
 
         public override void Init()
         {
@@ -33,7 +36,7 @@ namespace WellRoundedBalance.Items.Whites
                     x => x.MatchLdcR4(15f)))
             {
                 c.Index += 2;
-                c.Next.Operand = 9f;
+                c.Next.Operand = blockChance;
             }
             else
             {
