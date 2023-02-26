@@ -12,7 +12,9 @@ namespace WellRoundedBalance.Items.Whites
         public override string InternalPickupToken => "fragileDamageBonus";
 
         public override string PickupText => "Deal bonus damage out of danger.";
-        public override string DescText => "<style=cIsDamage>Increase base damage</style> by <style=cIsDamage>" + d(damageIncrease) + "</style> <style=cStack>(+" + d(damageIncreaseStack) + " per stack)</style> while out of danger.";
+        public override string DescText => StackDesc(damageIncrease, damageIncreaseStack,
+            init => $"<style=cIsDamage>Increase base damage</style> by <style=cIsDamage>{d(init)}</style>{{Stack}} while out of danger.",
+            stack => d(stack));
 
         [ConfigField("Damage Increase", "Decimal.", 0.15f)]
         public static float damageIncrease;
@@ -29,7 +31,7 @@ namespace WellRoundedBalance.Items.Whites
             watchDamage.canStack = false;
             watchDamage.isDebuff = false;
             watchDamage.buffColor = new Color32(208, 165, 136, 255);
-            watchDamage.iconSprite = Sprite.Create(damageIcon, new Rect(0f, 0f, (float)damageIcon.width, (float)damageIcon.height), new Vector2(0f, 0f));
+            watchDamage.iconSprite = Sprite.Create(damageIcon, new Rect(0f, 0f, damageIcon.width, damageIcon.height), new Vector2(0f, 0f));
             watchDamage.name = "Delicate Watch Damage Boost";
 
             ContentAddition.AddBuffDef(watchDamage);
@@ -47,13 +49,10 @@ namespace WellRoundedBalance.Items.Whites
 
         private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
-            if (sender.inventory)
+            if (sender.inventory && sender.HasBuff(watchDamage))
             {
-                var stack = sender.inventory.GetItemCount(DLC1Content.Items.FragileDamageBonus);
-                if (sender.HasBuff(watchDamage))
-                {
-                    args.damageMultAdd += (damageIncreaseStack * (stack - 1)) + damageIncrease;
-                }
+                args.damageMultAdd += StackAmount(damageIncrease, damageIncreaseStack,
+                    sender.inventory.GetItemCount(DLC1Content.Items.FragileDamageBonus));
             }
         }
 
@@ -70,54 +69,23 @@ namespace WellRoundedBalance.Items.Whites
         {
             ILCursor c = new(il);
 
-            if (c.TryGotoNext(MoveType.Before,
-                x => x.MatchLdfld<HealthComponent.ItemCounts>("fragileDamageBonus"),
-                x => x.MatchLdcI4(0),
-                x => x.MatchBle(out _),
-                x => x.MatchLdarg(0),
-                x => x.MatchCallOrCallvirt<HealthComponent>("get_isHealthLow")
-            ))
+            if (c.TryGotoNext(x => x.MatchLdfld<HealthComponent.ItemCounts>(nameof(HealthComponent.ItemCounts.fragileDamageBonus))) && c.TryGotoNext(x => x.MatchBle(out _)))
             {
-                c.Index += 5;
-                c.Emit(OpCodes.Ldarg_0);
-                c.EmitDelegate<Func<bool, HealthComponent, bool>>((Check, self) =>
-                {
-                    if ((self.health + self.shield) / self.fullCombinedHealth < -float.MaxValue)
-                    {
-                        Check = true;
-                        return Check;
-                    }
-                    else
-                    {
-                        Check = false;
-                        return Check;
-                    }
-                });
+                c.Emit(OpCodes.Pop);
+                c.Emit(OpCodes.Ldc_I4, int.MaxValue); // try being bigger than this lol
             }
-            else
-            {
-                Main.WRBLogger.LogError("Failed to apply Delicate Watch Threshold hook");
-            }
+            else Main.WRBLogger.LogError("Failed to apply Delicate Watch Threshold hook");
         }
 
         public static void ChangeDamage(ILContext il)
         {
             ILCursor c = new(il);
-            if (c.TryGotoNext(MoveType.Before,
-                    x => x.MatchBle(out _),
-                    x => x.MatchLdloc(out _),
-                    x => x.MatchLdcR4(1),
-                    x => x.MatchLdloc(out _),
-                    x => x.MatchConvR4(),
-                    x => x.MatchLdcR4(0.2f)))
+            if (c.TryGotoNext(x => x.MatchLdloc(25)) && c.TryGotoNext(x => x.MatchBle(out _)))
             {
-                c.Index += 5;
-                c.Next.Operand = 0f;
+                c.Emit(OpCodes.Pop);
+                c.Emit(OpCodes.Ldc_I4, int.MaxValue);
             }
-            else
-            {
-                Main.WRBLogger.LogError("Failed to apply Delicate Watch Damage hook");
-            }
+            else Main.WRBLogger.LogError("Failed to apply Delicate Watch Damage hook");
         }
     }
 
@@ -125,14 +93,8 @@ namespace WellRoundedBalance.Items.Whites
     {
         public void FixedUpdate()
         {
-            if (body.HasBuff(DelicateWatch.watchDamage) && !body.outOfDanger)
-            {
-                body.RemoveBuff(DelicateWatch.watchDamage);
-            }
-            if (!body.HasBuff(DelicateWatch.watchDamage) && body.outOfDanger)
-            {
-                body.AddBuff(DelicateWatch.watchDamage);
-            }
+            if (body.HasBuff(DelicateWatch.watchDamage) && !body.outOfDanger) body.RemoveBuff(DelicateWatch.watchDamage);
+            if (!body.HasBuff(DelicateWatch.watchDamage) && body.outOfDanger) body.AddBuff(DelicateWatch.watchDamage);
         }
     }
 }

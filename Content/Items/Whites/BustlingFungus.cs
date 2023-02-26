@@ -1,4 +1,7 @@
-﻿using MonoMod.Cil;
+﻿using Mono.Cecil.Cil;
+using MonoMod.Cil;
+using RoR2.Items;
+using System;
 
 namespace WellRoundedBalance.Items.Whites
 {
@@ -46,42 +49,28 @@ namespace WellRoundedBalance.Items.Whites
         public static void Changes(ILContext il)
         {
             ILCursor c = new(il);
-            if (c.TryGotoNext(MoveType.Before,
-                    x => x.MatchCallOrCallvirt<CharacterBody>("get_radius"),
-                    x => x.MatchLdcR4(1.5f),
-                    x => x.MatchAdd(),
-                    x => x.MatchLdcR4(1.5f)))
+            if (c.TryGotoNext(x => x.MatchStloc(2)))
             {
-                c.Index += 1;
-                c.Next.Operand = baseRadius;
-                c.Index += 2;
-                c.Next.Operand = radiusPerStack;
+                c.Emit(OpCodes.Pop);
+                c.Emit(OpCodes.Ldarg_0);
+                c.Emit(OpCodes.Ldloc_0);
+                c.EmitDelegate<Func<MushroomBodyBehavior, int, float>>((self, stack) => self.body.radius + StackAmount(baseRadius, radiusPerStack, stack));
             }
-            else
+            else Main.WRBLogger.LogError("Failed to apply Bustling Fungus Radius hook");
+            if (c.TryGotoNext(x => x.MatchStfld<HealingWard>(nameof(HealingWard.interval))))
             {
-                Main.WRBLogger.LogError("Failed to apply Bustling Fungus Radius hook");
+                c.Emit(OpCodes.Pop);
+                c.Emit(OpCodes.Ldc_R4, healingInterval); // not operanding for compat
             }
-
-            c.Index = 0;
-
-            if (c.TryGotoNext(MoveType.Before,
-                    x => x.MatchLdcR4(0.25f),
-                    x => x.MatchStfld<HealingWard>("interval"),
-                    x => x.MatchLdarg(0),
-                    x => x.MatchLdfld<RoR2.Items.MushroomBodyBehavior>("mushroomHealingWard"),
-                    x => x.MatchLdcR4(0.045f),
-                    x => x.MatchLdcR4(0.0225f)))
+            else Main.WRBLogger.LogError("Failed to apply Bustling Fungus Interval hook");
+            if (c.TryGotoNext(x => x.MatchStfld<HealingWard>(nameof(HealingWard.healFraction))))
             {
-                c.Next.Operand = healingInterval;
-                c.Index += 4;
-                c.Next.Operand = baseHealing;
-                c.Index += 1;
-                c.Next.Operand = healingPerStack;
+                c.Emit(OpCodes.Pop);
+                c.Emit(OpCodes.Ldarg_0);
+                c.Emit(OpCodes.Ldloc_0);
+                c.EmitDelegate<Func<MushroomBodyBehavior, int, float>>((self, stack) => StackAmount(baseHealing, self.mushroomHealingWard.interval * healingPerStack, stack));
             }
-            else
-            {
-                Main.WRBLogger.LogError("Failed to apply Bustling Fungus Healing hook");
-            }
+            else Main.WRBLogger.LogError("Failed to apply Bustling Fungus Healing hook");
         }
     }
 }

@@ -12,10 +12,15 @@ namespace WellRoundedBalance.Items.Whites
 
         public override string PickupText => "Reduce damage the first time you are hit.";
 
-        public override string DescText => "<style=cIsHealing>Increase armor</style> by <style=cIsHealing>" + armorGain + "</style> <style=cStack>(+" + armorGain + " per stack)</style> while out of combat.";
+        public override string DescText => StackDesc(armorGain, armorGainStack,
+            init => $"<style=cIsHealing>Increase armor</style> by <style=cIsHealing>{init}</style>{{Stack}} while out of combat.",
+            stack => stack.ToString());
 
         [ConfigField("Armor Gain", "", 40f)]
         public static float armorGain;
+
+        [ConfigField("Armor Gain per Stack", "", 40f)]
+        public static float armorGainStack;
 
         public override void Init()
         {
@@ -26,7 +31,7 @@ namespace WellRoundedBalance.Items.Whites
             opalArmor.canStack = false;
             opalArmor.isCooldown = false;
             opalArmor.isDebuff = false;
-            opalArmor.iconSprite = Sprite.Create(opalIcon, new Rect(0f, 0f, (float)opalIcon.width, (float)opalIcon.height), new Vector2(0f, 0f));
+            opalArmor.iconSprite = Sprite.Create(opalIcon, new Rect(0f, 0f, opalIcon.width, opalIcon.height), new Vector2(0f, 0f));
             opalArmor.buffColor = new Color32(196, 194, 255, 255);
             opalArmor.name = "Oddly-shaped Opal Armor";
 
@@ -39,41 +44,19 @@ namespace WellRoundedBalance.Items.Whites
         {
             RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
             CharacterBody.onBodyInventoryChangedGlobal += CharacterBody_onBodyInventoryChangedGlobal;
-            IL.RoR2.CharacterBody.RecalculateStats += CharacterBody_RecalculateStats;
-        }
-
-        private void CharacterBody_RecalculateStats(ILContext il)
-        {
-            ILCursor c = new(il);
-
-            if (c.TryGotoNext(MoveType.Before,
-                    x => x.MatchLdsfld("RoR2.DLC1Content/Buffs", "OutOfCombatArmorBuff")))
-            {
-                c.Remove();
-                c.Emit<Buffs.Useless>(OpCodes.Ldsfld, nameof(Buffs.Useless.oddlyShapedOpalUseless));
-            }
-            else
-            {
-                Main.WRBLogger.LogError("Failed to apply Oddly-shaped Opal Removal hook");
-            }
+            On.RoR2.OutOfCombatArmorBehavior.SetProvidingBuff += (orig, self, _) => { };
         }
 
         private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
             var inventory = sender.inventory;
             if (sender.HasBuff(opalArmor) && inventory)
-            {
-                var stack = inventory.GetItemCount(DLC1Content.Items.OutOfCombatArmor);
-                args.armorAdd += armorGain * stack;
-            }
+                args.armorAdd += StackAmount(armorGain, armorGainStack, inventory.GetItemCount(DLC1Content.Items.OutOfCombatArmor));
         }
 
         private void CharacterBody_onBodyInventoryChangedGlobal(CharacterBody characterBody)
         {
-            if (NetworkServer.active)
-            {
-                characterBody.AddItemBehavior<OutOfCombatArmorBehavior>(characterBody.inventory.GetItemCount(DLC1Content.Items.OutOfCombatArmor));
-            }
+            if (NetworkServer.active) characterBody.AddItemBehavior<OutOfCombatArmorBehavior>(characterBody.inventory.GetItemCount(DLC1Content.Items.OutOfCombatArmor));
         }
     }
 
@@ -81,10 +64,7 @@ namespace WellRoundedBalance.Items.Whites
     {
         private void SetProvidingBuff(bool shouldProvideBuff)
         {
-            if (shouldProvideBuff == providingBuff)
-            {
-                return;
-            }
+            if (shouldProvideBuff == providingBuff) return;
             providingBuff = shouldProvideBuff;
             if (providingBuff)
             {

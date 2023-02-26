@@ -1,4 +1,6 @@
-﻿using MonoMod.Cil;
+﻿using Mono.Cecil.Cil;
+using MonoMod.Cil;
+using System;
 
 namespace WellRoundedBalance.Items.Whites
 {
@@ -10,18 +12,24 @@ namespace WellRoundedBalance.Items.Whites
 
         public override string PickupText => "Killing an enemy ignites other nearby enemies.";
 
-        public override string DescText => "Killing an enemy <style=cIsDamage>ignites</style> all enemies within <style=cIsDamage>" + baseRange + "m</style>" +
-                                           (rangePerStack > 0 ? " <style=cStack>(+" + rangePerStack + "m per stack)</style>" : "") +
-                                           " for <style=cIsDamage>" + d(explosionDamage) + "</style> base damage." +
-                                           " Additionally, enemies <style=cIsDamage>burn</style> for <style=cIsDamage>" + d(burnDamagePerStack * (baseBurnDamage + 1)) + "</style> <style=cStack>(+" + (baseBurnDamage != 1 ? d(burnDamagePerStack * (baseBurnDamage + 2)) : d(burnDamagePerStack * (baseBurnDamage + 1)) + " per stack)</style> base damage.");
+        public override string DescText => StackDesc(baseRange, rangePerStack,
+            init => $"Killing an enemy <style=cIsDamage>ignites</style> all enemies within <style=cIsDamage>{init}m</style>{{Stack}}",
+            stack => stack + "m") + StackDesc(explosionDamage, explosionDamageStack,
+                init => $" for <style=cIsDamage>{d(init)}</style>{{Stack}} base damage.",
+                stack => d(stack)) + StackDesc(baseBurnDamage, burnDamagePerStack,
+                    init => ((explosionDamage > 0 || explosionDamageStack > 0) ? " Additionally, enemies <style=cIsDamage>burn</style>" : ", <style=cIsDamage>burning</style> enemies") + $" for <style=cIsDamage>{d(init)}</style>{{Stack}} base damage.",
+                    stack => d(stack));
 
         [ConfigField("Explosion Damage", "Decimal.", 1f)]
         public static float explosionDamage;
 
-        [ConfigField("Base Burn Damage", "Decimal. Formula for burn damage: Burn Damage Per Stack * (Base Burn Damage + Gasoline)", 1)]
-        public static int baseBurnDamage;
+        [ConfigField("Explosion Damage per Stack", "Decimal.", 1f)]
+        public static float explosionDamageStack;
 
-        [ConfigField("Burn Damage Per Stack", "Decimal. Formula for burn damage: Burn Damage Per Stack * (Base Burn Damage + Gasoline)", 1f)]
+        [ConfigField("Base Burn Damage", "Decimal.", 2f)]
+        public static float baseBurnDamage;
+
+        [ConfigField("Burn Damage Per Stack", "Decimal.", 2f)]
         public static float burnDamagePerStack;
 
         [ConfigField("Base Range", "", 12f)]
@@ -43,52 +51,28 @@ namespace WellRoundedBalance.Items.Whites
         private void GlobalEventManager_ProcIgniteOnKill(ILContext il)
         {
             ILCursor c = new(il);
-
-            if (c.TryGotoNext(MoveType.Before,
-                    x => x.MatchLdcI4(1),
-                    x => x.MatchLdarg(1),
-                    x => x.MatchAdd(),
-                    x => x.MatchConvR4(),
-                    x => x.MatchLdcR4(0.75f)))
+            if (c.TryGotoNext(x => x.MatchStloc(0)))
             {
-                c.Next.Operand = baseBurnDamage;
-                c.Index += 4;
-                c.Next.Operand = burnDamagePerStack;
+                c.Emit(OpCodes.Pop);
+                c.Emit(OpCodes.Ldarg_2);
+                c.Emit(OpCodes.Ldarg_1);
+                c.EmitDelegate<Func<CharacterBody, int, float>>((self, stack) => self.radius + StackAmount(baseRange, rangePerStack, stack));
             }
-            else
+            else Main.WRBLogger.LogError("Failed to apply Gasoline Radius hook");
+            if (c.TryGotoNext(x => x.MatchStloc(2)))
             {
-                Main.WRBLogger.LogError("Failed to apply Gasoline Burn Damage hook");
+                c.Emit(OpCodes.Pop);
+                c.Emit(OpCodes.Ldarg_1);
+                c.EmitDelegate<Func<int, float>>(stack => StackAmount(explosionDamage, explosionDamageStack, stack));
             }
-
-            c.Index = 0;
-
-            if (c.TryGotoNext(MoveType.Before,
-               x => x.MatchAdd(),
-               x => x.MatchStloc(1),
-               x => x.MatchLdcR4(1.5f)))
+            else Main.WRBLogger.LogError("Failed to apply Gasoline Explosion Damage hook");
+            if (c.TryGotoNext(x => x.MatchStloc(5)) && c.TryGotoPrev(MoveType.After, x => x.MatchMul()))
             {
-                c.Index += 2;
-                c.Next.Operand = explosionDamage;
+                c.Emit(OpCodes.Pop);
+                c.Emit(OpCodes.Ldarg_1);
+                c.EmitDelegate<Func<int, float>>(stack => StackAmount(baseBurnDamage, burnDamagePerStack, stack));
             }
-            else
-            {
-                Main.WRBLogger.LogError("Failed to apply Gasoline Explosion Damage hook");
-            }
-
-            c.Index = 0;
-
-            if (c.TryGotoNext(MoveType.Before,
-                x => x.MatchLdcR4(8f),
-                x => x.MatchLdcR4(4f)))
-            {
-                c.Next.Operand = baseRange - rangePerStack;
-                c.Index += 1;
-                c.Next.Operand = rangePerStack;
-            }
-            else
-            {
-                Main.WRBLogger.LogError("Failed to apply Gasoline Radius hook");
-            }
+            else Main.WRBLogger.LogError("Failed to apply Gasoline Burn Damage hook");
         }
     }
 }

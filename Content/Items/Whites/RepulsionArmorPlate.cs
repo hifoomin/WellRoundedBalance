@@ -1,4 +1,6 @@
-﻿using MonoMod.Cil;
+﻿using Mono.Cecil.Cil;
+using MonoMod.Cil;
+using System;
 
 namespace WellRoundedBalance.Items.Whites
 {
@@ -9,10 +11,15 @@ namespace WellRoundedBalance.Items.Whites
 
         public override string PickupText => "Receive flat damage reduction from all attacks.";
 
-        public override string DescText => "Reduce all <style=cIsDamage>incoming damage</style> by <style=cIsDamage>" + flatDamageReduction + "<style=cStack> (+" + flatDamageReduction + " per stack)</style></style>. Cannot be reduced below <style=cIsDamage>" + minimumDamage + "</style>.";
+        public override string DescText => StackDesc(flatDamageReduction, flatDamageReductionStack,
+            init => $"Reduce all <style=cIsDamage>incoming damage</style> by <style=cIsDamage>{init}</style>{{Stack}}. Cannot be reduced below <style=cIsDamage>{minimumDamage}</style>.",
+            stack => stack.ToString());
 
         [ConfigField("Flat Damage Reduction", "", 5f)]
         public static float flatDamageReduction;
+
+        [ConfigField("Flat Damage Reduction per Stack", "", 5f)]
+        public static float flatDamageReductionStack;
 
         [ConfigField("Minimum Damage", "", 8f)]
         public static float minimumDamage;
@@ -31,34 +38,14 @@ namespace WellRoundedBalance.Items.Whites
         {
             ILCursor c = new(il);
 
-            if (c.TryGotoNext(MoveType.Before,
-                    x => x.MatchLdcR4(1),
-                    x => x.MatchLdloc(out _),
-                    x => x.MatchLdcR4(5)))
+            if (c.TryGotoNext(x => x.MatchLdfld<HealthComponent.ItemCounts>(nameof(HealthComponent.ItemCounts.armorPlate))) && c.TryGotoNext(x => x.MatchStloc(6)))
             {
-                c.Index += 2;
-                c.Next.Operand = flatDamageReduction;
+                c.Emit(OpCodes.Pop);
+                c.Emit(OpCodes.Ldloc, 6);
+                c.Emit(OpCodes.Ldarg_0);
+                c.EmitDelegate<Func<float, HealthComponent, float>>((orig, self) => Mathf.Max(minimumDamage, StackAmount(flatDamageReduction, flatDamageReductionStack, self.itemCounts.armorPlate)));
             }
-            else
-            {
-                Main.WRBLogger.LogError("Failed to apply Repulsion Armor Plate Reduction hook");
-            }
-
-            c.Index = 0;
-
-            if (c.TryGotoNext(MoveType.Before,
-
-               x => x.MatchLdcI4(0),
-               x => x.MatchBle(out _),
-               x => x.MatchLdcR4(1)))
-            {
-                c.Index += 2;
-                c.Next.Operand = minimumDamage;
-            }
-            else
-            {
-                Main.WRBLogger.LogError("Failed to apply Repulsion Armor Plate Minimum hook");
-            }
+            else Main.WRBLogger.LogError("Failed to apply Repulsion Armor Plate hook");
         }
     }
 }

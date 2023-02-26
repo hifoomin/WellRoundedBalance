@@ -1,5 +1,7 @@
-﻿using MonoMod.Cil;
+﻿using Mono.Cecil.Cil;
+using MonoMod.Cil;
 using RoR2;
+using System;
 
 namespace WellRoundedBalance.Items.Whites
 {
@@ -9,10 +11,15 @@ namespace WellRoundedBalance.Items.Whites
         public override string InternalPickupToken => "crowbar";
 
         public override string PickupText => "Deal bonus damage to enemies above " + d(healthThreshold) + " health.";
-        public override string DescText => "Deal <style=cIsDamage>" + d(damageIncrease) + "</style> <style=cStack>(+" + d(damageIncrease) + " per stack)</style> damage to enemies above <style=cIsDamage>" + d(healthThreshold) + " health</style>.";
+        public override string DescText => StackDesc(damageIncrease, damageIncreaseStack, 
+            init => $"Deal <style=cIsDamage>{d(init)}</style>{{Stack}} damage to enemies above <style=cIsDamage>{d(healthThreshold)} health</style>.",
+            stack => d(stack));
 
         [ConfigField("Damage Increase", "Decimal.", 0.4f)]
         public static float damageIncrease;
+
+        [ConfigField("Damage Increase per Stack", "Decimal.", 0.4f)]
+        public static float damageIncreaseStack;
 
         [ConfigField("Health Threshold", "Decimal.", 0.85f)]
         public static float healthThreshold;
@@ -30,32 +37,19 @@ namespace WellRoundedBalance.Items.Whites
         public static void Changes(ILContext il)
         {
             ILCursor c = new(il);
-            if (c.TryGotoNext(MoveType.Before,
-                x => x.MatchLdcR4(1f),
-                x => x.MatchLdcR4(0.75f)))
+            if (c.TryGotoNext(x => x.MatchCallOrCallvirt<HealthComponent>("get_" + nameof(HealthComponent.fullCombinedHealth))) && c.TryGotoNext(x => x.MatchMul()))
             {
-                c.Index += 1;
-                c.Next.Operand = damageIncrease;
+                c.Emit(OpCodes.Pop);
+                c.Emit(OpCodes.Ldc_R4, healthThreshold);
             }
-            else
+            else Main.WRBLogger.LogError("Failed to apply Crowbar Threshold hook");
+            if (c.TryGotoNext(x => x.MatchLdloc(19)) && c.TryGotoNext(x => x.MatchStloc(6)))
             {
-                Main.WRBLogger.LogError("Failed to apply Crowbar Damage hook");
+                c.Emit(OpCodes.Pop);
+                c.Emit(OpCodes.Ldloc, 19);
+                c.EmitDelegate<Func<int, float>>(stack => StackAmount(damageIncrease, damageIncreaseStack, stack));
             }
-
-            c.Index = 0;
-
-            if (c.TryGotoNext(MoveType.Before,
-               x => x.MatchLdarg(0),
-               x => x.MatchCallOrCallvirt<HealthComponent>("get_fullCombinedHealth"),
-               x => x.MatchLdcR4(0.9f)))
-            {
-                c.Index += 2;
-                c.Next.Operand = healthThreshold;
-            }
-            else
-            {
-                Main.WRBLogger.LogError("Failed to apply Crowbar Threshold hook");
-            }
+            else Main.WRBLogger.LogError("Failed to apply Crowbar Damage hook");
         }
     }
 }

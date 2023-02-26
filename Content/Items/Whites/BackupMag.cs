@@ -9,8 +9,8 @@
 
         public override string DescText => "Add <style=cIsUtility>+1</style> <style=cStack>(+1 per stack)</style> charge of your <style=cIsUtility>Secondary skill</style>." +
                                            StackDesc(secondarySkillCooldownReduction, secondarySkillCooldownReductionStack, 
-                                               init => $" Reduce your <style=cIsUtility>secondary skill cooldown</style> by <style=cIsUtility>{d(secondarySkillCooldownReductionStack)}</style>{{Stack}}.", 
-                                               stack => d(secondarySkillCooldownReduction));
+                                               init => $" Reduce your <style=cIsUtility>secondary skill cooldown</style> by <style=cIsUtility>{d(init)}</style>{{Stack}}.", 
+                                               stack => d(stack));
 
         [ConfigField("Secondary Skill Cooldown Reduction", "Decimal.", 0.05f)]
         public static float secondarySkillCooldownReduction;

@@ -1,4 +1,5 @@
-﻿using MonoMod.Cil;
+﻿using Mono.Cecil.Cil;
+using MonoMod.Cil;
 using RoR2;
 using RoR2.Projectile;
 using System;
@@ -14,7 +15,7 @@ namespace WellRoundedBalance.Items.Whites
         public override string PickupText => "Activating an interactable launches fireworks at nearby enemies.";
 
         public override string DescText => StackDesc(fireworks, fireworksStack,
-            init => $"Activating an interactable <style=cIsDamage>launches {s(fireworks, "{Stack} firework")} that deal <style=cIsDamage>{d(blastDamageCoefficient)}</style> base damage.</style>",
+            init => $"Activating an interactable <style=cIsDamage>launches {s(init, "{Stack} firework")} that deal <style=cIsDamage>{d(blastDamageCoefficient)}</style> base damage.</style>",
             stack => stack.ToString());
 
         [ConfigField("Fireworks", "", 8)]
@@ -48,16 +49,11 @@ namespace WellRoundedBalance.Items.Whites
             ILCursor c = new(il);
             if (c.TryGotoNext(x => x.MatchStfld<FireworkLauncher>(nameof(FireworkLauncher.remaining))))
             {
-                c.EmitDelegate<Func<int, int>>((val) =>
-                {
-                    return fireworks - fireworksStack + ((val - fireworksStack) / fireworksStack) * fireworksStack;
-                    // 8 - 4 + ((val - 4) / 4) * 4;
-                });
+                c.Emit(OpCodes.Pop);
+                c.Emit(OpCodes.Ldloc, 6);
+                c.EmitDelegate<Func<int, int>>(stack => (int)StackAmount(fireworks, fireworksStack, stack));
             }
-            else
-            {
-                Main.WRBLogger.LogError("Failed to apply Bundle Of Fireworks Count hook");
-            }
+            else Main.WRBLogger.LogError("Failed to apply Bundle Of Fireworks Count hook");
         }
 
         public static void Changes()
