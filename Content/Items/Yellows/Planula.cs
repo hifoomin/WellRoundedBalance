@@ -59,8 +59,8 @@ namespace WellRoundedBalance.Items.Yellows
     {
         private float timer = 0;
         private float burnDistanceBase = 10000;
-        private float burnInterval = 0.4f;
-        private float burnDuration = 15f;
+        private float burnInterval = 0.6f;
+        private float burnDuration = 5f;
 
         private GameObject sunInstance;
 

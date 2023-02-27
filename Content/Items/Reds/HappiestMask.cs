@@ -12,7 +12,19 @@ namespace WellRoundedBalance.Items.Reds
 
         public override string PickupText => "Summon a ghost upon killing an enemy. Recharges over time.";
 
-        public override string DescText => "Killing an enemy <style=cIsDamage>spawns a ghost</style> with <style=cIsDamage>1200%</style> <style=cStack>(+400% per stack)</style> damage that lasts <style=cIsDamage>30s</style>. Recharges every <style=cIsDamage>20s</style>.";
+        public override string DescText => "Killing an enemy <style=cIsDamage>spawns a ghost</style> with <style=cIsDamage>" + d(baseDamage) + "</style> <style=cStack>(+" + d(damagePerStack) + " per stack)</style> damage that lasts <style=cIsDamage>" + lifetime + "s</style>. Recharges every <style=cIsDamage>" + buffCooldown + "s</style>.";
+
+        [ConfigField("Buff Cooldown", "", 20f)]
+        public static float buffCooldown;
+
+        [ConfigField("Lifetime", "", 30)]
+        public static int lifetime;
+
+        [ConfigField("Base Damage", "Decimal.", 12)]
+        public static int baseDamage;
+
+        [ConfigField("Damage Per Stack", "Decimal.", 4)]
+        public static int damagePerStack;
 
         public override void Init()
         {
@@ -91,7 +103,7 @@ namespace WellRoundedBalance.Items.Reds
                         if (happiestMaskController && happiestMaskController.CanSpawnGhost())
                         {
                             happiestMaskController.AddGhost(SpawnMaskGhost(victimBody, attackerBody, stack));
-                            for (int i = 1; i <= 20; i++)
+                            for (int i = 1; i <= buffCooldown; i++)
                             {
                                 attackerBody.AddTimedBuff(happiestMaskCooldown.buffIndex, i);
                             }
@@ -148,8 +160,8 @@ namespace WellRoundedBalance.Items.Reds
 
                     if (ownerBody && ownerBody.teamComponent && ownerBody.teamComponent.teamIndex == TeamIndex.Player)
                     {
-                        inventory.GiveItem(RoR2Content.Items.BoostDamage.itemIndex, 12 + 4 * itemCount);
-                        inventory.GiveItem(RoR2Content.Items.HealthDecay.itemIndex, 30);
+                        inventory.GiveItem(RoR2Content.Items.BoostDamage.itemIndex, baseDamage + damagePerStack * itemCount);
+                        inventory.GiveItem(RoR2Content.Items.HealthDecay.itemIndex, lifetime);
                     }
                 }
             }

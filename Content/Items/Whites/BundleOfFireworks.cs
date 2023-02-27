@@ -1,8 +1,5 @@
 ﻿using MonoMod.Cil;
-using RoR2;
-using RoR2.Projectile;
 using System;
-using UnityEngine;
 
 namespace WellRoundedBalance.Items.Whites
 {
@@ -31,11 +28,11 @@ namespace WellRoundedBalance.Items.Whites
 
         public override void Hooks()
         {
-            IL.RoR2.GlobalEventManager.OnInteractionBegin += ChangeCount;
+            IL.RoR2.GlobalEventManager.OnInteractionBegin += GlobalEventManager_OnInteractionBegin;
             Changes();
         }
 
-        public static void ChangeCount(ILContext il)
+        private void GlobalEventManager_OnInteractionBegin(ILContext il)
         {
             ILCursor c = new(il);
             if (c.TryGotoNext(x => x.MatchStfld<FireworkLauncher>("remaining")))
@@ -52,7 +49,7 @@ namespace WellRoundedBalance.Items.Whites
             }
         }
 
-        public static void Changes()
+        private void Changes()
         {
             var firework = Utils.Paths.GameObject.FireworkProjectile.Load<GameObject>();
             var projectileImpactExplosion = firework.GetComponent<ProjectileImpactExplosion>();

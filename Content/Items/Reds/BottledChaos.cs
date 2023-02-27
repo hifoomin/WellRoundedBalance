@@ -8,9 +8,14 @@ namespace WellRoundedBalance.Items.Reds
         public override string Name => ":: Items ::: Reds :: Bottled Chaos";
         public override string InternalPickupToken => "randomEquipmentTrigger";
 
-        public override string PickupText => "Activating your Equipment triggers 3 additional, random Equipment effects.";
+        public override string PickupText => "Activating your Equipment triggers " + randomEquipmentActivations + " additional, random Equipment effect" +
+                                             (randomEquipmentActivations != 1 ? "s." : ".");
 
-        public override string DescText => "Upon <style=cIsUtility>activating</style> your <style=cIsUtility>equipment</style>, trigger <style=cIsDamage>3</style> <style=cStack>(+3 per stack)</style> <style=cIsDamage>random equipment</style> effects.";
+        public override string DescText => "Upon <style=cIsUtility>activating</style> your <style=cIsUtility>equipment</style>, trigger <style=cIsDamage>" + randomEquipmentActivations + "</style> <style=cStack>(+" + randomEquipmentActivations + " per stack)</style> <style=cIsDamage>random equipment</style> effect" +
+                                            (randomEquipmentActivations != 1 ? "s." : ".");
+
+        [ConfigField("Random Equipment Activations", "", 3)]
+        public static int randomEquipmentActivations;
 
         public override void Init()
         {
@@ -31,7 +36,7 @@ namespace WellRoundedBalance.Items.Reds
                 x => x.MatchCallOrCallvirt<Inventory>("GetItemCount")))
             {
                 c.Index += 2;
-                c.Emit(OpCodes.Ldc_I4, 3);
+                c.Emit(OpCodes.Ldc_I4, randomEquipmentActivations);
                 c.Emit(OpCodes.Mul);
             }
             else

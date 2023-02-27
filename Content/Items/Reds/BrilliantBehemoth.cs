@@ -1,6 +1,4 @@
-﻿using HG;
-using Mono.Cecil.Cil;
-using MonoMod.Cil;
+﻿using MonoMod.Cil;
 
 namespace WellRoundedBalance.Items.Reds
 {
@@ -11,7 +9,10 @@ namespace WellRoundedBalance.Items.Reds
 
         public override string PickupText => "All your attacks explode!";
 
-        public override string DescText => "All your <style=cIsDamage>attacks explode</style> in a <style=cIsDamage>4m </style> <style=cStack>(+2.5m per stack)</style> radius for a bonus <style=cIsDamage>55%</style> TOTAL damage to nearby enemies.";
+        public override string DescText => "All your <style=cIsDamage>attacks explode</style> in a <style=cIsDamage>4m </style> <style=cStack>(+2.5m per stack)</style> radius for a bonus <style=cIsDamage>" + d(totalDamage) + "</style> TOTAL damage to nearby enemies.";
+
+        [ConfigField("TOTAL Damage", "Decimal.", 0.55f)]
+        public static float totalDamage;
 
         public override void Init()
         {
@@ -30,7 +31,7 @@ namespace WellRoundedBalance.Items.Reds
             if (c.TryGotoNext(MoveType.Before,
                     x => x.MatchLdcR4(0.6f)))
             {
-                c.Next.Operand = 0.55f;
+                c.Next.Operand = totalDamage;
             }
             else
             {

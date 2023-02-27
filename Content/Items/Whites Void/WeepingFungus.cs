@@ -10,7 +10,13 @@ namespace WellRoundedBalance.Items.VoidWhites
         public override string InternalPickupToken => "mushroomVoid";
 
         public override string PickupText => "Heal while sprinting. <style=cIsVoid>Corrupts all Bustling Fungi</style>.";
-        public override string DescText => "<style=cIsHealing>Heals</style> for <style=cIsHealing>1.5%</style> <style=cStack>(+0.5% per stack)</style> of your <style=cIsHealing>health</style> every second <style=cIsUtility>while sprinting</style>. <style=cIsVoid>Corrupts all Bustling Fungi</style>.";
+        public override string DescText => "<style=cIsHealing>Heals</style> for <style=cIsHealing>" + d(basePercentHealing) + "</style> <style=cStack>(+" + percentHealingPerStack + " per stack)</style> of your <style=cIsHealing>health</style> every second <style=cIsUtility>while sprinting</style>. <style=cIsVoid>Corrupts all Bustling Fungi</style>.";
+
+        [ConfigField("Base Percent Healing", "Decimal.", 0.0125f)]
+        public static float basePercentHealing;
+
+        [ConfigField("Percent Healing Per Stack", "Decimal.", 0.005f)]
+        public static float percentHealingPerStack;
 
         public override void Init()
         {
@@ -33,7 +39,7 @@ namespace WellRoundedBalance.Items.VoidWhites
                 c.Emit(OpCodes.Ldarg_0);
                 c.EmitDelegate<Func<float, MushroomVoidBehavior, float>>((useless, self) =>
                 {
-                    return (0.015f + 0.005f * (self.stack - 1)) * 0.5f;
+                    return (basePercentHealing + percentHealingPerStack * (self.stack - 1)) * 0.5f;
                 });
             }
             else

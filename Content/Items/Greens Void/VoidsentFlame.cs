@@ -8,7 +8,22 @@ namespace WellRoundedBalance.Items.VoidGreens
         public override string InternalPickupToken => "explodeOnDeathVoid";
 
         public override string PickupText => "Full health enemies also detonate on hit. <style=cIsVoid>Corrupts all Will-o'-the-wisps</style>.";
-        public override string DescText => "Upon hitting an enemy at <style=cIsDamage>100% health</style>, <style=cIsDamage>detonate</style> them in a <style=cIsDamage>12m</style> radius burst for <style=cIsDamage>80%</style> <style=cStack>(+20% per stack)</style> base damage. <style=cIsVoid>Corrupts all Will-o'-the-wisps</style>.";
+
+        public override string DescText => "Upon hitting an enemy at <style=cIsDamage>100% health</style>, <style=cIsDamage>detonate</style> them in a <style=cIsDamage>" + baseRange + "m</style>" +
+                                           (rangePerStack > 0 ? " <style=cStack>(+" + rangePerStack + "m per stack)</style>" : "") +
+                                           " radius burst for <style=cIsDamage>" + d(baseDamage) + "</style> <style=cStack>(+" + d(damagePerStack) + " per stack)</style> base damage. <style=cIsVoid>Corrupts all Will-o'-the-wisps</style>.";
+
+        [ConfigField("Base Damage", "Decimal.", 0.8f)]
+        public static float baseDamage;
+
+        [ConfigField("Damage Per Stack", "Decimal.", 0.2f)]
+        public static float damagePerStack;
+
+        [ConfigField("Base Range", "", 12f)]
+        public static float baseRange;
+
+        [ConfigField("Range Per Stack", "", 0f)]
+        public static float rangePerStack;
 
         public override void Init()
         {
@@ -26,24 +41,12 @@ namespace WellRoundedBalance.Items.VoidGreens
             ILCursor c = new(il);
 
             if (c.TryGotoNext(MoveType.Before,
-                    x => x.MatchLdcR4(1000f)))
-            {
-                c.Next.Operand = 0f;
-            }
-            else
-            {
-                Main.WRBLogger.LogError("Failed to apply Voidsent Flame Knockback hook");
-            }
-
-            c.Index = 0;
-
-            if (c.TryGotoNext(MoveType.Before,
                     x => x.MatchLdcR4(12f),
                     x => x.MatchLdcR4(2.4f)))
             {
-                c.Next.Operand = 12f;
+                c.Next.Operand = baseRange;
                 c.Index += 1;
-                c.Next.Operand = 0f;
+                c.Next.Operand = rangePerStack;
             }
             else
             {
@@ -61,9 +64,9 @@ namespace WellRoundedBalance.Items.VoidGreens
                     x => x.MatchConvR4(),
                     x => x.MatchLdcR4(0.6f)))
             {
-                c.Next.Operand = 0.8f;
+                c.Next.Operand = baseDamage;
                 c.Index += 6;
-                c.Next.Operand = 0.25f;
+                c.Next.Operand = damagePerStack / baseDamage;
             }
             else
             {

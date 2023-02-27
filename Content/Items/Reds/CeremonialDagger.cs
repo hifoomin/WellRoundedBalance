@@ -16,10 +16,10 @@
 
         public override void Hooks()
         {
-            ChangeProc();
+            Changes();
         }
 
-        public static void ChangeProc()
+        public static void Changes()
         {
             var c = Utils.Paths.GameObject.DaggerProjectile.Load<GameObject>().GetComponent<ProjectileController>();
             c.procCoefficient = 0f;

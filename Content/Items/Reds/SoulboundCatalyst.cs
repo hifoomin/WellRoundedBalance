@@ -11,7 +11,13 @@ namespace WellRoundedBalance.Items.Reds
 
         public override string PickupText => "Kills reduce equipment cooldown.";
 
-        public override string DescText => "<style=cIsDamage>Kills reduce</style> <style=cIsUtility>equipment cooldown</style> by <style=cIsUtility>3s</style> <style=cStack>(+2s per stack)</style>.";
+        public override string DescText => "<style=cIsDamage>Kills reduce</style> <style=cIsUtility>equipment cooldown</style> by <style=cIsUtility>" + baseEquipmentCooldownReduction + "s</style> <style=cStack>(+" + equipmentCooldownReductionPerStack + "s per stack)</style>.";
+
+        [ConfigField("Base Equipment Cooldown Reduction", "", 3f)]
+        public static float baseEquipmentCooldownReduction;
+
+        [ConfigField("Equipment Cooldown Reduction Per Stack", "", 2f)]
+        public static float equipmentCooldownReductionPerStack;
 
         public override void Init()
         {
@@ -35,9 +41,9 @@ namespace WellRoundedBalance.Items.Reds
                 x => x.MatchLdcR4(2f)))
             {
                 c.Index += 1;
-                c.Next.Operand = 1f;
+                c.Next.Operand = baseEquipmentCooldownReduction - equipmentCooldownReductionPerStack;
                 c.Index += 2;
-                c.Next.Operand = 2f;
+                c.Next.Operand = equipmentCooldownReductionPerStack;
             }
             else
             {

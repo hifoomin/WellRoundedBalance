@@ -8,7 +8,10 @@ namespace WellRoundedBalance.Items.Lunars
         public override string InternalPickupToken => "goldOnHit";
 
         public override string PickupText => "Gain gold on hit... <color=#FF7F7F>BUT surrender gold on getting hit</color>.";
-        public override string DescText => "<style=cIsUtility>30% chance on hit</style> to gain <style=cIsUtility>1.5<style=cStack> (+1.5 per stack)</style> gold</style>. <style=cIsUtility>Scales over time.</style>\n\nOn taking damage, <style=cIsHealth>lose gold</style> equal to <style=cIsHealth>100%<style=cStack> (+100% per stack)</style></style> of the <style=cIsHealth>maximum health percentage you lost</style>.";
+        public override string DescText => "<style=cIsUtility>30% chance on hit</style> to gain <style=cIsUtility>" + goldGain + "<style=cStack> (+" + goldGain + " per stack)</style> gold</style>. <style=cIsUtility>Scales over time.</style>\n\nOn taking damage, <style=cIsHealth>lose gold</style> equal to <style=cIsHealth>100%<style=cStack> (+100% per stack)</style></style> of the <style=cIsHealth>maximum health percentage you lost</style>.";
+
+        [ConfigField("Gold Gain", "", 1.5f)]
+        public static float goldGain;
 
         public override void Init()
         {
@@ -29,7 +32,7 @@ namespace WellRoundedBalance.Items.Lunars
                     x => x.MatchMul(),
                     x => x.MatchCallOrCallvirt<Run>("get_instance")))
             {
-                c.Next.Operand = 1.5f;
+                c.Next.Operand = goldGain;
             }
             else
             {

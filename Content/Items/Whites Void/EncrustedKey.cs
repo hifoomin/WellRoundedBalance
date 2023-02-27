@@ -1,8 +1,4 @@
-﻿using RoR2;
-using UnityEngine;
-using UnityEngine.AddressableAssets;
-
-namespace WellRoundedBalance.Items.Whites
+﻿namespace WellRoundedBalance.Items.Whites
 {
     public class EncrustedKey : ItemBase
     {
@@ -11,6 +7,9 @@ namespace WellRoundedBalance.Items.Whites
 
         public override string PickupText => "Gain access to an Encrusted Cache that contains a void item. <style=cIsVoid>Corrupts all Rusted Keys</style>.";
         public override string DescText => "A <style=cIsUtility>hidden cache</style> containing an item (41.66%/<style=cIsHealing>41.66%</style>/<style=cIsHealth>10%</style>) will appear in a random location <style=cIsUtility>on each stage</style>. Opening the cache <style=cIsUtility>consumes</style> this item. <style=cIsVoid>Corrupts all Rusted Keys</style>.";
+
+        [ConfigField("Choice Amount", "", 2)]
+        public static int choiceAmount;
 
         public override void Init()
         {
@@ -25,7 +24,7 @@ namespace WellRoundedBalance.Items.Whites
         private void Changes()
         {
             var vlockbox = Addressables.LoadAssetAsync<GameObject>("RoR2/DLC1/TreasureCacheVoid/LockboxVoid.prefab").WaitForCompletion().GetComponent<OptionChestBehavior>();
-            vlockbox.numOptions = 2;
+            vlockbox.numOptions = choiceAmount;
 
             var vlockDt = Addressables.LoadAssetAsync<BasicPickupDropTable>("RoR2/DLC1/TreasureCacheVoid/dtVoidLockbox.asset").WaitForCompletion();
         }

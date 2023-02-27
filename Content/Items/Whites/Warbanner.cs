@@ -43,7 +43,7 @@ namespace WellRoundedBalance.Items.Whites
         {
             if (sender.inventory)
             {
-                var stack = sender.inventory.GetItemCount(RoR2Content.Items.WardOnLevel);
+                var stack = Util.GetItemCountForTeam(sender.teamComponent.teamIndex, RoR2Content.Items.WardOnLevel.itemIndex, false);
                 if (sender.HasBuff(RoR2Content.Buffs.Warbanner.buffIndex))
                 {
                     args.baseAttackSpeedAdd += attackSpeedAndMovementSpeedPerStack * (stack - 1);

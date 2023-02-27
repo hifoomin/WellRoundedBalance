@@ -19,7 +19,7 @@ namespace WellRoundedBalance.Items.Whites
         [ConfigField("Base Gold Per Stage", "", 25)]
         public static int baseGoldPerStage;
 
-        [ConfigField("Gold Per Stage Per Stack", "", 15)]
+        [ConfigField("Gold Per Stage Per Stack", "", 25)]
         public static int goldPerStagePerStack;
 
         public override void Init()

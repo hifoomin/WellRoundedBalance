@@ -8,7 +8,13 @@ namespace WellRoundedBalance.Items.Lunars
         public override string InternalPickupToken => "repeatHeal";
 
         public override string PickupText => "Increase your healing... <color=#FF7F7F>BUT it's applied over time.</color>";
-        public override string DescText => "<style=cIsHealing>Heal +50%</style> <style=cStack>(+50% per stack)</style> more. <style=cIsHealing>All healing is applied over time</style>. Can <style=cIsHealing>heal</style> for a <style=cIsHealing>maximum</style> of <style=cIsHealing>7%</style> <style=cStack>(-50% per stack)</style> of your <style=cIsHealing>health per second</style>.";
+        public override string DescText => "<style=cIsHealing>Heal " + d(healingIncrease) + "</style> <style=cStack>(+" + d(healingIncrease) + " per stack)</style> more. <style=cIsHealing>All healing is applied over time</style>. Can <style=cIsHealing>heal</style> for a <style=cIsHealing>maximum</style> of <style=cIsHealing>" + d(percentHealingCapPerSecond) + "</style> <style=cStack>(-50% per stack)</style> of your <style=cIsHealing>health per second</style>.";
+
+        [ConfigField("Healing Increase", "Decimal.", 0.5f)]
+        public static float healingIncrease;
+
+        [ConfigField("Percent Healing Cap Per Second", "Decimal.", 0.07f)]
+        public static float percentHealingCapPerSecond;
 
         public override void Init()
         {
@@ -30,7 +36,7 @@ namespace WellRoundedBalance.Items.Lunars
                     x => x.MatchMul()))
             {
                 c.Index += 1;
-                c.Next.Operand = 1.5f;
+                c.Next.Operand = 1f + healingIncrease;
             }
             else
             {
@@ -44,7 +50,7 @@ namespace WellRoundedBalance.Items.Lunars
                     x => x.MatchLdcR4(0.1f)))
             {
                 c.Index += 1;
-                c.Next.Operand = 0.07f;
+                c.Next.Operand = percentHealingCapPerSecond;
             }
             else
             {

@@ -8,8 +8,14 @@
 
         public override string PickupText => "Reduce damage taken. Store damage taken and release it as a devastating laser upon using your special.";
 
-        public override string DescText => "Gain <style=cIsUtility>25%</style> damage resistance. Upon using your <style=cIsUtility>special</style>, unleash a devastating laser for <style=cIsDamage>50%</style> <style=cStack>(+50% per stack)</style> of the <style=cIsUtility>resisted damage</style> per second.";
+        public override string DescText => "Gain <style=cIsUtility>" + d(damageReduction) + "</style> damage reduction. Upon using your <style=cIsUtility>special</style>, unleash a devastating laser for <style=cIsDamage>" + d(damagePerSecond) + "</style> <style=cStack>(+" + d(damagePerSecond) + " per stack)</style> of the <style=cIsUtility>resisted damage</style> per second.";
         public static GameObject BubbleShieldEffectPrefab;
+
+        [ConfigField("Damage Reduction", "Decimal.", 0.25f)]
+        public static float damageReduction;
+
+        [ConfigField("Damage Per Second", "Decimal.", 0.5f)]
+        public static float damagePerSecond;
 
         public override void Init()
         {
@@ -56,9 +62,9 @@
             if (self.GetComponent<DefenseNucleusBehavior>() && NetworkServer.active)
             {
                 DefenseNucleusBehavior behavior = self.GetComponent<DefenseNucleusBehavior>();
-                float amount = damage.damage * 0.75f;
+                float amount = damage.damage * (1f - damageReduction);
                 behavior.StoredDamage += amount;
-                damage.damage *= 0.75f;
+                damage.damage *= (1f - damageReduction);
             }
             orig(self, damage);
         }
@@ -77,7 +83,7 @@
             private float TotalStoredDamage = 0f;
 
             private bool shouldFireLaser = false;
-            private float coefficientPerSecond => stack * 0.5f;
+            private float coefficientPerSecond => stack * damagePerSecond;
             private float ticks = 5;
             private float coeffPerTick => coefficientPerSecond / ticks;
             private float delay => 1f / ticks;
@@ -91,7 +97,7 @@
 
             private void Start()
             {
-                bubbleInstance = GameObject.Instantiate(BubbleShieldEffectPrefab, body.transform);
+                // bubbleInstance = GameObject.Instantiate(BubbleShieldEffectPrefab, body.transform);
             }
 
             private void FixedUpdate()

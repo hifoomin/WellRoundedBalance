@@ -9,7 +9,10 @@ namespace WellRoundedBalance.Items.Lunars
         public override string InternalPickupToken => "autoCastEquipment";
 
         public override string PickupText => "Reduce Equipment cooldown... <color=#FF7F7F>BUT it automatically activates and randomizes.</color>";
-        public override string DescText => "<style=cIsUtility>Reduce Equipment cooldown</style> by <style=cIsUtility>30%</style>. Forces your Equipment to <style=cIsUtility>activate</style> and <style=cIsUtility>randomize</style> whenever it is off <style=cIsUtility>cooldown</style>.";
+        public override string DescText => "<style=cIsUtility>Reduce Equipment cooldown</style> by <style=cIsUtility>" + d(baseEquipmentCooldownReduction) + "</style>. Forces your Equipment to <style=cIsUtility>activate</style> and <style=cIsUtility>randomize</style> whenever it is off <style=cIsUtility>cooldown</style>.";
+
+        [ConfigField("Base Equipment Cooldown Reduction", "", 0.3f)]
+        public static float baseEquipmentCooldownReduction;
 
         public override void Init()
         {
@@ -48,7 +51,7 @@ namespace WellRoundedBalance.Items.Lunars
                     x => x.MatchLdcR4(0.5f),
                     x => x.MatchLdcR4(0.85f)))
             {
-                c.Next.Operand = 0.7f;
+                c.Next.Operand = 1 - baseEquipmentCooldownReduction;
                 c.Index += 1;
                 c.Next.Operand = 1f;
             }

@@ -1,6 +1,5 @@
 ﻿using Mono.Cecil.Cil;
 using MonoMod.Cil;
-using WellRoundedBalance.Buffs;
 
 namespace WellRoundedBalance.Items.Whites
 {
@@ -39,7 +38,18 @@ namespace WellRoundedBalance.Items.Whites
         {
             RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
             CharacterBody.onBodyInventoryChangedGlobal += CharacterBody_onBodyInventoryChangedGlobal;
-            IL.RoR2.CharacterBody.RecalculateStats += CharacterBody_RecalculateStats;
+            // IL.RoR2.CharacterBody.RecalculateStats += CharacterBody_RecalculateStats;
+            IL.RoR2.OutOfCombatArmorBehavior.ctor += OutOfCombatArmorBehavior_ctor;
+        }
+
+        private void OutOfCombatArmorBehavior_ctor(ILContext il)
+        {
+            ILCursor c = new(il);
+            {
+                c.Index = 0;
+            }
+
+            c.Emit(OpCodes.Ret);
         }
 
         private void CharacterBody_RecalculateStats(ILContext il)
