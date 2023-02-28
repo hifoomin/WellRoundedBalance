@@ -11,10 +11,17 @@ namespace WellRoundedBalance.Items.Whites
 
         public override string PickupText => "Gain gold at the beginning of each stage.";
 
-        public override string DescText => "Gain <style=cIsUtility>" + goldOnPickup + "</style> gold on pickup. At the beginning of every stage, gain <style=cIsUtility>" + baseGoldPerStage + " <style=cStack>(+" + goldPerStagePerStack + " per stack)</style> gold</style>. <style=cIsUtility>Scales over time.</style>";
-
+        public override string DescText => StackDesc(goldOnPickup, goldOnPickupStack, 
+            init => $"Gain <style=cIsUtility>{init}</style>{{Stack}} gold on pickup. ",
+            stack => stack.ToString()) + StackDesc(baseGoldPerStage, goldPerStagePerStack,
+                init => $"At the beginning of every stage, gain <style=cIsUtility>{init}</style>{{Stack}} gold</style>. ",
+                stack => stack.ToString()) + "<style=cIsUtility>Scales over time.</style>";
+            
         [ConfigField("Gold On Pickup", "", 10)]
         public static int goldOnPickup;
+
+        [ConfigField("Gold On Pickup per Stack", "", 0)]
+        public static int goldOnPickupStack;
 
         [ConfigField("Base Gold Per Stage", "", 25)]
         public static int baseGoldPerStage;
@@ -41,7 +48,7 @@ namespace WellRoundedBalance.Items.Whites
             {
                 if (itemIndex == DLC1Content.Items.GoldOnHurt.itemIndex)
                 {
-                    TeamManager.instance.GiveTeamMoney(TeamIndex.Player, (uint)Run.instance.GetDifficultyScaledCost(goldOnPickup));
+                    TeamManager.instance.GiveTeamMoney(TeamIndex.Player, (uint)Run.instance.GetDifficultyScaledCost((int)StackAmount(goldOnPickup, goldOnPickupStack, count)));
                 }
             }
         }
@@ -59,28 +66,19 @@ namespace WellRoundedBalance.Items.Whites
                     stack += characterMaster.inventory.GetItemCount(DLC1Content.Items.GoldOnHurt);
                 }
             }
-            if (stack > 0)
-            {
-                TeamManager.instance.GiveTeamMoney(TeamIndex.Player, (uint)Run.instance.GetDifficultyScaledCost(baseGoldPerStage + goldPerStagePerStack * (stack - 1)));
-            }
+            TeamManager.instance.GiveTeamMoney(TeamIndex.Player, (uint)Run.instance.GetDifficultyScaledCost((int)StackAmount(baseGoldPerStage, goldPerStagePerStack, stack)));
         }
 
         private void HealthComponent_TakeDamage(ILContext il)
         {
             ILCursor c = new(il);
 
-            if (c.TryGotoNext(MoveType.Before,
-                x => x.MatchLdfld(typeof(HealthComponent.ItemCounts), "goldOnHurt"),
-                x => x.MatchLdcI4(0)))
+            if (c.TryGotoNext(x => x.MatchLdfld(typeof(HealthComponent.ItemCounts), nameof(HealthComponent.ItemCounts.goldOnHurt))) && c.TryGotoNext(x => x.MatchBle(out _)))
             {
-                c.Index += 1;
-                c.Remove();
+                c.Emit(OpCodes.Pop);
                 c.Emit(OpCodes.Ldc_I4, int.MaxValue);
             }
-            else
-            {
-                Main.WRBLogger.LogError("Failed to apply Roll of Pennies Gold hook");
-            }
+            else Main.WRBLogger.LogError("Failed to apply Roll of Pennies Gold hook");
         }
     }
 }
