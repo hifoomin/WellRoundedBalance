@@ -12,6 +12,18 @@ namespace WellRoundedBalance.Elites
         public static BuffDef overloadingSpeedBuff;
         public override string Name => ":: Elites ::: Overloading";
 
+        [ConfigField("Passive Movement Speed Gain", "Decimal.", 0.5f)]
+        public static float passiveMovementSpeedGain;
+
+        [ConfigField("Ally Buff Count", "", 3)]
+        public static int allyBuffCount;
+
+        [ConfigField("Ally Buff Count Eclipse 3+", "Only applies if you have Eclipse Changes enabled.", 4)]
+        public static int allyBuffCountE3;
+
+        [ConfigField("Ally Buff Movement Speed Gain", "Decimal.", 0.5f)]
+        public static float allyBuffMovementSpeedGain;
+
         public override void Init()
         {
             var speedBuff = Utils.Paths.Texture2D.texBuffKillMoveSpeed.Load<Texture2D>();
@@ -58,7 +70,7 @@ namespace WellRoundedBalance.Elites
             orig(self);
             if (NetworkServer.active && self.HasBuff(RoR2Content.Buffs.AffixBlue))
             {
-                self.moveSpeed *= 1.5f;
+                self.moveSpeed *= 1f + passiveMovementSpeedGain;
                 if (!self.GetComponent<OverloadingController>())
                 {
                     self.gameObject.AddComponent<OverloadingController>();
@@ -93,7 +105,7 @@ namespace WellRoundedBalance.Elites
         {
             if (sender && sender.HasBuff(overloadingSpeedBuff))
             {
-                args.moveSpeedMultAdd += 0.5f;
+                args.moveSpeedMultAdd += allyBuffMovementSpeedGain;
             }
         }
 
@@ -156,16 +168,16 @@ namespace WellRoundedBalance.Elites
                 HurtBox[] boxes = search.GetHurtBoxes();
                 foreach (HurtBox box in boxes)
                 {
-                    if (box.teamIndex == cb.teamComponent.teamIndex && NetworkServer.active)
+                    if (box.teamIndex == cb.teamComponent.teamIndex && !box.healthComponent.body.HasBuff(RoR2Content.Buffs.AffixBlue) && NetworkServer.active)
                     {
                         if (box.healthComponent)
                         {
                             LightningOrb orb = new()
                             {
                                 lightningType = LightningOrb.LightningType.Tesla,
-                                bouncesRemaining = e3 ? 4 : 3,
-                                targetsToFindPerBounce = Run.instance.selectedDifficulty >= DifficultyIndex.Eclipse3 ? 4 : 3,
-                                attacker = base.gameObject,
+                                bouncesRemaining = e3 ? allyBuffCountE3 : allyBuffCount,
+                                targetsToFindPerBounce = e3 ? allyBuffCountE3 : allyBuffCount,
+                                attacker = gameObject,
                                 teamIndex = cb.teamComponent.teamIndex,
                                 damageValue = 0,
                                 damageType = DamageType.Silent,

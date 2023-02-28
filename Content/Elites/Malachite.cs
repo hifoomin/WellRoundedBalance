@@ -1,16 +1,21 @@
+using WellRoundedBalance.Eclipse;
+
 namespace WellRoundedBalance.Elites
 {
     public class Malachite : EliteBase<Malachite>
     {
         public override string Name => "Elites :::: Malachite";
 
-        [ConfigField("Turret Count", "The number of Malachite Turrets to be given to the elite.", 2)]
-        public static float TurretCount;
+        [ConfigField("Turret Count", "", 2)]
+        public static int TurretCount;
 
-        [ConfigField("Safe Zone Radius", "The radius of the malachite safe zone.", 50f)]
+        [ConfigField("Turret Count Eclipse 3+", "Only applies if you have Eclipse Changes enabled.", 3)]
+        public static int turretCountE3;
+
+        [ConfigField("Safe Zone Radius", "", 50f)]
         public static float SafeZoneRadius;
 
-        [ConfigField("Healing Multiplier", "The multiplier to healing when outside of a malachite safe zone.", 0.5f)]
+        [ConfigField("Healing Multiplier", "", 0.5f)]
         public static float HealingMultiplier;
 
         internal static GameObject MalachiteTurret;
@@ -88,14 +93,18 @@ namespace WellRoundedBalance.Elites
             private float startTime;
             private CharacterBody body;
             private GameObject zoneInstance;
+            private int turretCount;
 
             private void Start()
             {
                 body = GetComponent<CharacterBody>();
                 startTime = Run.instance.GetRunStopwatch();
-                for (int i = 0; i < TurretCount; i++)
+                bool e3 = Run.instance.selectedDifficulty >= DifficultyIndex.Eclipse3 && Eclipse3.instance.isEnabled;
+                turretCount = e3 ? turretCountE3 : TurretCount;
+
+                for (int i = 0; i < turretCount; i++)
                 {
-                    GameObject turret = GameObject.Instantiate(MalachiteTurret);
+                    GameObject turret = Instantiate(MalachiteTurret);
                     TurretController controller = turret.GetComponent<TurretController>();
                     controller.owner = body;
                     activeTurrets.Add(controller);
@@ -108,7 +117,7 @@ namespace WellRoundedBalance.Elites
 
             private void FixedUpdate()
             {
-                for (int i = 0; i < TurretCount; i++)
+                for (int i = 0; i < turretCount; i++)
                 {
                     if (!activeTurrets[i].rb)
                     {
@@ -119,7 +128,7 @@ namespace WellRoundedBalance.Elites
                     Vector3 plane1 = Vector3.up;
                     Vector3 plane2 = Vector3.forward;
 
-                    Vector3 targetPosition = (body.footPosition + new Vector3(0, 2, 0)) + Quaternion.AngleAxis(360 / TurretCount * i + elapsed / 10 * 360, plane1) * plane2 * (3);
+                    Vector3 targetPosition = (body.footPosition + new Vector3(0, 2, 0)) + Quaternion.AngleAxis(360 / turretCount * i + elapsed / 10 * 360, plane1) * plane2 * (3);
                     float vel = body.isSprinting ? body.moveSpeed * body.sprintingSpeedMultiplier * 1.35f : body.moveSpeed * 1.35f;
 
                     Vector3 currentPos = activeTurrets[i].rb.position;
@@ -179,12 +188,14 @@ namespace WellRoundedBalance.Elites
                     if (target)
                     {
                         Vector3 aim = (target.transform.position - base.transform.position).normalized;
-                        FireProjectileInfo info = new();
-                        info.damage = owner.damage * 2;
-                        info.position = base.transform.position;
-                        info.rotation = Util.QuaternionSafeLookRotation(aim);
-                        info.owner = owner.gameObject;
-                        info.projectilePrefab = Utils.Paths.GameObject.UrchinSeekingProjectile.Load<GameObject>();
+                        FireProjectileInfo info = new()
+                        {
+                            damage = Run.instance ? 5f + Mathf.Sqrt(Run.instance.ambientLevel * 120f) / Mathf.Sqrt(Run.instance.participatingPlayerCount) : 0f,
+                            position = base.transform.position,
+                            rotation = Util.QuaternionSafeLookRotation(aim),
+                            owner = owner.gameObject,
+                            projectilePrefab = Utils.Paths.GameObject.UrchinSeekingProjectile.Load<GameObject>()
+                        };
 
                         ProjectileManager.instance.FireProjectile(info);
                         AkSoundEngine.PostEvent(Events.Play_elite_antiHeal_turret_shot, base.gameObject);

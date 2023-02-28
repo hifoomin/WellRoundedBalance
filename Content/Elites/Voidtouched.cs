@@ -121,7 +121,7 @@ namespace WellRoundedBalance.Elites
         {
             if (Util.HasEffectiveAuthority(gameObject))
             {
-                for (int i = 2; i < (ballCount + 2); i++)
+                for (int i = 0; i < ballCount; i++)
                 {
                     var fpi = new FireProjectileInfo
                     {
@@ -130,7 +130,7 @@ namespace WellRoundedBalance.Elites
                         rotation = Quaternion.identity,
                         owner = gameObject,
                         crit = body.RollCrit(),
-                        position = gameObject.transform.position + body.equipmentSlot.GetAimRay().GetPoint(i * 5)
+                        position = gameObject.transform.position + body.equipmentSlot.GetAimRay().GetPoint((i + 2) * 5) // small window in melee
                     };
                     ProjectileManager.instance.FireProjectile(fpi);
                 }
