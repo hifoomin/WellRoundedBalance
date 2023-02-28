@@ -1,10 +1,7 @@
 ﻿using Mono.Cecil.Cil;
 using MonoMod.Cil;
-
-using RoR2;
 using RoR2.Items;
 using System;
-using System.Collections.ObjectModel;
 
 namespace WellRoundedBalance.Items.Yellows
 {
@@ -15,7 +12,16 @@ namespace WellRoundedBalance.Items.Yellows
 
         public override string PickupText => "Recruit 3 Beetle Guards.";
 
-        public override string DescText => "<style=cIsUtility>Summon 3 Beetle Guards</style> with bonus <style=cIsDamage>300%</style> <style=cStack>(+200% per stack)</style> damage and <style=cIsHealing>100%</style> <style=cIsHealing>health</style>.";
+        public override string DescText => "<style=cIsUtility>Summon 3 Beetle Guards</style> with bonus <style=cIsDamage>200%</style> <style=cStack>(+100% per stack)</style> damage and <style=cIsHealing>100%</style> <style=cIsHealing>health</style>.";
+
+        [ConfigField("Beetle Guard Count", "", 3)]
+        public static int beetleGuardCount;
+
+        [ConfigField("Beetle Guard Base Damage", "Formula for final damage: (Beetle Guard Base Damage + Beetle Guard Damage Per Stack * (Queen's Gland - 1)) * 10", 20)]
+        public static int beetleGuardBaseDamage;
+
+        [ConfigField("Beetle Guard Damage Per Stack", "Formula for final damage: (Beetle Guard Base Damage + Beetle Guard Damage Per Stack * (Queen's Gland - 1)) * 10", 10)]
+        public static int beetleGuardDamagePerStack;
 
         public override void Init()
         {
@@ -32,19 +38,11 @@ namespace WellRoundedBalance.Items.Yellows
         private void CharacterMaster_OnBodyStart(On.RoR2.CharacterMaster.orig_OnBodyStart orig, CharacterMaster self, CharacterBody body)
         {
             orig(self, body);
-            int stack = 0;
-            ReadOnlyCollection<CharacterMaster> readOnlyInstancesList = CharacterMaster.readOnlyInstancesList;
-            for (int i = 0; i < readOnlyInstancesList.Count; i++)
-            {
-                CharacterMaster characterMaster = readOnlyInstancesList[i];
-                if (characterMaster.teamIndex == TeamIndex.Player)
-                {
-                    stack += characterMaster.inventory.GetItemCount(RoR2Content.Items.BeetleGland);
-                }
-            }
+            var stack = Util.GetItemCountForTeam(body.teamComponent.teamIndex, RoR2Content.Items.BeetleGland.itemIndex, false);
             if (self.name == "BeetleGuardAllyMaster(Clone)")
             {
-                self.inventory.GiveItem(RoR2Content.Items.BoostDamage, 20 * (stack - 1));
+                self.inventory.RemoveItem(RoR2Content.Items.BoostDamage, 30);
+                self.inventory.GiveItem(RoR2Content.Items.BoostDamage, beetleGuardBaseDamage + beetleGuardDamagePerStack * (stack - 1));
                 // this works I checked :smirk_cat:
             }
         }

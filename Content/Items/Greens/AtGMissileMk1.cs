@@ -17,6 +17,9 @@ namespace WellRoundedBalance.Items.Greens
         [ConfigField("TOTAL Damage Per Stack", "Decimal.", 2f)]
         public static float totalDamagePerStack;
 
+        [ConfigField("Improve targeting?", "Affects all missile items and equipment.", true)]
+        public static bool improveTargeting;
+
         public override void Init()
         {
             base.Init();
@@ -59,12 +62,15 @@ namespace WellRoundedBalance.Items.Greens
             var missileProjectileController = missileProjectile.GetComponent<ProjectileController>();
             missileProjectileController.procCoefficient = 0f;
 
-            var missileController = missileProjectile.GetComponent<MissileController>();
-            missileController.maxSeekDistance = 10000f;
-            missileController.turbulence = 0f;
-            missileController.deathTimer = 30f;
-            missileController.giveupTimer = 30f;
-            missileController.delayTimer = 0f;
+            if (improveTargeting)
+            {
+                var missileController = missileProjectile.GetComponent<MissileController>();
+                missileController.maxSeekDistance = 10000f;
+                missileController.turbulence = 0f;
+                missileController.deathTimer = 30f;
+                missileController.giveupTimer = 30f;
+                missileController.delayTimer = 0f;
+            }
         }
     }
 }

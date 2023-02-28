@@ -9,7 +9,13 @@ namespace WellRoundedBalance.Items.Reds
 
         public override string PickupText => "Fire haunting skulls when healed.";
 
-        public override string DescText => "Store <style=cIsHealing>100%</style> <style=cStack>(+100% per stack)</style> of healing as <style=cIsHealing>Soul Energy</style>. After your <style=cIsHealing>Soul Energy</style> reaches <style=cIsHealing>10%</style> of your <style=cIsHealing>maximum health</style>, <style=cIsDamage>fire a skull</style> that deals <style=cIsDamage>320%</style> of your <style=cIsHealing>Soul Energy</style> as <style=cIsDamage>damage</style>.";
+        public override string DescText => "Store <style=cIsHealing>100%</style> <style=cStack>(+100% per stack)</style> of healing as <style=cIsHealing>Soul Energy</style>. After your <style=cIsHealing>Soul Energy</style> reaches <style=cIsHealing>10%</style> of your <style=cIsHealing>maximum health</style>, <style=cIsDamage>fire a skull</style> that deals <style=cIsDamage>" + d(baseDamage) + "</style> of your <style=cIsHealing>Soul Energy</style> as <style=cIsDamage>damage</style>.";
+
+        [ConfigField("Base Damage", "Decimal.", 3.2f)]
+        public static float baseDamage;
+
+        [ConfigField("Base Range", "", 25f)]
+        public static float baseRange;
 
         public override void Init()
         {
@@ -34,7 +40,7 @@ namespace WellRoundedBalance.Items.Reds
             if (c.TryGotoNext(MoveType.Before,
                 x => x.MatchLdcR4(2.5f)))
             {
-                c.Next.Operand = 3.2f;
+                c.Next.Operand = baseDamage;
             }
             else
             {
@@ -46,7 +52,7 @@ namespace WellRoundedBalance.Items.Reds
             if (c.TryGotoNext(MoveType.Before,
                 x => x.MatchLdcR4(40f)))
             {
-                c.Next.Operand = 25f;
+                c.Next.Operand = baseRange;
             }
             else
             {

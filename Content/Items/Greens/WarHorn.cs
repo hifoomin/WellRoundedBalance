@@ -9,9 +9,10 @@ namespace WellRoundedBalance.Items.Greens
         public override string Name => ":: Items :: Greens :: War Horn";
         public override string InternalPickupToken => "energizedOnEquipmentUse";
 
-        public override string PickupText => "Activating your Equipment gives you a burst of attack speed and regeneration.";
+        public override string PickupText => "Activating your Equipment gives you a burst of attack speed" +
+                                             (baseAttackSpeedGain > 0 || attackSpeedGainPerStack > 0 ? " and regeneration." : ".");
 
-        public override string DescText => "Activating your Equipment gives you <style=cIsDamage>+30% attack speed</style> <style=cStack>(+15% per stack)</style> and <style=cIsHealing>+3 hp/s</style> <style=cStack>(+1.5 hp/s per stack)</style> <style=cIsHealing>base health regeneration</style> for <style=cIsDamage>12s</style>.";
+        public override string DescText => "Activating your Equipment gives you <style=cIsDamage>+" + d(baseAttackSpeedGain) + " attack speed</style> <style=cStack>(+" + d(attackSpeedGainPerStack) + " per stack)</style> and <style=cIsHealing>+" + baseRegenerationGain + " hp/s</style> <style=cStack>(+" + regenerationGainPerStack + " hp/s per stack)</style> <style=cIsHealing>base health regeneration</style> for <style=cIsDamage>" + buffDuration + "s</style>.";
 
         [ConfigField("Base Attack Speed Gain", "", 0.3f)]
         public static float baseAttackSpeedGain;
@@ -24,6 +25,9 @@ namespace WellRoundedBalance.Items.Greens
 
         [ConfigField("Regeneration Gain Per Stack", "", 1.5f)]
         public static float regenerationGainPerStack;
+
+        [ConfigField("Buff Duration", "", 12f)]
+        public static float buffDuration;
 
         public override void Init()
         {
@@ -55,9 +59,9 @@ namespace WellRoundedBalance.Items.Greens
             if (inventory && sender.HasBuff(warHornBuff))
             {
                 var stack = inventory.GetItemCount(RoR2Content.Items.EnergizedOnEquipmentUse);
-                args.baseAttackSpeedAdd += 0.3f + 0.15f * (stack - 1);
+                args.baseAttackSpeedAdd += baseAttackSpeedGain + attackSpeedGainPerStack * (stack - 1);
 
-                var regenStack = 3f + (1.5f * (stack - 1));
+                var regenStack = baseRegenerationGain + (regenerationGainPerStack * (stack - 1));
                 args.baseRegenAdd += regenStack + 0.2f * regenStack * (sender.level - 1);
             }
         }
@@ -71,7 +75,7 @@ namespace WellRoundedBalance.Items.Greens
                     var stack = self.inventory.GetItemCount(RoR2Content.Items.EnergizedOnEquipmentUse);
                     if (stack > 0)
                     {
-                        self.characterBody.AddTimedBuff(warHornBuff, 12f);
+                        self.characterBody.AddTimedBuff(warHornBuff, buffDuration);
                     }
                 }
                 orig(self);

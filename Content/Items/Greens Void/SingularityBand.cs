@@ -1,9 +1,4 @@
 ﻿using MonoMod.Cil;
-using RoR2;
-using RoR2.Projectile;
-using UnityEngine;
-using UnityEngine.AddressableAssets;
-using WellRoundedBalance.Items.Greens;
 
 namespace WellRoundedBalance.Items.VoidGreens
 {
@@ -13,7 +8,13 @@ namespace WellRoundedBalance.Items.VoidGreens
         public override string InternalPickupToken => "elementalRingVoid";
 
         public override string PickupText => "High damage hits also create unstable black holes. Recharges over time. <style=cIsVoid>Corrupts all Runald's and Kjaro's Bands</style>.";
-        public override string DescText => "Hits that deal <style=cIsDamage>more than 400% damage</style> also fire a black hole that <style=cIsUtility>draws enemies within 15m into its center</style>. Lasts <style=cIsUtility>5</style> seconds before collapsing, dealing <style=cIsDamage>50%</style> <style=cStack>(+50% per stack)</style> TOTAL damage. Recharges every <style=cIsUtility>10</style> seconds. <style=cIsVoid>Corrupts all Runald's and Kjaro's Bands</style>.";
+        public override string DescText => "Hits that deal <style=cIsDamage>more than 400% damage</style> also fire a black hole that <style=cIsUtility>draws enemies within 15m into its center</style>. Lasts <style=cIsUtility>5</style> seconds before collapsing, dealing <style=cIsDamage>" + d(totalDamage) + "</style> <style=cStack>(+" + d(totalDamage) + " per stack)</style> TOTAL damage. Recharges every <style=cIsUtility>" + cooldown + "</style> seconds. <style=cIsVoid>Corrupts all Runald's and Kjaro's Bands</style>.";
+
+        [ConfigField("Cooldown", "", 10f)]
+        public static float cooldown;
+
+        [ConfigField("TOTAL Damage", "Decimal.", 0.5f)]
+        public static float totalDamage;
 
         public override void Init()
         {
@@ -22,14 +23,12 @@ namespace WellRoundedBalance.Items.VoidGreens
 
         public override void Hooks()
         {
-            IL.RoR2.GlobalEventManager.OnHitEnemy += Changes;
+            IL.RoR2.GlobalEventManager.OnHitEnemy += GlobalEventManager_OnHitEnemy;
         }
 
-        private void Changes(ILContext il)
+        private void GlobalEventManager_OnHitEnemy(ILContext il)
         {
             ILCursor c = new(il);
-
-            c.Index = 0;
 
             if (c.TryGotoNext(MoveType.Before,
                 x => x.MatchCallOrCallvirt(typeof(LegacyResourcesAPI), nameof(LegacyResourcesAPI.Load)),
@@ -37,7 +36,7 @@ namespace WellRoundedBalance.Items.VoidGreens
                 x => x.MatchLdcR4(1f)))
             {
                 c.Index += 2;
-                c.Next.Operand = 0.5f;
+                c.Next.Operand = totalDamage;
             }
             else
             {
@@ -51,7 +50,7 @@ namespace WellRoundedBalance.Items.VoidGreens
                 x => x.MatchLdcR4(20f)))
             {
                 c.Index += 1;
-                c.Next.Operand = 10f;
+                c.Next.Operand = cooldown;
             }
             else
             {

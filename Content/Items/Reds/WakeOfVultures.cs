@@ -1,8 +1,4 @@
-using System;
-using UnityEngine;
-using Mono.Cecil;
 using MonoMod.Cil;
-using System.Linq;
 
 namespace WellRoundedBalance.Items.Reds
 {
@@ -13,7 +9,10 @@ namespace WellRoundedBalance.Items.Reds
 
         public override string PickupText => "Gain the powers of slain elites. Become resistant to elites.";
 
-        public override string DescText => "Killing an elite <style=cIsUtility>grants you their power</style>. You can have <style=cIsUtility>1</style> <style=cStack>(+1 per stack)</style> affix out at once. Take <style=cIsDamage>20%</style> <style=cStack>(+20% per stack)</style> reduced damage from elites of the same type as you.";
+        public override string DescText => "Killing an elite <style=cIsUtility>grants you their power</style>. You can have <style=cIsUtility>1</style> <style=cStack>(+1 per stack)</style> affix out at once. Take <style=cIsDamage>" + d(damageReduction) + "</style> <style=cStack>(+" + d(damageReduction) + " per stack)</style> reduced damage from elites of the same type as you.";
+
+        [ConfigField("Damage Reduction", "Decimal. ", 0.2f)]
+        public static float damageReduction;
 
         public override void Init()
         {
@@ -65,7 +64,7 @@ namespace WellRoundedBalance.Items.Reds
                             }
                         }
 
-                        float mult = Mathf.Pow((1 - 0.2f), self.body.inventory.GetItemCount(RoR2Content.Items.HeadHunter));
+                        float mult = Mathf.Pow((1 - damageReduction), self.body.inventory.GetItemCount(RoR2Content.Items.HeadHunter));
                         // Debug.Log(mult);
                         if (hasAtLeastOne)
                         {

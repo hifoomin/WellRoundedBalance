@@ -1,5 +1,4 @@
 ﻿using MonoMod.Cil;
-using UnityEngine;
 
 namespace WellRoundedBalance.Items.VoidGreens
 {
@@ -9,7 +8,13 @@ namespace WellRoundedBalance.Items.VoidGreens
         public override string InternalPickupToken => "missileVoid";
 
         public override string PickupText => "While you have shield, fire missiles on every hit. <style=cIsVoid>Corrupts all AtG Missile Mk. 1s</style>.";
-        public override string DescText => "Gain a <style=cIsHealing>shield</style> equal to <style=cIsHealing>20%</style> of your maximum health. While you have a <style=cIsHealing>shield</style>, hitting an enemy fires a missile that deals <style=cIsDamage>12%</style> <style=cStack>(+12% per stack)</style> TOTAL damage. <style=cIsVoid>Corrupts all AtG Missile Mk. 1s</style>.";
+        public override string DescText => "Gain a <style=cIsHealing>shield</style> equal to <style=cIsHealing>" + d(percentShield) + "</style> of your maximum health. While you have a <style=cIsHealing>shield</style>, hitting an enemy fires a missile that deals <style=cIsDamage>" + d(totalDamage) + "</style> <style=cStack>(+" + d(totalDamage) + " per stack)</style> TOTAL damage. <style=cIsVoid>Corrupts all AtG Missile Mk. 1s</style>.";
+
+        [ConfigField("TOTAL Damage", "Decimal.", 0.12f)]
+        public static float totalDamage;
+
+        [ConfigField("Percent Shield", "Decimal.", 0.2f)]
+        public static float percentShield;
 
         public override void Init()
         {
@@ -18,18 +23,18 @@ namespace WellRoundedBalance.Items.VoidGreens
 
         public override void Hooks()
         {
-            IL.RoR2.CharacterBody.RecalculateStats += ChangeShield;
-            IL.RoR2.GlobalEventManager.OnHitEnemy += Changes;
+            IL.RoR2.CharacterBody.RecalculateStats += CharacterBody_RecalculateStats;
+            IL.RoR2.GlobalEventManager.OnHitEnemy += GlobalEventManager_OnHitEnemy;
         }
 
-        private void Changes(ILContext il)
+        private void GlobalEventManager_OnHitEnemy(ILContext il)
         {
             ILCursor c = new(il);
 
             if (c.TryGotoNext(MoveType.Before,
                     x => x.MatchLdcR4(0.4f)))
             {
-                c.Next.Operand = 0.12f;
+                c.Next.Operand = totalDamage;
             }
             else
             {
@@ -50,16 +55,16 @@ namespace WellRoundedBalance.Items.VoidGreens
             }
         }
 
-        private void ChangeShield(ILContext il)
+        private void CharacterBody_RecalculateStats(ILContext il)
         {
             ILCursor c = new(il);
 
             if (c.TryGotoNext(MoveType.Before,
-                    x => x.MatchCallOrCallvirt<RoR2.CharacterBody>("get_maxHealth"),
+                    x => x.MatchCallOrCallvirt<CharacterBody>("get_maxHealth"),
                     x => x.MatchLdcR4(0.1f)))
             {
                 c.Index += 1;
-                c.Next.Operand = 0.2f;
+                c.Next.Operand = percentShield;
             }
             else
             {

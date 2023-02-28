@@ -12,9 +12,18 @@ namespace WellRoundedBalance.Items.Reds
         public override string Name => ":: Items ::: Reds :: Pocket ICBM";
         public override string InternalPickupToken => "moreMissile";
 
-        public override string PickupText => "All Missile items fire an additional missile. Gain a 10% chance to fire a missile.";
+        public override string PickupText => "All Missile items fire an additional missile. Gain a " + baseMissileChance + "% chance to fire a missile.";
 
-        public override string DescText => "All missile items and equipment fire an additional <style=cIsDamage>missile</style>. Gain a <style=cIsDamage>10%</style> <style=cStack>(+10% per stack)</style> chance to fire a missile that deals <style=cIsDamage>150%</style> TOTAL damage.";
+        public override string DescText => "All missile items and equipment fire an additional <style=cIsDamage>missile</style>. Gain a <style=cIsDamage>" + baseMissileChance + "%</style> <style=cStack>(+" + missileChancePerStack + "% per stack)</style> chance to fire a missile that deals <style=cIsDamage>" + d(totalDamage) + "</style> TOTAL damage.";
+
+        [ConfigField("TOTAL Damage", "Decimal.", 1.5f)]
+        public static float totalDamage;
+
+        [ConfigField("Base Missile Chance", "", 10f)]
+        public static float baseMissileChance;
+
+        [ConfigField("Missile Chance Per Stack", "", 10f)]
+        public static float missileChancePerStack;
 
         public override void Init()
         {
@@ -43,9 +52,9 @@ namespace WellRoundedBalance.Items.Reds
                             var stack = inventory.GetItemCount(DLC1Content.Items.MoreMissile);
                             if (stack > 0)
                             {
-                                if (Util.CheckRoll(10f * damageInfo.procCoefficient * stack, body.master))
+                                if (Util.CheckRoll((baseMissileChance + missileChancePerStack * (stack - 1)) * damageInfo.procCoefficient, body.master))
                                 {
-                                    float damage = Util.OnHitProcDamage(damageInfo.damage, body.damage, 1.5f);
+                                    float damage = Util.OnHitProcDamage(damageInfo.damage, body.damage, totalDamage);
                                     MissileUtils.FireMissile(body.corePosition, body, damageInfo.procChainMask, victim, damage, damageInfo.crit, GlobalEventManager.CommonAssets.missilePrefab, DamageColorIndex.Item, true);
                                 }
                             }

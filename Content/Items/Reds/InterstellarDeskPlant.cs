@@ -1,5 +1,4 @@
-﻿using HG;
-using MonoMod.Cil;
+﻿using MonoMod.Cil;
 
 namespace WellRoundedBalance.Items.Reds
 {
@@ -11,7 +10,16 @@ namespace WellRoundedBalance.Items.Reds
 
         public override string PickupText => "Plant a healing fruit on kill.";
 
-        public override string DescText => "On kill, plant a <style=cIsHealing>healing</style> fruit seed that grows into a plant after <style=cIsUtility>5</style> seconds. \n\nThe plant <style=cIsHealing>heals</style> for <style=cIsHealing>6%</style> of <style=cIsHealing>maximum health</style> every second to all allies within <style=cIsHealing>12m</style> <style=cStack>(+3m per stack)</style>. Lasts <style=cIsUtility>10</style> seconds.";
+        public override string DescText => "On kill, plant a <style=cIsHealing>healing</style> fruit seed that grows into a plant after <style=cIsUtility>5</style> seconds. \n\nThe plant <style=cIsHealing>heals</style> for <style=cIsHealing>" + d(percentHealing) + "</style> of <style=cIsHealing>maximum health</style> every second to all allies within <style=cIsHealing>" + baseRange + "m</style> <style=cStack>(+" + rangePerStack + "m per stack)</style>. Lasts <style=cIsUtility>10</style> seconds.";
+
+        [ConfigField("Percent Healing", "Decimal.", 0.06f)]
+        public static float percentHealing;
+
+        [ConfigField("Base Range", "", 12f)]
+        public static float baseRange;
+
+        [ConfigField("Range Per Stack", "", 3f)]
+        public static float rangePerStack;
 
         public override void Init()
         {
@@ -31,7 +39,7 @@ namespace WellRoundedBalance.Items.Reds
             if (c.TryGotoNext(MoveType.Before,
                     x => x.MatchLdcR4(0.05f)))
             {
-                c.Next.Operand = 0.03f;
+                c.Next.Operand = percentHealing / 2f;
             }
             else
             {
@@ -41,8 +49,8 @@ namespace WellRoundedBalance.Items.Reds
 
         private void DeskPlantController_Awake(On.RoR2.DeskPlantController.orig_Awake orig, DeskPlantController self)
         {
-            self.healingRadius = 12f;
-            self.radiusIncreasePerStack = 3f;
+            self.healingRadius = baseRange;
+            self.radiusIncreasePerStack = rangePerStack;
             orig(self);
         }
     }

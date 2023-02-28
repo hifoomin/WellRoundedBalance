@@ -9,9 +9,18 @@ namespace WellRoundedBalance.Items.Reds
         public override string Name => ":: Items ::: Reds :: Laser Scope";
         public override string InternalPickupToken => "critDamage";
 
-        public override string PickupText => "Remove bullet falloff. Your 'Critical Strikes' deal an additional 50% damage.";
+        public override string PickupText => (removeBulletFalloff ? "Remove bullet falloff. " : "") +
+                                             "Your 'Critical Strikes' deal an additional 50% damage.";
 
-        public override string DescText => "Remove <style=cIsUtility>bullet falloff</style>. Gain <style=cIsDamage>10% critical chance</style>. <style=cIsDamage>Critical Strikes</style> deal an additional <style=cIsDamage>50%</style> <style=cStack>(+50% per stack)</style> damage.";
+        public override string DescText => (removeBulletFalloff ? "Remove <style=cIsUtility>bullet falloff</style>. " : "") +
+                                           (criticalChance > 0 ? "Gain <style=cIsDamage>" + criticalChance + "% critical chance</style>. " : "") +
+                                           "<style=cIsDamage>Critical Strikes</style> deal an additional <style=cIsDamage>50%</style> <style=cStack>(+50% per stack)</style> damage.";
+
+        [ConfigField("Remove bullet falloff?", "", true)]
+        public static bool removeBulletFalloff;
+
+        [ConfigField("Critical Chance", "", 10f)]
+        public static float criticalChance;
 
         public override void Init()
         {

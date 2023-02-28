@@ -11,7 +11,10 @@ namespace WellRoundedBalance.Items.VoidGreens
         public override string InternalPickupToken => "chainLightningVoid";
 
         public override string PickupText => "Chance to repeatedly strike a single enemy with lightning. <style=cIsVoid>Corrupts all Ukuleles</style>.";
-        public override string DescText => "<style=cIsDamage>25%</style> chance to fire <style=cIsDamage>lightning</style> for <style=cIsDamage>25%</style> TOTAL damage up to <style=cIsDamage>4<style=cStack> (+1 per stack)</style></style> times. <style=cIsVoid>Corrupts all Ukuleles</style>.";
+        public override string DescText => "<style=cIsDamage>25%</style> chance to fire <style=cIsDamage>lightning</style> for <style=cIsDamage>" + d(totalDamage) + "</style> TOTAL damage up to <style=cIsDamage>4<style=cStack> (+1 per stack)</style></style> times. <style=cIsVoid>Corrupts all Ukuleles</style>.";
+
+        [ConfigField("TOTAL Damage", "Decimal.", 0.25f)]
+        public static float totalDamage;
 
         public override void Init()
         {
@@ -20,10 +23,10 @@ namespace WellRoundedBalance.Items.VoidGreens
 
         public override void Hooks()
         {
-            IL.RoR2.GlobalEventManager.OnHitEnemy += Changes;
+            IL.RoR2.GlobalEventManager.OnHitEnemy += GlobalEventManager_OnHitEnemy;
         }
 
-        private void Changes(ILContext il)
+        private void GlobalEventManager_OnHitEnemy(ILContext il)
         {
             ILCursor c = new(il);
 
@@ -34,7 +37,7 @@ namespace WellRoundedBalance.Items.VoidGreens
                     x => x.MatchLdcR4(0.6f)))
             {
                 c.Index += 2;
-                c.Next.Operand = 0.25f;
+                c.Next.Operand = totalDamage;
             }
             else
             {

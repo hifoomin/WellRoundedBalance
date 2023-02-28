@@ -12,7 +12,16 @@ namespace WellRoundedBalance.Items.Yellows
 
         public override string PickupText => "Fire an electric nova at low health.";
 
-        public override string DescText => "Falling below <style=cIsHealth>50% health</style> causes you to explode, dealing <style=cIsDamage>4000% base damage</style>. Recharges every <style=cIsUtility>30 seconds</style> <style=cStack>(-33% per stack)</style>.";
+        public override string DescText => "Falling below <style=cIsHealth>" + d(healthThreshold) + " health</style> causes you to explode, dealing <style=cIsDamage>" + d(baseDamage) + " base damage</style>. Recharges every <style=cIsUtility>" + cooldown + " seconds</style> <style=cStack>(-" + d(cooldown / 3) + " per stack)</style>.";
+
+        [ConfigField("Health Threshold", "Decimal.", 0.5f)]
+        public static float healthThreshold;
+
+        [ConfigField("Base Damage", "Decimal.", 40f)]
+        public static float baseDamage;
+
+        [ConfigField("Cooldown", "Formula for cooldown: Cooldown / (1 + Genesis Loop)", 60f)]
+        public static float cooldown;
 
         public override void Init()
         {
@@ -28,7 +37,7 @@ namespace WellRoundedBalance.Items.Yellows
 
         private void RechargeState_FixedUpdate(On.EntityStates.VagrantNovaItem.RechargeState.orig_FixedUpdate orig, RechargeState self)
         {
-            RechargeState.baseDuration = 60f; // make it actually 30s instead of 15s
+            RechargeState.baseDuration = cooldown; // make it actually 30s instead of 15s
             orig(self);
         }
 
@@ -44,7 +53,7 @@ namespace WellRoundedBalance.Items.Yellows
                 c.Emit(OpCodes.Ldarg_0);
                 c.EmitDelegate<Func<bool, ReadyState, bool>>((Check, self) =>
                 {
-                    if ((self.attachedHealthComponent.health + self.attachedHealthComponent.shield) / self.attachedHealthComponent.fullCombinedHealth <= 0.5f)
+                    if ((self.attachedHealthComponent.health + self.attachedHealthComponent.shield) / self.attachedHealthComponent.fullCombinedHealth <= healthThreshold)
                     {
                         Check = true;
                         return Check;
@@ -64,7 +73,7 @@ namespace WellRoundedBalance.Items.Yellows
 
         public static void Changes(On.EntityStates.VagrantNovaItem.DetonateState.orig_OnEnter orig, DetonateState self)
         {
-            DetonateState.blastDamageCoefficient = 40f;
+            DetonateState.blastDamageCoefficient = baseDamage;
             orig(self);
         }
     }

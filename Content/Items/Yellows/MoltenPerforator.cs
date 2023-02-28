@@ -1,9 +1,5 @@
-﻿using Mono.Cecil.Cil;
-using MonoMod.Cil;
-using RoR2;
-using RoR2.Projectile;
+﻿using MonoMod.Cil;
 using System;
-using UnityEngine;
 
 namespace WellRoundedBalance.Items.Yellows
 {
@@ -14,7 +10,13 @@ namespace WellRoundedBalance.Items.Yellows
 
         public override string PickupText => "Chance on hit to fire magma balls.";
 
-        public override string DescText => "<style=cIsDamage>10%</style> chance on hit to call forth <style=cIsDamage>3 magma balls</style> from an enemy, dealing <style=cIsDamage>190%</style> <style=cStack>(+60% per stack)</style> TOTAL damage.";
+        public override string DescText => "<style=cIsDamage>10%</style> chance on hit to call forth <style=cIsDamage>3 magma balls</style> from an enemy, dealing <style=cIsDamage>" + d(baseTotalDamage) + "</style> <style=cStack>(+" + d(totalDamagePerStack) + " per stack)</style> TOTAL damage.";
+
+        [ConfigField("Base TOTAL Damage", "Decimal.", 1.9f)]
+        public static float baseTotalDamage;
+
+        [ConfigField("TOTAL Damage Per Stack", "Decimal.", 0.6f)]
+        public static float totalDamagePerStack;
 
         public override void Init()
         {
@@ -32,7 +34,7 @@ namespace WellRoundedBalance.Items.Yellows
         {
             ILCursor c = new(il);
 
-            float initialDamage = 1.9f - 0.6f;
+            float initialDamage = baseTotalDamage - totalDamagePerStack;
 
             bool error = true;
 
@@ -40,7 +42,7 @@ namespace WellRoundedBalance.Items.Yellows
             c.TryGotoNext(x => x.MatchLdfld<DamageInfo>("damage")))
             {
                 c.Index -= 6;
-                c.Next.Operand = 0.6f;
+                c.Next.Operand = totalDamagePerStack;
                 c.Index += 4;
                 c.EmitDelegate<Func<float, float>>((damageCoefficient) =>
                 {

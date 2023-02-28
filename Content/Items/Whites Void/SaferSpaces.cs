@@ -8,7 +8,13 @@ namespace WellRoundedBalance.Items.VoidWhites
         public override string InternalPickupToken => "bearVoid";
 
         public override string PickupText => "Block the next source of damage. <style=cIsVoid>Corrupts all Tougher Times</style>.";
-        public override string DescText => "<style=cIsHealing>Blocks</style> incoming damage once. Recharges after <style=cIsUtility>30 seconds</style> <style=cStack>(-3% per stack)</style>. <style=cIsVoid>Corrupts all Tougher Times</style>.";
+        public override string DescText => "<style=cIsHealing>Blocks</style> incoming damage once. Recharges after <style=cIsUtility>" + baseCooldown + " seconds</style> <style=cStack>(-" + d(1 - cooldownMultiplier) + " per stack)</style>. <style=cIsVoid>Corrupts all Tougher Times</style>.";
+
+        [ConfigField("Base Cooldown", "Formula for cooldown: Base Cooldown * Cooldown Multiplier ^ Safer Spaces", 30f)]
+        public static float baseCooldown;
+
+        [ConfigField("Cooldown Multiplier", "Formula for cooldown: Base Cooldown * Cooldown Multiplier ^ Safer Spaces", 0.95f)]
+        public static float cooldownMultiplier;
 
         public override void Init()
         {
@@ -28,9 +34,9 @@ namespace WellRoundedBalance.Items.VoidWhites
                     x => x.MatchLdcR4(15f),
                     x => x.MatchLdcR4(0.9f)))
             {
-                c.Next.Operand = 30f;
+                c.Next.Operand = baseCooldown;
                 c.Index += 1;
-                c.Next.Operand = 0.97f;
+                c.Next.Operand = cooldownMultiplier;
             }
             else
             {

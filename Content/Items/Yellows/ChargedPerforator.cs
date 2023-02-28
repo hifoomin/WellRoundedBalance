@@ -1,5 +1,4 @@
-﻿using Mono.Cecil.Cil;
-using MonoMod.Cil;
+﻿using MonoMod.Cil;
 using System;
 
 namespace WellRoundedBalance.Items.Yellows
@@ -11,7 +10,13 @@ namespace WellRoundedBalance.Items.Yellows
 
         public override string PickupText => "Chance on hit to call down a lightning strike.";
 
-        public override string DescText => "<style=cIsDamage>10%</style> chance on hit to call down a lightning strike, dealing <style=cIsDamage>400%</style> <style=cStack>(+150% per stack)</style> TOTAL damage.";
+        public override string DescText => "<style=cIsDamage>10%</style> chance on hit to call down a lightning strike, dealing <style=cIsDamage>" + d(baseTotalDamage) + "</style> <style=cStack>(+" + d(totalDamagePerStack) + " per stack)</style> TOTAL damage.";
+
+        [ConfigField("Base TOTAL Damage", "Decimal. ", 4f)]
+        public static float baseTotalDamage;
+
+        [ConfigField("TOTAL Damage Per Stack", "Decimal. ", 1.5f)]
+        public static float totalDamagePerStack;
 
         public override void Init()
         {
@@ -28,14 +33,14 @@ namespace WellRoundedBalance.Items.Yellows
         {
             ILCursor c = new(il);
 
-            float initialDamage = 4f - 1.5f;
+            float initialDamage = baseTotalDamage - totalDamagePerStack;
 
             bool error = true;
             if (c.TryGotoNext(x => x.MatchLdsfld(typeof(RoR2Content.Items), "LightningStrikeOnHit")) &&
                 c.TryGotoNext(x => x.MatchLdfld<DamageInfo>("damage")))
             {
                 c.Index += 3;
-                c.Next.Operand = 1.5f;
+                c.Next.Operand = totalDamagePerStack;
                 c.Index += 4;
                 c.EmitDelegate<Func<float, float>>((damageCoefficient) =>
                 {

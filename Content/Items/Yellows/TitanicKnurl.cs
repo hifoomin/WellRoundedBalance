@@ -1,6 +1,4 @@
 ﻿using MonoMod.Cil;
-using R2API.Utils;
-using UnityEngine.UIElements;
 
 namespace WellRoundedBalance.Items.Yellows
 {
@@ -11,7 +9,16 @@ namespace WellRoundedBalance.Items.Yellows
 
         public override string PickupText => "Gain a 10% chance on hit to summon a stone fist.";
 
-        public override string DescText => "Gain a <style=cIsDamage>10%</style> <style=cStack>(+10% per stack)</style> chance on hit to summon a stone fist that deals <style=cIsDamage>350%</style> damage and <style=cIsUtility>knocks up</style> enemies in a small radius.";
+        public override string DescText => "Gain a <style=cIsDamage>" + baseFistChance + "%</style> <style=cStack>(+" + baseFistChance + "% per stack)</style> chance on hit to summon a stone fist that deals <style=cIsDamage>" + d(fistBaseDamage) + "</style> damage and <style=cIsUtility>knocks up</style> enemies in a small radius.";
+
+        [ConfigField("Base Fist Chance", "", 10f)]
+        public static float baseFistChance;
+
+        [ConfigField("Fist Chance Per Stack", "", 10f)]
+        public static float fistChancePerStack;
+
+        [ConfigField("Fist Base Damage", "Decimal.", 3.5f)]
+        public static float fistBaseDamage;
 
         public override void Init()
         {
@@ -39,13 +46,13 @@ namespace WellRoundedBalance.Items.Yellows
                     var stack = inventory.GetItemCount(RoR2Content.Items.Knurl);
                     if (stack > 0)
                     {
-                        if (Util.CheckRoll(10f * damageReport.damageInfo.procCoefficient * stack, master))
+                        if (Util.CheckRoll((baseFistChance + fistChancePerStack * (stack - 1)) * damageReport.damageInfo.procCoefficient, master))
                         {
                             var aimRotation = body.inputBank.GetAimRay().direction;
                             var fpi = new FireProjectileInfo
                             {
                                 owner = body.gameObject,
-                                damage = body.damage * 3.5f,
+                                damage = body.damage * fistBaseDamage,
                                 position = victimBody.footPosition,
                                 rotation = Util.QuaternionSafeLookRotation(aimRotation),
                                 crit = body.RollCrit(),

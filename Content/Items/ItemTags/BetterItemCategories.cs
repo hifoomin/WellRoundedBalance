@@ -133,7 +133,7 @@ namespace WellRoundedBalance.Items.ConsistentCategories
             // special cases (NREs at any point)
 
             var irradiantPearl = Utils.Paths.ItemDef.ShinyPearl.Load<ItemDef>();
-            irradiantPearl.tags = new ItemTag[] { ItemTag.Damage, ItemTag.Utility };
+            irradiantPearl.tags = new ItemTag[] { ItemTag.Damage, ItemTag.Utility, ItemTag.WorldUnique };
             ItemAPI.ApplyTagToItem("Defense", irradiantPearl);
 
             var oldWarStealthkit = Utils.Paths.ItemDef.Phasing.Load<ItemDef>();

@@ -1,6 +1,4 @@
 ﻿using MonoMod.Cil;
-using R2API;
-using RoR2;
 
 namespace WellRoundedBalance.Items.Reds
 {
@@ -11,7 +9,16 @@ namespace WellRoundedBalance.Items.Reds
 
         public override string PickupText => "Chance to hook all nearby enemies.";
 
-        public override string DescText => "<style=cIsDamage>20%</style> <style=cStack>(+20% per stack)</style> chance on hit to <style=cIsDamage>fire homing hooks</style> at up to <style=cIsDamage>5</style> <style=cStack>(+2 per stack)</style> enemies for <style=cIsDamage>100%</style> TOTAL damage.";
+        public override string DescText => "<style=cIsDamage>20%</style> <style=cStack>(+20% per stack)</style> chance on hit to <style=cIsDamage>fire homing hooks</style> at up to <style=cIsDamage>" + baseMaxTargets + "</style> <style=cStack>(+" + maxTargetsPerStack + " per stack)</style> enemies for <style=cIsDamage>100%</style> TOTAL damage.";
+
+        [ConfigField("Base Max Targets", "", 5)]
+        public static int baseMaxTargets;
+
+        [ConfigField("Max Targets Per Stack", "", 2)]
+        public static int maxTargetsPerStack;
+
+        [ConfigField("Range", "", 20f)]
+        public static float range;
 
         public override void Init()
         {
@@ -32,9 +39,9 @@ namespace WellRoundedBalance.Items.Reds
                     x => x.MatchLdloc(13),
                     x => x.MatchLdcI4(5)))
             {
-                c.Next.Operand = 3;
+                c.Next.Operand = baseMaxTargets - maxTargetsPerStack;
                 c.Index += 2;
-                c.Next.Operand = 2;
+                c.Next.Operand = maxTargetsPerStack;
             }
             else
             {
@@ -48,7 +55,7 @@ namespace WellRoundedBalance.Items.Reds
                     x => x.MatchLdloc(66),
                     x => x.MatchLdloc(62)))
             {
-                c.Next.Operand = 20f;
+                c.Next.Operand = range;
             }
             else
             {

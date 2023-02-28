@@ -1,8 +1,4 @@
-﻿using HG;
-using Mono.Cecil.Cil;
-using MonoMod.Cil;
-using RoR2;
-using UnityEngine;
+﻿using MonoMod.Cil;
 
 namespace WellRoundedBalance.Items.Greens
 {
@@ -13,7 +9,21 @@ namespace WellRoundedBalance.Items.Greens
 
         public override string PickupText => "Detonate enemies on kill.";
 
-        public override string DescText => "On killing an enemy, spawn a <style=cIsDamage>lava pillar</style> in a <style=cIsDamage>12m</style> radius for <style=cIsDamage>180%</style> <style=cStack>(+90% per stack)</style> base damage.";
+        public override string DescText => "On killing an enemy, spawn a <style=cIsDamage>lava pillar</style> in a <style=cIsDamage>" + baseRange + "m</style>" +
+                                            (rangePerStack > 0 ? " <style=cStack>(+" + rangePerStack + "m per stack)</style>" : "") +
+                                            " radius for <style=cIsDamage>" + d(baseDamage) + "</style> <style=cStack>(+" + d(damagePerStack) + " per stack)</style> base damage.";
+
+        [ConfigField("Base Damage", "Decimal.", 1.6f)]
+        public static float baseDamage;
+
+        [ConfigField("Damage Per Stack", "Decimal.", 0.8f)]
+        public static float damagePerStack;
+
+        [ConfigField("Base Range", "", 12f)]
+        public static float baseRange;
+
+        [ConfigField("Range Per Stack", "", 0f)]
+        public static float rangePerStack;
 
         public override void Init()
         {
@@ -39,9 +49,9 @@ namespace WellRoundedBalance.Items.Greens
                     x => x.MatchConvR4(),
                     x => x.MatchLdcR4(0.8f)))
             {
-                c.Next.Operand = 1.8f;
+                c.Next.Operand = baseDamage;
                 c.Index += 6;
-                c.Next.Operand = 0.5f;
+                c.Next.Operand = damagePerStack / baseDamage;
             }
             else
             {
@@ -54,9 +64,9 @@ namespace WellRoundedBalance.Items.Greens
                 x => x.MatchLdcR4(12f),
                 x => x.MatchLdcR4(2.4f)))
             {
-                c.Next.Operand = 12f;
+                c.Next.Operand = baseRange;
                 c.Index += 1;
-                c.Next.Operand = 0f;
+                c.Next.Operand = rangePerStack;
             }
             else
             {

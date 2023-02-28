@@ -1,7 +1,4 @@
 ﻿using MonoMod.Cil;
-using RoR2;
-using UnityEngine;
-using UnityEngine.Networking;
 
 namespace WellRoundedBalance.Items.Reds
 {
@@ -12,7 +9,10 @@ namespace WellRoundedBalance.Items.Reds
 
         public override string PickupText => "Cheat death. Consumed on use.";
 
-        public override string DescText => "<style=cIsUtility>Upon death</style>, this item will be <style=cIsUtility>consumed</style>, you will <style=cIsHealing>return to life</style> with <style=cIsHealing>5 seconds of invulnerability</style> and gain <style=cIsUtility>1</style> Tougher Times.";
+        public override string DescText => "<style=cIsUtility>Upon death</style>, this item will be <style=cIsUtility>consumed</style>, you will <style=cIsHealing>return to life</style> with <style=cIsHealing>" + invincibilityDuration + " seconds of invulnerability</style> and gain <style=cIsUtility>1</style> Tougher Times.";
+
+        [ConfigField("Invincibility Duration", "", 5f)]
+        public static float invincibilityDuration;
 
         public override void Init()
         {
@@ -21,8 +21,23 @@ namespace WellRoundedBalance.Items.Reds
 
         public override void Hooks()
         {
-            IL.RoR2.CharacterMaster.RespawnExtraLife += ChangeInvinc;
+            IL.RoR2.CharacterMaster.RespawnExtraLife += CharacterMaster_RespawnExtraLife1;
             On.RoR2.CharacterMaster.RespawnExtraLife += CharacterMaster_RespawnExtraLife;
+        }
+
+        private void CharacterMaster_RespawnExtraLife1(ILContext il)
+        {
+            ILCursor c = new(il);
+
+            if (c.TryGotoNext(MoveType.Before,
+                x => x.MatchLdcR4(3f)))
+            {
+                c.Next.Operand = invincibilityDuration;
+            }
+            else
+            {
+                Main.WRBLogger.LogError("Failed to apply Dios Best Friend Invincibility hook");
+            }
         }
 
         private void CharacterMaster_RespawnExtraLife(On.RoR2.CharacterMaster.orig_RespawnExtraLife orig, CharacterMaster self)
@@ -32,21 +47,6 @@ namespace WellRoundedBalance.Items.Reds
             {
                 self.inventory.GiveItem(RoR2Content.Items.Bear);
                 CharacterMasterNotificationQueue.SendTransformNotification(self, RoR2Content.Items.ExtraLife.itemIndex, RoR2Content.Items.Bear.itemIndex, CharacterMasterNotificationQueue.TransformationType.Default);
-            }
-        }
-
-        private void ChangeInvinc(ILContext il)
-        {
-            ILCursor c = new(il);
-
-            if (c.TryGotoNext(MoveType.Before,
-                x => x.MatchLdcR4(3f)))
-            {
-                c.Next.Operand = 5f;
-            }
-            else
-            {
-                Main.WRBLogger.LogError("Failed to apply Dios Best Friend Invincibility hook");
             }
         }
     }

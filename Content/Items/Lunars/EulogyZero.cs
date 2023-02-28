@@ -8,7 +8,10 @@ namespace WellRoundedBalance.Items.Lunars
         public override string InternalPickupToken => "randomlyLunar";
 
         public override string PickupText => "Items and equipment have a small chance to transform into a Lunar item instead.";
-        public override string DescText => "Items have a <style=cIsUtility>10% <style=cStack>(+10% per stack)</style></style> chance to become a <style=cIsLunar>Lunar</style> item instead.";
+        public override string DescText => "Items have a <style=cIsUtility>" + d(lunarChance) + " <style=cStack>(+" + d(lunarChance) + " per stack)</style></style> chance to become a <style=cIsLunar>Lunar</style> item instead.";
+
+        [ConfigField("Lunar Chance", "Decimal.", 0.1f)]
+        public static float lunarChance;
 
         public override void Init()
         {
@@ -28,7 +31,7 @@ namespace WellRoundedBalance.Items.Lunars
             if (c.TryGotoNext(MoveType.Before,
                     x => x.MatchLdcR4(0.05f)))
             {
-                c.Next.Operand = 0.1f;
+                c.Next.Operand = lunarChance;
             }
             else
             {
@@ -43,7 +46,7 @@ namespace WellRoundedBalance.Items.Lunars
             if (c.TryGotoNext(MoveType.Before,
                     x => x.MatchLdcR4(0.05f)))
             {
-                c.Next.Operand = 0.1f;
+                c.Next.Operand = lunarChance;
             }
             else
             {

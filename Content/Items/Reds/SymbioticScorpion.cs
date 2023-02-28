@@ -13,7 +13,19 @@ namespace WellRoundedBalance.Items.Reds
 
         public override string PickupText => "Inflict venom on hit.";
 
-        public override string DescText => "Inflict <style=cIsDamage>venom</style> on hit, dealing <style=cIsDamage>750%</style> <style=cStack>(+100% per stack)</style> base damage over 5s and stealing <style=cIsHealing>20</style> <style=cStack>(+10 per stack)</style> <style=cIsHealing>armor</style> for 5s.";
+        public override string DescText => "Inflict <style=cIsDamage>venom</style> on hit, dealing <style=cIsDamage>750%</style> <style=cStack>(+200% per stack)</style> base damage over 5s and stealing <style=cIsHealing>20</style> <style=cStack>(+10 per stack)</style> <style=cIsHealing>armor</style> for 5s.";
+
+        [ConfigField("Base Venom Damage Per Tick", "Formula for final damage: (Base Venom Damage Per Tick + Venom Damage Per Tick Per Stack * (Symbiotic Scorpion - 1)) * 25", 0.3f)]
+        public static float baseVenomDamagePerTick;
+
+        [ConfigField("Venom Damage Per Tick Per Stack", "Formula for final damage: (Base Venom Damage Per Tick + Venom Damage Per Tick Per Stack * (Symbiotic Scorpion - 1)) * 25", 0.08f)]
+        public static float venomDamagePerTickPerStack;
+
+        [ConfigField("Base Armor Steal Amount", "", 20f)]
+        public static float baseArmorStealAmount;
+
+        [ConfigField("Armor Steal Amount Per Stack", "", 10f)]
+        public static float armorStealAmountPerStack;
 
         public override void Init()
         {
@@ -25,7 +37,7 @@ namespace WellRoundedBalance.Items.Reds
             venom.canStack = false;
             venom.isDebuff = true;
             venom.iconSprite = Sprite.Create(scorpion, new Rect(0f, 0f, (float)scorpion.width, (float)scorpion.height), new Vector2(0f, 0f));
-            venom.buffColor = new Color32(187, 255, 0, 255);
+            venom.buffColor = new Color32(216, 116, 132, 255);
             venom.name = "Symbiotic Scorpion Venom";
 
             armorReduction = ScriptableObject.CreateInstance<BuffDef>();
@@ -60,12 +72,12 @@ namespace WellRoundedBalance.Items.Reds
             var stack = sender.inventory ? sender.inventory.GetItemCount(DLC1Content.Items.PermanentDebuffOnHit) : 0;
             if (sender.HasBuff(armorReduction))
             {
-                if (sender.armor - (20 + 10 * (stack - 1)) >= 0)
+                if (sender.armor - (baseArmorStealAmount + armorStealAmountPerStack * (stack - 1)) >= 0)
                 {
-                    args.armorAdd -= 20 + 10 * (stack - 1);
+                    args.armorAdd -= baseArmorStealAmount + armorStealAmountPerStack * (stack - 1);
                 }
             }
-            args.armorAdd += sender.GetBuffCount(armorGain) * (20 + 10 * (stack - 1));
+            args.armorAdd += sender.GetBuffCount(armorGain) * (baseArmorStealAmount + armorStealAmountPerStack * (stack - 1));
         }
 
         private void GlobalEventManager_onServerDamageDealt(DamageReport damageReport)
@@ -90,6 +102,7 @@ namespace WellRoundedBalance.Items.Reds
                         if (stack > 0 && damageReport.damageInfo.procCoefficient > 0)
                         {
                             victimBody.AddTimedBuff(armorReduction, 5f);
+                            victimBody.AddTimedBuff(venom, 5f);
                             attackerBody.AddTimedBuff(armorGain, 5f);
                             if (!based)
                             {
@@ -130,7 +143,7 @@ namespace WellRoundedBalance.Items.Reds
     {
         public float interval = 0.2f;
         public float timer;
-        public float damageCoefficient = 0.3f;
+        public float damageCoefficient = SymbioticScorpion.baseVenomDamagePerTick;
         public float duration = 5f;
         public HealthComponent victimHealthComponent;
         public CharacterBody attackerBody;
@@ -144,7 +157,7 @@ namespace WellRoundedBalance.Items.Reds
             var inventory = attackerBody.inventory;
             if (inventory)
             {
-                damageCoefficient = 0.3f + 0.04f * (inventory.GetItemCount(DLC1Content.Items.PermanentDebuffOnHit) - 1);
+                damageCoefficient = SymbioticScorpion.baseVenomDamagePerTick + SymbioticScorpion.venomDamagePerTickPerStack * (inventory.GetItemCount(DLC1Content.Items.PermanentDebuffOnHit) - 1);
             }
         }
 
