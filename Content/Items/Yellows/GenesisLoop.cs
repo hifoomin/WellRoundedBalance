@@ -12,7 +12,7 @@ namespace WellRoundedBalance.Items.Yellows
 
         public override string PickupText => "Fire an electric nova at low health.";
 
-        public override string DescText => "Falling below <style=cIsHealth>" + d(healthThreshold) + " health</style> causes you to explode, dealing <style=cIsDamage>" + d(baseDamage) + " base damage</style>. Recharges every <style=cIsUtility>" + cooldown + " seconds</style> <style=cStack>(-" + d(cooldown / 3) + " per stack)</style>.";
+        public override string DescText => "Falling below <style=cIsHealth>" + d(healthThreshold) + " health</style> causes you to explode, dealing <style=cIsDamage>" + d(baseDamage) + " base damage</style>. Recharges every <style=cIsUtility>" + cooldown + " seconds</style> <style=cStack>(-" + (cooldown / 2f) + "% per stack)</style>.";
 
         [ConfigField("Health Threshold", "Decimal.", 0.5f)]
         public static float healthThreshold;

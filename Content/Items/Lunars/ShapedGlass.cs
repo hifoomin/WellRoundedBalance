@@ -1,8 +1,5 @@
 ﻿using Mono.Cecil.Cil;
 using MonoMod.Cil;
-using R2API;
-using RoR2;
-using UnityEngine;
 
 namespace WellRoundedBalance.Items.Lunars
 {

@@ -9,7 +9,7 @@ namespace WellRoundedBalance.Items.Greens
 
         public override string PickupText => "Chance on kill to drop an ammo pack that resets all skill cooldowns.";
 
-        public override string DescText => "<style=cIsUtility>" + (Mathf.Round(1 - (1 / (Mathf.Pow(baseValue + 1, exponent))))) * 100f + "%</style> <style=cStack>(+" + ((Mathf.Round(1 - (1 / (Mathf.Pow(baseValue + 2, exponent)))) - Mathf.Round(1 - (1 / (Mathf.Pow(baseValue + 1, exponent)))))) * 100f + "% per stack)</style> chance on kill to drop an ammo pack that <style=cIsUtility>resets all skill cooldowns</style>.";
+        public override string DescText => "<style=cIsUtility>" + Mathf.Round((1 - (1 / Mathf.Pow(baseValue + 1, exponent))) * 100f) + "%</style> <style=cStack>(+" + (Mathf.Round((1 - (1 / Mathf.Pow(baseValue + 2, exponent))) * 100f) - Mathf.Round((1 - (1 / Mathf.Pow(baseValue + 1, exponent))) * 100f)) + "% per stack)</style> chance on kill to drop an ammo pack that <style=cIsUtility>resets all skill cooldowns</style>.";
 
         [ConfigField("Base Value", "Formula for drop chance: 1 - 1 / (Base Value + Bandolier) ^ Exponent", 0.9f)]
         public static float baseValue;

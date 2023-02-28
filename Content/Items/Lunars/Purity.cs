@@ -7,8 +7,14 @@ namespace WellRoundedBalance.Items.Lunars
         public override string Name => ":: Items ::::: Lunars :: Purity";
         public override string InternalPickupToken => "lunarBadLuck";
 
-        public override string PickupText => "Reduce your skill cooldowns by 3 seconds. <color=#FF7F7F>You are unlucky.</color>";
-        public override string DescText => "All skill cooldowns are reduced by <style=cIsUtility>3</style> <style=cStack>(+1 per stack)</style> seconds. All random effects are rolled <style=cIsUtility>+1</style> <style=cStack>(+1 per stack)</style> times for an <style=cIsHealth>unfavorable outcome</style>.";
+        public override string PickupText => "Reduce your skill cooldowns by " + baseFlatCooldownReduction + " seconds. <color=#FF7F7F>You are unlucky.</color>";
+        public override string DescText => "All skill cooldowns are reduced by <style=cIsUtility>" + baseFlatCooldownReduction + "</style> <style=cStack>(+" + flatCooldownReductionPerStack + " per stack)</style> seconds. All random effects are rolled <style=cIsUtility>+1</style> <style=cStack>(+1 per stack)</style> times for an <style=cIsHealth>unfavorable outcome</style>.";
+
+        [ConfigField("Base Flat Cooldown Reduction", "", 3f)]
+        public static float baseFlatCooldownReduction;
+
+        [ConfigField("Flat Cooldown Reduction Per Stack", "", 1f)]
+        public static float flatCooldownReductionPerStack;
 
         public override void Init()
         {
@@ -30,9 +36,9 @@ namespace WellRoundedBalance.Items.Lunars
                     x => x.MatchLdcR4(1f)))
             {
                 c.Index += 1;
-                c.Next.Operand = 3f;
+                c.Next.Operand = baseFlatCooldownReduction;
                 c.Index += 1;
-                c.Next.Operand = 1f;
+                c.Next.Operand = flatCooldownReductionPerStack;
             }
             else
             {

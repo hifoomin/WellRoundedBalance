@@ -1,9 +1,4 @@
-﻿using RoR2;
-using UnityEngine;
-using UnityEngine.AddressableAssets;
-using R2API;
-
-namespace WellRoundedBalance.Items.Lunars
+﻿namespace WellRoundedBalance.Items.Lunars
 {
     public class MercurialRachis : ItemBase
     {
@@ -12,9 +7,21 @@ namespace WellRoundedBalance.Items.Lunars
 
         public override string PickupText => "Randomly create a Ward of Power. ALL characters have bonus stats while in the Ward.";
 
-        public override string DescText => "Creates a Ward of Power in a random location nearby that buffs both enemies and allies within <style=cIsUtility>30m</style> <style=cStack>(+50% per stack)</style>, causing them to gain <style=cIsDamage>35% attack speed</style> and <style=cIsUtility>movement speed</style>. Enemies benefit from the ward twice as much.";
+        public override string DescText => "Creates a Ward of Power in a random location nearby that buffs both enemies and allies within <style=cIsUtility>" + baseRadius + "m</style> <style=cStack>(+" + d(radiusIncreasePerStack) + " per stack)</style>, causing them to gain <style=cIsDamage>" + d(attackSpeedAndMovementSpeedGain) + " attack speed</style> and <style=cIsUtility>movement speed</style>. Enemies benefit from the ward twice as much.";
 
         public static BuffDef rachisBuff;
+
+        [ConfigField("Attack Speed and Movement Speed Gain", "", 0.35f)]
+        public static float attackSpeedAndMovementSpeedGain;
+
+        [ConfigField("Base Radius", "", 30f)]
+        public static float baseRadius;
+
+        [ConfigField("Radius Increase Per Stack", "Decimal.", 0.5f)]
+        public static float radiusIncreasePerStack;
+
+        [ConfigField("Ward Duration", "", 25f)]
+        public static float wardDuration;
 
         public override void Init()
         {
@@ -33,13 +40,13 @@ namespace WellRoundedBalance.Items.Lunars
         {
             if (sender && sender.teamComponent._teamIndex == TeamIndex.Player && sender.HasBuff(rachisBuff))
             {
-                args.baseAttackSpeedAdd += 0.35f;
-                args.moveSpeedMultAdd += 0.35f;
+                args.baseAttackSpeedAdd += attackSpeedAndMovementSpeedGain;
+                args.moveSpeedMultAdd += attackSpeedAndMovementSpeedGain;
             }
             if (sender && sender.teamComponent._teamIndex != TeamIndex.Player && sender.HasBuff(rachisBuff))
             {
-                args.baseAttackSpeedAdd += 0.7f;
-                args.moveSpeedMultAdd += 0.7f;
+                args.baseAttackSpeedAdd += attackSpeedAndMovementSpeedGain * 2f;
+                args.moveSpeedMultAdd += attackSpeedAndMovementSpeedGain * 2f;
             }
         }
 
@@ -58,9 +65,9 @@ namespace WellRoundedBalance.Items.Lunars
 
         private void RandomDamageZoneBodyBehavior_FixedUpdate(On.RoR2.Items.RandomDamageZoneBodyBehavior.orig_FixedUpdate orig, RoR2.Items.RandomDamageZoneBodyBehavior self)
         {
-            RoR2.Items.RandomDamageZoneBodyBehavior.baseWardRadius = 30f;
-            RoR2.Items.RandomDamageZoneBodyBehavior.wardDuration = 25f;
-            RoR2.Items.RandomDamageZoneBodyBehavior.wardRadiusMultiplierPerStack = 1 + 0.5f;
+            RoR2.Items.RandomDamageZoneBodyBehavior.baseWardRadius = baseRadius;
+            RoR2.Items.RandomDamageZoneBodyBehavior.wardDuration = wardDuration;
+            RoR2.Items.RandomDamageZoneBodyBehavior.wardRadiusMultiplierPerStack = 1 + radiusIncreasePerStack;
             orig(self);
         }
 

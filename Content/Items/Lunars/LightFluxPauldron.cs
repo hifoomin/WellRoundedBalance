@@ -12,6 +12,12 @@ namespace WellRoundedBalance.Items.Lunars
 
         public override string DescText => "Increase <style=cIsUtility>movement speed</style> by <style=cIsUtility>30%</style> <style=cStack>(+30% per stack)</style> while airborne. Getting hit forcibly <style=cIsUtility>pulls</style> you to the ground. <style=cStack>(Pull strength increases per stack)</style>.";
 
+        [ConfigField("Base Movement Speed Gain", "Decimal.", 0.3f)]
+        public static float baseMovementSpeedGain;
+
+        [ConfigField("Movement Speed Gain Per Stack", "Decimal.", 0.3f)]
+        public static float movementSpeedGainPerStack;
+
         public override void Init()
         {
             base.Init();
@@ -28,13 +34,30 @@ namespace WellRoundedBalance.Items.Lunars
 
         private void CharacterMotor_OnLeaveStableGround(On.RoR2.CharacterMotor.orig_OnLeaveStableGround orig, CharacterMotor self)
         {
-            self.body.statsDirty = true;
+            var body = self.body;
+            if (body)
+            {
+                var inventory = body.inventory;
+                if (inventory && inventory.GetItemCount(DLC1Content.Items.HalfAttackSpeedHalfCooldowns) > 0)
+                {
+                    self.body.statsDirty = true;
+                }
+            }
             orig(self);
         }
 
         private void CharacterMotor_OnLanded(On.RoR2.CharacterMotor.orig_OnLanded orig, CharacterMotor self)
         {
-            self.body.statsDirty = true;
+            var body = self.body;
+            if (body)
+            {
+                var inventory = body.inventory;
+                if (inventory && inventory.GetItemCount(DLC1Content.Items.HalfAttackSpeedHalfCooldowns) > 0)
+                {
+                    self.body.statsDirty = true;
+                }
+            }
+
             orig(self);
         }
 
@@ -43,7 +66,7 @@ namespace WellRoundedBalance.Items.Lunars
             if (sender.inventory && sender.characterMotor)
             {
                 var stack = sender.inventory.GetItemCount(DLC1Content.Items.HalfAttackSpeedHalfCooldowns);
-                if (!sender.characterMotor.isGrounded) args.moveSpeedMultAdd += 0.3f * stack;
+                if (!sender.characterMotor.isGrounded) args.moveSpeedMultAdd += baseMovementSpeedGain + movementSpeedGainPerStack * (stack - 1);
             }
         }
 

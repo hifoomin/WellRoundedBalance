@@ -12,7 +12,7 @@ namespace WellRoundedBalance.Items.Yellows
 
         public override string PickupText => "Summon the unmatched power of the sun after standing still for 1 second.";
 
-        public override string DescText => "After standing still for <style=cIsDamage>1</style> second, summon <style=cIsDamage>the unmatched power of the sun</style> that increasingly ignites enemies.";
+        public override string DescText => "After standing still for <style=cIsDamage>1</style> second, summon <style=cIsDamage>the unmatched power of the sun</style> that increasingly <style=cIsDamage>ignites</style> enemies.";
 
         public override void Init()
         {
