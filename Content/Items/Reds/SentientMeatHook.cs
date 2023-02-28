@@ -11,13 +11,13 @@ namespace WellRoundedBalance.Items.Reds
 
         public override string DescText => "<style=cIsDamage>20%</style> <style=cStack>(+20% per stack)</style> chance on hit to <style=cIsDamage>fire homing hooks</style> at up to <style=cIsDamage>" + baseMaxTargets + "</style> <style=cStack>(+" + maxTargetsPerStack + " per stack)</style> enemies for <style=cIsDamage>100%</style> TOTAL damage.";
 
-        [ConfigField("Base Max Targets", "", 5)]
+        [ConfigField("Base Max Targets", 5)]
         public static int baseMaxTargets;
 
-        [ConfigField("Max Targets Per Stack", "", 2)]
+        [ConfigField("Max Targets Per Stack", 2)]
         public static int maxTargetsPerStack;
 
-        [ConfigField("Range", "", 20f)]
+        [ConfigField("Range", 20f)]
         public static float range;
 
         public override void Init()

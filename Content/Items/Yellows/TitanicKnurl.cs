@@ -11,10 +11,10 @@ namespace WellRoundedBalance.Items.Yellows
 
         public override string DescText => "Gain a <style=cIsDamage>" + baseFistChance + "%</style> <style=cStack>(+" + baseFistChance + "% per stack)</style> chance on hit to summon a stone fist that deals <style=cIsDamage>" + d(fistBaseDamage) + "</style> damage and <style=cIsUtility>knocks up</style> enemies in a small radius.";
 
-        [ConfigField("Base Fist Chance", "", 10f)]
+        [ConfigField("Base Fist Chance", 10f)]
         public static float baseFistChance;
 
-        [ConfigField("Fist Chance Per Stack", "", 10f)]
+        [ConfigField("Fist Chance Per Stack", 10f)]
         public static float fistChancePerStack;
 
         [ConfigField("Fist Base Damage", "Decimal.", 3.5f)]

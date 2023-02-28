@@ -11,12 +11,17 @@ namespace WellRoundedBalance.Items.Whites
         public override string Name => ":: Items : Whites :: Tri Tip Dagger";
         public override string InternalPickupToken => "bleedOnHit";
 
-        public override string PickupText => "Gain +" + bleedChance + "% chance to bleed enemies on hit.";
+        public override string PickupText => $"Gain +{bleedChance}% chance to bleed enemies on hit.";
 
-        public override string DescText => "<style=cIsDamage>" + bleedChance + "%</style> <style=cStack>(+" + bleedChance + "% per stack)</style> chance to <style=cIsDamage>bleed</style> an enemy for <style=cIsDamage>240%</style> base damage.";
+        public override string DescText => 
+            StackDesc(bleedChance, bleedChanceStack, init => $"<style=cIsDamage>{d(init)}</style>{{Stack}} chance to <style=cIsDamage>bleed</style> an enemy for <style=cIsDamage>240%</style> base damage.", d);
 
-        [ConfigField("Bleed Chance", "", 9f)]
+        [ConfigField("Bleed Chance", 9f)]
         public static float bleedChance;
+        [ConfigField("Bleed Chance per Stack", 9f)]
+        public static float bleedChanceStack;
+        [ConfigField("Damage is Hyperbolic", "Decimal, Max value. Set to 0 to make it linear.", 0f)]
+        public static float bleedChanceIsHyperbolic;
 
         public override void Init()
         {
@@ -25,26 +30,13 @@ namespace WellRoundedBalance.Items.Whites
 
         public override void Hooks()
         {
-            IL.RoR2.CharacterBody.RecalculateStats += ChangeChance;
+            On.RoR2.CharacterBody.RecalculateStats += CharacterBody_RecalculateStats;
         }
-
-        public static void ChangeChance(ILContext il)
+        private void CharacterBody_RecalculateStats(On.RoR2.CharacterBody.orig_RecalculateStats orig, CharacterBody self)
         {
-            ILCursor c = new(il);
-
-            if (c.TryGotoNext(MoveType.Before,
-                    x => x.MatchLdarg(0),
-                    x => x.MatchLdcR4(10f),
-                    x => x.MatchLdloc(out _),
-                    x => x.MatchConvR4()))
-            {
-                c.Index += 1;
-                c.Next.Operand = 9f;
-            }
-            else
-            {
-                Main.WRBLogger.LogError("Failed to apply Tri-tip Dagger Chance hook");
-            }
+            orig(self);
+            if (self.inventory) self.bleedChance += StackAmount(bleedChance, bleedChanceStack,
+                self.inventory.GetItemCount(RoR2Content.Items.SecondarySkillMagazine), bleedChanceIsHyperbolic) - 10f;
         }
     }
 }

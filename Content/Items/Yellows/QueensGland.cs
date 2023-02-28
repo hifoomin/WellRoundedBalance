@@ -14,7 +14,7 @@ namespace WellRoundedBalance.Items.Yellows
 
         public override string DescText => "<style=cIsUtility>Summon 3 Beetle Guards</style> with bonus <style=cIsDamage>200%</style> <style=cStack>(+100% per stack)</style> damage and <style=cIsHealing>100%</style> <style=cIsHealing>health</style>.";
 
-        [ConfigField("Beetle Guard Count", "", 3)]
+        [ConfigField("Beetle Guard Count", 3)]
         public static int beetleGuardCount;
 
         [ConfigField("Beetle Guard Base Damage", "Formula for final damage: (Beetle Guard Base Damage + Beetle Guard Damage Per Stack * (Queen's Gland - 1)) * 10", 20)]

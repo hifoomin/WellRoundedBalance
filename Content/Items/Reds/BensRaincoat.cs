@@ -24,10 +24,10 @@ namespace WellRoundedBalance.Items.Reds
         [ConfigField("Buff Movement Speed Gain Per Stack", "Decimal.", 0.1f)]
         public static float buffMovementSpeedGainPerStack;
 
-        [ConfigField("Recharge Time", "", 1f)]
+        [ConfigField("Recharge Time", 1f)]
         public static float rechargeTime;
 
-        [ConfigField("Buff Duration", "", 3f)]
+        [ConfigField("Buff Duration", 3f)]
         public static float buffDuration;
 
         public override void Init()

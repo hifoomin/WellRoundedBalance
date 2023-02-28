@@ -14,7 +14,9 @@ namespace WellRoundedBalance.Attributes
         public string desc;
         public object defaultValue;
 
-        public ConfigFieldAttribute(string name, string desc, object defaultValue)
+        public ConfigFieldAttribute(string name, object defaultValue) => Init(name, string.Empty, defaultValue);
+        public ConfigFieldAttribute(string name, string desc, object defaultValue) => Init(name, desc, defaultValue);
+        public void Init(string name, string desc, object defaultValue)
         {
             this.name = name;
             this.desc = desc;
@@ -24,6 +26,7 @@ namespace WellRoundedBalance.Attributes
 
     public class ConfigManager
     {
+        internal static bool ConfigChanged = false;
         public static void HandleConfigAttributes(Type type, string section, ConfigFile config)
         {
             TypeInfo info = type.GetTypeInfo();
@@ -47,6 +50,7 @@ namespace WellRoundedBalance.Attributes
                 method = method.MakeGenericMethod(t);
                 ConfigEntryBase val = (ConfigEntryBase)method.Invoke(config, new object[] { new ConfigDefinition(section, configattr.name), configattr.defaultValue, new ConfigDescription(configattr.desc) });
 
+                if (val.DefaultValue != val.BoxedValue) ConfigChanged = true;
                 field.SetValue(null, val.BoxedValue);
             }
         }

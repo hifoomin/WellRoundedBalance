@@ -14,7 +14,7 @@ namespace WellRoundedBalance.Items.Whites
         public override string PickupText => "Quickly regenerate upon taking heavy damage. Recharges each stage.";
 
         public override string DescText => $"Taking damage to below <style=cIsHealth>{d(healthThreshold)} health</style> <style=cIsUtility>consumes</style> this item, <style=cIsHealing>healing</style> you for <style=cIsHealing>{d(percentHealing)}</style> of your <style=cIsHealing>maximum health</style> over <style=cIsUtility>{healingTime}s</style>." +
-                                           (refillEveryStage ? " <style=cIsUtility>Refills every stage</style>." : "");
+            (refillEveryStage ? " <style=cIsUtility>Refills every stage</style>." : "");
 
         [ConfigField("Health Threshold", "Decimal.", 0.5f)]
         public static float healthThreshold;
@@ -22,10 +22,10 @@ namespace WellRoundedBalance.Items.Whites
         [ConfigField("Percent Healing", "Decimal.", 0.25f)]
         public static float percentHealing;
 
-        [ConfigField("Healing Time", "", 4f)]
+        [ConfigField("Healing Time", 4f)]
         public static float healingTime;
 
-        [ConfigField("Refill Every Stage?", "", true)]
+        [ConfigField("Refill Every Stage?", true)]
         public static bool refillEveryStage;
 
         public override void Init()
@@ -122,10 +122,7 @@ namespace WellRoundedBalance.Items.Whites
                 c.Emit(OpCodes.Pop);
                 c.Emit(OpCodes.Ldc_I4_0);
             }
-            else
-            {
-                Main.WRBLogger.LogError("Failed to apply Power Elixir Count hook");
-            }
+            else Main.WRBLogger.LogError("Failed to apply Power Elixir Count hook");
         }
     }
 }

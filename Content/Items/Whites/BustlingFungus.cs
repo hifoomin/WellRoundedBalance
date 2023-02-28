@@ -10,31 +10,49 @@ namespace WellRoundedBalance.Items.Whites
         public override string Name => ":: Items : Whites :: Bustling Fungus";
         public override string InternalPickupToken => "mushroom";
 
-        public override string PickupText => $"Heal all nearby allies after standing still for {s(standingStillDuration, "second")}.";
+        public override string PickupText => $"Heal all nearby allies after standing still for 0.5 second.";
 
-        public override string DescText => $"After standing still for <style=cIsHealing>{s(standingStillDuration, "</style> second")}, create a zone" + StackDesc(baseHealing, healingPerStack,
-                init => $"that <style=cIsHealing>heals</style> for <style=cIsHealing>{d(init)}</style>{{Stack}} of your <style=cIsHealing>health</style> every second to all allies",
-                stack => d(stack)) + StackDesc(baseRadius, radiusPerStack,
-                    init => $"within <style=cIsHealing>{init}m</style>{{Stack}}.",
-                    stack => stack + "m");
+        public override string DescText => $"After standing still for <style=cIsHealing>0.5</style> second, create a zone that <style=cIsHealing>heals</style> for " + 
+            StackDesc(flatHealing, flatHealingStack, init => $"<style=cIsHealing>{init}</style>{{Stack}} ", noop) +
+            StackDesc(percentHealing, percentHealingStack, init => (flatHealing > 0 || flatHealingStack > 0 ? "plus an additional " : "") + $"<style=cIsHealing>{d(init)}</style>{{Stack}} of <style=cIsHealing>maximum health</style> ", d) +
+            StackDesc(healingInterval, healingIntervalStack, init => $"every {s(init, "{Stack} second")} to all allies ", noop) + 
+            StackDesc(baseRadius, radiusStack, init => $"within <style=cIsHealing>{m(init)}</style>{{Stack}}", m) + ".";
 
-        [ConfigField("Base Radius", "", 13f)]
+        [ConfigField("Base Radius", 13f)]
         public static float baseRadius;
 
-        [ConfigField("Radius Per Stack", "", 0f)]
-        public static float radiusPerStack;
+        [ConfigField("Radius Per Stack", 0f)]
+        public static float radiusStack;
 
-        [ConfigField("Base Healing", "Decimal.", 0.05f)]
-        public static float baseHealing;
+        [ConfigField("Radius is Hyperbolic", "Decimal, Max value. Set to 0 to make it linear.", 0f)]
+        public static float radiusIsHyperbolic;
 
-        [ConfigField("Healing Per Stack", "Decimal.", 0.025f)]
-        public static float healingPerStack;
+        [ConfigField("Flat Healing", "Decimal.", 0f)]
+        public static float flatHealing;
 
-        [ConfigField("Standing Still Duration", "", 0.5f)]
-        public static float standingStillDuration;
+        [ConfigField("Flat Healing Per Stack", "Decimal.", 0f)]
+        public static float flatHealingStack;
 
-        [ConfigField("Healing Interval", "", 0.25f)]
+        [ConfigField("Flat Healing is Hyperbolic", "Decimal, Max value. Set to 0 to make it linear.", 0f)]
+        public static float flatHealingIsHyperbolic;
+
+        [ConfigField("Percent Healing", "Decimal.", 0.05f)]
+        public static float percentHealing;
+
+        [ConfigField("Percent Healing Per Stack", "Decimal.", 0.025f)]
+        public static float percentHealingStack;
+
+        [ConfigField("Percent Healing is Hyperbolic", "Decimal, Max value. Set to 0 to make it linear.", 0f)]
+        public static float percentHealingIsHyperbolic;
+
+        [ConfigField("Healing Interval", 0.25f)]
         public static float healingInterval;
+
+        [ConfigField("Healing Interval per Stack", 0f)]
+        public static float healingIntervalStack;
+
+        [ConfigField("Healing Interval is Hyperbolic", "Decimal, Max value. Set to 0 to make it linear.", 0f)]
+        public static float healingIntervalIsHyperbolic;
 
         public override void Init()
         {
@@ -43,10 +61,10 @@ namespace WellRoundedBalance.Items.Whites
 
         public override void Hooks()
         {
-            IL.RoR2.Items.MushroomBodyBehavior.FixedUpdate += Changes;
+            IL.RoR2.Items.MushroomBodyBehavior.FixedUpdate += MushroomBodyBehavior_FixedUpdate;
         }
 
-        public static void Changes(ILContext il)
+        public static void MushroomBodyBehavior_FixedUpdate(ILContext il)
         {
             ILCursor c = new(il);
             if (c.TryGotoNext(x => x.MatchStloc(2)))
@@ -54,13 +72,14 @@ namespace WellRoundedBalance.Items.Whites
                 c.Emit(OpCodes.Pop);
                 c.Emit(OpCodes.Ldarg_0);
                 c.Emit(OpCodes.Ldloc_0);
-                c.EmitDelegate<Func<MushroomBodyBehavior, int, float>>((self, stack) => self.body.radius + StackAmount(baseRadius, radiusPerStack, stack));
+                c.EmitDelegate<Func<MushroomBodyBehavior, int, float>>((self, stack) => self.body.radius + StackAmount(baseRadius, radiusStack, stack, radiusIsHyperbolic));
             }
             else Main.WRBLogger.LogError("Failed to apply Bustling Fungus Radius hook");
             if (c.TryGotoNext(x => x.MatchStfld<HealingWard>(nameof(HealingWard.interval))))
             {
                 c.Emit(OpCodes.Pop);
-                c.Emit(OpCodes.Ldc_R4, healingInterval); // not operanding for compat
+                c.Emit(OpCodes.Ldloc_0);
+                c.EmitDelegate<Func<int, float>>(stack => StackAmount(healingInterval, healingIntervalStack, stack, healingIntervalIsHyperbolic));
             }
             else Main.WRBLogger.LogError("Failed to apply Bustling Fungus Interval hook");
             if (c.TryGotoNext(x => x.MatchStfld<HealingWard>(nameof(HealingWard.healFraction))))
@@ -68,9 +87,17 @@ namespace WellRoundedBalance.Items.Whites
                 c.Emit(OpCodes.Pop);
                 c.Emit(OpCodes.Ldarg_0);
                 c.Emit(OpCodes.Ldloc_0);
-                c.EmitDelegate<Func<MushroomBodyBehavior, int, float>>((self, stack) => StackAmount(baseHealing, self.mushroomHealingWard.interval * healingPerStack, stack));
+                c.EmitDelegate<Func<MushroomBodyBehavior, int, float>>((self, stack) => StackAmount(percentHealing, self.mushroomHealingWard.interval * percentHealingStack, stack, percentHealingIsHyperbolic));
             }
-            else Main.WRBLogger.LogError("Failed to apply Bustling Fungus Healing hook");
+            else Main.WRBLogger.LogError("Failed to apply Bustling Fungus Percent Healing hook");
+            if (c.TryGotoNext(x => x.MatchStfld<HealingWard>(nameof(HealingWard.healPoints))))
+            {
+                c.Emit(OpCodes.Pop);
+                c.Emit(OpCodes.Ldarg_0);
+                c.Emit(OpCodes.Ldloc_0);
+                c.EmitDelegate<Func<MushroomBodyBehavior, int, float>>((self, stack) => StackAmount(flatHealing, self.mushroomHealingWard.interval * flatHealingStack, stack, flatHealingIsHyperbolic));
+            }
+            else Main.WRBLogger.LogError("Failed to apply Bustling Fungus Flat Healing hook");
         }
     }
 }

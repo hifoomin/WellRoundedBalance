@@ -9,15 +9,17 @@ namespace WellRoundedBalance.Items.Whites
 
         public override string PickupText => "Gain 45 max health.";
 
-        public override string DescText => StackDesc(maximumHealthGain, maximumHealthGainStack, 
-            init => $"Increases <style=cIsHealing>maximum health</style> by <style=cIsHealing>{init}</style>{{Stack}}.", 
-            stack => stack.ToString());
+        public override string DescText =>
+            StackDesc(maximumHealthGain, maximumHealthGainStack, init => $"Increases <style=cIsHealing>maximum health</style> by <style=cIsHealing>{init}</style>{{Stack}}.", noop);
 
-        [ConfigField("Maximum Health Gain", "", 45f)]
+        [ConfigField("Maximum Health Gain", 45f)]
         public static float maximumHealthGain;
 
-        [ConfigField("Maximum Health Gain per Stack", "", 45f)]
+        [ConfigField("Maximum Health Gain per Stack", 45f)]
         public static float maximumHealthGainStack;
+
+        [ConfigField("Maximum Health Gain is Hyperbolic", "Decimal, Max value. Set to 0 to make it linear.", 0f)]
+        public static float maximumHealthGainIsHyperbolic;
 
         public override void Init()
         {
@@ -34,7 +36,7 @@ namespace WellRoundedBalance.Items.Whites
             if (sender.inventory)
             {
                 args.baseHealthAdd += StackAmount(maximumHealthGain - 25, maximumHealthGainStack - 25,
-                    sender.inventory.GetItemCount(RoR2Content.Items.FlatHealth));
+                    sender.inventory.GetItemCount(RoR2Content.Items.FlatHealth), maximumHealthGainIsHyperbolic);
             }
         }
     }

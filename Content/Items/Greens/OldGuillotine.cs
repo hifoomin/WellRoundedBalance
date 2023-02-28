@@ -12,7 +12,7 @@ namespace WellRoundedBalance.Items.Greens
 
         public override string DescText => "Instantly kill Elite monsters below <style=cIsHealth>" + healthThreshold + "% <style=cStack>(+" + healthThreshold + "% per stack)</style> health</style>.";
 
-        [ConfigField("Health Threshold", "", 25f)]
+        [ConfigField("Health Threshold", 25f)]
         public static float healthThreshold;
 
         public override void Init()

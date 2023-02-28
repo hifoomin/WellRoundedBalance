@@ -12,15 +12,17 @@ namespace WellRoundedBalance.Items.Whites
         public override string InternalPickupToken => "fragileDamageBonus";
 
         public override string PickupText => "Deal bonus damage out of danger.";
-        public override string DescText => StackDesc(damageIncrease, damageIncreaseStack,
-            init => $"<style=cIsDamage>Increase base damage</style> by <style=cIsDamage>{d(init)}</style>{{Stack}} while out of danger.",
-            stack => d(stack));
+        public override string DescText => 
+            StackDesc(damageIncrease, damageIncreaseStack, init => $"<style=cIsDamage>Increase base damage</style> by <style=cIsDamage>{d(init)}</style>{{Stack}} while out of danger.", d);
 
         [ConfigField("Damage Increase", "Decimal.", 0.15f)]
         public static float damageIncrease;
 
         [ConfigField("Damage Increase per Stack", "Decimal.", 0.15f)]
         public static float damageIncreaseStack;
+
+        [ConfigField("Damage Increase is Hyperbolic", "Decimal, Max value. Set to 0 to make it linear.", 0f)]
+        public static float damageIncreaseIsHyperbolic;
 
         public override void Init()
         {
@@ -41,8 +43,8 @@ namespace WellRoundedBalance.Items.Whites
 
         public override void Hooks()
         {
-            IL.RoR2.HealthComponent.TakeDamage += ChangeDamage;
-            IL.RoR2.HealthComponent.UpdateLastHitTime += ChangeThreshold;
+            IL.RoR2.HealthComponent.TakeDamage += HealthCompoment_TakeDamage;
+            IL.RoR2.HealthComponent.UpdateLastHitTime += HealthComponent_UpdateLastHitTime;
             CharacterBody.onBodyInventoryChangedGlobal += CharacterBody_onBodyInventoryChangedGlobal;
             RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
         }
@@ -52,7 +54,7 @@ namespace WellRoundedBalance.Items.Whites
             if (sender.inventory && sender.HasBuff(watchDamage))
             {
                 args.damageMultAdd += StackAmount(damageIncrease, damageIncreaseStack,
-                    sender.inventory.GetItemCount(DLC1Content.Items.FragileDamageBonus));
+                    sender.inventory.GetItemCount(DLC1Content.Items.FragileDamageBonus), damageIncreaseIsHyperbolic);
             }
         }
 
@@ -65,25 +67,25 @@ namespace WellRoundedBalance.Items.Whites
             }
         }
 
-        private void ChangeThreshold(ILContext il)
+        private void HealthComponent_UpdateLastHitTime(ILContext il)
         {
             ILCursor c = new(il);
 
-            if (c.TryGotoNext(x => x.MatchLdfld<HealthComponent.ItemCounts>(nameof(HealthComponent.ItemCounts.fragileDamageBonus))) && c.TryGotoNext(x => x.MatchBle(out _)))
+            if (c.TryGotoNext(MoveType.After, x => x.MatchLdfld<HealthComponent.ItemCounts>(nameof(HealthComponent.ItemCounts.fragileDamageBonus))))
             {
                 c.Emit(OpCodes.Pop);
-                c.Emit(OpCodes.Ldc_I4, int.MaxValue); // try being bigger than this lol
+                c.Emit(OpCodes.Ldc_I4_0);
             }
             else Main.WRBLogger.LogError("Failed to apply Delicate Watch Threshold hook");
         }
 
-        public static void ChangeDamage(ILContext il)
+        public static void HealthCompoment_TakeDamage(ILContext il)
         {
             ILCursor c = new(il);
-            if (c.TryGotoNext(x => x.MatchLdloc(25)) && c.TryGotoNext(x => x.MatchBle(out _)))
+            if (c.TryGotoNext(MoveType.After, x => x.MatchLdloc(25)))
             {
                 c.Emit(OpCodes.Pop);
-                c.Emit(OpCodes.Ldc_I4, int.MaxValue);
+                c.Emit(OpCodes.Ldc_I4_0);
             }
             else Main.WRBLogger.LogError("Failed to apply Delicate Watch Damage hook");
         }

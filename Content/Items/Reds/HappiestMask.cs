@@ -14,10 +14,10 @@ namespace WellRoundedBalance.Items.Reds
 
         public override string DescText => "Killing an enemy <style=cIsDamage>spawns a ghost</style> with <style=cIsDamage>" + d(baseDamage) + "</style> <style=cStack>(+" + d(damagePerStack) + " per stack)</style> damage that lasts <style=cIsDamage>" + lifetime + "s</style>. Recharges every <style=cIsDamage>" + buffCooldown + "s</style>.";
 
-        [ConfigField("Buff Cooldown", "", 20f)]
+        [ConfigField("Buff Cooldown", 20f)]
         public static float buffCooldown;
 
-        [ConfigField("Lifetime", "", 30)]
+        [ConfigField("Lifetime", 30)]
         public static int lifetime;
 
         [ConfigField("Base Damage", "Decimal.", 12)]

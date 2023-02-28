@@ -15,10 +15,10 @@ namespace WellRoundedBalance.Items.Reds
         [ConfigField("Percent Healing", "Decimal.", 0.06f)]
         public static float percentHealing;
 
-        [ConfigField("Base Range", "", 12f)]
+        [ConfigField("Base Range", 12f)]
         public static float baseRange;
 
-        [ConfigField("Range Per Stack", "", 3f)]
+        [ConfigField("Range Per Stack", 3f)]
         public static float rangePerStack;
 
         public override void Init()

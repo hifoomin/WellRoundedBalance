@@ -19,7 +19,7 @@ namespace WellRoundedBalance.Items.Greens
         [ConfigField("Slow Percent", "Decimal.", 1f / 3f)]
         public static float slowPercent;
 
-        [ConfigField("Debuff Duration", "", 5f)]
+        [ConfigField("Debuff Duration", 5f)]
         public static float debuffDuration;
 
         [ConfigField("Base Attack Speed Reduction", "Decimal.", 0.15f)]

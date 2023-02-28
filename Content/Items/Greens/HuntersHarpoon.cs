@@ -12,10 +12,10 @@ namespace WellRoundedBalance.Items.Greens
 
         public override string PickupText => "Killing an enemy gives you a burst of movement speed.";
 
-        [ConfigField("Base Buff Duration", "", 2f)]
+        [ConfigField("Base Buff Duration", 2f)]
         public static float baseBuffDuration;
 
-        [ConfigField("Buff Duration Per Stack", "", 1.25f)]
+        [ConfigField("Buff Duration Per Stack", 1.25f)]
         public static float buffDurationPerStack;
 
         public override void Hooks()

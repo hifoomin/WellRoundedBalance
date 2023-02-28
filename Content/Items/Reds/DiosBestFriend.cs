@@ -11,7 +11,7 @@ namespace WellRoundedBalance.Items.Reds
 
         public override string DescText => "<style=cIsUtility>Upon death</style>, this item will be <style=cIsUtility>consumed</style>, you will <style=cIsHealing>return to life</style> with <style=cIsHealing>" + invincibilityDuration + " seconds of invulnerability</style> and gain <style=cIsUtility>1</style> Tougher Times.";
 
-        [ConfigField("Invincibility Duration", "", 5f)]
+        [ConfigField("Invincibility Duration", 5f)]
         public static float invincibilityDuration;
 
         public override void Init()

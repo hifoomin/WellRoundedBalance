@@ -16,10 +16,10 @@ namespace WellRoundedBalance.Items.Reds
                                            (criticalChance > 0 ? "Gain <style=cIsDamage>" + criticalChance + "% critical chance</style>. " : "") +
                                            "<style=cIsDamage>Critical Strikes</style> deal an additional <style=cIsDamage>50%</style> <style=cStack>(+50% per stack)</style> damage.";
 
-        [ConfigField("Remove bullet falloff?", "", true)]
+        [ConfigField("Remove bullet falloff?", true)]
         public static bool removeBulletFalloff;
 
-        [ConfigField("Critical Chance", "", 10f)]
+        [ConfigField("Critical Chance", 10f)]
         public static float criticalChance;
 
         public override void Init()

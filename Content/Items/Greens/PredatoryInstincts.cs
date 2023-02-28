@@ -12,7 +12,7 @@ namespace WellRoundedBalance.Items.Greens
 
         public override string DescText => "Gain <style=cIsDamage>5% critical chance</style>. <style=cIsDamage>Critical strikes</style> increase <style=cIsDamage>attack speed</style> by <style=cIsDamage>" + d(attackSpeedGainPerBuff) + "</style> up to <style=cIsDamage>3</style> <style=cStack>(+2 per stack)</style> times.";
 
-        [ConfigField("Attack Speed Gain Per Buff", "", 0.16f)]
+        [ConfigField("Attack Speed Gain Per Buff", 0.16f)]
         public static float attackSpeedGainPerBuff;
 
         public override void Init()

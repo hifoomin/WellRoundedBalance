@@ -12,7 +12,7 @@ namespace WellRoundedBalance.Items.Greens
 
         public override string DescText => "Release a <style=cIsHealing>healing nova </style>during the Teleporter event, <style=cIsHealing>healing</style> all nearby allies for <style=cIsHealing>" + d(percentHealing) + "</style> of their maximum health. Occurs <style=cIsHealing>" + novaCountMultiplier + "</style> <style=cStack>(+" + novaCountMultiplier + " per stack)</style> times.";
 
-        [ConfigField("Nova Count Multiplier", "", 2)]
+        [ConfigField("Nova Count Multiplier", 2)]
         public static int novaCountMultiplier;
 
         [ConfigField("Percent Healing", "Decimal.", 0.35f)]
