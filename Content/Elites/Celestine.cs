@@ -1,4 +1,5 @@
 ﻿using UnityEngine.Rendering.PostProcessing;
+using WellRoundedBalance.Eclipse;
 
 namespace WellRoundedBalance.Elites
 {
@@ -11,13 +12,16 @@ namespace WellRoundedBalance.Elites
         public static GameObject BlindnessWard;
         public static PostProcessVolume CelestinePPV;
 
-        [ConfigField("Fog Radius", "", 6f)]
+        [ConfigField("Fog Radius", "", 20f)]
         public static float fogRadius;
 
-        [ConfigField("Fog Lifetime", "", 8f)]
+        [ConfigField("Fog Radius", "Only applies if you have Eclipse Changes enabled.", 27f)]
+        public static float fogRadiusE3;
+
+        [ConfigField("Fog Lifetime", "", 10f)]
         public static float fogLifetime;
 
-        [ConfigField("Fog Blindness Duration", "", 3f)]
+        [ConfigField("Fog Blindness Duration", "", 2f)]
         public static float fogBlindnessDuration;
 
         [ConfigField("Bubble Armor Gain", "", 20f)]
@@ -67,11 +71,11 @@ namespace WellRoundedBalance.Elites
             RampFog fog = postProcessProfile.AddSettings<RampFog>();
             fog.SetAllOverridesTo(true, true);
             fog.fogColorStart.value = new Color32(0, 0, 0, 165);
-            fog.fogColorMid.value = new Color32(78, 106, 28, byte.MaxValue);
-            fog.fogColorEnd.value = new Color32(155, 212, 209, byte.MaxValue);
+            fog.fogColorMid.value = new Color32(20, 28, 7, byte.MaxValue);
+            fog.fogColorEnd.value = new Color32(100, 135, 132, byte.MaxValue);
             fog.skyboxStrength.value = 0.02f;
             fog.fogPower.value = 0.35f;
-            fog.fogIntensity.value = 0.99f;
+            fog.fogIntensity.value = 1f;
             fog.fogZero.value = 0f;
             fog.fogOne.value = 0.05f;
             DepthOfField dof = postProcessProfile.AddSettings<DepthOfField>();
@@ -94,7 +98,7 @@ namespace WellRoundedBalance.Elites
 
         private static void StatIncrease(CharacterBody self, RecalculateStatsAPI.StatHookEventArgs args)
         {
-            if (NetworkServer.active && self.HasBuff(CelestineBoost))
+            if (NetworkServer.active && self.HasBuff(CelestineBoost) && !self.HasBuff(RoR2Content.Buffs.AffixHaunted))
             {
                 args.baseAttackSpeedAdd += bubbleAttackSpeedGain;
                 args.armorAdd += bubbleArmorGain;
@@ -125,6 +129,7 @@ namespace WellRoundedBalance.Elites
 
         private static GameObject GetWard() // this sucks lmfao, please replace with PrefabAPI stuff
         {
+            bool e3 = Run.instance.selectedDifficulty >= DifficultyIndex.Eclipse3 && Eclipse3.instance.isEnabled;
             BlindnessWard = new("Blindness Ward") { layer = LayerIndex.defaultLayer.intVal };
             TeamFilter filter = BlindnessWard.AddComponent<TeamFilter>();
             BlindnessWard.AddComponent<MeshRenderer>().material = Utils.Paths.Material.matHauntedAura.Load<Material>();
@@ -132,7 +137,7 @@ namespace WellRoundedBalance.Elites
             BuffWard ward = BlindnessWard.AddComponent<BuffWard>();
             ward.buffDef = Blindness;
             ward.invertTeamFilter = true;
-            ward.radius = fogRadius;
+            ward.radius = e3 ? fogRadius : fogRadiusE3;
             ward.buffDuration = fogBlindnessDuration;
             ward.expires = true;
             ward.expireDuration = fogLifetime;

@@ -11,6 +11,12 @@ namespace WellRoundedBalance.Equipment
 
         public override string DescText => "<style=cIsUtility>Cleanse</style> all negative effects. Includes debuffs, damage over time, and nearby projectiles.";
 
+        [ConfigField("Cooldown", "", 13f)]
+        public static float cooldown;
+
+        [ConfigField("Projectile Removal Range", "", 20f)]
+        public static float projectileRemovalRange;
+
         public override void Init()
         {
             base.Init();
@@ -19,6 +25,9 @@ namespace WellRoundedBalance.Equipment
         public override void Hooks()
         {
             IL.RoR2.Util.CleanseBody += ChangeRemovalRange;
+
+            var BlastShower = Utils.Paths.EquipmentDef.Cleanse.Load<EquipmentDef>();
+            BlastShower.cooldown = cooldown;
         }
 
         private void ChangeRemovalRange(ILContext il)
@@ -28,7 +37,7 @@ namespace WellRoundedBalance.Equipment
             if (c.TryGotoNext(MoveType.Before,
                 x => x.MatchLdcR4(6f)))
             {
-                c.Next.Operand = 13f;
+                c.Next.Operand = projectileRemovalRange;
             }
             else
             {

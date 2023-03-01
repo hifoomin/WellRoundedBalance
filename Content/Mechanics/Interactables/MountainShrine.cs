@@ -1,4 +1,4 @@
-﻿namespace WellRoundedBalance.Mechanics.Shrines
+﻿namespace WellRoundedBalance.Mechanics.Interactables
 {
     internal class MountainShrine : MechanicBase
     {
@@ -14,7 +14,7 @@
             mountainShrineBuff.canStack = true;
             mountainShrineBuff.isDebuff = false;
             mountainShrineBuff.buffColor = new Color32(72, 180, 255, 255);
-            mountainShrineBuff.iconSprite = Sprite.Create(warbanner, new Rect(0f, 0f, (float)warbanner.width, (float)warbanner.height), new Vector2(0f, 0f));
+            mountainShrineBuff.iconSprite = Sprite.Create(warbanner, new Rect(0f, 0f, warbanner.width, warbanner.height), new Vector2(0f, 0f));
 
             ContentAddition.AddBuffDef(mountainShrineBuff);
             base.Init();
@@ -45,7 +45,7 @@
             args.moveSpeedMultAdd += 0.1f * sender.GetBuffCount(mountainShrineBuff);
         }
 
-        private void CombatDirector_OnEnable(On.RoR2.CombatDirector.orig_OnEnable orig, RoR2.CombatDirector self)
+        private void CombatDirector_OnEnable(On.RoR2.CombatDirector.orig_OnEnable orig, CombatDirector self)
         {
             self.minRerollSpawnInterval /= 1.35f;
             self.maxRerollSpawnInterval /= 1.35f;

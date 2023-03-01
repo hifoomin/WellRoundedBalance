@@ -12,7 +12,7 @@ namespace WellRoundedBalance.Elites
         [ConfigField("Percent Healing Per Second", "", 3f)]
         public static float healFraction;
 
-        [ConfigField("Heal Nova Radius", "", 5f)]
+        [ConfigField("Heal Nova Radius", "", 10f)]
         public static float healNovaRadius;
 
         [ConfigField("On Hit Healing Target Regen Boost", "", 5f)]
@@ -113,7 +113,7 @@ namespace WellRoundedBalance.Elites
 
                 if (controller.target)
                 {
-                    controller.target.body.AddTimedBuff(RoR2Content.Buffs.CrocoRegen, 0.5f);
+                    controller.target.body.AddTimedBuff(regenBoost, 2f);
                 }
             }
         }
@@ -181,10 +181,12 @@ namespace WellRoundedBalance.Elites
 
             private HealthComponent FetchTarget()
             {
-                SphereSearch search = new();
-                search.origin = base.transform.position;
-                search.radius = radius;
-                search.mask = LayerIndex.entityPrecise.mask;
+                SphereSearch search = new()
+                {
+                    origin = base.transform.position,
+                    radius = radius,
+                    mask = LayerIndex.entityPrecise.mask
+                };
                 search.RefreshCandidates();
                 search.OrderCandidatesByDistance();
                 search.FilterCandidatesByDistinctHurtBoxEntities();
@@ -223,7 +225,7 @@ namespace WellRoundedBalance.Elites
             private float maxRadius;
             private float radiusPerSecond => maxRadius / 1.5f;
             private float stopwatch = 0f;
-            private float lifespan = 5f;
+            private float lifespan = 2f;
             private SphereZone zone;
             private float damage;
             private float healStopwatch;

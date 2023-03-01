@@ -12,7 +12,7 @@ namespace WellRoundedBalance.Items.Greens
         public override string PickupText => "...and his music was electric.";
         public override string DescText => "<style=cIsDamage>" + chance + "%</style> Chance to fire <style=cIsDamage>chain lightning</style> for <style=cIsDamage>" + d(totalDamage) + "</style> TOTAL damage on up to <style=cIsDamage>" + baseMaxTargets + " <style=cStack>(+" + maxTargetsPerStack + " per stack)</style></style> targets within <style=cIsDamage>" + baseRange + "m</style> <style=cStack>(+" + rangePerStack + "m per stack)</style>.";
 
-        [ConfigField("TOTAL Damage", "Decimal.", 0.5f)]
+        [ConfigField("TOTAL Damage", "Decimal.", 0.55f)]
         public static float totalDamage;
 
         [ConfigField("Chance", "", 25f)]

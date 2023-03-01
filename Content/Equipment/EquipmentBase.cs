@@ -1,12 +1,4 @@
-﻿using BepInEx.Configuration;
-using R2API;
-using RiskOfOptions;
-using RiskOfOptions.OptionConfigs;
-using RiskOfOptions.Options;
-using System.Text.RegularExpressions;
-using UnityEngine;
-
-namespace WellRoundedBalance.Equipment
+﻿namespace WellRoundedBalance.Equipment
 {
     public abstract class EquipmentBase
     {
@@ -15,6 +7,11 @@ namespace WellRoundedBalance.Equipment
         public abstract string PickupText { get; }
         public abstract string DescText { get; }
         public virtual bool isEnabled { get; } = true;
+
+        public string d(float f)
+        {
+            return (f * 100f).ToString() + "%";
+        }
 
         public abstract void Hooks();
 

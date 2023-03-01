@@ -1,3 +1,4 @@
+/*
 namespace WellRoundedBalance.Mechanics.Monsters
 {
     public class Assists : MechanicBase<Assists>
@@ -97,3 +98,6 @@ namespace WellRoundedBalance.Mechanics.Monsters
         }
     }
 }
+*/
+
+// FIX THIS GUH idk how you would tho

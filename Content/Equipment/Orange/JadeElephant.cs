@@ -7,9 +7,18 @@ namespace WellRoundedBalance.Equipment
         public override string Name => ":: Equipment :: Jade Elephant";
         public override string InternalPickupToken => "gainArmor";
 
-        public override string PickupText => "Gain massive armor for 10 seconds.";
+        public override string PickupText => "Gain massive armor for " + buffDuration + " seconds.";
 
-        public override string DescText => "Gain <style=cIsDamage>200 armor</style> for <style=cIsUtility>10 seconds.</style>";
+        public override string DescText => "Gain <style=cIsDamage>" + armorGain + " armor</style> for <style=cIsUtility>" + buffDuration + " seconds.</style>";
+
+        [ConfigField("Armor Gain", "", 200f)]
+        public static float armorGain;
+
+        [ConfigField("Buff Duration", "", 10f)]
+        public static float buffDuration;
+
+        [ConfigField("Cooldown", "", 45f)]
+        public static float cooldown;
 
         public override void Init()
         {
@@ -20,6 +29,9 @@ namespace WellRoundedBalance.Equipment
         {
             IL.RoR2.EquipmentSlot.FireGainArmor += ChangeDuration;
             IL.RoR2.CharacterBody.RecalculateStats += ChangeArmor;
+
+            var Jade = Utils.Paths.EquipmentDef.GainArmor.Load<EquipmentDef>();
+            Jade.cooldown = cooldown;
         }
 
         private void ChangeArmor(ILContext il)
@@ -29,7 +41,7 @@ namespace WellRoundedBalance.Equipment
             if (c.TryGotoNext(MoveType.Before,
                 x => x.MatchLdcR4(500f)))
             {
-                c.Next.Operand = 200f;
+                c.Next.Operand = armorGain;
             }
             else
             {
@@ -44,7 +56,7 @@ namespace WellRoundedBalance.Equipment
             if (c.TryGotoNext(MoveType.Before,
                 x => x.MatchLdcR4(5f)))
             {
-                c.Next.Operand = 10f;
+                c.Next.Operand = buffDuration;
             }
             else
             {

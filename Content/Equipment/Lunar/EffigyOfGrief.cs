@@ -1,10 +1,4 @@
-﻿using RoR2;
-using UnityEngine;
-using UnityEngine.AddressableAssets;
-using R2API;
-using MonoMod.Cil;
-
-namespace WellRoundedBalance.Equipment
+﻿namespace WellRoundedBalance.Equipment
 {
     public class EffigyOfGrief : EquipmentBase
     {
@@ -13,9 +7,15 @@ namespace WellRoundedBalance.Equipment
 
         public override string PickupText => "Drop a permanent effigy that cripples ALL characters inside. Can place up to 5.";
 
-        public override string DescText => "ALL characters within are <style=cIsUtility>slowed by 50%</style> and have their <style=cIsDamage>armor reduced by -25</style>. Can place up to <style=cIsUtility>5</style>.";
+        public override string DescText => "ALL characters within are <style=cIsUtility>slowed by " + d(slowPercent) + "</style> and have their <style=cIsDamage>armor reduced by " + armorGain + "</style>. Can place up to <style=cIsUtility>5</style>.";
 
         public static BuffDef CrippleEffigy;
+
+        [ConfigField("Slow Percent", "Decimal.", 0.5f)]
+        public static float slowPercent;
+
+        [ConfigField("Armor Gain", "", -30f)]
+        public static float armorGain;
 
         public override void Init()
         {
@@ -33,8 +33,8 @@ namespace WellRoundedBalance.Equipment
         {
             if (sender && sender.HasBuff(CrippleEffigy))
             {
-                args.moveSpeedReductionMultAdd += 0.5f * 2f;
-                args.armorAdd += -25f;
+                args.moveSpeedReductionMultAdd += Mathf.Abs(1 - (1 / (1 - slowPercent)));
+                args.armorAdd += armorGain;
             }
         }
 

@@ -44,9 +44,9 @@ namespace WellRoundedBalance.Items.Greens
                 c.Index += 1;
                 c.Next.Operand = totalDamagePerStack;
                 c.Index += 4;
-                c.EmitDelegate<Func<float, float>>((useless) =>
+                c.EmitDelegate<Func<float, float>>((self) =>
                 {
-                    return totalDamagePerStack + (baseTotalDamage - totalDamagePerStack);
+                    return self + (baseTotalDamage - totalDamagePerStack);
                 });
             }
             else

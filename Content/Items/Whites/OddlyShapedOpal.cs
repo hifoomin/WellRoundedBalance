@@ -39,17 +39,18 @@ namespace WellRoundedBalance.Items.Whites
             RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
             CharacterBody.onBodyInventoryChangedGlobal += CharacterBody_onBodyInventoryChangedGlobal;
             // IL.RoR2.CharacterBody.RecalculateStats += CharacterBody_RecalculateStats;
-            IL.RoR2.OutOfCombatArmorBehavior.ctor += OutOfCombatArmorBehavior_ctor;
+            On.RoR2.OutOfCombatArmorBehavior.SetProvidingBuff += OutOfCombatArmorBehavior_SetProvidingBuff;
+            On.RoR2.OutOfCombatArmorBehavior.FixedUpdate += OutOfCombatArmorBehavior_FixedUpdate;
         }
 
-        private void OutOfCombatArmorBehavior_ctor(ILContext il)
+        private void OutOfCombatArmorBehavior_FixedUpdate(On.RoR2.OutOfCombatArmorBehavior.orig_FixedUpdate orig, CharacterBody.ItemBehavior self)
         {
-            ILCursor c = new(il);
-            {
-                c.Index = 0;
-            }
+            return;
+        }
 
-            c.Emit(OpCodes.Ret);
+        private void OutOfCombatArmorBehavior_SetProvidingBuff(On.RoR2.OutOfCombatArmorBehavior.orig_SetProvidingBuff orig, CharacterBody.ItemBehavior self, bool shouldProvideBuff)
+        {
+            return;
         }
 
         private void CharacterBody_RecalculateStats(ILContext il)
