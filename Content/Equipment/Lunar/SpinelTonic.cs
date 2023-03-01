@@ -17,10 +17,10 @@ namespace WellRoundedBalance.Equipment.Lunar
         [ConfigField("Buff Duration", "", 20f)]
         public static float buffDuration;
 
-        [ConfigField("Damage Increase", "Decimal.", 1f)]
+        [ConfigField("Damage Increase", "Decimal.", 0.6f)]
         public static float damageIncrease;
 
-        [ConfigField("Attack Speed Multiplier", "", 1.7f)]
+        [ConfigField("Attack Speed Multiplier", "", 1.5f)]
         public static float attackSpeedMultiplier;
 
         [ConfigField("Armor Gain", "", 20f)]

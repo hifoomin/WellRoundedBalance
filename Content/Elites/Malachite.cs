@@ -44,7 +44,7 @@ namespace WellRoundedBalance.Elites
             rb.mass = 300;
             GameObject turretMdl = GameObject.Instantiate(Utils.Paths.GameObject.mdlUrchinTurret.Load<GameObject>());
             turretMdl.transform.SetParent(MalachiteTurret.transform);
-            turretMdl.transform.localScale *= 0.2f;
+            turretMdl.transform.localScale *= 0.4f;
             turretMdl.transform.rotation = Quaternion.Euler(-90, 0, 0);
             SkinnedMeshRenderer srenderer = turretMdl.GetComponentInChildren<SkinnedMeshRenderer>();
             MeshRenderer mrenderer = turretMdl.GetComponentInChildren<MeshRenderer>();

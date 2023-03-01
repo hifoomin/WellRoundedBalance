@@ -3,7 +3,6 @@ using RiskOfOptions;
 using RiskOfOptions.Options;
 using System;
 using BepInEx.Logging;
-using Unity.Collections;
 
 namespace WellRoundedBalance.Items
 {
@@ -19,9 +18,13 @@ namespace WellRoundedBalance.Items
         public abstract void Hooks();
 
         public string noop(float f) => f.ToString();
+
         public string d(float f) => (f * 100f).ToString() + "%";
+
         public string m(float f) => f + "m";
+
         public string s(float f, string suffix) => f + " " + suffix + (Mathf.Abs(f) > 1 ? "s" : string.Empty);
+
         public static string StackDesc(float init, float stack, Func<float, string> initFn, Func<float, string> stackFn)
         {
             if (init <= 0 && stack <= 0) return string.Empty;
@@ -29,6 +32,7 @@ namespace WellRoundedBalance.Items
             if (stack > 0) ret = ret.Replace("{Stack}", " <style=cStack>(" + (stack > 0 ? "+" : string.Empty) + stackFn(stack) + " per stack)</style>");
             return ret;
         }
+
         public static float StackAmount(float init, float stack, float count, float isHyperbolic = 0f)
         {
             if (count <= 0) return 0;
@@ -36,6 +40,7 @@ namespace WellRoundedBalance.Items
             if (isHyperbolic > 0) ret = GetHyperbolic(init, isHyperbolic, ret);
             return ret;
         }
+
         public static float GetHyperbolic(float firstStack, float cap, float chance) // Util.ConvertAmplificationPercentageIntoReductionPercentage but Better :zanysoup:
         {
             if (firstStack >= cap) return cap * (chance / firstStack); // should not happen, but failsafe

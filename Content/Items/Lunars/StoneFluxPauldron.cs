@@ -11,7 +11,6 @@ namespace WellRoundedBalance.Items.Lunars
 
         public override string DescText => "<style=cIsUtility>Pull</style> enemies on hit. Enemies <style=cIsUtility>pull</style> you on hit. <style=cStack>(Pull strength increases per stack)</style>.";
 
-        // slows aren't accurate in ror2
         public override void Init()
         {
             base.Init();
@@ -23,7 +22,6 @@ namespace WellRoundedBalance.Items.Lunars
             On.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
         }
 
-        // enemies pulling player on hit
         private void HealthComponent_TakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo)
         {
             var attacker = damageInfo.attacker;
@@ -46,7 +44,7 @@ namespace WellRoundedBalance.Items.Lunars
                             else if (self.body.rigidbody) mass = self.body.rigidbody.mass;
                             else mass = 1f;
 
-                            var force = 30f * stack;
+                            var force = 30f * damageInfo.procCoefficient * stack;
                             damageInfo.force += Vector3.Normalize(attackerBody.corePosition - self.body.corePosition) * force * mass;
                         }
                         if (inventory2)
@@ -58,7 +56,7 @@ namespace WellRoundedBalance.Items.Lunars
                             else if (self.body.rigidbody) mass = self.body.rigidbody.mass;
                             else mass = 1f;
 
-                            var force = 6f * stack;
+                            var force = 6f * damageInfo.procCoefficient * stack;
                             if (!attackerBody.isChampion || !attackerBody.isBoss)
                             {
                                 damageInfo.force += Vector3.Normalize(attackerBody.corePosition - self.body.corePosition) * force * Mathf.Pow(mass, 1.1f);

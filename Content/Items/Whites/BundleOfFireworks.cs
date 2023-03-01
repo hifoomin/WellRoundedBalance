@@ -11,7 +11,7 @@ namespace WellRoundedBalance.Items.Whites
 
         public override string PickupText => "Activating an interactable launches fireworks at nearby enemies.";
 
-        public override string DescText => 
+        public override string DescText =>
             StackDesc(fireworks, fireworksStack, init => $"Activating an interactable <style=cIsDamage>launches {s(init, "{Stack} firework")} that deal <style=cIsDamage>{d(blastDamageCoefficient)}</style> base damage.</style>", noop);
 
         [ConfigField("Fireworks", 8f)]
@@ -32,7 +32,7 @@ namespace WellRoundedBalance.Items.Whites
         [ConfigField("Blast Damage Coefficient", 3f)]
         public static float blastDamageCoefficient;
 
-        [ConfigField("Blast Proc Coefficient", 0.2f)]
+        [ConfigField("Blast Proc Coefficient", 0f)]
         public static float blastProcCoefficient;
 
         public override void Init()

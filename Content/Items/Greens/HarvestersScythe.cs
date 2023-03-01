@@ -14,10 +14,10 @@ namespace WellRoundedBalance.Items.Greens
 
         private static ProcType Backstab = (ProcType)38921;
 
-        [ConfigField("Base Missing Health Healing Percent", "Decimal.", 0.015f)]
+        [ConfigField("Base Missing Health Healing Percent", "Decimal. Formula for healing: (Maximum Health - Current Health) * (Base Missing Health Healing Percent + (Missing Health Healing Percent Per Stack * (Harvesters Scythe - 1)))", 0.015f)]
         public static float baseMissingHealthHealingPercent;
 
-        [ConfigField("Missing Health Healing Percent Per Stack", "Decimal.", 0.0075f)]
+        [ConfigField("Missing Health Healing Percent Per Stack", "Decimal. Formula for healing: (Maximum Health - Current Health) * (Base Missing Health Healing Percent + (Missing Health Healing Percent Per Stack * (Harvesters Scythe - 1)))", 0.0075f)]
         public static float missingHealthHealingPercentPerStack;
 
         public override void Init()
@@ -101,7 +101,7 @@ namespace WellRoundedBalance.Items.Greens
 
                 var healthComponent = attacker.healthComponent;
 
-                var healing = (healthComponent.fullHealth - healthComponent.health) * (baseMissingHealthHealingPercent + (missingHealthHealingPercentPerStack * stack));
+                var healing = (healthComponent.fullHealth - healthComponent.health) * (baseMissingHealthHealingPercent + missingHealthHealingPercentPerStack * (stack - 1));
 
                 if (NetworkServer.active)
                 {

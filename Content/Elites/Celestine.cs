@@ -12,7 +12,7 @@ namespace WellRoundedBalance.Elites
         public static GameObject BlindnessWard;
         public static PostProcessVolume CelestinePPV;
 
-        [ConfigField("Fog Radius", "", 20f)]
+        [ConfigField("Fog Radius", "", 25f)]
         public static float fogRadius;
 
         [ConfigField("Fog Radius", "Only applies if you have Eclipse Changes enabled.", 27f)]
@@ -48,7 +48,7 @@ namespace WellRoundedBalance.Elites
             ContentAddition.AddBuffDef(CelestineBoost);
 
             Blindness = ScriptableObject.CreateInstance<BuffDef>();
-            Blindness.buffColor = new Color(124f / 255f, 78f / 255f, 222f / 255f);
+            Blindness.buffColor = new Color32(100, 135, 132, 255);
             Blindness.iconSprite = Utils.Paths.BuffDef.bdCloak.Load<BuffDef>().iconSprite;
             Blindness.canStack = false;
             Blindness.isHidden = false;
@@ -87,7 +87,7 @@ namespace WellRoundedBalance.Elites
             CelestinePPV.sharedProfile = postProcessProfile;
 
             RecalculateStatsAPI.GetStatCoefficients += StatIncrease;
-            On.RoR2.CharacterModel.UpdateOverlays += HandleOverlay;
+            // On.RoR2.CharacterModel.UpdateOverlays += HandleOverlay; // makes invis do more
             On.RoR2.GlobalEventManager.OnHitEnemy += HandleFog;
 
             On.RoR2.CharacterBody.GetVisibilityLevel_CharacterBody += HandleAIBlindness;
