@@ -8,7 +8,7 @@
         public override string PickupText => "Gain access to an Encrusted Cache that contains a void item. <style=cIsVoid>Corrupts all Rusted Keys</style>.";
         public override string DescText => "A <style=cIsUtility>hidden cache</style> containing an item (41.66%/<style=cIsHealing>41.66%</style>/<style=cIsHealth>10%</style>) will appear in a random location <style=cIsUtility>on each stage</style>. Opening the cache <style=cIsUtility>consumes</style> this item. <style=cIsVoid>Corrupts all Rusted Keys</style>.";
 
-        [ConfigField("Choice Amount", "", 2)]
+        [ConfigField("Choice Amount", 2)]
         public static int choiceAmount;
 
         public override void Init()

@@ -19,10 +19,10 @@ namespace WellRoundedBalance.Items.Reds
         [ConfigField("TOTAL Damage", "Decimal.", 1.5f)]
         public static float totalDamage;
 
-        [ConfigField("Base Missile Chance", "", 10f)]
+        [ConfigField("Base Missile Chance", 10f)]
         public static float baseMissileChance;
 
-        [ConfigField("Missile Chance Per Stack", "", 10f)]
+        [ConfigField("Missile Chance Per Stack", 10f)]
         public static float missileChancePerStack;
 
         public override void Init()

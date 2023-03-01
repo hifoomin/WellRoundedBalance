@@ -14,7 +14,7 @@ namespace WellRoundedBalance.Items.Reds
         public override string DescText => "Upon <style=cIsUtility>activating</style> your <style=cIsUtility>equipment</style>, trigger <style=cIsDamage>" + randomEquipmentActivations + "</style> <style=cStack>(+" + randomEquipmentActivations + " per stack)</style> <style=cIsDamage>random equipment</style> effect" +
                                             (randomEquipmentActivations != 1 ? "s." : ".");
 
-        [ConfigField("Random Equipment Activations", "", 3)]
+        [ConfigField("Random Equipment Activations", 3)]
         public static int randomEquipmentActivations;
 
         public override void Init()

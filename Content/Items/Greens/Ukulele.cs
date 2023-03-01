@@ -15,19 +15,19 @@ namespace WellRoundedBalance.Items.Greens
         [ConfigField("TOTAL Damage", "Decimal.", 0.55f)]
         public static float totalDamage;
 
-        [ConfigField("Chance", "", 25f)]
+        [ConfigField("Chance", 25f)]
         public static float chance;
 
-        [ConfigField("Base Max Targets", "", 3)]
+        [ConfigField("Base Max Targets", 3)]
         public static int baseMaxTargets;
 
-        [ConfigField("Max Targets Per Stack", "", 2)]
+        [ConfigField("Max Targets Per Stack", 2)]
         public static int maxTargetsPerStack;
 
-        [ConfigField("Base Range", "", 12f)]
+        [ConfigField("Base Range", 12f)]
         public static float baseRange;
 
-        [ConfigField("Range Per Stack", "", 4f)]
+        [ConfigField("Range Per Stack", 4f)]
         public static float rangePerStack;
 
         public override void Init()

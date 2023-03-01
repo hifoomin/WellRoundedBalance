@@ -14,7 +14,7 @@ namespace WellRoundedBalance.Items.Reds
         [ConfigField("Base Damage", "Decimal.", 3.2f)]
         public static float baseDamage;
 
-        [ConfigField("Base Range", "", 25f)]
+        [ConfigField("Base Range", 25f)]
         public static float baseRange;
 
         public override void Init()

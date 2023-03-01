@@ -14,7 +14,7 @@ namespace WellRoundedBalance.Items.Reds
         [ConfigField("Base Damage Per Tick", "Formula for DPS: Base Damage Per Tick * 2", 1.5f)]
         public static float baseDamagePerTick;
 
-        [ConfigField("Range", "", 25f)]
+        [ConfigField("Range", 25f)]
         public static float range;
 
         public override void Init()

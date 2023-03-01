@@ -13,10 +13,10 @@ namespace WellRoundedBalance.Items.Reds
 
         public override string DescText => "<style=cIsDamage>Kills reduce</style> <style=cIsUtility>equipment cooldown</style> by <style=cIsUtility>" + baseEquipmentCooldownReduction + "s</style> <style=cStack>(+" + equipmentCooldownReductionPerStack + "s per stack)</style>.";
 
-        [ConfigField("Base Equipment Cooldown Reduction", "", 3f)]
+        [ConfigField("Base Equipment Cooldown Reduction", 3f)]
         public static float baseEquipmentCooldownReduction;
 
-        [ConfigField("Equipment Cooldown Reduction Per Stack", "", 2f)]
+        [ConfigField("Equipment Cooldown Reduction Per Stack", 2f)]
         public static float equipmentCooldownReductionPerStack;
 
         public override void Init()

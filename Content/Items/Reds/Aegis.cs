@@ -15,7 +15,7 @@ namespace WellRoundedBalance.Items.Reds
         [ConfigField("Overheal Percent", "Decimal.", 0.75f)]
         public static float overhealPercent;
 
-        [ConfigField("Armor Gain With Barrier", "", 30f)]
+        [ConfigField("Armor Gain With Barrier", 30f)]
         public static float armorGainWithBarrier;
 
         public override void Init()

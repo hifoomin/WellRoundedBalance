@@ -1,4 +1,6 @@
-﻿using MonoMod.Cil;
+﻿using Mono.Cecil.Cil;
+using MonoMod.Cil;
+using System;
 
 namespace WellRoundedBalance.Items.Whites
 {
@@ -10,14 +12,23 @@ namespace WellRoundedBalance.Items.Whites
 
         public override string PickupText => "Gain a temporary barrier on kill.";
 
-        public override string DescText => "Gain a <style=cIsHealing>temporary barrier</style> on kill for <style=cIsHealing>" + flatBarrierGain + "</style> <style=cStack>(+" + flatBarrierGain + " per stack)</style>" +
-                                           (percentBarrierGain > 0 ? " plus an additional <style=cIsHealing>" + d(percentBarrierGain) + "</style> of <style=cIsHealing>maximum health</style>." : ".");
+        public override string DescText => "Gain a <style=cIsHealing>temporary barrier</style> on kill for " + 
+            StackDesc(flatBarrierGain, flatBarrierGainStack, init => $"<style=cIsHealing>{init}</style>{{Stack}}", noop) +
+            StackDesc(percentBarrierGain, percentBarrierGainStack, init => (flatBarrierGain > 0 || flatBarrierGainStack > 0 ? "plus an additional " : "") + $"<style=cIsHealing>{d(init)}</style>{{Stack}} of <style=cIsHealing>maximum health</style>", d) + ".";
 
         [ConfigField("Percent Barrier Gain", "Decimal.", 0.02f)]
         public static float percentBarrierGain;
+        [ConfigField("Percent Barrier Gain per Stack", "Decimal.", 0.02f)]
+        public static float percentBarrierGainStack;
+        [ConfigField("Percent Barrier Gain is Hyperbolic", "Decimal, Max value. Set to 0 to make it linear.", 0f)]
+        public static float percentBarrierGainIsHyperbolic;
 
-        [ConfigField("Flat Barrier Gain", "", 10f)]
+        [ConfigField("Flat Barrier Gain", 10f)]
         public static float flatBarrierGain;
+        [ConfigField("Flat Barrier Gain per Stack", 10f)]
+        public static float flatBarrierGainStack;
+        [ConfigField("Flat Barrier Gain is Hyperbolic", "Decimal, Max value. Set to 0 to make it linear.", 0f)]
+        public static float flatBarrierGainIsHyperbolic;
 
         public override void Hooks()
         {
@@ -27,22 +38,14 @@ namespace WellRoundedBalance.Items.Whites
 
         private void GlobalEventManager_onCharacterDeathGlobal(DamageReport damageReport)
         {
-            var attacker = damageReport.attacker;
-            var victim = damageReport.victim;
-            if (attacker && victim)
+            if (damageReport.attacker && damageReport.victim)
             {
                 var attackerBody = damageReport.attackerBody;
                 if (attackerBody)
                 {
                     var inventory = attackerBody.inventory;
-                    if (inventory)
-                    {
-                        var stack = inventory.GetItemCount(RoR2Content.Items.BarrierOnKill);
-                        if (stack > 0 && NetworkServer.active && attackerBody.healthComponent)
-                        {
-                            attackerBody.healthComponent.AddBarrier(attackerBody.healthComponent.combinedHealthFraction * percentBarrierGain);
-                        }
-                    }
+                    if (inventory && NetworkServer.active && attackerBody.healthComponent)
+                        attackerBody.healthComponent.AddBarrier(attackerBody.healthComponent.combinedHealthFraction * StackAmount(percentBarrierGain, percentBarrierGainStack, inventory.GetItemCount(RoR2Content.Items.BarrierOnKill), percentBarrierGainIsHyperbolic));
                 }
             }
         }
@@ -50,18 +53,13 @@ namespace WellRoundedBalance.Items.Whites
         private void GlobalEventManager_OnCharacterDeath(ILContext il)
         {
             ILCursor c = new(il);
-
-            if (c.TryGotoNext(MoveType.Before,
-                    x => x.MatchCallOrCallvirt<CharacterBody>("get_healthComponent"),
-                    x => x.MatchLdcR4(15f)))
+            if (c.TryGotoNext(x => x.MatchLdloc(49)) && c.TryGotoNext(x => x.MatchCallOrCallvirt<HealthComponent>(nameof(HealthComponent.AddBarrier))))
             {
-                c.Index += 1;
-                c.Next.Operand = flatBarrierGain;
+                c.Emit(OpCodes.Pop);
+                c.Emit(OpCodes.Ldloc, 49);
+                c.EmitDelegate<Func<int, float>>(stack => StackAmount(flatBarrierGain, flatBarrierGainStack, stack, flatBarrierGainIsHyperbolic));
             }
-            else
-            {
-                Main.WRBLogger.LogError("Failed to apply Topaz Brooch Barrier hook");
-            }
+            else Main.WRBLogger.LogError("Failed to apply Topaz Brooch Barrier hook");
         }
     }
 }

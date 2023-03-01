@@ -11,10 +11,17 @@ namespace WellRoundedBalance.Items.Whites
 
         public override string PickupText => "Reduce damage the first time you are hit.";
 
-        public override string DescText => "<style=cIsHealing>Increase armor</style> by <style=cIsHealing>" + armorGain + "</style> <style=cStack>(+" + armorGain + " per stack)</style> while out of combat.";
+        public override string DescText =>
+            StackDesc(armorGain, armorGainStack, init => $"<style=cIsHealing>Increase armor</style> by <style=cIsHealing>{init}</style>{{Stack}} while out of combat.", noop);
 
-        [ConfigField("Armor Gain", "", 40f)]
+        [ConfigField("Armor Gain", 40f)]
         public static float armorGain;
+
+        [ConfigField("Armor Gain per Stack", 40f)]
+        public static float armorGainStack;
+
+        [ConfigField("Armor Gain is Hyperbolic", "Decimal, Max value. Set to 0 to make it linear.", 0f)]
+        public static float armorGainIsHyperbolic;
 
         public override void Init()
         {
@@ -25,7 +32,7 @@ namespace WellRoundedBalance.Items.Whites
             opalArmor.canStack = false;
             opalArmor.isCooldown = false;
             opalArmor.isDebuff = false;
-            opalArmor.iconSprite = Sprite.Create(opalIcon, new Rect(0f, 0f, (float)opalIcon.width, (float)opalIcon.height), new Vector2(0f, 0f));
+            opalArmor.iconSprite = Sprite.Create(opalIcon, new Rect(0f, 0f, opalIcon.width, opalIcon.height), new Vector2(0f, 0f));
             opalArmor.buffColor = new Color32(196, 194, 255, 255);
             opalArmor.name = "Oddly-shaped Opal Armor";
 
@@ -73,18 +80,13 @@ namespace WellRoundedBalance.Items.Whites
         {
             var inventory = sender.inventory;
             if (sender.HasBuff(opalArmor) && inventory)
-            {
-                var stack = inventory.GetItemCount(DLC1Content.Items.OutOfCombatArmor);
-                args.armorAdd += armorGain * stack;
-            }
+                args.armorAdd += StackAmount(armorGain, armorGainStack,
+                    inventory.GetItemCount(DLC1Content.Items.OutOfCombatArmor), armorGainIsHyperbolic);
         }
 
         private void CharacterBody_onBodyInventoryChangedGlobal(CharacterBody characterBody)
         {
-            if (NetworkServer.active)
-            {
-                characterBody.AddItemBehavior<OutOfCombatArmorBehavior>(characterBody.inventory.GetItemCount(DLC1Content.Items.OutOfCombatArmor));
-            }
+            if (NetworkServer.active) characterBody.AddItemBehavior<OutOfCombatArmorBehavior>(characterBody.inventory.GetItemCount(DLC1Content.Items.OutOfCombatArmor));
         }
     }
 
@@ -92,10 +94,7 @@ namespace WellRoundedBalance.Items.Whites
     {
         private void SetProvidingBuff(bool shouldProvideBuff)
         {
-            if (shouldProvideBuff == providingBuff)
-            {
-                return;
-            }
+            if (shouldProvideBuff == providingBuff) return;
             providingBuff = shouldProvideBuff;
             if (providingBuff)
             {

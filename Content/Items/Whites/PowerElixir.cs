@@ -13,8 +13,8 @@ namespace WellRoundedBalance.Items.Whites
 
         public override string PickupText => "Quickly regenerate upon taking heavy damage. Recharges each stage.";
 
-        public override string DescText => "Taking damage to below <style=cIsHealth>" + d(healthThreshold) + " health</style> <style=cIsUtility>consumes</style> this item, <style=cIsHealing>healing</style> you for <style=cIsHealing>" + d(percentHealing) + "</style> of your <style=cIsHealing>maximum health</style> over <style=cIsUtility>" + healingTime + "s</style>." +
-                                           (refillEveryStage ? " <style=cIsUtility>Refills every stage</style>." : "");
+        public override string DescText => $"Taking damage to below <style=cIsHealth>{d(healthThreshold)} health</style> <style=cIsUtility>consumes</style> this item, <style=cIsHealing>healing</style> you for <style=cIsHealing>{d(percentHealing)}</style> of your <style=cIsHealing>maximum health</style> over <style=cIsUtility>{healingTime}s</style>." +
+            (refillEveryStage ? " <style=cIsUtility>Refills every stage</style>." : "");
 
         [ConfigField("Health Threshold", "Decimal.", 0.5f)]
         public static float healthThreshold;
@@ -22,10 +22,10 @@ namespace WellRoundedBalance.Items.Whites
         [ConfigField("Percent Healing", "Decimal.", 0.25f)]
         public static float percentHealing;
 
-        [ConfigField("Healing Time", "", 4f)]
+        [ConfigField("Healing Time", 4f)]
         public static float healingTime;
 
-        [ConfigField("Refill Every Stage?", "", true)]
+        [ConfigField("Refill Every Stage?", true)]
         public static bool refillEveryStage;
 
         public override void Init()
@@ -37,7 +37,7 @@ namespace WellRoundedBalance.Items.Whites
             regen.isDebuff = false;
             regen.canStack = false;
             regen.buffColor = new Color32(255, 132, 115, 255);
-            regen.iconSprite = Sprite.Create(medkitIcon, new Rect(0f, 0f, (float)medkitIcon.width, (float)medkitIcon.height), new Vector2(0f, 0f));
+            regen.iconSprite = Sprite.Create(medkitIcon, new Rect(0f, 0f, medkitIcon.width, medkitIcon.height), new Vector2(0f, 0f));
             regen.name = "Power Elixir Regen";
 
             ContentAddition.AddBuffDef(regen);
@@ -101,42 +101,28 @@ namespace WellRoundedBalance.Items.Whites
         private void HealthComponent_ServerFixedUpdate(ILContext il)
         {
             ILCursor c = new(il);
-
-            if (c.TryGotoNext(MoveType.After,
-                x => x.MatchLdfld(typeof(HealthComponent), "regenAccumulator")))
+            if (c.TryGotoNext(x => x.MatchStfld(typeof(HealthComponent), nameof(HealthComponent.regenAccumulator))))
             {
                 c.Emit(OpCodes.Ldarg_0);
                 c.EmitDelegate<Func<float, HealthComponent, float>>((regenAccumulator, self) =>
                 {
-                    if (self.body.HasBuff(regen))
-                    {
-                        regenAccumulator += Time.fixedDeltaTime * (percentHealing / healingTime) * self.fullHealth;
-                    }
+                    if (self.body.HasBuff(regen)) regenAccumulator += Time.fixedDeltaTime * (percentHealing / healingTime) * self.fullHealth;
                     return regenAccumulator;
                 });
             }
-            else
-            {
-                Main.WRBLogger.LogError("Failed to apply Power Elixir Regen hook");
-            }
+            else Main.WRBLogger.LogError("Failed to apply Power Elixir Regen hook");
         }
 
         private void HealthComponent_UpdateLastHitTime(ILContext il)
         {
             ILCursor c = new(il);
 
-            if (c.TryGotoNext(MoveType.After,
-                x => x.MatchLdfld(typeof(HealthComponent.ItemCounts), "healingPotion")))
+            if (c.TryGotoNext(MoveType.After, x => x.MatchLdfld(typeof(HealthComponent.ItemCounts), "healingPotion")))
             {
-                c.EmitDelegate<Func<int, int>>((useless) =>
-                {
-                    return 0;
-                });
+                c.Emit(OpCodes.Pop);
+                c.Emit(OpCodes.Ldc_I4_0);
             }
-            else
-            {
-                Main.WRBLogger.LogError("Failed to apply Power Elixir Count hook");
-            }
+            else Main.WRBLogger.LogError("Failed to apply Power Elixir Count hook");
         }
     }
 }

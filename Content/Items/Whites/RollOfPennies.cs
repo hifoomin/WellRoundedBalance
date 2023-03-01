@@ -11,16 +11,30 @@ namespace WellRoundedBalance.Items.Whites
 
         public override string PickupText => "Gain gold at the beginning of each stage.";
 
-        public override string DescText => "Gain <style=cIsUtility>" + goldOnPickup + "</style> gold on pickup. At the beginning of every stage, gain <style=cIsUtility>" + baseGoldPerStage + " <style=cStack>(+" + goldPerStagePerStack + " per stack)</style> gold</style>. <style=cIsUtility>Scales over time.</style>";
-
-        [ConfigField("Gold On Pickup", "", 10)]
+        public override string DescText => 
+            StackDesc(goldOnPickup, goldOnPickupStack, init => $"Gain <style=cIsUtility>{init}</style>{{Stack}} gold on pickup. ", noop) + 
+            StackDesc(baseGoldPerStage, goldPerStagePerStack, init => $"At the beginning of every stage, gain <style=cIsUtility>{init}</style>{{Stack}} gold</style>.", noop) + (scaleOverTime ? " <style=cIsUtility>Scales over time.</style>" : "");
+            
+        [ConfigField("Gold On Pickup", 10)]
         public static int goldOnPickup;
 
-        [ConfigField("Base Gold Per Stage", "", 25)]
+        [ConfigField("Gold On Pickup per Stack", 0)]
+        public static int goldOnPickupStack;
+
+        [ConfigField("Gold On Pickup is Hyperbolic", "Decimal, Max value. Set to 0 to make it linear.", 0f)]
+        public static float goldOnPickupIsHyperbolic;
+
+        [ConfigField("Base Gold Per Stage", 25)]
         public static int baseGoldPerStage;
 
-        [ConfigField("Gold Per Stage Per Stack", "", 25)]
+        [ConfigField("Gold Per Stage Per Stack", 25)]
         public static int goldPerStagePerStack;
+
+        [ConfigField("Gold Per Stage is Hyperbolic", "Decimal, Max value. Set to 0 to make it linear.", 0f)]
+        public static float goldPerStageIsHyperbolic;
+
+        [ConfigField("Scales Over Time", true)]
+        public static bool scaleOverTime;
 
         public override void Init()
         {
@@ -41,7 +55,9 @@ namespace WellRoundedBalance.Items.Whites
             {
                 if (itemIndex == DLC1Content.Items.GoldOnHurt.itemIndex)
                 {
-                    TeamManager.instance.GiveTeamMoney(TeamIndex.Player, (uint)Run.instance.GetDifficultyScaledCost(goldOnPickup));
+                    uint ret = (uint)StackAmount(goldOnPickup, goldOnPickupStack, count, goldOnPickupIsHyperbolic);
+                    if (scaleOverTime) ret = (uint)Run.instance.GetDifficultyScaledCost((int)ret);
+                    TeamManager.instance.GiveTeamMoney(TeamIndex.Player, ret);
                 }
             }
         }
@@ -59,28 +75,21 @@ namespace WellRoundedBalance.Items.Whites
                     stack += characterMaster.inventory.GetItemCount(DLC1Content.Items.GoldOnHurt);
                 }
             }
-            if (stack > 0)
-            {
-                TeamManager.instance.GiveTeamMoney(TeamIndex.Player, (uint)Run.instance.GetDifficultyScaledCost(baseGoldPerStage + goldPerStagePerStack * (stack - 1)));
-            }
+            uint ret = (uint)StackAmount(baseGoldPerStage, goldPerStagePerStack, stack, goldPerStageIsHyperbolic);
+            if (scaleOverTime) ret = (uint)Run.instance.GetDifficultyScaledCost((int)ret);
+            TeamManager.instance.GiveTeamMoney(TeamIndex.Player, ret);
         }
 
         private void HealthComponent_TakeDamage(ILContext il)
         {
             ILCursor c = new(il);
 
-            if (c.TryGotoNext(MoveType.Before,
-                x => x.MatchLdfld(typeof(HealthComponent.ItemCounts), "goldOnHurt"),
-                x => x.MatchLdcI4(0)))
+            if (c.TryGotoNext(MoveType.After, x => x.MatchLdfld(typeof(HealthComponent.ItemCounts), nameof(HealthComponent.ItemCounts.goldOnHurt))))
             {
-                c.Index += 1;
-                c.Remove();
-                c.Emit(OpCodes.Ldc_I4, int.MaxValue);
+                c.Emit(OpCodes.Pop);
+                c.Emit(OpCodes.Ldc_I4_0);
             }
-            else
-            {
-                Main.WRBLogger.LogError("Failed to apply Roll of Pennies Gold hook");
-            }
+            else Main.WRBLogger.LogError("Failed to apply Roll of Pennies Gold hook");
         }
     }
 }

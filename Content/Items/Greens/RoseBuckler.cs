@@ -13,10 +13,10 @@ namespace WellRoundedBalance.Items.Greens
 
         public override string DescText => "<style=cIsHealing>Increase armor</style> by <style=cIsHealing>" + baseArmorGain + "</style> <style=cStack>(+" + armorGainPerStack + " per stack)</style> while <style=cIsUtility>sprinting</style>.";
 
-        [ConfigField("Base Armor Gain", "", 25)]
+        [ConfigField("Base Armor Gain", 25)]
         public static int baseArmorGain;
 
-        [ConfigField("Armor Gain Per Stack", "", 15)]
+        [ConfigField("Armor Gain Per Stack", 15)]
         public static int armorGainPerStack;
 
         public override void Init()
