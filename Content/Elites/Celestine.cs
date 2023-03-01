@@ -1,4 +1,7 @@
-﻿using UnityEngine.Rendering.PostProcessing;
+﻿using Mono.Cecil.Cil;
+using MonoMod.Cil;
+using UnityEngine.Rendering.PostProcessing;
+using WellRoundedBalance.Buffs;
 using WellRoundedBalance.Eclipse;
 
 namespace WellRoundedBalance.Elites
@@ -43,7 +46,7 @@ namespace WellRoundedBalance.Elites
             CelestineBoost.buffColor = Color.cyan;
             CelestineBoost.canStack = false;
             CelestineBoost.isHidden = true;
-            CelestineBoost.name = "Celestine Boost";
+            CelestineBoost.name = "Celestine Elite Stat Boost";
 
             ContentAddition.AddBuffDef(CelestineBoost);
 
@@ -53,7 +56,7 @@ namespace WellRoundedBalance.Elites
             Blindness.canStack = false;
             Blindness.isHidden = false;
             Blindness.isDebuff = true;
-            Blindness.name = "Blindness";
+            Blindness.name = "Celestine Elite Blind";
 
             ContentAddition.AddBuffDef(Blindness);
 
@@ -92,8 +95,25 @@ namespace WellRoundedBalance.Elites
 
             On.RoR2.CharacterBody.GetVisibilityLevel_CharacterBody += HandleAIBlindness;
             On.RoR2.CharacterBody.FixedUpdate += HandlePlayerBlindness;
+            IL.RoR2.GlobalEventManager.OnHitEnemy += GlobalEventManager_OnHitEnemy;
 
             CelestineOverlay = Utils.Paths.Material.matMoonbatteryGlassOverlay.Load<Material>();
+        }
+
+        private void GlobalEventManager_OnHitEnemy(ILContext il)
+        {
+            ILCursor c = new(il);
+
+            if (c.TryGotoNext(MoveType.Before,
+                x => x.MatchLdsfld(typeof(RoR2Content.Buffs), "AffixHaunted")))
+            {
+                c.Remove();
+                c.Emit<Useless>(OpCodes.Ldsfld, nameof(Useless.uselessBuff));
+            }
+            else
+            {
+                Main.WRBLogger.LogError("Failed to apply Celestine Elite On Hit hook");
+            }
         }
 
         private static void StatIncrease(CharacterBody self, RecalculateStatsAPI.StatHookEventArgs args)

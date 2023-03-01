@@ -174,6 +174,10 @@ namespace WellRoundedBalance.Items.ConsistentCategories
             var warHorn = Utils.Paths.ItemDef.EnergizedOnEquipmentUse.Load<ItemDef>();
             ItemAPI.ApplyTagToItem("Defense", warHorn);
 
+            var medkit = Utils.Paths.ItemDef.Medkit.Load<ItemDef>();
+            medkit.tags = new ItemTag[] { ItemTag.AIBlacklist };
+            ItemAPI.ApplyTagToItem("Defense", medkit);
+
             // removals and defense additions
 
             ReplaceWithDefense("ArmorPlate"); // Repulsion Armor Plate
@@ -190,7 +194,6 @@ namespace WellRoundedBalance.Items.ConsistentCategories
             ReplaceWithDefense("HealWhileSafe"); // Cautious Slug
             ReplaceWithDefense("IncreaseHealing"); // Rejuvenation Rack
             ReplaceWithDefense("Infusion");
-            ReplaceWithDefense("Medkit");
             ReplaceWithDefense("Mushroom"); // Bustling Fungus
             ReplaceWithDefense("Pearl");
             ReplaceWithDefense("PersonalShield"); // Personal Shield Generator
