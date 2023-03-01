@@ -10,7 +10,7 @@ namespace WellRoundedBalance.Items.VoidWhites
         public override string PickupText => "Gain a 0.45% chance to instantly kill a non-boss enemy. <style=cIsVoid>Corrupts all Lens-Maker's Glasses</style>.";
         public override string DescText => "Your attacks have a <style=cIsDamage>0.45%</style> <style=cStack>(+0.45% per stack)</style> chance to <style=cIsDamage>instantly kill</style> a <style=cIsDamage>non-Boss enemy</style>. <style=cIsVoid>Corrupts all Lens-Maker's Glasses</style>.";
 
-        [ConfigField("Instant Kill Chance", "", 0.45f)]
+        [ConfigField("Instant Kill Chance", 0.45f)]
         public static float instantKillChance;
 
         public override void Init()

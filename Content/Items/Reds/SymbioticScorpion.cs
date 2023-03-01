@@ -21,10 +21,10 @@ namespace WellRoundedBalance.Items.Reds
         [ConfigField("Venom Damage Per Tick Per Stack", "Formula for final damage: (Base Venom Damage Per Tick + Venom Damage Per Tick Per Stack * (Symbiotic Scorpion - 1)) * 25", 0.08f)]
         public static float venomDamagePerTickPerStack;
 
-        [ConfigField("Base Armor Steal Amount", "", 20f)]
+        [ConfigField("Base Armor Steal Amount", 20f)]
         public static float baseArmorStealAmount;
 
-        [ConfigField("Armor Steal Amount Per Stack", "", 10f)]
+        [ConfigField("Armor Steal Amount Per Stack", 10f)]
         public static float armorStealAmountPerStack;
 
         public override void Init()

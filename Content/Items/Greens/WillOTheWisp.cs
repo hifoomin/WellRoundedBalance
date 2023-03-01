@@ -19,10 +19,10 @@ namespace WellRoundedBalance.Items.Greens
         [ConfigField("Damage Per Stack", "Decimal.", 0.8f)]
         public static float damagePerStack;
 
-        [ConfigField("Base Range", "", 12f)]
+        [ConfigField("Base Range", 12f)]
         public static float baseRange;
 
-        [ConfigField("Range Per Stack", "", 0f)]
+        [ConfigField("Range Per Stack", 0f)]
         public static float rangePerStack;
 
         public override void Init()

@@ -13,7 +13,7 @@ namespace WellRoundedBalance.Items.Greens
 
         public override string DescText => "Enemies with <style=cIsDamage>" + minimumDebuffs + "</style> or more debuffs are <style=cIsDamage>marked for death</style>, increasing damage taken by <style=cIsDamage>" + d(baseDamageIncreasePerDebuff) + "</style> <style=cStack>(+" + d(damageIncreasePerDebuffPerStack) + " per stack)</style> per debuff from all sources for <style=cIsUtility>7</style> seconds.";
 
-        [ConfigField("Minimum Debuffs", "", 2)]
+        [ConfigField("Minimum Debuffs", 2)]
         public static int minimumDebuffs;
 
         [ConfigField("Base Damage Increase Per Debuff", "Decimal.", 0.07f)]

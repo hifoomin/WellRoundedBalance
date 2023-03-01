@@ -14,7 +14,7 @@ namespace WellRoundedBalance.Items.Reds
         [ConfigField("Percent Cooldown Reduction", "Decimal.", 0.3f)]
         public static float percentCooldownReduction;
 
-        [ConfigField("Flat Cooldown Reduction", "", 0.5f)]
+        [ConfigField("Flat Cooldown Reduction", 0.5f)]
         public static float flatCooldownReduction;
 
         public override void Init()

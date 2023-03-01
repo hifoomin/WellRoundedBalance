@@ -13,7 +13,7 @@ namespace WellRoundedBalance.Items.Greens
 
         public override string DescText => "<style=cIsDamage>Killing " + killCount + " enemies</style> within <style=cIsDamage>1</style> second sends you into a <style=cIsDamage>frenzy</style> for <style=cIsDamage>6s</style> <style=cStack>(+4s per stack)</style>, which increases <style=cIsUtility>movement speed</style> by <style=cIsUtility>50%</style> and <style=cIsDamage>attack speed</style> by <style=cIsDamage>100%</style>.";
 
-        [ConfigField("Kill Count", "", 3)]
+        [ConfigField("Kill Count", 3)]
         public static int killCount;
 
         public override void Init()

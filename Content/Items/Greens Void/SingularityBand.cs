@@ -10,7 +10,7 @@ namespace WellRoundedBalance.Items.VoidGreens
         public override string PickupText => "High damage hits also create unstable black holes. Recharges over time. <style=cIsVoid>Corrupts all Runald's and Kjaro's Bands</style>.";
         public override string DescText => "Hits that deal <style=cIsDamage>more than 400% damage</style> also fire a black hole that <style=cIsUtility>draws enemies within 15m into its center</style>. Lasts <style=cIsUtility>5</style> seconds before collapsing, dealing <style=cIsDamage>" + d(totalDamage) + "</style> <style=cStack>(+" + d(totalDamage) + " per stack)</style> TOTAL damage. Recharges every <style=cIsUtility>" + cooldown + "</style> seconds. <style=cIsVoid>Corrupts all Runald's and Kjaro's Bands</style>.";
 
-        [ConfigField("Cooldown", "", 10f)]
+        [ConfigField("Cooldown", 10f)]
         public static float cooldown;
 
         [ConfigField("TOTAL Damage", "Decimal.", 0.5f)]

@@ -11,7 +11,7 @@ namespace WellRoundedBalance.Items.Yellows
 
         public override string DescText => "Fire a <style=cIsDamage>tracking wisp</style> for <style=cIsDamage>300% <style=cStack>(+300% per stack)</style> damage</style>. Fires every <style=cIsUtility>1.6</style> seconds while sprinting. Fire rate increases with <style=cIsUtility>movement speed</style>.";
 
-        [ConfigField("Range", "", 25f)]
+        [ConfigField("Range", 25f)]
         public static float range;
 
         public override void Init()

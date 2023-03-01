@@ -17,6 +17,9 @@ using WellRoundedBalance.Misc;
 using WellRoundedBalance.Artifacts;
 using WellRoundedBalance.Mechanics;
 using WellRoundedBalance.Items.ConsistentCategories;
+using IL.RoR2.UI;
+using RoR2.UI;
+using RoR2.UI.MainMenu;
 
 // using WellRoundedBalance.Enemies.FamilyEvents;
 
@@ -63,7 +66,7 @@ namespace WellRoundedBalance
         public void Awake()
         {
             WRBLogger = Logger;
-            Main.WRBConfig = base.Config;
+            WRBConfig = Config;
 
             wellroundedbalance = AssetBundle.LoadFromFile(Assembly.GetExecutingAssembly().Location.Replace("WellRoundedBalance.dll", "wellroundedbalance"));
 
@@ -230,6 +233,19 @@ namespace WellRoundedBalance
             SpeedBoost.Init();
             BetterScaling.Init();
             // FamilyEvents.Init();
+
+            string balls = WRBMechanicConfig.Bind("Balls?", "", "", ":smirk_cat:").Value;
+            bool shownConfigMessage = false;
+            RoR2Application.onLoad += () => Dialogue.input = GameObject.Find("MPEventSystem Player0").GetComponent<RoR2.UI.MPInput>();
+            On.RoR2.UI.MainMenu.BaseMainMenuScreen.OnEnter += (orig, self, mainMenuController) => 
+            {
+                orig(self, mainMenuController);
+                if (!shownConfigMessage && ConfigManager.ConfigChanged && balls != "STAYING")
+                {
+                    shownConfigMessage = true;
+                    Dialogue.ShowPopup("Config changed?", "Thank you for enjoying Well Rounded Balance! Despite the extensive configuration, we want our default experience to be as enjoyable as possible. Please let us know your balanced takes at <style=cDeath>cutt.ly/ballscord</style>! any feedback is welcome.\n\n<style=cStack>set Mechanics > Balls? to \'STAYING\' to disable this message.</style>");
+                }
+            };
         }
 
         private void ItemCatalog_Init(On.RoR2.ItemCatalog.orig_Init orig)
@@ -246,6 +262,7 @@ namespace WellRoundedBalance
             {
                 bool enabledfr = WRBMechanicConfig.Bind(gb.Name, "Enable Changes?", true, "Vanilla is false").Value;
                 if (enabledfr) return true;
+                else ConfigManager.ConfigChanged = true;
             }
             return false;
         }
@@ -256,6 +273,7 @@ namespace WellRoundedBalance
             {
                 bool enabledfr = WRBItemConfig.Bind(ib.Name, "Enable Changes?", true, "Vanilla is false").Value;
                 if (enabledfr) return true;
+                else ConfigManager.ConfigChanged = true;
             }
             return false;
         }
@@ -266,6 +284,7 @@ namespace WellRoundedBalance
             {
                 bool enabledfr = WRBEquipmentConfig.Bind(eqb.Name, "Enable Changes?", true, "Vanilla is false").Value;
                 if (enabledfr) return true;
+                else ConfigManager.ConfigChanged = true;
             }
             return false;
         }
@@ -276,6 +295,7 @@ namespace WellRoundedBalance
             {
                 bool enabledfr = WRBInteractableConfig.Bind(ib.Name, "Enable Changes?", true, "Vanilla is false").Value;
                 if (enabledfr) return true;
+                else ConfigManager.ConfigChanged = true;
             }
             return false;
         }
@@ -286,6 +306,7 @@ namespace WellRoundedBalance
             {
                 bool enabledfr = WRBEnemyConfig.Bind(enb.Name, "Enable Changes?", true, "Vanilla is false").Value;
                 if (enabledfr) return true;
+                else ConfigManager.ConfigChanged = true;
             }
             return false;
         }
@@ -296,6 +317,7 @@ namespace WellRoundedBalance
             {
                 bool enabledfr = WRBEliteConfig.Bind(elb.Name, "Enable Changes?", true, "Vanilla is false").Value;
                 if (enabledfr) return true;
+                else ConfigManager.ConfigChanged = true;
             }
             return false;
         }
@@ -306,6 +328,7 @@ namespace WellRoundedBalance
             {
                 bool enabledfr = WRBGamemodeConfig.Bind(gmb.Name, "Enable Changes?", true, "Vanilla is false").Value;
                 if (enabledfr) return true;
+                else ConfigManager.ConfigChanged = true;
             }
             return false;
         }
@@ -316,6 +339,7 @@ namespace WellRoundedBalance
             {
                 bool enabledfr = WRBArtifactConfig.Bind(ab.Name, "Enable Changes?", true, "Vanilla is false").Value;
                 if (enabledfr) return true;
+                else ConfigManager.ConfigChanged = true;
             }
             return false;
         }
