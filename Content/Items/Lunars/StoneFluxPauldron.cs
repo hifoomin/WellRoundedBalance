@@ -57,7 +57,7 @@ namespace WellRoundedBalance.Items.Lunars
                             else mass = 1f;
 
                             var force = 6f * damageInfo.procCoefficient * stack;
-                            if (!attackerBody.isChampion || !attackerBody.isBoss)
+                            if (!self.body.isChampion || !self.body.isBoss)
                             {
                                 damageInfo.force += Vector3.Normalize(attackerBody.corePosition - self.body.corePosition) * force * Mathf.Pow(mass, 1.1f);
                             }

@@ -20,6 +20,8 @@ using WellRoundedBalance.Items.ConsistentCategories;
 using IL.RoR2.UI;
 using RoR2.UI;
 using RoR2.UI.MainMenu;
+using WellRoundedBalance.Items.Whites;
+using WellRoundedBalance.Items.NoTier;
 
 // using WellRoundedBalance.Enemies.FamilyEvents;
 
@@ -233,17 +235,18 @@ namespace WellRoundedBalance
             SpeedBoost.Init();
             BetterScaling.Init();
             // FamilyEvents.Init();
+            EmptyBottle.Init();
 
-            string balls = WRBMechanicConfig.Bind("Balls?", "", "", ":smirk_cat:").Value;
+            string balls = WRBMechanicConfig.Bind("Annoying Pop Up", "", "", "Disables the mf config changed message").Value;
             bool shownConfigMessage = false;
             RoR2Application.onLoad += () => Dialogue.input = GameObject.Find("MPEventSystem Player0").GetComponent<RoR2.UI.MPInput>();
-            On.RoR2.UI.MainMenu.BaseMainMenuScreen.OnEnter += (orig, self, mainMenuController) => 
+            On.RoR2.UI.MainMenu.BaseMainMenuScreen.OnEnter += (orig, self, mainMenuController) =>
             {
                 orig(self, mainMenuController);
-                if (!shownConfigMessage && ConfigManager.ConfigChanged && balls != "STAYING")
+                if (!shownConfigMessage && ConfigManager.ConfigChanged && balls.ToLower() != "fuck off")
                 {
                     shownConfigMessage = true;
-                    Dialogue.ShowPopup("Config changed?", "Thank you for enjoying Well Rounded Balance! Despite the extensive configuration, we want our default experience to be as enjoyable as possible. Please let us know your balanced takes at <style=cDeath>cutt.ly/ballscord</style>! any feedback is welcome.\n\n<style=cStack>set Mechanics > Balls? to \'STAYING\' to disable this message.</style>");
+                    Dialogue.ShowPopup("Config changed?", "Thank you for enjoying Well Rounded Balance! Despite the extensive configuration, we want our default experience to be as enjoyable as possible. Please let us know your balanced takes at <style=cDeath>cutt.ly/ballscord</style>! any feedback is welcome.\n\n<style=cStack>set Mechanics > Annoying Pop Up to \'Fuck Off\' to disable this message.</style>");
                 }
             };
         }

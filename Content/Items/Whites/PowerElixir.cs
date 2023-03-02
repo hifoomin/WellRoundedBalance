@@ -4,7 +4,7 @@ using System;
 
 namespace WellRoundedBalance.Items.Whites
 {
-    internal class PowerElixir : ItemBase
+    internal class PowerElixir : ItemBase<PowerElixir>
     {
         public static BuffDef regen;
         public override string Name => ":: Items : Whites :: Power Elixir";

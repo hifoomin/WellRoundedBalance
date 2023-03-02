@@ -13,16 +13,16 @@ namespace WellRoundedBalance.Items.VoidGreens
         public override string PickupText => "Chance to repeatedly strike a single enemy with lightning. <style=cIsVoid>Corrupts all Ukuleles</style>.";
         public override string DescText => "<style=cIsDamage>" + chance + "%</style> chance to fire <style=cIsDamage>lightning</style> for <style=cIsDamage>" + d(totalDamage) + "</style> TOTAL damage up to <style=cIsDamage>" + strikeCount + "<style=cStack> (+" + strikeCountPerStack + " per stack)</style></style> times. <style=cIsVoid>Corrupts all Ukuleles</style>.";
 
-        [ConfigField("TOTAL Damage", "Decimal.", 0.4f)]
+        [ConfigField("TOTAL Damage", "Decimal.", 0.25f)]
         public static float totalDamage;
 
         [ConfigField("Chance", "", 25f)]
         public static float chance;
 
-        [ConfigField("Base Strike Count", "", 3)]
+        [ConfigField("Base Strike Count", "", 4)]
         public static int strikeCount;
 
-        [ConfigField("Strike Count Per Stack", "", 1)]
+        [ConfigField("Strike Count Per Stack", "", 2)]
         public static int strikeCountPerStack;
 
         public override void Init()

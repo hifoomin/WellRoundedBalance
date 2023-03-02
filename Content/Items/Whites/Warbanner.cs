@@ -1,10 +1,6 @@
 ﻿using Mono.Cecil.Cil;
 using MonoMod.Cil;
-using R2API;
-using RoR2;
 using System;
-using UnityEngine;
-using UnityEngine.AddressableAssets;
 
 namespace WellRoundedBalance.Items.Whites
 {
@@ -21,20 +17,25 @@ namespace WellRoundedBalance.Items.Whites
 
         [ConfigField("Base Radius", 20f)]
         public static float baseRadius;
+
         [ConfigField("Radius Per Stack", 0f)]
         public static float radiusPerStack;
+
         [ConfigField("Radius is Hyperbolic", "Decimal, Max value. Set to 0 to make it linear.", 0f)]
         public static float radiusIsHyperbolic;
 
         [ConfigField("Attack Speed and Movement Speed", "Decimal.", 0.3f)]
         public static float attackSpeedAndMovementSpeed;
-        [ConfigField("Attack Speed and Movement Speed Per Stack", "Decimal.", 0.1f)]
+
+        [ConfigField("Attack Speed and Movement Speed Per Stack", "Decimal.", 0.15f)]
         public static float attackSpeedAndMovementSpeedStack;
+
         [ConfigField("Attack Speed and Movement Speed is Hyperbolic", "Decimal, Max value. Set to 0 to make it linear.", 0f)]
         public static float attackSpeedAndMovementSpeedIsHyperbolic;
 
         [ConfigField("Increase Movement Speed", true)]
         public static bool enableMovementSpeed;
+
         [ConfigField("Increase Attack Speed", true)]
         public static bool enableAttackSpeed;
 
@@ -85,7 +86,7 @@ namespace WellRoundedBalance.Items.Whites
                 c.Emit(OpCodes.Ldloc, 8);
                 c.EmitDelegate<Func<int, float>>(stack => StackAmount(baseRadius, radiusPerStack, stack, radiusIsHyperbolic));
             }
-            else Main.WRBLogger.LogError("Failed to apply Warbanner Radius 1 hook");
+            else Main.WRBLogger.LogError("Failed to apply Warbanner Radius 2 hook");
         }
     }
 }
