@@ -17,10 +17,6 @@ using WellRoundedBalance.Misc;
 using WellRoundedBalance.Artifacts;
 using WellRoundedBalance.Mechanics;
 using WellRoundedBalance.Items.ConsistentCategories;
-using IL.RoR2.UI;
-using RoR2.UI;
-using RoR2.UI.MainMenu;
-using WellRoundedBalance.Items.Whites;
 using WellRoundedBalance.Items.NoTier;
 
 // using WellRoundedBalance.Enemies.FamilyEvents;
@@ -47,7 +43,7 @@ namespace WellRoundedBalance
         public const string PluginGUID = PluginAuthor + "." + PluginName;
         public const string PluginAuthor = "BALLS";
         public const string PluginName = "WellRoundedBalance";
-        public const string PluginVersion = "1.6.2";
+        public const string PluginVersion = "1.1.0";
         public static ConfigFile WRBConfig;
         public static ConfigFile WRBItemConfig;
         public static ConfigFile WRBMechanicConfig;

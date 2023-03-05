@@ -20,7 +20,7 @@ namespace WellRoundedBalance.Items.Whites
         [ConfigField("Explosion Damage", "Decimal.", 1f)]
         public static float explosionDamage;
 
-        [ConfigField("Explosion Damage per Stack", "Decimal.", 1f)]
+        [ConfigField("Explosion Damage per Stack", "Decimal.", 0f)]
         public static float explosionDamageStack;
 
         [ConfigField("Explosion Damage is Hyperbolic", "Decimal, Max value. Set to 0 to make it linear.", 0f)]
