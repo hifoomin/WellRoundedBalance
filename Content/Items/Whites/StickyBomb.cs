@@ -11,8 +11,8 @@ namespace WellRoundedBalance.Items.Whites
 
         public override string PickupText => "Chance on hit to attach a bomb to enemies.";
 
-        public override string DescText => 
-            StackDesc(chance, chanceStack, init => $"<style=cIsDamage>{d(init)}</style>{{Stack}} chance on hit to attach a <style=cIsDamage>bomb</style> to an enemy", d) + 
+        public override string DescText =>
+            StackDesc(chance, chanceStack, init => $"<style=cIsDamage>{d(init)}</style>{{Stack}} chance on hit to attach a <style=cIsDamage>bomb</style> to an enemy", d) +
             StackDesc(damage, damageStack, init => $", detonating for <style=cIsDamage>{init}</style>{{Stack}} {(damageIsTotal ? "TOTAL" : "base")} damage.", d);
 
         // Better Configs Wave 2 Template -P
@@ -46,7 +46,6 @@ namespace WellRoundedBalance.Items.Whites
 
         [ConfigField("Proc Coefficient", "Decimal.", 0f)]
         public static float proc;
-
 
         public override void Init()
         {

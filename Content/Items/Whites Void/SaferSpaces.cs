@@ -13,7 +13,7 @@ namespace WellRoundedBalance.Items.VoidWhites
         [ConfigField("Base Cooldown", "Formula for cooldown: Base Cooldown * Cooldown Multiplier ^ Safer Spaces", 30f)]
         public static float baseCooldown;
 
-        [ConfigField("Cooldown Multiplier", "Formula for cooldown: Base Cooldown * Cooldown Multiplier ^ Safer Spaces", 0.95f)]
+        [ConfigField("Cooldown Multiplier", "Formula for cooldown: Base Cooldown * Cooldown Multiplier ^ Safer Spaces", 0.93f)]
         public static float cooldownMultiplier;
 
         public override void Init()

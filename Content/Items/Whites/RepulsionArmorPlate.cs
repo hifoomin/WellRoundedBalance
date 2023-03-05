@@ -11,7 +11,7 @@ namespace WellRoundedBalance.Items.Whites
 
         public override string PickupText => "Receive flat damage reduction from all attacks.";
 
-        public override string DescText => 
+        public override string DescText =>
             StackDesc(flatDamageReduction, flatDamageReductionStack, init => $"Reduce all <style=cIsDamage>incoming damage</style> by <style=cIsDamage>{init}</style>{{Stack}}. ", noop) + "Cannot be reduced below " +
             StackDesc(minimumDamage, minimumDamageStack, init => $"<style=cIsDamage>{init}</style>{{Stack}}", noop) +
             StackDesc(minimumPercentDamage, minimumPercentDamageStack, init => (minimumDamage > 0 || minimumDamageStack > 0 ? "or " : "") + $"<style=cIsDamage>{d(init)}</style>{{Stack}} of <style=cIsHealing>maximum health</style>", d) + ".";
@@ -64,7 +64,7 @@ namespace WellRoundedBalance.Items.Whites
                 c.Emit(OpCodes.Ldarg_0);
                 c.EmitDelegate<Func<float, HealthComponent, float>>((orig, self) => Mathf.Max(Mathf.Min(
                     StackAmount(minimumDamage, minimumDamageStack, self.itemCounts.armorPlate, minimumDamageIsHyperbolic),
-                    self.fullHealth * StackAmount(minimumPercentDamage, minimumPercentDamageStack, self.itemCounts.armorPlate, minimumPercentDamageIsHyperbolic)), 
+                    self.fullHealth * StackAmount(minimumPercentDamage, minimumPercentDamageStack, self.itemCounts.armorPlate, minimumPercentDamageIsHyperbolic)),
                     StackAmount(flatDamageReduction, flatDamageReductionStack, self.itemCounts.armorPlate, flatDamageReductionIsHyperbolic)));
             }
             else Main.WRBLogger.LogError("Failed to apply Repulsion Armor Plate hook");

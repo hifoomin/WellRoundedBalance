@@ -12,7 +12,8 @@ namespace WellRoundedBalance.Items.Whites
         public override string InternalPickupToken => "fragileDamageBonus";
 
         public override string PickupText => "Deal bonus damage out of danger.";
-        public override string DescText => 
+
+        public override string DescText =>
             StackDesc(damageIncrease, damageIncreaseStack, init => $"<style=cIsDamage>Increase base damage</style> by <style=cIsDamage>{d(init)}</style>{{Stack}} while out of danger.", d);
 
         [ConfigField("Damage Increase", "Decimal.", 0.15f)]

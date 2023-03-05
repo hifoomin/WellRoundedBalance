@@ -12,10 +12,10 @@ namespace WellRoundedBalance.Items.VoidWhites
         public override string PickupText => "Heal while sprinting. <style=cIsVoid>Corrupts all Bustling Fungi</style>.";
         public override string DescText => "<style=cIsHealing>Heals</style> for <style=cIsHealing>" + d(basePercentHealing) + "</style> <style=cStack>(+" + d(percentHealingPerStack) + " per stack)</style> of your <style=cIsHealing>health</style> every second <style=cIsUtility>while sprinting</style>. <style=cIsVoid>Corrupts all Bustling Fungi</style>.";
 
-        [ConfigField("Base Percent Healing", "Decimal.", 0.0125f)]
+        [ConfigField("Base Percent Healing", "Decimal.", 0.012f)]
         public static float basePercentHealing;
 
-        [ConfigField("Percent Healing Per Stack", "Decimal.", 0.005f)]
+        [ConfigField("Percent Healing Per Stack", "Decimal.", 0.012f)]
         public static float percentHealingPerStack;
 
         public override void Init()

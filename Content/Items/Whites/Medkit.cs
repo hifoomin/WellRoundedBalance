@@ -11,8 +11,8 @@ namespace WellRoundedBalance.Items.Whites
 
         public override string PickupText => "Receive a delayed heal after taking damage.";
 
-        public override string DescText => "2 seconds after getting hurt, <style=cIsHealing>heal</style> for " + 
-            StackDesc(flatHealing, flatHealingStack, init => $"<style=cIsHealing>{init}</style>{{Stack}}", noop) + 
+        public override string DescText => "2 seconds after getting hurt, <style=cIsHealing>heal</style> for " +
+            StackDesc(flatHealing, flatHealingStack, init => $"<style=cIsHealing>{init}</style>{{Stack}}", noop) +
             StackDesc(percentHealing, percentHealingStack, init => (flatHealing > 0 || flatHealingStack > 0 ? "plus an additional " : "") + $"<style=cIsHealing>{d(init)}</style>{{Stack}} of <style=cIsHealing>maximum health</style>", d) + ".";
 
         [ConfigField("Flat Healing", 20f)]

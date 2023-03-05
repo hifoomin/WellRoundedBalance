@@ -1,8 +1,6 @@
 ﻿using Mono.Cecil.Cil;
 using MonoMod.Cil;
-using RoR2;
 using System;
-using UnityEngine;
 
 namespace WellRoundedBalance.Items.Whites
 {
@@ -13,7 +11,7 @@ namespace WellRoundedBalance.Items.Whites
 
         public override string PickupText => "Deal bonus damage to nearby enemies.";
 
-        public override string DescText => 
+        public override string DescText =>
             StackDesc(damageIncrease, damageIncreaseStack, init => $"Increase damage to enemies within <style=cIsDamage>13m</style> by <style=cIsDamage>{d(init)}</style>{{Stack}}.", d);
 
         [ConfigField("Damage Increase", "Decimal.", 0.15f)]

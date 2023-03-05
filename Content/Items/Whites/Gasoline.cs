@@ -12,9 +12,9 @@ namespace WellRoundedBalance.Items.Whites
 
         public override string PickupText => "Killing an enemy ignites other nearby enemies.";
 
-        public override string DescText => 
-            StackDesc(baseRange, rangePerStack, init => $"Killing an enemy <style=cIsDamage>ignites</style> all enemies within <style=cIsDamage>{m(init)}</style>{{Stack}}", m) + 
-            StackDesc(explosionDamage, explosionDamageStack, init => $" for <style=cIsDamage>{d(init)}</style>{{Stack}} base damage.", d) + 
+        public override string DescText =>
+            StackDesc(baseRange, rangePerStack, init => $"Killing an enemy <style=cIsDamage>ignites</style> all enemies within <style=cIsDamage>{m(init)}</style>{{Stack}}", m) +
+            StackDesc(explosionDamage, explosionDamageStack, init => $" for <style=cIsDamage>{d(init)}</style>{{Stack}} base damage.", d) +
             StackDesc(baseBurnDamage, burnDamagePerStack, init => ((explosionDamage > 0 || explosionDamageStack > 0) ? " Additionally, enemies <style=cIsDamage>burn</style>" : ", <style=cIsDamage>burning</style> enemies") + $" for <style=cIsDamage>{d(init)}</style>{{Stack}} base damage.", d);
 
         [ConfigField("Explosion Damage", "Decimal.", 1f)]

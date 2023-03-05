@@ -12,10 +12,10 @@ namespace WellRoundedBalance.Items.Whites
 
         public override string PickupText => $"Heal all nearby allies after standing still for 0.5 second.";
 
-        public override string DescText => $"After standing still for <style=cIsHealing>0.5</style> second, create a zone that <style=cIsHealing>heals</style> for " + 
+        public override string DescText => $"After standing still for <style=cIsHealing>0.5</style> second, create a zone that <style=cIsHealing>heals</style> for " +
             StackDesc(flatHealing, flatHealingStack, init => $"<style=cIsHealing>{init}</style>{{Stack}} ", noop) +
             StackDesc(percentHealing, percentHealingStack, init => (flatHealing > 0 || flatHealingStack > 0 ? "plus an additional " : "") + $"<style=cIsHealing>{d(init)}</style>{{Stack}} of <style=cIsHealing>maximum health</style> ", d) +
-            StackDesc(healingInterval, healingIntervalStack, init => $"every {s(init, "{Stack} second")} to all allies ", noop) + 
+            StackDesc(healingInterval, healingIntervalStack, init => $"every {s(init, "{Stack} second")} to all allies ", noop) +
             StackDesc(baseRadius, radiusStack, init => $"within <style=cIsHealing>{m(init)}</style>{{Stack}}", m) + ".";
 
         [ConfigField("Base Radius", 13f)]

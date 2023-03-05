@@ -12,10 +12,10 @@ namespace WellRoundedBalance.Items.Yellows
 
         public override string DescText => "<style=cIsDamage>10%</style> chance on hit to call forth <style=cIsDamage>3 magma balls</style> from an enemy, dealing <style=cIsDamage>" + d(baseTotalDamage) + "</style> <style=cStack>(+" + d(totalDamagePerStack) + " per stack)</style> TOTAL damage.";
 
-        [ConfigField("Base TOTAL Damage", "Decimal.", 1.9f)]
+        [ConfigField("Base TOTAL Damage", "Decimal.", 2.2f)]
         public static float baseTotalDamage;
 
-        [ConfigField("TOTAL Damage Per Stack", "Decimal.", 0.6f)]
+        [ConfigField("TOTAL Damage Per Stack", "Decimal.", 1.1f)]
         public static float totalDamagePerStack;
 
         public override void Init()
