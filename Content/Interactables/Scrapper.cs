@@ -34,8 +34,7 @@ namespace WellRoundedBalance.Interactables
             }
             self.foundValidScrap = true;
             var scrapperController = self.scrapperController;
-            var itemsEaten = scrapperController.itemsEaten;
-            scrapperController.itemsEaten = itemsEaten - 1;
+            scrapperController.itemsEaten = 1;
         }
     }
 }

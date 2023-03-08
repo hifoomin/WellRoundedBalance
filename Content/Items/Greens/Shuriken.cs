@@ -190,8 +190,12 @@ namespace WellRoundedBalance.Items.Greens
             if (enablePierce || enableBoomerang)
             {
                 GameObject hitBox = new("hitBox");
-                hitBox.AddComponent<HitBox>();
                 hitBox.transform.parent = shuriken.transform;
+
+                Main.WRBLogger.LogError("HitBox GameObject is " + hitBox);
+                Main.WRBLogger.LogError("static shuriken GameObject is " + shuriken);
+
+                hitBox.AddComponent<HitBox>();
                 var hitBoxGroup = shuriken.AddComponent<HitBoxGroup>();
                 hitBoxGroup.hitBoxes = new HitBox[] { hitBox.GetComponent<HitBox>() };
 

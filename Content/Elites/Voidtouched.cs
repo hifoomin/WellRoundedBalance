@@ -99,11 +99,11 @@ namespace WellRoundedBalance.Elites
 
             if (Run.instance.selectedDifficulty >= DifficultyIndex.Eclipse3 && Eclipse3.instance.isEnabled)
             {
-                ballCount = 5;
+                ballCount = 4;
             }
             else
             {
-                ballCount = 4;
+                ballCount = 3;
             }
 
             if (body)
@@ -115,6 +115,21 @@ namespace WellRoundedBalance.Elites
         private void Body_onSkillActivatedServer(GenericSkill genericSkill)
         {
             StartCoroutine(SummonBalls());
+        }
+
+        public Vector3 RaycastToFloor(Vector3 position)
+        {
+            Ray ray = new(position, Vector3.down);
+            var maxDistance = 15f;
+            LayerIndex world = LayerIndex.world;
+            if (Physics.Raycast(ray, out RaycastHit raycastHit, maxDistance, world.mask, QueryTriggerInteraction.Ignore))
+            {
+                return raycastHit.point;
+            }
+            else
+            {
+                return Vector3.one;
+            }
         }
 
         public IEnumerator SummonBalls()
@@ -130,7 +145,7 @@ namespace WellRoundedBalance.Elites
                         rotation = Quaternion.identity,
                         owner = gameObject,
                         crit = body.RollCrit(),
-                        position = gameObject.transform.position + body.equipmentSlot.GetAimRay().GetPoint((i + 2) * 5) // small window in melee
+                        position = RaycastToFloor(gameObject.transform.position + body.equipmentSlot.GetAimRay().GetPoint(i + 2))
                     };
                     ProjectileManager.instance.FireProjectile(fpi);
                 }
@@ -149,7 +164,7 @@ namespace WellRoundedBalance.Elites
             hc = GetComponent<HealthComponent>();
             if (!hc)
             {
-                Object.Destroy(this);
+                Destroy(this);
                 return;
             }
             body = hc.body;
@@ -164,7 +179,7 @@ namespace WellRoundedBalance.Elites
                     case TeamIndex.Player:
                         {
                             float takenDamagePercent = damageReport.damageDealt / hc.fullCombinedHealth * 100f;
-                            int permanentDamage = Mathf.FloorToInt((takenDamagePercent * 25f / 100f) * damageReport.damageInfo.procCoefficient);
+                            int permanentDamage = Mathf.FloorToInt((takenDamagePercent * 30f / 100f) * damageReport.damageInfo.procCoefficient);
                             for (int l = 0; l < permanentDamage; l++)
                             {
                                 body.AddBuff(RoR2Content.Buffs.PermanentCurse);

@@ -97,7 +97,7 @@ namespace WellRoundedBalance.Elites
                     if (attackerBody.HasBuff(RoR2Content.Buffs.AffixWhite))
                     {
                         var procType = (ProcType)1258907;
-                        if (!damageInfo.procChainMask.HasProc(procType))
+                        if (!damageInfo.procChainMask.HasProc(procType) && Util.CheckRoll(100f * damageInfo.procCoefficient))
                         {
                             ProcChainMask mask = new();
                             mask.AddProc(procType);
