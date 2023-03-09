@@ -5,7 +5,7 @@ namespace WellRoundedBalance.Artifacts
 {
     internal class Sacrifice : ArtifactBase
     {
-        public override string Name => ":: Artifacts : Sacrifice";
+        public override string Name => ":: Artifacts :::::::::::: Sacrifice";
 
         public override void Init()
         {
@@ -17,10 +17,17 @@ namespace WellRoundedBalance.Artifacts
             IL.RoR2.Artifacts.SacrificeArtifactManager.OnServerCharacterDeath += SacrificeArtifactManager_OnServerCharacterDeath;
         }
 
-        public float baseDropChance = 4f;
-        public float swarmDropChance = 2f;
-        public float maxBaseDropChance = 7f;
-        public float maxSwarmDropChance = 3.5f;
+        [ConfigField("Base Drop Chance", "", 4f)]
+        public static float baseDropChance;
+
+        [ConfigField("Swarm Drop Chance", "", 2f)]
+        public static float swarmDropChance;
+
+        [ConfigField("Max Drop Chance", "", 7f)]
+        public static float maxDropChance;
+
+        [ConfigField("Max Swarm Drop Chance", "", 3.5f)]
+        public static float maxSwarmDropChance;
 
         private void SacrificeArtifactManager_OnServerCharacterDeath(ILContext il)
         {
@@ -48,7 +55,7 @@ namespace WellRoundedBalance.Artifacts
                     bool swarmsEnabled = RunArtifactManager.instance.IsArtifactEnabled(RoR2Content.Artifacts.swarmsArtifactDef);
 
                     float baseChance = baseDropChance;
-                    float maxChance = maxBaseDropChance;
+                    float maxChance = maxDropChance;
 
                     if (swarmsEnabled)
                     {

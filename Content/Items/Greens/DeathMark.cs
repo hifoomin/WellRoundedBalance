@@ -53,7 +53,7 @@ namespace WellRoundedBalance.Items.Greens
                 c.Emit(OpCodes.Ldloc_1);
                 c.EmitDelegate<Func<HealthComponent, CharacterBody, float>>((self, attacker) =>
                 {
-                    if (attacker.master.inventory)
+                    if (self.body && attacker.master && attacker.master.inventory)
                     {
                         int DeathMarkCount = Util.GetItemCountForTeam(attacker.master.teamIndex, RoR2Content.Items.DeathMark.itemIndex, false, true);
                         int debuffCount = 0;

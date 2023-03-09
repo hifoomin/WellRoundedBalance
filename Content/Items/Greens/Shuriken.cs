@@ -192,8 +192,8 @@ namespace WellRoundedBalance.Items.Greens
                 GameObject hitBox = new("hitBox");
                 hitBox.transform.parent = shuriken.transform;
 
-                Main.WRBLogger.LogError("HitBox GameObject is " + hitBox);
-                Main.WRBLogger.LogError("static shuriken GameObject is " + shuriken);
+                // Main.WRBLogger.LogError("HitBox GameObject is " + hitBox);
+                // Main.WRBLogger.LogError("static shuriken GameObject is " + shuriken);
 
                 hitBox.AddComponent<HitBox>();
                 var hitBoxGroup = shuriken.AddComponent<HitBoxGroup>();

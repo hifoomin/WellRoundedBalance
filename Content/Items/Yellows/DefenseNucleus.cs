@@ -8,14 +8,17 @@
 
         public override string PickupText => "Reduce damage taken. Store damage taken and release it as a devastating laser upon using your equipment.";
 
-        public override string DescText => "Gain <style=cIsUtility>" + d(damageReduction) + "</style> damage reduction. Upon using your <style=cIsUtility>special</style>, unleash a devastating laser for <style=cIsDamage>" + d(damagePerSecond) + "</style> <style=cStack>(+" + d(damagePerSecond) + " per stack)</style> of the <style=cIsUtility>resisted damage</style> per second.";
+        public override string DescText => "Gain <style=cIsHealing>" + d(damageReduction) + "</style> damage reduction. Upon using your <style=cIsDamage>equipment</style>, unleash a devastating laser for <style=cIsDamage>" + d(baseDamagePerSecond) + "</style> <style=cStack>(+" + d(damagePerSecondPerStack) + " per stack)</style> of the <style=cIsHealing>resisted damage</style> per second.";
         public static GameObject BubbleShieldEffectPrefab;
 
-        [ConfigField("Damage Reduction", "Decimal.", 0.25f)]
+        [ConfigField("Damage Reduction", "Decimal.", 0.2f)]
         public static float damageReduction;
 
-        [ConfigField("Damage Per Second", "Decimal.", 0.5f)]
-        public static float damagePerSecond;
+        [ConfigField("Base Damage Per Second", "Decimal.", 1.6f)]
+        public static float baseDamagePerSecond;
+
+        [ConfigField("Damage Per Second Per Stack", "Decimal.", 0.8f)]
+        public static float damagePerSecondPerStack;
 
         public override void Init()
         {
@@ -83,7 +86,7 @@
             private float TotalStoredDamage = 0f;
 
             private bool shouldFireLaser = false;
-            private float coefficientPerSecond => stack * damagePerSecond;
+            private float coefficientPerSecond => baseDamagePerSecond + damagePerSecondPerStack * (stack - 1);
             private float ticks = 5;
             private float coeffPerTick => coefficientPerSecond / ticks;
             private float delay => 1f / ticks;
@@ -117,8 +120,8 @@
                             procChainMask = new(),
                             procCoefficient = 0.5f,
                             hitEffectPrefab = hitEffectPrefab,
-                            radius = 5f,
-                            smartCollision = false,
+                            radius = 6f,
+                            smartCollision = true,
                             owner = body.gameObject,
                             weapon = body.gameObject,
                             isCrit = Util.CheckRoll(body.crit, body.master)

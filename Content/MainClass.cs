@@ -18,6 +18,7 @@ using WellRoundedBalance.Artifacts;
 using WellRoundedBalance.Mechanics;
 using WellRoundedBalance.Items.ConsistentCategories;
 using WellRoundedBalance.Items.NoTier;
+using WellRoundedBalance.Difficulties;
 
 // using WellRoundedBalance.Enemies.FamilyEvents;
 
@@ -53,6 +54,7 @@ namespace WellRoundedBalance
         public static ConfigFile WRBEliteConfig;
         public static ConfigFile WRBGamemodeConfig;
         public static ConfigFile WRBArtifactConfig;
+        public static ConfigFile WRBDifficultyConfig;
         public static ManualLogSource WRBLogger;
 
         public static AssetBundle wellroundedbalance;
@@ -76,6 +78,7 @@ namespace WellRoundedBalance
             WRBEliteConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Elites.cfg", true);
             WRBGamemodeConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Gamemodes.cfg", true);
             WRBArtifactConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Artifacts.cfg", true);
+            WRBDifficultyConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Difficulties.cfg", true);
 
             InfernoLoaded = BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("HIFU.Inferno");
             RiskyArtifactsLoaded = BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("com.Moffein.RiskyArtifacts");
@@ -193,6 +196,21 @@ namespace WellRoundedBalance
             {
                 EliteBase based = (EliteBase)Activator.CreateInstance(type);
                 if (ValidateElite(based))
+                {
+                    based.Init();
+                }
+            }
+
+            IEnumerable<Type> enumerable9 = from type in Assembly.GetExecutingAssembly().GetTypes()
+                                            where !type.IsAbstract && type.IsSubclassOf(typeof(DifficultyBase))
+                                            select type;
+
+            WRBLogger.LogInfo("==+----------------==DIFFICULTIES==----------------+==");
+
+            foreach (Type type in enumerable9)
+            {
+                DifficultyBase based = (DifficultyBase)Activator.CreateInstance(type);
+                if (ValidateDifficulty(based))
                 {
                     based.Init();
                 }
@@ -337,6 +355,17 @@ namespace WellRoundedBalance
             if (ab.isEnabled)
             {
                 bool enabledfr = WRBArtifactConfig.Bind(ab.Name, "Enable Changes?", true, "Vanilla is false").Value;
+                if (enabledfr) return true;
+                else ConfigManager.ConfigChanged = true;
+            }
+            return false;
+        }
+
+        public bool ValidateDifficulty(DifficultyBase db)
+        {
+            if (db.isEnabled)
+            {
+                bool enabledfr = WRBDifficultyConfig.Bind(db.Name, "Enable Changes?", true, "Vanilla is false").Value;
                 if (enabledfr) return true;
                 else ConfigManager.ConfigChanged = true;
             }
