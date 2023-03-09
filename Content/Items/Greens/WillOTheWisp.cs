@@ -13,10 +13,10 @@ namespace WellRoundedBalance.Items.Greens
                                             (rangePerStack > 0 ? " <style=cStack>(+" + rangePerStack + "m per stack)</style>" : "") +
                                             " radius for <style=cIsDamage>" + d(baseDamage) + "</style> <style=cStack>(+" + d(damagePerStack) + " per stack)</style> base damage.";
 
-        [ConfigField("Base Damage", "Decimal.", 2.2f)]
+        [ConfigField("Base Damage", "Decimal.", 2f)]
         public static float baseDamage;
 
-        [ConfigField("Damage Per Stack", "Decimal.", 1.1f)]
+        [ConfigField("Damage Per Stack", "Decimal.", 1f)]
         public static float damagePerStack;
 
         [ConfigField("Base Range", 12f)]

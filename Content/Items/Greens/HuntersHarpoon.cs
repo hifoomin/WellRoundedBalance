@@ -26,7 +26,7 @@ namespace WellRoundedBalance.Items.Greens
         [ConfigField("Max Buff Count Per Stack", 2)]
         public static int maxBuffCountPerStack;
 
-        [ConfigField("Base Buff Duration", 3f)]
+        [ConfigField("Base Buff Duration", 4f)]
         public static float baseBuffDuration;
 
         [ConfigField("Buff Duration Per Stack", 0f)]
