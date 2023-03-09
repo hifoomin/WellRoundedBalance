@@ -9,8 +9,8 @@ namespace WellRoundedBalance.Difficulties
 
         public override string DescText => "For new players. Every move calls for less effort and attention.<style=cStack>\n\n" +
                                            (percentRegenIncrease > 0 ? ">Player Health Regeneration: <style=cIsHealing>+" + d(percentRegenIncrease) + "</style> \n" : "") +
-                                           (armorGain > 0 ? ">Player Damage Reduction: <style=cIsHealing>+" + (Mathf.Round(armorGain / (100 + armorGain)) * 100) + "%</style> \n>" : "") +
-                                           "Difficulty Scaling: <style=cIsHealing>" + (totalDifficultyScaling - 100f) + "%</style></style>";
+                                           (armorGain > 0 ? ">Player Damage Reduction: <style=cIsHealing>+" + (Mathf.Round(armorGain / (100 + armorGain)) * 100) + "%</style> \n" : "") +
+                                           ">Difficulty Scaling: <style=cIsHealing>" + (totalDifficultyScaling - 100f) + "%</style></style>";
 
         [ConfigField("Percent Regen Increase", "Decimal.", 0f)]
         public static float percentRegenIncrease;
