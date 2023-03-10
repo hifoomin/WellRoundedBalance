@@ -3,7 +3,7 @@
     public class BisonSteak : ItemBase
     {
         public override string Name => ":: Items : Whites :: Bison Steak";
-        public override string InternalPickupToken => "flatHealth";
+        public override ItemDef InternalPickup => RoR2Content.Items.FlatHealth;
 
         public override string PickupText => "Gain 45 max health.";
 
@@ -34,7 +34,7 @@
             if (sender.inventory)
             {
                 args.baseHealthAdd += StackAmount(maximumHealthGain - 25, maximumHealthGainStack - 25,
-                    sender.inventory.GetItemCount(RoR2Content.Items.FlatHealth), maximumHealthGainIsHyperbolic);
+                    sender.inventory.GetItemCount(InternalPickup), maximumHealthGainIsHyperbolic);
             }
         }
     }

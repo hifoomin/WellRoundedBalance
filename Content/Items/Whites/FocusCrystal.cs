@@ -7,7 +7,7 @@ namespace WellRoundedBalance.Items.Whites
     public class FocusCrystal : ItemBase
     {
         public override string Name => ":: Items : Whites :: Focus Crystal";
-        public override string InternalPickupToken => "nearbyDamageBonus";
+        public override ItemDef InternalPickup => RoR2Content.Items.NearbyDamageBonus;
 
         public override string PickupText => "Deal bonus damage to nearby enemies.";
 

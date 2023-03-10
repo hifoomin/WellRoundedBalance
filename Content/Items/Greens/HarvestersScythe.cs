@@ -6,7 +6,7 @@ namespace WellRoundedBalance.Items.Greens
     public class HarvestersScythe : ItemBase
     {
         public override string Name => ":: Items :: Greens :: Harvesters Scythe";
-        public override string InternalPickupToken => "healOnCrit";
+        public override ItemDef InternalPickup => RoR2Content.Items.HealOnCrit;
 
         public override string PickupText => "'Backstabs' heal a percentage of missing health.";
 

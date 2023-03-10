@@ -3,7 +3,7 @@
     public class SquidPolyp : ItemBase
     {
         public override string Name => ":: Items :: Greens :: Squid Polyp";
-        public override string InternalPickupToken => "squidTurret";
+        public override ItemDef InternalPickup => RoR2Content.Items.Squid;
 
         public override string PickupText => "Activating an interactable summons a Squid Turret nearby.";
         public override string DescText => "Activating an interactable summons a <style=cIsDamage>Squid Turret</style> that attacks nearby enemies at <style=cIsDamage>100% <style=cStack>(+100% per stack)</style> attack speed</style>. Lasts <style=cIsUtility>" + lifetime + "</style> seconds.";

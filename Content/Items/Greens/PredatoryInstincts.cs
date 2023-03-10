@@ -5,7 +5,7 @@ namespace WellRoundedBalance.Items.Greens
     public class PredatoryInstincts : ItemBase
     {
         public override string Name => ":: Items :: Greens :: Predatory Instincts";
-        public override string InternalPickupToken => "attackSpeedOnCrit";
+        public override ItemDef InternalPickup => RoR2Content.Items.AttackSpeedOnCrit;
 
         public override string PickupText => "'Critical Strikes' increase attack speed up to 3 times.";
 

@@ -6,7 +6,7 @@ namespace WellRoundedBalance.Items.VoidGreens
     public class SingularityBand : ItemBase
     {
         public override string Name => ":: Items :::::: Voids :: Singularity Band";
-        public override string InternalPickupToken => "elementalRingVoid";
+        public override ItemDef InternalPickup => DLC1Content.Items.ElementalRingVoid;
 
         public override string PickupText => "High damage hits also create unstable black holes. Recharges over time. <style=cIsVoid>Corrupts all Runald's and Kjaro's Bands</style>.";
 

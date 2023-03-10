@@ -12,7 +12,7 @@ namespace WellRoundedBalance.Items.Greens
                                            (buffDurationPerStack > 0 ? " <style=cStack>(+" + buffDurationPerStack + " per stack)</style>" : "") +
                                            " seconds.";
 
-        public override string InternalPickupToken => "moveSpeedOnKill";
+        public override ItemDef InternalPickup => DLC1Content.Items.MoveSpeedOnKill;
         public override string Name => ":: Items :: Greens :: Hunters Harpoon";
 
         public override string PickupText => "Killing an enemy gives you a burst of movement speed.";

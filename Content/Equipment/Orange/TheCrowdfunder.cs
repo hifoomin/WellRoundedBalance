@@ -6,7 +6,7 @@ namespace WellRoundedBalance.Equipment
     public class TheCrowdfunder : EquipmentBase
     {
         public override string Name => ":: Equipment :: The Crowdfunder";
-        public override string InternalPickupToken => "goldGat";
+        public override EquipmentDef InternalPickup => RoR2Content.Equipment.GoldGat;
 
         public override string PickupText => "Toggle to fire. Costs gold per bullet.";
 

@@ -5,7 +5,7 @@ namespace WellRoundedBalance.Equipment
     public class BlastShower : EquipmentBase
     {
         public override string Name => ":: Equipment :: Blast Shower";
-        public override string InternalPickupToken => "cleanse";
+        public override EquipmentDef InternalPickup => RoR2Content.Equipment.Cleanse;
 
         public override string PickupText => "Cleanse all negative effects.";
 

@@ -5,7 +5,7 @@ namespace WellRoundedBalance.Items.Reds
     public class UnstableTeslaCoil : ItemBase
     {
         public override string Name => ":: Items ::: Reds :: Unstable Tesla Coil";
-        public override string InternalPickupToken => "shockNearby";
+        public override ItemDef InternalPickup => RoR2Content.Items.ShockNearby;
 
         public override string PickupText => "Shock all nearby enemies every 0.5 seconds.";
 

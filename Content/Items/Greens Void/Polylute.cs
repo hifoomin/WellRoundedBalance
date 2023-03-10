@@ -7,7 +7,7 @@ namespace WellRoundedBalance.Items.VoidGreens
     public class Polylute : ItemBase
     {
         public override string Name => ":: Items :::::: Voids :: Polylute";
-        public override string InternalPickupToken => "chainLightningVoid";
+        public override ItemDef InternalPickup => DLC1Content.Items.ChainLightningVoid;
 
         public override string PickupText => "Chance to repeatedly strike a single enemy with lightning. <style=cIsVoid>Corrupts all Ukuleles</style>.";
         public override string DescText => "<style=cIsDamage>" + chance + "%</style> chance to fire <style=cIsDamage>lightning</style> for <style=cIsDamage>" + d(totalDamage) + "</style> TOTAL damage up to <style=cIsDamage>" + strikeCount + "<style=cStack> (+" + strikeCountPerStack + " per stack)</style></style> times. <style=cIsVoid>Corrupts all Ukuleles</style>.";

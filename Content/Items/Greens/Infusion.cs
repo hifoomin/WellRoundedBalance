@@ -13,7 +13,7 @@ namespace WellRoundedBalance.Items.Greens
         // ///////////////
 
         public override string Name => ":: Items :: Greens :: Infusion";
-        public override string InternalPickupToken => "infusion";
+        public override ItemDef InternalPickup => RoR2Content.Items.Infusion;
 
         public override string PickupText => "Killing an enemy permanently increases your maximum health.";
 

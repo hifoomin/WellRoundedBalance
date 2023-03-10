@@ -5,7 +5,7 @@ namespace WellRoundedBalance.Items.Lunars
     public class StoneFluxPauldron : ItemBase
     {
         public override string Name => ":: Items ::::: Lunars :: Stone Flux Pauldron";
-        public override string InternalPickupToken => "halfSpeedDoubleHealth";
+        public override ItemDef InternalPickup => DLC1Content.Items.HalfSpeedDoubleHealth;
 
         public override string PickupText => "Pull enemies on hit... <color=#FF7F7F>BUT enemies pull you on hit.</color>\n";
 

@@ -5,7 +5,7 @@ namespace WellRoundedBalance.Items.Reds
     public class AlienHead : ItemBase
     {
         public override string Name => ":: Items ::: Reds :: Alien Head";
-        public override string InternalPickupToken => "alienHead";
+        public override ItemDef InternalPickup => RoR2Content.Items.AlienHead;
 
         public override string PickupText => "Reduces cooldowns for your skills.";
 

@@ -8,7 +8,7 @@ namespace WellRoundedBalance.Items.Whites
     {
         public override string Name => ":: Items : Whites :: Topaz Brooch";
 
-        public override string InternalPickupToken => "barrierOnKill";
+        public override ItemDef InternalPickup => RoR2Content.Items.BarrierOnKill;
 
         public override string PickupText => "Gain a temporary barrier on kill.";
 

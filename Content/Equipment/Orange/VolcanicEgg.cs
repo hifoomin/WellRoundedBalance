@@ -3,7 +3,7 @@
     public class VolcanicEgg : EquipmentBase
     {
         public override string Name => "::: Equipment :: Volcanic Egg";
-        public override string InternalPickupToken => "fireballDash";
+        public override EquipmentDef InternalPickup => RoR2Content.Equipment.FireBallDash;
 
         public override string PickupText => "Transform into a speeding draconic fireball, dealing damage as you pass through enemies.";
 

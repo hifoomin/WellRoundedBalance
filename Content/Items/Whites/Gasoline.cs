@@ -8,7 +8,7 @@ namespace WellRoundedBalance.Items.Whites
     {
         public override string Name => ":: Items : Whites :: Gasoline";
 
-        public override string InternalPickupToken => "igniteOnKill";
+        public override ItemDef InternalPickup => RoR2Content.Items.IgniteOnKill;
 
         public override string PickupText => "Killing an enemy ignites other nearby enemies.";
 

@@ -7,7 +7,7 @@ namespace WellRoundedBalance.Items.Whites
     {
         public override string Name => ":: Items : Whites :: Roll of Pennies";
 
-        public override string InternalPickupToken => "goldOnHurt";
+        public override ItemDef InternalPickup => DLC1Content.Items.GoldOnHurt;
 
         public override string PickupText => "Gain gold at the beginning of each stage.";
 

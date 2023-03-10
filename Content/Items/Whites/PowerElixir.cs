@@ -9,7 +9,7 @@ namespace WellRoundedBalance.Items.Whites
         public static BuffDef regen;
         public override string Name => ":: Items : Whites :: Power Elixir";
 
-        public override string InternalPickupToken => "healingPotion";
+        public override ItemDef InternalPickup => DLC1Content.Items.HealingPotion;
 
         public override string PickupText => "Quickly regenerate upon taking heavy damage. Refills each stage.";
 

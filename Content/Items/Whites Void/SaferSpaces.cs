@@ -5,7 +5,7 @@ namespace WellRoundedBalance.Items.VoidWhites
     public class SaferSpaces : ItemBase
     {
         public override string Name => ":: Items :::::: Voids :: Safer Spaces";
-        public override string InternalPickupToken => "bearVoid";
+        public override ItemDef InternalPickup => DLC1Content.Items.BearVoid;
 
         public override string PickupText => "Block the next source of damage. <style=cIsVoid>Corrupts all Tougher Times</style>.";
         public override string DescText => "<style=cIsHealing>Blocks</style> incoming damage once. Recharges after <style=cIsUtility>" + baseCooldown + " seconds</style> <style=cStack>(-" + Mathf.Round((1f - cooldownMultiplier) * 100f) + "% per stack)</style>. <style=cIsVoid>Corrupts all Tougher Times</style>.";

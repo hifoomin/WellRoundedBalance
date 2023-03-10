@@ -3,7 +3,7 @@
     public class MercurialRachis : ItemBase
     {
         public override string Name => ":: Items ::::: Lunars :: Mercurial Rachis";
-        public override string InternalPickupToken => "randomDamageZone";
+        public override ItemDef InternalPickup => RoR2Content.Items.RandomDamageZone;
 
         public override string PickupText => "Randomly create a Ward of Power. ALL characters have bonus stats while in the Ward.";
 

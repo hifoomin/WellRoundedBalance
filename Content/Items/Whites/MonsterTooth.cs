@@ -6,7 +6,7 @@ namespace WellRoundedBalance.Items.Whites
     public class MonsterTooth : ItemBase
     {
         public override string Name => ":: Items : Whites :: MonsterTooth";
-        public override string InternalPickupToken => "tooth";
+        public override ItemDef InternalPickup => RoR2Content.Items.Tooth;
 
         public override string PickupText => "Drop a healing orb on kill.";
 

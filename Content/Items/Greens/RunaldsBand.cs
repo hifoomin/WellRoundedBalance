@@ -6,7 +6,7 @@ namespace WellRoundedBalance.Items.Greens
     public class RunaldsBand : ItemBase
     {
         public override string Name => ":: Items :: Greens :: Runalds Band";
-        public override string InternalPickupToken => "icering";
+        public override ItemDef InternalPickup => RoR2Content.Items.IceRing;
 
         public override string PickupText => "High damage hits also blast enemies with runic ice. Recharges over time.";
 

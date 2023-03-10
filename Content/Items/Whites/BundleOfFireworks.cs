@@ -7,7 +7,7 @@ namespace WellRoundedBalance.Items.Whites
     public class BundleOfFireworks : ItemBase
     {
         public override string Name => ":: Items : Whites :: Bundle of Fireworks";
-        public override string InternalPickupToken => "firework";
+        public override ItemDef InternalPickup => RoR2Content.Items.Firework;
 
         public override string PickupText => "Activating an interactable launches fireworks at nearby enemies.";
 

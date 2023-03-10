@@ -6,7 +6,7 @@ namespace WellRoundedBalance.Equipment
     {
         public override string Name => ":: Equipment :: Foreign Fruit";
 
-        public override string InternalPickupToken => "fruit";
+        public override EquipmentDef InternalPickup => RoR2Content.Equipment.Fruit;
 
         public override string PickupText => "Heal on use.";
 

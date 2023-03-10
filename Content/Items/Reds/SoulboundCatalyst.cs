@@ -7,7 +7,7 @@ namespace WellRoundedBalance.Items.Reds
         public static float BaseCdr;
         public static float StackCdr;
         public override string Name => ":: Items ::: Reds :: Soulbound Catalyst";
-        public override string InternalPickupToken => "talisman";
+        public override ItemDef InternalPickup => RoR2Content.Items.Talisman;
 
         public override string PickupText => "Kills reduce equipment cooldown.";
 

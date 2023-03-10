@@ -8,7 +8,7 @@ namespace WellRoundedBalance.Items.Whites
         public static BuffDef watchDamage;
 
         public override string Name => ":: Items : Whites :: Delicate Watch";
-        public override string InternalPickupToken => "fragileDamageBonus";
+        public override ItemDef InternalPickup => DLC1Content.Items.FragileDamageBonus;
 
         public override string PickupText => "Deal bonus damage out of danger.";
 

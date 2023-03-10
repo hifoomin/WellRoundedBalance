@@ -5,7 +5,7 @@ namespace WellRoundedBalance.Items.Greens
     public class IgnitionTank : ItemBase
     {
         public override string Name => ":: Items :: Greens :: Ignition Tank";
-        public override string InternalPickupToken => "strengthenBurn";
+        public override ItemDef InternalPickup => DLC1Content.Items.StrengthenBurn;
 
         public override string PickupText => (igniteChanceOnHit > 0 ? "Gain a " + igniteChanceOnHit + "% chance to ignite enemies on hit. " : "") +
                                              "Your ignite effects deal " + igniteDamageIncrease + "x damage.";

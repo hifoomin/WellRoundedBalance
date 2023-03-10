@@ -7,7 +7,7 @@ namespace WellRoundedBalance.Equipment.Lunar
     {
         public override string Name => ":: Equipment ::: Glowing Meteorite";
 
-        public override string InternalPickupToken => "meteor";
+        public override EquipmentDef InternalPickup => RoR2Content.Equipment.Meteor;
 
         public override string PickupText => "Rain meteors from the sky, <color=#FF7F7F>hurting both enemies and allies.</color>";
 

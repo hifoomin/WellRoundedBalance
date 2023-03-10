@@ -8,10 +8,11 @@ namespace WellRoundedBalance.Items
 {
     public abstract class ItemBase : SharedBase
     {
-        public virtual string InternalPickupToken { get; }
+        public virtual ItemDef InternalPickup { get; }
         public abstract string PickupText { get; }
         public abstract string DescText { get; }
         public override ConfigFile Config => Main.WRBItemConfig;
+        public static event Action onTokenRegister;
 
         public static int GetItemLoc(ILCursor c, string item) // modify this on compat update
         {
@@ -23,37 +24,29 @@ namespace WellRoundedBalance.Items
 
         public T ConfigOption<T>(T value, string name, string desc)
         {
-            ConfigEntry<T> entry = Main.WRBConfig.Bind<T>(Name, name, value, desc);
-            if (typeof(T) == typeof(int))
-            {
-                ModSettingsManager.AddOption(new IntSliderOption(entry as ConfigEntry<int>));
-            }
-            else if (typeof(T) == typeof(float))
-            {
-                ModSettingsManager.AddOption(new SliderOption(entry as ConfigEntry<float>));
-            }
-            else if (typeof(T) == typeof(string))
-            {
-                ModSettingsManager.AddOption(new StringInputFieldOption(entry as ConfigEntry<string>));
-            }
-            else if (typeof(T) == typeof(Enum))
-            {
-                ModSettingsManager.AddOption(new ChoiceOption(entry));
-            }
+            ConfigEntry<T> entry = Main.WRBConfig.Bind(Name, name, value, desc);
+            if (typeof(T) == typeof(int)) ModSettingsManager.AddOption(new IntSliderOption(entry as ConfigEntry<int>));
+            else if (typeof(T) == typeof(float)) ModSettingsManager.AddOption(new SliderOption(entry as ConfigEntry<float>));
+            else if (typeof(T) == typeof(string)) ModSettingsManager.AddOption(new StringInputFieldOption(entry as ConfigEntry<string>));
+            else if (typeof(T) == typeof(Enum)) ModSettingsManager.AddOption(new ChoiceOption(entry));
             return entry.Value;
         }
 
         public override void Init()
         {
             base.Init();
-            string pickupToken;
-            string descriptionToken;
+            onTokenRegister += SetToken;
+        }
 
-            pickupToken = "ITEM_" + InternalPickupToken.ToUpper() + "_PICKUP";
-            descriptionToken = "ITEM_" + InternalPickupToken.ToUpper() + "_DESC";
+        [SystemInitializer(typeof(ItemCatalog))]
+        public static void OnItemInitialized() { if (onTokenRegister != null) onTokenRegister(); }
 
-            LanguageAPI.Add(pickupToken, PickupText);
-            LanguageAPI.Add(descriptionToken, DescText);
+        public void SetToken()
+        {
+            if (InternalPickup != null) {
+                LanguageAPI.Add(InternalPickup.pickupToken, PickupText);
+                LanguageAPI.Add(InternalPickup.descriptionToken, DescText);
+            };
         }
 
         public string GetToken(string addressablePath)

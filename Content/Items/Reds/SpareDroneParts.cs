@@ -3,7 +3,7 @@
     public class SpareDroneParts : ItemBase
     {
         public override string Name => ":: Items ::: Reds :: Spare Drone Parts";
-        public override string InternalPickupToken => "droneWeapons";
+        public override ItemDef InternalPickup => DLC1Content.Items.DroneWeapons;
 
         public override string PickupText => "Your drones fire faster, have less cooldowns, shoot missiles, and gain a bonus chaingun.";
 

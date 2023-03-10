@@ -9,7 +9,7 @@ namespace WellRoundedBalance.Items.Greens
         public static BuffDef razorwireCooldown;
 
         public override string Name => ":: Items :: Greens :: Razorwire";
-        public override string InternalPickupToken => "thorns";
+        public override ItemDef InternalPickup => RoR2Content.Items.Thorns;
 
         public override string PickupText => "Retaliate upon taking damage.";
         public override string DescText => "Getting hit causes a razor to <style=cIsDamage>retaliate</style>, dealing <style=cIsDamage>" + d(baseDamage) + "</style> <style=cStack>(+" + d(damagePerStack) + " per stack)</style> damage.";

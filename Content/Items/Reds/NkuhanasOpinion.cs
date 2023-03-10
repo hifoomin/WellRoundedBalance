@@ -5,7 +5,7 @@ namespace WellRoundedBalance.Items.Reds
     public class NkuhanasOpinion : ItemBase
     {
         public override string Name => ":: Items ::: Reds :: Nkuhanas Opinion";
-        public override string InternalPickupToken => "novaOnHeal";
+        public override ItemDef InternalPickup => RoR2Content.Items.NovaOnHeal;
 
         public override string PickupText => "Fire haunting skulls when healed.";
 

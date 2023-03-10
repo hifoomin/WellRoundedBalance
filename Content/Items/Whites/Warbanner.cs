@@ -7,7 +7,7 @@ namespace WellRoundedBalance.Items.Whites
     public class Warbanner : ItemBase
     {
         public override string Name => ":: Items : Whites :: Warbanner";
-        public override string InternalPickupToken => "wardOnLevel";
+        public override ItemDef InternalPickup => RoR2Content.Items.WardOnLevel;
 
         public override string PickupText => $"Drop a Warbanner on level up or starting the Teleporter event. Grants allies{(enableMovementSpeed ? " movement speed" : "")}{(enableAttackSpeed ? (enableMovementSpeed ? " and" : "") + " attack speed" : "")}.";
 

@@ -9,7 +9,7 @@ namespace WellRoundedBalance.Items.Reds
         public static BuffDef armorReduction;
         public static BuffDef armorGain;
         public override string Name => ":: Items ::: Reds :: Symbiotic Scorpion";
-        public override string InternalPickupToken => "permanentDebuffOnHit";
+        public override ItemDef InternalPickup => DLC1Content.Items.PermanentDebuffOnHit;
 
         public override string PickupText => "Inflict venom on hit.";
 

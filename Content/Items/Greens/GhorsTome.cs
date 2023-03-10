@@ -5,7 +5,7 @@ namespace WellRoundedBalance.Items.Greens
     public class GhorsTome : ItemBase
     {
         public override string Name => ":: Items :: Greens :: Ghors Tome";
-        public override string InternalPickupToken => "bonusGoldPackOnKill";
+        public override ItemDef InternalPickup => RoR2Content.Items.BonusGoldPackOnKill;
 
         public override string PickupText => "Chance on kill to drop a treasure.";
         public override string DescText => "<style=cIsUtility>" + goldPackDropChance + "%</style> <style=cStack>(+" + goldPackDropChance + "% on stack)</style> chance on kill to drop a treasure worth <style=cIsUtility>$" + goldPackGoldGain + "</style>. <style=cIsUtility>Scales over time.</style>";

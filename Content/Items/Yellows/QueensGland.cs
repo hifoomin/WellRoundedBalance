@@ -8,7 +8,7 @@ namespace WellRoundedBalance.Items.Yellows
     public class QueensGland : ItemBase
     {
         public override string Name => ":: Items :::: Yellows :: Queens Gland";
-        public override string InternalPickupToken => "beetleGland";
+        public override ItemDef InternalPickup => RoR2Content.Items.BeetleGland;
 
         public override string PickupText => "Recruit 3 Beetle Guards.";
 

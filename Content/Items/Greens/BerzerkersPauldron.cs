@@ -7,7 +7,7 @@ namespace WellRoundedBalance.Items.Greens
     public class BerzerkersPauldron : ItemBase
     {
         public override string Name => ":: Items :: Greens :: Berzerkers Pauldron";
-        public override string InternalPickupToken => "warCryOnMultiKill";
+        public override ItemDef InternalPickup => RoR2Content.Items.WarCryOnMultiKill;
 
         public override string PickupText => "Enter a frenzy after killing " + killCount + " enemies in quick succession.";
 

@@ -5,7 +5,7 @@ namespace WellRoundedBalance.Items.VoidWhites
     public class LostSeersLenses : ItemBase
     {
         public override string Name => ":: Items :::::: Voids :: Lost Seers Lenses";
-        public override string InternalPickupToken => "critGlassesVoid";
+        public override ItemDef InternalPickup => DLC1Content.Items.CritGlassesVoid;
 
         public override string PickupText => "Gain a 1% chance to instantly kill a non-boss enemy. <style=cIsVoid>Corrupts all Lens-Maker's Glasses</style>.";
         public override string DescText => "Your attacks have a <style=cIsDamage>1%</style> <style=cStack>(1% per stack)</style> chance to <style=cIsDamage>instantly kill</style> a <style=cIsDamage>non-Boss enemy</style>. <style=cIsVoid>Corrupts all Lens-Maker's Glasses</style>.";

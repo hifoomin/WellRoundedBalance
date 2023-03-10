@@ -7,7 +7,7 @@ namespace WellRoundedBalance.Items.Whites
     public class Crowbar : ItemBase
     {
         public override string Name => ":: Items : Whites :: Crowbar";
-        public override string InternalPickupToken => "crowbar";
+        public override ItemDef InternalPickup => RoR2Content.Items.Crowbar;
 
         public override string PickupText => "Deal bonus damage to enemies above " + d(healthThreshold) + " health.";
 

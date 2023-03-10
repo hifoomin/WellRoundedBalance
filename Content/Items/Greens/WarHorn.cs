@@ -7,7 +7,7 @@ namespace WellRoundedBalance.Items.Greens
     {
         public static BuffDef warHornBuff;
         public override string Name => ":: Items :: Greens :: War Horn";
-        public override string InternalPickupToken => "energizedOnEquipmentUse";
+        public override ItemDef InternalPickup => RoR2Content.Items.EnergizedOnEquipmentUse;
 
         public override string PickupText => "Activating your Equipment gives you a burst of attack speed" +
                                              (baseAttackSpeedGain > 0 || attackSpeedGainPerStack > 0 ? " and regeneration." : ".");

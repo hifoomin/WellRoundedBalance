@@ -5,7 +5,7 @@ namespace WellRoundedBalance.Items.Reds
     public class WakeOfVultures : ItemBase
     {
         public override string Name => ":: Items ::: Reds :: Wake Of Vultures";
-        public override string InternalPickupToken => GetToken(Utils.Paths.ItemDef.HeadHunter);
+        public override ItemDef InternalPickup => RoR2Content.Items.HeadHunter;
 
         public override string PickupText => "Gain the powers of slain elites. Become resistant to elites.";
 

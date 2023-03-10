@@ -8,7 +8,7 @@ namespace WellRoundedBalance.Items.Reds
         public static BuffDef happiestMaskReady;
         public static BuffDef happiestMaskCooldown;
         public override string Name => ":: Items ::: Reds :: Happiest Mask";
-        public override string InternalPickupToken => "ghostOnKill";
+        public override ItemDef InternalPickup => RoR2Content.Items.GhostOnKill;
 
         public override string PickupText => "Summon a ghost upon killing an enemy. Recharges over time.";
 

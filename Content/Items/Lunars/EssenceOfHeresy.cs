@@ -4,7 +4,7 @@
     {
         public override string Name => ":: Items ::::: Lunars :: Essence of Heresy";
 
-        public override string InternalPickupToken => "lunarSpecialReplacement";
+        public override ItemDef InternalPickup => RoR2Content.Items.LunarSpecialReplacement;
 
         public override string PickupText => "Replace your Special Skill with 'Ruin'.";
 

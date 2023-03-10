@@ -6,7 +6,7 @@ namespace WellRoundedBalance.Items.Reds
     {
         public override string Name => ":: Items ::: Reds :: Interstellar Desk Plant";
 
-        public override string InternalPickupToken => "interstellarDeskPlant";
+        public override ItemDef InternalPickup => RoR2Content.Items.Plant;
 
         public override string PickupText => "Plant a healing fruit on kill.";
 

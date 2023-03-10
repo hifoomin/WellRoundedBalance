@@ -6,7 +6,7 @@ namespace WellRoundedBalance.Equipment.Orange
     public class OcularHud : EquipmentBase
     {
         public override string Name => "::: Equipment :: Ocular HUD";
-        public override string InternalPickupToken => "critOnUse";
+        public override EquipmentDef InternalPickup => RoR2Content.Equipment.CritOnUse;
 
         public override string PickupText => "Gain " + critChanceGain + "% Critical Strike Chance" +
                                              (critDamageGain > 0f ? " and " + d(critDamageGain) + "% Critical Strike Damage" : "") +

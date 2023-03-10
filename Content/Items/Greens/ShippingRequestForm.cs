@@ -3,7 +3,7 @@
     public class ShippingRequestForm : ItemBase
     {
         public override string Name => ":: Items :: Greens :: Shipping Request Form";
-        public override string InternalPickupToken => "freeChest";
+        public override ItemDef InternalPickup => DLC1Content.Items.FreeChest;
 
         public override string PickupText => "Get a delivery each stage that contains powerful items.";
 

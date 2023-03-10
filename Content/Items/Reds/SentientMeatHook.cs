@@ -5,7 +5,7 @@ namespace WellRoundedBalance.Items.Reds
     public class SentientMeatHook : ItemBase
     {
         public override string Name => ":: Items ::: Reds :: Sentient Meat Hook";
-        public override string InternalPickupToken => "bounceNearby";
+        public override ItemDef InternalPickup => RoR2Content.Items.BounceNearby;
 
         public override string PickupText => "Chance to hook all nearby enemies.";
 

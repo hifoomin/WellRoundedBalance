@@ -5,7 +5,7 @@ namespace WellRoundedBalance.Equipment.Lunar
     public class SpinelTonic : EquipmentBase
     {
         public override string Name => "::: Equipment ::: Spinel Tonic";
-        public override string InternalPickupToken => "tonic";
+        public override EquipmentDef InternalPickup => RoR2Content.Equipment.Tonic;
 
         public override string PickupText => "Gain a massive boost to ALL stats. <color=#FF7F7F>Chance to gain an affliction that reduces ALL stats.</color>";
 
@@ -82,7 +82,7 @@ namespace WellRoundedBalance.Equipment.Lunar
             ILCursor c = new(il);
 
             if (c.TryGotoNext(MoveType.Before,
-                x => x.MatchCallOrCallvirt<RoR2.CharacterBody>("get_maxHealth"),
+                x => x.MatchCallOrCallvirt<CharacterBody>("get_maxHealth"),
                 x => x.MatchLdcR4(1.5f)))
             {
                 c.Index += 1;
@@ -96,7 +96,7 @@ namespace WellRoundedBalance.Equipment.Lunar
             c.Index = 0;
 
             if (c.TryGotoNext(MoveType.Before,
-                x => x.MatchCallOrCallvirt<RoR2.CharacterBody>("get_maxShield"),
+                x => x.MatchCallOrCallvirt<CharacterBody>("get_maxShield"),
                 x => x.MatchLdcR4(1.5f)))
             {
                 c.Index += 1;
@@ -124,7 +124,7 @@ namespace WellRoundedBalance.Equipment.Lunar
             c.Index = 0;
 
             if (c.TryGotoNext(MoveType.Before,
-                x => x.MatchCallOrCallvirt<RoR2.CharacterBody>("get_moveSpeed"),
+                x => x.MatchCallOrCallvirt<CharacterBody>("get_moveSpeed"),
                 x => x.MatchLdcR4(1.3f)))
             {
                 c.Index += 1;

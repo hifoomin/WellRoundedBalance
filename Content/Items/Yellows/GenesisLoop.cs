@@ -8,7 +8,7 @@ namespace WellRoundedBalance.Items.Yellows
     public class GenesisLoop : ItemBase
     {
         public override string Name => ":: Items :::: Yellows :: Genesis Loop";
-        public override string InternalPickupToken => "novaOnLowHealth";
+        public override ItemDef InternalPickup => RoR2Content.Items.NovaOnLowHealth;
 
         public override string PickupText => "Fire an electric nova at low health.";
 

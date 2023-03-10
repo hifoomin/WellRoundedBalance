@@ -5,7 +5,7 @@ namespace WellRoundedBalance.Items.Greens
     public class Bandolier : ItemBase
     {
         public override string Name => ":: Items :: Greens :: Bandolier";
-        public override string InternalPickupToken => "bandolier";
+        public override ItemDef InternalPickup => RoR2Content.Items.Bandolier;
 
         public override string PickupText => "Chance on kill to drop an ammo pack that resets all skill cooldowns.";
 

@@ -5,7 +5,7 @@ namespace WellRoundedBalance.Items.Greens
     public class WillOTheWisp : ItemBase
     {
         public override string Name => ":: Items :: Greens :: Will O The Wisp";
-        public override string InternalPickupToken => "explodeOnDeath";
+        public override ItemDef InternalPickup => RoR2Content.Items.ExplodeOnDeath;
 
         public override string PickupText => "Detonate enemies on kill.";
 
@@ -76,7 +76,7 @@ namespace WellRoundedBalance.Items.Greens
 
         public static void ChangeProc()
         {
-            var w = LegacyResourcesAPI.Load<GameObject>("prefabs/networkedobjects/WilloWispDelay").GetComponent<RoR2.DelayBlast>();
+            var w = LegacyResourcesAPI.Load<GameObject>("prefabs/networkedobjects/WilloWispDelay").GetComponent<DelayBlast>();
             w.procCoefficient = 0f;
         }
     }

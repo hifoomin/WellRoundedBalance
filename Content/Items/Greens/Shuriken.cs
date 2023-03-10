@@ -7,7 +7,7 @@ namespace WellRoundedBalance.Items.Greens
     public class Shuriken : ItemBase
     {
         public override string Name => ":: Items :: Greens :: Shuriken";
-        public override string InternalPickupToken => "primarySkillShuriken";
+        public override ItemDef InternalPickup => DLC1Content.Items.PrimarySkillShuriken;
 
         public override string PickupText => "Activating your Primary skill also throws a shuriken. Recharges over time.";
 

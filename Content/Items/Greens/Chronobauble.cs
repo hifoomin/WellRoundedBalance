@@ -9,7 +9,7 @@ namespace WellRoundedBalance.Items.Greens
         public static BuffDef slow50;
         public override string Name => ":: Items :: Greens :: Chronobauble";
 
-        public override string InternalPickupToken => "slowOnHit";
+        public override ItemDef InternalPickup => RoR2Content.Items.SlowOnHit;
 
         public override string PickupText => "Slow enemies on hit.";
 

@@ -7,7 +7,7 @@ namespace WellRoundedBalance.Equipment
     {
         public override string Name => ":: Equipment :: Disposable Missile Launcher";
 
-        public override string InternalPickupToken => "commandMissile";
+        public override EquipmentDef InternalPickup => RoR2Content.Equipment.CommandMissile;
 
         public override string PickupText => "Fire a swarm of missiles.";
 

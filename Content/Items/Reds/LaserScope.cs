@@ -7,7 +7,7 @@ namespace WellRoundedBalance.Items.Reds
     public class LaserScope : ItemBase
     {
         public override string Name => ":: Items ::: Reds :: Laser Scope";
-        public override string InternalPickupToken => "critDamage";
+        public override ItemDef InternalPickup => DLC1Content.Items.CritDamage;
 
         public override string PickupText => (removeBulletFalloff ? "Remove bullet falloff. " : "") +
                                              "Your 'Critical Strikes' deal an additional 50% damage.";

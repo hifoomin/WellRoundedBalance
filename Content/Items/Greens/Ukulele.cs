@@ -7,7 +7,7 @@ namespace WellRoundedBalance.Items.Greens
     public class Ukulele : ItemBase
     {
         public override string Name => ":: Items :: Greens :: Ukulele";
-        public override string InternalPickupToken => "chainLightning";
+        public override ItemDef InternalPickup => RoR2Content.Items.ChainLightning;
 
         public override string PickupText => "...and his music was electric.";
         public override string DescText => "<style=cIsDamage>" + chance + "%</style> Chance to fire <style=cIsDamage>chain lightning</style> for <style=cIsDamage>" + d(totalDamage) + "</style> TOTAL damage on up to <style=cIsDamage>" + baseMaxTargets + " <style=cStack>(+" + maxTargetsPerStack + " per stack)</style></style> targets within <style=cIsDamage>" + baseRange + "m</style> <style=cStack>(+" + rangePerStack + "m per stack)</style>.";

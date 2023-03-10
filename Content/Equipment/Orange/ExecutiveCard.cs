@@ -6,7 +6,7 @@ namespace WellRoundedBalance.Equipment
     {
         public override string Name => ":: Equipment :: Executive Card";
 
-        public override string InternalPickupToken => "multiShopCard";
+        public override EquipmentDef InternalPickup => DLC1Content.Equipment.MultiShopCard;
 
         public override string PickupText => "Gain " + d(cashBackPercent) + " cash back on all purchases. Multishops remain open.";
 

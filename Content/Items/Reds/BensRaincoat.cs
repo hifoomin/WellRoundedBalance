@@ -7,7 +7,7 @@ namespace WellRoundedBalance.Items.Reds
         public static BuffDef braincoatSpeed;
         public override string Name => ":: Items ::: Reds :: Bens Raincoat";
 
-        public override string InternalPickupToken => "immuneToDebuff";
+        public override ItemDef InternalPickup => DLC1Content.Items.ImmuneToDebuff;
 
         public override string PickupText => "Prevent debuffs, instead gaining temporary movement speed. Recharges over time.";
 

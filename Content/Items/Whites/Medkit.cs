@@ -7,7 +7,7 @@ namespace WellRoundedBalance.Items.Whites
     public class Medkit : ItemBase
     {
         public override string Name => ":: Items : Whites :: Medkit";
-        public override string InternalPickupToken => "medkit";
+        public override ItemDef InternalPickup => RoR2Content.Items.Medkit;
 
         public override string PickupText => "Receive a delayed heal after taking damage.";
 

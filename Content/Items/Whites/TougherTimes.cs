@@ -7,7 +7,7 @@ namespace WellRoundedBalance.Items.Whites
     public class TougherTimes : ItemBase
     {
         public override string Name => ":: Items : Whites :: Tougher Times";
-        public override string InternalPickupToken => "bear";
+        public override ItemDef InternalPickup => RoR2Content.Items.Bear;
 
         public override string PickupText => "Chance to block incoming damage.";
 

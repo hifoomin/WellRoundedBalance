@@ -6,7 +6,7 @@ namespace WellRoundedBalance.Items.Lunars
     public class LightFluxPauldron : ItemBase
     {
         public override string Name => ":: Items ::::: Lunars :: Light Flux Pauldron";
-        public override string InternalPickupToken => "halfAttackSpeedHalfCooldowns";
+        public override ItemDef InternalPickup => DLC1Content.Items.HalfAttackSpeedHalfCooldowns;
 
         public override string PickupText => "Increase movement speed while airborne... <color=#FF7F7F>BUT getting hit forcibly pulls you to the ground.</color>\n";
 

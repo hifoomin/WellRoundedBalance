@@ -3,7 +3,7 @@
     public class FrostRelic : ItemBase
     {
         public override string Name => ":: Items ::: Reds :: Frost Relic";
-        public override string InternalPickupToken => "icicle";
+        public override ItemDef InternalPickup => RoR2Content.Items.Icicle;
 
         public override string PickupText => "Killing enemies surrounds you with an ice storm.";
 

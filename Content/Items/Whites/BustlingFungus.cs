@@ -8,7 +8,7 @@ namespace WellRoundedBalance.Items.Whites
     public class BustlingFungus : ItemBase
     {
         public override string Name => ":: Items : Whites :: Bustling Fungus";
-        public override string InternalPickupToken => "mushroom";
+        public override ItemDef InternalPickup => RoR2Content.Items.Mushroom;
 
         public override string PickupText => $"Heal all nearby allies after standing still for 0.5 second.";
 

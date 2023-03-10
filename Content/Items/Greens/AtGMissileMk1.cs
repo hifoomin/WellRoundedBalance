@@ -6,8 +6,8 @@ namespace WellRoundedBalance.Items.Greens
     public class AtGMissileMk1 : ItemBase
     {
         public override string Name => ":: Items :: Greens :: AtG Missile Mk1";
-        public override string InternalPickupToken => "missile";
-
+        public override ItemDef InternalPickup => RoR2Content.Items.Missile;
+        
         public override string PickupText => "Chance to fire a missile.";
         public override string DescText => "<style=cIsDamage>10%</style> chance to fire a missile that deals <style=cIsDamage>" + d(baseTotalDamage) + "</style> <style=cStack>(+" + d(totalDamagePerStack) + " per stack)</style> TOTAL damage.";
 

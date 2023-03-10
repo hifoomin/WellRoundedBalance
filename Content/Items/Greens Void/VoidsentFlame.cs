@@ -5,7 +5,7 @@ namespace WellRoundedBalance.Items.VoidGreens
     public class VoidsentFlame : ItemBase
     {
         public override string Name => ":: Items :::::: Voids :: Voidsent Flame";
-        public override string InternalPickupToken => "explodeOnDeathVoid";
+        public override ItemDef InternalPickup => DLC1Content.Items.ExplodeOnDeathVoid;
 
         public override string PickupText => "Full health enemies also detonate on hit. <style=cIsVoid>Corrupts all Will-o'-the-wisps</style>.";
 

@@ -7,7 +7,7 @@ namespace WellRoundedBalance.Items.Whites
     public class StickyBomb : ItemBase
     {
         public override string Name => ":: Items : Whites :: Sticky Bomb";
-        public override string InternalPickupToken => "stickyBomb";
+        public override ItemDef InternalPickup => RoR2Content.Items.StickyBomb;
 
         public override string PickupText => "Chance on hit to attach a bomb to enemies.";
 

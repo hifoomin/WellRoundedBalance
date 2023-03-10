@@ -5,7 +5,7 @@ namespace WellRoundedBalance.Items.Yellows
     public class Shatterspleen : ItemBase
     {
         public override string Name => ":: Items :::: Yellows :: Shatterspleen";
-        public override string InternalPickupToken => "bleedOnHitAndExplode";
+        public override ItemDef InternalPickup => RoR2Content.Items.BleedOnHitAndExplode;
 
         public override string PickupText => "Critical strikes always bleed enemies. Bleeding enemies now explode.";
 

@@ -3,7 +3,7 @@
     public class IrradiantPearl : ItemBase
     {
         public override string Name => ":: Items :::: Yellows :: Irradiant Pearl";
-        public override string InternalPickupToken => "shinyPearl";
+        public override ItemDef InternalPickup => RoR2Content.Items.ShinyPearl;
 
         public override string PickupText => "Increase ALL of your stats.";
 

@@ -4,7 +4,7 @@
     {
         public override string Name => ":: Items :::: Yellows :: Defense Nucleus";
 
-        public override string InternalPickupToken => GetToken(Utils.Paths.ItemDef.MinorConstructOnKill);
+        public override ItemDef InternalPickup => DLC1Content.Items.MinorConstructOnKill;
 
         public override string PickupText => "Reduce damage taken. Store damage taken and release it as a devastating laser upon using your equipment.";
 
