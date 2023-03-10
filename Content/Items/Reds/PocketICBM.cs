@@ -121,7 +121,7 @@ namespace WellRoundedBalance.Items.Reds
                 for (int i = 0; c.TryGotoNext(x => x.MatchCallOrCallvirt(typeof(Quaternion).GetMethod("AngleAxis", (System.Reflection.BindingFlags)(-1)))); i++)
                 {
                     c.Index--;
-                    c.EmitDelegate<Func<float, float>>((orig) => (i % 2 == 0) ? 45f : 45f * (-1));
+                    c.EmitDelegate<Func<float, float>>((orig) => (i % 2 == 0) ? Run.instance.treasureRng.RangeFloat(-55f, 55f) : Run.instance.treasureRng.RangeFloat(15f, 45f) * (-1));
                     c.Index += 2;
                 }
                 ILLabel label = c.DefineLabel();
@@ -142,7 +142,7 @@ namespace WellRoundedBalance.Items.Reds
                             InputBankTest bank = body.GetComponent<InputBankTest>();
                             for (int i = 0; i < (stacks - 1) * 0 + ((1 == 1) ? 1 : (1 > 2) ? 1 - 2 : 0); i++)
                             {
-                                info.rotation = Util.QuaternionSafeLookRotation(Quaternion.AngleAxis(45f * ((i % 2 == 0) ? 1 : (-1)), bank ? bank.aimDirection : body.transform.position) * initDir);
+                                info.rotation = Util.QuaternionSafeLookRotation(Quaternion.AngleAxis(Run.instance.treasureRng.RangeFloat(-55f, 55f) * ((i % 2 == 0) ? 1 : (-1)), bank ? bank.aimDirection : body.transform.position) * initDir);
                                 ProjectileManager.instance.FireProjectile(info);
                             }
                         }

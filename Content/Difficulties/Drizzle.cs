@@ -13,7 +13,7 @@ namespace WellRoundedBalance.Difficulties
                                            ">Difficulty Scaling: <style=cIsHealing>" + (totalDifficultyScaling - 100f) + "%</style></style>";
 
         [ConfigField("Percent Regen Increase", "Decimal.", 0f)]
-        public static float percentRegenIncrease; 
+        public static float percentRegenIncrease;
 
         [ConfigField("Armor Gain", "", 0f)]
         public static float armorGain;

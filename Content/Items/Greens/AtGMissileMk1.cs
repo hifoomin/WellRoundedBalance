@@ -20,9 +20,6 @@ namespace WellRoundedBalance.Items.Greens
         [ConfigField("Improve targeting?", "Affects all missile items and equipment.", true)]
         public static bool improveTargeting;
 
-        [ConfigField("Size Multiplier", "", 3f)]
-        public static float sizeMultiplier;
-
         public override void Init()
         {
             base.Init();
@@ -66,7 +63,7 @@ namespace WellRoundedBalance.Items.Greens
             missileProjectileController.procCoefficient = 0f;
 
             var ghost = missileProjectileController.ghostPrefab;
-            ghost.transform.localScale = new Vector3(sizeMultiplier, sizeMultiplier, sizeMultiplier);
+            ghost.transform.localScale = new Vector3(3f, 3f, 3f);
             ghost.transform.GetChild(1).gameObject.SetActive(false);
 
             if (improveTargeting)
