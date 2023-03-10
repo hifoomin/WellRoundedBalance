@@ -5,7 +5,7 @@ namespace WellRoundedBalance.Items.Reds
     public class UnstableTeslaCoil : ItemBase
     {
         public override string Name => ":: Items ::: Reds :: Unstable Tesla Coil";
-        public override string InternalPickupToken => "shockNearby";
+        public override ItemDef InternalPickup => RoR2Content.Items.ShockNearby;
 
         public override string PickupText => "Shock all nearby enemies every 0.5 seconds.";
 
@@ -38,7 +38,7 @@ namespace WellRoundedBalance.Items.Reds
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Unstable Tesla Coil Damage hook");
+                Logger.LogError("Failed to apply Unstable Tesla Coil Damage hook");
             }
 
             c.Index = 0;
@@ -50,7 +50,7 @@ namespace WellRoundedBalance.Items.Reds
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Unstable Tesla Coil Proc Coefficient hook");
+                Logger.LogError("Failed to apply Unstable Tesla Coil Proc Coefficient hook");
             }
 
             c.Index = 0;
@@ -62,7 +62,7 @@ namespace WellRoundedBalance.Items.Reds
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Unstable Tesla Coil Range hook");
+                Logger.LogError("Failed to apply Unstable Tesla Coil Range hook");
             }
         }
     }

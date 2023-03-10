@@ -3,7 +3,7 @@
     public class LeechingSeed : ItemBase
     {
         public override string Name => ":: Items :: Greens :: Leeching Seed";
-        public override string InternalPickupToken => "seed";
+        public override ItemDef InternalPickup => RoR2Content.Items.Seed;
 
         public override string PickupText => "Dealing damage heals you.";
 

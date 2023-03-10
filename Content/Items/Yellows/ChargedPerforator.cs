@@ -6,7 +6,7 @@ namespace WellRoundedBalance.Items.Yellows
     public class ChargedPerforator : ItemBase
     {
         public override string Name => ":: Items :::: Yellows :: Charged Perforator";
-        public override string InternalPickupToken => "lightningStrikeOnHit";
+        public override ItemDef InternalPickup => RoR2Content.Items.LightningStrikeOnHit;
 
         public override string PickupText => "Chance on hit to call down a lightning strike.";
 
@@ -59,7 +59,7 @@ namespace WellRoundedBalance.Items.Yellows
             }
             if (error)
             {
-                Main.WRBLogger.LogError("Failed to apply Charged Perforator hook");
+                Logger.LogError("Failed to apply Charged Perforator hook");
             }
         }
 

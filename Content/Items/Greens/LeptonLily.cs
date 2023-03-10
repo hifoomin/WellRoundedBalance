@@ -6,7 +6,7 @@ namespace WellRoundedBalance.Items.Greens
     internal class LeptonLily : ItemBase
     {
         public override string Name => ":: Items :: Greens :: Lepton Lily";
-        public override string InternalPickupToken => "tpHealingNova";
+        public override ItemDef InternalPickup => RoR2Content.Items.TPHealingNova;
 
         public override string PickupText => "Periodically release a healing nova during the Teleporter event.";
 
@@ -40,7 +40,7 @@ namespace WellRoundedBalance.Items.Greens
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Lepton Lily Healing hook");
+                Logger.LogError("Failed to apply Lepton Lily Healing hook");
             }
         }
 
@@ -59,7 +59,7 @@ namespace WellRoundedBalance.Items.Greens
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Lepton Lily Count hook");
+                Logger.LogError("Failed to apply Lepton Lily Count hook");
             }
         }
     }

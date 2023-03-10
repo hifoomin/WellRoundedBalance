@@ -5,7 +5,7 @@ namespace WellRoundedBalance.Items.Yellows
     public class TitanicKnurl : ItemBase
     {
         public override string Name => ":: Items :::: Yellows :: Titanic Knurl";
-        public override string InternalPickupToken => "knurl";
+        public override ItemDef InternalPickup => RoR2Content.Items.Knurl;
 
         public override string PickupText => "Gain a 10% chance on hit to summon a stone fist.";
 
@@ -81,7 +81,7 @@ namespace WellRoundedBalance.Items.Yellows
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Titanic Knurl Health hook");
+                Logger.LogError("Failed to apply Titanic Knurl Health hook");
             }
 
             c.Index = 0;
@@ -96,7 +96,7 @@ namespace WellRoundedBalance.Items.Yellows
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Titanic Knurl Regen hook");
+                Logger.LogError("Failed to apply Titanic Knurl Regen hook");
             }
         }
     }

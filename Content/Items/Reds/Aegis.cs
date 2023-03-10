@@ -5,7 +5,7 @@ namespace WellRoundedBalance.Items.Reds
     public class Aegis : ItemBase
     {
         public override string Name => ":: Items ::: Reds :: Aegis";
-        public override string InternalPickupToken => "barrierOnOverheal";
+        public override ItemDef InternalPickup => RoR2Content.Items.BarrierOnOverHeal;
 
         public override string PickupText => "Healing past full grants you a temporary barrier.";
 
@@ -44,7 +44,7 @@ namespace WellRoundedBalance.Items.Reds
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Aegis Overheal hook");
+                Logger.LogError("Failed to apply Aegis Overheal hook");
             }
         }
 

@@ -4,7 +4,7 @@
     {
         public override string Name => ":: Equipment :: Goobo Jr";
 
-        public override string InternalPickupToken => "gummyClone";
+        public override EquipmentDef InternalPickup => DLC1Content.Equipment.GummyClone;
 
         public override string PickupText => "Create a clone of you for " + maxLifetime + " seconds.";
 

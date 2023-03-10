@@ -1,15 +1,11 @@
-﻿using MonoMod.Cil;
-using RoR2;
-using UnityEngine;
-
-namespace WellRoundedBalance.Items.Whites
+﻿namespace WellRoundedBalance.Items.Whites
 {
     public class TriTipDagger : ItemBase
     {
         public static float Chance;
 
         public override string Name => ":: Items : Whites :: Tri Tip Dagger";
-        public override string InternalPickupToken => "bleedOnHit";
+        public override ItemDef InternalPickup => RoR2Content.Items.BleedOnHit;
 
         public override string PickupText => $"Gain +{bleedChance}% chance to bleed enemies on hit.";
 

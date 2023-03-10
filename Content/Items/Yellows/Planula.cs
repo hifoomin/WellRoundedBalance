@@ -8,7 +8,7 @@ namespace WellRoundedBalance.Items.Yellows
     {
         public static GameObject sunPrefabLessPP;
         public override string Name => ":: Items :::: Yellows :: Planula";
-        public override string InternalPickupToken => "parentEgg";
+        public override ItemDef InternalPickup => RoR2Content.Items.ParentEgg;
 
         public override string PickupText => "Summon the unmatched power of the sun after standing still for 1 second.";
 
@@ -50,7 +50,7 @@ namespace WellRoundedBalance.Items.Yellows
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Planula Healing hook");
+                Logger.LogError("Failed to apply Planula Healing hook");
             }
         }
     }

@@ -3,7 +3,7 @@
     public class MilkyChrysalis : EquipmentBase
     {
         public override string Name => "::: Equipment :: Milky Chrysalis";
-        public override string InternalPickupToken => "jetpack";
+        public override EquipmentDef InternalPickup => RoR2Content.Equipment.Jetpack;
 
         public override string PickupText => "Gain temporary flight.";
 

@@ -1,5 +1,4 @@
-﻿using UnityEngine;
-using WellRoundedBalance.Eclipse;
+﻿using WellRoundedBalance.Eclipse;
 
 namespace WellRoundedBalance.Mechanics.Bosses
 {

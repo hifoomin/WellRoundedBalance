@@ -6,7 +6,7 @@ namespace WellRoundedBalance.Items.Whites
     public class MonsterTooth : ItemBase
     {
         public override string Name => ":: Items : Whites :: MonsterTooth";
-        public override string InternalPickupToken => "tooth";
+        public override ItemDef InternalPickup => RoR2Content.Items.Tooth;
 
         public override string PickupText => "Drop a healing orb on kill.";
 
@@ -47,7 +47,7 @@ namespace WellRoundedBalance.Items.Whites
                 c.Emit(OpCodes.Pop);
                 c.Emit(OpCodes.Ldc_I4_0);
             }
-            else Main.WRBLogger.LogError("Failed to apply Monster Tooth Deletion hook");
+            else Logger.LogError("Failed to apply Monster Tooth Deletion hook");
         }
 
         private void GlobalEventManager_onCharacterDeathGlobal(DamageReport damageReport)

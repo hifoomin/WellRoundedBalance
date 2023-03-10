@@ -1,12 +1,11 @@
 ﻿using MonoMod.Cil;
-using UnityEngine;
 
 namespace WellRoundedBalance.Items.Greens
 {
     public class OldGuillotine : ItemBase
     {
         public override string Name => ":: Items :: Greens :: Old Guillotine";
-        public override string InternalPickupToken => "executeLowHealthElite";
+        public override ItemDef InternalPickup => RoR2Content.Items.ExecuteLowHealthElite;
 
         public override string PickupText => "Instantly kill low health Elite monsters.";
 
@@ -36,7 +35,7 @@ namespace WellRoundedBalance.Items.Greens
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Old Guillotine Threshold hook");
+                Logger.LogError("Failed to apply Old Guillotine Threshold hook");
             }
         }
     }

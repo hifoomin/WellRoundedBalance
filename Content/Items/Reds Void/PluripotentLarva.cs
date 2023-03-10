@@ -1,11 +1,9 @@
-﻿using System.Reflection;
-
-namespace WellRoundedBalance.Items.Reds
+﻿namespace WellRoundedBalance.Items.Reds
 {
     public class PluripotentLarva : ItemBase
     {
         public override string Name => ":: Items :::::: Voids :: Pluripotent Larva";
-        public override string InternalPickupToken => "extraLifeVoid";
+        public override ItemDef InternalPickup => DLC1Content.Items.ExtraLifeVoid;
 
         public override string PickupText => "Shuffle your inventory, and get a <style=cIsVoid>corrupted</style> extra life. Consumed on use. <style=cIsVoid>Corrupts all Dio's Best Friends.</style>.";
 

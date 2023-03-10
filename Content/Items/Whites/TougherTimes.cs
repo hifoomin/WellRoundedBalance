@@ -1,7 +1,5 @@
 ﻿using Mono.Cecil.Cil;
 using MonoMod.Cil;
-using R2API;
-using RoR2;
 using System;
 
 namespace WellRoundedBalance.Items.Whites
@@ -9,7 +7,7 @@ namespace WellRoundedBalance.Items.Whites
     public class TougherTimes : ItemBase
     {
         public override string Name => ":: Items : Whites :: Tougher Times";
-        public override string InternalPickupToken => "bear";
+        public override ItemDef InternalPickup => RoR2Content.Items.Bear;
 
         public override string PickupText => "Chance to block incoming damage.";
 
@@ -44,7 +42,7 @@ namespace WellRoundedBalance.Items.Whites
                 c.Emit(OpCodes.Ldarg_0);
                 c.EmitDelegate<Func<HealthComponent, float>>(self => StackAmount(blockChance, blockChanceStack, self.itemCounts.bear, blockChanceIsHyperbolic) * 100);
             }
-            else Main.WRBLogger.LogError("Failed to apply Tougher Times Block hook");
+            else Logger.LogError("Failed to apply Tougher Times Block hook");
         }
     }
 }

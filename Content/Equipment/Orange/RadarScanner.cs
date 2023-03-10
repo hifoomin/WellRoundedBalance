@@ -3,7 +3,7 @@
     public class RadarScanner : EquipmentBase
     {
         public override string Name => ":: Equipment :: Radar Scanner";
-        public override string InternalPickupToken => "scanner";
+        public override EquipmentDef InternalPickup => RoR2Content.Equipment.Scanner;
 
         public override string PickupText => "Reveal all nearby interactables.";
 

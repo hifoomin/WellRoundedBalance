@@ -7,7 +7,7 @@ namespace WellRoundedBalance.Items.VoidWhites
     public class WeepingFungus : ItemBase
     {
         public override string Name => ":: Items :::::: Voids :: Weeping Fungus";
-        public override string InternalPickupToken => "mushroomVoid";
+        public override ItemDef InternalPickup => DLC1Content.Items.MushroomVoid;
 
         public override string PickupText => "Heal while sprinting. <style=cIsVoid>Corrupts all Bustling Fungi</style>.";
         public override string DescText => "<style=cIsHealing>Heals</style> for <style=cIsHealing>" + d(basePercentHealing) + "</style> <style=cStack>(+" + d(percentHealingPerStack) + " per stack)</style> of your <style=cIsHealing>health</style> every second <style=cIsUtility>while sprinting</style>. <style=cIsVoid>Corrupts all Bustling Fungi</style>.";
@@ -44,7 +44,7 @@ namespace WellRoundedBalance.Items.VoidWhites
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Weeping Fungus Healing hook");
+                Logger.LogError("Failed to apply Weeping Fungus Healing hook");
             }
         }
     }

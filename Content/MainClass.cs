@@ -23,7 +23,6 @@ using WellRoundedBalance.Difficulties;
 // using WellRoundedBalance.Enemies.FamilyEvents;
 
 [assembly: HG.Reflection.SearchableAttribute.OptIn]
-
 namespace WellRoundedBalance
 {
     [BepInDependency("HIFU.Inferno", BepInDependency.DependencyFlags.SoftDependency)]

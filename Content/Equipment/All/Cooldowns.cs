@@ -3,7 +3,7 @@
     public class Cooldowns : EquipmentBase
     {
         public override string Name => ":: Equipment : Cooldowns";
-        public override string InternalPickupToken => "guh";
+        public override EquipmentDef InternalPickup => null;
 
         public override string PickupText => "";
 

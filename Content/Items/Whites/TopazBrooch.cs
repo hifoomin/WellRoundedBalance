@@ -8,7 +8,7 @@ namespace WellRoundedBalance.Items.Whites
     {
         public override string Name => ":: Items : Whites :: Topaz Brooch";
 
-        public override string InternalPickupToken => "barrierOnKill";
+        public override ItemDef InternalPickup => RoR2Content.Items.BarrierOnKill;
 
         public override string PickupText => "Gain a temporary barrier on kill.";
 
@@ -64,7 +64,7 @@ namespace WellRoundedBalance.Items.Whites
                 c.Emit(OpCodes.Ldloc, stack);
                 c.EmitDelegate<Func<int, float>>(stack => StackAmount(flatBarrierGain, flatBarrierGainStack, stack, flatBarrierGainIsHyperbolic));
             }
-            else Main.WRBLogger.LogError("Failed to apply Topaz Brooch Barrier hook");
+            else Logger.LogError("Failed to apply Topaz Brooch Barrier hook");
         }
     }
 }

@@ -6,7 +6,7 @@ namespace WellRoundedBalance.Equipment.Orange
     public class TheBackup : EquipmentBase
     {
         public override string Name => "::: Equipment :: The Backup";
-        public override string InternalPickupToken => "droneBackup";
+        public override EquipmentDef InternalPickup => RoR2Content.Equipment.DroneBackup;
 
         public override string PickupText => "Call drones for back up. Lasts " + duration + " seconds.";
 
@@ -39,7 +39,7 @@ namespace WellRoundedBalance.Equipment.Orange
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply The Backup Duration hook");
+                Logger.LogError("Failed to apply The Backup Duration hook");
             }
 
             c.Index = 0;
@@ -55,7 +55,7 @@ namespace WellRoundedBalance.Equipment.Orange
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply The Backup Drone Count hook");
+                Logger.LogError("Failed to apply The Backup Drone Count hook");
             }
         }
     }

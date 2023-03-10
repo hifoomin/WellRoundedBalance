@@ -7,7 +7,7 @@ namespace WellRoundedBalance.Items.Greens
     public class Shuriken : ItemBase
     {
         public override string Name => ":: Items :: Greens :: Shuriken";
-        public override string InternalPickupToken => "primarySkillShuriken";
+        public override ItemDef InternalPickup => DLC1Content.Items.PrimarySkillShuriken;
 
         public override string PickupText => "Activating your Primary skill also throws a shuriken. Recharges over time.";
 
@@ -75,7 +75,7 @@ namespace WellRoundedBalance.Items.Greens
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Shuriken Damage hook");
+                Logger.LogError("Failed to apply Shuriken Damage hook");
             }
         }
 
@@ -102,7 +102,7 @@ namespace WellRoundedBalance.Items.Greens
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Shuriken Count and Cooldown hook");
+                Logger.LogError("Failed to apply Shuriken Count and Cooldown hook");
             }
         }
 

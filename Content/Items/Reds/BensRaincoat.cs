@@ -7,7 +7,7 @@ namespace WellRoundedBalance.Items.Reds
         public static BuffDef braincoatSpeed;
         public override string Name => ":: Items ::: Reds :: Bens Raincoat";
 
-        public override string InternalPickupToken => "immuneToDebuff";
+        public override ItemDef InternalPickup => DLC1Content.Items.ImmuneToDebuff;
 
         public override string PickupText => "Prevent debuffs, instead gaining temporary movement speed. Recharges over time.";
 
@@ -65,7 +65,7 @@ namespace WellRoundedBalance.Items.Reds
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Ben's Raincoat Barrier hook");
+                Logger.LogError("Failed to apply Ben's Raincoat Barrier hook");
             }
 
             c.Index = 0;
@@ -77,7 +77,7 @@ namespace WellRoundedBalance.Items.Reds
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Ben's Raincoat Recharge hook");
+                Logger.LogError("Failed to apply Ben's Raincoat Recharge hook");
             }
         }
 

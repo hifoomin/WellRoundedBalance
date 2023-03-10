@@ -1,7 +1,4 @@
-﻿using System;
-using UnityEngine;
-
-namespace WellRoundedBalance.Interactables
+﻿namespace WellRoundedBalance.Interactables
 {
     internal class AllShrines : InteractableBase
     {

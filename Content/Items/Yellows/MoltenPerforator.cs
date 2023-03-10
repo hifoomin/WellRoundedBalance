@@ -6,7 +6,7 @@ namespace WellRoundedBalance.Items.Yellows
     public class MoltenPerforator : ItemBase
     {
         public override string Name => ":: Items :::: Yellows :: Molten Perforator";
-        public override string InternalPickupToken => "fireballsOnHit";
+        public override ItemDef InternalPickup => RoR2Content.Items.FireballsOnHit;
 
         public override string PickupText => "Chance on hit to fire magma balls.";
 
@@ -52,7 +52,7 @@ namespace WellRoundedBalance.Items.Yellows
             }
             if (error)
             {
-                Main.WRBLogger.LogError("Failed to apply Molten Perforator hook");
+                Logger.LogError("Failed to apply Molten Perforator hook");
             }
         }
 

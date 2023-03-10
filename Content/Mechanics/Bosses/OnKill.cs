@@ -1,6 +1,3 @@
-using System;
-using UnityEngine;
-
 namespace WellRoundedBalance.Mechanics.Bosses
 {
     public class OnKill : MechanicBase<OnKill>

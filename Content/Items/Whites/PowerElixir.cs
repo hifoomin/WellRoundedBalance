@@ -9,7 +9,7 @@ namespace WellRoundedBalance.Items.Whites
         public static BuffDef regen;
         public override string Name => ":: Items : Whites :: Power Elixir";
 
-        public override string InternalPickupToken => "healingPotion";
+        public override ItemDef InternalPickup => DLC1Content.Items.HealingPotion;
 
         public override string PickupText => "Quickly regenerate upon taking heavy damage. Refills each stage.";
 
@@ -110,7 +110,7 @@ namespace WellRoundedBalance.Items.Whites
                     return regenAccumulator;
                 });
             }
-            else Main.WRBLogger.LogError("Failed to apply Power Elixir Regen hook");
+            else Logger.LogError("Failed to apply Power Elixir Regen hook");
         }
 
         private void HealthComponent_UpdateLastHitTime(ILContext il)
@@ -121,7 +121,7 @@ namespace WellRoundedBalance.Items.Whites
                 c.Emit(OpCodes.Pop);
                 c.Emit(OpCodes.Ldc_I4_0);
             }
-            else Main.WRBLogger.LogError("Failed to apply Power Elixir Count hook");
+            else Logger.LogError("Failed to apply Power Elixir Count hook");
         }
     }
 }

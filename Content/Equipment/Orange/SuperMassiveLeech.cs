@@ -6,7 +6,7 @@ namespace WellRoundedBalance.Equipment.Orange
     public class SuperMassiveLeech : EquipmentBase
     {
         public override string Name => "::: Equipment :: Super Massive Leech";
-        public override string InternalPickupToken => "lifestealOnHit";
+        public override EquipmentDef InternalPickup => RoR2Content.Equipment.LifestealOnHit;
 
         public override string PickupText => "Heal for a percentage of the damage you deal for " + duration + " seconds.";
 
@@ -51,7 +51,7 @@ namespace WellRoundedBalance.Equipment.Orange
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Super Massive Leech Healing hook");
+                Logger.LogError("Failed to apply Super Massive Leech Healing hook");
             }
         }
 
@@ -66,7 +66,7 @@ namespace WellRoundedBalance.Equipment.Orange
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Super Massive Leech Duration hook");
+                Logger.LogError("Failed to apply Super Massive Leech Duration hook");
             }
         }
     }

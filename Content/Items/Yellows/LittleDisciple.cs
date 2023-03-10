@@ -5,7 +5,7 @@ namespace WellRoundedBalance.Items.Yellows
     public class LittleDisciple : ItemBase
     {
         public override string Name => ":: Items :::: Yellows :: Little Disciple";
-        public override string InternalPickupToken => "sprintWisp";
+        public override ItemDef InternalPickup => RoR2Content.Items.SprintWisp;
 
         public override string PickupText => "Fire tracking wisps while sprinting.";
 
@@ -43,7 +43,7 @@ namespace WellRoundedBalance.Items.Yellows
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Little Disciple Proc Coefficient hook");
+                Logger.LogError("Failed to apply Little Disciple Proc Coefficient hook");
             }
         }
     }

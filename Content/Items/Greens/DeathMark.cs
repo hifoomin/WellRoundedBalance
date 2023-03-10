@@ -7,7 +7,7 @@ namespace WellRoundedBalance.Items.Greens
     public class DeathMark : ItemBase
     {
         public override string Name => ":: Items :: Greens :: Death Mark";
-        public override string InternalPickupToken => "deathMark";
+        public override ItemDef InternalPickup => RoR2Content.Items.DeathMark;
 
         public override string PickupText => "Enemies with " + minimumDebuffs + " or more debuffs are marked for death, taking bonus damage.";
 
@@ -87,7 +87,7 @@ namespace WellRoundedBalance.Items.Greens
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Death Mark Rework hook");
+                Logger.LogError("Failed to apply Death Mark Rework hook");
             }
         }
 
@@ -105,7 +105,7 @@ namespace WellRoundedBalance.Items.Greens
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Death Mark Minimum Debuffs hook");
+                Logger.LogError("Failed to apply Death Mark Minimum Debuffs hook");
             }
 
             c.Index = 0;
@@ -123,7 +123,7 @@ namespace WellRoundedBalance.Items.Greens
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Death Mark Debuff Length hook");
+                Logger.LogError("Failed to apply Death Mark Debuff Length hook");
             }
         }
     }

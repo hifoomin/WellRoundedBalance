@@ -129,7 +129,7 @@
             search.searchDirection = aimRay.direction;
             search.RefreshCandidates();
 
-            HurtBox targetHurtBox = search.GetResults().FirstOrDefault<HurtBox>();
+            HurtBox targetHurtBox = search.GetResults().FirstOrDefault();
 
             return targetHurtBox;
         }

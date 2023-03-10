@@ -5,7 +5,7 @@ namespace WellRoundedBalance.Items.Greens
     public class Bandolier : ItemBase
     {
         public override string Name => ":: Items :: Greens :: Bandolier";
-        public override string InternalPickupToken => "bandolier";
+        public override ItemDef InternalPickup => RoR2Content.Items.Bandolier;
 
         public override string PickupText => "Chance on kill to drop an ammo pack that resets all skill cooldowns.";
 
@@ -42,7 +42,7 @@ namespace WellRoundedBalance.Items.Greens
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Bandolier Base hook");
+                Logger.LogError("Failed to apply Bandolier Base hook");
             }
 
             c.Index = 0;
@@ -57,7 +57,7 @@ namespace WellRoundedBalance.Items.Greens
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Bandolier Exponent hook");
+                Logger.LogError("Failed to apply Bandolier Exponent hook");
             }
         }
     }

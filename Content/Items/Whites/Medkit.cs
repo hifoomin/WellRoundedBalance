@@ -7,7 +7,7 @@ namespace WellRoundedBalance.Items.Whites
     public class Medkit : ItemBase
     {
         public override string Name => ":: Items : Whites :: Medkit";
-        public override string InternalPickupToken => "medkit";
+        public override ItemDef InternalPickup => RoR2Content.Items.Medkit;
 
         public override string PickupText => "Receive a delayed heal after taking damage.";
 
@@ -58,14 +58,14 @@ namespace WellRoundedBalance.Items.Whites
                 c.Emit(OpCodes.Ldloc, count);
                 c.EmitDelegate<Func<CharacterBody, int, float>>((self, stack) => self.maxHealth * StackAmount(percentHealing, percentHealingStack, stack, percentHealingIsHyperbolic));
             }
-            else Main.WRBLogger.LogError("Failed to apply Medkit Percent Healing hook");
+            else Logger.LogError("Failed to apply Medkit Percent Healing hook");
             if (c.TryGotoPrev(x => x.MatchStloc(out cmp)) && cmp != count)
             {
                 c.Emit(OpCodes.Pop);
                 c.Emit(OpCodes.Ldloc, count);
                 c.EmitDelegate<Func<int, float>>(stack => StackAmount(flatHealing, flatHealingStack, stack, flatHealingIsHyperbolic));
             }
-            else Main.WRBLogger.LogError("Failed to apply Medkit Flat Healing hook");
+            else Logger.LogError("Failed to apply Medkit Flat Healing hook");
         }
     }
 }

@@ -7,7 +7,7 @@ namespace WellRoundedBalance.Items.Whites
     public class FocusCrystal : ItemBase
     {
         public override string Name => ":: Items : Whites :: Focus Crystal";
-        public override string InternalPickupToken => "nearbyDamageBonus";
+        public override ItemDef InternalPickup => RoR2Content.Items.NearbyDamageBonus;
 
         public override string PickupText => "Deal bonus damage to nearby enemies.";
 
@@ -45,7 +45,7 @@ namespace WellRoundedBalance.Items.Whites
                 c.Emit(OpCodes.Ldloc, idx);
                 c.EmitDelegate<Func<int, float>>(stack => 1 + StackAmount(damageIncrease, damageIncreaseStack, stack, damageIncreaseIsHyperbolic));
             }
-            else Main.WRBLogger.LogError("Failed to apply Focus Crystal Damage hook");
+            else Logger.LogError("Failed to apply Focus Crystal Damage hook");
         }
     }
 }

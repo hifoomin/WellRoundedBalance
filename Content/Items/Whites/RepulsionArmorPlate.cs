@@ -7,7 +7,7 @@ namespace WellRoundedBalance.Items.Whites
     public class RepulsionArmorPlate : ItemBase
     {
         public override string Name => ":: Items : Whites :: Repulsion Armor Plate";
-        public override string InternalPickupToken => "repulsionArmorPlate";
+        public override ItemDef InternalPickup => RoR2Content.Items.ArmorPlate;
 
         public override string PickupText => "Receive flat damage reduction from all attacks.";
 
@@ -68,7 +68,7 @@ namespace WellRoundedBalance.Items.Whites
                     self.fullHealth * StackAmount(minimumPercentDamage, minimumPercentDamageStack, self.itemCounts.armorPlate, minimumPercentDamageIsHyperbolic)),
                     StackAmount(flatDamageReduction, flatDamageReductionStack, self.itemCounts.armorPlate, flatDamageReductionIsHyperbolic)));
             }
-            else Main.WRBLogger.LogError("Failed to apply Repulsion Armor Plate hook");
+            else Logger.LogError("Failed to apply Repulsion Armor Plate hook");
         }
     }
 }

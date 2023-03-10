@@ -1,6 +1,5 @@
 ﻿using Mono.Cecil.Cil;
 using MonoMod.Cil;
-using RoR2;
 using System;
 
 namespace WellRoundedBalance.Items.Whites
@@ -8,7 +7,7 @@ namespace WellRoundedBalance.Items.Whites
     public class Crowbar : ItemBase
     {
         public override string Name => ":: Items : Whites :: Crowbar";
-        public override string InternalPickupToken => "crowbar";
+        public override ItemDef InternalPickup => RoR2Content.Items.Crowbar;
 
         public override string PickupText => "Deal bonus damage to enemies above " + d(healthThreshold) + " health.";
 
@@ -58,14 +57,14 @@ namespace WellRoundedBalance.Items.Whites
                 c.Emit(OpCodes.Ldloc, stack);
                 c.EmitDelegate<Func<int, float>>(stack => StackAmount(healthThreshold, healthThresholdStack, stack, healthThresholdIsHyperbolic));
             }
-            else Main.WRBLogger.LogError("Failed to apply Crowbar Threshold hook");
+            else Logger.LogError("Failed to apply Crowbar Threshold hook");
             if (c.TryGotoNext(x => x.MatchLdloc(stack)) && c.TryGotoNext(x => x.MatchStloc(dmg)))
             {
                 c.Emit(OpCodes.Pop);
                 c.Emit(OpCodes.Ldloc, stack);
                 c.EmitDelegate<Func<int, float>>(stack => 1f + StackAmount(damageIncrease, damageIncreaseStack, stack, damageIncreaseIsHyperbolic));
             }
-            else Main.WRBLogger.LogError("Failed to apply Crowbar Damage hook");
+            else Logger.LogError("Failed to apply Crowbar Damage hook");
         }
     }
 }

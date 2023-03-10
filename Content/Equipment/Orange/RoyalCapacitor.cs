@@ -5,7 +5,7 @@ namespace WellRoundedBalance.Equipment.Orange
     public class RoyalCapacitor : EquipmentBase
     {
         public override string Name => "::: Equipment :: Royal Capacitor";
-        public override string InternalPickupToken => "lightning";
+        public override EquipmentDef InternalPickup => RoR2Content.Equipment.Lightning;
 
         public override string PickupText => "Call down a lightning strike on a targeted monster.";
 
@@ -44,7 +44,7 @@ namespace WellRoundedBalance.Equipment.Orange
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Royal Capacitor Damage hook");
+                Logger.LogError("Failed to apply Royal Capacitor Damage hook");
             }
 
             c.Index = 0;
@@ -56,7 +56,7 @@ namespace WellRoundedBalance.Equipment.Orange
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Royal Capacitor Proc Coefficient hook");
+                Logger.LogError("Failed to apply Royal Capacitor Proc Coefficient hook");
             }
         }
     }

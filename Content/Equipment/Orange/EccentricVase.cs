@@ -5,7 +5,7 @@ namespace WellRoundedBalance.Equipment.Orange
     public class EccentricVase : EquipmentBase
     {
         public override string Name => "::: Equipment :: Eccentric Vase";
-        public override string InternalPickupToken => "gateway";
+        public override EquipmentDef InternalPickup => RoR2Content.Equipment.Gateway;
 
         public override string PickupText => "Create a quantum tunnel between two locations.";
 
@@ -44,7 +44,7 @@ namespace WellRoundedBalance.Equipment.Orange
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Eccentric Vase Distance hook");
+                Logger.LogError("Failed to apply Eccentric Vase Distance hook");
             }
 
             if (c.TryGotoNext(MoveType.Before,
@@ -54,7 +54,7 @@ namespace WellRoundedBalance.Equipment.Orange
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Eccentric Vase Duration hook");
+                Logger.LogError("Failed to apply Eccentric Vase Duration hook");
             }
         }
     }

@@ -1,8 +1,4 @@
-﻿using RoR2;
-using UnityEngine;
-using UnityEngine.AddressableAssets;
-
-namespace WellRoundedBalance.Enemies
+﻿namespace WellRoundedBalance.Enemies
 {
     internal class SolusProbe : EnemyBase
     {

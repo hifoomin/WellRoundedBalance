@@ -4,7 +4,8 @@ namespace WellRoundedBalance.Utils {
             return Addressables.LoadAssetAsync<T>(path).WaitForCompletion();
         }
 
-        public static T LoadComponent<T>(this string path) where T : UnityEngine.Component {
+        public static T LoadComponent<T>(this string path) where T : Component
+        {
             return Addressables.LoadAssetAsync<T>(path).WaitForCompletion().GetComponent<T>();
         }
     }

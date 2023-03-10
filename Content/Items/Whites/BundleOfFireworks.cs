@@ -7,7 +7,7 @@ namespace WellRoundedBalance.Items.Whites
     public class BundleOfFireworks : ItemBase
     {
         public override string Name => ":: Items : Whites :: Bundle of Fireworks";
-        public override string InternalPickupToken => "firework";
+        public override ItemDef InternalPickup => RoR2Content.Items.Firework;
 
         public override string PickupText => "Activating an interactable launches fireworks at nearby enemies.";
 
@@ -56,7 +56,7 @@ namespace WellRoundedBalance.Items.Whites
                 c.Emit(OpCodes.Ldloc, idx);
                 c.EmitDelegate<Func<int, int>>(stack => (int)StackAmount(fireworks, fireworksStack, stack, fireworksIsHyperbolic));
             }
-            else Main.WRBLogger.LogError("Failed to apply Bundle Of Fireworks Count hook");
+            else Logger.LogError("Failed to apply Bundle Of Fireworks Count hook");
         }
 
         public static void Changes()

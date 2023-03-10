@@ -5,7 +5,7 @@ namespace WellRoundedBalance.Items.Reds
     public class DiosBestFriend : ItemBase
     {
         public override string Name => ":: Items ::: Reds :: Dios Best Friend";
-        public override string InternalPickupToken => "extraLife";
+        public override ItemDef InternalPickup => RoR2Content.Items.ExtraLife;
 
         public override string PickupText => "Cheat death. Consumed on use.";
 
@@ -36,7 +36,7 @@ namespace WellRoundedBalance.Items.Reds
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Dios Best Friend Invincibility hook");
+                Logger.LogError("Failed to apply Dios Best Friend Invincibility hook");
             }
         }
 

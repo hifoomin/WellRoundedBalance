@@ -7,7 +7,7 @@ namespace WellRoundedBalance.Equipment
     {
         public override string Name => ":: Equipment :: Disposable Missile Launcher";
 
-        public override string InternalPickupToken => "commandMissile";
+        public override EquipmentDef InternalPickup => RoR2Content.Equipment.CommandMissile;
 
         public override string PickupText => "Fire a swarm of missiles.";
 
@@ -47,7 +47,7 @@ namespace WellRoundedBalance.Equipment
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Disposable Missile Launcher Missile Count hook");
+                Logger.LogError("Failed to apply Disposable Missile Launcher Missile Count hook");
             }
         }
     }

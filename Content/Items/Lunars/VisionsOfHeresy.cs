@@ -9,7 +9,7 @@ namespace WellRoundedBalance.Items.Lunars
         public static Component[] kara;
 
         public override string Name => ":: Items ::::: Lunars :: Visions of Heresy";
-        public override string InternalPickupToken => "lunarPrimaryReplacement";
+        public override ItemDef InternalPickup => RoR2Content.Items.LunarPrimaryReplacement;
 
         public override string PickupText => "Replace your Primary Skill with 'Hungering Gaze'.";
         public override string DescText => "<style=cIsUtility>Replace your Primary Skill</style> with <style=cIsUtility>Hungering Gaze</style>. \n\nFire a flurry of <style=cIsUtility>tracking shards</style> that deal <style=cIsDamage>70%</style> damage each, then explode for <style=cIsDamage>140%</style> base damage. Hold up to <style=cIsUtility>5</style> <style=cStack>(+5 per stack)</style> <style=cIsUtility>charges</style> that reload after <style=cIsUtility>1.7</style> <style=cStack>(+1.7 per stack)</style> seconds.";

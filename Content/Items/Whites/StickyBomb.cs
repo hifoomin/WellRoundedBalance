@@ -7,7 +7,7 @@ namespace WellRoundedBalance.Items.Whites
     public class StickyBomb : ItemBase
     {
         public override string Name => ":: Items : Whites :: Sticky Bomb";
-        public override string InternalPickupToken => "stickyBomb";
+        public override ItemDef InternalPickup => RoR2Content.Items.StickyBomb;
 
         public override string PickupText => "Chance on hit to attach a bomb to enemies.";
 
@@ -74,7 +74,7 @@ namespace WellRoundedBalance.Items.Whites
                 c.Emit(OpCodes.Ldarg, info);
                 c.EmitDelegate<Func<int, DamageInfo, float>>((stack, info) => info.procCoefficient * StackAmount(chance, chanceStack, stack, chanceIsHyperbolic));
             }
-            else Main.WRBLogger.LogError("Failed to apply Sticky Bomb Chance hook");
+            else Logger.LogError("Failed to apply Sticky Bomb Chance hook");
             if (c.TryGotoNext(x => x.MatchStloc(79)))
             {
                 c.Emit(OpCodes.Pop);
@@ -88,7 +88,7 @@ namespace WellRoundedBalance.Items.Whites
                     return ret * 100;
                 });
             }
-            else Main.WRBLogger.LogError("Failed to apply Sticky Bomb Damage hook");
+            else Logger.LogError("Failed to apply Sticky Bomb Damage hook");
         }
 
         public static void Changes()

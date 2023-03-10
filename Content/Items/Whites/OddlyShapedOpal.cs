@@ -4,7 +4,7 @@
     {
         public static BuffDef opalArmor;
         public override string Name => ":: Items : Whites :: Oddly Shaped Opal";
-        public override string InternalPickupToken => "outOfCombatArmor";
+        public override ItemDef InternalPickup => DLC1Content.Items.OutOfCombatArmor;
 
         public override string PickupText => "Reduce damage the first time you are hit.";
 

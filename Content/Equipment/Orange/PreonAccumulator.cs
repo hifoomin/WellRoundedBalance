@@ -3,7 +3,7 @@
     public class PreonAccumulator : EquipmentBase
     {
         public override string Name => "::: Equipment :: Preon Accumulator";
-        public override string InternalPickupToken => "bfg";
+        public override EquipmentDef InternalPickup => RoR2Content.Equipment.BFG;
 
         public override string PickupText => "Fire a ball of energy that electrocutes nearby enemies before detonating.";
 

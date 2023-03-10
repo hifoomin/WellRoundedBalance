@@ -3,7 +3,7 @@
     public class BackupMag : ItemBase
     {
         public override string Name => ":: Items : Whites :: Backup Mag";
-        public override string InternalPickupToken => "secondarySkillMagazine";
+        public override ItemDef InternalPickup => RoR2Content.Items.SecondarySkillMagazine;
 
         public override string PickupText => "Add an extra charge of your Secondary skill and reduce its cooldown.";
 
@@ -34,7 +34,7 @@
             if (sender.inventory)
             {
                 args.secondaryCooldownMultAdd -= StackAmount(secondarySkillCooldownReduction, secondarySkillCooldownReductionStack,
-                    sender.inventory.GetItemCount(RoR2Content.Items.SecondarySkillMagazine), secondarySkillCooldownReductionIsHyperbolic);
+                    sender.inventory.GetItemCount(InternalPickup), secondarySkillCooldownReductionIsHyperbolic);
             }
         }
     }

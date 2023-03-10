@@ -5,7 +5,7 @@ namespace WellRoundedBalance.Items.VoidGreens
     public class LysateCell : ItemBase
     {
         public override string Name => ":: Items :::::: Voids :: Lysate Cell";
-        public override string InternalPickupToken => "equipmentMagazineVoid";
+        public override ItemDef InternalPickup => DLC1Content.Items.EquipmentMagazineVoid;
 
         public override string PickupText => "Add an extra charge of your Special skill" +
                                              (baseSpecialSkillCooldownReduction > 0 ? " and reduce its cooldown." : ".") + "<style=cIsVoid>Corrupts all Fuel Cells</style>.";
@@ -37,7 +37,7 @@ namespace WellRoundedBalance.Items.VoidGreens
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Lysate Cell Cooldown Reduction hook");
+                Logger.LogError("Failed to apply Lysate Cell Cooldown Reduction hook");
             }
         }
     }

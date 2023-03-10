@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-namespace WellRoundedBalance.Interactables
+﻿namespace WellRoundedBalance.Interactables
 {
     internal class CleansingPool : InteractableBase
     {

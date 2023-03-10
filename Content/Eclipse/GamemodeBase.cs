@@ -1,16 +1,9 @@
-﻿namespace WellRoundedBalance.Eclipse
+﻿using BepInEx.Configuration;
+
+namespace WellRoundedBalance.Eclipse
 {
-    public abstract class GamemodeBase
+    public abstract class GamemodeBase : SharedBase
     {
-        public abstract string Name { get; }
-        public virtual bool isEnabled { get; } = true;
-
-        public abstract void Hooks();
-
-        public virtual void Init()
-        {
-            ConfigManager.HandleConfigAttributes(this.GetType(), Name, Main.WRBGamemodeConfig);
-            Hooks();
-        }
+        public override ConfigFile Config => Main.WRBGamemodeConfig;
     }
 }
