@@ -48,11 +48,11 @@ namespace WellRoundedBalance.Items.Reds
 
             int[] idx = { };
             int[] value = { };
-            for (var i = 0; i < inventory.itemStacks.Length; i++) if (inventory.itemStacks[i] > 0)
-                {
-                    HG.ArrayUtils.ArrayAppend(ref idx, i);
-                    HG.ArrayUtils.ArrayAppend(ref value, inventory.itemStacks[i]);
-                }
+            for (var i = 0; i < inventory.itemStacks.Length; i++) if (inventory.itemStacks[i] > 0 && ItemCatalog.GetItemDef((ItemIndex)i).tier == ItemTier.Tier1)
+            {
+                HG.ArrayUtils.ArrayAppend(ref idx, i);
+                HG.ArrayUtils.ArrayAppend(ref value, inventory.itemStacks[i]);
+            }
             idx = idx.OrderBy(x => Run.instance.runRNG.Next()).ToArray();
             for (var i = 0; i < idx.Length; i++) inventory.itemStacks[idx[i]] = value[i];
             if (LocalUserManager.GetFirstLocalUser()?.cachedBody?.inventory == inventory) Chat.SendBroadcastChat(new Chat.SimpleChatMessage { baseToken = "<style=cWorldEvent>You have been... corrupted.</color>" });

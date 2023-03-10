@@ -42,7 +42,7 @@ namespace WellRoundedBalance.Items.Whites
             {
                 c.Emit(OpCodes.Pop);
                 c.Emit(OpCodes.Ldarg_0);
-                c.EmitDelegate<Func<HealthComponent, float>>(self => StackAmount(blockChance, blockChanceStack, self.itemCounts.bear, blockChanceIsHyperbolic));
+                c.EmitDelegate<Func<HealthComponent, float>>(self => StackAmount(blockChance, blockChanceStack, self.itemCounts.bear, blockChanceIsHyperbolic) * 100);
             }
             else Main.WRBLogger.LogError("Failed to apply Tougher Times Block hook");
         }

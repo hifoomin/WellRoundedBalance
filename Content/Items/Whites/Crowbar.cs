@@ -47,18 +47,23 @@ namespace WellRoundedBalance.Items.Whites
         public static void HealthComponent_TakeDamage(ILContext il)
         {
             ILCursor c = new(il);
+            int dmg = -1;
+            c.TryGotoNext(x => x.MatchLdfld<DamageInfo>(nameof(DamageInfo.damage)), x => x.MatchStloc(out dmg));
+            int stack = GetItemLoc(c, nameof(RoR2Content.Items.Crowbar));
+            if (dmg == -1 || stack == -1) return;
+            c.Index = 0;
             if (c.TryGotoNext(x => x.MatchCallOrCallvirt<HealthComponent>("get_" + nameof(HealthComponent.fullCombinedHealth))) && c.TryGotoNext(x => x.MatchMul()))
             {
                 c.Emit(OpCodes.Pop);
-                c.Emit(OpCodes.Ldloc, 19);
+                c.Emit(OpCodes.Ldloc, stack);
                 c.EmitDelegate<Func<int, float>>(stack => StackAmount(healthThreshold, healthThresholdStack, stack, healthThresholdIsHyperbolic));
             }
             else Main.WRBLogger.LogError("Failed to apply Crowbar Threshold hook");
-            if (c.TryGotoNext(x => x.MatchLdloc(19)) && c.TryGotoNext(x => x.MatchStloc(6)))
+            if (c.TryGotoNext(x => x.MatchLdloc(stack)) && c.TryGotoNext(x => x.MatchStloc(dmg)))
             {
                 c.Emit(OpCodes.Pop);
-                c.Emit(OpCodes.Ldloc, 19);
-                c.EmitDelegate<Func<int, float>>(stack => StackAmount(damageIncrease, damageIncreaseStack, stack, damageIncreaseIsHyperbolic));
+                c.Emit(OpCodes.Ldloc, stack);
+                c.EmitDelegate<Func<int, float>>(stack => 1f + StackAmount(damageIncrease, damageIncreaseStack, stack, damageIncreaseIsHyperbolic));
             }
             else Main.WRBLogger.LogError("Failed to apply Crowbar Damage hook");
         }
