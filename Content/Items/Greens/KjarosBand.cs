@@ -1,6 +1,4 @@
-﻿using Mono.Cecil.Cil;
-using MonoMod.Cil;
-using RoR2;
+﻿using MonoMod.Cil;
 using System;
 
 namespace WellRoundedBalance.Items.Greens
@@ -51,7 +49,7 @@ namespace WellRoundedBalance.Items.Greens
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Kjaro's Band Damage hook");
+                Logger.LogError("Failed to apply Kjaro's Band Damage hook");
             }
         }
     }

@@ -38,7 +38,7 @@ namespace WellRoundedBalance.Items.VoidGreens
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Plasma Shrimp Damage hook");
+                Logger.LogError("Failed to apply Plasma Shrimp Damage hook");
             }
 
             c.Index = 0;
@@ -51,7 +51,7 @@ namespace WellRoundedBalance.Items.VoidGreens
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Plasma Shrimp Proc Coefficient hook");
+                Logger.LogError("Failed to apply Plasma Shrimp Proc Coefficient hook");
             }
         }
 
@@ -68,7 +68,7 @@ namespace WellRoundedBalance.Items.VoidGreens
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Plasma Shrimp Shield hook");
+                Logger.LogError("Failed to apply Plasma Shrimp Shield hook");
             }
         }
     }

@@ -49,7 +49,7 @@ namespace WellRoundedBalance.Eclipse
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Eclipse 1 hook");
+                Logger.LogError("Failed to apply Eclipse 1 hook");
             }
         }
     }

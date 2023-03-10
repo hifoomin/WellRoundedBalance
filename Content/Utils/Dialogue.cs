@@ -1,7 +1,4 @@
 ﻿using RoR2.UI;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace WellRoundedBalance.Utils
 {

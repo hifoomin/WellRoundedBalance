@@ -1,6 +1,4 @@
-﻿using MonoMod.Cil;
-
-namespace WellRoundedBalance.Items.Whites
+﻿namespace WellRoundedBalance.Items.Whites
 {
     public class BisonSteak : ItemBase
     {

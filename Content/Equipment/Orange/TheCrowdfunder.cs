@@ -62,7 +62,7 @@ namespace WellRoundedBalance.Equipment
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply The Crowdfunder Gold Scaling hook");
+                Logger.LogError("Failed to apply The Crowdfunder Gold Scaling hook");
             }
         }
 

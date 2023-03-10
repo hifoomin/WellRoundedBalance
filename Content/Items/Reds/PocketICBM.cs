@@ -1,9 +1,6 @@
 ﻿using Mono.Cecil.Cil;
 using MonoMod.Cil;
-using RoR2;
-using RoR2.Projectile;
 using System;
-using UnityEngine;
 
 namespace WellRoundedBalance.Items.Reds
 {
@@ -80,7 +77,7 @@ namespace WellRoundedBalance.Items.Reds
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Pocket I.C.B.M. Missile Count 1 hook");
+                Logger.LogError("Failed to apply Pocket I.C.B.M. Missile Count 1 hook");
             }
         }
 
@@ -125,7 +122,7 @@ namespace WellRoundedBalance.Items.Reds
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Pocket I.C.B.M. Damage, Count, Stacking hook");
+                Logger.LogError("Failed to apply Pocket I.C.B.M. Damage, Count, Stacking hook");
             }
 
             // BIG thanks to RandomlyAwesome

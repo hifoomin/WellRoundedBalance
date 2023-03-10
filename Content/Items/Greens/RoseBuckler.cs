@@ -48,7 +48,7 @@ namespace WellRoundedBalance.Items.Greens
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Rose Buckler Armor hook");
+                Logger.LogError("Failed to apply Rose Buckler Armor hook");
             }
         }
     }

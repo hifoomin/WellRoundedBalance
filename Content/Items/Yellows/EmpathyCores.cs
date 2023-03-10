@@ -41,7 +41,7 @@ namespace WellRoundedBalance.Items.Yellows
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Empathy Cores Damage hook");
+                Logger.LogError("Failed to apply Empathy Cores Damage hook");
             }
         }
     }

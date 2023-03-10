@@ -49,7 +49,7 @@ namespace WellRoundedBalance.Items.VoidGreens
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Polylute Damage hook");
+                Logger.LogError("Failed to apply Polylute Damage hook");
             }
 
             c.Index = 0;
@@ -75,7 +75,7 @@ namespace WellRoundedBalance.Items.VoidGreens
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Polylute Hit Count hook");
+                Logger.LogError("Failed to apply Polylute Hit Count hook");
             }
 
             c.Index = 0;
@@ -88,7 +88,7 @@ namespace WellRoundedBalance.Items.VoidGreens
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Polylute Proc Coefficient hook");
+                Logger.LogError("Failed to apply Polylute Proc Coefficient hook");
             }
 
             c.Index = 0;
@@ -104,7 +104,7 @@ namespace WellRoundedBalance.Items.VoidGreens
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Polylute Chance hook");
+                Logger.LogError("Failed to apply Polylute Chance hook");
             }
         }
     }

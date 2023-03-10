@@ -67,7 +67,7 @@ namespace WellRoundedBalance.Items.Yellows
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Genesis Loop Threshold hook");
+                Logger.LogError("Failed to apply Genesis Loop Threshold hook");
             }
         }
 

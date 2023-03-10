@@ -1,6 +1,4 @@
-﻿using System.Reflection;
-
-namespace WellRoundedBalance.Items.Reds
+﻿namespace WellRoundedBalance.Items.Reds
 {
     public class PluripotentLarva : ItemBase
     {

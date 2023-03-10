@@ -37,7 +37,7 @@ namespace WellRoundedBalance.Items.Yellows
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Shatterspleen Base Explosion Damage hook");
+                Logger.LogError("Failed to apply Shatterspleen Base Explosion Damage hook");
             }
 
             c.Index = 0;
@@ -51,7 +51,7 @@ namespace WellRoundedBalance.Items.Yellows
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Shatterspleen Percent Explosion Damage hook");
+                Logger.LogError("Failed to apply Shatterspleen Percent Explosion Damage hook");
             }
         }
     }

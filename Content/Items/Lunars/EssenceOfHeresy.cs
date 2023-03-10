@@ -1,6 +1,4 @@
-﻿using MonoMod.Cil;
-
-namespace WellRoundedBalance.Items.Lunars
+﻿namespace WellRoundedBalance.Items.Lunars
 {
     internal class EssenceOfHeresy : ItemBase
     {

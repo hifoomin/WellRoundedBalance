@@ -1,5 +1,4 @@
-﻿using Mono.Cecil.Cil;
-using MonoMod.Cil;
+﻿using MonoMod.Cil;
 
 namespace WellRoundedBalance.Items.Greens
 {
@@ -36,7 +35,7 @@ namespace WellRoundedBalance.Items.Greens
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Predatory Instincts Attack Speed hook");
+                Logger.LogError("Failed to apply Predatory Instincts Attack Speed hook");
             }
         }
     }

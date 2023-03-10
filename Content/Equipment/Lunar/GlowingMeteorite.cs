@@ -72,7 +72,7 @@ namespace WellRoundedBalance.Equipment.Lunar
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Glowing Meteorite Falloff hook");
+                Logger.LogError("Failed to apply Glowing Meteorite Falloff hook");
             }
         }
     }

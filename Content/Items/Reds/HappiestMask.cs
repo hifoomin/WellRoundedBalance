@@ -188,7 +188,7 @@ namespace WellRoundedBalance.Items.Reds
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Happiest Mask Deletion hook");
+                Logger.LogError("Failed to apply Happiest Mask Deletion hook");
             }
         }
     }

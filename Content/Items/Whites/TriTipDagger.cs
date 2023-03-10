@@ -1,8 +1,4 @@
-﻿using MonoMod.Cil;
-using RoR2;
-using UnityEngine;
-
-namespace WellRoundedBalance.Items.Whites
+﻿namespace WellRoundedBalance.Items.Whites
 {
     public class TriTipDagger : ItemBase
     {

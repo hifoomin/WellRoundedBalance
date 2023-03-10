@@ -42,7 +42,7 @@ namespace WellRoundedBalance.Items.Greens
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Ignition Tank Burn Damage hook");
+                Logger.LogError("Failed to apply Ignition Tank Burn Damage hook");
             }
         }
 

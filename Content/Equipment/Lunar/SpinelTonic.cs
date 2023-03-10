@@ -73,7 +73,7 @@ namespace WellRoundedBalance.Equipment.Lunar
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Spinel Tonic Affliction Chance hook");
+                Logger.LogError("Failed to apply Spinel Tonic Affliction Chance hook");
             }
         }
 
@@ -90,7 +90,7 @@ namespace WellRoundedBalance.Equipment.Lunar
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Spinel Tonic Health hook");
+                Logger.LogError("Failed to apply Spinel Tonic Health hook");
             }
 
             c.Index = 0;
@@ -104,7 +104,7 @@ namespace WellRoundedBalance.Equipment.Lunar
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Spinel Tonic Shield hook");
+                Logger.LogError("Failed to apply Spinel Tonic Shield hook");
             }
 
             c.Index = 0;
@@ -118,7 +118,7 @@ namespace WellRoundedBalance.Equipment.Lunar
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Spinel Tonic Attack Speed hook");
+                Logger.LogError("Failed to apply Spinel Tonic Attack Speed hook");
             }
 
             c.Index = 0;
@@ -132,7 +132,7 @@ namespace WellRoundedBalance.Equipment.Lunar
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Spinel Tonic Movement Speed hook");
+                Logger.LogError("Failed to apply Spinel Tonic Movement Speed hook");
             }
 
             c.Index = 0;
@@ -147,7 +147,7 @@ namespace WellRoundedBalance.Equipment.Lunar
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Spinel Tonic Armor hook");
+                Logger.LogError("Failed to apply Spinel Tonic Armor hook");
             }
 
             c.Index = 0;
@@ -161,7 +161,7 @@ namespace WellRoundedBalance.Equipment.Lunar
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Spinel Tonic Damage hook");
+                Logger.LogError("Failed to apply Spinel Tonic Damage hook");
             }
 
             c.Index = 0;
@@ -175,7 +175,7 @@ namespace WellRoundedBalance.Equipment.Lunar
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Spinel Tonic Regen hook");
+                Logger.LogError("Failed to apply Spinel Tonic Regen hook");
             }
 
             c.Index = 0;
@@ -188,7 +188,7 @@ namespace WellRoundedBalance.Equipment.Lunar
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Tonic Affliction All Stats hook");
+                Logger.LogError("Failed to apply Tonic Affliction All Stats hook");
             }
 
             c.Index = 0;
@@ -203,7 +203,7 @@ namespace WellRoundedBalance.Equipment.Lunar
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Tonic Affliction Curse hook");
+                Logger.LogError("Failed to apply Tonic Affliction Curse hook");
             }
         }
     }

@@ -1,9 +1,4 @@
-﻿using MonoMod.Cil;
-using R2API;
-using RoR2;
-using UnityEngine;
-
-namespace WellRoundedBalance.Items.Yellows
+﻿namespace WellRoundedBalance.Items.Yellows
 {
     public class IrradiantPearl : ItemBase
     {

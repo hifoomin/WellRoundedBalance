@@ -45,7 +45,7 @@ namespace WellRoundedBalance.Equipment
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Jade Elephant Armor hook");
+                Logger.LogError("Failed to apply Jade Elephant Armor hook");
             }
         }
 
@@ -60,7 +60,7 @@ namespace WellRoundedBalance.Equipment
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Jade Elephant Duration hook");
+                Logger.LogError("Failed to apply Jade Elephant Duration hook");
             }
         }
     }

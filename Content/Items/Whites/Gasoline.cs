@@ -73,27 +73,27 @@ namespace WellRoundedBalance.Items.Whites
                 c.Emit(OpCodes.Ldarg, stack);
                 c.EmitDelegate<Func<CharacterBody, int, float>>((self, stack) => self.radius + StackAmount(baseRange, rangePerStack, stack, rangeIsHyperbolic));
             }
-            else Main.WRBLogger.LogError("Failed to apply Gasoline Radius hook");
+            else Logger.LogError("Failed to apply Gasoline Radius hook");
             if (c.TryGotoNext(x => x.MatchLdfld<DamageReport>(nameof(DamageReport.attackerBody)), x => x.MatchCallOrCallvirt<CharacterBody>("get_" + nameof(CharacterBody.damage))) && c.TryGotoNext(x => x.MatchLdloc(out _)))
             {
                 c.Emit(OpCodes.Pop);
                 c.Emit(OpCodes.Ldarg, stack);
                 c.EmitDelegate<Func<int, float>>(stack => StackAmount(explosionDamage, explosionDamageStack, stack, explosionDamageIsHyperbolic));
             }
-            else Main.WRBLogger.LogError("Failed to apply Gasoline Explosion Damage hook");
+            else Logger.LogError("Failed to apply Gasoline Explosion Damage hook");
             if (c.TryGotoNext(x => x.MatchLdarg(stack)) && c.TryGotoNext(x => x.MatchLdfld<DamageReport>(nameof(DamageReport.attackerBody)), x => x.MatchCallOrCallvirt<CharacterBody>("get_" + nameof(CharacterBody.damage))) && c.TryGotoNext(x => x.MatchStloc(out _)))
             {
                 c.Emit(OpCodes.Pop);
                 c.Emit(OpCodes.Ldarg, stack);
                 c.EmitDelegate<Func<int, float>>(stack => StackAmount(baseBurnDamage, burnDamagePerStack, stack, burnDamageIsHyperbolic));
             }
-            else Main.WRBLogger.LogError("Failed to apply Gasoline Burn Damage hook");
+            else Logger.LogError("Failed to apply Gasoline Burn Damage hook");
             if (c.TryGotoNext(x => x.MatchStfld<BlastAttack>(nameof(BlastAttack.procCoefficient))))
             {
                 c.Emit(OpCodes.Pop);
                 c.Emit(OpCodes.Ldc_R4, explosionProcCoefficient);
             }
-            else Main.WRBLogger.LogError("Failed to apply Gasoline Explosion Damage hook");
+            else Logger.LogError("Failed to apply Gasoline Explosion Damage hook");
         }
     }
 }

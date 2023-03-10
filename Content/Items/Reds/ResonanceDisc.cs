@@ -1,7 +1,4 @@
-﻿using MonoMod.Cil;
-using UnityEngine;
-
-namespace WellRoundedBalance.Items.Reds
+﻿namespace WellRoundedBalance.Items.Reds
 {
     public class ResonanceDisc : ItemBase
     {

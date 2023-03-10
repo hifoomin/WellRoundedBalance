@@ -64,7 +64,7 @@ namespace WellRoundedBalance.Items.Whites
                 c.Emit(OpCodes.Ldloc, stack);
                 c.EmitDelegate<Func<int, float>>(stack => StackAmount(flatBarrierGain, flatBarrierGainStack, stack, flatBarrierGainIsHyperbolic));
             }
-            else Main.WRBLogger.LogError("Failed to apply Topaz Brooch Barrier hook");
+            else Logger.LogError("Failed to apply Topaz Brooch Barrier hook");
         }
     }
 }

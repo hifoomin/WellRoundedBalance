@@ -65,7 +65,7 @@ namespace WellRoundedBalance.Items.Reds
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Ben's Raincoat Barrier hook");
+                Logger.LogError("Failed to apply Ben's Raincoat Barrier hook");
             }
 
             c.Index = 0;
@@ -77,7 +77,7 @@ namespace WellRoundedBalance.Items.Reds
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Ben's Raincoat Recharge hook");
+                Logger.LogError("Failed to apply Ben's Raincoat Recharge hook");
             }
         }
 

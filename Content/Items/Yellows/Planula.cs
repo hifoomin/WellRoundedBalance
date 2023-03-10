@@ -50,7 +50,7 @@ namespace WellRoundedBalance.Items.Yellows
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Planula Healing hook");
+                Logger.LogError("Failed to apply Planula Healing hook");
             }
         }
     }

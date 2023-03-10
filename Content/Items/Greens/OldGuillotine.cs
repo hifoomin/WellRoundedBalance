@@ -1,5 +1,4 @@
 ﻿using MonoMod.Cil;
-using UnityEngine;
 
 namespace WellRoundedBalance.Items.Greens
 {
@@ -36,7 +35,7 @@ namespace WellRoundedBalance.Items.Greens
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Old Guillotine Threshold hook");
+                Logger.LogError("Failed to apply Old Guillotine Threshold hook");
             }
         }
     }

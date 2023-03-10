@@ -163,7 +163,7 @@ namespace WellRoundedBalance.Items.Greens
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Hunter's Harpoon Deletion hook");
+                Logger.LogError("Failed to apply Hunter's Harpoon Deletion hook");
             }
         }
     }

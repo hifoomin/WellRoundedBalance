@@ -87,7 +87,7 @@ namespace WellRoundedBalance.Items.Greens
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Death Mark Rework hook");
+                Logger.LogError("Failed to apply Death Mark Rework hook");
             }
         }
 
@@ -105,7 +105,7 @@ namespace WellRoundedBalance.Items.Greens
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Death Mark Minimum Debuffs hook");
+                Logger.LogError("Failed to apply Death Mark Minimum Debuffs hook");
             }
 
             c.Index = 0;
@@ -123,7 +123,7 @@ namespace WellRoundedBalance.Items.Greens
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Death Mark Debuff Length hook");
+                Logger.LogError("Failed to apply Death Mark Debuff Length hook");
             }
         }
     }

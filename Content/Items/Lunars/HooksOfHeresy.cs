@@ -1,9 +1,4 @@
-﻿using RoR2;
-using RoR2.Projectile;
-using RoR2.Skills;
-using UnityEngine;
-
-namespace WellRoundedBalance.Items.Lunars
+﻿namespace WellRoundedBalance.Items.Lunars
 {
     public class HooksOfHeresy : ItemBase
     {

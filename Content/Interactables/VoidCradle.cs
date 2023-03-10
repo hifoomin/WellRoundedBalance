@@ -71,7 +71,7 @@ namespace WellRoundedBalance.Interactables
                     });
                 }
                 else {
-                    Main.WRBLogger.LogError("Failed to apply CostTypeCatalog IL hook");
+                    Logger.LogError("Failed to apply CostTypeCatalog IL hook");
                 }
             };
 

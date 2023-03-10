@@ -1,9 +1,7 @@
 ﻿using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using RoR2.Navigation;
-using RoR2.Orbs;
 using WellRoundedBalance.Buffs;
-using WellRoundedBalance.Eclipse;
 
 namespace WellRoundedBalance.Elites
 {
@@ -85,7 +83,7 @@ namespace WellRoundedBalance.Elites
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Overloading Deletion 2 hook");
+                Logger.LogError("Failed to apply Overloading Deletion 2 hook");
             }
         }
 
@@ -121,7 +119,7 @@ namespace WellRoundedBalance.Elites
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Overloading Deletion 1 hook");
+                Logger.LogError("Failed to apply Overloading Deletion 1 hook");
             }
         }
 

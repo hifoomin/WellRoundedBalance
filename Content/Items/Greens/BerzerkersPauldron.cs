@@ -40,7 +40,7 @@ namespace WellRoundedBalance.Items.Greens
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Berzerker's Pauldron Buff Kill Requirement hook");
+                Logger.LogError("Failed to apply Berzerker's Pauldron Buff Kill Requirement hook");
             }
         }
     }

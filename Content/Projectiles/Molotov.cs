@@ -1,6 +1,4 @@
-﻿using RoR2;
-
-namespace WellRoundedBalance.Projectiles
+﻿namespace WellRoundedBalance.Projectiles
 {
     public static class Molotov
     {

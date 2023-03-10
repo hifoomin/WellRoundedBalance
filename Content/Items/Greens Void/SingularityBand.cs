@@ -52,7 +52,7 @@ namespace WellRoundedBalance.Items.VoidGreens
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Singularity Band Deletion hook");
+                Logger.LogError("Failed to apply Singularity Band Deletion hook");
             }
         }
 

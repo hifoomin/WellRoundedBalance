@@ -59,7 +59,7 @@ namespace WellRoundedBalance.Items.Yellows
             }
             if (error)
             {
-                Main.WRBLogger.LogError("Failed to apply Charged Perforator hook");
+                Logger.LogError("Failed to apply Charged Perforator hook");
             }
         }
 
