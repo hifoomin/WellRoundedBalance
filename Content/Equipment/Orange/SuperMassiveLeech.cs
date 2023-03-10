@@ -51,7 +51,7 @@ namespace WellRoundedBalance.Equipment.Orange
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Super Massive Leech Healing hook");
+                Logger.LogError("Failed to apply Super Massive Leech Healing hook");
             }
         }
 
@@ -66,7 +66,7 @@ namespace WellRoundedBalance.Equipment.Orange
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Super Massive Leech Duration hook");
+                Logger.LogError("Failed to apply Super Massive Leech Duration hook");
             }
         }
     }

@@ -37,7 +37,7 @@ namespace WellRoundedBalance.Items.VoidGreens
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Lysate Cell Cooldown Reduction hook");
+                Logger.LogError("Failed to apply Lysate Cell Cooldown Reduction hook");
             }
         }
     }

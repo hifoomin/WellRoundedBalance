@@ -40,7 +40,7 @@ namespace WellRoundedBalance.Items.Greens
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Red Whip Speed hook");
+                Logger.LogError("Failed to apply Red Whip Speed hook");
             }
         }
     }

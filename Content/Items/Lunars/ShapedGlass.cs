@@ -45,7 +45,7 @@ namespace WellRoundedBalance.Items.Lunars
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Shaped Glass Damage hook");
+                Logger.LogError("Failed to apply Shaped Glass Damage hook");
             }
         }
     }

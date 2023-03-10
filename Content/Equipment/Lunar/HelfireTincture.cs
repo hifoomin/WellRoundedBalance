@@ -59,7 +59,7 @@ namespace WellRoundedBalance.Equipment.Lunar
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Helfire Tincture Duration hook");
+                Logger.LogError("Failed to apply Helfire Tincture Duration hook");
             }
         }
 

@@ -52,7 +52,7 @@ namespace WellRoundedBalance.Items.Yellows
             }
             if (error)
             {
-                Main.WRBLogger.LogError("Failed to apply Molten Perforator hook");
+                Logger.LogError("Failed to apply Molten Perforator hook");
             }
         }
 

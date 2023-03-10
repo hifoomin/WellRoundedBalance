@@ -13,18 +13,13 @@ namespace WellRoundedBalance.Items.VoidWhites
         [ConfigField("Instant Kill Chance", 0.45f)]
         public static float instantKillChance;
 
-        public override void Init()
-        {
-            base.Init();
-        }
-
         public override void Hooks()
         {
-            IL.RoR2.HealthComponent.TakeDamage += ChangeChance;
-            On.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
+            IL.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
+            On.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage2;
         }
 
-        private void HealthComponent_TakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo)
+        private void HealthComponent_TakeDamage2(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo)
         {
             if (damageInfo.attacker)
             {
@@ -36,7 +31,7 @@ namespace WellRoundedBalance.Items.VoidWhites
                     if (!self.body.isBoss && characterBody.inventory && Util.CheckRoll(chance, characterBody.master))
                     {
                         delete = true;
-                        var vroggleVFX = HealthComponent.AssetReferences.critGlassesVoidExecuteEffectPrefab;
+                        var vroggleVFX = HealthComponent.AssetReferences.critGlassesVoidExecuteEffectPrefab; // where did the r come from
                         EffectManager.SpawnEffect(vroggleVFX, new EffectData
                         {
                             origin = self.body.corePosition,
@@ -46,19 +41,9 @@ namespace WellRoundedBalance.Items.VoidWhites
                     }
                     if (delete)
                     {
-                        delete = true;
-                        if (self.health > 0f)
-                        {
-                            self.Networkhealth = 0f;
-                        }
-                        if (self.shield > 0f)
-                        {
-                            self.Networkshield = 0f;
-                        }
-                        if (self.barrier > 0f)
-                        {
-                            self.Networkbarrier = 0f;
-                        }
+                        if (self.health > 0f) self.Networkhealth = 0f;
+                        if (self.shield > 0f) self.Networkshield = 0f;
+                        if (self.barrier > 0f) self.Networkbarrier = 0f;
                     }
                 }
             }
@@ -66,7 +51,7 @@ namespace WellRoundedBalance.Items.VoidWhites
             orig(self, damageInfo);
         }
 
-        private void ChangeChance(ILContext il)
+        private void HealthComponent_TakeDamage(ILContext il)
         {
             ILCursor c = new(il);
 
@@ -81,7 +66,7 @@ namespace WellRoundedBalance.Items.VoidWhites
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Lost Seer's Lenses Chance hook");
+                Logger.LogError("Failed to apply Lost Seer's Lenses Chance hook");
             }
         }
     }

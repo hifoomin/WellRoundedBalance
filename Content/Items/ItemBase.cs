@@ -14,7 +14,7 @@ namespace WellRoundedBalance.Items
         public abstract string PickupText { get; }
         public abstract string DescText { get; }
         public virtual bool isEnabled { get; } = true;
-        public ManualLogSource Logger => Main.WRBLogger;
+        public static ManualLogSource Logger => Main.WRBLogger;
 
         public abstract void Hooks();
 
@@ -24,13 +24,14 @@ namespace WellRoundedBalance.Items
 
         public string m(float f) => f + "m";
 
-        public string s(float f, string suffix) => f + " " + suffix + (Mathf.Abs(f) > 1 ? "s" : string.Empty);
+        public string s(float f, string suffix) => f + (suffix.StartsWith("{Stack}") ? "" : " ") + suffix + (Mathf.Abs(f) > 1 ? "s" : string.Empty);
 
         public static string StackDesc(float init, float stack, Func<float, string> initFn, Func<float, string> stackFn)
         {
-            if (init <= 0 && stack <= 0) return string.Empty;
+            if (init == 0 && stack == 0) return string.Empty;
             string ret = initFn(init);
-            if (stack > 0) ret = ret.Replace("{Stack}", " <style=cStack>(" + (stack > 0 ? "+" : string.Empty) + stackFn(stack) + " per stack)</style>");
+            if (stack != 0) ret = ret.Replace("{Stack}", " <style=cStack>(" + (stack > 0 ? "+" : string.Empty) + stackFn(stack) + " per stack)</style>");
+            else ret = ret.Replace("{Stack}", "");
             return ret;
         }
 

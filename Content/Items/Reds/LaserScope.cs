@@ -66,7 +66,7 @@ namespace WellRoundedBalance.Items.Reds
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Laser Scope Bullet Falloff Removal 1 hook");
+                Logger.LogError("Failed to apply Laser Scope Bullet Falloff Removal 1 hook");
             }
 
             c.Index = 0;
@@ -100,7 +100,7 @@ namespace WellRoundedBalance.Items.Reds
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Laser Scope Bullet Falloff Removal 2 hook");
+                Logger.LogError("Failed to apply Laser Scope Bullet Falloff Removal 2 hook");
             }
         }
 

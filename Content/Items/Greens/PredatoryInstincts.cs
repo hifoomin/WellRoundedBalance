@@ -36,7 +36,7 @@ namespace WellRoundedBalance.Items.Greens
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Predatory Instincts Attack Speed hook");
+                Logger.LogError("Failed to apply Predatory Instincts Attack Speed hook");
             }
         }
     }

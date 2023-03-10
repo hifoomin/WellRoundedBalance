@@ -42,7 +42,7 @@ namespace WellRoundedBalance.Items.Greens
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Bandolier Base hook");
+                Logger.LogError("Failed to apply Bandolier Base hook");
             }
 
             c.Index = 0;
@@ -57,7 +57,7 @@ namespace WellRoundedBalance.Items.Greens
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Bandolier Exponent hook");
+                Logger.LogError("Failed to apply Bandolier Exponent hook");
             }
         }
     }

@@ -110,7 +110,7 @@ namespace WellRoundedBalance.Items.Whites
                     return regenAccumulator;
                 });
             }
-            else Main.WRBLogger.LogError("Failed to apply Power Elixir Regen hook");
+            else Logger.LogError("Failed to apply Power Elixir Regen hook");
         }
 
         private void HealthComponent_UpdateLastHitTime(ILContext il)
@@ -121,7 +121,7 @@ namespace WellRoundedBalance.Items.Whites
                 c.Emit(OpCodes.Pop);
                 c.Emit(OpCodes.Ldc_I4_0);
             }
-            else Main.WRBLogger.LogError("Failed to apply Power Elixir Count hook");
+            else Logger.LogError("Failed to apply Power Elixir Count hook");
         }
     }
 }

@@ -56,7 +56,7 @@ namespace WellRoundedBalance.Items.Whites
                 c.Emit(OpCodes.Ldloc, idx);
                 c.EmitDelegate<Func<int, int>>(stack => (int)StackAmount(fireworks, fireworksStack, stack, fireworksIsHyperbolic));
             }
-            else Main.WRBLogger.LogError("Failed to apply Bundle Of Fireworks Count hook");
+            else Logger.LogError("Failed to apply Bundle Of Fireworks Count hook");
         }
 
         public static void Changes()

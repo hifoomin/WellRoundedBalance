@@ -75,7 +75,7 @@ namespace WellRoundedBalance.Items.Whites
                 c.Emit(OpCodes.Ldloc, stack);
                 c.EmitDelegate<Func<int, float>>(stack => StackAmount(baseRadius, radiusPerStack, stack, radiusIsHyperbolic));
             }
-            else Main.WRBLogger.LogError("Failed to apply Warbanner Radius hook");
+            else Logger.LogError("Failed to apply Warbanner Radius hook");
         }
     }
 }

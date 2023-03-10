@@ -77,7 +77,7 @@ namespace WellRoundedBalance.Items.Whites
                 c.Emit(OpCodes.Pop);
                 c.Emit(OpCodes.Ldc_I4_0);
             }
-            else Main.WRBLogger.LogError("Failed to apply Delicate Watch Threshold hook");
+            else Logger.LogError("Failed to apply Delicate Watch Threshold hook");
         }
 
         public static void HealthCompoment_TakeDamage(ILContext il)
@@ -89,7 +89,7 @@ namespace WellRoundedBalance.Items.Whites
                 c.Emit(OpCodes.Pop);
                 c.Emit(OpCodes.Ldc_I4_0);
             }
-            else Main.WRBLogger.LogError("Failed to apply Delicate Watch Damage hook");
+            else Logger.LogError("Failed to apply Delicate Watch Damage hook");
         }
     }
 

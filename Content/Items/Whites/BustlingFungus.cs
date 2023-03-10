@@ -73,28 +73,28 @@ namespace WellRoundedBalance.Items.Whites
                 c.Emit(OpCodes.Ldarg_0);
                 c.EmitDelegate<Func<MushroomBodyBehavior, float>>(self => self.body.radius + StackAmount(baseRadius, radiusStack, self.stack, radiusIsHyperbolic));
             }
-            else Main.WRBLogger.LogError("Failed to apply Bustling Fungus Radius hook");
+            else Logger.LogError("Failed to apply Bustling Fungus Radius hook");
             if (c.TryGotoNext(x => x.MatchStfld<HealingWard>(nameof(HealingWard.interval))))
             {
                 c.Emit(OpCodes.Pop);
                 c.Emit(OpCodes.Ldarg_0);
                 c.EmitDelegate<Func<MushroomBodyBehavior, float>>(self => StackAmount(healingInterval, healingIntervalStack, self.stack, healingIntervalIsHyperbolic));
             }
-            else Main.WRBLogger.LogError("Failed to apply Bustling Fungus Interval hook");
+            else Logger.LogError("Failed to apply Bustling Fungus Interval hook");
             if (c.TryGotoNext(x => x.MatchStfld<HealingWard>(nameof(HealingWard.healFraction))))
             {
                 c.Emit(OpCodes.Pop);
                 c.Emit(OpCodes.Ldarg_0);
                 c.EmitDelegate<Func<MushroomBodyBehavior, float>>(self => StackAmount(percentHealing, self.mushroomHealingWard.interval * percentHealingStack, self.stack, percentHealingIsHyperbolic));
             }
-            else Main.WRBLogger.LogError("Failed to apply Bustling Fungus Percent Healing hook");
+            else Logger.LogError("Failed to apply Bustling Fungus Percent Healing hook");
             if (c.TryGotoNext(x => x.MatchStfld<HealingWard>(nameof(HealingWard.healPoints))))
             {
                 c.Emit(OpCodes.Pop);
                 c.Emit(OpCodes.Ldarg_0);
                 c.EmitDelegate<Func<MushroomBodyBehavior, float>>(self => StackAmount(flatHealing, self.mushroomHealingWard.interval * flatHealingStack, self.stack, flatHealingIsHyperbolic));
             }
-            else Main.WRBLogger.LogError("Failed to apply Bustling Fungus Flat Healing hook");
+            else Logger.LogError("Failed to apply Bustling Fungus Flat Healing hook");
         }
     }
 }

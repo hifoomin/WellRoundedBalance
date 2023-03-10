@@ -42,7 +42,7 @@ namespace WellRoundedBalance.Equipment
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Foreign Fruit Healing hook");
+                Logger.LogError("Failed to apply Foreign Fruit Healing hook");
             }
         }
     }

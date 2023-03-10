@@ -53,7 +53,7 @@ namespace WellRoundedBalance.Equipment.Orange
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Forgive Me Please Interval hook");
+                Logger.LogError("Failed to apply Forgive Me Please Interval hook");
             }
         }
     }

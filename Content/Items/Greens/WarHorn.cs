@@ -97,7 +97,7 @@ namespace WellRoundedBalance.Items.Greens
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply War Horn Duration hook");
+                Logger.LogError("Failed to apply War Horn Duration hook");
             }
         }
     }

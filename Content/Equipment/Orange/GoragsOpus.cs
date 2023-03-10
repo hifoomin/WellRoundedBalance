@@ -41,7 +41,7 @@ namespace WellRoundedBalance.Equipment.Orange
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Gorag's Opus Duration hook");
+                Logger.LogError("Failed to apply Gorag's Opus Duration hook");
             }
         }
     }

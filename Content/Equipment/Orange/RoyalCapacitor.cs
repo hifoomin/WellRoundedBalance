@@ -44,7 +44,7 @@ namespace WellRoundedBalance.Equipment.Orange
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Royal Capacitor Damage hook");
+                Logger.LogError("Failed to apply Royal Capacitor Damage hook");
             }
 
             c.Index = 0;
@@ -56,7 +56,7 @@ namespace WellRoundedBalance.Equipment.Orange
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Royal Capacitor Proc Coefficient hook");
+                Logger.LogError("Failed to apply Royal Capacitor Proc Coefficient hook");
             }
         }
     }

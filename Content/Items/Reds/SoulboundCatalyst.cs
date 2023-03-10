@@ -47,7 +47,7 @@ namespace WellRoundedBalance.Items.Reds
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Soulbound Catalyst Cooldown hook");
+                Logger.LogError("Failed to apply Soulbound Catalyst Cooldown hook");
             }
         }
     }

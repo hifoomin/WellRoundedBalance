@@ -39,7 +39,7 @@ namespace WellRoundedBalance.Equipment.Orange
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply The Backup Duration hook");
+                Logger.LogError("Failed to apply The Backup Duration hook");
             }
 
             c.Index = 0;
@@ -55,7 +55,7 @@ namespace WellRoundedBalance.Equipment.Orange
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply The Backup Drone Count hook");
+                Logger.LogError("Failed to apply The Backup Drone Count hook");
             }
         }
     }

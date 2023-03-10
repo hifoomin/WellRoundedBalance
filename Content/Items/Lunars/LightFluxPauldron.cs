@@ -113,7 +113,7 @@ namespace WellRoundedBalance.Items.Lunars
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Light Flux Pauldron Cooldown hook");
+                Logger.LogError("Failed to apply Light Flux Pauldron Cooldown hook");
             }
 
             c.Index = 0;
@@ -130,7 +130,7 @@ namespace WellRoundedBalance.Items.Lunars
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Light Flux Pauldron Attack Speed hook");
+                Logger.LogError("Failed to apply Light Flux Pauldron Attack Speed hook");
             }
         }
     }

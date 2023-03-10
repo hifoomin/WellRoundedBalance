@@ -47,7 +47,7 @@ namespace WellRoundedBalance.Equipment
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Disposable Missile Launcher Missile Count hook");
+                Logger.LogError("Failed to apply Disposable Missile Launcher Missile Count hook");
             }
         }
     }
