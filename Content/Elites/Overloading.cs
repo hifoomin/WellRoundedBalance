@@ -23,6 +23,7 @@ namespace WellRoundedBalance.Elites
 
         [ConfigField("Ally Buff Movement Speed Gain", "Decimal.", 0.5f)]
         public static float allyBuffMovementSpeedGain;
+        private static GameObject SpeedAura;
 
         public override void Init()
         {
@@ -36,6 +37,29 @@ namespace WellRoundedBalance.Elites
             overloadingSpeedBuff.iconSprite = Sprite.Create(speedBuff, new Rect(0f, 0f, (float)speedBuff.width, (float)speedBuff.height), new Vector2(0f, 0f));
 
             ContentAddition.AddBuffDef(overloadingSpeedBuff);
+
+            SpeedAura = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.RailgunnerMineAltDetonated.Load<GameObject>(), "AntihealZone");
+            Transform areaIndicator = SpeedAura.transform.Find("AreaIndicator");
+            Transform softGlow = areaIndicator.Find("SoftGlow");
+            Transform sphere = areaIndicator.Find("Sphere");
+            Transform light = areaIndicator.Find("Point Light");
+            Transform core = areaIndicator.Find("Core");
+
+            softGlow.gameObject.SetActive(false);
+            light.gameObject.SetActive(false);
+            core.gameObject.SetActive(false);
+
+            MeshRenderer renderer = sphere.GetComponent<MeshRenderer>();
+            Material[] mats = renderer.sharedMaterials;
+            mats[0] = Utils.Paths.Material.matMoonbatteryCrippleRadius.Load<Material>();
+            mats[1] = Utils.Paths.Material.matCrippleSphereIndicator.Load<Material>();
+            renderer.SetSharedMaterials(mats, 2);
+
+            SpeedAura.GetComponent<BuffWard>().buffDef = overloadingSpeedBuff;
+            SpeedAura.GetComponent<BuffWard>().expires = false;
+            SpeedAura.GetComponent<BuffWard>().expireDuration = 10000;
+
+            SpeedAura.RemoveComponent<SlowDownProjectiles>();
 
             base.Init();
         }
@@ -103,108 +127,87 @@ namespace WellRoundedBalance.Elites
 
         private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
-            if (sender && sender.HasBuff(overloadingSpeedBuff))
+            if (sender && sender.HasBuff(overloadingSpeedBuff) && !sender.HasBuff(RoR2Content.Buffs.AffixBlue))
             {
                 args.moveSpeedMultAdd += allyBuffMovementSpeedGain;
             }
         }
 
-        private class OverloadingController : MonoBehaviour, IOnTakeDamageServerReceiver
+        private class OverloadingController : MonoBehaviour
         {
-            private float stopwatch = 0f;
-            private float teleportCooldown = 6f;
-            private bool isOnCooldown = false;
-            private SphereSearch search;
-            private HealthComponent hc => GetComponent<HealthComponent>();
-            private CharacterBody cb => GetComponent<CharacterBody>();
+            public HealthComponent hc;
+            public CharacterBody cb;
+            public GameObject wardInstance;
+            public BuffWard ward;
+            public float stopwatch = 0f;
 
-            private void Start()
-            {
-                List<IOnTakeDamageServerReceiver> receivers = hc.onTakeDamageReceivers.ToList();
-                receivers.Add(this);
-                hc.onTakeDamageReceivers = receivers.ToArray();
-                search = new();
-                search.radius = 60;
-                search.mask = LayerIndex.entityPrecise.mask;
-                search.queryTriggerInteraction = QueryTriggerInteraction.Ignore;
-            }
+            public void Start() {
+                hc = GetComponent<HealthComponent>();
+                cb = hc.body;
 
-            public void OnTakeDamageServer(DamageReport report)
-            {
-                if (cb && NetworkServer.active && report.victimBody && report.victimBody == cb && !isOnCooldown)
-                {
-                    NodeGraph nodes = SceneInfo.instance.groundNodes;
-                    if (nodes)
-                    {
-                        List<NodeGraph.Node> validNodes = nodes.nodes.Where(x => Vector3.Distance(cb.corePosition, x.position) < 30).ToList();
-                        NodeGraph.Node node = validNodes.GetRandom(Run.instance.spawnRng);
-                        Vector3 position = node.position;
-                        EffectManager.SpawnEffect(Utils.Paths.GameObject.ParentTeleportEffect.Load<GameObject>(), new EffectData
-                        {
-                            origin = cb.corePosition,
-                            scale = 2f,
-                        }, true);
-                        TeleportHelper.TeleportBody(cb, position);
-                        isOnCooldown = true;
-                        Invoke(nameof(BuffNearby), 0.2f);
-                    }
+                if (NetworkServer.active) {
+                    wardInstance = GameObject.Instantiate(SpeedAura, transform);
+                    ward = wardInstance.GetComponent<BuffWard>();
+                    ward.radius = Util.Remap(cb.maxHealth, 0, 2500, 4, 25);
+                    NetworkServer.Spawn(wardInstance);
                 }
             }
 
-            private void BuffNearby()
-            {
-                bool e3 = Run.instance.selectedDifficulty >= DifficultyIndex.Eclipse3 && Eclipse3.instance.isEnabled;
-                EffectManager.SpawnEffect(Utils.Paths.GameObject.LunarSecondaryExplosion.Load<GameObject>(), new EffectData
-                {
-                    origin = cb.corePosition,
-                    scale = 2f,
+            public void FixedUpdate() {
+                stopwatch += Time.fixedDeltaTime;
+                if (stopwatch >= GetDelay()) {
+                    stopwatch = 0f;
+                    HandleTeleport(PickTeleportPosition());
+                }
+            }
+
+            public void OnDestroy() {
+                if (NetworkServer.active) {
+                    Destroy(wardInstance);
+                }
+            }
+
+            public float GetDelay() {
+                return (hc.health / hc.fullCombinedHealth) > 0.5 ? 3f : 5f;
+            }
+
+            public void HandleTeleport(Vector3 pos) {
+                Vector3 current = transform.position;
+                EffectManager.SpawnEffect(Utils.Paths.GameObject.ParentTeleportEffect.Load<GameObject>(), new EffectData {
+                    scale = 1,
+                    origin = current
                 }, true);
-                AkSoundEngine.PostEvent(Events.Play_moonBrother_orb_slam_impact, base.gameObject);
-                search.ClearCandidates();
-                search.origin = cb.corePosition;
-                search.RefreshCandidates();
-                search.FilterCandidatesByDistinctHurtBoxEntities();
-                search.OrderCandidatesByDistance();
-                HurtBox[] boxes = search.GetHurtBoxes();
-                foreach (HurtBox box in boxes)
-                {
-                    if (box.teamIndex == cb.teamComponent.teamIndex && !box.healthComponent.body.HasBuff(RoR2Content.Buffs.AffixBlue) && NetworkServer.active)
-                    {
-                        if (box.healthComponent)
-                        {
-                            LightningOrb orb = new()
-                            {
-                                lightningType = LightningOrb.LightningType.Tesla,
-                                bouncesRemaining = e3 ? allyBuffCountE3 : allyBuffCount,
-                                targetsToFindPerBounce = e3 ? allyBuffCountE3 : allyBuffCount,
-                                attacker = gameObject,
-                                teamIndex = cb.teamComponent.teamIndex,
-                                damageValue = 0,
-                                damageType = DamageType.Silent,
-                                origin = cb.corePosition,
-                                range = 10000f
-                            };
+                EffectManager.SpawnEffect(Utils.Paths.GameObject.ParentTeleportEffect.Load<GameObject>(), new EffectData {
+                    scale = 1,
+                    origin = pos
+                }, true);
+                TeleportHelper.TeleportBody(cb, pos + new Vector3(0, 1, 0));
+            }
 
-                            OrbManager.instance.AddOrb(orb);
-                            // Debug.Log("added orb");
-                            box.healthComponent.body.AddTimedBuff(overloadingSpeedBuff, 6f);
-                        }
-                    }
+            public Vector3 PickTeleportPosition() {
+                if (!SceneInfo.instance || !SceneInfo.instance.groundNodes) {
+                    return transform.position;
+                }
+
+                NodeGraph.Node[] nodes = SceneInfo.instance.groundNodes.nodes;
+                if (GetDelay() == 3f) {
+                    return PickValidPositions(0, 25, nodes).ToList().GetRandom();
+                }
+                else {
+                    return PickValidPositions(20, 40, nodes).ToList().GetRandom();
                 }
             }
 
-            private void FixedUpdate()
-            {
-                if (isOnCooldown)
-                {
-                    stopwatch += Time.fixedDeltaTime;
-
-                    if (stopwatch >= teleportCooldown)
-                    {
-                        stopwatch = 0f;
-                        isOnCooldown = false;
-                    }
+            public Vector3[] PickValidPositions(float min, float max, NodeGraph.Node[] nodes) {
+                NodeGraph.Node[] validNodes = nodes.Where(x => Vector3.Distance(x.position, transform.position) > min && Vector3.Distance(x.position, transform.position) < max).ToArray();
+                if (validNodes.Length <= 1) {
+                    return new Vector3[] { transform.position };
                 }
+                List<Vector3> guh = new();
+                foreach (NodeGraph.Node node in validNodes) {
+                    guh.Add(node.position);
+                }
+                return guh.ToArray();
             }
         }
     }
