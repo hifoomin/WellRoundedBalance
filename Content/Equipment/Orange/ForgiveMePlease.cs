@@ -11,6 +11,9 @@ namespace WellRoundedBalance.Equipment.Orange
 
         public override string DescText => "Throw a cursed doll out that <style=cIsDamage>triggers</style> any <style=cIsDamage>On-Kill</style> effects you have every <style=cIsUtility>" + interval + "</style> second for <style=cIsUtility>" + maxDuration + "</style> seconds.";
 
+        [ConfigField("Cooldown", "", 55f)]
+        public static float cooldown;
+
         [ConfigField("Interval", "Formula for activation count: Max Duration / Interval", 1f)]
         public static float interval;
 
@@ -26,6 +29,9 @@ namespace WellRoundedBalance.Equipment.Orange
         {
             IL.RoR2.Projectile.DeathProjectile.FixedUpdate += ChangeInterval;
             On.RoR2.Projectile.DeathProjectile.Awake += ChangeMaxDur;
+
+            var FMP = Utils.Paths.EquipmentDef.DeathProjectile.Load<EquipmentDef>();
+            FMP.cooldown = cooldown;
         }
 
         private void ChangeMaxDur(On.RoR2.Projectile.DeathProjectile.orig_Awake orig, DeathProjectile self)

@@ -90,14 +90,40 @@ namespace WellRoundedBalance.Elites
             CelestinePPV.sharedProfile = postProcessProfile;
 
             RecalculateStatsAPI.GetStatCoefficients += StatIncrease;
-            // On.RoR2.CharacterModel.UpdateOverlays += HandleOverlay; // makes invis do more
-            On.RoR2.GlobalEventManager.OnHitEnemy += HandleFog;
+            GlobalEventManager.onServerDamageDealt += GlobalEventManager_onServerDamageDealt;
 
             On.RoR2.CharacterBody.GetVisibilityLevel_CharacterBody += HandleAIBlindness;
             On.RoR2.CharacterBody.FixedUpdate += HandlePlayerBlindness;
             IL.RoR2.GlobalEventManager.OnHitEnemy += GlobalEventManager_OnHitEnemy;
 
             CelestineOverlay = Utils.Paths.Material.matMoonbatteryGlassOverlay.Load<Material>();
+        }
+
+        private void GlobalEventManager_onServerDamageDealt(DamageReport damageReport)
+        {
+            var damageInfo = damageReport.damageInfo;
+
+            if (damageInfo.procCoefficient == 0f || damageInfo.rejected || !NetworkServer.active || damageInfo.dotIndex != DotController.DotIndex.None) return;
+
+            var attackerBody = damageReport.attackerBody;
+            if (!attackerBody)
+            {
+                return;
+            }
+
+            var victimBody = damageReport.victimBody;
+            if (!victimBody)
+            {
+                return;
+            }
+
+            if (attackerBody.HasBuff(RoR2Content.Buffs.AffixHaunted) && Util.CheckRoll(100f * damageInfo.procCoefficient))
+            {
+                var ward = GetWard();
+                ward.GetComponent<TeamFilter>().teamIndex = attackerBody.teamComponent.teamIndex;
+                ward.transform.position = victimBody.footPosition;
+                NetworkServer.Spawn(ward);
+            }
         }
 
         private void GlobalEventManager_OnHitEnemy(ILContext il)
@@ -125,28 +151,6 @@ namespace WellRoundedBalance.Elites
             }
         }
 
-        private static void HandleOverlay(On.RoR2.CharacterModel.orig_UpdateOverlays orig, CharacterModel self)
-        {
-            orig(self);
-            if (self.body && self.body.HasBuff(CelestineBoost))
-            {
-                self.currentOverlays[self.activeOverlayCount++] = CelestineOverlay;
-            }
-        }
-
-        private static void HandleFog(On.RoR2.GlobalEventManager.orig_OnHitEnemy orig, GlobalEventManager self, DamageInfo damageInfo, GameObject victim)
-        {
-            orig(self, damageInfo, victim);
-            if (damageInfo.procCoefficient == 0f || damageInfo.rejected || !NetworkServer.active || damageInfo.dotIndex != DotController.DotIndex.None) return;
-            if (damageInfo?.attacker?.GetComponent<CharacterBody>()?.HasBuff(RoR2Content.Buffs.AffixHaunted) ?? false)
-            {
-                GameObject ward = GetWard();
-                ward.GetComponent<TeamFilter>().teamIndex = damageInfo.attacker.GetComponent<CharacterBody>().teamComponent.teamIndex;
-                ward.transform.position = victim.GetComponent<CharacterBody>().footPosition;
-                NetworkServer.Spawn(ward);
-            }
-        }
-
         private static GameObject GetWard() // this sucks lmfao, please replace with PrefabAPI stuff
         {
             bool e3 = Run.instance.selectedDifficulty >= DifficultyIndex.Eclipse3 && Eclipse3.instance.isEnabled;
@@ -162,7 +166,7 @@ namespace WellRoundedBalance.Elites
             ward.expires = true;
             ward.expireDuration = fogLifetime;
             ward.interval = 0.2f;
-            GameObject indicator = Object.Instantiate(Utils.Paths.GameObject.AffixHauntedWard.Load<GameObject>().transform.Find("Indicator").Find("IndicatorSphere").gameObject);
+            var indicator = Object.Instantiate(Utils.Paths.GameObject.AffixHauntedWard.Load<GameObject>().transform.Find("Indicator").Find("IndicatorSphere").gameObject);
             indicator.transform.SetParent(BlindnessWard.transform);
             indicator.transform.localScale = new Vector3(0, 0, 0);
             indicator.AddComponent<DestroyOnTimer>().duration = ward.expireDuration;

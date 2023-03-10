@@ -33,7 +33,7 @@
         {
             if (sender.inventory)
             {
-                args.secondaryCooldownMultAdd -= StackAmount(secondarySkillCooldownReduction, secondarySkillCooldownReductionStack, 
+                args.secondaryCooldownMultAdd -= StackAmount(secondarySkillCooldownReduction, secondarySkillCooldownReductionStack,
                     sender.inventory.GetItemCount(RoR2Content.Items.SecondarySkillMagazine), secondarySkillCooldownReductionIsHyperbolic);
             }
         }

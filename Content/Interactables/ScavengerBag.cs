@@ -16,7 +16,15 @@
 
         private void Opening_OnEnter(On.EntityStates.ScavBackpack.Opening.orig_OnEnter orig, EntityStates.ScavBackpack.Opening self)
         {
-            EntityStates.ScavBackpack.Opening.maxItemDropCount = 3;
+            if (self.characterBody.bodyIndex == BodyCatalog.FindBodyIndexCaseInsensitive("scavlunar"))
+            {
+                EntityStates.ScavBackpack.Opening.maxItemDropCount = 10;
+            }
+            else
+            {
+                EntityStates.ScavBackpack.Opening.maxItemDropCount = 3;
+            }
+
             orig(self);
         }
     }

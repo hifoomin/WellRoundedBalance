@@ -17,7 +17,7 @@
 
         private void CharacterBody_FixedUpdate(On.RoR2.CharacterBody.orig_FixedUpdate orig, CharacterBody self)
         {
-            self.barrierDecayRate = self.healthComponent.barrier * 0.071f + self.healthComponent.fullCombinedHealth * 0.008f;
+            self.barrierDecayRate = self.healthComponent.barrier * 0.07f + self.healthComponent.fullCombinedHealth * 0.008f;
             orig(self);
         }
     }

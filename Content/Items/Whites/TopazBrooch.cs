@@ -12,21 +12,25 @@ namespace WellRoundedBalance.Items.Whites
 
         public override string PickupText => "Gain a temporary barrier on kill.";
 
-        public override string DescText => "Gain a <style=cIsHealing>temporary barrier</style> on kill for " + 
+        public override string DescText => "Gain a <style=cIsHealing>temporary barrier</style> on kill for " +
             StackDesc(flatBarrierGain, flatBarrierGainStack, init => $"<style=cIsHealing>{init}</style>{{Stack}}", noop) +
             StackDesc(percentBarrierGain, percentBarrierGainStack, init => (flatBarrierGain > 0 || flatBarrierGainStack > 0 ? "plus an additional " : "") + $"<style=cIsHealing>{d(init)}</style>{{Stack}} of <style=cIsHealing>maximum health</style>", d) + ".";
 
         [ConfigField("Percent Barrier Gain", "Decimal.", 0.02f)]
         public static float percentBarrierGain;
+
         [ConfigField("Percent Barrier Gain per Stack", "Decimal.", 0.02f)]
         public static float percentBarrierGainStack;
+
         [ConfigField("Percent Barrier Gain is Hyperbolic", "Decimal, Max value. Set to 0 to make it linear.", 0f)]
         public static float percentBarrierGainIsHyperbolic;
 
         [ConfigField("Flat Barrier Gain", 10f)]
         public static float flatBarrierGain;
-        [ConfigField("Flat Barrier Gain per Stack", 10f)]
+
+        [ConfigField("Flat Barrier Gain per Stack", 0f)]
         public static float flatBarrierGainStack;
+
         [ConfigField("Flat Barrier Gain is Hyperbolic", "Decimal, Max value. Set to 0 to make it linear.", 0f)]
         public static float flatBarrierGainIsHyperbolic;
 

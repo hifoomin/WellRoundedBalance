@@ -6,16 +6,19 @@
 
         public override string InternalPickupToken => GetToken(Utils.Paths.ItemDef.MinorConstructOnKill);
 
-        public override string PickupText => "Reduce damage taken. Store damage taken and release it as a devastating laser upon using your special.";
+        public override string PickupText => "Reduce damage taken. Store damage taken and release it as a devastating laser upon using your equipment.";
 
-        public override string DescText => "Gain <style=cIsUtility>" + d(damageReduction) + "</style> damage reduction. Upon using your <style=cIsUtility>special</style>, unleash a devastating laser for <style=cIsDamage>" + d(damagePerSecond) + "</style> <style=cStack>(+" + d(damagePerSecond) + " per stack)</style> of the <style=cIsUtility>resisted damage</style> per second.";
+        public override string DescText => "Gain <style=cIsHealing>" + d(damageReduction) + "</style> damage reduction. Upon using your <style=cIsDamage>equipment</style>, unleash a devastating laser for <style=cIsDamage>" + d(baseDamagePerSecond) + "</style> <style=cStack>(+" + d(damagePerSecondPerStack) + " per stack)</style> of the <style=cIsHealing>resisted damage</style> per second.";
         public static GameObject BubbleShieldEffectPrefab;
 
-        [ConfigField("Damage Reduction", "Decimal.", 0.25f)]
+        [ConfigField("Damage Reduction", "Decimal.", 0.2f)]
         public static float damageReduction;
 
-        [ConfigField("Damage Per Second", "Decimal.", 0.5f)]
-        public static float damagePerSecond;
+        [ConfigField("Base Damage Per Second", "Decimal.", 1.6f)]
+        public static float baseDamagePerSecond;
+
+        [ConfigField("Damage Per Second Per Stack", "Decimal.", 0.8f)]
+        public static float damagePerSecondPerStack;
 
         public override void Init()
         {
@@ -31,7 +34,7 @@
         {
             On.RoR2.HealthComponent.TakeDamage += Resistance;
             RecalculateStatsAPI.GetStatCoefficients += AddBehavior;
-            On.RoR2.CharacterBody.OnSkillActivated += SkillActivated;
+            RoR2.EquipmentSlot.onServerEquipmentActivated += EquipmentSlot_onServerEquipmentActivated;
             On.RoR2.Projectile.ProjectileManager.FireProjectile_FireProjectileInfo += (orig, self, info) =>
             {
                 if (info.projectilePrefab == GlobalEventManager.CommonAssets.minorConstructOnKillProjectile)
@@ -44,15 +47,15 @@
             };
         }
 
-        private void SkillActivated(On.RoR2.CharacterBody.orig_OnSkillActivated orig, CharacterBody self, GenericSkill skill)
+        private void EquipmentSlot_onServerEquipmentActivated(EquipmentSlot equipmentSlot, EquipmentIndex equipmentIndex)
         {
-            orig(self, skill);
-            if (self.GetComponent<DefenseNucleusBehavior>() && NetworkServer.active)
+            var body = equipmentSlot.characterBody;
+            if (body)
             {
-                DefenseNucleusBehavior behavior = self.GetComponent<DefenseNucleusBehavior>();
-                if (self.skillLocator && self.skillLocator.FindSkillSlot(skill) == SkillSlot.Special && behavior.StoredDamage > 0)
+                var defenseNucleusBehavior = body.GetComponent<DefenseNucleusBehavior>();
+                if (defenseNucleusBehavior && NetworkServer.active)
                 {
-                    behavior.Fire();
+                    defenseNucleusBehavior.Fire();
                 }
             }
         }
@@ -83,7 +86,7 @@
             private float TotalStoredDamage = 0f;
 
             private bool shouldFireLaser = false;
-            private float coefficientPerSecond => stack * damagePerSecond;
+            private float coefficientPerSecond => baseDamagePerSecond + damagePerSecondPerStack * (stack - 1);
             private float ticks = 5;
             private float coeffPerTick => coefficientPerSecond / ticks;
             private float delay => 1f / ticks;
@@ -117,8 +120,8 @@
                             procChainMask = new(),
                             procCoefficient = 0.5f,
                             hitEffectPrefab = hitEffectPrefab,
-                            radius = 5f,
-                            smartCollision = false,
+                            radius = 6f,
+                            smartCollision = true,
                             owner = body.gameObject,
                             weapon = body.gameObject,
                             isCrit = Util.CheckRoll(body.crit, body.master)

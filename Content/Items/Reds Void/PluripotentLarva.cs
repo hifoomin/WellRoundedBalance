@@ -1,4 +1,4 @@
-﻿using MonoMod.Cil;
+﻿using System.Reflection;
 
 namespace WellRoundedBalance.Items.Reds
 {
@@ -24,13 +24,35 @@ namespace WellRoundedBalance.Items.Reds
         private void Inventory_onServerItemGiven(Inventory inventory, ItemIndex itemIndex, int count)
         {
             if (itemIndex != DLC1Content.Items.ExtraLifeVoid.itemIndex) return;
+            /*
+            List<ItemIndex> tier1Indices = new();
+
+            for (int i = 0; i < inventory.itemAcquisitionOrder.Count; i++)
+            {
+                var index = inventory.itemAcquisitionOrder[i];
+                var itemDef = ItemCatalog.GetItemDef(index);
+
+                if (itemDef.tier == ItemTier.Tier1 || itemDef.deprecatedTier == ItemTier.Tier1)
+                {
+                    tier1Indices.Add(index);
+                }
+            }
+            for (int i = 0; i < tier1Indices.Count; i++)
+            {
+                var index = tier1Indices[i];
+                index = Run.instance.stageRng.RangeInt(tier1Indices, tier1Indices.Count);
+            }
+            // what am i doing uhhh this is dumber than i thought
+            Chat.SendBroadcastChat(new Chat.SimpleChatMessage { baseToken = "<style=cWorldEvent>You have been... corrupted.</color>" });
+            */
+
             int[] idx = { };
             int[] value = { };
             for (var i = 0; i < inventory.itemStacks.Length; i++) if (inventory.itemStacks[i] > 0)
-            {
-                HG.ArrayUtils.ArrayAppend(ref idx, i);
-                HG.ArrayUtils.ArrayAppend(ref value, inventory.itemStacks[i]);
-            }
+                {
+                    HG.ArrayUtils.ArrayAppend(ref idx, i);
+                    HG.ArrayUtils.ArrayAppend(ref value, inventory.itemStacks[i]);
+                }
             idx = idx.OrderBy(x => Run.instance.runRNG.Next()).ToArray();
             for (var i = 0; i < idx.Length; i++) inventory.itemStacks[idx[i]] = value[i];
             if (LocalUserManager.GetFirstLocalUser()?.cachedBody?.inventory == inventory) Chat.SendBroadcastChat(new Chat.SimpleChatMessage { baseToken = "<style=cWorldEvent>You have been... corrupted.</color>" });

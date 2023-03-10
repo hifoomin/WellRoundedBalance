@@ -11,10 +11,10 @@ namespace WellRoundedBalance.Items.Whites
 
         public override string PickupText => "Gain gold at the beginning of each stage.";
 
-        public override string DescText => 
-            StackDesc(goldOnPickup, goldOnPickupStack, init => $"Gain <style=cIsUtility>{init}</style>{{Stack}} gold on pickup. ", noop) + 
+        public override string DescText =>
+            StackDesc(goldOnPickup, goldOnPickupStack, init => $"Gain <style=cIsUtility>{init}</style>{{Stack}} gold on pickup. ", noop) +
             StackDesc(baseGoldPerStage, goldPerStagePerStack, init => $"At the beginning of every stage, gain <style=cIsUtility>{init}</style>{{Stack}} gold</style>.", noop) + (scaleOverTime ? " <style=cIsUtility>Scales over time.</style>" : "");
-            
+
         [ConfigField("Gold On Pickup", 10)]
         public static int goldOnPickup;
 

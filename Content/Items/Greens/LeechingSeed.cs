@@ -9,10 +9,10 @@
 
         public override string DescText => "Dealing damage <style=cIsHealing>heals</style> you for <style=cIsHealing>1 <style=cStack>(+1 per stack)</style> health</style>, plus an additional <style=cIsHealing>" + baseHealingRegardlessOfSource + "</style> <style=cStack>(+" + healingRegardlessOfSourcePerStack + " per stack)</style> <style=cIsHealing>health</style> regardless of source.";
 
-        [ConfigField("Base Healing Regardless of Source", "", 0.5f)]
+        [ConfigField("Base Healing Regardless of Source", "", 0.6f)]
         public static float baseHealingRegardlessOfSource;
 
-        [ConfigField("Healing Regardless of Source Per Stack", "", 0.25f)]
+        [ConfigField("Healing Regardless of Source Per Stack", "", 0.3f)]
         public static float healingRegardlessOfSourcePerStack;
 
         public override void Init()

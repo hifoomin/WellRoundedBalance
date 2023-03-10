@@ -89,7 +89,7 @@ namespace WellRoundedBalance.Items.Lunars
                             var bodyMotor = body.characterMotor;
                             if (bodyMotor && stack > 0)
                             {
-                                bodyMotor.velocity.y = Mathf.Min(bodyMotor.velocity.y, -20f * damageInfo.procCoefficient * stack);
+                                bodyMotor.velocity.y = Mathf.Max(Mathf.Abs(bodyMotor.velocity.y) - body.jumpPower + 20f * damageInfo.procCoefficient * stack, 0f);
                             }
                         }
                     }

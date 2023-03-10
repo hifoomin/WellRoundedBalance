@@ -1,7 +1,4 @@
-﻿using Mono.Cecil.Cil;
-using MonoMod.Cil;
-
-namespace WellRoundedBalance.Items.Whites
+﻿namespace WellRoundedBalance.Items.Whites
 {
     public class OddlyShapedOpal : ItemBase
     {
@@ -45,9 +42,15 @@ namespace WellRoundedBalance.Items.Whites
         {
             RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
             CharacterBody.onBodyInventoryChangedGlobal += CharacterBody_onBodyInventoryChangedGlobal;
-            // IL.RoR2.CharacterBody.RecalculateStats += CharacterBody_RecalculateStats;
             On.RoR2.OutOfCombatArmorBehavior.SetProvidingBuff += OutOfCombatArmorBehavior_SetProvidingBuff;
             On.RoR2.OutOfCombatArmorBehavior.FixedUpdate += OutOfCombatArmorBehavior_FixedUpdate;
+            On.RoR2.CharacterBody.UpdateAllTemporaryVisualEffects += CharacterBody_UpdateAllTemporaryVisualEffects;
+        }
+
+        private void CharacterBody_UpdateAllTemporaryVisualEffects(On.RoR2.CharacterBody.orig_UpdateAllTemporaryVisualEffects orig, CharacterBody self)
+        {
+            orig(self);
+            self.UpdateSingleTemporaryVisualEffect(ref self.outOfCombatArmorEffectInstance, CharacterBody.AssetReferences.outOfCombatArmorEffectPrefab, self.radius, self.HasBuff(opalArmor), "");
         }
 
         private void OutOfCombatArmorBehavior_FixedUpdate(On.RoR2.OutOfCombatArmorBehavior.orig_FixedUpdate orig, CharacterBody.ItemBehavior self)
@@ -58,22 +61,6 @@ namespace WellRoundedBalance.Items.Whites
         private void OutOfCombatArmorBehavior_SetProvidingBuff(On.RoR2.OutOfCombatArmorBehavior.orig_SetProvidingBuff orig, CharacterBody.ItemBehavior self, bool shouldProvideBuff)
         {
             return;
-        }
-
-        private void CharacterBody_RecalculateStats(ILContext il)
-        {
-            ILCursor c = new(il);
-
-            if (c.TryGotoNext(MoveType.Before,
-                    x => x.MatchLdsfld("RoR2.DLC1Content/Buffs", "OutOfCombatArmorBuff")))
-            {
-                c.Remove();
-                c.Emit<Buffs.Useless>(OpCodes.Ldsfld, nameof(Buffs.Useless.oddlyShapedOpalUseless));
-            }
-            else
-            {
-                Main.WRBLogger.LogError("Failed to apply Oddly-shaped Opal Removal hook");
-            }
         }
 
         private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)

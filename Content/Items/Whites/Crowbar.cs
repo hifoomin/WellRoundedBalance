@@ -11,7 +11,8 @@ namespace WellRoundedBalance.Items.Whites
         public override string InternalPickupToken => "crowbar";
 
         public override string PickupText => "Deal bonus damage to enemies above " + d(healthThreshold) + " health.";
-        public override string DescText => 
+
+        public override string DescText =>
             StackDesc(damageIncrease, damageIncreaseStack, init => $"Deal <style=cIsDamage>{d(init)}</style>{{Stack}} damage to enemies ", d) +
             StackDesc(healthThreshold, healthThresholdStack, init => $"above <style=cIsDamage>{d(init)}{{Stack}} health</style>", d) + ".";
 
