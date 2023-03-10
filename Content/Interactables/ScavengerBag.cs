@@ -4,6 +4,9 @@
     {
         public override string Name => ":: Interactables :::::::: Scavenger Bag";
 
+        [ConfigField("Item Drop Count", "", 3)]
+        public static int itemDropCount;
+
         public override void Init()
         {
             base.Init();
@@ -22,7 +25,7 @@
             }
             else
             {
-                EntityStates.ScavBackpack.Opening.maxItemDropCount = 3;
+                EntityStates.ScavBackpack.Opening.maxItemDropCount = itemDropCount;
             }
 
             orig(self);

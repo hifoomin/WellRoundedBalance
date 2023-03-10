@@ -6,6 +6,20 @@ namespace WellRoundedBalance.Mechanics.Director
     {
         public override string Name => ":: Mechanics :::: Scene Director";
 
+        [ConfigField("Pre-Spawn Gold and Exp Reward Multiplier", "", 3f)]
+        public static float prespawnGoldAndExpRewardMultiplier;
+
+        [ConfigField("Pre-Spawn Elite Bias", "", 0.8f)]
+        public static float prespawnEliteBias;
+
+        [ConfigField("Pre-Spawn Credit Multiplier", "", 2.5f)]
+        public static float prespawnCreditMultiplier;
+
+        public override void Init()
+        {
+            base.Init();
+        }
+
         public override void Hooks()
         {
             RoR2.SceneDirector.onPrePopulateMonstersSceneServer += SceneDirector_onPrePopulateMonstersSceneServer;
@@ -13,9 +27,9 @@ namespace WellRoundedBalance.Mechanics.Director
 
         private void SceneDirector_onPrePopulateMonstersSceneServer(RoR2.SceneDirector sd)
         {
-            sd.expRewardCoefficient *= 3f; // holy fuck why is it so low (literally like 0.0667)
-            sd.monsterCredit = Convert.ToInt32(sd.monsterCredit * 2.5f);
-            sd.eliteBias = 0.8f; // down from 2
+            sd.expRewardCoefficient *= prespawnGoldAndExpRewardMultiplier; // holy fuck why is it so low (literally like 0.0667)
+            sd.monsterCredit = Convert.ToInt32(sd.monsterCredit * prespawnCreditMultiplier);
+            sd.eliteBias = prespawnEliteBias; // down from 2
         }
     }
 }

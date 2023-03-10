@@ -2,6 +2,7 @@
 using MonoMod.Cil;
 using RoR2.Navigation;
 using WellRoundedBalance.Buffs;
+using WellRoundedBalance.Eclipse;
 
 namespace WellRoundedBalance.Elites
 {
@@ -13,14 +14,21 @@ namespace WellRoundedBalance.Elites
         [ConfigField("Passive Movement Speed Gain", "Decimal.", 0.5f)]
         public static float passiveMovementSpeedGain;
 
-        [ConfigField("Ally Buff Count", "", 3)]
-        public static int allyBuffCount;
-
         [ConfigField("Ally Buff Count Eclipse 3+", "Only applies if you have Eclipse Changes enabled.", 4)]
         public static int allyBuffCountE3;
 
         [ConfigField("Ally Buff Movement Speed Gain", "Decimal.", 0.5f)]
         public static float allyBuffMovementSpeedGain;
+
+        [ConfigField("Ally Buff Movement Speed Gain Eclipse 3+", "Decimal. Only applies if you have Eclipse Changes enabled.", 0.75f)]
+        public static float allyBuffMovementSpeedGainE3;
+
+        [ConfigField("Maximum Speed Aura Radius", "Formula for aura radius: Minimum value between Body Radius + Speed Aura Radius Add and Maximum Speed Aura Radius", 40f)]
+        public static float maxSpeedAuraRadius;
+
+        [ConfigField("Speed Aura Radius Add", "Formula for aura radius: Minimum value between Body Radius + Speed Aura Radius Add and Maximum Speed Aura Radius", 10f)]
+        public static float speedAuraRadiusAdd;
+
         private static GameObject SpeedAura;
 
         public override void Init()
@@ -58,6 +66,8 @@ namespace WellRoundedBalance.Elites
             SpeedAura.GetComponent<BuffWard>().expireDuration = 10000;
 
             SpeedAura.RemoveComponent<SlowDownProjectiles>();
+
+            PrefabAPI.RegisterNetworkPrefab(SpeedAura);
 
             base.Init();
         }
@@ -125,9 +135,10 @@ namespace WellRoundedBalance.Elites
 
         private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
+            bool e3 = Run.instance.selectedDifficulty >= DifficultyIndex.Eclipse3 && Eclipse3.instance.isEnabled;
             if (sender && sender.HasBuff(overloadingSpeedBuff) && !sender.HasBuff(RoR2Content.Buffs.AffixBlue))
             {
-                args.moveSpeedMultAdd += allyBuffMovementSpeedGain;
+                args.moveSpeedMultAdd += e3 ? allyBuffMovementSpeedGainE3 : allyBuffMovementSpeedGain;
             }
         }
 
@@ -139,70 +150,87 @@ namespace WellRoundedBalance.Elites
             public BuffWard ward;
             public float stopwatch = 0f;
 
-            public void Start() {
+            public void Start()
+            {
                 hc = GetComponent<HealthComponent>();
                 cb = hc.body;
 
-                if (NetworkServer.active) {
+                if (NetworkServer.active)
+                {
                     wardInstance = GameObject.Instantiate(SpeedAura, transform);
                     ward = wardInstance.GetComponent<BuffWard>();
-                    ward.radius = Util.Remap(cb.maxHealth, 0, 2500, 4, 25);
+                    ward.radius = Mathf.Min(cb.radius + speedAuraRadiusAdd, maxSpeedAuraRadius);
                     NetworkServer.Spawn(wardInstance);
                 }
             }
 
-            public void FixedUpdate() {
+            public void FixedUpdate()
+            {
                 stopwatch += Time.fixedDeltaTime;
-                if (stopwatch >= GetDelay()) {
+                if (stopwatch >= GetDelay())
+                {
                     stopwatch = 0f;
                     HandleTeleport(PickTeleportPosition());
                 }
             }
 
-            public void OnDestroy() {
-                if (NetworkServer.active) {
+            public void OnDestroy()
+            {
+                if (NetworkServer.active)
+                {
                     Destroy(wardInstance);
                 }
             }
 
-            public float GetDelay() {
+            public float GetDelay()
+            {
                 return (hc.health / hc.fullCombinedHealth) > 0.5 ? 3f : 5f;
             }
 
-            public void HandleTeleport(Vector3 pos) {
+            public void HandleTeleport(Vector3 pos)
+            {
                 Vector3 current = transform.position;
-                EffectManager.SpawnEffect(Utils.Paths.GameObject.ParentTeleportEffect.Load<GameObject>(), new EffectData {
+                EffectManager.SpawnEffect(Utils.Paths.GameObject.ParentTeleportEffect.Load<GameObject>(), new EffectData
+                {
                     scale = 1,
                     origin = current
                 }, true);
-                EffectManager.SpawnEffect(Utils.Paths.GameObject.ParentTeleportEffect.Load<GameObject>(), new EffectData {
+                EffectManager.SpawnEffect(Utils.Paths.GameObject.ParentTeleportEffect.Load<GameObject>(), new EffectData
+                {
                     scale = 1,
                     origin = pos
                 }, true);
                 TeleportHelper.TeleportBody(cb, pos + new Vector3(0, 1, 0));
             }
 
-            public Vector3 PickTeleportPosition() {
-                if (!SceneInfo.instance || !SceneInfo.instance.groundNodes) {
+            public Vector3 PickTeleportPosition()
+            {
+                if (!SceneInfo.instance || !SceneInfo.instance.groundNodes)
+                {
                     return transform.position;
                 }
 
                 NodeGraph.Node[] nodes = SceneInfo.instance.groundNodes.nodes;
-                if (GetDelay() == 3f) {
+                if (GetDelay() == 3f)
+                {
                     return PickValidPositions(0, 25, nodes).ToList().GetRandom();
                 }
-                else {
+                else
+                {
                     return PickValidPositions(20, 40, nodes).ToList().GetRandom();
                 }
             }
 
-            public Vector3[] PickValidPositions(float min, float max, NodeGraph.Node[] nodes) {
+            public Vector3[] PickValidPositions(float min, float max, NodeGraph.Node[] nodes)
+            {
                 NodeGraph.Node[] validNodes = nodes.Where(x => Vector3.Distance(x.position, transform.position) > min && Vector3.Distance(x.position, transform.position) < max).ToArray();
-                if (validNodes.Length <= 1) {
+                if (validNodes.Length <= 1)
+                {
                     return new Vector3[] { transform.position };
                 }
                 List<Vector3> guh = new();
-                foreach (NodeGraph.Node node in validNodes) {
+                foreach (NodeGraph.Node node in validNodes)
+                {
                     guh.Add(node.position);
                 }
                 return guh.ToArray();

@@ -6,6 +6,9 @@ namespace WellRoundedBalance.Mechanics.Movement
     {
         public override string Name => ":: Mechanics ::: Movement";
 
+        [ConfigField("Not Moving Interval", "Affects all other mods using it!", 0.5f)]
+        public static float notMovingInterval;
+
         public override void Init()
         {
             base.Init();
@@ -24,7 +27,7 @@ namespace WellRoundedBalance.Mechanics.Movement
             if (c.TryGotoNext(MoveType.Before,
                     x => x.MatchLdcR4(1f)))
             {
-                c.Next.Operand = 0.5f;
+                c.Next.Operand = notMovingInterval;
             }
             else
             {

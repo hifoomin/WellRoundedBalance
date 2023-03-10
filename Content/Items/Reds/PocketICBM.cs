@@ -6,6 +6,7 @@ namespace WellRoundedBalance.Items.Reds
 {
     public class PocketICBM : ItemBase
     {
+        public static GameObject bigFuckingMissile;
         public override string Name => ":: Items ::: Reds :: Pocket ICBM";
         public override ItemDef InternalPickup => DLC1Content.Items.MoreMissile;
 
@@ -24,6 +25,25 @@ namespace WellRoundedBalance.Items.Reds
 
         public override void Init()
         {
+            bigFuckingMissile = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.MissileProjectile.Load<GameObject>(), "BigFuckingMissile");
+            bigFuckingMissile.transform.localScale = new Vector3(5f, 5f, 5f);
+
+            var projectileController = bigFuckingMissile.GetComponent<ProjectileController>();
+            var ghost = projectileController.ghostPrefab;
+
+            var newGhost = PrefabAPI.InstantiateClone(ghost, "BigFuckingMissileGhost", false);
+            var flare = newGhost.transform.GetChild(1);
+            flare.gameObject.SetActive(false);
+
+            var trail = newGhost.transform.GetChild(0);
+            var trailRenderer = trail.GetComponent<TrailRenderer>();
+            trailRenderer.time = 2f;
+            trailRenderer.widthMultiplier = 5f;
+
+            ghost = newGhost;
+
+            PrefabAPI.RegisterNetworkPrefab(bigFuckingMissile);
+
             base.Init();
         }
 
@@ -52,7 +72,7 @@ namespace WellRoundedBalance.Items.Reds
                                 if (Util.CheckRoll((baseMissileChance + missileChancePerStack * (stack - 1)) * damageInfo.procCoefficient, body.master))
                                 {
                                     float damage = Util.OnHitProcDamage(damageInfo.damage, body.damage, totalDamage);
-                                    MissileUtils.FireMissile(body.corePosition, body, damageInfo.procChainMask, victim, damage, damageInfo.crit, GlobalEventManager.CommonAssets.missilePrefab, DamageColorIndex.Item, true);
+                                    MissileUtils.FireMissile(body.corePosition, body, damageInfo.procChainMask, victim, damage, damageInfo.crit, bigFuckingMissile, DamageColorIndex.Item, true);
                                 }
                             }
                         }

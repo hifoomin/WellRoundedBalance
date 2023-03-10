@@ -34,7 +34,7 @@
         {
             On.RoR2.HealthComponent.TakeDamage += Resistance;
             RecalculateStatsAPI.GetStatCoefficients += AddBehavior;
-            RoR2.EquipmentSlot.onServerEquipmentActivated += EquipmentSlot_onServerEquipmentActivated;
+            EquipmentSlot.onServerEquipmentActivated += EquipmentSlot_onServerEquipmentActivated;
             On.RoR2.Projectile.ProjectileManager.FireProjectile_FireProjectileInfo += (orig, self, info) =>
             {
                 if (info.projectilePrefab == GlobalEventManager.CommonAssets.minorConstructOnKillProjectile)
@@ -109,7 +109,7 @@
                 {
                     stopwatch += Time.fixedDeltaTime;
 
-                    if (stopwatch >= delay)
+                    if (stopwatch >= delay && Util.HasEffectiveAuthority(gameObject))
                     {
                         BulletAttack attack = new()
                         {

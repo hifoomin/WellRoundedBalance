@@ -29,7 +29,7 @@ namespace WellRoundedBalance.Interactables
             VoidCradle.AddComponent<PickupIndexNetworker>();
             PickupPickerController controller = VoidCradle.AddComponent<PickupPickerController>();
             controller.cutoffDistance = 10;
-            optionPanel = Utils.Paths.GameObject.OptionPickerPanel.Load<GameObject>().InstantiateClone("VoidCradleOptionPicker");
+            optionPanel = Utils.Paths.GameObject.OptionPickerPanel.Load<GameObject>().InstantiateClone("VoidCradleOptionPicker", false);
             Transform bg = optionPanel.transform.Find("MainPanel").Find("Juice").Find("BG, Colored");
             Transform bgCenter = bg.Find("BG, Colored Center");
             bg.GetComponent<Image>().color = new Color32(237, 127, 205, 255);
@@ -41,49 +41,59 @@ namespace WellRoundedBalance.Interactables
             VoidCradle.AddComponent<CradleManager>();
 
             def = new();
-            def.buildCostString = delegate(CostTypeDef def, CostTypeDef.BuildCostStringContext c) {
+            def.buildCostString = delegate (CostTypeDef def, CostTypeDef.BuildCostStringContext c)
+            {
                 c.stringBuilder.Append("<style=cDeath>10% Curse</style>");
             };
 
-            def.isAffordable = delegate(CostTypeDef def, CostTypeDef.IsAffordableContext c) {
+            def.isAffordable = delegate (CostTypeDef def, CostTypeDef.IsAffordableContext c)
+            {
                 return HasAtLeastOneItem(c.activator.GetComponent<CharacterBody>().inventory);
             };
 
-            def.payCost = delegate(CostTypeDef def, CostTypeDef.PayCostContext c) {
-
+            def.payCost = delegate (CostTypeDef def, CostTypeDef.PayCostContext c)
+            {
             };
 
-            On.RoR2.CostTypeCatalog.Init += (orig) => {
+            On.RoR2.CostTypeCatalog.Init += (orig) =>
+            {
                 orig();
                 CostTypeCatalog.Register(costTypeIndex, def);
             };
 
-            IL.RoR2.CostTypeCatalog.Init += (il) => {
+            IL.RoR2.CostTypeCatalog.Init += (il) =>
+            {
                 ILCursor c = new(il);
-                bool found = c.TryGotoNext(MoveType.Before, 
+                bool found = c.TryGotoNext(MoveType.Before,
                     x => x.MatchLdcI4(15)
                 );
 
-                if (found) {
+                if (found)
+                {
                     c.Index++;
-                    c.EmitDelegate<Func<int,int>>((c) => {
+                    c.EmitDelegate<Func<int, int>>((c) =>
+                    {
                         return 20;
                     });
                 }
-                else {
+                else
+                {
                     Logger.LogError("Failed to apply CostTypeCatalog IL hook");
                 }
             };
 
-            On.RoR2.UI.PickupPickerPanel.OnCreateButton += (orig, self, i, button) => {
+            On.RoR2.UI.PickupPickerPanel.OnCreateButton += (orig, self, i, button) =>
+            {
                 orig(self, i, button);
-                if (!self.gameObject.name.Contains("VoidCradle")) {
+                if (!self.gameObject.name.Contains("VoidCradle"))
+                {
                     return;
                 }
                 TooltipProvider tp = button.gameObject.AddComponent<TooltipProvider>();
                 TooltipContent c = new();
                 ItemDef def = ItemCatalog.GetItemDef(GetCorruption(self.pickerController.options[i].pickupIndex.itemIndex));
-                if (!def) {
+                if (!def)
+                {
                     return;
                 }
                 c.bodyColor = ColorCatalog.GetColor(ColorCatalog.ColorIndex.VoidItem);
@@ -94,9 +104,12 @@ namespace WellRoundedBalance.Interactables
             };
         }
 
-        public static bool HasAtLeastOneItem(Inventory inventory) {
-            foreach (ItemIndex index in inventory.itemAcquisitionOrder) {
-                if (IsCorruptible(index)) {
+        public static bool HasAtLeastOneItem(Inventory inventory)
+        {
+            foreach (ItemIndex index in inventory.itemAcquisitionOrder)
+            {
+                if (IsCorruptible(index))
+                {
                     return true;
                 }
             }
@@ -104,12 +117,14 @@ namespace WellRoundedBalance.Interactables
             return false;
         }
 
-        public static bool IsCorruptible(ItemIndex index) {
+        public static bool IsCorruptible(ItemIndex index)
+        {
             ItemIndex item = RoR2.Items.ContagiousItemManager.GetTransformedItemIndex(index);
             return item != ItemIndex.None;
         }
 
-        public static ItemIndex GetCorruption(ItemIndex index) {
+        public static ItemIndex GetCorruption(ItemIndex index)
+        {
             return RoR2.Items.ContagiousItemManager.GetTransformedItemIndex(index);
         }
 
@@ -127,7 +142,8 @@ namespace WellRoundedBalance.Interactables
                 controller.onPickupSelected.AddListener(Corrupt);
             }
 
-            public void Corrupt(int i) {
+            public void Corrupt(int i)
+            {
                 PickupIndex index = new(i);
                 ItemIndex def = index.itemIndex;
                 Interactor interactor = interaction.lastActivator;
@@ -154,13 +170,17 @@ namespace WellRoundedBalance.Interactables
 
                     List<PickupPickerController.Option> options = new();
                     int c = 0;
-                    foreach (ItemIndex index in body.inventory.itemAcquisitionOrder.OrderBy(x => UnityEngine.Random.value)) {
-                        if (IsCorruptible(index)) {
+                    foreach (ItemIndex index in body.inventory.itemAcquisitionOrder.OrderBy(x => UnityEngine.Random.value))
+                    {
+                        if (IsCorruptible(index))
+                        {
                             ItemDef def = ItemCatalog.GetItemDef(index);
-                            if (def.tier == ItemTier.Boss || c >= 3) {
+                            if (def.tier == ItemTier.Boss || c >= 3)
+                            {
                                 continue;
                             }
-                            options.Add(new PickupPickerController.Option {
+                            options.Add(new PickupPickerController.Option
+                            {
                                 pickupIndex = PickupCatalog.FindPickupIndex(index),
                                 available = true
                             });
@@ -168,7 +188,8 @@ namespace WellRoundedBalance.Interactables
                         }
                     }
 
-                    if (options.Count >= 1) {
+                    if (options.Count >= 1)
+                    {
                         Debug.Log("starting UI");
                         controller.SetOptionsInternal(options.ToArray());
                         controller.SetOptionsServer(options.ToArray());

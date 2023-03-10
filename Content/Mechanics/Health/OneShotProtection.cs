@@ -6,6 +6,12 @@ namespace WellRoundedBalance.Mechanics.Health
     {
         public override string Name => ":: Mechanics :: One Shot Protection";
 
+        [ConfigField("Percent Threshold", "Decimal.", 0.1f)]
+        public static float percentThreshold;
+
+        [ConfigField("Invincibility Duration", "", 0.5f)]
+        public static float invincibilityDuration;
+
         public override void Init()
         {
             base.Init();
@@ -14,6 +20,15 @@ namespace WellRoundedBalance.Mechanics.Health
         public override void Hooks()
         {
             IL.RoR2.HealthComponent.TriggerOneShotProtection += ChangeTime;
+            CharacterBody.onBodyStartGlobal += CharacterBody_onBodyStartGlobal;
+        }
+
+        private void CharacterBody_onBodyStartGlobal(CharacterBody characterBody)
+        {
+            if (characterBody.oneShotProtectionFraction > 0)
+            {
+                characterBody.oneShotProtectionFraction = percentThreshold;
+            }
         }
 
         public static void ChangeTime(ILContext il)
@@ -23,7 +38,7 @@ namespace WellRoundedBalance.Mechanics.Health
             if (c.TryGotoNext(MoveType.Before,
                     x => x.MatchLdcR4(0.1f)))
             {
-                c.Next.Operand = 0.5f;
+                c.Next.Operand = invincibilityDuration;
             }
             else
             {

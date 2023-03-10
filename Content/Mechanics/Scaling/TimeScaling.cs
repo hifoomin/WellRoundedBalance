@@ -13,6 +13,36 @@ namespace WellRoundedBalance.Mechanics.Scaling
 
         public override string Name => ":: Mechanics : Time Scaling";
 
+        [ConfigField("Time Scaling", "Formula for difficulty coefficient: ((Player Factor Base + Player Count * Player Count Multiplier) + (Time in minutes * Time Factor Multiplier * (Square Root Multiplier * Square Root(DifficultyDef Scaling Value (1.5 for WRB Drizzle, 2 for Rainstorm, 3 for Monsoon)))) * (Player Count ^ Player Count Exponent)) * (Custom Factor Add + Custom Time Factor Multiplier * (Square Root(Time in minutes) * Scaling Value Multiplier * DifficultyDef Scaling Value) * Square Root(Player Count ^ Player Count Exponent))\nFormula for ambient level: ", 0.75f)]
+        public static float duhDoesNothing;
+
+        [ConfigField("Scaling Debug Keybind", "Writes vanilla time scaling for comparison", ";")]
+        public static string scalingDebugKeybind;
+
+        [ConfigField("Player Factor Base", "", 0.7f)]
+        public static float playerFactorBase;
+
+        [ConfigField("Player Count Multiplier", "", 0.3f)]
+        public static float playerCountMultiplier;
+
+        [ConfigField("Player Count Exponent", "", 0.2f)]
+        public static float playerCountExponent;
+
+        [ConfigField("Time Factor Multiplier", "", 0.0506f)]
+        public static float timeFactorMultiplier;
+
+        [ConfigField("Square Root Multiplier", "", 1.2f)]
+        public static float squareRootMultiplier;
+
+        [ConfigField("Scaling Value Multiplier", "", 0.42f)]
+        public static float scalingValueMultiplier;
+
+        [ConfigField("Custom Factor Add", "", 1f)]
+        public static float customFactorAdd;
+
+        [ConfigField("Custom Time Factor Multiplier", "", 0.31f)]
+        public static float customTimeFactorMultiplier;
+
         public override void Init()
         {
             base.Init();
@@ -26,7 +56,7 @@ namespace WellRoundedBalance.Mechanics.Scaling
 
         private void RoR2Application_onUpdate()
         {
-            if (Input.GetKeyDown(";") && Run.instance)
+            if (Input.GetKeyDown(scalingDebugKeybind) && Run.instance)
             {
                 ChatMessage.Send("\n");
                 ChatMessage.Send("Current ambient level: " + ambientLevel);
@@ -43,22 +73,25 @@ namespace WellRoundedBalance.Mechanics.Scaling
                 int playerCount = self.participatingPlayerCount;
                 float Time = self.GetRunStopwatch() * 0.016666668f; // stupid vanilla workaround
 
-                var playerfactorbase = 0.7f;
-                var playercountmultiplier = 0.3f;
-                var playercountexponent = 0.2f;
-                var timefactormultiplier = 0.0506f;
+                var playerfactorbase = playerFactorBase;
+                var playercountmultiplier = playerCountMultiplier;
+                var playercountexponent = playerCountExponent;
+                var timefactormultiplier = timeFactorMultiplier;
 
                 DifficultyDef difficultyDef = DifficultyCatalog.GetDifficultyDef(self.selectedDifficulty);
 
                 float playerFactor = playerfactorbase + playerCount * playercountmultiplier;
-                float timeFactor = Time * timefactormultiplier * (1.2f * Mathf.Sqrt(difficultyDef.scalingValue));
+                float timeFactor = Time * timefactormultiplier * (squareRootMultiplier * Mathf.Sqrt(difficultyDef.scalingValue));
                 float playerScalar = (float)Math.Pow(playerCount, playercountexponent);
 
-                float customTimeFactor = Mathf.Sqrt(Time) * 0.42f * difficultyDef.scalingValue;
+                float customTimeFactor = Mathf.Sqrt(Time) * scalingValueMultiplier * difficultyDef.scalingValue;
 
-                float customFactor = 1f + 0.31f * customTimeFactor * Mathf.Sqrt(playerScalar);
+                float customFactor = customFactorAdd + customTimeFactorMultiplier * customTimeFactor * Mathf.Sqrt(playerScalar);
 
+                //
                 float finalDifficulty = (playerFactor + timeFactor * playerScalar) * customFactor;
+                //
+
                 self.compensatedDifficultyCoefficient = finalDifficulty;
                 self.difficultyCoefficient = finalDifficulty;
                 self.ambientLevel = Mathf.Min(3f * (finalDifficulty - playerFactor) + 1f, Run.ambientLevelCap);
