@@ -40,14 +40,34 @@ namespace WellRoundedBalance.Items.Reds
             var projectileController = bigFuckingMissile.GetComponent<ProjectileController>();
 
             bigFuckingMissileGhost = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.MissileGhost.Load<GameObject>(), "BigFuckingMissileGhost", false);
-            bigFuckingMissileGhost.transform.localScale = new Vector3(10f, 10f, 10f);
+            bigFuckingMissileGhost.transform.localScale = new Vector3(9f, 9f, 9f);
             var flare = bigFuckingMissileGhost.transform.GetChild(1);
             flare.gameObject.SetActive(false);
 
+            var icbmTrail = GameObject.Instantiate(Utils.Paths.Material.matMissileTrail.Load<Material>());
+            icbmTrail.name = "DSADASD";
+            icbmTrail.SetColor("_TintColor", new Color32(255, 129, 102, 255));
+
             var trail = bigFuckingMissileGhost.transform.GetChild(0);
             var trailRenderer = trail.GetComponent<TrailRenderer>();
-            trailRenderer.time = 0.4f * 2f;
-            trailRenderer.widthMultiplier = 0.5f * 8f;
+            trailRenderer.time = 0.4f * 1.5f;
+            trailRenderer.widthMultiplier = 0.5f * 3f;
+
+            // Main.WRBLogger.LogError("pre sharedMaterial is " + trailRenderer.sharedMaterial);
+
+            trailRenderer.sharedMaterial = icbmTrail;
+
+            // Main.WRBLogger.LogError("post sharedMaterial is " + trailRenderer.sharedMaterial);
+
+            var missileModel = bigFuckingMissileGhost.transform.GetChild(2);
+            var meshRenderer = missileModel.GetComponent<MeshRenderer>();
+
+            var icbmMat = GameObject.Instantiate(Utils.Paths.Material.matMissile.Load<Material>());
+            // icbmMat.SetColor("_Color", new Color32(224, 94, 94, 255));
+            icbmMat.SetTexture("_MainTex", Main.wellroundedbalance.LoadAsset<Texture2D>("texIcbm.png"));
+            icbmMat.EnableKeyword("DITHER");
+
+            meshRenderer.sharedMaterial = icbmMat;
 
             projectileController.ghostPrefab = bigFuckingMissileGhost;
 

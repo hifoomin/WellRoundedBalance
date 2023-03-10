@@ -61,10 +61,19 @@ namespace WellRoundedBalance.Items.Greens
             var missileProjectile = Utils.Paths.GameObject.MissileProjectile.Load<GameObject>();
             var missileProjectileController = missileProjectile.GetComponent<ProjectileController>();
             missileProjectileController.procCoefficient = 0f;
-
             var ghost = missileProjectileController.ghostPrefab;
-            ghost.transform.localScale = new Vector3(3f, 3f, 3f);
+            ghost.transform.localScale = new Vector3(2f, 2f, 2f);
             ghost.transform.GetChild(1).gameObject.SetActive(false);
+
+            var missileModel = ghost.transform.GetChild(2);
+            var meshRenderer = missileModel.GetComponent<MeshRenderer>();
+
+            var atgMat = GameObject.Instantiate(Utils.Paths.Material.matMissile.Load<Material>());
+            // atgMat.SetColor("_Color", new Color32(224, 94, 94, 255));
+            atgMat.SetTexture("_MainTex", Main.wellroundedbalance.LoadAsset<Texture2D>("texAtg.png"));
+            atgMat.EnableKeyword("DITHER");
+
+            meshRenderer.sharedMaterial = atgMat;
 
             if (improveTargeting)
             {
