@@ -4,7 +4,7 @@ namespace WellRoundedBalance.Equipment.Orange
 {
     public class EccentricVase : EquipmentBase
     {
-        public override string Name => "::: Equipment :: Eccentric Vase";
+        public override string Name => ":: Equipment :: Eccentric Vase";
         public override EquipmentDef InternalPickup => RoR2Content.Equipment.Gateway;
 
         public override string PickupText => "Create a quantum tunnel between two locations.";

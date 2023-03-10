@@ -4,7 +4,7 @@ namespace WellRoundedBalance.Equipment.Lunar
 {
     public class HelfireTincture : EquipmentBase
     {
-        public override string Name => "::: Equipment ::: Helfire Tincture";
+        public override string Name => ":: Equipment ::: Helfire Tincture";
         public override EquipmentDef InternalPickup => RoR2Content.Equipment.BurnNearby;
 
         public override string PickupText => "Ignite everything nearby... <color=#FF7F7F>including you and allies.</color>\n";

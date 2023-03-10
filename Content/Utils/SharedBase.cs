@@ -10,15 +10,24 @@ namespace WellRoundedBalance.Utils
         public virtual bool isEnabled { get; } = true;
         public static ManualLogSource Logger => Main.WRBLogger;
         public abstract ConfigFile Config { get; }
+        public static List<string> initList = new();
+
         public abstract void Hooks();
+
         public virtual void Init()
         {
             ConfigManager.HandleConfigAttributes(GetType(), Name, Config);
             Hooks();
+            // Main.WRBLogger.LogDebug("Initialized " + Name);
+            initList.Add(Name);
         }
+
         public string noop(float f) => f.ToString();
+
         public string d(float f) => (f * 100f).ToString() + "%";
+
         public string m(float f) => f + "m";
+
         public string s(float f, string suffix) => f + (suffix.StartsWith("{Stack}") ? "" : " ") + suffix + (Mathf.Abs(f) > 1 ? "s" : string.Empty);
 
         public static string StackDesc(float init, float stack, Func<float, string> initFn, Func<float, string> stackFn)

@@ -10,6 +10,27 @@ namespace WellRoundedBalance.Elites
 
         public override string Name => ":: Elites : Stat Changes";
 
+        [ConfigField("Tier 1 Cost Multiplier", "", 8f)]
+        public static float tier1CostMultiplier;
+
+        [ConfigField("Tier 1 Honor Cost Multiplier", "", 4.66666f)]
+        public static float tier1HonorCostMultiplier;
+
+        [ConfigField("Tier 2 Cost Multiplier", "", 48f)]
+        public static float tier2CostMultiplier;
+
+        [ConfigField("Tier 2 Health Multiplier", "", 6f)]
+        public static float tier2HealthMultiplier;
+
+        [ConfigField("Tier 2 Honor Health Multiplier", "", 4.5f)]
+        public static float tier2HonorHealthMultiplier;
+
+        [ConfigField("All Tier Damage Multiplier", "", 1f)]
+        public static float allTierDamageMultiplier;
+
+        [ConfigField("All Tier Honor Damage Multiplier", "", 1f)]
+        public static float allTierHonorDamageMultiplier;
+
         public override void Init()
         {
             base.Init();
@@ -32,17 +53,17 @@ namespace WellRoundedBalance.Elites
 
                     if (eliteDefList.Contains(RoR2Content.Elites.Fire))
                     {
-                        eliteTierDef.costMultiplier = 8f;
+                        eliteTierDef.costMultiplier = tier1CostMultiplier;
                     }
 
                     if (eliteDefList.Contains(RoR2Content.Elites.FireHonor))
                     {
-                        eliteTierDef.costMultiplier = 4.66666f;
+                        eliteTierDef.costMultiplier = tier1HonorCostMultiplier;
                     }
 
                     if (eliteDefList.Contains(RoR2Content.Elites.Poison))
                     {
-                        eliteTierDef.costMultiplier = 48f;
+                        eliteTierDef.costMultiplier = tier2CostMultiplier;
                     }
                     // havent tested t2 or honor lol, but t1 elites were too frequent based on playtesting
 
@@ -52,13 +73,13 @@ namespace WellRoundedBalance.Elites
                         {
                             if (eliteDef.name.IndexOf("honor", StringComparison.OrdinalIgnoreCase) >= 0)
                             {
-                                eliteDef.damageBoostCoefficient = 1f;
-                                eliteDef.healthBoostCoefficient = Mathf.Min(eliteDef.healthBoostCoefficient, 4.5f);
+                                eliteDef.damageBoostCoefficient = allTierHonorDamageMultiplier;
+                                eliteDef.healthBoostCoefficient = Mathf.Min(eliteDef.healthBoostCoefficient, tier2HonorHealthMultiplier);
                             }
                             else
                             {
-                                eliteDef.damageBoostCoefficient = 1f;
-                                eliteDef.healthBoostCoefficient = Mathf.Min(eliteDef.healthBoostCoefficient, 6f);
+                                eliteDef.damageBoostCoefficient = allTierDamageMultiplier;
+                                eliteDef.healthBoostCoefficient = Mathf.Min(eliteDef.healthBoostCoefficient, tier2HealthMultiplier);
                             }
                         }
                     }

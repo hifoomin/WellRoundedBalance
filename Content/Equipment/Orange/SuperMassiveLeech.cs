@@ -5,7 +5,7 @@ namespace WellRoundedBalance.Equipment.Orange
 {
     public class SuperMassiveLeech : EquipmentBase
     {
-        public override string Name => "::: Equipment :: Super Massive Leech";
+        public override string Name => ":: Equipment :: Super Massive Leech";
         public override EquipmentDef InternalPickup => RoR2Content.Equipment.LifestealOnHit;
 
         public override string PickupText => "Heal for a percentage of the damage you deal for " + duration + " seconds.";

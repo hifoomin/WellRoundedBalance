@@ -4,7 +4,7 @@ namespace WellRoundedBalance.Equipment.Lunar
 {
     public class SpinelTonic : EquipmentBase
     {
-        public override string Name => "::: Equipment ::: Spinel Tonic";
+        public override string Name => ":: Equipment ::: Spinel Tonic";
         public override EquipmentDef InternalPickup => RoR2Content.Equipment.Tonic;
 
         public override string PickupText => "Gain a massive boost to ALL stats. <color=#FF7F7F>Chance to gain an affliction that reduces ALL stats.</color>";

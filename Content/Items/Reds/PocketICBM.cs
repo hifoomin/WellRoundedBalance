@@ -7,6 +7,7 @@ namespace WellRoundedBalance.Items.Reds
     public class PocketICBM : ItemBase
     {
         public static GameObject bigFuckingMissile;
+        public static GameObject bigFuckingMissileGhost;
         public override string Name => ":: Items ::: Reds :: Pocket ICBM";
         public override ItemDef InternalPickup => DLC1Content.Items.MoreMissile;
 
@@ -26,21 +27,29 @@ namespace WellRoundedBalance.Items.Reds
         public override void Init()
         {
             bigFuckingMissile = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.MissileProjectile.Load<GameObject>(), "BigFuckingMissile");
-            bigFuckingMissile.transform.localScale = new Vector3(5f, 5f, 5f);
+
+            var missileController = bigFuckingMissile.GetComponent<MissileController>();
+            missileController.maxSeekDistance = 10000f;
+            missileController.turbulence = 0f;
+            missileController.deathTimer = 30f;
+            missileController.giveupTimer = 30f;
+            missileController.delayTimer = 0f;
+            missileController.maxVelocity = 25f * 2.5f;
+            missileController.acceleration = 3f * 2.5f;
 
             var projectileController = bigFuckingMissile.GetComponent<ProjectileController>();
-            var ghost = projectileController.ghostPrefab;
 
-            var newGhost = PrefabAPI.InstantiateClone(ghost, "BigFuckingMissileGhost", false);
-            var flare = newGhost.transform.GetChild(1);
+            bigFuckingMissileGhost = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.MissileGhost.Load<GameObject>(), "BigFuckingMissileGhost", false);
+            bigFuckingMissileGhost.transform.localScale = new Vector3(10f, 10f, 10f);
+            var flare = bigFuckingMissileGhost.transform.GetChild(1);
             flare.gameObject.SetActive(false);
 
-            var trail = newGhost.transform.GetChild(0);
+            var trail = bigFuckingMissileGhost.transform.GetChild(0);
             var trailRenderer = trail.GetComponent<TrailRenderer>();
-            trailRenderer.time = 2f;
-            trailRenderer.widthMultiplier = 5f;
+            trailRenderer.time = 0.4f * 2f;
+            trailRenderer.widthMultiplier = 0.5f * 8f;
 
-            ghost = newGhost;
+            projectileController.ghostPrefab = bigFuckingMissileGhost;
 
             PrefabAPI.RegisterNetworkPrefab(bigFuckingMissile);
 

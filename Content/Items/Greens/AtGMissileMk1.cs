@@ -7,7 +7,7 @@ namespace WellRoundedBalance.Items.Greens
     {
         public override string Name => ":: Items :: Greens :: AtG Missile Mk1";
         public override ItemDef InternalPickup => RoR2Content.Items.Missile;
-        
+
         public override string PickupText => "Chance to fire a missile.";
         public override string DescText => "<style=cIsDamage>10%</style> chance to fire a missile that deals <style=cIsDamage>" + d(baseTotalDamage) + "</style> <style=cStack>(+" + d(totalDamagePerStack) + " per stack)</style> TOTAL damage.";
 
@@ -19,6 +19,9 @@ namespace WellRoundedBalance.Items.Greens
 
         [ConfigField("Improve targeting?", "Affects all missile items and equipment.", true)]
         public static bool improveTargeting;
+
+        [ConfigField("Size Multiplier", "", 3f)]
+        public static float sizeMultiplier;
 
         public override void Init()
         {
@@ -61,6 +64,10 @@ namespace WellRoundedBalance.Items.Greens
             var missileProjectile = Utils.Paths.GameObject.MissileProjectile.Load<GameObject>();
             var missileProjectileController = missileProjectile.GetComponent<ProjectileController>();
             missileProjectileController.procCoefficient = 0f;
+
+            var ghost = missileProjectileController.ghostPrefab;
+            ghost.transform.localScale = new Vector3(sizeMultiplier, sizeMultiplier, sizeMultiplier);
+            ghost.transform.GetChild(1).gameObject.SetActive(false);
 
             if (improveTargeting)
             {

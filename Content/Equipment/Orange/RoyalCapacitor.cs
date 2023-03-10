@@ -4,7 +4,7 @@ namespace WellRoundedBalance.Equipment.Orange
 {
     public class RoyalCapacitor : EquipmentBase
     {
-        public override string Name => "::: Equipment :: Royal Capacitor";
+        public override string Name => ":: Equipment :: Royal Capacitor";
         public override EquipmentDef InternalPickup => RoR2Content.Equipment.Lightning;
 
         public override string PickupText => "Call down a lightning strike on a targeted monster.";

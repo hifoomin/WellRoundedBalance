@@ -23,6 +23,7 @@ using WellRoundedBalance.Difficulties;
 // using WellRoundedBalance.Enemies.FamilyEvents;
 
 [assembly: HG.Reflection.SearchableAttribute.OptIn]
+
 namespace WellRoundedBalance
 {
     [BepInDependency("HIFU.Inferno", BepInDependency.DependencyFlags.SoftDependency)]
@@ -262,6 +263,15 @@ namespace WellRoundedBalance
                     Dialogue.ShowPopup("Config changed?", "Thank you for enjoying Well Rounded Balance! Despite the extensive configuration, we want our default experience to be as enjoyable as possible. Please let us know your balanced takes at <style=cDeath>cutt.ly/ballscord</style>! any feedback is welcome.\n\n<style=cStack>set Mechanics > Annoying Pop Up to \'Fuck Off\' to disable this message.</style>");
                 }
             };
+
+            SharedBase.initList.Sort();
+            for (int i = 0; i < SharedBase.initList.Count; i++)
+            {
+                var index = SharedBase.initList[i];
+                WRBLogger.LogDebug("Initialized " + index);
+            }
+            WRBLogger.LogDebug("==+----------------==+++++==----------------+==");
+            WRBLogger.LogDebug("Initialized " + SharedBase.initList.Count + " classes");
         }
 
         private void ItemCatalog_Init(On.RoR2.ItemCatalog.orig_Init orig)

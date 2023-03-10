@@ -5,7 +5,7 @@ namespace WellRoundedBalance.Equipment.Orange
 {
     public class TheBackup : EquipmentBase
     {
-        public override string Name => "::: Equipment :: The Backup";
+        public override string Name => ":: Equipment :: The Backup";
         public override EquipmentDef InternalPickup => RoR2Content.Equipment.DroneBackup;
 
         public override string PickupText => "Call drones for back up. Lasts " + duration + " seconds.";

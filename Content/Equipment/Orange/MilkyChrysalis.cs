@@ -2,7 +2,7 @@
 {
     public class MilkyChrysalis : EquipmentBase
     {
-        public override string Name => "::: Equipment :: Milky Chrysalis";
+        public override string Name => ":: Equipment :: Milky Chrysalis";
         public override EquipmentDef InternalPickup => RoR2Content.Equipment.Jetpack;
 
         public override string PickupText => "Gain temporary flight.";
