@@ -18,7 +18,7 @@ namespace WellRoundedBalance.Equipment
         }
 
         [SystemInitializer(typeof(EquipmentCatalog))]
-        public static void OnItemInitialized() { if (onTokenRegister != null) onTokenRegister(); }
+        public static void OnEquipmentInitialized() { if (onTokenRegister != null) onTokenRegister(); }
 
         public void SetToken()
         {

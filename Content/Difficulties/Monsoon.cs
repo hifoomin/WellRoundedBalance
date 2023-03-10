@@ -5,7 +5,7 @@ namespace WellRoundedBalance.Difficulties
     internal class Monsoon : DifficultyBase
     {
         public override string Name => ":: Difficulties ::: Monsoon";
-        public override string InternalDiffToken => "difficulty_hard_description";
+        public override DifficultyIndex InternalDiff => DifficultyIndex.Hard;
 
         public override string DescText => "For hardcore players. Every bend introduces pain and horrors of the planet. You will die.<style=cStack>\n\n" +
                                            (percentRegenDecrease > 0 ? ">Player Health Regeneration: <style=cIsHealth>-" + d(percentRegenDecrease) + "</style> \n" : "") +
@@ -47,14 +47,8 @@ namespace WellRoundedBalance.Difficulties
 
         private void Changes()
         {
-            for (int i = 0; i < DifficultyCatalog.difficultyDefs.Length; i++)
-            {
-                var difficulty = DifficultyCatalog.difficultyDefs[i];
-                if (difficulty.nameToken == "DIFFICULTY_HARD_NAME")
-                {
-                    difficulty.scalingValue = totalDifficultyScaling / 50f;
-                }
-            }
+            DifficultyDef def = DifficultyCatalog.difficultyDefs.FirstOrDefault(x => DifficultyCatalog.GetDifficultyDef(InternalDiff) == x);
+            if (def != null && def != default) def.scalingValue = totalDifficultyScaling / 50f;
         }
     }
 }

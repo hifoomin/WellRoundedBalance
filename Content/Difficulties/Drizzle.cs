@@ -5,7 +5,7 @@ namespace WellRoundedBalance.Difficulties
     internal class Drizzle : DifficultyBase
     {
         public override string Name => ":: Difficulties : Drizzle";
-        public override string InternalDiffToken => "difficulty_easy_description";
+        public override DifficultyIndex InternalDiff => DifficultyIndex.Easy;
 
         public override string DescText => "For new players. Every move calls for less effort and attention.<style=cStack>\n\n" +
                                            (percentRegenIncrease > 0 ? ">Player Health Regeneration: <style=cIsHealing>+" + d(percentRegenIncrease) + "</style> \n" : "") +
@@ -13,7 +13,7 @@ namespace WellRoundedBalance.Difficulties
                                            ">Difficulty Scaling: <style=cIsHealing>" + (totalDifficultyScaling - 100f) + "%</style></style>";
 
         [ConfigField("Percent Regen Increase", "Decimal.", 0f)]
-        public static float percentRegenIncrease;
+        public static float percentRegenIncrease; 
 
         [ConfigField("Armor Gain", "", 0f)]
         public static float armorGain;
@@ -63,14 +63,8 @@ namespace WellRoundedBalance.Difficulties
 
         private void Changes()
         {
-            for (int i = 0; i < DifficultyCatalog.difficultyDefs.Length; i++)
-            {
-                var difficulty = DifficultyCatalog.difficultyDefs[i];
-                if (difficulty.nameToken == "DIFFICULTY_EASY_NAME")
-                {
-                    difficulty.scalingValue = totalDifficultyScaling / 50f;
-                }
-            }
+            DifficultyDef def = DifficultyCatalog.difficultyDefs.FirstOrDefault(x => DifficultyCatalog.GetDifficultyDef(InternalDiff) == x);
+            if (def != null && def != default) def.scalingValue = totalDifficultyScaling / 50f;
         }
     }
 }

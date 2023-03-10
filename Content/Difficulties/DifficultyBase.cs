@@ -6,7 +6,7 @@ namespace WellRoundedBalance.Difficulties
     public abstract class DifficultyBase : SharedBase
     {
         public override ConfigFile Config => Main.WRBDifficultyConfig;
-        public abstract string InternalDiffToken { get; }
+        public abstract DifficultyIndex InternalDiff { get; }
         public abstract string DescText { get; }
 
         public static event Action onTokenRegister;
@@ -14,12 +14,15 @@ namespace WellRoundedBalance.Difficulties
         public override void Init()
         {
             base.Init();
-            onTokenRegister += SetToken;
+            SetToken();
         }
 
         public void SetToken()
         {
-            LanguageAPI.Add(InternalDiffToken, DescText);
+            if (InternalDiff == DifficultyIndex.Invalid) return;
+            DifficultyDef def = DifficultyCatalog.GetDifficultyDef(InternalDiff);
+            Logger.LogMessage(def.descriptionToken);
+            if (def != null) LanguageAPI.Add(def.descriptionToken, DescText);
         }
     }
 }
