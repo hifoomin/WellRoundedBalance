@@ -9,7 +9,7 @@ namespace WellRoundedBalance.Elites
         [ConfigField("Healing Beam Radius", "", 25f)]
         public static float radius;
 
-        [ConfigField("Percent Healing Per Second", "", 3f)]
+        [ConfigField("Heal Coefficient Per Second", "", 3f)]
         public static float healFraction;
 
         [ConfigField("Heal Nova Radius", "", 10f)]
@@ -66,6 +66,10 @@ namespace WellRoundedBalance.Elites
             zone.rangeIndicator = areaIndicator;
             zone.radius = healNovaRadius;
 
+            if (!healNovaPrefab.GetComponent<ProjectileDamage>()) {
+                healNovaPrefab.AddComponent<ProjectileDamage>();
+            }
+
             healNovaPrefab.AddComponent<HealNovaController>();
 
             ContentAddition.AddProjectile(healNovaPrefab);
@@ -106,7 +110,8 @@ namespace WellRoundedBalance.Elites
                     {
                         position = info.position,
                         projectilePrefab = healNovaPrefab,
-                        owner = info.attacker
+                        owner = info.attacker,
+                        damage = info.attacker.GetComponent<CharacterBody>().damage * 0.33f
                     };
                     ProjectileManager.instance.FireProjectile(pinfo);
                 }
@@ -156,7 +161,7 @@ namespace WellRoundedBalance.Elites
                     target = FetchTarget();
                     if (target && NetworkServer.active)
                     {
-                        target.Heal(target.health * (healRate * 0.01f), new(), true);
+                        target.Heal(body.damage * healFraction, new(), true);
                     }
 
                     if (target)
@@ -232,6 +237,7 @@ namespace WellRoundedBalance.Elites
             private float delay = 1f / 3f;
             private TeamIndex index;
             private GameObject owner;
+            private float heal;
 
             private void Start()
             {
@@ -239,6 +245,7 @@ namespace WellRoundedBalance.Elites
                 maxRadius = healNovaRadius;
                 index = GetComponent<TeamFilter>().teamIndex;
                 owner = GetComponent<ProjectileController>().owner;
+                heal = GetComponent<ProjectileDamage>().damage;
             }
 
             private void FixedUpdate()
@@ -273,9 +280,9 @@ namespace WellRoundedBalance.Elites
 
                     foreach (TeamComponent com in TeamComponent.GetTeamMembers(index))
                     {
-                        if (!healed.Contains(com) && com.body && zone.IsInBounds(com.body.corePosition))
+                        if (!healed.Contains(com) && com.body && zone.IsInBounds(com.body.corePosition) && !com.body.HasBuff(DLC1Content.Buffs.EliteEarth))
                         {
-                            com.body.healthComponent.HealFraction(healFraction * 0.005f, new());
+                            com.body.healthComponent.HealFraction(heal, new());
                         }
                     }
                 }
