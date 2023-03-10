@@ -83,7 +83,8 @@ namespace WellRoundedBalance.Items.Whites
         public static void HealthCompoment_TakeDamage(ILContext il)
         {
             ILCursor c = new(il);
-            if (c.TryGotoNext(MoveType.After, x => x.MatchLdloc(25)))
+            int idx = GetItemLoc(c, nameof(DLC1Content.Items.FragileDamageBonus));
+            if (idx != -1 && c.TryGotoNext(MoveType.After, x => x.MatchLdloc(idx)))
             {
                 c.Emit(OpCodes.Pop);
                 c.Emit(OpCodes.Ldc_I4_0);

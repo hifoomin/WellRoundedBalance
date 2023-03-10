@@ -67,35 +67,32 @@ namespace WellRoundedBalance.Items.Whites
         public static void MushroomBodyBehavior_FixedUpdate(ILContext il)
         {
             ILCursor c = new(il);
-            if (c.TryGotoNext(x => x.MatchStloc(2)))
+            if (c.TryGotoNext(x => x.MatchCallOrCallvirt<CharacterBody>("get_" + nameof(CharacterBody.radius))) && c.TryGotoNext(x => x.MatchStloc(out _)))
             {
                 c.Emit(OpCodes.Pop);
                 c.Emit(OpCodes.Ldarg_0);
-                c.Emit(OpCodes.Ldloc_0);
-                c.EmitDelegate<Func<MushroomBodyBehavior, int, float>>((self, stack) => self.body.radius + StackAmount(baseRadius, radiusStack, stack, radiusIsHyperbolic));
+                c.EmitDelegate<Func<MushroomBodyBehavior, float>>(self => self.body.radius + StackAmount(baseRadius, radiusStack, self.stack, radiusIsHyperbolic));
             }
             else Main.WRBLogger.LogError("Failed to apply Bustling Fungus Radius hook");
             if (c.TryGotoNext(x => x.MatchStfld<HealingWard>(nameof(HealingWard.interval))))
             {
                 c.Emit(OpCodes.Pop);
-                c.Emit(OpCodes.Ldloc_0);
-                c.EmitDelegate<Func<int, float>>(stack => StackAmount(healingInterval, healingIntervalStack, stack, healingIntervalIsHyperbolic));
+                c.Emit(OpCodes.Ldarg_0);
+                c.EmitDelegate<Func<MushroomBodyBehavior, float>>(self => StackAmount(healingInterval, healingIntervalStack, self.stack, healingIntervalIsHyperbolic));
             }
             else Main.WRBLogger.LogError("Failed to apply Bustling Fungus Interval hook");
             if (c.TryGotoNext(x => x.MatchStfld<HealingWard>(nameof(HealingWard.healFraction))))
             {
                 c.Emit(OpCodes.Pop);
                 c.Emit(OpCodes.Ldarg_0);
-                c.Emit(OpCodes.Ldloc_0);
-                c.EmitDelegate<Func<MushroomBodyBehavior, int, float>>((self, stack) => StackAmount(percentHealing, self.mushroomHealingWard.interval * percentHealingStack, stack, percentHealingIsHyperbolic));
+                c.EmitDelegate<Func<MushroomBodyBehavior, float>>(self => StackAmount(percentHealing, self.mushroomHealingWard.interval * percentHealingStack, self.stack, percentHealingIsHyperbolic));
             }
             else Main.WRBLogger.LogError("Failed to apply Bustling Fungus Percent Healing hook");
             if (c.TryGotoNext(x => x.MatchStfld<HealingWard>(nameof(HealingWard.healPoints))))
             {
                 c.Emit(OpCodes.Pop);
                 c.Emit(OpCodes.Ldarg_0);
-                c.Emit(OpCodes.Ldloc_0);
-                c.EmitDelegate<Func<MushroomBodyBehavior, int, float>>((self, stack) => StackAmount(flatHealing, self.mushroomHealingWard.interval * flatHealingStack, stack, flatHealingIsHyperbolic));
+                c.EmitDelegate<Func<MushroomBodyBehavior, float>>(self => StackAmount(flatHealing, self.mushroomHealingWard.interval * flatHealingStack, self.stack, flatHealingIsHyperbolic));
             }
             else Main.WRBLogger.LogError("Failed to apply Bustling Fungus Flat Healing hook");
         }

@@ -36,11 +36,14 @@ namespace WellRoundedBalance.Items.Whites
         public static void HealthCompoment_TakeDamage(ILContext il)
         {
             ILCursor c = new(il);
-            if (c.TryGotoNext(x => x.MatchLdloc(24)) && c.TryGotoNext(x => x.MatchStloc(6)))
+            int dmg = -1;
+            c.TryGotoNext(x => x.MatchLdfld<DamageInfo>(nameof(DamageInfo.damage)), x => x.MatchStloc(out dmg));
+            int idx = GetItemLoc(c, nameof(RoR2Content.Items.NearbyDamageBonus));
+            if (idx != -1 && c.TryGotoNext(x => x.MatchStloc(dmg)))
             {
                 c.Emit(OpCodes.Pop);
-                c.Emit(OpCodes.Ldloc, 24);
-                c.EmitDelegate<Func<int, float>>(stack => StackAmount(damageIncrease, damageIncreaseStack, stack, damageIncreaseIsHyperbolic));
+                c.Emit(OpCodes.Ldloc, idx);
+                c.EmitDelegate<Func<int, float>>(stack => 1 + StackAmount(damageIncrease, damageIncreaseStack, stack, damageIncreaseIsHyperbolic));
             }
             else Main.WRBLogger.LogError("Failed to apply Focus Crystal Damage hook");
         }

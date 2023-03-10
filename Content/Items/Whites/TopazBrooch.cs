@@ -57,10 +57,11 @@ namespace WellRoundedBalance.Items.Whites
         private void GlobalEventManager_OnCharacterDeath(ILContext il)
         {
             ILCursor c = new(il);
-            if (c.TryGotoNext(x => x.MatchLdloc(49)) && c.TryGotoNext(x => x.MatchCallOrCallvirt<HealthComponent>(nameof(HealthComponent.AddBarrier))))
+            int stack = GetItemLoc(c, nameof(RoR2Content.Items.BarrierOnKill));
+            if (c.TryGotoNext(x => x.MatchLdloc(stack)) && c.TryGotoNext(x => x.MatchCallOrCallvirt<HealthComponent>(nameof(HealthComponent.AddBarrier))))
             {
                 c.Emit(OpCodes.Pop);
-                c.Emit(OpCodes.Ldloc, 49);
+                c.Emit(OpCodes.Ldloc, stack);
                 c.EmitDelegate<Func<int, float>>(stack => StackAmount(flatBarrierGain, flatBarrierGainStack, stack, flatBarrierGainIsHyperbolic));
             }
             else Main.WRBLogger.LogError("Failed to apply Topaz Brooch Barrier hook");

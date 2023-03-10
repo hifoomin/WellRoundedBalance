@@ -3,6 +3,7 @@ using RiskOfOptions;
 using RiskOfOptions.Options;
 using System;
 using BepInEx.Logging;
+using MonoMod.Cil;
 
 namespace WellRoundedBalance.Items
 {
@@ -47,6 +48,14 @@ namespace WellRoundedBalance.Items
             float count = chance / firstStack;
             float coeff = (100 * firstStack) / (cap - firstStack); // should be good
             return cap * (1 - (100 / ((count * coeff) + 100)));
+        }
+
+        public static int GetItemLoc(ILCursor c, string item) // modify this on compat update
+        {
+            int ret = -1;
+            if (c.TryGotoNext(x => x.MatchLdsfld(typeof(RoR2Content.Items), item), x => x.MatchCallOrCallvirt<Inventory>(nameof(Inventory.GetItemCount)), x => x.MatchStloc(out ret))) c.Index--;
+            else if (c.TryGotoNext(x => x.MatchLdsfld(typeof(DLC1Content.Items), item), x => x.MatchCallOrCallvirt<Inventory>(nameof(Inventory.GetItemCount)), x => x.MatchStloc(out ret))) c.Index--;
+            return ret;
         }
 
         public T ConfigOption<T>(T value, string name, string desc)

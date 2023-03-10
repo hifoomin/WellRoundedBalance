@@ -46,8 +46,8 @@ namespace WellRoundedBalance.Items.Whites
 
         public override void Hooks()
         {
-            IL.RoR2.TeleporterInteraction.ChargingState.OnEnter += ChargingState_OnEnter;
-            IL.RoR2.Items.WardOnLevelManager.OnCharacterLevelUp += WardOnLevelManager_OnCharacterLevelUp;
+            IL.RoR2.TeleporterInteraction.ChargingState.OnEnter += Change;
+            IL.RoR2.Items.WardOnLevelManager.OnCharacterLevelUp += Change;
             RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
         }
 
@@ -65,28 +65,17 @@ namespace WellRoundedBalance.Items.Whites
             }
         }
 
-        public static void WardOnLevelManager_OnCharacterLevelUp(ILContext il)
+        public static void Change(ILContext il)
         {
             ILCursor c = new(il);
-            if (c.TryGotoNext(x => x.MatchCallOrCallvirt<BuffWard>("set_" + nameof(BuffWard.Networkradius))))
+            int stack = GetItemLoc(c, nameof(RoR2Content.Items.WardOnLevel));
+            if (stack != -1 && c.TryGotoNext(x => x.MatchCallOrCallvirt<BuffWard>("set_" + nameof(BuffWard.Networkradius))))
             {
                 c.Emit(OpCodes.Pop);
-                c.Emit(OpCodes.Ldloc_1);
+                c.Emit(OpCodes.Ldloc, stack);
                 c.EmitDelegate<Func<int, float>>(stack => StackAmount(baseRadius, radiusPerStack, stack, radiusIsHyperbolic));
             }
-            else Main.WRBLogger.LogError("Failed to apply Warbanner Radius 1 hook");
-        }
-
-        public static void ChargingState_OnEnter(ILContext il)
-        {
-            ILCursor c = new(il);
-            if (c.TryGotoNext(x => x.MatchCallOrCallvirt<BuffWard>("set_" + nameof(BuffWard.Networkradius))))
-            {
-                c.Emit(OpCodes.Pop);
-                c.Emit(OpCodes.Ldloc, 8);
-                c.EmitDelegate<Func<int, float>>(stack => StackAmount(baseRadius, radiusPerStack, stack, radiusIsHyperbolic));
-            }
-            else Main.WRBLogger.LogError("Failed to apply Warbanner Radius 2 hook");
+            else Main.WRBLogger.LogError("Failed to apply Warbanner Radius hook");
         }
     }
 }

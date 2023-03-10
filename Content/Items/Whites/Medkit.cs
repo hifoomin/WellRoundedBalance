@@ -46,21 +46,26 @@ namespace WellRoundedBalance.Items.Whites
         private void CharacterBody_RemoveBuff_BuffIndex(ILContext il)
         {
             ILCursor c = new(il);
-            if (c.TryGotoNext(x => x.MatchStloc(1)))
-            {
-                c.Emit(OpCodes.Pop);
-                c.Emit(OpCodes.Ldloc_0);
-                c.EmitDelegate<Func<int, float>>(stack => StackAmount(flatHealing, flatHealingStack, stack, flatHealingIsHyperbolic));
-            }
-            else Main.WRBLogger.LogError("Failed to apply Medkit Flat Healing hook");
-            if (c.TryGotoNext(x => x.MatchStloc(2)))
+            int bufftype = -1;
+            c.TryGotoNext(x => x.MatchLdarg(out bufftype), x => x.MatchLdcI4(-1), x => x.MatchBneUn(out _));
+            int count = GetItemLoc(c, nameof(RoR2Content.Items.Medkit));
+            if (bufftype == -1 || count == -1) return;
+            int cmp = -1;
+            if (c.TryGotoNext(x => x.MatchCallOrCallvirt<CharacterBody>("get_" + nameof(CharacterBody.maxHealth))) && c.TryGotoNext(x => x.MatchStloc(out _)))
             {
                 c.Emit(OpCodes.Pop);
                 c.Emit(OpCodes.Ldarg_0);
-                c.Emit(OpCodes.Ldloc_0);
+                c.Emit(OpCodes.Ldloc, count);
                 c.EmitDelegate<Func<CharacterBody, int, float>>((self, stack) => self.maxHealth * StackAmount(percentHealing, percentHealingStack, stack, percentHealingIsHyperbolic));
             }
             else Main.WRBLogger.LogError("Failed to apply Medkit Percent Healing hook");
+            if (c.TryGotoPrev(x => x.MatchStloc(out cmp)) && cmp != count)
+            {
+                c.Emit(OpCodes.Pop);
+                c.Emit(OpCodes.Ldloc, count);
+                c.EmitDelegate<Func<int, float>>(stack => StackAmount(flatHealing, flatHealingStack, stack, flatHealingIsHyperbolic));
+            }
+            else Main.WRBLogger.LogError("Failed to apply Medkit Flat Healing hook");
         }
     }
 }

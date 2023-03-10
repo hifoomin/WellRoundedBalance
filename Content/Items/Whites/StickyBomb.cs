@@ -61,25 +61,31 @@ namespace WellRoundedBalance.Items.Whites
         public static void GlobalEventManager_OnHitEnemy(ILContext il)
         {
             ILCursor c = new(il);
-            if (c.TryGotoNext(x => x.MatchLdsfld(typeof(RoR2Content.Items), nameof(RoR2Content.Items.StickyBomb))) && c.TryGotoNext(x => x.MatchLdloc(4), x => x.MatchCallOrCallvirt(typeof(Util), nameof(Util.CheckRoll))))
+            int info = -1;
+            int attacker = -1;
+            c.TryGotoNext(x => x.MatchLdarg(out info), x => x.MatchLdfld<DamageInfo>(nameof(DamageInfo.attacker)));
+            c.TryGotoNext(x => x.MatchStloc(attacker));
+            if (info == -1 || attacker == -1) return;
+            int stack = GetItemLoc(c, nameof(RoR2Content.Items.StickyBomb));
+            if (stack != -1 && c.TryGotoNext(x => x.MatchCallOrCallvirt(typeof(Util), nameof(Util.CheckRoll))))
             {
                 c.Emit(OpCodes.Pop);
-                c.Emit(OpCodes.Ldloc, 14);
-                c.Emit(OpCodes.Ldarg_1);
+                c.Emit(OpCodes.Ldloc, stack);
+                c.Emit(OpCodes.Ldarg, info);
                 c.EmitDelegate<Func<int, DamageInfo, float>>((stack, info) => info.procCoefficient * StackAmount(chance, chanceStack, stack, chanceIsHyperbolic));
             }
             else Main.WRBLogger.LogError("Failed to apply Sticky Bomb Chance hook");
             if (c.TryGotoNext(x => x.MatchStloc(79)))
             {
                 c.Emit(OpCodes.Pop);
-                c.Emit(OpCodes.Ldarg_1);
-                c.Emit(OpCodes.Ldloc_1);
-                c.Emit(OpCodes.Ldloc, 14);
+                c.Emit(OpCodes.Ldarg, info);
+                c.Emit(OpCodes.Ldloc, attacker);
+                c.Emit(OpCodes.Ldloc, stack);
                 c.EmitDelegate<Func<DamageInfo, CharacterBody, int, float>>((info, body, stack) =>
                 {
                     float ret = StackAmount(damage, damageStack, stack, damageIsHyperbolic);
                     if (damageIsTotal) ret = Util.OnHitProcDamage(info.damage, body.damage, ret);
-                    return ret;
+                    return ret * 100;
                 });
             }
             else Main.WRBLogger.LogError("Failed to apply Sticky Bomb Damage hook");

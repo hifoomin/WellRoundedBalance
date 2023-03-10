@@ -49,10 +49,11 @@ namespace WellRoundedBalance.Items.Whites
         public static void GlobalEventManager_OnInteractionBegin(ILContext il)
         {
             ILCursor c = new(il);
-            if (c.TryGotoNext(x => x.MatchStfld<FireworkLauncher>(nameof(FireworkLauncher.remaining))))
+            int idx = GetItemLoc(c, nameof(RoR2Content.Items.Firework));
+            if (idx != -1 && c.TryGotoNext(x => x.MatchStfld<FireworkLauncher>(nameof(FireworkLauncher.remaining))))
             {
                 c.Emit(OpCodes.Pop);
-                c.Emit(OpCodes.Ldloc, 6);
+                c.Emit(OpCodes.Ldloc, idx);
                 c.EmitDelegate<Func<int, int>>(stack => (int)StackAmount(fireworks, fireworksStack, stack, fireworksIsHyperbolic));
             }
             else Main.WRBLogger.LogError("Failed to apply Bundle Of Fireworks Count hook");
