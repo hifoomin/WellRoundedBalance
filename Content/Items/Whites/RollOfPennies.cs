@@ -89,7 +89,7 @@ namespace WellRoundedBalance.Items.Whites
                 c.Emit(OpCodes.Pop);
                 c.Emit(OpCodes.Ldc_I4_0);
             }
-            else Logger.LogError("Failed to apply Roll of Pennies Gold hook");
+            else Main.WRBLogger.LogError("Failed to apply Roll of Pennies Gold hook");
         }
     }
 }

@@ -90,7 +90,7 @@ namespace WellRoundedBalance.Items.Reds
             }
             else
             {
-                Logger.LogError("Failed to apply Wake of Vultures Deletion hook");
+                Main.WRBLogger.LogError("Failed to apply Wake of Vultures Deletion hook");
             }
         }
 

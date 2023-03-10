@@ -134,7 +134,7 @@ namespace WellRoundedBalance.Items.Reds
             }
             else
             {
-                Logger.LogError("Failed to apply Symbiotic Scorpion Chance hook");
+                Main.WRBLogger.LogError("Failed to apply Symbiotic Scorpion Chance hook");
             }
         }
     }

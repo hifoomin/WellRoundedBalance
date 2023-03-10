@@ -80,7 +80,7 @@ namespace WellRoundedBalance.Items.Reds
             }
             else
             {
-                Logger.LogError("Failed to apply Pocket I.C.B.M. Missile Count 1 hook");
+                Main.WRBLogger.LogError("Failed to apply Pocket I.C.B.M. Missile Count 1 hook");
             }
         }
 
@@ -125,7 +125,7 @@ namespace WellRoundedBalance.Items.Reds
             }
             else
             {
-                Logger.LogError("Failed to apply Pocket I.C.B.M. Damage, Count, Stacking hook");
+                Main.WRBLogger.LogError("Failed to apply Pocket I.C.B.M. Damage, Count, Stacking hook");
             }
 
             // BIG thanks to RandomlyAwesome

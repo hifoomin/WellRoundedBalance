@@ -41,7 +41,7 @@ namespace WellRoundedBalance.Difficulties
             }
             else
             {
-                Logger.LogError("Failed to apply Drizzle Regen hook");
+                Main.WRBLogger.LogError("Failed to apply Drizzle Regen hook");
             }
         }
 

@@ -47,7 +47,7 @@ namespace WellRoundedBalance.Items.Whites
                 c.Emit(OpCodes.Pop);
                 c.Emit(OpCodes.Ldc_I4_0);
             }
-            else Logger.LogError("Failed to apply Monster Tooth Deletion hook");
+            else Main.WRBLogger.LogError("Failed to apply Monster Tooth Deletion hook");
         }
 
         private void GlobalEventManager_onCharacterDeathGlobal(DamageReport damageReport)

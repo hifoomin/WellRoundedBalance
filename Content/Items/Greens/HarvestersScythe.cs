@@ -48,7 +48,7 @@ namespace WellRoundedBalance.Items.Greens
             }
             else
             {
-                Logger.LogError("Failed to apply Harvester's Scythe Deletion 2 hook");
+                Main.WRBLogger.LogError("Failed to apply Harvester's Scythe Deletion 2 hook");
             }
         }
 
@@ -64,7 +64,7 @@ namespace WellRoundedBalance.Items.Greens
             }
             else
             {
-                Logger.LogError("Failed to apply Harvester's Scythe Deletion 1 hook");
+                Main.WRBLogger.LogError("Failed to apply Harvester's Scythe Deletion 1 hook");
             }
         }
 

@@ -83,7 +83,7 @@ namespace WellRoundedBalance.Items.Greens
             }
             else
             {
-                Logger.LogError("Failed to apply Chronobauble Duration hook");
+                Main.WRBLogger.LogError("Failed to apply Chronobauble Duration hook");
             }
         }
     }

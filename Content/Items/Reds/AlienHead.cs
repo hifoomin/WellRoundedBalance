@@ -52,7 +52,7 @@ namespace WellRoundedBalance.Items.Reds
             }
             else
             {
-                Logger.LogError("Failed to apply Alien Head Cooldown Reduction hook");
+                Main.WRBLogger.LogError("Failed to apply Alien Head Cooldown Reduction hook");
             }
         }
     }

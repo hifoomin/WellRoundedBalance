@@ -83,7 +83,7 @@ namespace WellRoundedBalance.Items.Lunars
             }
             else
             {
-                Logger.LogError("Failed to apply Stone Flux Pauldron Speed hook");
+                Main.WRBLogger.LogError("Failed to apply Stone Flux Pauldron Speed hook");
             }
 
             c.Index = 0;
@@ -99,7 +99,7 @@ namespace WellRoundedBalance.Items.Lunars
             }
             else
             {
-                Logger.LogError("Failed to apply Stone Flux Pauldron Health hook");
+                Main.WRBLogger.LogError("Failed to apply Stone Flux Pauldron Health hook");
             }
         }
     }

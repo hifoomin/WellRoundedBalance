@@ -51,7 +51,7 @@ namespace WellRoundedBalance.Items.Lunars
             }
             else
             {
-                Logger.LogError("Failed to apply Transcendence Shield Timer hook");
+                Main.WRBLogger.LogError("Failed to apply Transcendence Shield Timer hook");
             }
         }
     }

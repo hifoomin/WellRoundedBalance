@@ -38,7 +38,7 @@ namespace WellRoundedBalance.Items.Reds
             }
             else
             {
-                Logger.LogError("Failed to apply Unstable Tesla Coil Damage hook");
+                Main.WRBLogger.LogError("Failed to apply Unstable Tesla Coil Damage hook");
             }
 
             c.Index = 0;
@@ -50,7 +50,7 @@ namespace WellRoundedBalance.Items.Reds
             }
             else
             {
-                Logger.LogError("Failed to apply Unstable Tesla Coil Proc Coefficient hook");
+                Main.WRBLogger.LogError("Failed to apply Unstable Tesla Coil Proc Coefficient hook");
             }
 
             c.Index = 0;
@@ -62,7 +62,7 @@ namespace WellRoundedBalance.Items.Reds
             }
             else
             {
-                Logger.LogError("Failed to apply Unstable Tesla Coil Range hook");
+                Main.WRBLogger.LogError("Failed to apply Unstable Tesla Coil Range hook");
             }
         }
     }

@@ -35,7 +35,7 @@ namespace WellRoundedBalance.Items.Lunars
             }
             else
             {
-                Logger.LogError("Failed to apply Eulogy Zero Chance2 hook");
+                Main.WRBLogger.LogError("Failed to apply Eulogy Zero Chance2 hook");
             }
         }
 
@@ -50,7 +50,7 @@ namespace WellRoundedBalance.Items.Lunars
             }
             else
             {
-                Logger.LogError("Failed to apply Eulogy Zero Chance1 hook");
+                Main.WRBLogger.LogError("Failed to apply Eulogy Zero Chance1 hook");
             }
         }
     }

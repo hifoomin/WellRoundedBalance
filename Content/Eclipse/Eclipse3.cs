@@ -28,7 +28,7 @@ namespace WellRoundedBalance.Eclipse
             }
             else
             {
-                Logger.LogError("Failed to apply Eclipse 3 hook");
+                Main.WRBLogger.LogError("Failed to apply Eclipse 3 hook");
             }
         }
     }

@@ -40,7 +40,7 @@ namespace WellRoundedBalance.Items.Lunars
             }
             else
             {
-                Logger.LogError("Failed to apply Corpsebloom Heal Increase hook");
+                Main.WRBLogger.LogError("Failed to apply Corpsebloom Heal Increase hook");
             }
 
             c.Index = 0;
@@ -54,7 +54,7 @@ namespace WellRoundedBalance.Items.Lunars
             }
             else
             {
-                Logger.LogError("Failed to apply Corpsebloom Healing Cap hook");
+                Main.WRBLogger.LogError("Failed to apply Corpsebloom Healing Cap hook");
             }
         }
     }

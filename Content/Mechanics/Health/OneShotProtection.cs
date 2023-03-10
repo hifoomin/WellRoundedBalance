@@ -27,7 +27,7 @@ namespace WellRoundedBalance.Mechanics.Health
             }
             else
             {
-                Logger.LogError("Failed to apply One Shot Protection Time hook");
+                Main.WRBLogger.LogError("Failed to apply One Shot Protection Time hook");
             }
         }
     }

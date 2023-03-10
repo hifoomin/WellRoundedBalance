@@ -53,7 +53,7 @@ namespace WellRoundedBalance.Items.Greens
             }
             else
             {
-                Logger.LogError("Failed to apply Old War Stealthkit Threshold hook");
+                Main.WRBLogger.LogError("Failed to apply Old War Stealthkit Threshold hook");
             }
         }
     }

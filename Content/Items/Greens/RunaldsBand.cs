@@ -53,7 +53,7 @@ namespace WellRoundedBalance.Items.Greens
             }
             else
             {
-                Logger.LogError("Failed to apply Runalds's Band Damage hook");
+                Main.WRBLogger.LogError("Failed to apply Runalds's Band Damage hook");
             }
 
             c.Index = 0;
@@ -73,7 +73,7 @@ namespace WellRoundedBalance.Items.Greens
             }
             else
             {
-                Logger.LogError("Failed to apply Runalds's Band Slow hook");
+                Main.WRBLogger.LogError("Failed to apply Runalds's Band Slow hook");
             }
         }
 

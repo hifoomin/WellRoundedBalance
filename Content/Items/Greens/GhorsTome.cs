@@ -40,7 +40,7 @@ namespace WellRoundedBalance.Items.Greens
             }
             else
             {
-                Logger.LogError("Failed to apply Ghor's Tome Chance hook");
+                Main.WRBLogger.LogError("Failed to apply Ghor's Tome Chance hook");
             }
         }
 

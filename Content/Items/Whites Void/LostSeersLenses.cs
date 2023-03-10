@@ -66,7 +66,7 @@ namespace WellRoundedBalance.Items.VoidWhites
             }
             else
             {
-                Logger.LogError("Failed to apply Lost Seer's Lenses Chance hook");
+                Main.WRBLogger.LogError("Failed to apply Lost Seer's Lenses Chance hook");
             }
         }
     }

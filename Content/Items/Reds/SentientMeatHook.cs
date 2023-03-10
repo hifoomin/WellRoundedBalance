@@ -45,7 +45,7 @@ namespace WellRoundedBalance.Items.Reds
             }
             else
             {
-                Logger.LogError("Failed to apply Sentient Meat Hook Max Targets hook");
+                Main.WRBLogger.LogError("Failed to apply Sentient Meat Hook Max Targets hook");
             }
 
             c.Index = 0;
@@ -59,7 +59,7 @@ namespace WellRoundedBalance.Items.Reds
             }
             else
             {
-                Logger.LogError("Failed to apply Sentient Meat Hook Range hook");
+                Main.WRBLogger.LogError("Failed to apply Sentient Meat Hook Range hook");
             }
 
             c.Index = 0;
@@ -73,7 +73,7 @@ namespace WellRoundedBalance.Items.Reds
             }
             else
             {
-                Logger.LogError("Failed to apply Sentient Meat Hook Proc Coefficient hook");
+                Main.WRBLogger.LogError("Failed to apply Sentient Meat Hook Proc Coefficient hook");
             }
         }
     }

@@ -52,7 +52,7 @@ namespace WellRoundedBalance.Items.Greens
             }
             else
             {
-                Logger.LogError("Failed to apply AtG Damage hook");
+                Main.WRBLogger.LogError("Failed to apply AtG Damage hook");
             }
         }
 

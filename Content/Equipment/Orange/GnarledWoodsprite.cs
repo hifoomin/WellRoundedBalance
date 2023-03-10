@@ -47,7 +47,7 @@ namespace WellRoundedBalance.Equipment.Orange
             }
             else
             {
-                Logger.LogError("Failed to apply Gnarled Woodsprite Burst Healing hook");
+                Main.WRBLogger.LogError("Failed to apply Gnarled Woodsprite Burst Healing hook");
             }
         }
 

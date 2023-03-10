@@ -81,7 +81,7 @@ namespace WellRoundedBalance.Items.Yellows
             }
             else
             {
-                Logger.LogError("Failed to apply Titanic Knurl Health hook");
+                Main.WRBLogger.LogError("Failed to apply Titanic Knurl Health hook");
             }
 
             c.Index = 0;
@@ -96,7 +96,7 @@ namespace WellRoundedBalance.Items.Yellows
             }
             else
             {
-                Logger.LogError("Failed to apply Titanic Knurl Regen hook");
+                Main.WRBLogger.LogError("Failed to apply Titanic Knurl Regen hook");
             }
         }
     }

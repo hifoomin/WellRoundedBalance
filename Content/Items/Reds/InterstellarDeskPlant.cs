@@ -43,7 +43,7 @@ namespace WellRoundedBalance.Items.Reds
             }
             else
             {
-                Logger.LogError("Failed to apply Interstellar Desk Plant Healing hook");
+                Main.WRBLogger.LogError("Failed to apply Interstellar Desk Plant Healing hook");
             }
         }
 

@@ -44,7 +44,7 @@ namespace WellRoundedBalance.Items.Reds
             }
             else
             {
-                Logger.LogError("Failed to apply Nkuhanas Opinion Damage hook");
+                Main.WRBLogger.LogError("Failed to apply Nkuhanas Opinion Damage hook");
             }
 
             c.Index = 0;
@@ -56,7 +56,7 @@ namespace WellRoundedBalance.Items.Reds
             }
             else
             {
-                Logger.LogError("Failed to apply Nkuhanas Opinion Range hook");
+                Main.WRBLogger.LogError("Failed to apply Nkuhanas Opinion Range hook");
             }
         }
     }

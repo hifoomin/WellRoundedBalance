@@ -107,7 +107,7 @@ namespace WellRoundedBalance.Items.Greens
             }
             else
             {
-                Logger.LogError("Failed to apply Razorwire Deletion hook");
+                Main.WRBLogger.LogError("Failed to apply Razorwire Deletion hook");
             }
         }
     }

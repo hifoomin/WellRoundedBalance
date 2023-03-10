@@ -44,7 +44,7 @@ namespace WellRoundedBalance.Items.VoidWhites
             }
             else
             {
-                Logger.LogError("Failed to apply Weeping Fungus Healing hook");
+                Main.WRBLogger.LogError("Failed to apply Weeping Fungus Healing hook");
             }
         }
     }

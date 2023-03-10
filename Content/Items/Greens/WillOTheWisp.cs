@@ -55,7 +55,7 @@ namespace WellRoundedBalance.Items.Greens
             }
             else
             {
-                Logger.LogError("Failed to apply Will o' The Wisp Damage hook");
+                Main.WRBLogger.LogError("Failed to apply Will o' The Wisp Damage hook");
             }
 
             c.Index = 0;
@@ -70,7 +70,7 @@ namespace WellRoundedBalance.Items.Greens
             }
             else
             {
-                Logger.LogError("Failed to apply Will o' The Wisp Range hook");
+                Main.WRBLogger.LogError("Failed to apply Will o' The Wisp Range hook");
             }
         }
 

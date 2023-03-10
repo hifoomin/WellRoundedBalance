@@ -68,7 +68,7 @@ namespace WellRoundedBalance.Items.Whites
                     self.fullHealth * StackAmount(minimumPercentDamage, minimumPercentDamageStack, self.itemCounts.armorPlate, minimumPercentDamageIsHyperbolic)),
                     StackAmount(flatDamageReduction, flatDamageReductionStack, self.itemCounts.armorPlate, flatDamageReductionIsHyperbolic)));
             }
-            else Logger.LogError("Failed to apply Repulsion Armor Plate hook");
+            else Main.WRBLogger.LogError("Failed to apply Repulsion Armor Plate hook");
         }
     }
 }

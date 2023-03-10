@@ -40,7 +40,7 @@ namespace WellRoundedBalance.Items.Greens
             }
             else
             {
-                Logger.LogError("Failed to apply Lepton Lily Healing hook");
+                Main.WRBLogger.LogError("Failed to apply Lepton Lily Healing hook");
             }
         }
 
@@ -59,7 +59,7 @@ namespace WellRoundedBalance.Items.Greens
             }
             else
             {
-                Logger.LogError("Failed to apply Lepton Lily Count hook");
+                Main.WRBLogger.LogError("Failed to apply Lepton Lily Count hook");
             }
         }
     }

@@ -28,7 +28,7 @@ namespace WellRoundedBalance.Mechanics.Movement
             }
             else
             {
-                Logger.LogError("Failed to apply Get Not Moving hook");
+                Main.WRBLogger.LogError("Failed to apply Get Not Moving hook");
             }
         }
     }

@@ -42,7 +42,7 @@ namespace WellRoundedBalance.Items.Lunars
             }
             else
             {
-                Logger.LogError("Failed to apply Purity Cooldown Reduction hook");
+                Main.WRBLogger.LogError("Failed to apply Purity Cooldown Reduction hook");
             }
         }
     }

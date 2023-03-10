@@ -50,7 +50,7 @@ namespace WellRoundedBalance.Items.VoidGreens
             }
             else
             {
-                Logger.LogError("Failed to apply Voidsent Flame Radius hook");
+                Main.WRBLogger.LogError("Failed to apply Voidsent Flame Radius hook");
             }
 
             c.Index = 0;
@@ -70,7 +70,7 @@ namespace WellRoundedBalance.Items.VoidGreens
             }
             else
             {
-                Logger.LogError("Failed to apply Voidsent Flame Damage hook");
+                Main.WRBLogger.LogError("Failed to apply Voidsent Flame Damage hook");
             }
         }
 

@@ -58,14 +58,14 @@ namespace WellRoundedBalance.Items.Whites
                 c.Emit(OpCodes.Ldloc, stack);
                 c.EmitDelegate<Func<int, float>>(stack => StackAmount(healthThreshold, healthThresholdStack, stack, healthThresholdIsHyperbolic));
             }
-            else Logger.LogError("Failed to apply Crowbar Threshold hook");
+            else Main.WRBLogger.LogError("Failed to apply Crowbar Threshold hook");
             if (c.TryGotoNext(x => x.MatchLdloc(stack)) && c.TryGotoNext(x => x.MatchStloc(dmg)))
             {
                 c.Emit(OpCodes.Pop);
                 c.Emit(OpCodes.Ldloc, stack);
                 c.EmitDelegate<Func<int, float>>(stack => 1f + StackAmount(damageIncrease, damageIncreaseStack, stack, damageIncreaseIsHyperbolic));
             }
-            else Logger.LogError("Failed to apply Crowbar Damage hook");
+            else Main.WRBLogger.LogError("Failed to apply Crowbar Damage hook");
         }
     }
 }

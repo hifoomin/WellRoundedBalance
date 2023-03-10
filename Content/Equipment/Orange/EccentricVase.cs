@@ -44,7 +44,7 @@ namespace WellRoundedBalance.Equipment.Orange
             }
             else
             {
-                Logger.LogError("Failed to apply Eccentric Vase Distance hook");
+                Main.WRBLogger.LogError("Failed to apply Eccentric Vase Distance hook");
             }
 
             if (c.TryGotoNext(MoveType.Before,
@@ -54,7 +54,7 @@ namespace WellRoundedBalance.Equipment.Orange
             }
             else
             {
-                Logger.LogError("Failed to apply Eccentric Vase Duration hook");
+                Main.WRBLogger.LogError("Failed to apply Eccentric Vase Duration hook");
             }
         }
     }

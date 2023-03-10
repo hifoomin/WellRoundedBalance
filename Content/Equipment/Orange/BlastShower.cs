@@ -41,7 +41,7 @@ namespace WellRoundedBalance.Equipment
             }
             else
             {
-                Logger.LogError("Failed to apply Blast Shower Projectile Removal hook");
+                Main.WRBLogger.LogError("Failed to apply Blast Shower Projectile Removal hook");
             }
         }
     }

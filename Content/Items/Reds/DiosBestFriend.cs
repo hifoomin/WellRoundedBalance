@@ -36,7 +36,7 @@ namespace WellRoundedBalance.Items.Reds
             }
             else
             {
-                Logger.LogError("Failed to apply Dios Best Friend Invincibility hook");
+                Main.WRBLogger.LogError("Failed to apply Dios Best Friend Invincibility hook");
             }
         }
 

@@ -1,4 +1,6 @@
-﻿namespace WellRoundedBalance.Difficulties
+﻿using BepInEx.Logging;
+
+namespace WellRoundedBalance.Difficulties
 {
     public abstract class DifficultyBase
     {
@@ -6,6 +8,7 @@
         public abstract string InternalDiffToken { get; }
         public abstract string DescText { get; }
         public virtual bool isEnabled { get; } = true;
+        public static ManualLogSource Logger => Main.WRBLogger;
 
         public abstract void Hooks();
 

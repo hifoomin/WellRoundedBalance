@@ -36,7 +36,7 @@ namespace WellRoundedBalance.Items.Lunars
             }
             else
             {
-                Logger.LogError("Failed to apply Brittle Crown Gold hook");
+                Main.WRBLogger.LogError("Failed to apply Brittle Crown Gold hook");
             }
         }
     }

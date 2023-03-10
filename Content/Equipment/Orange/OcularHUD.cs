@@ -68,7 +68,7 @@ namespace WellRoundedBalance.Equipment.Orange
             }
             else
             {
-                Logger.LogError("Failed to apply Ocular HUD Crit Chance hook");
+                Main.WRBLogger.LogError("Failed to apply Ocular HUD Crit Chance hook");
             }
         }
 
@@ -83,7 +83,7 @@ namespace WellRoundedBalance.Equipment.Orange
             }
             else
             {
-                Logger.LogError("Failed to apply Ocular HUD Duration hook");
+                Main.WRBLogger.LogError("Failed to apply Ocular HUD Duration hook");
             }
         }
     }

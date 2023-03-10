@@ -63,7 +63,7 @@ namespace WellRoundedBalance.Items.Yellows
             }
             else
             {
-                Logger.LogError("Failed to apply Queens Gland Count hook");
+                Main.WRBLogger.LogError("Failed to apply Queens Gland Count hook");
             }
         }
 

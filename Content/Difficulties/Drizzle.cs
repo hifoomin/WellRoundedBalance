@@ -45,7 +45,7 @@ namespace WellRoundedBalance.Difficulties
             }
             else
             {
-                Logger.LogError("Failed to apply Drizzle Regen hook");
+                Main.WRBLogger.LogError("Failed to apply Drizzle Regen hook");
             }
 
             c.Index = 0;
@@ -57,7 +57,7 @@ namespace WellRoundedBalance.Difficulties
             }
             else
             {
-                Logger.LogError("Failed to apply Drizzle Armor hook");
+                Main.WRBLogger.LogError("Failed to apply Drizzle Armor hook");
             }
         }
 

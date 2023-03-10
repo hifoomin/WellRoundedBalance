@@ -35,7 +35,7 @@ namespace WellRoundedBalance.Items.Reds
             }
             else
             {
-                Logger.LogError("Failed to apply Brilliant Behemoth Damage hook");
+                Main.WRBLogger.LogError("Failed to apply Brilliant Behemoth Damage hook");
             }
         }
     }

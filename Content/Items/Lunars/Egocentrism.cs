@@ -36,7 +36,7 @@ namespace WellRoundedBalance.Items.Lunars
             }
             else
             {
-                Logger.LogError("Failed to apply Egocentrism Damage hook");
+                Main.WRBLogger.LogError("Failed to apply Egocentrism Damage hook");
             }
         }
     }

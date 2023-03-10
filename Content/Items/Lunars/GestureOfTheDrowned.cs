@@ -57,7 +57,7 @@ namespace WellRoundedBalance.Items.Lunars
             }
             else
             {
-                Logger.LogError("Failed to apply Gesture Of The Drowned Equipment Cooldown Reduction hook");
+                Main.WRBLogger.LogError("Failed to apply Gesture Of The Drowned Equipment Cooldown Reduction hook");
             }
         }
     }

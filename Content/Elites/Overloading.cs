@@ -85,7 +85,7 @@ namespace WellRoundedBalance.Elites
             }
             else
             {
-                Logger.LogError("Failed to apply Overloading Deletion 2 hook");
+                Main.WRBLogger.LogError("Failed to apply Overloading Deletion 2 hook");
             }
         }
 
@@ -121,7 +121,7 @@ namespace WellRoundedBalance.Elites
             }
             else
             {
-                Logger.LogError("Failed to apply Overloading Deletion 1 hook");
+                Main.WRBLogger.LogError("Failed to apply Overloading Deletion 1 hook");
             }
         }
 

@@ -75,7 +75,7 @@ namespace WellRoundedBalance.Items.Greens
             }
             else
             {
-                Logger.LogError("Failed to apply Shuriken Damage hook");
+                Main.WRBLogger.LogError("Failed to apply Shuriken Damage hook");
             }
         }
 
@@ -102,7 +102,7 @@ namespace WellRoundedBalance.Items.Greens
             }
             else
             {
-                Logger.LogError("Failed to apply Shuriken Count and Cooldown hook");
+                Main.WRBLogger.LogError("Failed to apply Shuriken Count and Cooldown hook");
             }
         }
 

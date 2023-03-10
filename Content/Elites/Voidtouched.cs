@@ -66,7 +66,7 @@ namespace WellRoundedBalance.Elites
             }
             else
             {
-                Logger.LogError("Failed to apply Voidtouched Elite Safer Spaces hook");
+                Main.WRBLogger.LogError("Failed to apply Voidtouched Elite Safer Spaces hook");
             }
         }
 
@@ -82,7 +82,7 @@ namespace WellRoundedBalance.Elites
             }
             else
             {
-                Logger.LogError("Failed to apply Voidtouched Elite Needletick hook");
+                Main.WRBLogger.LogError("Failed to apply Voidtouched Elite Needletick hook");
             }
         }
     }

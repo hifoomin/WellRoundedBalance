@@ -41,7 +41,7 @@ namespace WellRoundedBalance.Items.Reds
             }
             else
             {
-                Logger.LogError("Failed to apply Bottled Chaos Count hook");
+                Main.WRBLogger.LogError("Failed to apply Bottled Chaos Count hook");
             }
         }
     }

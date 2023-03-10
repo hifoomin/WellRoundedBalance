@@ -40,7 +40,7 @@ namespace WellRoundedBalance.Items.VoidWhites
             }
             else
             {
-                Logger.LogError("Failed to apply Safer Spaces Cooldown hook");
+                Main.WRBLogger.LogError("Failed to apply Safer Spaces Cooldown hook");
             }
         }
     }

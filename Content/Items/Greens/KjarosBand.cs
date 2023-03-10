@@ -51,7 +51,7 @@ namespace WellRoundedBalance.Items.Greens
             }
             else
             {
-                Logger.LogError("Failed to apply Kjaro's Band Damage hook");
+                Main.WRBLogger.LogError("Failed to apply Kjaro's Band Damage hook");
             }
         }
     }

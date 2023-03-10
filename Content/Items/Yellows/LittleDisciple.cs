@@ -43,7 +43,7 @@ namespace WellRoundedBalance.Items.Yellows
             }
             else
             {
-                Logger.LogError("Failed to apply Little Disciple Proc Coefficient hook");
+                Main.WRBLogger.LogError("Failed to apply Little Disciple Proc Coefficient hook");
             }
         }
     }
