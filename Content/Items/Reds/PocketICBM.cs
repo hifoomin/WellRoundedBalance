@@ -60,6 +60,7 @@ namespace WellRoundedBalance.Items.Reds
             // Main.WRBLogger.LogError("post sharedMaterial is " + trailRenderer.sharedMaterial);
 
             var missileModel = bigFuckingMissileGhost.transform.GetChild(2);
+            missileModel.transform.eulerAngles = new Vector3(-90f, 0f, 0f);
             var meshRenderer = missileModel.GetComponent<MeshRenderer>();
 
             var icbmMat = GameObject.Instantiate(Utils.Paths.Material.matMissile.Load<Material>());
