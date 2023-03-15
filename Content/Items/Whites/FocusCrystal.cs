@@ -42,8 +42,9 @@ namespace WellRoundedBalance.Items.Whites
             if (idx != -1 && c.TryGotoNext(x => x.MatchStloc(dmg)))
             {
                 c.Emit(OpCodes.Pop);
+                c.Emit(OpCodes.Ldloc, dmg);
                 c.Emit(OpCodes.Ldloc, idx);
-                c.EmitDelegate<Func<int, float>>(stack => 1 + StackAmount(damageIncrease, damageIncreaseStack, stack, damageIncreaseIsHyperbolic));
+                c.EmitDelegate<Func<float, int, float>>((orig, stack) => orig * (1f + StackAmount(damageIncrease, damageIncreaseStack, stack, damageIncreaseIsHyperbolic)));
             }
             else Logger.LogError("Failed to apply Focus Crystal Damage hook");
         }

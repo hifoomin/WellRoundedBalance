@@ -61,8 +61,9 @@ namespace WellRoundedBalance.Items.Whites
             if (c.TryGotoNext(x => x.MatchLdloc(stack)) && c.TryGotoNext(x => x.MatchStloc(dmg)))
             {
                 c.Emit(OpCodes.Pop);
+                c.Emit(OpCodes.Ldloc, dmg);
                 c.Emit(OpCodes.Ldloc, stack);
-                c.EmitDelegate<Func<int, float>>(stack => 1f + StackAmount(damageIncrease, damageIncreaseStack, stack, damageIncreaseIsHyperbolic));
+                c.EmitDelegate<Func<float, int, float>>((orig, stack) => orig * (1f + StackAmount(damageIncrease, damageIncreaseStack, stack, damageIncreaseIsHyperbolic)));
             }
             else Logger.LogError("Failed to apply Crowbar Damage hook");
         }

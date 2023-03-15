@@ -13,7 +13,7 @@ namespace WellRoundedBalance.Items.Whites
 
         public override string DescText => "2 seconds after getting hurt, <style=cIsHealing>heal</style> for " +
             StackDesc(flatHealing, flatHealingStack, init => $"<style=cIsHealing>{init}</style>{{Stack}}", noop) +
-            StackDesc(percentHealing, percentHealingStack, init => (flatHealing > 0 || flatHealingStack > 0 ? "plus an additional " : "") + $"<style=cIsHealing>{d(init)}</style>{{Stack}} of <style=cIsHealing>maximum health</style>", d) + ".";
+            StackDesc(percentHealing, percentHealingStack, init => (flatHealing > 0 || flatHealingStack > 0 ? " plus an additional " : "") + $"<style=cIsHealing>{d(init)}</style>{{Stack}} of <style=cIsHealing>maximum health</style>", d) + ".";
 
         [ConfigField("Flat Healing", 20f)]
         public static float flatHealing;
