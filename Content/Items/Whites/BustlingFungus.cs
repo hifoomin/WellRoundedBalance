@@ -13,10 +13,16 @@ namespace WellRoundedBalance.Items.Whites
         public override string PickupText => $"Heal all nearby allies after standing still for 0.5 second.";
 
         public override string DescText => $"After standing still for <style=cIsHealing>0.5</style> second, create a zone that <style=cIsHealing>heals</style> for " +
-            StackDesc(flatHealing, flatHealingStack, init => $"<style=cIsHealing>{init}</style>{{Stack}} ", noop) +
-            StackDesc(percentHealing, percentHealingStack, init => (flatHealing > 0 || flatHealingStack > 0 ? "plus an additional " : "") + $"<style=cIsHealing>{d(init)}</style>{{Stack}} of <style=cIsHealing>maximum health</style> ", d) +
-            StackDesc(healingInterval, healingIntervalStack, init => $"every {s(init, "{Stack} second")} to all allies ", noop) +
-            StackDesc(baseRadius, radiusStack, init => $"within <style=cIsHealing>{m(init)}</style>{{Stack}}", m) + ".";
+            StackDesc(flatHealing, flatHealingStack, init => $"<style=cIsHealing>{init / healingInterval}</style>{{Stack}} ", stack => GetPerSecondStack(flatHealing, stack, flatHealingIsHyperbolic).ToString()) +
+            StackDesc(percentHealing, percentHealingStack, init => (flatHealing > 0 || flatHealingStack > 0 ? "plus an additional " : "") + $"<style=cIsHealing>{d(init / healingInterval)}</style>{{Stack}} of <style=cIsHealing>maximum health</style> ", stack => d(GetPerSecondStack(percentHealing, stack, percentHealingIsHyperbolic))) +
+            "every second to all allies " + StackDesc(baseRadius, radiusStack, init => $"within <style=cIsHealing>{m(init)}</style>{{Stack}}", m) + ".";
+
+        public static float GetPerSecondStack(float init, float stack, float hyper)
+        {
+            float a0 = init / healingInterval;
+            float a1 = StackAmount(init, stack, 1, hyper) / StackAmount(healingInterval, healingIntervalStack, 1, healingIntervalIsHyperbolic);
+            return a1 / a0 - 1f;
+        }
 
         [ConfigField("Base Radius", 13f)]
         public static float baseRadius;
@@ -36,10 +42,10 @@ namespace WellRoundedBalance.Items.Whites
         [ConfigField("Flat Healing is Hyperbolic", "Decimal, Max value. Set to 0 to make it linear.", 0f)]
         public static float flatHealingIsHyperbolic;
 
-        [ConfigField("Percent Healing", "Decimal.", 0.05f)]
+        [ConfigField("Percent Healing", "Decimal.", 0.0125f)]
         public static float percentHealing;
 
-        [ConfigField("Percent Healing Per Stack", "Decimal.", 0.025f)]
+        [ConfigField("Percent Healing Per Stack", "Decimal.", 0.00625f)]
         public static float percentHealingStack;
 
         [ConfigField("Percent Healing is Hyperbolic", "Decimal, Max value. Set to 0 to make it linear.", 0f)]
