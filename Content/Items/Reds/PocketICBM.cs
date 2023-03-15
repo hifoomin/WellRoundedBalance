@@ -26,7 +26,7 @@ namespace WellRoundedBalance.Items.Reds
 
         public override void Init()
         {
-            bigFuckingMissile = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.MissileProjectile.Load<GameObject>(), "BigFuckingMissile");
+            bigFuckingMissile = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.MissileProjectile.Load<GameObject>(), "Pocket ICBM Missile");
 
             var missileController = bigFuckingMissile.GetComponent<MissileController>();
             missileController.maxSeekDistance = 10000f;
@@ -39,7 +39,7 @@ namespace WellRoundedBalance.Items.Reds
 
             var projectileController = bigFuckingMissile.GetComponent<ProjectileController>();
 
-            bigFuckingMissileGhost = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.MissileGhost.Load<GameObject>(), "BigFuckingMissileGhost", false);
+            bigFuckingMissileGhost = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.MissileGhost.Load<GameObject>(), "Pocket ICBM Missile Ghost", false);
             bigFuckingMissileGhost.transform.localScale = new Vector3(9f, 9f, 9f);
             var flare = bigFuckingMissileGhost.transform.GetChild(1);
             flare.gameObject.SetActive(false);
@@ -67,6 +67,7 @@ namespace WellRoundedBalance.Items.Reds
             // icbmMat.SetColor("_Color", new Color32(224, 94, 94, 255));
             icbmMat.SetTexture("_MainTex", Main.wellroundedbalance.LoadAsset<Texture2D>("texIcbm.png"));
             icbmMat.EnableKeyword("DITHER");
+            icbmMat.EnableKeyword("FADECLOSE");
 
             meshRenderer.sharedMaterial = icbmMat;
 

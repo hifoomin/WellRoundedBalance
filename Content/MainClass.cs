@@ -272,6 +272,7 @@ namespace WellRoundedBalance
             }
             WRBLogger.LogDebug("==+----------------==+++++==----------------+==");
             WRBLogger.LogDebug("Initialized " + SharedBase.initList.Count + " classes");
+            WRBLogger.LogMessage("Thanks for playing the mod <3");
         }
 
         private void ItemCatalog_Init(On.RoR2.ItemCatalog.orig_Init orig)
