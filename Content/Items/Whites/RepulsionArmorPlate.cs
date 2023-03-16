@@ -63,10 +63,13 @@ namespace WellRoundedBalance.Items.Whites
                 c.Emit(OpCodes.Pop);
                 c.Emit(OpCodes.Ldloc, dmg);
                 c.Emit(OpCodes.Ldarg_0);
-                c.EmitDelegate<Func<float, HealthComponent, float>>((orig, self) => Mathf.Max(Mathf.Min(
-                    StackAmount(minimumDamage, minimumDamageStack, self.itemCounts.armorPlate, minimumDamageIsHyperbolic),
-                    self.fullHealth * StackAmount(minimumPercentDamage, minimumPercentDamageStack, self.itemCounts.armorPlate, minimumPercentDamageIsHyperbolic)),
-                    StackAmount(flatDamageReduction, flatDamageReductionStack, self.itemCounts.armorPlate, flatDamageReductionIsHyperbolic)));
+                c.EmitDelegate<Func<float, HealthComponent, float>>((orig, self) =>
+                {
+                    float minFlat = StackAmount(minimumDamage, minimumDamageStack, self.itemCounts.armorPlate, minimumDamageIsHyperbolic);
+                    float minPercent = self.fullHealth * StackAmount(minimumPercentDamage, minimumPercentDamageStack, self.itemCounts.armorPlate, minimumPercentDamageIsHyperbolic);
+                    float reduction = StackAmount(flatDamageReduction, flatDamageReductionStack, self.itemCounts.armorPlate, flatDamageReductionIsHyperbolic);
+                    return Mathf.Max(minFlat, minPercent, orig - reduction);
+                });
             }
             else Logger.LogError("Failed to apply Repulsion Armor Plate hook");
         }
