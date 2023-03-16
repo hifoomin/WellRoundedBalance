@@ -7,6 +7,9 @@
         [ConfigField("Item Drop Count", "", 3)]
         public static int itemDropCount;
 
+        [ConfigField("Lunar Coin Drop Count", "Only applies to Twisted Scavengers.", 10)]
+        public static int lunarCoinDropCount;
+
         public override void Init()
         {
             base.Init();
@@ -19,9 +22,9 @@
 
         private void Opening_OnEnter(On.EntityStates.ScavBackpack.Opening.orig_OnEnter orig, EntityStates.ScavBackpack.Opening self)
         {
-            if (self.characterBody.bodyIndex == BodyCatalog.FindBodyIndexCaseInsensitive("scavlunar"))
+            if (self.characterBody.name.ToLower().Contains("scavlunar"))
             {
-                EntityStates.ScavBackpack.Opening.maxItemDropCount = 10;
+                EntityStates.ScavBackpack.Opening.maxItemDropCount = lunarCoinDropCount;
             }
             else
             {

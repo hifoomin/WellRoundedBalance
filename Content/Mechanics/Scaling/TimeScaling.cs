@@ -70,7 +70,7 @@ namespace WellRoundedBalance.Mechanics.Scaling
         {
             On.RoR2.Run.RecalculateDifficultyCoefficentInternal += (orig, self) =>
             {
-                int playerCount = self.participatingPlayerCount;
+                float playerCount = Mathf.Sqrt(self.participatingPlayerCount);
                 float Time = self.GetRunStopwatch() * 0.016666668f; // stupid vanilla workaround
 
                 var playerfactorbase = playerFactorBase;
@@ -86,7 +86,7 @@ namespace WellRoundedBalance.Mechanics.Scaling
 
                 float customTimeFactor = Mathf.Sqrt(Time) * scalingValueMultiplier * difficultyDef.scalingValue;
 
-                float customFactor = customFactorAdd + customTimeFactorMultiplier * customTimeFactor * Mathf.Sqrt(playerScalar);
+                float customFactor = customFactorAdd + customTimeFactorMultiplier * customTimeFactor * playerScalar;
 
                 //
                 float finalDifficulty = (playerFactor + timeFactor * playerScalar) * customFactor;

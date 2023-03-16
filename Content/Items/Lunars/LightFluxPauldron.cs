@@ -30,6 +30,33 @@ namespace WellRoundedBalance.Items.Lunars
             RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
             On.RoR2.CharacterMotor.OnLanded += CharacterMotor_OnLanded;
             On.RoR2.CharacterMotor.OnLeaveStableGround += CharacterMotor_OnLeaveStableGround;
+            On.RoR2.Inventory.GiveItem_ItemIndex_int += Inventory_GiveItem_ItemIndex_int;
+        }
+
+        private void Inventory_GiveItem_ItemIndex_int(On.RoR2.Inventory.orig_GiveItem_ItemIndex_int orig, Inventory self, ItemIndex itemIndex, int count)
+        {
+            orig(self, itemIndex, count);
+            if (NetworkServer.active && itemIndex == DLC1Content.Items.HalfAttackSpeedHalfCooldowns.itemIndex)
+            {
+                var master = self.gameObject.GetComponent<CharacterMaster>();
+                if (master)
+                {
+                    var body = master.GetBodyObject();
+
+                    if (body)
+                    {
+                        var lfpc = body.GetComponent<LightFluxPauldronComponent>();
+                        if (lfpc == null)
+                        {
+                            body.AddComponent<LightFluxPauldronComponent>();
+                        }
+                        else
+                        {
+                            lfpc.Refresh();
+                        }
+                    }
+                }
+            }
         }
 
         private void CharacterMotor_OnLeaveStableGround(On.RoR2.CharacterMotor.orig_OnLeaveStableGround orig, CharacterMotor self)
@@ -89,7 +116,8 @@ namespace WellRoundedBalance.Items.Lunars
                             var bodyMotor = body.characterMotor;
                             if (bodyMotor && stack > 0)
                             {
-                                bodyMotor.velocity.y = Mathf.Max(Mathf.Abs(bodyMotor.velocity.y) - body.jumpPower + 20f * damageInfo.procCoefficient * stack, 0f);
+                                bodyMotor.velocity.y = Mathf.Min((Mathf.Abs(bodyMotor.velocity.y) - body.jumpPower - 35f) * damageInfo.procCoefficient * stack, 0f);
+                                Main.WRBLogger.LogFatal("body y velocity is " + bodyMotor.velocity.y);
                             }
                         }
                     }
@@ -131,6 +159,58 @@ namespace WellRoundedBalance.Items.Lunars
             else
             {
                 Logger.LogError("Failed to apply Light Flux Pauldron Attack Speed hook");
+            }
+        }
+    }
+
+    public class LightFluxPauldronComponent : MonoBehaviour
+    {
+        public CharacterBody body;
+        public Inventory inventory;
+        public CharacterMotor motor;
+        public int stack;
+        public float currentAirControl;
+        public float interval = 0.2f;
+        public float timer;
+
+        private void Start()
+        {
+            body = GetComponent<CharacterBody>();
+            motor = GetComponent<CharacterMotor>();
+            if (body)
+            {
+                inventory = body.inventory;
+            }
+        }
+
+        public void FixedUpdate()
+        {
+            timer += Time.fixedDeltaTime;
+            if (timer >= interval)
+            {
+                timer = 0f;
+                if (inventory)
+                {
+                    stack = inventory.GetItemCount(DLC1Content.Items.HalfAttackSpeedHalfCooldowns);
+                    Refresh();
+                }
+            }
+        }
+
+        public void Refresh()
+        {
+            if (motor && inventory)
+            {
+                if (stack > 0)
+                {
+                    motor.airControl = 1f;
+                }
+                else
+                {
+                    motor.airControl = 0.25f;
+                }
+
+                currentAirControl = motor.airControl;
             }
         }
     }

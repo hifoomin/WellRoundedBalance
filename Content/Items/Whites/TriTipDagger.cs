@@ -34,8 +34,12 @@
         private void CharacterBody_RecalculateStats(On.RoR2.CharacterBody.orig_RecalculateStats orig, CharacterBody self)
         {
             orig(self);
-            int stack = self.inventory.GetItemCount(RoR2Content.Items.BleedOnHit);
-            if (self.inventory && stack > 0) self.bleedChance += StackAmount(bleedChance, bleedChanceStack, stack, bleedChanceIsHyperbolic) * 100f - 10f;
+            var inventory = self.inventory;
+            if (inventory)
+            {
+                var stack = self.inventory.GetItemCount(RoR2Content.Items.BleedOnHit);
+                if (self.inventory && stack > 0) self.bleedChance += StackAmount(bleedChance, bleedChanceStack, stack, bleedChanceIsHyperbolic) * 100f - 10f;
+            }
         }
     }
 }
