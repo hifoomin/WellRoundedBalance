@@ -67,6 +67,8 @@ namespace WellRoundedBalance.Elites
             buffWard.expireDuration = 10000;
 
             SpeedAura.RemoveComponent<SlowDownProjectiles>();
+            var teamFilter = SpeedAura.AddComponent<TeamFilter>();
+            teamFilter.teamIndex = TeamIndex.None;
 
             PrefabAPI.RegisterNetworkPrefab(SpeedAura);
 
@@ -149,6 +151,7 @@ namespace WellRoundedBalance.Elites
             public CharacterBody cb;
             public GameObject wardInstance;
             public BuffWard ward;
+            public TeamFilter teamFilter;
             public float stopwatch = 0f;
 
             public void Start()
@@ -159,9 +162,10 @@ namespace WellRoundedBalance.Elites
                 if (NetworkServer.active)
                 {
                     wardInstance = GameObject.Instantiate(SpeedAura, transform);
+                    teamFilter = wardInstance.GetComponent<TeamFilter>();
                     ward = wardInstance.GetComponent<BuffWard>();
                     ward.radius = Mathf.Min(cb.radius + speedAuraRadiusAdd, maxSpeedAuraRadius);
-                    ward.teamFilter = gameObject.GetComponent<TeamFilter>();
+                    ward.teamFilter = teamFilter;
                     NetworkServer.Spawn(wardInstance);
                 }
             }

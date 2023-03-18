@@ -20,6 +20,7 @@
 
         private void HealthBar_UpdateBarInfos(On.RoR2.UI.HealthBar.orig_UpdateBarInfos orig, RoR2.UI.HealthBar self)
         {
+            orig(self);
             var hc = self.source;
             if (hc)
             {
@@ -29,8 +30,6 @@
 
                 bar.normalizedXMax = 0.5f * (1f - hc.GetHealthBarValues().curseFraction);
             }
-
-            orig(self);
         }
 
         private void ChangeThreshold(On.RoR2.HealthComponent.orig_Awake orig, HealthComponent self)

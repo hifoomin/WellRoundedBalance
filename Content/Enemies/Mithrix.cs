@@ -2,7 +2,7 @@
 
 namespace WellRoundedBalance.Enemies
 {
-    public static class Mithrix
+    public class Mithrix : EnemyBase
     {
         [ConfigField("Phase 1 & 3 Base Move Speed", "Disabled if playing Inferno.", 17f)]
         public static float phase13BaseMoveSpeed;
@@ -36,7 +36,14 @@ namespace WellRoundedBalance.Enemies
         public static GameObject ramp3;
         public static GameObject rocks;
 
-        public static void Init()
+        public override string Name => ":::: Final Bosses : Mithrix";
+
+        public void Init()
+        {
+            base.Init();
+        }
+
+        public override void Hooks()
         {
             CharacterBody.onBodyAwakeGlobal += CharacterBody_onBodyAwakeGlobal;
             CharacterMaster.onStartGlobal += CharacterMaster_onStartGlobal;
@@ -63,7 +70,7 @@ namespace WellRoundedBalance.Enemies
             On.EntityStates.BrotherHaunt.FireRandomProjectiles.OnEnter += FireRandomProjectiles_OnEnter;
         }
 
-        private static void UltChannelState_OnEnter(On.EntityStates.BrotherMonster.UltChannelState.orig_OnEnter orig, EntityStates.BrotherMonster.UltChannelState self)
+        private void UltChannelState_OnEnter(On.EntityStates.BrotherMonster.UltChannelState.orig_OnEnter orig, EntityStates.BrotherMonster.UltChannelState self)
         {
             if (enableSkillAndAIChanges)
             {
@@ -73,7 +80,7 @@ namespace WellRoundedBalance.Enemies
             orig(self);
         }
 
-        private static void FireRandomProjectiles_OnEnter(On.EntityStates.BrotherHaunt.FireRandomProjectiles.orig_OnEnter orig, EntityStates.BrotherHaunt.FireRandomProjectiles self)
+        private void FireRandomProjectiles_OnEnter(On.EntityStates.BrotherHaunt.FireRandomProjectiles.orig_OnEnter orig, EntityStates.BrotherHaunt.FireRandomProjectiles self)
         {
             if (enableSkillAndAIChanges)
             {
@@ -85,7 +92,7 @@ namespace WellRoundedBalance.Enemies
             orig(self);
         }
 
-        private static void TrueDeathState_OnEnter(On.EntityStates.BrotherMonster.TrueDeathState.orig_OnEnter orig, EntityStates.BrotherMonster.TrueDeathState self)
+        private void TrueDeathState_OnEnter(On.EntityStates.BrotherMonster.TrueDeathState.orig_OnEnter orig, EntityStates.BrotherMonster.TrueDeathState self)
         {
             if (enableSkillAndAIChanges)
             {
@@ -94,7 +101,7 @@ namespace WellRoundedBalance.Enemies
             orig(self);
         }
 
-        private static void StaggerLoop_OnEnter(On.EntityStates.BrotherMonster.StaggerLoop.orig_OnEnter orig, EntityStates.BrotherMonster.StaggerLoop self)
+        private void StaggerLoop_OnEnter(On.EntityStates.BrotherMonster.StaggerLoop.orig_OnEnter orig, EntityStates.BrotherMonster.StaggerLoop self)
         {
             if (enableSkillAndAIChanges)
             {
@@ -103,7 +110,7 @@ namespace WellRoundedBalance.Enemies
             orig(self);
         }
 
-        private static void StaggerExit_OnEnter(On.EntityStates.BrotherMonster.StaggerExit.orig_OnEnter orig, EntityStates.BrotherMonster.StaggerExit self)
+        private void StaggerExit_OnEnter(On.EntityStates.BrotherMonster.StaggerExit.orig_OnEnter orig, EntityStates.BrotherMonster.StaggerExit self)
         {
             if (enableSkillAndAIChanges)
             {
@@ -112,7 +119,7 @@ namespace WellRoundedBalance.Enemies
             orig(self);
         }
 
-        private static void StaggerEnter_OnEnter(On.EntityStates.BrotherMonster.StaggerEnter.orig_OnEnter orig, EntityStates.BrotherMonster.StaggerEnter self)
+        private void StaggerEnter_OnEnter(On.EntityStates.BrotherMonster.StaggerEnter.orig_OnEnter orig, EntityStates.BrotherMonster.StaggerEnter self)
         {
             if (enableSkillAndAIChanges)
             {
@@ -121,7 +128,7 @@ namespace WellRoundedBalance.Enemies
             orig(self);
         }
 
-        private static void SpellChannelExitState_OnEnter(On.EntityStates.BrotherMonster.SpellChannelExitState.orig_OnEnter orig, EntityStates.BrotherMonster.SpellChannelExitState self)
+        private void SpellChannelExitState_OnEnter(On.EntityStates.BrotherMonster.SpellChannelExitState.orig_OnEnter orig, EntityStates.BrotherMonster.SpellChannelExitState self)
         {
             if (enableSkillAndAIChanges)
             {
@@ -131,7 +138,7 @@ namespace WellRoundedBalance.Enemies
             orig(self);
         }
 
-        private static void SpellChannelState_OnEnter(On.EntityStates.BrotherMonster.SpellChannelState.orig_OnEnter orig, EntityStates.BrotherMonster.SpellChannelState self)
+        private void SpellChannelState_OnEnter(On.EntityStates.BrotherMonster.SpellChannelState.orig_OnEnter orig, EntityStates.BrotherMonster.SpellChannelState self)
         {
             if (enableSkillAndAIChanges)
             {
@@ -142,7 +149,7 @@ namespace WellRoundedBalance.Enemies
             orig(self);
         }
 
-        private static void SpellChannelEnterState_OnEnter(On.EntityStates.BrotherMonster.SpellChannelEnterState.orig_OnEnter orig, EntityStates.BrotherMonster.SpellChannelEnterState self)
+        private void SpellChannelEnterState_OnEnter(On.EntityStates.BrotherMonster.SpellChannelEnterState.orig_OnEnter orig, EntityStates.BrotherMonster.SpellChannelEnterState self)
         {
             if (enableSkillAndAIChanges)
             {
@@ -151,7 +158,7 @@ namespace WellRoundedBalance.Enemies
             orig(self);
         }
 
-        private static void FistSlam_OnEnter(On.EntityStates.BrotherMonster.FistSlam.orig_OnEnter orig, EntityStates.BrotherMonster.FistSlam self)
+        private void FistSlam_OnEnter(On.EntityStates.BrotherMonster.FistSlam.orig_OnEnter orig, EntityStates.BrotherMonster.FistSlam self)
         {
             if (enableSkillAndAIChanges)
             {
@@ -174,7 +181,7 @@ namespace WellRoundedBalance.Enemies
             orig(self);
         }
 
-        private static void SprintBash_OnEnter(On.EntityStates.BrotherMonster.SprintBash.orig_OnEnter orig, EntityStates.BrotherMonster.SprintBash self)
+        private void SprintBash_OnEnter(On.EntityStates.BrotherMonster.SprintBash.orig_OnEnter orig, EntityStates.BrotherMonster.SprintBash self)
         {
             if (enableSkillAndAIChanges)
             {
@@ -208,7 +215,7 @@ namespace WellRoundedBalance.Enemies
             orig(self);
         }
 
-        private static void WeaponSlam_OnEnter(On.EntityStates.BrotherMonster.WeaponSlam.orig_OnEnter orig, EntityStates.BrotherMonster.WeaponSlam self)
+        private void WeaponSlam_OnEnter(On.EntityStates.BrotherMonster.WeaponSlam.orig_OnEnter orig, EntityStates.BrotherMonster.WeaponSlam self)
         {
             if (enableSkillAndAIChanges)
             {
@@ -221,7 +228,7 @@ namespace WellRoundedBalance.Enemies
             orig(self);
         }
 
-        private static void ExitSkyLeap_OnEnter(On.EntityStates.BrotherMonster.ExitSkyLeap.orig_OnEnter orig, EntityStates.BrotherMonster.ExitSkyLeap self)
+        private void ExitSkyLeap_OnEnter(On.EntityStates.BrotherMonster.ExitSkyLeap.orig_OnEnter orig, EntityStates.BrotherMonster.ExitSkyLeap self)
         {
             if (enableSkillAndAIChanges)
             {
@@ -231,7 +238,7 @@ namespace WellRoundedBalance.Enemies
             orig(self);
         }
 
-        private static void HoldSkyLeap_OnEnter(On.EntityStates.BrotherMonster.HoldSkyLeap.orig_OnEnter orig, EntityStates.BrotherMonster.HoldSkyLeap self)
+        private void HoldSkyLeap_OnEnter(On.EntityStates.BrotherMonster.HoldSkyLeap.orig_OnEnter orig, EntityStates.BrotherMonster.HoldSkyLeap self)
         {
             if (enableSkillAndAIChanges)
             {
@@ -244,7 +251,7 @@ namespace WellRoundedBalance.Enemies
             orig(self);
         }
 
-        private static void Phase4_OnEnter(On.EntityStates.Missions.BrotherEncounter.Phase4.orig_OnEnter orig, EntityStates.Missions.BrotherEncounter.Phase4 self)
+        private void Phase4_OnEnter(On.EntityStates.Missions.BrotherEncounter.Phase4.orig_OnEnter orig, EntityStates.Missions.BrotherEncounter.Phase4 self)
         {
             if (disableRamps)
             {
@@ -256,7 +263,7 @@ namespace WellRoundedBalance.Enemies
             orig(self);
         }
 
-        private static void Phase3_OnEnter(On.EntityStates.Missions.BrotherEncounter.Phase3.orig_OnEnter orig, EntityStates.Missions.BrotherEncounter.Phase3 self)
+        private void Phase3_OnEnter(On.EntityStates.Missions.BrotherEncounter.Phase3.orig_OnEnter orig, EntityStates.Missions.BrotherEncounter.Phase3 self)
         {
             if (disableRamps)
             {
@@ -268,7 +275,7 @@ namespace WellRoundedBalance.Enemies
             orig(self);
         }
 
-        private static void Phase2_OnEnter(On.EntityStates.Missions.BrotherEncounter.Phase2.orig_OnEnter orig, EntityStates.Missions.BrotherEncounter.Phase2 self)
+        private void Phase2_OnEnter(On.EntityStates.Missions.BrotherEncounter.Phase2.orig_OnEnter orig, EntityStates.Missions.BrotherEncounter.Phase2 self)
         {
             if (disableRamps)
             {
@@ -280,7 +287,7 @@ namespace WellRoundedBalance.Enemies
             orig(self);
         }
 
-        private static void Phase1_OnEnter(On.EntityStates.Missions.BrotherEncounter.Phase1.orig_OnEnter orig, EntityStates.Missions.BrotherEncounter.Phase1 self)
+        private void Phase1_OnEnter(On.EntityStates.Missions.BrotherEncounter.Phase1.orig_OnEnter orig, EntityStates.Missions.BrotherEncounter.Phase1 self)
         {
             if (disableRamps)
             {
@@ -297,7 +304,7 @@ namespace WellRoundedBalance.Enemies
             }
         }
 
-        private static void SceneDirector_Start(On.RoR2.SceneDirector.orig_Start orig, SceneDirector self)
+        private void SceneDirector_Start(On.RoR2.SceneDirector.orig_Start orig, SceneDirector self)
         {
             if (SceneManager.GetActiveScene().name == "moon2")
             {
@@ -310,7 +317,7 @@ namespace WellRoundedBalance.Enemies
             orig(self);
         }
 
-        private static void CharacterMaster_onStartGlobal(CharacterMaster cm)
+        private void CharacterMaster_onStartGlobal(CharacterMaster cm)
         {
             if (Main.IsInfernoDef())
             {
@@ -364,7 +371,7 @@ namespace WellRoundedBalance.Enemies
             }
         }
 
-        private static void CharacterBody_onBodyAwakeGlobal(CharacterBody cb)
+        private void CharacterBody_onBodyAwakeGlobal(CharacterBody cb)
         {
             if (Main.IsInfernoDef())
             {
