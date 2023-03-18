@@ -74,6 +74,7 @@ namespace WellRoundedBalance.Items.Yellows
         {
             sunPlacementMinDistance += body.radius;
             sunPlacementIdealAltitudeBonus += body.radius;
+            burnDuration = 5f + 3f * (stack - 1);
         }
 
         private void FixedUpdate()

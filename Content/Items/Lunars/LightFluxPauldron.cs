@@ -117,7 +117,7 @@ namespace WellRoundedBalance.Items.Lunars
                             if (bodyMotor && stack > 0)
                             {
                                 bodyMotor.velocity.y = Mathf.Min((Mathf.Abs(bodyMotor.velocity.y) - body.jumpPower - 35f) * damageInfo.procCoefficient * stack, 0f);
-                                Main.WRBLogger.LogFatal("body y velocity is " + bodyMotor.velocity.y);
+                                // Main.WRBLogger.LogFatal("body y velocity is " + bodyMotor.velocity.y);
                             }
                         }
                     }

@@ -61,9 +61,10 @@ namespace WellRoundedBalance.Elites
             mats[1] = Utils.Paths.Material.matCrippleSphereIndicator.Load<Material>();
             renderer.SetSharedMaterials(mats, 2);
 
-            SpeedAura.GetComponent<BuffWard>().buffDef = overloadingSpeedBuff;
-            SpeedAura.GetComponent<BuffWard>().expires = false;
-            SpeedAura.GetComponent<BuffWard>().expireDuration = 10000;
+            var buffWard = SpeedAura.GetComponent<BuffWard>();
+            buffWard.buffDef = overloadingSpeedBuff;
+            buffWard.expires = false;
+            buffWard.expireDuration = 10000;
 
             SpeedAura.RemoveComponent<SlowDownProjectiles>();
 
@@ -160,6 +161,7 @@ namespace WellRoundedBalance.Elites
                     wardInstance = GameObject.Instantiate(SpeedAura, transform);
                     ward = wardInstance.GetComponent<BuffWard>();
                     ward.radius = Mathf.Min(cb.radius + speedAuraRadiusAdd, maxSpeedAuraRadius);
+                    ward.teamFilter = gameObject.GetComponent<TeamFilter>();
                     NetworkServer.Spawn(wardInstance);
                 }
             }
