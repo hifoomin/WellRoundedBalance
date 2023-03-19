@@ -103,7 +103,7 @@ namespace WellRoundedBalance.Items.Whites
             StickyBombImpact.blastProcCoefficient = proc;
             StickyBombImpact.blastRadius = radius;
 
-            var coolerExplosion = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.OmniExplosionVFXQuick.Load<GameObject>(), "Sticky Bomb Explosion");
+            var coolerExplosion = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.OmniExplosionVFXQuick.Load<GameObject>(), "Sticky Bomb Explosion", false);
             coolerExplosion.transform.localScale = new Vector3(radius, radius, radius);
             var effectComponent = coolerExplosion.GetComponent<EffectComponent>();
             effectComponent.soundName = "Play_item_proc_behemoth";
