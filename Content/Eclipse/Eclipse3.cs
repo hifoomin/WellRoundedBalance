@@ -31,5 +31,9 @@ namespace WellRoundedBalance.Eclipse
                 Main.WRBLogger.LogError("Failed to apply Eclipse 3 hook");
             }
         }
+
+        internal static bool CheckEclipse() {
+            return instance.isEnabled && Run.instance.selectedDifficulty >= DifficultyIndex.Eclipse3;
+        }
     }
 }

@@ -172,6 +172,9 @@ namespace WellRoundedBalance.Elites
             }
 
             public void HandleTeleport(Vector3 pos) {
+                if (cb.isPlayerControlled) {
+                    return;
+                }
                 Vector3 current = transform.position;
                 EffectManager.SpawnEffect(Utils.Paths.GameObject.ParentTeleportEffect.Load<GameObject>(), new EffectData {
                     scale = 1,

@@ -5,6 +5,7 @@ namespace WellRoundedBalance.Projectiles
     public static class Molotov
     {
         public static GameObject prefab;
+        public static GameObject singlePrefab;
 
         public static void Create()
         {
@@ -83,6 +84,8 @@ namespace WellRoundedBalance.Projectiles
             PrefabAPI.RegisterNetworkPrefab(firePool);
             PrefabAPI.RegisterNetworkPrefab(molotovChild);
             PrefabAPI.RegisterNetworkPrefab(prefab);
+
+            singlePrefab = molotovChild;
         }
     }
 }
