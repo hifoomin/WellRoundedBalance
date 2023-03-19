@@ -1,6 +1,4 @@
-﻿using Mono.Cecil.Cil;
-using MonoMod.Cil;
-using RoR2;
+﻿using MonoMod.Cil;
 using System;
 
 namespace WellRoundedBalance.Items.Greens
@@ -8,7 +6,7 @@ namespace WellRoundedBalance.Items.Greens
     public class KjarosBand : ItemBase
     {
         public override string Name => ":: Items :: Greens :: Kjaros Band";
-        public override string InternalPickupToken => "firering";
+        public override ItemDef InternalPickup => RoR2Content.Items.FireRing;
 
         public override string PickupText => "High damage hits also blast enemies with a runic flame tornado. Recharges over time.";
 
@@ -51,7 +49,7 @@ namespace WellRoundedBalance.Items.Greens
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Kjaro's Band Damage hook");
+                Logger.LogError("Failed to apply Kjaro's Band Damage hook");
             }
         }
     }

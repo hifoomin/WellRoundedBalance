@@ -4,7 +4,7 @@
     {
         public override string Name => ":: Items :::: Yellows :: Defense Nucleus";
 
-        public override string InternalPickupToken => GetToken(Utils.Paths.ItemDef.MinorConstructOnKill);
+        public override ItemDef InternalPickup => DLC1Content.Items.MinorConstructOnKill;
 
         public override string PickupText => "Reduce damage taken. Store damage taken and release it as a devastating laser upon using your equipment.";
 
@@ -34,7 +34,7 @@
         {
             On.RoR2.HealthComponent.TakeDamage += Resistance;
             RecalculateStatsAPI.GetStatCoefficients += AddBehavior;
-            RoR2.EquipmentSlot.onServerEquipmentActivated += EquipmentSlot_onServerEquipmentActivated;
+            EquipmentSlot.onServerEquipmentActivated += EquipmentSlot_onServerEquipmentActivated;
             On.RoR2.Projectile.ProjectileManager.FireProjectile_FireProjectileInfo += (orig, self, info) =>
             {
                 if (info.projectilePrefab == GlobalEventManager.CommonAssets.minorConstructOnKillProjectile)
@@ -109,7 +109,7 @@
                 {
                     stopwatch += Time.fixedDeltaTime;
 
-                    if (stopwatch >= delay)
+                    if (stopwatch >= delay && Util.HasEffectiveAuthority(gameObject))
                     {
                         BulletAttack attack = new()
                         {

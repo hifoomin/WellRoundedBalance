@@ -1,5 +1,3 @@
-using System;
-
 namespace WellRoundedBalance.Utils
 {
     public static class Extensions

@@ -1,14 +1,9 @@
-﻿using RoR2;
-using RoR2.Projectile;
-using RoR2.Skills;
-using UnityEngine;
-
-namespace WellRoundedBalance.Items.Lunars
+﻿namespace WellRoundedBalance.Items.Lunars
 {
     public class HooksOfHeresy : ItemBase
     {
         public override string Name => ":: Items ::::: Lunars :: Hooks of Heresy";
-        public override string InternalPickupToken => "lunarSecondaryReplacement";
+        public override ItemDef InternalPickup => RoR2Content.Items.LunarSecondaryReplacement;
 
         public override string PickupText => "Replace your Secondary Skill with 'Slicing Maelstrom'.";
 

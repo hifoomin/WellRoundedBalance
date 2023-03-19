@@ -5,7 +5,7 @@ namespace WellRoundedBalance.Items.Yellows
     public class EmpathyCores : ItemBase
     {
         public override string Name => ":: Items :::: Yellows :: Empathy Cores";
-        public override string InternalPickupToken => "roboBallBuddy";
+        public override ItemDef InternalPickup => RoR2Content.Items.RoboBallBuddy;
 
         public override string PickupText => "Recruit a pair of Solus Probes that gain power with more allies.";
 
@@ -41,7 +41,7 @@ namespace WellRoundedBalance.Items.Yellows
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Empathy Cores Damage hook");
+                Logger.LogError("Failed to apply Empathy Cores Damage hook");
             }
         }
     }

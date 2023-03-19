@@ -8,7 +8,7 @@ namespace WellRoundedBalance.Items.Greens
     public class OldWarStealthkit : ItemBase
     {
         public override string Name => ":: Items :: Greens :: Old War Stealthkit";
-        public override string InternalPickupToken => "phasing";
+        public override ItemDef InternalPickup => RoR2Content.Items.Phasing;
 
         public override string PickupText => "Turn invisible at low health.";
 
@@ -53,7 +53,7 @@ namespace WellRoundedBalance.Items.Greens
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Old War Stealthkit Threshold hook");
+                Logger.LogError("Failed to apply Old War Stealthkit Threshold hook");
             }
         }
     }

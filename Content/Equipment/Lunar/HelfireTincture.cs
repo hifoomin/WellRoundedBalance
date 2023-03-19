@@ -4,8 +4,8 @@ namespace WellRoundedBalance.Equipment.Lunar
 {
     public class HelfireTincture : EquipmentBase
     {
-        public override string Name => "::: Equipment ::: Helfire Tincture";
-        public override string InternalPickupToken => "burnNearby";
+        public override string Name => ":: Equipment ::: Helfire Tincture";
+        public override EquipmentDef InternalPickup => RoR2Content.Equipment.BurnNearby;
 
         public override string PickupText => "Ignite everything nearby... <color=#FF7F7F>including you and allies.</color>\n";
 
@@ -24,7 +24,7 @@ namespace WellRoundedBalance.Equipment.Lunar
         [ConfigField("Damage to Allies", "Decimal.", 0.0025f)]
         public static float damageToAllies;
 
-        [ConfigField("Damage To Enemies", "Decimal.", 0.2f)]
+        [ConfigField("Damage To Enemies", "Decimal.", 0.18f)]
         public static float damageToEnemies;
 
         [ConfigField("Range", "", 15f)]
@@ -59,13 +59,14 @@ namespace WellRoundedBalance.Equipment.Lunar
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Helfire Tincture Duration hook");
+                Logger.LogError("Failed to apply Helfire Tincture Duration hook");
             }
         }
 
         private void Changes()
         {
             var hel = Utils.Paths.GameObject.HelfireController.Load<GameObject>().GetComponent<HelfireController>();
+            hel.gameObject.transform.localScale = new Vector3(range, range, range);
             hel.baseRadius = range;
             hel.dotDuration = burnDuration;
             //hel.interval = FireRate;

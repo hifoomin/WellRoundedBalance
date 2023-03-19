@@ -5,7 +5,7 @@ namespace WellRoundedBalance.Items.Greens
     public class RedWhip : ItemBase
     {
         public override string Name => ":: Items :: Greens :: Red Whip";
-        public override string InternalPickupToken => "sprintOutOfCombat";
+        public override ItemDef InternalPickup => RoR2Content.Items.SprintOutOfCombat;
 
         public override string PickupText => "Move fast out of combat.";
         public override string DescText => "Leaving combat boosts your <style=cIsUtility>movement speed</style> by <style=cIsUtility>" + d(movementSpeedGain) + "</style> <style=cStack>(+" + d(movementSpeedGain) + " per stack)</style>.";
@@ -40,7 +40,7 @@ namespace WellRoundedBalance.Items.Greens
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Red Whip Speed hook");
+                Logger.LogError("Failed to apply Red Whip Speed hook");
             }
         }
     }

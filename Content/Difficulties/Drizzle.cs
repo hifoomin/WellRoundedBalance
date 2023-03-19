@@ -5,7 +5,7 @@ namespace WellRoundedBalance.Difficulties
     internal class Drizzle : DifficultyBase
     {
         public override string Name => ":: Difficulties : Drizzle";
-        public override string InternalDiffToken => "difficulty_easy_description";
+        public override DifficultyIndex InternalDiff => DifficultyIndex.Easy;
 
         public override string DescText => "For new players. Every move calls for less effort and attention.<style=cStack>\n\n" +
                                            (percentRegenIncrease > 0 ? ">Player Health Regeneration: <style=cIsHealing>+" + d(percentRegenIncrease) + "</style> \n" : "") +
@@ -45,7 +45,7 @@ namespace WellRoundedBalance.Difficulties
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Drizzle Regen hook");
+                Logger.LogError("Failed to apply Drizzle Regen hook");
             }
 
             c.Index = 0;
@@ -57,20 +57,14 @@ namespace WellRoundedBalance.Difficulties
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Drizzle Armor hook");
+                Logger.LogError("Failed to apply Drizzle Armor hook");
             }
         }
 
         private void Changes()
         {
-            for (int i = 0; i < DifficultyCatalog.difficultyDefs.Length; i++)
-            {
-                var difficulty = DifficultyCatalog.difficultyDefs[i];
-                if (difficulty.nameToken == "DIFFICULTY_EASY_NAME")
-                {
-                    difficulty.scalingValue = totalDifficultyScaling / 50f;
-                }
-            }
+            DifficultyDef def = DifficultyCatalog.difficultyDefs.FirstOrDefault(x => DifficultyCatalog.GetDifficultyDef(InternalDiff) == x);
+            if (def != null && def != default) def.scalingValue = totalDifficultyScaling / 50f;
         }
     }
 }

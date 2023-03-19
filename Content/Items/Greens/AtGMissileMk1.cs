@@ -6,7 +6,7 @@ namespace WellRoundedBalance.Items.Greens
     public class AtGMissileMk1 : ItemBase
     {
         public override string Name => ":: Items :: Greens :: AtG Missile Mk1";
-        public override string InternalPickupToken => "missile";
+        public override ItemDef InternalPickup => RoR2Content.Items.Missile;
 
         public override string PickupText => "Chance to fire a missile.";
         public override string DescText => "<style=cIsDamage>10%</style> chance to fire a missile that deals <style=cIsDamage>" + d(baseTotalDamage) + "</style> <style=cStack>(+" + d(totalDamagePerStack) + " per stack)</style> TOTAL damage.";
@@ -52,15 +52,30 @@ namespace WellRoundedBalance.Items.Greens
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply AtG Damage hook");
+                Logger.LogError("Failed to apply AtG Damage hook");
             }
         }
 
         public static void Changes()
         {
             var missileProjectile = Utils.Paths.GameObject.MissileProjectile.Load<GameObject>();
+            missileProjectile.name = "Generic Missile";
             var missileProjectileController = missileProjectile.GetComponent<ProjectileController>();
             missileProjectileController.procCoefficient = 0f;
+            var ghost = missileProjectileController.ghostPrefab;
+            ghost.transform.localScale = new Vector3(2f, 2f, 2f);
+            ghost.transform.GetChild(1).gameObject.SetActive(false);
+
+            var missileModel = ghost.transform.GetChild(2);
+            missileModel.transform.eulerAngles = new Vector3(-90f, 0f, 0f);
+            var meshRenderer = missileModel.GetComponent<MeshRenderer>();
+
+            var atgMat = GameObject.Instantiate(Utils.Paths.Material.matMissile.Load<Material>());
+            // atgMat.SetColor("_Color", new Color32(224, 94, 94, 255));
+            atgMat.SetTexture("_MainTex", Main.wellroundedbalance.LoadAsset<Texture2D>("texAtg.png"));
+            atgMat.EnableKeyword("DITHER");
+            atgMat.EnableKeyword("FADECLOSE");
+            meshRenderer.sharedMaterial = atgMat;
 
             if (improveTargeting)
             {

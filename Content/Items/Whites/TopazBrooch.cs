@@ -8,13 +8,13 @@ namespace WellRoundedBalance.Items.Whites
     {
         public override string Name => ":: Items : Whites :: Topaz Brooch";
 
-        public override string InternalPickupToken => "barrierOnKill";
+        public override ItemDef InternalPickup => RoR2Content.Items.BarrierOnKill;
 
         public override string PickupText => "Gain a temporary barrier on kill.";
 
         public override string DescText => "Gain a <style=cIsHealing>temporary barrier</style> on kill for " +
             StackDesc(flatBarrierGain, flatBarrierGainStack, init => $"<style=cIsHealing>{init}</style>{{Stack}}", noop) +
-            StackDesc(percentBarrierGain, percentBarrierGainStack, init => (flatBarrierGain > 0 || flatBarrierGainStack > 0 ? "plus an additional " : "") + $"<style=cIsHealing>{d(init)}</style>{{Stack}} of <style=cIsHealing>maximum health</style>", d) + ".";
+            StackDesc(percentBarrierGain, percentBarrierGainStack, init => (flatBarrierGain > 0 || flatBarrierGainStack > 0 ? " plus an additional " : "") + $"<style=cIsHealing>{d(init)}</style>{{Stack}} of <style=cIsHealing>maximum health</style>", d) + ".";
 
         [ConfigField("Percent Barrier Gain", "Decimal.", 0.02f)]
         public static float percentBarrierGain;
@@ -57,13 +57,14 @@ namespace WellRoundedBalance.Items.Whites
         private void GlobalEventManager_OnCharacterDeath(ILContext il)
         {
             ILCursor c = new(il);
-            if (c.TryGotoNext(x => x.MatchLdloc(49)) && c.TryGotoNext(x => x.MatchCallOrCallvirt<HealthComponent>(nameof(HealthComponent.AddBarrier))))
+            int stack = GetItemLoc(c, nameof(RoR2Content.Items.BarrierOnKill));
+            if (c.TryGotoNext(x => x.MatchLdloc(stack)) && c.TryGotoNext(x => x.MatchCallOrCallvirt<HealthComponent>(nameof(HealthComponent.AddBarrier))))
             {
                 c.Emit(OpCodes.Pop);
-                c.Emit(OpCodes.Ldloc, 49);
+                c.Emit(OpCodes.Ldloc, stack);
                 c.EmitDelegate<Func<int, float>>(stack => StackAmount(flatBarrierGain, flatBarrierGainStack, stack, flatBarrierGainIsHyperbolic));
             }
-            else Main.WRBLogger.LogError("Failed to apply Topaz Brooch Barrier hook");
+            else Logger.LogError("Failed to apply Topaz Brooch Barrier hook");
         }
     }
 }

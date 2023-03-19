@@ -6,7 +6,7 @@ namespace WellRoundedBalance.Equipment
     {
         public override string Name => ":: Equipment :: Foreign Fruit";
 
-        public override string InternalPickupToken => "fruit";
+        public override EquipmentDef InternalPickup => RoR2Content.Equipment.Fruit;
 
         public override string PickupText => "Heal on use.";
 
@@ -42,7 +42,7 @@ namespace WellRoundedBalance.Equipment
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Foreign Fruit Healing hook");
+                Logger.LogError("Failed to apply Foreign Fruit Healing hook");
             }
         }
     }

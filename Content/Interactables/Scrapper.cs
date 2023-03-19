@@ -6,6 +6,9 @@ namespace WellRoundedBalance.Interactables
     {
         public override string Name => ":: Interactables ::::: Scrapper";
 
+        [ConfigField("Max Spawns Per Stage", "", 1)]
+        public static int maxSpawnsPerStage;
+
         public override void Init()
         {
             base.Init();
@@ -14,7 +17,7 @@ namespace WellRoundedBalance.Interactables
         public override void Hooks()
         {
             var scrapper = Addressables.LoadAssetAsync<InteractableSpawnCard>("RoR2/Base/Scrapper/iscScrapper.asset").WaitForCompletion();
-            scrapper.maxSpawnsPerStage = 1;
+            scrapper.maxSpawnsPerStage = maxSpawnsPerStage;
             scrapper.directorCreditCost = 0;
 
             On.EntityStates.Scrapper.ScrappingToIdle.OnEnter += ScrappingToIdle_OnEnter;
@@ -33,8 +36,7 @@ namespace WellRoundedBalance.Interactables
                 return;
             }
             self.foundValidScrap = true;
-            var scrapperController = self.scrapperController;
-            scrapperController.itemsEaten = 1;
+            self.scrapperController.itemsEaten++;
         }
     }
 }

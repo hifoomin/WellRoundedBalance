@@ -3,6 +3,7 @@ using BepInEx.Configuration;
 using BepInEx.Logging;
 using System;
 using System.Reflection;
+
 using WellRoundedBalance.Items;
 using WellRoundedBalance.Equipment;
 using WellRoundedBalance.Interactables;
@@ -12,10 +13,12 @@ using WellRoundedBalance.Eclipse;
 using System.Runtime.CompilerServices;
 using WellRoundedBalance.Elites;
 using R2API.ContentManagement;
-using WellRoundedBalance.Mechanics.Monsters;
+
+// using WellRoundedBalance.Mechanics.Monsters;
 using WellRoundedBalance.Misc;
 using WellRoundedBalance.Artifacts;
 using WellRoundedBalance.Mechanics;
+
 using WellRoundedBalance.Items.ConsistentCategories;
 using WellRoundedBalance.Items.NoTier;
 using WellRoundedBalance.Difficulties;
@@ -84,7 +87,7 @@ namespace WellRoundedBalance
             RiskyArtifactsLoaded = BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("com.Moffein.RiskyArtifacts");
 
             FunnyLabel.Hooks();
-            Useless.Create();
+            // Useless.Create();
             Buffs.Useless.Create();
             VoidBall.Create();
             BlazingProjectileVFX.Create();
@@ -246,8 +249,8 @@ namespace WellRoundedBalance
                 }
             }
 
-            SpeedBoost.Init();
-            BetterScaling.Init();
+            // SpeedBoost.Init();
+            // BetterScaling.Init();
             // FamilyEvents.Init();
             EmptyBottle.Init();
 
@@ -263,14 +266,40 @@ namespace WellRoundedBalance
                     Dialogue.ShowPopup("Config changed?", "Thank you for enjoying Well Rounded Balance! Despite the extensive configuration, we want our default experience to be as enjoyable as possible. Please let us know your balanced takes at <style=cDeath>cutt.ly/ballscord</style>! any feedback is welcome.\n\n<style=cStack>set Mechanics > Annoying Pop Up to \'Fuck Off\' to disable this message.</style>");
                 }
             };
+
+            SharedBase.initList.Sort();
+            for (int i = 0; i < SharedBase.initList.Count; i++)
+            {
+                var index = SharedBase.initList[i];
+                WRBLogger.LogDebug("Initialized " + index);
+            }
+            WRBLogger.LogDebug("==+----------------==+++++==----------------+==");
+            WRBLogger.LogDebug("Initialized " + SharedBase.initList.Count + " classes");
+            for (int j = 0; j < 5; j++)
+            {
+                WRBLogger.LogMessage("Thanks for playing the mod <3");
+            }
+            WRBLogger.LogDebug("==+----------------==+++++==----------------+==");
+            On.RoR2.RoR2Application.OnLoad += RoR2Application_OnLoad;
+        }
+
+        private System.Collections.IEnumerator RoR2Application_OnLoad(On.RoR2.RoR2Application.orig_OnLoad orig, RoR2Application self)
+        {
+            WRBLogger.LogDebug("==+----------------==+++++==----------------+==");
+            for (int j = 0; j < 5; j++)
+            {
+                WRBLogger.LogMessage("Thanks for playing the mod <3");
+            }
+            WRBLogger.LogDebug("==+----------------==+++++==----------------+==");
+            return orig(self);
         }
 
         private void ItemCatalog_Init(On.RoR2.ItemCatalog.orig_Init orig)
         {
             WRBLogger.LogDebug("ItemAPI.AddItemTag(\"Defense\") returns " + ItemAPI.AddItemTag("Defense"));
-            BetterItemCategories.Init();
+            // BetterItemCategories.Init();
             orig();
-            BetterItemCategories.BetterAIBlacklist();
+            // BetterItemCategories.BetterAIBlacklist();
         }
 
         public bool ValidateMechanic(MechanicBase gb)

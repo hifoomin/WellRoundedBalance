@@ -125,7 +125,7 @@ namespace WellRoundedBalance.Elites
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Glacial Elite Overlay hook");
+                Logger.LogError("Failed to apply Glacial Elite Overlay hook");
             }
         }
 
@@ -164,7 +164,7 @@ namespace WellRoundedBalance.Elites
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Glacial Elite On Hit hook");
+                Logger.LogError("Failed to apply Glacial Elite On Hit hook");
             }
         }
 

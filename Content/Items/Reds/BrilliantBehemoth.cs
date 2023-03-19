@@ -5,7 +5,7 @@ namespace WellRoundedBalance.Items.Reds
     public class BrilliantBehemoth : ItemBase
     {
         public override string Name => ":: Items ::: Reds :: Brilliant Behemoth";
-        public override string InternalPickupToken => "behemoth";
+        public override ItemDef InternalPickup => RoR2Content.Items.Behemoth;
 
         public override string PickupText => "All your attacks explode!";
 
@@ -35,7 +35,7 @@ namespace WellRoundedBalance.Items.Reds
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Brilliant Behemoth Damage hook");
+                Logger.LogError("Failed to apply Brilliant Behemoth Damage hook");
             }
         }
     }

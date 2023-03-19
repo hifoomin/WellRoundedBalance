@@ -7,12 +7,12 @@ namespace WellRoundedBalance.Items.Whites
     public class BundleOfFireworks : ItemBase
     {
         public override string Name => ":: Items : Whites :: Bundle of Fireworks";
-        public override string InternalPickupToken => "firework";
+        public override ItemDef InternalPickup => RoR2Content.Items.Firework;
 
         public override string PickupText => "Activating an interactable launches fireworks at nearby enemies.";
 
         public override string DescText =>
-            StackDesc(fireworks, fireworksStack, init => $"Activating an interactable <style=cIsDamage>launches {s(init, "{Stack} firework")} that deal <style=cIsDamage>{d(blastDamageCoefficient)}</style> base damage.</style>", noop);
+            StackDesc(fireworks, fireworksStack, init => $"Activating an interactable <style=cIsDamage>launches {s(init, "{Stack} firework")}</style> that deal <style=cIsDamage>{d(blastDamageCoefficient)}</style> base damage.", noop);
 
         [ConfigField("Fireworks", 8f)]
         public static float fireworks;
@@ -49,13 +49,14 @@ namespace WellRoundedBalance.Items.Whites
         public static void GlobalEventManager_OnInteractionBegin(ILContext il)
         {
             ILCursor c = new(il);
-            if (c.TryGotoNext(x => x.MatchStfld<FireworkLauncher>(nameof(FireworkLauncher.remaining))))
+            int idx = GetItemLoc(c, nameof(RoR2Content.Items.Firework));
+            if (idx != -1 && c.TryGotoNext(x => x.MatchStfld<FireworkLauncher>(nameof(FireworkLauncher.remaining))))
             {
                 c.Emit(OpCodes.Pop);
-                c.Emit(OpCodes.Ldloc, 6);
+                c.Emit(OpCodes.Ldloc, idx);
                 c.EmitDelegate<Func<int, int>>(stack => (int)StackAmount(fireworks, fireworksStack, stack, fireworksIsHyperbolic));
             }
-            else Main.WRBLogger.LogError("Failed to apply Bundle Of Fireworks Count hook");
+            else Logger.LogError("Failed to apply Bundle Of Fireworks Count hook");
         }
 
         public static void Changes()

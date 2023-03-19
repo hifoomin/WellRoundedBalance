@@ -1,14 +1,9 @@
-﻿using MonoMod.Cil;
-using R2API;
-using RoR2;
-using UnityEngine;
-
-namespace WellRoundedBalance.Items.Yellows
+﻿namespace WellRoundedBalance.Items.Yellows
 {
     public class IrradiantPearl : ItemBase
     {
         public override string Name => ":: Items :::: Yellows :: Irradiant Pearl";
-        public override string InternalPickupToken => "shinyPearl";
+        public override ItemDef InternalPickup => RoR2Content.Items.ShinyPearl;
 
         public override string PickupText => "Increase ALL of your stats.";
 

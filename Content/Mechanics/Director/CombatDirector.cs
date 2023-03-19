@@ -1,8 +1,23 @@
 ﻿namespace WellRoundedBalance.Mechanics.Director
 {
-    internal class CombatDirector : MechanicBase
+    internal class CombatDirector : MechanicBase<CombatDirector>
     {
         public override string Name => ":: Mechanics :::: Combat Director";
+
+        [ConfigField("Minimum Reroll Spawn Interval Multiplier", "", 1.35f)]
+        public static float minimumRerollSpawnIntervalMultiplier;
+
+        [ConfigField("Credit Multiplier", "", 1.25f)]
+        public static float creditMultiplier;
+
+        [ConfigField("Elite Bias Multiplier", "", 0.9f)]
+        public static float eliteBiasMultiplier;
+
+        [ConfigField("Credit Multiplier for each Mountain Shrine", "", 1.05f)]
+        public static float creditMultiplierForEachMountainShrine;
+
+        [ConfigField("Gold and Experience Multiplier for each Mountain Shrine", "", 0.9f)]
+        public static float goldAndExperienceMultiplierForEachMountainShrine;
 
         public override void Init()
         {
@@ -24,25 +39,25 @@
 
         private void CombatDirector_OnDisable(On.RoR2.CombatDirector.orig_OnDisable orig, RoR2.CombatDirector self)
         {
-            self.minRerollSpawnInterval *= 1.35f;
-            self.maxRerollSpawnInterval *= 1.35f;
+            self.minRerollSpawnInterval *= minimumRerollSpawnIntervalMultiplier;
+            self.maxRerollSpawnInterval *= minimumRerollSpawnIntervalMultiplier;
             orig(self);
         }
 
         private void CombatDirector_OnEnable(On.RoR2.CombatDirector.orig_OnEnable orig, RoR2.CombatDirector self)
         {
-            self.minRerollSpawnInterval /= 1.35f;
-            self.maxRerollSpawnInterval /= 1.35f;
-            self.creditMultiplier += 0.25f;
-            self.eliteBias *= 0.9f;
+            self.minRerollSpawnInterval /= minimumRerollSpawnIntervalMultiplier;
+            self.maxRerollSpawnInterval /= minimumRerollSpawnIntervalMultiplier;
+            self.creditMultiplier += (1f - creditMultiplier);
+            self.eliteBias *= eliteBiasMultiplier;
             var teleporter = TeleporterInteraction.instance;
             if (teleporter != null)
             {
                 for (int i = 0; i < teleporter.shrineBonusStacks; i++)
                 {
-                    self.creditMultiplier *= 1.05f;
-                    self.expRewardCoefficient *= 0.9f;
-                    self.goldRewardCoefficient *= 0.9f;
+                    self.creditMultiplier *= creditMultiplierForEachMountainShrine;
+                    self.expRewardCoefficient *= goldAndExperienceMultiplierForEachMountainShrine;
+                    self.goldRewardCoefficient *= goldAndExperienceMultiplierForEachMountainShrine;
                 }
             }
             orig(self);

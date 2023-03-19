@@ -7,7 +7,7 @@ namespace WellRoundedBalance.Items.Greens
     public class Ukulele : ItemBase
     {
         public override string Name => ":: Items :: Greens :: Ukulele";
-        public override string InternalPickupToken => "chainLightning";
+        public override ItemDef InternalPickup => RoR2Content.Items.ChainLightning;
 
         public override string PickupText => "...and his music was electric.";
         public override string DescText => "<style=cIsDamage>" + chance + "%</style> Chance to fire <style=cIsDamage>chain lightning</style> for <style=cIsDamage>" + d(totalDamage) + "</style> TOTAL damage on up to <style=cIsDamage>" + baseMaxTargets + " <style=cStack>(+" + maxTargetsPerStack + " per stack)</style></style> targets within <style=cIsDamage>" + baseRange + "m</style> <style=cStack>(+" + rangePerStack + "m per stack)</style>.";
@@ -56,7 +56,7 @@ namespace WellRoundedBalance.Items.Greens
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Ukulele Chance hook");
+                Logger.LogError("Failed to apply Ukulele Chance hook");
             }
 
             c.Index = 0;
@@ -71,7 +71,7 @@ namespace WellRoundedBalance.Items.Greens
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Ukulele Total Damage hook");
+                Logger.LogError("Failed to apply Ukulele Total Damage hook");
             }
             // oh wow util.checkroll is stupid why tf are there two methods named the same
             // thank you harb :)
@@ -88,7 +88,7 @@ namespace WellRoundedBalance.Items.Greens
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Ukulele Target hook");
+                Logger.LogError("Failed to apply Ukulele Target hook");
             }
 
             c.Index = 0;
@@ -102,7 +102,7 @@ namespace WellRoundedBalance.Items.Greens
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Ukulele Range hook");
+                Logger.LogError("Failed to apply Ukulele Range hook");
             }
 
             c.Index = 0;
@@ -119,7 +119,7 @@ namespace WellRoundedBalance.Items.Greens
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Ukulele Proc Coefficient hook");
+                Logger.LogError("Failed to apply Ukulele Proc Coefficient hook");
             }
         }
 

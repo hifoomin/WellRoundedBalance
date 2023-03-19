@@ -1,12 +1,11 @@
-﻿using Mono.Cecil.Cil;
-using MonoMod.Cil;
+﻿using MonoMod.Cil;
 
 namespace WellRoundedBalance.Items.Greens
 {
     public class PredatoryInstincts : ItemBase
     {
         public override string Name => ":: Items :: Greens :: Predatory Instincts";
-        public override string InternalPickupToken => "attackSpeedOnCrit";
+        public override ItemDef InternalPickup => RoR2Content.Items.AttackSpeedOnCrit;
 
         public override string PickupText => "'Critical Strikes' increase attack speed up to 3 times.";
 
@@ -36,7 +35,7 @@ namespace WellRoundedBalance.Items.Greens
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Predatory Instincts Attack Speed hook");
+                Logger.LogError("Failed to apply Predatory Instincts Attack Speed hook");
             }
         }
     }

@@ -5,7 +5,7 @@ namespace WellRoundedBalance.Items.Lunars
     public class Corpsebloom : ItemBase
     {
         public override string Name => ":: Items ::::: Lunars :: Corpsebloom";
-        public override string InternalPickupToken => "repeatHeal";
+        public override ItemDef InternalPickup => RoR2Content.Items.RepeatHeal;
 
         public override string PickupText => "Increase your healing... <color=#FF7F7F>BUT it's applied over time.</color>";
         public override string DescText => "<style=cIsHealing>Heal " + d(healingIncrease) + "</style> <style=cStack>(+" + d(healingIncrease) + " per stack)</style> more. <style=cIsHealing>All healing is applied over time</style>. Can <style=cIsHealing>heal</style> for a <style=cIsHealing>maximum</style> of <style=cIsHealing>" + d(percentHealingCapPerSecond) + "</style> <style=cStack>(-50% per stack)</style> of your <style=cIsHealing>health per second</style>.";
@@ -40,7 +40,7 @@ namespace WellRoundedBalance.Items.Lunars
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Corpsebloom Heal Increase hook");
+                Logger.LogError("Failed to apply Corpsebloom Heal Increase hook");
             }
 
             c.Index = 0;
@@ -54,7 +54,7 @@ namespace WellRoundedBalance.Items.Lunars
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Corpsebloom Healing Cap hook");
+                Logger.LogError("Failed to apply Corpsebloom Healing Cap hook");
             }
         }
     }

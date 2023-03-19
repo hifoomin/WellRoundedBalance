@@ -1,12 +1,9 @@
-﻿using MonoMod.Cil;
-using UnityEngine;
-
-namespace WellRoundedBalance.Items.Reds
+﻿namespace WellRoundedBalance.Items.Reds
 {
     public class ResonanceDisc : ItemBase
     {
         public override string Name => ":: Items ::: Reds :: Resonance Disc";
-        public override string InternalPickupToken => "laserTurbine";
+        public override ItemDef InternalPickup => RoR2Content.Items.LaserTurbine;
 
         public override string PickupText => "Obtain a Resonance Disc charged by killing enemies. Fires automatically when fully charged.";
 

@@ -1,6 +1,5 @@
 ﻿using Mono.Cecil.Cil;
 using MonoMod.Cil;
-using System;
 
 namespace WellRoundedBalance.Items.Whites
 {
@@ -9,7 +8,7 @@ namespace WellRoundedBalance.Items.Whites
         public static BuffDef watchDamage;
 
         public override string Name => ":: Items : Whites :: Delicate Watch";
-        public override string InternalPickupToken => "fragileDamageBonus";
+        public override ItemDef InternalPickup => DLC1Content.Items.FragileDamageBonus;
 
         public override string PickupText => "Deal bonus damage out of danger.";
 
@@ -27,14 +26,12 @@ namespace WellRoundedBalance.Items.Whites
 
         public override void Init()
         {
-            var damageIcon = Utils.Paths.Texture2D.texBuffFullCritIcon.Load<Texture2D>();
-
             watchDamage = ScriptableObject.CreateInstance<BuffDef>();
             watchDamage.isHidden = false;
             watchDamage.canStack = false;
             watchDamage.isDebuff = false;
             watchDamage.buffColor = new Color32(208, 165, 136, 255);
-            watchDamage.iconSprite = Sprite.Create(damageIcon, new Rect(0f, 0f, damageIcon.width, damageIcon.height), new Vector2(0f, 0f));
+            watchDamage.iconSprite = Main.wellroundedbalance.LoadAsset<Sprite>("texBuffDelicateWatchIcon.png");
             watchDamage.name = "Delicate Watch Damage Boost";
 
             ContentAddition.AddBuffDef(watchDamage);
@@ -77,18 +74,19 @@ namespace WellRoundedBalance.Items.Whites
                 c.Emit(OpCodes.Pop);
                 c.Emit(OpCodes.Ldc_I4_0);
             }
-            else Main.WRBLogger.LogError("Failed to apply Delicate Watch Threshold hook");
+            else Logger.LogError("Failed to apply Delicate Watch Threshold hook");
         }
 
         public static void HealthCompoment_TakeDamage(ILContext il)
         {
             ILCursor c = new(il);
-            if (c.TryGotoNext(MoveType.After, x => x.MatchLdloc(25)))
+            int idx = GetItemLoc(c, nameof(DLC1Content.Items.FragileDamageBonus));
+            if (idx != -1 && c.TryGotoNext(MoveType.After, x => x.MatchLdloc(idx)))
             {
                 c.Emit(OpCodes.Pop);
                 c.Emit(OpCodes.Ldc_I4_0);
             }
-            else Main.WRBLogger.LogError("Failed to apply Delicate Watch Damage hook");
+            else Logger.LogError("Failed to apply Delicate Watch Damage hook");
         }
     }
 

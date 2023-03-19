@@ -1,4 +1,6 @@
-﻿namespace WellRoundedBalance.Mechanics.Interactables
+﻿using RoR2.Navigation;
+
+namespace WellRoundedBalance.Mechanics.Interactables
 {
     internal class ItemFallPrevention : MechanicBase
     {
@@ -11,7 +13,6 @@
 
         public override void Hooks()
         {
-            On.RoR2.MapZone.Awake += MapZone_Awake;
             On.RoR2.MapZone.TryZoneStart += MapZone_TryZoneStart;
             // do this better later
         }
@@ -20,35 +21,40 @@
         {
             if (self.zoneType == MapZone.ZoneType.OutOfBounds)
             {
-                if (other.GetComponent<PickupDropletController>() || other.GetComponent<GenericPickupController>())
+                if (IsCollider(other))
                 {
-                    SpawnCard spawnCard = ScriptableObject.CreateInstance<SpawnCard>();
+                    var spawnCard = ScriptableObject.CreateInstance<SpawnCard>();
                     spawnCard.hullSize = HullClassification.Human;
-                    spawnCard.nodeGraphType = RoR2.Navigation.MapNodeGroup.GraphType.Ground;
+                    spawnCard.nodeGraphType = MapNodeGroup.GraphType.Ground;
                     spawnCard.prefab = LegacyResourcesAPI.Load<GameObject>("SpawnCards/HelperPrefab");
-                    GameObject gameObject = DirectorCore.instance.TrySpawnObject(new DirectorSpawnRequest(spawnCard, new DirectorPlacementRule
+
+                    var directorPlacementRule = new DirectorPlacementRule
                     {
                         placementMode = DirectorPlacementRule.PlacementMode.NearestNode,
                         position = other.transform.position
-                    }, RoR2Application.rng));
-                    if (gameObject)
+                    };
+
+                    var clone = DirectorCore.instance.TrySpawnObject(new DirectorSpawnRequest(spawnCard, directorPlacementRule, RoR2Application.rng));
+
+                    if (clone)
                     {
-                        TeleportHelper.TeleportGameObject(other.gameObject, gameObject.transform.position);
-                        Object.Destroy(gameObject);
+                        TeleportHelper.TeleportGameObject(other.gameObject, clone.transform.position);
+                        Object.Destroy(clone);
                     }
+
                     Object.Destroy(spawnCard);
                 }
             }
             orig(self, other);
         }
 
-        private void MapZone_Awake(On.RoR2.MapZone.orig_Awake orig, MapZone self)
+        private static bool IsCollider(Collider collider)
         {
-            orig(self);
-            if (self.zoneType == MapZone.ZoneType.OutOfBounds)
-            {
-                self.gameObject.layer = 29;
-            }
+            if (collider.GetComponent<PickupDropletController>()) return true;
+            if (collider.GetComponent<GenericPickupController>()) return true;
+            if (collider.GetComponent<PickupPickerController>()) return true;
+
+            return false;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using MonoMod.Cil;
+using RoR2.Items;
 
 namespace WellRoundedBalance.Items.Reds
 {
@@ -7,7 +8,7 @@ namespace WellRoundedBalance.Items.Reds
         public static BuffDef braincoatSpeed;
         public override string Name => ":: Items ::: Reds :: Bens Raincoat";
 
-        public override string InternalPickupToken => "immuneToDebuff";
+        public override ItemDef InternalPickup => DLC1Content.Items.ImmuneToDebuff;
 
         public override string PickupText => "Prevent debuffs, instead gaining temporary movement speed. Recharges over time.";
 
@@ -21,7 +22,7 @@ namespace WellRoundedBalance.Items.Reds
         [ConfigField("Base Buff Movement Speed Gain", "Decimal.", 0.3f)]
         public static float baseBuffMovementSpeedGain;
 
-        [ConfigField("Buff Movement Speed Gain Per Stack", "Decimal.", 0.1f)]
+        [ConfigField("Buff Movement Speed Gain Per Stack", "Decimal.", 0f)]
         public static float buffMovementSpeedGainPerStack;
 
         [ConfigField("Recharge Time", 1f)]
@@ -32,13 +33,14 @@ namespace WellRoundedBalance.Items.Reds
 
         public override void Init()
         {
-            var whip = Utils.Paths.Texture2D.texMoveSpeedIcon.Load<Texture2D>();
+            var whip = Utils.Paths.Texture2D.texMovespeedBuffIcon.Load<Texture2D>();
 
             braincoatSpeed = ScriptableObject.CreateInstance<BuffDef>();
             braincoatSpeed.buffColor = new Color32(224, 164, 0, 255);
             braincoatSpeed.isDebuff = false;
             braincoatSpeed.iconSprite = Sprite.Create(whip, new Rect(0f, 0f, (float)whip.width, (float)whip.height), new Vector2(0f, 0f));
             braincoatSpeed.canStack = false;
+            braincoatSpeed.isHidden = false;
 
             braincoatSpeed.name = "Ben's Raincoat Speed Boost";
 
@@ -51,7 +53,17 @@ namespace WellRoundedBalance.Items.Reds
         {
             IL.RoR2.Items.ImmuneToDebuffBehavior.TryApplyOverride += ImmuneToDebuffBehavior_TryApplyOverride;
             RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
-            On.RoR2.Items.ImmuneToDebuffBehavior.OnDisable += ImmuneToDebuffBehavior_OnDisable;
+            On.RoR2.Items.ImmuneToDebuffBehavior.TryApplyOverride += ImmuneToDebuffBehavior_TryApplyOverride1;
+        }
+
+        private bool ImmuneToDebuffBehavior_TryApplyOverride1(On.RoR2.Items.ImmuneToDebuffBehavior.orig_TryApplyOverride orig, CharacterBody body)
+        {
+            var hasRaincoat = body.GetComponent<ImmuneToDebuffBehavior>();
+            if (hasRaincoat)
+            {
+                body.AddTimedBuff(braincoatSpeed, buffDuration);
+            }
+            return orig(body);
         }
 
         private void ImmuneToDebuffBehavior_TryApplyOverride(ILContext il)
@@ -65,7 +77,7 @@ namespace WellRoundedBalance.Items.Reds
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Ben's Raincoat Barrier hook");
+                Logger.LogError("Failed to apply Ben's Raincoat Barrier hook");
             }
 
             c.Index = 0;
@@ -77,17 +89,8 @@ namespace WellRoundedBalance.Items.Reds
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Ben's Raincoat Recharge hook");
+                Logger.LogError("Failed to apply Ben's Raincoat Recharge hook");
             }
-        }
-
-        private void ImmuneToDebuffBehavior_OnDisable(On.RoR2.Items.ImmuneToDebuffBehavior.orig_OnDisable orig, RoR2.Items.ImmuneToDebuffBehavior self)
-        {
-            if (self.body)
-            {
-                self.body.AddTimedBuff(braincoatSpeed, buffDuration);
-            }
-            orig(self);
         }
 
         private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)

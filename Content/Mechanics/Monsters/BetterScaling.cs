@@ -1,12 +1,19 @@
 ﻿using BepInEx.Configuration;
-using System;
-using UnityEngine;
 
 namespace WellRoundedBalance.Mechanics.Monsters
 {
     internal class BetterScaling
     {
         public static ConfigEntry<bool> enable { get; set; }
+
+        [ConfigField("Health Multiplier", "", 0.7f)]
+        public static float healthMultiplier;
+
+        [ConfigField("Armor Cap", "Formula for current armor gain: Armor Cap - Armor Cap / Base Value ^ Stages Cleared", 200f)]
+        public static float armorCap;
+
+        [ConfigField("Base Value", "Formula for current armor gain: Armor Cap - Armor Cap / Base Value ^ Stages Cleared", 1.055f)]
+        public static float baseValue;
 
         public static void Init()
         {
@@ -21,8 +28,8 @@ namespace WellRoundedBalance.Mechanics.Monsters
         {
             if (sender.teamComponent.teamIndex != TeamIndex.Player)
             {
-                args.armorAdd += 200 - 200 / Mathf.Pow(1 + 0.055f, Run.instance.stageClearCount);
-                args.healthMultAdd *= 0.7f; // no inferno check intentionally
+                args.armorAdd += armorCap - armorCap / Mathf.Pow(baseValue, Run.instance.stageClearCount);
+                args.healthMultAdd *= healthMultiplier; // no inferno check intentionally
             }
         }
     }

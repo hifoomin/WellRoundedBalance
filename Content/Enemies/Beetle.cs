@@ -4,10 +4,16 @@
     {
         public override string Name => ":: Enemies ::::: Beetle";
 
+        [ConfigField("Should Lunge?", "Disabled if playing Inferno.", true)]
+        public static bool shouldLunge;
+
         public override void Hooks()
         {
-            On.EntityStates.BeetleMonster.HeadbuttState.FixedUpdate += HeadbuttState_FixedUpdate;
-            CharacterMaster.onStartGlobal += CharacterMaster_onStartGlobal;
+            if (shouldLunge)
+            {
+                On.EntityStates.BeetleMonster.HeadbuttState.FixedUpdate += HeadbuttState_FixedUpdate;
+                CharacterMaster.onStartGlobal += CharacterMaster_onStartGlobal;
+            }
         }
 
         private void CharacterMaster_onStartGlobal(CharacterMaster master)

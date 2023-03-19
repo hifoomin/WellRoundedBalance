@@ -5,7 +5,7 @@ namespace WellRoundedBalance.Items.Lunars
     public class EulogyZero : ItemBase
     {
         public override string Name => ":: Items ::::: Lunars :: Eulogy Zero";
-        public override string InternalPickupToken => "randomlyLunar";
+        public override ItemDef InternalPickup => DLC1Content.Items.RandomlyLunar;
 
         public override string PickupText => "Items and equipment have a small chance to transform into a Lunar item instead.";
         public override string DescText => "Items have a <style=cIsUtility>" + d(lunarChance) + " <style=cStack>(+" + d(lunarChance) + " per stack)</style></style> chance to become a <style=cIsLunar>Lunar</style> item instead.";
@@ -35,7 +35,7 @@ namespace WellRoundedBalance.Items.Lunars
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Eulogy Zero Chance2 hook");
+                Logger.LogError("Failed to apply Eulogy Zero Chance2 hook");
             }
         }
 
@@ -50,7 +50,7 @@ namespace WellRoundedBalance.Items.Lunars
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Eulogy Zero Chance1 hook");
+                Logger.LogError("Failed to apply Eulogy Zero Chance1 hook");
             }
         }
     }

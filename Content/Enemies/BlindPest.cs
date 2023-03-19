@@ -1,28 +1,27 @@
-﻿using RoR2;
-using UnityEngine;
-using UnityEngine.AddressableAssets;
-
-namespace WellRoundedBalance.Enemies
+﻿namespace WellRoundedBalance.Enemies
 {
     internal class BlindPest : EnemyBase
     {
         public override string Name => ":: Enemies :::: Blind Pest";
 
+        [ConfigField("Base Damage", "Disabled if playing Inferno.", 10f)]
+        public static float baseDamage;
+
+        [ConfigField("Director Credit Cost", "", 35)]
+        public static int directorCreditCost;
+
         public override void Hooks()
         {
             var blindPest = Addressables.LoadAssetAsync<GameObject>("RoR2/DLC1/FlyingVermin/FlyingVerminBody.prefab").WaitForCompletion();
             var blindPestBody = blindPest.GetComponent<CharacterBody>();
-            blindPestBody.baseDamage = 10f;
-            blindPestBody.levelDamage = 2f;
+            blindPestBody.baseDamage = baseDamage;
+            blindPestBody.levelDamage = baseDamage / 0.2f;
 
             var blindPestSC = Utils.Paths.CharacterSpawnCard.cscFlyingVermin.Load<CharacterSpawnCard>();
-            blindPestSC.directorCreditCost = 35;
+            blindPestSC.directorCreditCost = directorCreditCost;
 
             var blindPestSC2 = Utils.Paths.CharacterSpawnCard.cscFlyingVerminSnowy.Load<CharacterSpawnCard>();
-            blindPestSC2.directorCreditCost = 35;
-
-            var siphoned = Utils.Paths.DirectorCardCategorySelection.dccsSnowyForestMonstersDLC1.Load<DirectorCardCategorySelection>();
-            siphoned.categories[2] /* standard monsters */.cards[2] /* blind pest */.spawnCard = Utils.Paths.CharacterSpawnCard.cscMinorConstruct.Load<CharacterSpawnCard>();
+            blindPestSC2.directorCreditCost = directorCreditCost;
         }
     }
 }

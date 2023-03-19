@@ -4,8 +4,8 @@ namespace WellRoundedBalance.Equipment.Orange
 {
     public class GnarledWoodsprite : EquipmentBase
     {
-        public override string Name => "::: Equipment :: Gnarled Woodsprite";
-        public override string InternalPickupToken => "passiveHealing";
+        public override string Name => ":: Equipment :: Gnarled Woodsprite";
+        public override EquipmentDef InternalPickup => RoR2Content.Equipment.PassiveHealing;
         public override string PickupText => "Heal over time. Activate to send to an ally.";
 
         public override string DescText => "Gain a Woodsprite follower that heals a friendly target for <style=cIsHealing>" + d(activationPercentHealing) + " of their maximum health</style> instantly, then <style=cIsHealing>" + d(passivePercentHealing) + " of your maximum health</style> every second. \n\nActivating the equipment assigns a new target, or yourself if there are no targets available.";
@@ -47,7 +47,7 @@ namespace WellRoundedBalance.Equipment.Orange
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Gnarled Woodsprite Burst Healing hook");
+                Logger.LogError("Failed to apply Gnarled Woodsprite Burst Healing hook");
             }
         }
 

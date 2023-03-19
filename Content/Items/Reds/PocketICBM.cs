@@ -1,16 +1,15 @@
 ﻿using Mono.Cecil.Cil;
 using MonoMod.Cil;
-using RoR2;
-using RoR2.Projectile;
 using System;
-using UnityEngine;
 
 namespace WellRoundedBalance.Items.Reds
 {
     public class PocketICBM : ItemBase
     {
+        public static GameObject bigFuckingMissile;
+        public static GameObject bigFuckingMissileGhost;
         public override string Name => ":: Items ::: Reds :: Pocket ICBM";
-        public override string InternalPickupToken => "moreMissile";
+        public override ItemDef InternalPickup => DLC1Content.Items.MoreMissile;
 
         public override string PickupText => "All Missile items fire an additional missile. Gain a " + baseMissileChance + "% chance to fire a missile.";
 
@@ -27,6 +26,55 @@ namespace WellRoundedBalance.Items.Reds
 
         public override void Init()
         {
+            bigFuckingMissile = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.MissileProjectile.Load<GameObject>(), "Pocket ICBM Missile");
+
+            var missileController = bigFuckingMissile.GetComponent<MissileController>();
+            missileController.maxSeekDistance = 10000f;
+            missileController.turbulence = 0f;
+            missileController.deathTimer = 30f;
+            missileController.giveupTimer = 30f;
+            missileController.delayTimer = 0f;
+            missileController.maxVelocity = 25f * 2.5f;
+            missileController.acceleration = 3f * 2.5f;
+
+            var projectileController = bigFuckingMissile.GetComponent<ProjectileController>();
+
+            bigFuckingMissileGhost = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.MissileGhost.Load<GameObject>(), "Pocket ICBM Missile Ghost", false);
+            bigFuckingMissileGhost.transform.localScale = new Vector3(9f, 9f, 9f);
+            var flare = bigFuckingMissileGhost.transform.GetChild(1);
+            flare.gameObject.SetActive(false);
+
+            var icbmTrail = GameObject.Instantiate(Utils.Paths.Material.matMissileTrail.Load<Material>());
+            icbmTrail.name = "DSADASD";
+            icbmTrail.SetColor("_TintColor", new Color32(255, 129, 102, 255));
+
+            var trail = bigFuckingMissileGhost.transform.GetChild(0);
+            var trailRenderer = trail.GetComponent<TrailRenderer>();
+            trailRenderer.time = 0.4f * 1.5f;
+            trailRenderer.widthMultiplier = 0.5f * 3f;
+
+            // Main.WRBLogger.LogError("pre sharedMaterial is " + trailRenderer.sharedMaterial);
+
+            trailRenderer.sharedMaterial = icbmTrail;
+
+            // Main.WRBLogger.LogError("post sharedMaterial is " + trailRenderer.sharedMaterial);
+
+            var missileModel = bigFuckingMissileGhost.transform.GetChild(2);
+            missileModel.transform.eulerAngles = new Vector3(-90f, 0f, 0f);
+            var meshRenderer = missileModel.GetComponent<MeshRenderer>();
+
+            var icbmMat = GameObject.Instantiate(Utils.Paths.Material.matMissile.Load<Material>());
+            // icbmMat.SetColor("_Color", new Color32(224, 94, 94, 255));
+            icbmMat.SetTexture("_MainTex", Main.wellroundedbalance.LoadAsset<Texture2D>("texIcbm.png"));
+            icbmMat.EnableKeyword("DITHER");
+            icbmMat.EnableKeyword("FADECLOSE");
+
+            meshRenderer.sharedMaterial = icbmMat;
+
+            projectileController.ghostPrefab = bigFuckingMissileGhost;
+
+            PrefabAPI.RegisterNetworkPrefab(bigFuckingMissile);
+
             base.Init();
         }
 
@@ -55,7 +103,7 @@ namespace WellRoundedBalance.Items.Reds
                                 if (Util.CheckRoll((baseMissileChance + missileChancePerStack * (stack - 1)) * damageInfo.procCoefficient, body.master))
                                 {
                                     float damage = Util.OnHitProcDamage(damageInfo.damage, body.damage, totalDamage);
-                                    MissileUtils.FireMissile(body.corePosition, body, damageInfo.procChainMask, victim, damage, damageInfo.crit, GlobalEventManager.CommonAssets.missilePrefab, DamageColorIndex.Item, true);
+                                    MissileUtils.FireMissile(body.corePosition, body, damageInfo.procChainMask, victim, damage, damageInfo.crit, bigFuckingMissile, DamageColorIndex.Item, true);
                                 }
                             }
                         }
@@ -80,7 +128,7 @@ namespace WellRoundedBalance.Items.Reds
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Pocket I.C.B.M. Missile Count 1 hook");
+                Logger.LogError("Failed to apply Pocket I.C.B.M. Missile Count 1 hook");
             }
         }
 
@@ -88,20 +136,20 @@ namespace WellRoundedBalance.Items.Reds
         {
             ILCursor c = new(il);
 
-            if (c.TryGotoNext(MoveType.After, x => x.MatchCallOrCallvirt(typeof(System.Nullable<Int32>).GetMethod("GetValueOrDefault", new Type[] { }))))
+            if (c.TryGotoNext(MoveType.After, x => x.MatchCallOrCallvirt(typeof(int?).GetMethod("GetValueOrDefault", new Type[] { }))))
             {
                 c.Index += 4;
                 c.EmitDelegate<Func<float, float>>((orig) => 0f);
-                for (int i = 0; c.TryGotoNext(x => x.MatchCallOrCallvirt(typeof(UnityEngine.Quaternion).GetMethod("AngleAxis", (System.Reflection.BindingFlags)(-1)))); i++)
+                for (int i = 0; c.TryGotoNext(x => x.MatchCallOrCallvirt(typeof(Quaternion).GetMethod("AngleAxis", (System.Reflection.BindingFlags)(-1)))); i++)
                 {
                     c.Index--;
-                    c.EmitDelegate<Func<float, float>>((orig) => (i % 2 == 0) ? 45f : 45f * (-1));
+                    c.EmitDelegate<Func<float, float>>((orig) => (i % 2 == 0) ? Run.instance.treasureRng.RangeFloat(-55f, 55f) : Run.instance.treasureRng.RangeFloat(15f, 45f) * (-1));
                     c.Index += 2;
                 }
                 ILLabel label = c.DefineLabel();
                 if (c.TryGotoPrev(MoveType.After, x => x.MatchBle(out label)))
                 {
-                    c.EmitDelegate<Func<bool>>(() => 1 < 2);
+                    c.EmitDelegate(() => 1 < 2);
                     c.Emit(OpCodes.Brtrue, label);
                     c.GotoLabel(label, MoveType.Before);
                     c.MoveAfterLabels();
@@ -116,7 +164,7 @@ namespace WellRoundedBalance.Items.Reds
                             InputBankTest bank = body.GetComponent<InputBankTest>();
                             for (int i = 0; i < (stacks - 1) * 0 + ((1 == 1) ? 1 : (1 > 2) ? 1 - 2 : 0); i++)
                             {
-                                info.rotation = Util.QuaternionSafeLookRotation(Quaternion.AngleAxis(45f * ((i % 2 == 0) ? 1 : (-1)), bank ? bank.aimDirection : body.transform.position) * initDir);
+                                info.rotation = Util.QuaternionSafeLookRotation(Quaternion.AngleAxis(Run.instance.treasureRng.RangeFloat(-55f, 55f) * ((i % 2 == 0) ? 1 : (-1)), bank ? bank.aimDirection : body.transform.position) * initDir);
                                 ProjectileManager.instance.FireProjectile(info);
                             }
                         }
@@ -125,7 +173,7 @@ namespace WellRoundedBalance.Items.Reds
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Pocket I.C.B.M. Damage, Count, Stacking hook");
+                Logger.LogError("Failed to apply Pocket I.C.B.M. Damage, Count, Stacking hook");
             }
 
             // BIG thanks to RandomlyAwesome

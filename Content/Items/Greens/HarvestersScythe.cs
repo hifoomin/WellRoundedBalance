@@ -6,7 +6,7 @@ namespace WellRoundedBalance.Items.Greens
     public class HarvestersScythe : ItemBase
     {
         public override string Name => ":: Items :: Greens :: Harvesters Scythe";
-        public override string InternalPickupToken => "healOnCrit";
+        public override ItemDef InternalPickup => RoR2Content.Items.HealOnCrit;
 
         public override string PickupText => "'Backstabs' heal a percentage of missing health.";
 
@@ -48,7 +48,7 @@ namespace WellRoundedBalance.Items.Greens
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Harvester's Scythe Deletion 2 hook");
+                Logger.LogError("Failed to apply Harvester's Scythe Deletion 2 hook");
             }
         }
 
@@ -64,7 +64,7 @@ namespace WellRoundedBalance.Items.Greens
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Harvester's Scythe Deletion 1 hook");
+                Logger.LogError("Failed to apply Harvester's Scythe Deletion 1 hook");
             }
         }
 

@@ -59,7 +59,7 @@ namespace WellRoundedBalance.Eclipse
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Eclipse 2 Alloy Vulture hook");
+                Logger.LogError("Failed to apply Eclipse 2 Alloy Vulture hook");
             }
         }
 
@@ -114,7 +114,7 @@ namespace WellRoundedBalance.Eclipse
 
             if (error)
             {
-                Main.WRBLogger.LogError("Failed to apply Eclipse 2 Wandering Vagrant hook");
+                Logger.LogError("Failed to apply Eclipse 2 Wandering Vagrant hook");
             }
         }
 
@@ -139,7 +139,7 @@ namespace WellRoundedBalance.Eclipse
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Eclipse 2 Scavenger hook");
+                Logger.LogError("Failed to apply Eclipse 2 Scavenger hook");
             }
         }
 
@@ -174,7 +174,7 @@ namespace WellRoundedBalance.Eclipse
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Eclipse 2 Solus Control Unit hook");
+                Logger.LogError("Failed to apply Eclipse 2 Solus Control Unit hook");
             }
         }
 
@@ -202,7 +202,7 @@ namespace WellRoundedBalance.Eclipse
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Eclipse 2 Alpha Construct hook");
+                Logger.LogError("Failed to apply Eclipse 2 Alpha Construct hook");
             }
         }
 
@@ -230,7 +230,7 @@ namespace WellRoundedBalance.Eclipse
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Eclipse 2 Lunar Exploder hook");
+                Logger.LogError("Failed to apply Eclipse 2 Lunar Exploder hook");
             }
         }
 
@@ -267,7 +267,7 @@ namespace WellRoundedBalance.Eclipse
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Eclipse 2 Elder Lemurian hook");
+                Logger.LogError("Failed to apply Eclipse 2 Elder Lemurian hook");
             }
         }
 
@@ -292,7 +292,7 @@ namespace WellRoundedBalance.Eclipse
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Eclipse 2 Lemurian hook");
+                Logger.LogError("Failed to apply Eclipse 2 Lemurian hook");
             }
         }
 
@@ -317,7 +317,7 @@ namespace WellRoundedBalance.Eclipse
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Eclipse 2 Grovetender hook");
+                Logger.LogError("Failed to apply Eclipse 2 Grovetender hook");
             }
         }
 
@@ -342,7 +342,7 @@ namespace WellRoundedBalance.Eclipse
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Eclipse 2 Greater Wisp hook");
+                Logger.LogError("Failed to apply Eclipse 2 Greater Wisp hook");
             }
         }
 
@@ -370,7 +370,7 @@ namespace WellRoundedBalance.Eclipse
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Eclipse 2 Blind Pest hook");
+                Logger.LogError("Failed to apply Eclipse 2 Blind Pest hook");
             }
         }
 
@@ -406,7 +406,7 @@ namespace WellRoundedBalance.Eclipse
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Eclipse 2 Clay Dunestrider hook");
+                Logger.LogError("Failed to apply Eclipse 2 Clay Dunestrider hook");
             }
         }
 
@@ -437,7 +437,7 @@ namespace WellRoundedBalance.Eclipse
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Eclipse 2 Brass Contraption hook");
+                Logger.LogError("Failed to apply Eclipse 2 Brass Contraption hook");
             }
         }
 
@@ -462,7 +462,7 @@ namespace WellRoundedBalance.Eclipse
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Eclipse 2 Beetle Guard hook");
+                Logger.LogError("Failed to apply Eclipse 2 Beetle Guard hook");
             }
         }
 
@@ -477,7 +477,7 @@ namespace WellRoundedBalance.Eclipse
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Eclipse 2 hook");
+                Logger.LogError("Failed to apply Eclipse 2 hook");
             }
         }
     }

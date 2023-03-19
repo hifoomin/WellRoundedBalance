@@ -5,7 +5,7 @@ namespace WellRoundedBalance.Equipment
     public class JadeElephant : EquipmentBase
     {
         public override string Name => ":: Equipment :: Jade Elephant";
-        public override string InternalPickupToken => "gainArmor";
+        public override EquipmentDef InternalPickup => RoR2Content.Equipment.GainArmor;
 
         public override string PickupText => "Gain massive armor for " + buffDuration + " seconds.";
 
@@ -45,7 +45,7 @@ namespace WellRoundedBalance.Equipment
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Jade Elephant Armor hook");
+                Logger.LogError("Failed to apply Jade Elephant Armor hook");
             }
         }
 
@@ -60,7 +60,7 @@ namespace WellRoundedBalance.Equipment
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Jade Elephant Duration hook");
+                Logger.LogError("Failed to apply Jade Elephant Duration hook");
             }
         }
     }

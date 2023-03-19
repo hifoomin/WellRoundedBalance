@@ -4,6 +4,14 @@
     {
         public override string Name => ":: Mechanics :::::: Faster Holdout Zone";
 
+        [ConfigField("Charge Rate Multiplier", "", 1.6f)]
+        public static float chargeRateMultiplier;
+
+        public override void Init()
+        {
+            base.Init();
+        }
+
         public override void Hooks()
         {
             On.RoR2.HoldoutZoneController.Awake += HoldoutZoneController_Awake;
@@ -17,7 +25,7 @@
 
         private void Self_calcChargeRate(ref float rate)
         {
-            rate *= 1.6f;
+            rate *= chargeRateMultiplier;
         }
     }
 }

@@ -3,7 +3,7 @@
     public class CeremonialDagger : ItemBase
     {
         public override string Name => ":: Items ::: Reds :: Ceremonial Dagger";
-        public override string InternalPickupToken => "dagger";
+        public override ItemDef InternalPickup => RoR2Content.Items.Dagger;
 
         public override string PickupText => "Killing an enemy releases homing daggers.";
 

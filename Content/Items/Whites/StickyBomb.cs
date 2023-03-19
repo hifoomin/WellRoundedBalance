@@ -1,5 +1,6 @@
 ﻿using Mono.Cecil.Cil;
 using MonoMod.Cil;
+using R2API;
 using System;
 
 namespace WellRoundedBalance.Items.Whites
@@ -7,13 +8,13 @@ namespace WellRoundedBalance.Items.Whites
     public class StickyBomb : ItemBase
     {
         public override string Name => ":: Items : Whites :: Sticky Bomb";
-        public override string InternalPickupToken => "stickyBomb";
+        public override ItemDef InternalPickup => RoR2Content.Items.StickyBomb;
 
         public override string PickupText => "Chance on hit to attach a bomb to enemies.";
 
         public override string DescText =>
             StackDesc(chance, chanceStack, init => $"<style=cIsDamage>{d(init)}</style>{{Stack}} chance on hit to attach a <style=cIsDamage>bomb</style> to an enemy", d) +
-            StackDesc(damage, damageStack, init => $", detonating for <style=cIsDamage>{init}</style>{{Stack}} {(damageIsTotal ? "TOTAL" : "base")} damage.", d);
+            StackDesc(damage, damageStack, init => $", detonating for <style=cIsDamage>{d(init)}</style>{{Stack}} {(damageIsTotal ? "TOTAL" : "base")} damage.", d);
 
         // Better Configs Wave 2 Template -P
 
@@ -47,6 +48,9 @@ namespace WellRoundedBalance.Items.Whites
         [ConfigField("Proc Coefficient", "Decimal.", 0f)]
         public static float proc;
 
+        [ConfigField("Radius", "", 10f)]
+        public static float radius;
+
         public override void Init()
         {
             base.Init();
@@ -61,28 +65,34 @@ namespace WellRoundedBalance.Items.Whites
         public static void GlobalEventManager_OnHitEnemy(ILContext il)
         {
             ILCursor c = new(il);
-            if (c.TryGotoNext(x => x.MatchLdsfld(typeof(RoR2Content.Items), nameof(RoR2Content.Items.StickyBomb))) && c.TryGotoNext(x => x.MatchLdloc(4), x => x.MatchCallOrCallvirt(typeof(Util), nameof(Util.CheckRoll))))
+            int info = -1;
+            int attacker = -1;
+            c.TryGotoNext(x => x.MatchLdarg(out info), x => x.MatchLdfld<DamageInfo>(nameof(DamageInfo.attacker)));
+            c.TryGotoNext(x => x.MatchStloc(attacker));
+            if (info == -1 || attacker == -1) return;
+            int stack = GetItemLoc(c, nameof(RoR2Content.Items.StickyBomb));
+            if (stack != -1 && c.TryGotoNext(x => x.MatchCallOrCallvirt(typeof(Util), nameof(Util.CheckRoll))))
             {
                 c.Emit(OpCodes.Pop);
-                c.Emit(OpCodes.Ldloc, 14);
-                c.Emit(OpCodes.Ldarg_1);
+                c.Emit(OpCodes.Ldloc, stack);
+                c.Emit(OpCodes.Ldarg, info);
                 c.EmitDelegate<Func<int, DamageInfo, float>>((stack, info) => info.procCoefficient * StackAmount(chance, chanceStack, stack, chanceIsHyperbolic));
             }
-            else Main.WRBLogger.LogError("Failed to apply Sticky Bomb Chance hook");
+            else Logger.LogError("Failed to apply Sticky Bomb Chance hook");
             if (c.TryGotoNext(x => x.MatchStloc(79)))
             {
                 c.Emit(OpCodes.Pop);
-                c.Emit(OpCodes.Ldarg_1);
-                c.Emit(OpCodes.Ldloc_1);
-                c.Emit(OpCodes.Ldloc, 14);
+                c.Emit(OpCodes.Ldarg, info);
+                c.Emit(OpCodes.Ldloc, attacker);
+                c.Emit(OpCodes.Ldloc, stack);
                 c.EmitDelegate<Func<DamageInfo, CharacterBody, int, float>>((info, body, stack) =>
                 {
                     float ret = StackAmount(damage, damageStack, stack, damageIsHyperbolic);
                     if (damageIsTotal) ret = Util.OnHitProcDamage(info.damage, body.damage, ret);
-                    return ret;
+                    return ret * 100;
                 });
             }
-            else Main.WRBLogger.LogError("Failed to apply Sticky Bomb Damage hook");
+            else Logger.LogError("Failed to apply Sticky Bomb Damage hook");
         }
 
         public static void Changes()
@@ -91,6 +101,16 @@ namespace WellRoundedBalance.Items.Whites
             StickyBombImpact.lifetime = lifetime;
             StickyBombImpact.falloffModel = changeFalloff;
             StickyBombImpact.blastProcCoefficient = proc;
+            StickyBombImpact.blastRadius = radius;
+
+            var coolerExplosion = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.OmniExplosionVFXQuick.Load<GameObject>(), "Sticky Bomb Explosion", false);
+            coolerExplosion.transform.localScale = new Vector3(radius, radius, radius);
+            var effectComponent = coolerExplosion.GetComponent<EffectComponent>();
+            effectComponent.soundName = "Play_item_proc_behemoth";
+
+            ContentAddition.AddEffect(coolerExplosion);
+
+            StickyBombImpact.impactEffect = coolerExplosion;
         }
     }
 }

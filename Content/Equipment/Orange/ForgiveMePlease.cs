@@ -4,8 +4,8 @@ namespace WellRoundedBalance.Equipment.Orange
 {
     public class ForgiveMePlease : EquipmentBase
     {
-        public override string Name => "::: Equipment :: Forgive Me Please";
-        public override string InternalPickupToken => "deathProjectile";
+        public override string Name => ":: Equipment :: Forgive Me Please";
+        public override EquipmentDef InternalPickup => RoR2Content.Equipment.DeathProjectile;
 
         public override string PickupText => "Throw a cursed doll that repeatedly triggers your 'On Kill' effects.";
 
@@ -53,7 +53,7 @@ namespace WellRoundedBalance.Equipment.Orange
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Forgive Me Please Interval hook");
+                Logger.LogError("Failed to apply Forgive Me Please Interval hook");
             }
         }
     }

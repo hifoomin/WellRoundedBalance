@@ -1,6 +1,5 @@
 ﻿using Mono.Cecil.Cil;
 using MonoMod.Cil;
-using RoR2;
 using System;
 
 namespace WellRoundedBalance.Items.Whites
@@ -8,7 +7,7 @@ namespace WellRoundedBalance.Items.Whites
     public class Crowbar : ItemBase
     {
         public override string Name => ":: Items : Whites :: Crowbar";
-        public override string InternalPickupToken => "crowbar";
+        public override ItemDef InternalPickup => RoR2Content.Items.Crowbar;
 
         public override string PickupText => "Deal bonus damage to enemies above " + d(healthThreshold) + " health.";
 
@@ -47,20 +46,26 @@ namespace WellRoundedBalance.Items.Whites
         public static void HealthComponent_TakeDamage(ILContext il)
         {
             ILCursor c = new(il);
+            int dmg = -1;
+            c.TryGotoNext(x => x.MatchLdfld<DamageInfo>(nameof(DamageInfo.damage)), x => x.MatchStloc(out dmg));
+            int stack = GetItemLoc(c, nameof(RoR2Content.Items.Crowbar));
+            if (dmg == -1 || stack == -1) return;
+            c.Index = 0;
             if (c.TryGotoNext(x => x.MatchCallOrCallvirt<HealthComponent>("get_" + nameof(HealthComponent.fullCombinedHealth))) && c.TryGotoNext(x => x.MatchMul()))
             {
                 c.Emit(OpCodes.Pop);
-                c.Emit(OpCodes.Ldloc, 19);
+                c.Emit(OpCodes.Ldloc, stack);
                 c.EmitDelegate<Func<int, float>>(stack => StackAmount(healthThreshold, healthThresholdStack, stack, healthThresholdIsHyperbolic));
             }
-            else Main.WRBLogger.LogError("Failed to apply Crowbar Threshold hook");
-            if (c.TryGotoNext(x => x.MatchLdloc(19)) && c.TryGotoNext(x => x.MatchStloc(6)))
+            else Logger.LogError("Failed to apply Crowbar Threshold hook");
+            if (c.TryGotoNext(x => x.MatchLdloc(stack)) && c.TryGotoNext(x => x.MatchStloc(dmg)))
             {
                 c.Emit(OpCodes.Pop);
-                c.Emit(OpCodes.Ldloc, 19);
-                c.EmitDelegate<Func<int, float>>(stack => StackAmount(damageIncrease, damageIncreaseStack, stack, damageIncreaseIsHyperbolic));
+                c.Emit(OpCodes.Ldloc, dmg);
+                c.Emit(OpCodes.Ldloc, stack);
+                c.EmitDelegate<Func<float, int, float>>((orig, stack) => orig * (1f + StackAmount(damageIncrease, damageIncreaseStack, stack, damageIncreaseIsHyperbolic)));
             }
-            else Main.WRBLogger.LogError("Failed to apply Crowbar Damage hook");
+            else Logger.LogError("Failed to apply Crowbar Damage hook");
         }
     }
 }

@@ -1,9 +1,12 @@
-﻿namespace WellRoundedBalance.Items.Lunars
+﻿using MonoMod.Cil;
+using System;
+
+namespace WellRoundedBalance.Items.Lunars
 {
     public class FocusedConvergence : ItemBase
     {
         public override string Name => ":: Items ::::: Lunars :: Focused Convergence";
-        public override string InternalPickupToken => "focusedConvergence";
+        public override ItemDef InternalPickup => RoR2Content.Items.FocusConvergence;
 
         public override string PickupText => "Teleporter events grant additional rewards... <color=#FF7F7F>BUT increase their difficulty.</color>";
         public override string DescText => "Increase <style=cIsUtility>teleporter event rewards</style> by <style=cIsUtility>" + mountainShrineCount + "</style> <style=cStack>(+" + mountainShrineCount + " per stack)</style>. Teleporter events are <style=cIsUtility>" + d(mountainShrineCount) + "</style> <style=cStack>(+" + d(mountainShrineCount) + " per stack)</style> harder.";
@@ -20,6 +23,26 @@
         {
             On.RoR2.HoldoutZoneController.FocusConvergenceController.Awake += Changes;
             On.RoR2.TeleporterInteraction.Start += AddDifficulty;
+            IL.RoR2.HoldoutZoneController.FocusConvergenceController.ApplyRadius += FocusConvergenceController_ApplyRadius;
+        }
+
+        private void FocusConvergenceController_ApplyRadius(ILContext il)
+        {
+            ILCursor c = new(il);
+
+            if (c.TryGotoNext(MoveType.Before,
+                x => x.MatchLdfld(typeof(HoldoutZoneController.FocusConvergenceController), "currentFocusConvergenceCount")))
+            {
+                c.Index++;
+                c.EmitDelegate<Func<int, int>>((useless) =>
+                {
+                    return 1;
+                });
+            }
+            else
+            {
+                Main.WRBLogger.LogError("Failed to apply Focused Convergence Radius hook");
+            }
         }
 
         private void AddDifficulty(On.RoR2.TeleporterInteraction.orig_Start orig, TeleporterInteraction self)

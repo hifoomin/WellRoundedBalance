@@ -7,7 +7,7 @@ namespace WellRoundedBalance.Items.Whites
     {
         public override string Name => ":: Items : Whites :: Roll of Pennies";
 
-        public override string InternalPickupToken => "goldOnHurt";
+        public override ItemDef InternalPickup => DLC1Content.Items.GoldOnHurt;
 
         public override string PickupText => "Gain gold at the beginning of each stage.";
 
@@ -89,7 +89,7 @@ namespace WellRoundedBalance.Items.Whites
                 c.Emit(OpCodes.Pop);
                 c.Emit(OpCodes.Ldc_I4_0);
             }
-            else Main.WRBLogger.LogError("Failed to apply Roll of Pennies Gold hook");
+            else Logger.LogError("Failed to apply Roll of Pennies Gold hook");
         }
     }
 }

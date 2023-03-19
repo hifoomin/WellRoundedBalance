@@ -1,21 +1,32 @@
-﻿namespace WellRoundedBalance.Difficulties
+﻿using BepInEx.Configuration;
+using System;
+
+namespace WellRoundedBalance.Difficulties
 {
-    public abstract class DifficultyBase
+    public abstract class DifficultyBase : SharedBase
     {
-        public abstract string Name { get; }
-        public abstract string InternalDiffToken { get; }
+        public override ConfigFile Config => Main.WRBDifficultyConfig;
+        public abstract DifficultyIndex InternalDiff { get; }
         public abstract string DescText { get; }
-        public virtual bool isEnabled { get; } = true;
 
-        public abstract void Hooks();
+        public static event Action onTokenRegister;
 
-        public string d(float f) => (f * 100f).ToString() + "%";
-
-        public virtual void Init()
+        public override void Init()
         {
-            ConfigManager.HandleConfigAttributes(this.GetType(), Name, Main.WRBDifficultyConfig);
-            Hooks();
-            LanguageAPI.Add(InternalDiffToken.ToUpper(), DescText);
+            base.Init();
+            SetToken();
+        }
+
+        [SystemInitializer(typeof(DifficultyCatalog))]
+        public static void OnDifficultyInitialized()
+        { if (onTokenRegister != null) onTokenRegister(); }
+
+        public void SetToken()
+        {
+            if (InternalDiff == DifficultyIndex.Invalid) return;
+            DifficultyDef def = DifficultyCatalog.GetDifficultyDef(InternalDiff);
+            //Logger.LogMessage(def.descriptionToken);
+            if (def != null) LanguageAPI.Add(def.descriptionToken, DescText);
         }
     }
 }

@@ -2,8 +2,8 @@
 {
     public class Molotov6Pack : EquipmentBase
     {
-        public override string Name => "::: Equipment :: Molotov 6 Pack";
-        public override string InternalPickupToken => "molotov";
+        public override string Name => ":: Equipment :: Molotov 6 Pack";
+        public override EquipmentDef InternalPickup => DLC1Content.Equipment.Molotov;
 
         public override string PickupText => "Throw " + molotovCount + " flaming molotovs that ignite enemies upon shattering.";
 

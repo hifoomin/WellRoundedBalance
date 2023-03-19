@@ -5,7 +5,7 @@ namespace WellRoundedBalance.Items.Lunars
     public class StoneFluxPauldron : ItemBase
     {
         public override string Name => ":: Items ::::: Lunars :: Stone Flux Pauldron";
-        public override string InternalPickupToken => "halfSpeedDoubleHealth";
+        public override ItemDef InternalPickup => DLC1Content.Items.HalfSpeedDoubleHealth;
 
         public override string PickupText => "Pull enemies on hit... <color=#FF7F7F>BUT enemies pull you on hit.</color>\n";
 
@@ -57,10 +57,7 @@ namespace WellRoundedBalance.Items.Lunars
                             else mass = 1f;
 
                             var force = 6f * damageInfo.procCoefficient * stack;
-                            if (!self.body.isBoss)
-                            {
-                                damageInfo.force += Vector3.Normalize(attackerBody.corePosition - self.body.corePosition) * force * Mathf.Pow(mass, 1.1f);
-                            }
+                            damageInfo.force += Vector3.Normalize(attackerBody.corePosition - self.body.corePosition) * force * Mathf.Pow(mass, 1.1f);
                         }
                     }
                 }
@@ -83,7 +80,7 @@ namespace WellRoundedBalance.Items.Lunars
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Stone Flux Pauldron Speed hook");
+                Logger.LogError("Failed to apply Stone Flux Pauldron Speed hook");
             }
 
             c.Index = 0;
@@ -99,7 +96,7 @@ namespace WellRoundedBalance.Items.Lunars
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Stone Flux Pauldron Health hook");
+                Logger.LogError("Failed to apply Stone Flux Pauldron Health hook");
             }
         }
     }

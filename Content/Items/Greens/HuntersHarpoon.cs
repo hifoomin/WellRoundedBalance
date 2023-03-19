@@ -12,7 +12,7 @@ namespace WellRoundedBalance.Items.Greens
                                            (buffDurationPerStack > 0 ? " <style=cStack>(+" + buffDurationPerStack + " per stack)</style>" : "") +
                                            " seconds.";
 
-        public override string InternalPickupToken => "moveSpeedOnKill";
+        public override ItemDef InternalPickup => DLC1Content.Items.MoveSpeedOnKill;
         public override string Name => ":: Items :: Greens :: Hunters Harpoon";
 
         public override string PickupText => "Killing an enemy gives you a burst of movement speed.";
@@ -26,7 +26,7 @@ namespace WellRoundedBalance.Items.Greens
         [ConfigField("Max Buff Count Per Stack", 2)]
         public static int maxBuffCountPerStack;
 
-        [ConfigField("Base Buff Duration", 4f)]
+        [ConfigField("Base Buff Duration", 5f)]
         public static float baseBuffDuration;
 
         [ConfigField("Buff Duration Per Stack", 0f)]
@@ -81,6 +81,7 @@ namespace WellRoundedBalance.Items.Greens
                             }
                         }
                     }
+
                     if (iter < maxBuffCount)
                     {
                         self.timedBuffs.Add(new CharacterBody.TimedBuff()
@@ -90,12 +91,14 @@ namespace WellRoundedBalance.Items.Greens
                         });
                         self.AddBuff(buffDef);
                     }
-                    else if (iter2 > -1)
+
+                    if (iter2 > -1)
                     {
                         self.timedBuffs[iter2].timer = duration;
                     }
                 }
             }
+
             orig(self, buffDef, duration);
         }
 
@@ -163,7 +166,7 @@ namespace WellRoundedBalance.Items.Greens
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Hunter's Harpoon Deletion hook");
+                Logger.LogError("Failed to apply Hunter's Harpoon Deletion hook");
             }
         }
     }

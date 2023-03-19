@@ -2,8 +2,8 @@
 {
     public class RemoteCaffeinator : EquipmentBase
     {
-        public override string Name => "::: Equipment :: Remote Caffeinator";
-        public override string InternalPickupToken => "vendingMachine";
+        public override string Name => ":: Equipment :: Remote Caffeinator";
+        public override EquipmentDef InternalPickup => DLC1Content.Equipment.VendingMachine;
 
         public override string PickupText => "Request a healing soda machine.";
 

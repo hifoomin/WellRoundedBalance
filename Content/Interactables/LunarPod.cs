@@ -4,6 +4,15 @@
     {
         public override string Name => ":: Interactables ::::::: Lunar Pod";
 
+        [ConfigField("Choice Count", "", 2)]
+        public static int choiceCount;
+
+        [ConfigField("Max Spawns Per Stage", "", 1)]
+        public static int maxSpawnsPerStage;
+
+        [ConfigField("Director Credit Cost", "", 15)]
+        public static int directorCreditCost;
+
         public override void Init()
         {
             base.Init();
@@ -12,8 +21,8 @@
         public override void Hooks()
         {
             var iscLunarPod = Utils.Paths.InteractableSpawnCard.iscLunarChest.Load<InteractableSpawnCard>();
-            iscLunarPod.maxSpawnsPerStage = 1;
-            iscLunarPod.directorCreditCost = 15;
+            iscLunarPod.maxSpawnsPerStage = maxSpawnsPerStage;
+            iscLunarPod.directorCreditCost = directorCreditCost;
 
             var lunarPod = Utils.Paths.GameObject.LunarChest.Load<GameObject>();
             Object.Destroy(lunarPod.GetComponent<ChestBehavior>());
@@ -27,7 +36,7 @@
             optionChestBehavior.dropForwardVelocityStrength = 3f;
             optionChestBehavior.openState = new(typeof(EntityStates.Barrel.OpeningLunar));
             optionChestBehavior.pickupPrefab = Utils.Paths.GameObject.OptionPickup.Load<GameObject>();
-            optionChestBehavior.numOptions = 2;
+            optionChestBehavior.numOptions = choiceCount;
             optionChestBehavior.displayTier = ItemTier.Lunar;
 
             lunarPod.AddComponent<UnityTechnologies>();

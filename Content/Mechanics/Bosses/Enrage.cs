@@ -1,11 +1,19 @@
-﻿using UnityEngine;
-using WellRoundedBalance.Eclipse;
+﻿using WellRoundedBalance.Eclipse;
 
 namespace WellRoundedBalance.Mechanics.Bosses
 {
     internal class Enrage : MechanicBase
     {
         public override string Name => ":: Mechanics ::::: Boss Enrage";
+
+        [ConfigField("Maximum Movement Speed Gain", "Decimal.", 0.3f)]
+        public static float maximumMovementSpeedGain;
+
+        [ConfigField("Maximum Attack Speed Gain", "Decimal.", 0.25f)]
+        public static float maximumAttackSpeedGain;
+
+        [ConfigField("Maximum Cooldown Reduction Gain", "Decimal.", 0.25f)]
+        public static float maximumCooldownReductionGain;
 
         public override void Init()
         {
@@ -24,15 +32,15 @@ namespace WellRoundedBalance.Mechanics.Bosses
                 var increase = Mathf.Clamp01(1f - sender.healthComponent.combinedHealthFraction);
                 if (Run.instance.selectedDifficulty >= DifficultyIndex.Eclipse6 && Eclipse6.instance.isEnabled)
                 {
-                    args.moveSpeedMultAdd += increase * 0.6f;
-                    args.attackSpeedMultAdd += increase * 0.5f;
-                    args.cooldownMultAdd -= increase * 0.5f;
+                    args.moveSpeedMultAdd += increase * (maximumMovementSpeedGain * 2f);
+                    args.attackSpeedMultAdd += increase * (maximumAttackSpeedGain * 2f);
+                    args.cooldownMultAdd -= increase * (maximumCooldownReductionGain * 2f);
                 }
                 else
                 {
-                    args.moveSpeedMultAdd += increase * 0.3f;
-                    args.attackSpeedMultAdd += increase * 0.25f;
-                    args.cooldownMultAdd -= increase * 0.25f;
+                    args.moveSpeedMultAdd += increase * maximumMovementSpeedGain;
+                    args.attackSpeedMultAdd += increase * maximumAttackSpeedGain;
+                    args.cooldownMultAdd -= increase * maximumCooldownReductionGain;
                 }
             }
         }

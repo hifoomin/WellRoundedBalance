@@ -1,16 +1,9 @@
-﻿namespace WellRoundedBalance.Mechanics
+﻿using BepInEx.Configuration;
+
+namespace WellRoundedBalance.Mechanics
 {
-    public abstract class MechanicBase
+    public abstract class MechanicBase : SharedBase
     {
-        public abstract string Name { get; }
-        public virtual bool isEnabled { get; } = true;
-
-        public abstract void Hooks();
-
-        public virtual void Init()
-        {
-            ConfigManager.HandleConfigAttributes(this.GetType(), Name, Main.WRBMechanicConfig);
-            Hooks();
-        }
+        public override ConfigFile Config => Main.WRBMechanicConfig;
     }
 }

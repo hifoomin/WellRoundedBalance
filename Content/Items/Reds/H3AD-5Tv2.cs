@@ -3,7 +3,7 @@
     public class Headstompers : ItemBase
     {
         public override string Name => ":: Items ::: Reds :: H3AD-5T v2";
-        public override string InternalPickupToken => "fallBoots";
+        public override ItemDef InternalPickup => RoR2Content.Items.FallBoots;
 
         public override string PickupText => "Increase jump height. Hold 'Interact' to slam down to the ground.";
 

@@ -2,8 +2,8 @@
 {
     public class Sawmerang : EquipmentBase
     {
-        public override string Name => "::: Equipment :: Sawmerang";
-        public override string InternalPickupToken => "sawmerang";
+        public override string Name => ":: Equipment :: Sawmerang";
+        public override EquipmentDef InternalPickup => RoR2Content.Equipment.Saw;
 
         public override string PickupText => "Throw a fan of buzzing saws that come back to you.";
 

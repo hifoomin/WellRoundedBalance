@@ -6,7 +6,7 @@ namespace WellRoundedBalance.Items.Reds
     public class BottledChaos : ItemBase
     {
         public override string Name => ":: Items ::: Reds :: Bottled Chaos";
-        public override string InternalPickupToken => "randomEquipmentTrigger";
+        public override ItemDef InternalPickup => DLC1Content.Items.RandomEquipmentTrigger;
 
         public override string PickupText => "Activating your Equipment triggers " + randomEquipmentActivations + " additional, random Equipment effect" +
                                              (randomEquipmentActivations != 1 ? "s." : ".");
@@ -41,7 +41,7 @@ namespace WellRoundedBalance.Items.Reds
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Bottled Chaos Count hook");
+                Logger.LogError("Failed to apply Bottled Chaos Count hook");
             }
         }
     }

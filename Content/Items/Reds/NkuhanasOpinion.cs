@@ -5,7 +5,7 @@ namespace WellRoundedBalance.Items.Reds
     public class NkuhanasOpinion : ItemBase
     {
         public override string Name => ":: Items ::: Reds :: Nkuhanas Opinion";
-        public override string InternalPickupToken => "novaOnHeal";
+        public override ItemDef InternalPickup => RoR2Content.Items.NovaOnHeal;
 
         public override string PickupText => "Fire haunting skulls when healed.";
 
@@ -44,7 +44,7 @@ namespace WellRoundedBalance.Items.Reds
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Nkuhanas Opinion Damage hook");
+                Logger.LogError("Failed to apply Nkuhanas Opinion Damage hook");
             }
 
             c.Index = 0;
@@ -56,7 +56,7 @@ namespace WellRoundedBalance.Items.Reds
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Nkuhanas Opinion Range hook");
+                Logger.LogError("Failed to apply Nkuhanas Opinion Range hook");
             }
         }
     }

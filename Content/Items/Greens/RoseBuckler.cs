@@ -7,7 +7,7 @@ namespace WellRoundedBalance.Items.Greens
     public class RoseBuckler : ItemBase
     {
         public override string Name => ":: Items :: Greens :: Rose Buckler";
-        public override string InternalPickupToken => "sprintArmor";
+        public override ItemDef InternalPickup => RoR2Content.Items.SprintArmor;
 
         public override string PickupText => "Reduce incoming damage while sprinting.";
 
@@ -48,7 +48,7 @@ namespace WellRoundedBalance.Items.Greens
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Rose Buckler Armor hook");
+                Logger.LogError("Failed to apply Rose Buckler Armor hook");
             }
         }
     }

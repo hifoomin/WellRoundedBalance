@@ -73,7 +73,7 @@ namespace WellRoundedBalance.Elites
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Blazing Elite Firetrail Damage hook");
+                Logger.LogError("Failed to apply Blazing Elite Firetrail Damage hook");
             }
         }
 
@@ -89,7 +89,7 @@ namespace WellRoundedBalance.Elites
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Blazing Elite On Hit hook");
+                Logger.LogError("Failed to apply Blazing Elite On Hit hook");
             }
         }
 

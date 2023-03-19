@@ -8,7 +8,7 @@ namespace WellRoundedBalance.Items.Whites
     {
         public override string Name => ":: Items : Whites :: Gasoline";
 
-        public override string InternalPickupToken => "igniteOnKill";
+        public override ItemDef InternalPickup => RoR2Content.Items.IgniteOnKill;
 
         public override string PickupText => "Killing an enemy ignites other nearby enemies.";
 
@@ -60,34 +60,40 @@ namespace WellRoundedBalance.Items.Whites
         private void GlobalEventManager_ProcIgniteOnKill(ILContext il)
         {
             ILCursor c = new(il);
-            if (c.TryGotoNext(x => x.MatchStloc(0)))
+            int stack = -1;
+            int body = -1;
+            c.TryGotoNext(x => x.MatchLdarg(out stack), x => x.MatchConvR4());
+            c.TryGotoNext(x => x.MatchLdarg(out body), x => x.MatchCallOrCallvirt<CharacterBody>("get_" + nameof(CharacterBody.radius)));
+            if (stack == -1 || body == -1) return;
+            c.Index = 0;
+            if (c.TryGotoNext(x => x.MatchLdarg(stack)) && c.TryGotoNext(x => x.MatchStloc(out _)))
             {
                 c.Emit(OpCodes.Pop);
-                c.Emit(OpCodes.Ldarg_2);
-                c.Emit(OpCodes.Ldarg_1);
+                c.Emit(OpCodes.Ldarg, body);
+                c.Emit(OpCodes.Ldarg, stack);
                 c.EmitDelegate<Func<CharacterBody, int, float>>((self, stack) => self.radius + StackAmount(baseRange, rangePerStack, stack, rangeIsHyperbolic));
             }
-            else Main.WRBLogger.LogError("Failed to apply Gasoline Radius hook");
-            if (c.TryGotoNext(x => x.MatchStloc(2)))
+            else Logger.LogError("Failed to apply Gasoline Radius hook");
+            if (c.TryGotoNext(x => x.MatchLdfld<DamageReport>(nameof(DamageReport.attackerBody)), x => x.MatchCallOrCallvirt<CharacterBody>("get_" + nameof(CharacterBody.damage))) && c.TryGotoNext(x => x.MatchLdloc(out _)))
             {
                 c.Emit(OpCodes.Pop);
-                c.Emit(OpCodes.Ldarg_1);
+                c.Emit(OpCodes.Ldarg, stack);
                 c.EmitDelegate<Func<int, float>>(stack => StackAmount(explosionDamage, explosionDamageStack, stack, explosionDamageIsHyperbolic));
             }
-            else Main.WRBLogger.LogError("Failed to apply Gasoline Explosion Damage hook");
-            if (c.TryGotoNext(x => x.MatchStloc(5)) && c.TryGotoPrev(MoveType.After, x => x.MatchMul()))
+            else Logger.LogError("Failed to apply Gasoline Explosion Damage hook");
+            if (c.TryGotoNext(x => x.MatchLdarg(stack)) && c.TryGotoNext(x => x.MatchLdfld<DamageReport>(nameof(DamageReport.attackerBody)), x => x.MatchCallOrCallvirt<CharacterBody>("get_" + nameof(CharacterBody.damage))) && c.TryGotoNext(x => x.MatchStloc(out _)))
             {
                 c.Emit(OpCodes.Pop);
-                c.Emit(OpCodes.Ldarg_1);
+                c.Emit(OpCodes.Ldarg, stack);
                 c.EmitDelegate<Func<int, float>>(stack => StackAmount(baseBurnDamage, burnDamagePerStack, stack, burnDamageIsHyperbolic));
             }
-            else Main.WRBLogger.LogError("Failed to apply Gasoline Burn Damage hook");
+            else Logger.LogError("Failed to apply Gasoline Burn Damage hook");
             if (c.TryGotoNext(x => x.MatchStfld<BlastAttack>(nameof(BlastAttack.procCoefficient))))
             {
                 c.Emit(OpCodes.Pop);
                 c.Emit(OpCodes.Ldc_R4, explosionProcCoefficient);
             }
-            else Main.WRBLogger.LogError("Failed to apply Gasoline Explosion Damage hook");
+            else Logger.LogError("Failed to apply Gasoline Explosion Damage hook");
         }
     }
 }

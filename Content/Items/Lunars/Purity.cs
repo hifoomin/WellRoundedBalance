@@ -5,7 +5,7 @@ namespace WellRoundedBalance.Items.Lunars
     public class Purity : ItemBase
     {
         public override string Name => ":: Items ::::: Lunars :: Purity";
-        public override string InternalPickupToken => "lunarBadLuck";
+        public override ItemDef InternalPickup => RoR2Content.Items.LunarBadLuck;
 
         public override string PickupText => "Reduce your skill cooldowns by " + baseFlatCooldownReduction + " seconds. <color=#FF7F7F>You are unlucky.</color>";
         public override string DescText => "All skill cooldowns are reduced by <style=cIsUtility>" + baseFlatCooldownReduction + "</style> <style=cStack>(+" + flatCooldownReductionPerStack + " per stack)</style> seconds. All random effects are rolled <style=cIsUtility>+1</style> <style=cStack>(+1 per stack)</style> times for an <style=cIsHealth>unfavorable outcome</style>.";
@@ -42,7 +42,7 @@ namespace WellRoundedBalance.Items.Lunars
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Purity Cooldown Reduction hook");
+                Logger.LogError("Failed to apply Purity Cooldown Reduction hook");
             }
         }
     }

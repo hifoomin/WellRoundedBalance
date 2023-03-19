@@ -6,7 +6,7 @@ namespace WellRoundedBalance.Items.Whites
     public class MonsterTooth : ItemBase
     {
         public override string Name => ":: Items : Whites :: MonsterTooth";
-        public override string InternalPickupToken => "tooth";
+        public override ItemDef InternalPickup => RoR2Content.Items.Tooth;
 
         public override string PickupText => "Drop a healing orb on kill.";
 
@@ -41,63 +41,36 @@ namespace WellRoundedBalance.Items.Whites
         private void GlobalEventManager_OnCharacterDeath(ILContext il)
         {
             ILCursor c = new(il);
-
-            if (c.TryGotoNext(MoveType.Before,
-                x => x.MatchLdsfld(typeof(RoR2Content.Items), "Tooth")))
+            int idx = GetItemLoc(c, nameof(RoR2Content.Items.Tooth));
+            if (c.TryGotoNext(x => x.MatchStloc(idx)))
             {
-                c.Remove();
-                c.Emit<Useless>(OpCodes.Ldsfld, nameof(Useless.uselessItem));
+                c.Emit(OpCodes.Pop);
+                c.Emit(OpCodes.Ldc_I4_0);
             }
-            else
-            {
-                Main.WRBLogger.LogError("Failed to apply Monster Tooth Deletion hook");
-            }
+            else Logger.LogError("Failed to apply Monster Tooth Deletion hook");
         }
 
         private void GlobalEventManager_onCharacterDeathGlobal(DamageReport damageReport)
         {
-            if (!damageReport.victim)
-            {
-                return;
-            }
-
-            if (!damageReport.attacker)
-            {
-                return;
-            }
-
-            if (!damageReport.attackerBody)
-            {
-                return;
-            }
-
+            if (!damageReport.victim || !damageReport.attacker || !damageReport.attackerBody) return;
             var inventory = damageReport.attackerBody.inventory;
-            if (!inventory)
-            {
-                return;
-            }
-
-            var vector = damageReport.victim.transform.position;
+            if (!inventory) return;
 
             var stack = inventory.GetItemCount(RoR2Content.Items.Tooth);
-            if (stack > 0)
+            if (stack <= 0) return;
+            var vector = damageReport.victim.transform.position;
+            float scale = Mathf.Pow(stack, 0.3f);
+            var monsterToothPrefab = Object.Instantiate(LegacyResourcesAPI.Load<GameObject>("Prefabs/NetworkedObjects/HealPack"), vector, Random.rotation);
+            var teamFilter = monsterToothPrefab.GetComponent<TeamFilter>();
+            if (teamFilter) teamFilter.teamIndex = damageReport.attackerBody.teamComponent.teamIndex;
+            var healthPickup = monsterToothPrefab.GetComponentInChildren<HealthPickup>();
+            if (healthPickup)
             {
-                float scale = Mathf.Pow(stack, 0.25f);
-                var monsterToothPrefab = Object.Instantiate(LegacyResourcesAPI.Load<GameObject>("Prefabs/NetworkedObjects/HealPack"), vector, Random.rotation);
-                var teamFilter = monsterToothPrefab.GetComponent<TeamFilter>();
-                if (teamFilter)
-                {
-                    teamFilter.teamIndex = damageReport.attackerBody.teamComponent.teamIndex;
-                }
-                var healthPickup = monsterToothPrefab.GetComponentInChildren<HealthPickup>();
-                if (healthPickup)
-                {
-                    healthPickup.flatHealing = baseFlatHealing + flatHealingPerStack * (stack - 1);
-                    healthPickup.fractionalHealing = basePercentHealing + percentHealingPerStack * (stack - 1);
-                }
-                monsterToothPrefab.transform.localScale = new Vector3(scale, scale, scale);
-                NetworkServer.Spawn(monsterToothPrefab);
+                healthPickup.flatHealing = baseFlatHealing + flatHealingPerStack * (stack - 1);
+                healthPickup.fractionalHealing = basePercentHealing + percentHealingPerStack * (stack - 1);
             }
+            monsterToothPrefab.transform.localScale = new Vector3(scale, scale, scale);
+            NetworkServer.Spawn(monsterToothPrefab);
         }
     }
 }

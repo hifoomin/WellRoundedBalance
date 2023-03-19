@@ -6,7 +6,7 @@ namespace WellRoundedBalance.Equipment
     {
         public override string Name => ":: Equipment :: Executive Card";
 
-        public override string InternalPickupToken => "multiShopCard";
+        public override EquipmentDef InternalPickup => DLC1Content.Equipment.MultiShopCard;
 
         public override string PickupText => "Gain " + d(cashBackPercent) + " cash back on all purchases. Multishops remain open.";
 
@@ -42,7 +42,7 @@ namespace WellRoundedBalance.Equipment
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Disposable Missile Launcher Missile Count hook");
+                Logger.LogError("Failed to apply Disposable Missile Launcher Missile Count hook");
             }
         }
     }

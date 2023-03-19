@@ -2,8 +2,8 @@
 {
     public class PrimordialCube : EquipmentBase
     {
-        public override string Name => "::: Equipment :: Primordial Cube";
-        public override string InternalPickupToken => "blackHole";
+        public override string Name => ":: Equipment :: Primordial Cube";
+        public override EquipmentDef InternalPickup => RoR2Content.Equipment.Blackhole;
 
         public override string PickupText => "";
 

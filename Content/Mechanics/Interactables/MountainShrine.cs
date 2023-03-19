@@ -1,9 +1,15 @@
 ﻿namespace WellRoundedBalance.Mechanics.Interactables
 {
-    internal class MountainShrine : MechanicBase
+    internal class MountainShrine : MechanicBase<MountainShrine>
     {
         public static BuffDef mountainShrineBuff;
         public override string Name => ":: Mechanics :::::: Mountain Shrine";
+
+        [ConfigField("Attack Speed Gain per Mountain Shrine", "", 0.1f)]
+        public static float attackSpeedGainPerMountainShrine;
+
+        [ConfigField("Movement Speed Gain per Mountain Shrine", "", 0.1f)]
+        public static float movementSpeedGainPerMountainShrine;
 
         public override void Init()
         {
@@ -41,24 +47,24 @@
 
         private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
-            args.attackSpeedMultAdd += 0.1f * sender.GetBuffCount(mountainShrineBuff);
-            args.moveSpeedMultAdd += 0.1f * sender.GetBuffCount(mountainShrineBuff);
+            args.attackSpeedMultAdd += attackSpeedGainPerMountainShrine * sender.GetBuffCount(mountainShrineBuff);
+            args.moveSpeedMultAdd += movementSpeedGainPerMountainShrine * sender.GetBuffCount(mountainShrineBuff);
         }
 
         private void CombatDirector_OnEnable(On.RoR2.CombatDirector.orig_OnEnable orig, CombatDirector self)
         {
-            self.minRerollSpawnInterval /= 1.35f;
-            self.maxRerollSpawnInterval /= 1.35f;
-            self.creditMultiplier += 0.25f;
-            self.eliteBias *= 0.9f;
+            self.minRerollSpawnInterval /= Director.CombatDirector.minimumRerollSpawnIntervalMultiplier;
+            self.maxRerollSpawnInterval /= Director.CombatDirector.minimumRerollSpawnIntervalMultiplier;
+            self.creditMultiplier += Director.CombatDirector.creditMultiplier;
+            self.eliteBias *= Director.CombatDirector.eliteBiasMultiplier;
             var teleporter = TeleporterInteraction.instance;
             if (teleporter != null)
             {
                 for (int i = 0; i < teleporter.shrineBonusStacks; i++)
                 {
-                    self.creditMultiplier *= 1.05f;
-                    self.expRewardCoefficient *= 0.94f;
-                    self.goldRewardCoefficient *= 0.94f;
+                    self.creditMultiplier *= Director.CombatDirector.creditMultiplierForEachMountainShrine;
+                    self.expRewardCoefficient *= Director.CombatDirector.goldAndExperienceMultiplierForEachMountainShrine;
+                    self.goldRewardCoefficient *= Director.CombatDirector.goldAndExperienceMultiplierForEachMountainShrine;
                 }
             }
             orig(self);

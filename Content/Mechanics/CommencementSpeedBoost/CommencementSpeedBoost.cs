@@ -7,6 +7,12 @@ namespace WellRoundedBalance.Mechanics.CommencementSpeedBoost
         public static BuffDef commencementSpeed;
         public override string Name => ":: Mechanics ::::::: Commencement Speed Boost";
 
+        [ConfigField("Movement Speed Gain", "Decimal.", 0.85f)]
+        public static float movementSpeedGain;
+
+        [ConfigField("Buff Duration", "", 45f)]
+        public static float buffDuration;
+
         public override void Init()
         {
             var genericSpeed = Utils.Paths.Texture2D.texMovespeedBuffIcon.Load<Texture2D>();
@@ -46,7 +52,7 @@ namespace WellRoundedBalance.Mechanics.CommencementSpeedBoost
         {
             if (sender.HasBuff(commencementSpeed))
             {
-                args.moveSpeedMultAdd += 0.75f;
+                args.moveSpeedMultAdd += movementSpeedGain;
             }
         }
     }
@@ -61,7 +67,7 @@ namespace WellRoundedBalance.Mechanics.CommencementSpeedBoost
             characterBody = GetComponent<CharacterBody>();
             if (!wasGiven)
             {
-                characterBody.AddTimedBuff(CommencementSpeedBoost.commencementSpeed, 45f);
+                characterBody.AddTimedBuff(CommencementSpeedBoost.commencementSpeed, CommencementSpeedBoost.buffDuration);
                 wasGiven = true;
             }
         }

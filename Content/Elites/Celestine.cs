@@ -138,7 +138,7 @@ namespace WellRoundedBalance.Elites
             }
             else
             {
-                Main.WRBLogger.LogError("Failed to apply Celestine Elite On Hit hook");
+                Logger.LogError("Failed to apply Celestine Elite On Hit hook");
             }
         }
 

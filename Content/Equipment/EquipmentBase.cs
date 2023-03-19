@@ -1,28 +1,32 @@
-﻿namespace WellRoundedBalance.Equipment
+﻿using BepInEx.Configuration;
+using System;
+
+namespace WellRoundedBalance.Equipment
 {
-    public abstract class EquipmentBase
+    public abstract class EquipmentBase : SharedBase
     {
-        public abstract string Name { get; }
-        public virtual string InternalPickupToken { get; }
+        public virtual EquipmentDef InternalPickup { get; }
         public abstract string PickupText { get; }
         public abstract string DescText { get; }
-        public virtual bool isEnabled { get; } = true;
+        public override ConfigFile Config => Main.WRBEquipmentConfig;
+        public static event Action onTokenRegister;
 
-        public string d(float f)
+        public override void Init()
         {
-            return (f * 100f).ToString() + "%";
+            base.Init();
+            onTokenRegister += SetToken;
         }
 
-        public abstract void Hooks();
+        [SystemInitializer(typeof(EquipmentCatalog))]
+        public static void OnEquipmentInitialized() { if (onTokenRegister != null) onTokenRegister(); }
 
-        public virtual void Init()
+        public void SetToken()
         {
-            ConfigManager.HandleConfigAttributes(this.GetType(), Name, Main.WRBEquipmentConfig);
-            Hooks();
-            string pickupToken = "EQUIPMENT_" + InternalPickupToken.ToUpper() + "_PICKUP";
-            string descriptionToken = "EQUIPMENT_" + InternalPickupToken.ToUpper() + "_DESC";
-            LanguageAPI.Add(pickupToken, PickupText);
-            LanguageAPI.Add(descriptionToken, DescText);
+            if (InternalPickup != null)
+            {
+                LanguageAPI.Add(InternalPickup.pickupToken, PickupText);
+                LanguageAPI.Add(InternalPickup.descriptionToken, DescText);
+            };
         }
     }
 }

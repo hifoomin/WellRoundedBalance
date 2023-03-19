@@ -4,7 +4,7 @@
     {
         public static BuffDef opalArmor;
         public override string Name => ":: Items : Whites :: Oddly Shaped Opal";
-        public override string InternalPickupToken => "outOfCombatArmor";
+        public override ItemDef InternalPickup => DLC1Content.Items.OutOfCombatArmor;
 
         public override string PickupText => "Reduce damage the first time you are hit.";
 
@@ -42,8 +42,8 @@
         {
             RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
             CharacterBody.onBodyInventoryChangedGlobal += CharacterBody_onBodyInventoryChangedGlobal;
-            On.RoR2.OutOfCombatArmorBehavior.SetProvidingBuff += OutOfCombatArmorBehavior_SetProvidingBuff;
-            On.RoR2.OutOfCombatArmorBehavior.FixedUpdate += OutOfCombatArmorBehavior_FixedUpdate;
+            On.RoR2.OutOfCombatArmorBehavior.SetProvidingBuff += (_, __, ___) => { };
+            On.RoR2.OutOfCombatArmorBehavior.FixedUpdate += (_, __) => { };
             On.RoR2.CharacterBody.UpdateAllTemporaryVisualEffects += CharacterBody_UpdateAllTemporaryVisualEffects;
         }
 
@@ -51,16 +51,6 @@
         {
             orig(self);
             self.UpdateSingleTemporaryVisualEffect(ref self.outOfCombatArmorEffectInstance, CharacterBody.AssetReferences.outOfCombatArmorEffectPrefab, self.radius, self.HasBuff(opalArmor), "");
-        }
-
-        private void OutOfCombatArmorBehavior_FixedUpdate(On.RoR2.OutOfCombatArmorBehavior.orig_FixedUpdate orig, CharacterBody.ItemBehavior self)
-        {
-            return;
-        }
-
-        private void OutOfCombatArmorBehavior_SetProvidingBuff(On.RoR2.OutOfCombatArmorBehavior.orig_SetProvidingBuff orig, CharacterBody.ItemBehavior self, bool shouldProvideBuff)
-        {
-            return;
         }
 
         private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)

@@ -4,6 +4,9 @@
     {
         public override string Name => ":: Mechanics ::::::::: Monster Loop Armor";
 
+        [ConfigField("Armor Per Loop", "", 7f)]
+        public static float armorPerLoop;
+
         public override void Init()
         {
             base.Init();
@@ -18,7 +21,7 @@
         {
             if (sender.teamComponent.teamIndex != TeamIndex.Player)
             {
-                args.armorAdd += 7f * Run.instance.loopClearCount;
+                args.armorAdd += armorPerLoop * Run.instance.loopClearCount;
             }
         }
     }
