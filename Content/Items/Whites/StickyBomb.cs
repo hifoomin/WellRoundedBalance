@@ -1,5 +1,6 @@
 ﻿using Mono.Cecil.Cil;
 using MonoMod.Cil;
+using R2API;
 using System;
 
 namespace WellRoundedBalance.Items.Whites
@@ -46,6 +47,9 @@ namespace WellRoundedBalance.Items.Whites
 
         [ConfigField("Proc Coefficient", "Decimal.", 0f)]
         public static float proc;
+
+        [ConfigField("Radius", "", 10f)]
+        public static float radius;
 
         public override void Init()
         {
@@ -97,6 +101,16 @@ namespace WellRoundedBalance.Items.Whites
             StickyBombImpact.lifetime = lifetime;
             StickyBombImpact.falloffModel = changeFalloff;
             StickyBombImpact.blastProcCoefficient = proc;
+            StickyBombImpact.blastRadius = radius;
+
+            var coolerExplosion = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.OmniExplosionVFXQuick.Load<GameObject>(), "Sticky Bomb Explosion");
+            coolerExplosion.transform.localScale = new Vector3(radius, radius, radius);
+            var effectComponent = coolerExplosion.GetComponent<EffectComponent>();
+            effectComponent.soundName = "Play_item_proc_behemoth";
+
+            ContentAddition.AddEffect(coolerExplosion);
+
+            StickyBombImpact.impactEffect = coolerExplosion;
         }
     }
 }

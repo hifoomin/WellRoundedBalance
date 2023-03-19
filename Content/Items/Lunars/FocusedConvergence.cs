@@ -1,4 +1,7 @@
-﻿namespace WellRoundedBalance.Items.Lunars
+﻿using MonoMod.Cil;
+using System;
+
+namespace WellRoundedBalance.Items.Lunars
 {
     public class FocusedConvergence : ItemBase
     {
@@ -20,6 +23,26 @@
         {
             On.RoR2.HoldoutZoneController.FocusConvergenceController.Awake += Changes;
             On.RoR2.TeleporterInteraction.Start += AddDifficulty;
+            IL.RoR2.HoldoutZoneController.FocusConvergenceController.ApplyRadius += FocusConvergenceController_ApplyRadius;
+        }
+
+        private void FocusConvergenceController_ApplyRadius(ILContext il)
+        {
+            ILCursor c = new(il);
+
+            if (c.TryGotoNext(MoveType.Before,
+                x => x.MatchLdfld(typeof(HoldoutZoneController.FocusConvergenceController), "currentFocusConvergenceCount")))
+            {
+                c.Index++;
+                c.EmitDelegate<Func<int, int>>((useless) =>
+                {
+                    return 1;
+                });
+            }
+            else
+            {
+                Main.WRBLogger.LogError("Failed to apply Focused Convergence Radius hook");
+            }
         }
 
         private void AddDifficulty(On.RoR2.TeleporterInteraction.orig_Start orig, TeleporterInteraction self)
