@@ -1,6 +1,7 @@
 ﻿using MonoMod.Cil;
+using WellRoundedBalance.Eclipse;
 
-namespace WellRoundedBalance.Eclipse
+namespace WellRoundedBalance.Gamemodes.Eclipse
 {
     internal class Eclipse1 : GamemodeBase<Eclipse1>
     {

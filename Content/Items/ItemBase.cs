@@ -12,6 +12,7 @@ namespace WellRoundedBalance.Items
         public abstract string PickupText { get; }
         public abstract string DescText { get; }
         public override ConfigFile Config => Main.WRBItemConfig;
+
         public static event Action onTokenRegister;
 
         public static int GetItemLoc(ILCursor c, string item) // modify this on compat update
@@ -39,13 +40,17 @@ namespace WellRoundedBalance.Items
         }
 
         [SystemInitializer(typeof(ItemCatalog))]
-        public static void OnItemInitialized() { if (onTokenRegister != null) onTokenRegister(); }
+        public static void OnItemInitialized()
+        { if (onTokenRegister != null) onTokenRegister(); }
 
         public void SetToken()
         {
-            if (InternalPickup != null) {
-                LanguageAPI.Add(InternalPickup.pickupToken, PickupText);
-                LanguageAPI.Add(InternalPickup.descriptionToken, DescText);
+            if (InternalPickup != null)
+            {
+                var newPickup = InternalPickup.pickupToken + "_WRB";
+                var newDesc = InternalPickup.descriptionToken + "_WRB";
+                LanguageAPI.Add(newPickup, PickupText);
+                LanguageAPI.Add(newDesc, DescText);
             };
         }
 

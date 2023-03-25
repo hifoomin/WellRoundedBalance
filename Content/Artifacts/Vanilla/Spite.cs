@@ -1,8 +1,8 @@
 ﻿using R2API.Utils;
 
-namespace WellRoundedBalance.Artifacts
+namespace WellRoundedBalance.Artifacts.Vanilla
 {
-    internal class Spite : ArtifactBase
+    internal class Spite : ArtifactEditBase
     {
         public override string Name => ":: Artifacts :::::::::::::: Spite";
 

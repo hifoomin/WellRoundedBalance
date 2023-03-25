@@ -1,4 +1,5 @@
 using WellRoundedBalance.Eclipse;
+using WellRoundedBalance.Gamemodes.Eclipse;
 
 namespace WellRoundedBalance.Elites
 {
@@ -66,7 +67,8 @@ namespace WellRoundedBalance.Elites
             zone.rangeIndicator = areaIndicator;
             zone.radius = healNovaRadius;
 
-            if (!healNovaPrefab.GetComponent<ProjectileDamage>()) {
+            if (!healNovaPrefab.GetComponent<ProjectileDamage>())
+            {
                 healNovaPrefab.AddComponent<ProjectileDamage>();
             }
 

@@ -1,3 +1,4 @@
+using WellRoundedBalance.Eclipse;
 using WellRoundedBalance.Gamemodes.Eclipse;
 
 namespace WellRoundedBalance.Elites

@@ -1,9 +1,9 @@
 ﻿using MonoMod.Cil;
 using System;
 
-namespace WellRoundedBalance.Artifacts
+namespace WellRoundedBalance.Artifacts.Vanilla
 {
-    internal class Sacrifice : ArtifactBase
+    internal class Sacrifice : ArtifactEditBase
     {
         public override string Name => ":: Artifacts :::::::::::: Sacrifice";
 

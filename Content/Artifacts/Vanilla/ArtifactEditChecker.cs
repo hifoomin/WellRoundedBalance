@@ -1,12 +1,12 @@
 ﻿using System;
 
-namespace WellRoundedBalance.Artifacts
+namespace WellRoundedBalance.Artifacts.Vanilla
 {
-    public abstract class ArtifactBase<T> : ArtifactBase where T : ArtifactBase<T>
+    public abstract class ArtifactEditBase<T> : ArtifactEditBase where T : ArtifactEditBase<T>
     {
         public static T instance { get; set; }
 
-        public ArtifactBase()
+        public ArtifactEditBase()
         {
             if (instance != null)
             {

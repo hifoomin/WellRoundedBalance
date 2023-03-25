@@ -1,9 +1,10 @@
 ﻿using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using System;
-using Util = WellRoundedBalance.Eclipse.PredictionUtils;
+using WellRoundedBalance.Eclipse;
+using Util = WellRoundedBalance.Gamemodes.Eclipse.PredictionUtils;
 
-namespace WellRoundedBalance.Eclipse
+namespace WellRoundedBalance.Gamemodes.Eclipse
 {
     internal class Eclipse2 : GamemodeBase<Eclipse2>
     {

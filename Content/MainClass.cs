@@ -22,6 +22,8 @@ using WellRoundedBalance.Mechanics;
 using WellRoundedBalance.Items.ConsistentCategories;
 using WellRoundedBalance.Items.NoTier;
 using WellRoundedBalance.Difficulties;
+using WellRoundedBalance.Artifacts.Vanilla;
+using WellRoundedBalance.Artifacts.New;
 
 // using WellRoundedBalance.Enemies.FamilyEvents;
 
@@ -58,7 +60,10 @@ namespace WellRoundedBalance
         public static ConfigFile WRBGamemodeConfig;
         public static ConfigFile WRBArtifactConfig;
         public static ConfigFile WRBDifficultyConfig;
+        public static ConfigFile WRBMiscConfig;
         public static ManualLogSource WRBLogger;
+
+        public static ConfigEntry<bool> enableLogging { get; set; }
 
         public static AssetBundle wellroundedbalance;
 
@@ -82,6 +87,9 @@ namespace WellRoundedBalance
             WRBGamemodeConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Gamemodes.cfg", true);
             WRBArtifactConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Artifacts.cfg", true);
             WRBDifficultyConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Difficulties.cfg", true);
+            WRBMiscConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Misc.cfg", true);
+
+            enableLogging = WRBMiscConfig.Bind("Logging", "Enable Initialization logging?", false, "Enabling this slows down loading times, but can help with resolving mod compatibility issues in some cases.");
 
             InfernoLoaded = BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("HIFU.Inferno");
             RiskyArtifactsLoaded = BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("com.Moffein.RiskyArtifacts");
@@ -235,15 +243,28 @@ namespace WellRoundedBalance
             }
 
             IEnumerable<Type> enumerable8 = from type in Assembly.GetExecutingAssembly().GetTypes()
-                                            where !type.IsAbstract && type.IsSubclassOf(typeof(ArtifactBase))
+                                            where !type.IsAbstract && type.IsSubclassOf(typeof(ArtifactEditBase))
                                             select type;
+
+            IEnumerable<Type> enumerable10 = from type in Assembly.GetExecutingAssembly().GetTypes()
+                                             where !type.IsAbstract && type.IsSubclassOf(typeof(ArtifactAddBase))
+                                             select type;
 
             WRBLogger.LogInfo("==+----------------==ARTIFACTS==----------------+==");
 
             foreach (Type type in enumerable8)
             {
-                ArtifactBase based = (ArtifactBase)Activator.CreateInstance(type);
-                if (ValidateArtifact(based))
+                ArtifactEditBase based = (ArtifactEditBase)Activator.CreateInstance(type);
+                if (ValidateArtifactEdit(based))
+                {
+                    based.Init();
+                }
+            }
+
+            foreach (Type type in enumerable10)
+            {
+                ArtifactAddBase based = (ArtifactAddBase)Activator.CreateInstance(type);
+                if (ValidateArtifactAdd(based))
                 {
                     based.Init();
                 }
@@ -254,7 +275,7 @@ namespace WellRoundedBalance
             // FamilyEvents.Init();
             EmptyBottle.Init();
 
-            string balls = WRBMechanicConfig.Bind("Annoying Pop Up", "", "", "Disables the mf config changed message").Value;
+            string balls = WRBMiscConfig.Bind("Annoying Pop Up", "Set to Fuck Off to disable", "", "Disables the mf config changed message").Value;
             bool shownConfigMessage = false;
             RoR2Application.onLoad += () => Dialogue.input = GameObject.Find("MPEventSystem Player0").GetComponent<RoR2.UI.MPInput>();
             On.RoR2.UI.MainMenu.BaseMainMenuScreen.OnEnter += (orig, self, mainMenuController) =>
@@ -263,34 +284,33 @@ namespace WellRoundedBalance
                 if (!shownConfigMessage && ConfigManager.ConfigChanged && balls.ToLower() != "fuck off")
                 {
                     shownConfigMessage = true;
-                    Dialogue.ShowPopup("Config changed?", "Thank you for enjoying Well Rounded Balance! Despite the extensive configuration, we want our default experience to be as enjoyable as possible. Please let us know your balanced takes at <style=cDeath>cutt.ly/ballscord</style>! any feedback is welcome.\n\n<style=cStack>set Mechanics > Annoying Pop Up to \'Fuck Off\' to disable this message.</style>");
+                    Dialogue.ShowPopup("Config changed?", "Thank you for enjoying Well Rounded Balance <3! Despite the extensive configuration, we want our default experience to be as enjoyable as possible. Please let us know your balanced takes at <style=cDeath>cutt.ly/ballscord</style>! any constructive feedback is welcome <3.\n\n<style=cStack>set Misc > Annoying Pop Up to \'Fuck Off\' to disable this message.</style>");
                 }
             };
 
-            SharedBase.initList.Sort();
-            for (int i = 0; i < SharedBase.initList.Count; i++)
+            if (enableLogging.Value)
             {
-                var index = SharedBase.initList[i];
-                WRBLogger.LogDebug("Initialized " + index);
+                SharedBase.initList.Sort();
+                for (int i = 0; i < SharedBase.initList.Count; i++)
+                {
+                    var index = SharedBase.initList[i];
+                    WRBLogger.LogDebug("Initialized " + index);
+                }
             }
-            WRBLogger.LogDebug("==+----------------==+++++==----------------+==");
+
+            WRBLogger.LogDebug("==+----------------==INFO==----------------+==");
             WRBLogger.LogDebug("Initialized " + SharedBase.initList.Count + " classes");
-            for (int j = 0; j < 5; j++)
-            {
-                WRBLogger.LogMessage("Thanks for playing the mod <3");
-            }
-            WRBLogger.LogDebug("==+----------------==+++++==----------------+==");
             On.RoR2.RoR2Application.OnLoad += RoR2Application_OnLoad;
         }
 
         private System.Collections.IEnumerator RoR2Application_OnLoad(On.RoR2.RoR2Application.orig_OnLoad orig, RoR2Application self)
         {
-            WRBLogger.LogDebug("==+----------------==+++++==----------------+==");
+            WRBLogger.LogDebug("==+----------------==ZANY==----------------+==");
             for (int j = 0; j < 5; j++)
             {
-                WRBLogger.LogMessage("Thanks for playing the mod <3");
+                WRBLogger.LogMessage("Thanks for playing Well Rounded Balance <3");
             }
-            WRBLogger.LogDebug("==+----------------==+++++==----------------+==");
+            WRBLogger.LogDebug("==+----------------==GOOFY==----------------+==");
             return orig(self);
         }
 
@@ -379,11 +399,22 @@ namespace WellRoundedBalance
             return false;
         }
 
-        public bool ValidateArtifact(ArtifactBase ab)
+        public bool ValidateArtifactEdit(ArtifactEditBase aeb)
         {
-            if (ab.isEnabled)
+            if (aeb.isEnabled)
             {
-                bool enabledfr = WRBArtifactConfig.Bind(ab.Name, "Enable Changes?", true, "Vanilla is false").Value;
+                bool enabledfr = WRBArtifactConfig.Bind(aeb.Name, "Enable Changes?", true, "Vanilla is false").Value;
+                if (enabledfr) return true;
+                else ConfigManager.ConfigChanged = true;
+            }
+            return false;
+        }
+
+        public bool ValidateArtifactAdd(ArtifactAddBase aab)
+        {
+            if (aab.isEnabled)
+            {
+                bool enabledfr = WRBArtifactConfig.Bind(aab.Name, "Enable?", true, "Vanilla is false").Value;
                 if (enabledfr) return true;
                 else ConfigManager.ConfigChanged = true;
             }

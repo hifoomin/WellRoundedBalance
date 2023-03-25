@@ -2,6 +2,7 @@
 using MonoMod.Cil;
 using RoR2.Navigation;
 using WellRoundedBalance.Buffs;
+using WellRoundedBalance.Eclipse;
 using WellRoundedBalance.Gamemodes.Eclipse;
 
 namespace WellRoundedBalance.Elites
@@ -177,6 +178,8 @@ namespace WellRoundedBalance.Elites
             public void FixedUpdate()
             {
                 stopwatch += Time.fixedDeltaTime;
+                if (ward.transform.localPosition != Vector3.zero) ward.transform.localPosition = Vector3.zero;
+                if (ward.transform.position != gameObject.transform.position) ward.transform.position = gameObject.transform.position;
                 if (stopwatch >= GetDelay())
                 {
                     stopwatch = 0f;
@@ -197,8 +200,10 @@ namespace WellRoundedBalance.Elites
                 return (hc.health / hc.fullCombinedHealth) > 0.5 ? aggressiveTeleportCooldown : defensiveTeleportCooldown;
             }
 
-            public void HandleTeleport(Vector3 pos) {
-                if (cb.isPlayerControlled) {
+            public void HandleTeleport(Vector3 pos)
+            {
+                if (cb.isPlayerControlled)
+                {
                     return;
                 }
                 Vector3 current = transform.position;

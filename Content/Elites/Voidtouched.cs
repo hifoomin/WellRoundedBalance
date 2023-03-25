@@ -2,6 +2,7 @@
 using MonoMod.Cil;
 using System.Collections;
 using WellRoundedBalance.Buffs;
+using WellRoundedBalance.Eclipse;
 using WellRoundedBalance.Gamemodes.Eclipse;
 
 namespace WellRoundedBalance.Elites
@@ -39,19 +40,23 @@ namespace WellRoundedBalance.Elites
             On.RoR2.CharacterBody.OnSkillActivated += OnSkillActivated;
         }
 
-        private void OnSkillActivated(On.RoR2.CharacterBody.orig_OnSkillActivated orig, CharacterBody body, GenericSkill slot) {
+        private void OnSkillActivated(On.RoR2.CharacterBody.orig_OnSkillActivated orig, CharacterBody body, GenericSkill slot)
+        {
             orig(body, slot);
-            if (!NetworkServer.active || body.HasBuff(hiddenCooldown) || !body.HasBuff(DLC1Content.Buffs.EliteVoid)) {
-                return; 
+            if (!NetworkServer.active || body.HasBuff(hiddenCooldown) || !body.HasBuff(DLC1Content.Buffs.EliteVoid))
+            {
+                return;
             }
 
             Vector3 originalPosition = body.corePosition;
             Vector3 aimDirection = body.inputBank.aimDirection;
 
-            for (int i = 0; i < (Eclipse3.CheckEclipse() ? 8 : 4); i++) {
+            for (int i = 0; i < (Eclipse3.CheckEclipse() ? 8 : 4); i++)
+            {
                 Vector3 position = originalPosition + (aimDirection * (i * 10));
                 position.y = Eclipse3.CheckEclipse() ? 60 : 120;
-                if (Physics.Raycast(position, Vector3.down, out RaycastHit hit, 1000, ~0)) {
+                if (Physics.Raycast(position, Vector3.down, out RaycastHit hit, 1000, ~0))
+                {
                     FireProjectileInfo info = new();
                     info.damage = body.damage * 2f;
                     info.damageTypeOverride = DamageType.Nullify;
