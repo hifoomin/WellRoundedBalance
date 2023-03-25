@@ -31,7 +31,8 @@ namespace WellRoundedBalance.Items.Lunars
             ILCursor c = new(il);
 
             if (c.TryGotoNext(MoveType.Before,
-                x => x.MatchLdfld(typeof(HoldoutZoneController.FocusConvergenceController), "currentFocusConvergenceCount")))
+                x => x.MatchLdfld(typeof(HoldoutZoneController.FocusConvergenceController), "currentFocusConvergenceCount"),
+                x => x.MatchConvR4()))
             {
                 c.Index++;
                 c.EmitDelegate<Func<int, int>>((useless) =>

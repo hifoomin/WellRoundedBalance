@@ -6,7 +6,7 @@
 
         public override string ArtifactLangTokenName => "ARRANGEMENT";
 
-        public override string ArtifactDescription => "Category chests are much more common. Category chests have unique spawn rates from each other.";
+        public override string ArtifactDescription => "Category chests are much more common and have unique spawn rates from each other.";
 
         public override Sprite ArtifactEnabledIcon => Main.wellroundedbalance.LoadAsset<Sprite>("texBuffHappiestMaskReady.png");
 
