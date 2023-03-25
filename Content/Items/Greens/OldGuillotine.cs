@@ -62,9 +62,40 @@ namespace WellRoundedBalance.Items.Greens
         private void Changes()
         {
             guillotineVFX = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.OmniImpactExecute.Load<GameObject>(), "Old Guillotine Execution", false);
-            guillotineVFX.transform.localScale = new Vector3(2f, 2f, 2f);
+            var transform = guillotineVFX.transform;
+            transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
 
+            transform.GetChild(0).gameObject.SetActive(false);
+
+            var hitspark = transform.GetChild(1).GetComponent<ParticleSystem>();
+            var hitsparkMain = hitspark.main;
+            hitsparkMain.duration = 1.5f;
+            hitsparkMain.startLifetime = new ParticleSystem.MinMaxCurve(1.5f, 1.5f);
+
+            var flash = transform.GetChild(2).GetComponent<ParticleSystem>();
+            var flashMain = flash.main;
+            flashMain.duration = 1.5f;
+            flashMain.startLifetime = new ParticleSystem.MinMaxCurve(0.2f, 0.2f);
+
+            var dash = transform.GetChild(3).GetComponent<ParticleSystem>();
+            var dashMain = dash.main;
+            dashMain.duration = 1.5f;
+            dashMain.startLifetime = new ParticleSystem.MinMaxCurve(1.5f, 1.5f);
+
+            transform.GetChild(4).gameObject.SetActive(false);
+
+            var slash = transform.GetChild(5).GetComponent<ParticleSystem>();
+            var slashMain = slash.main;
+            slashMain.duration = 1.5f;
+            slashMain.startLifetime = new ParticleSystem.MinMaxCurve(1.5f, 1.5f);
+
+            var hitspark2 = transform.GetChild(6).GetComponent<ParticleSystem>();
+            var hitspark2Main = hitspark2.main;
+            hitspark2Main.startLifetime = new ParticleSystem.MinMaxCurve(0.35f, 0.35f);
+            hitspark2Main.startSpeed = new ParticleSystem.MinMaxCurve(6f, 6f);
             ContentAddition.AddEffect(guillotineVFX);
+
+            var hitspark3 = hitspark2.transform.GetChild(0).GetComponent<ParticleSystem>();
         }
     }
 }

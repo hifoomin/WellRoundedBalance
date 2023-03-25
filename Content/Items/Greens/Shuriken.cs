@@ -201,7 +201,7 @@ namespace WellRoundedBalance.Items.Greens
                 boomerangProjectile.canHitWorld = true;
                 boomerangProjectile.distanceMultiplier = distanceMultiplier;
                 boomerangProjectile.impactSpark = Utils.Paths.GameObject.ShurikenImpact.Load<GameObject>();
-
+                // shurikenProjectile.AddComponent<DestroyStuckObject>();
                 UnityGames.AddListener(OnFlyBack);
             }
 
@@ -233,6 +233,49 @@ namespace WellRoundedBalance.Items.Greens
             if (boomerangProjectile && projectileOverlapAttack && UnityGames != null)
             {
                 projectileOverlapAttack.ResetOverlapAttack();
+            }
+        }
+    }
+
+    public class DestroyStuckObject : MonoBehaviour // FUCK im too stupid to make this work
+    {
+        private float noMovementThreshold = 0.0001f;
+        private const int noMovementFrames = 3;
+        private Vector3[] previousLocations = new Vector3[noMovementFrames];
+
+        private void Awake()
+        {
+            //For good measure, set the previous locations
+            for (int i = 0; i < previousLocations.Length; i++)
+            {
+                previousLocations[i] = Vector3.zero;
+            }
+        }
+
+        private void FixedUpdate()
+        {
+            //Store the newest vector at the end of the list of vectors
+            for (int i = 0; i < previousLocations.Length - 1; i++)
+            {
+                previousLocations[i] = previousLocations[i + 1];
+            }
+            previousLocations[previousLocations.Length - 1] = transform.position;
+
+            //Check the distances between the points in your previous locations
+            //If for the past several updates, there are no movements smaller than the threshold,
+            //you can most likely assume that the object is not moving
+            for (int i = 0; i < previousLocations.Length - 1; i++)
+            {
+                if (Vector3.Distance(previousLocations[i], previousLocations[i + 1]) >= noMovementThreshold)
+                {
+                    Main.WRBLogger.LogError("above not moving threshold");
+                    break;
+                }
+                else
+                {
+                    Main.WRBLogger.LogError("BELOW    not moving threshold");
+                    Destroy(gameObject);
+                }
             }
         }
     }

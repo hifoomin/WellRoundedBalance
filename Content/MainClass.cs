@@ -265,7 +265,8 @@ namespace WellRoundedBalance
                 ArtifactAddBase based = (ArtifactAddBase)Activator.CreateInstance(type);
                 if (ValidateArtifactAdd(based))
                 {
-                    based.Init();
+                    // based.Init();
+                    // disabled until icon is done
                 }
             }
 
@@ -299,18 +300,18 @@ namespace WellRoundedBalance
 
             WRBLogger.LogDebug("==+----------------==INFO==----------------+==");
             WRBLogger.LogDebug("Initialized " + SharedBase.initList.Count + " classes");
-            On.RoR2.RoR2Application.OnLoad += RoR2Application_OnLoad;
+            On.RoR2.UI.MainMenu.BaseMainMenuScreen.OnEnter += BaseMainMenuScreen_OnEnter;
         }
 
-        private System.Collections.IEnumerator RoR2Application_OnLoad(On.RoR2.RoR2Application.orig_OnLoad orig, RoR2Application self)
+        private void BaseMainMenuScreen_OnEnter(On.RoR2.UI.MainMenu.BaseMainMenuScreen.orig_OnEnter orig, RoR2.UI.MainMenu.BaseMainMenuScreen self, RoR2.UI.MainMenu.MainMenuController mainMenuController)
         {
+            orig(self, mainMenuController);
             WRBLogger.LogDebug("==+----------------==ZANY==----------------+==");
-            for (int j = 0; j < 5; j++)
+            for (int j = 0; j < 3; j++)
             {
                 WRBLogger.LogMessage("Thanks for playing Well Rounded Balance <3");
             }
             WRBLogger.LogDebug("==+----------------==GOOFY==----------------+==");
-            return orig(self);
         }
 
         private void ItemCatalog_Init(On.RoR2.ItemCatalog.orig_Init orig)

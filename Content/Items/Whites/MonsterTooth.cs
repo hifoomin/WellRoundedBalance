@@ -59,7 +59,7 @@ namespace WellRoundedBalance.Items.Whites
             var stack = inventory.GetItemCount(RoR2Content.Items.Tooth);
             if (stack <= 0) return;
             var vector = damageReport.victim.transform.position;
-            float scale = Mathf.Pow(stack, 0.3f);
+            float scale = Mathf.Pow(stack, 0.45f);
             var monsterToothPrefab = Object.Instantiate(LegacyResourcesAPI.Load<GameObject>("Prefabs/NetworkedObjects/HealPack"), vector, Random.rotation);
             var teamFilter = monsterToothPrefab.GetComponent<TeamFilter>();
             if (teamFilter) teamFilter.teamIndex = damageReport.attackerBody.teamComponent.teamIndex;
