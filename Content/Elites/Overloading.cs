@@ -2,7 +2,7 @@
 using MonoMod.Cil;
 using RoR2.Navigation;
 using WellRoundedBalance.Buffs;
-using WellRoundedBalance.Eclipse;
+using WellRoundedBalance.Gamemodes.Eclipse;
 
 namespace WellRoundedBalance.Elites
 {
@@ -14,14 +14,17 @@ namespace WellRoundedBalance.Elites
         [ConfigField("Passive Movement Speed Gain", "Decimal.", 0.5f)]
         public static float passiveMovementSpeedGain;
 
-        [ConfigField("Ally Buff Count Eclipse 3+", "Only applies if you have Eclipse Changes enabled.", 4)]
-        public static int allyBuffCountE3;
-
         [ConfigField("Ally Buff Movement Speed Gain", "Decimal.", 0.5f)]
         public static float allyBuffMovementSpeedGain;
 
         [ConfigField("Ally Buff Movement Speed Gain Eclipse 3+", "Decimal. Only applies if you have Eclipse Changes enabled.", 0.75f)]
         public static float allyBuffMovementSpeedGainE3;
+
+        [ConfigField("Aggressive Teleport Cooldown", "Do not set it to the same value as Defensive Teleport Cooldown", 5f)]
+        public static float aggressiveTeleportCooldown;
+
+        [ConfigField("Defensive Teleport Cooldown", "Do not set it to the same value as Defensive Teleport Cooldown", 6f)]
+        public static float defensiveTeleportCooldown;
 
         [ConfigField("Maximum Speed Aura Radius", "Formula for aura radius: Minimum value between Body Radius + Speed Aura Radius Add and Maximum Speed Aura Radius", 40f)]
         public static float maxSpeedAuraRadius;
@@ -163,6 +166,7 @@ namespace WellRoundedBalance.Elites
                 {
                     wardInstance = GameObject.Instantiate(SpeedAura, transform);
                     teamFilter = wardInstance.GetComponent<TeamFilter>();
+                    teamFilter.teamIndex = cb.teamComponent.teamIndex;
                     ward = wardInstance.GetComponent<BuffWard>();
                     ward.radius = Mathf.Min(cb.radius + speedAuraRadiusAdd, maxSpeedAuraRadius);
                     ward.teamFilter = teamFilter;
@@ -190,7 +194,7 @@ namespace WellRoundedBalance.Elites
 
             public float GetDelay()
             {
-                return (hc.health / hc.fullCombinedHealth) > 0.5 ? 3f : 5f;
+                return (hc.health / hc.fullCombinedHealth) > 0.5 ? aggressiveTeleportCooldown : defensiveTeleportCooldown;
             }
 
             public void HandleTeleport(Vector3 pos)
@@ -217,13 +221,13 @@ namespace WellRoundedBalance.Elites
                 }
 
                 NodeGraph.Node[] nodes = SceneInfo.instance.groundNodes.nodes;
-                if (GetDelay() == 3f)
+                if (GetDelay() == aggressiveTeleportCooldown)
                 {
                     return PickValidPositions(0, 25, nodes).ToList().GetRandom();
                 }
                 else
                 {
-                    return PickValidPositions(20, 40, nodes).ToList().GetRandom();
+                    return PickValidPositions(25, 45, nodes).ToList().GetRandom();
                 }
             }
 

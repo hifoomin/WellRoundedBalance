@@ -1,4 +1,4 @@
-﻿namespace WellRoundedBalance.Eclipse
+﻿namespace WellRoundedBalance.Gamemodes.Eclipse
 {
     internal class PredictionUtils
     {

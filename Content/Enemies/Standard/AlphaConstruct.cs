@@ -1,4 +1,4 @@
-﻿namespace WellRoundedBalance.Enemies
+﻿namespace WellRoundedBalance.Enemies.Standard
 {
     internal class AlphaConstruct : EnemyBase
     {
@@ -36,8 +36,8 @@
                     MonsterCategory = DirectorAPI.MonsterCategory.BasicMonsters
                 };
 
-                DirectorAPI.AddCard(commencement, cardHolder);
-                DirectorAPI.AddCard(commencementDLC1, cardHolder);
+                commencement.AddCard(cardHolder);
+                commencementDLC1.AddCard(cardHolder);
             }
 
             if (shouldReplaceBlindPestsOnSiphonedForest)

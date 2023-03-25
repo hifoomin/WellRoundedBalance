@@ -1,4 +1,4 @@
-using WellRoundedBalance.Eclipse;
+using WellRoundedBalance.Gamemodes.Eclipse;
 
 namespace WellRoundedBalance.Elites
 {
@@ -9,7 +9,7 @@ namespace WellRoundedBalance.Elites
         [ConfigField("Turret Count", "", 2)]
         public static int TurretCount;
 
-        [ConfigField("Turret Count Eclipse 3+", "Only applies if you have Eclipse Changes enabled.", 3)]
+        [ConfigField("Turret Count Eclipse 3+", "Only applies if you have Eclipse Changes enabled.", 4)]
         public static int turretCountE3;
 
         [ConfigField("Safe Zone Radius", "", 50f)]

@@ -2,7 +2,7 @@
 using MonoMod.Cil;
 using UnityEngine.Rendering.PostProcessing;
 using WellRoundedBalance.Buffs;
-using WellRoundedBalance.Eclipse;
+using WellRoundedBalance.Gamemodes.Eclipse;
 
 namespace WellRoundedBalance.Elites
 {
@@ -18,7 +18,7 @@ namespace WellRoundedBalance.Elites
         [ConfigField("Fog Radius", "", 25f)]
         public static float fogRadius;
 
-        [ConfigField("Fog Radius", "Only applies if you have Eclipse Changes enabled.", 27f)]
+        [ConfigField("Fog Radius", "Only applies if you have Eclipse Changes enabled.", 40f)]
         public static float fogRadiusE3;
 
         [ConfigField("Fog Lifetime", "", 10f)]

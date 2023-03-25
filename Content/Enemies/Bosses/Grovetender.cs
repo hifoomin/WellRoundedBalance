@@ -1,4 +1,4 @@
-﻿namespace WellRoundedBalance.Enemies
+﻿namespace WellRoundedBalance.Enemies.Bosses
 {
     internal class Grovetender : EnemyBase
     {

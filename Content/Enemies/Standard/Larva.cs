@@ -1,4 +1,4 @@
-﻿namespace WellRoundedBalance.Enemies
+﻿namespace WellRoundedBalance.Enemies.Standard
 {
     internal class Larva : EnemyBase
     {

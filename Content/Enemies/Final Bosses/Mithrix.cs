@@ -285,6 +285,11 @@ namespace WellRoundedBalance.Enemies
                 rocks.SetActive(false);
             }
             orig(self);
+            if (disablePhase2)
+            {
+                self.PreEncounterBegin();
+                self.outer.SetNextState(new EntityStates.Missions.BrotherEncounter.Phase3());
+            }
         }
 
         private void Phase1_OnEnter(On.EntityStates.Missions.BrotherEncounter.Phase1.orig_OnEnter orig, EntityStates.Missions.BrotherEncounter.Phase1 self)
@@ -297,11 +302,6 @@ namespace WellRoundedBalance.Enemies
                 rocks.SetActive(false);
             }
             orig(self);
-            if (disablePhase2)
-            {
-                self.PreEncounterBegin();
-                self.outer.SetNextState(new EntityStates.Missions.BrotherEncounter.Phase3());
-            }
         }
 
         private void SceneDirector_Start(On.RoR2.SceneDirector.orig_Start orig, SceneDirector self)

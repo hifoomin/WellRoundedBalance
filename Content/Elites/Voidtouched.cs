@@ -2,7 +2,7 @@
 using MonoMod.Cil;
 using System.Collections;
 using WellRoundedBalance.Buffs;
-using WellRoundedBalance.Eclipse;
+using WellRoundedBalance.Gamemodes.Eclipse;
 
 namespace WellRoundedBalance.Elites
 {
