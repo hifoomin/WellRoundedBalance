@@ -47,10 +47,10 @@ namespace WellRoundedBalance.Items
         {
             if (InternalPickup != null)
             {
-                var newPickup = InternalPickup.pickupToken + "_WRB";
-                var newDesc = InternalPickup.descriptionToken + "_WRB";
-                LanguageAPI.Add(newPickup, PickupText);
-                LanguageAPI.Add(newDesc, DescText);
+                InternalPickup.pickupToken += "_WRB";
+                InternalPickup.descriptionToken += "_WRB";
+                LanguageAPI.Add(InternalPickup.pickupToken, PickupText);
+                LanguageAPI.Add(InternalPickup.descriptionToken, DescText);
             };
         }
 

@@ -37,7 +37,7 @@ namespace WellRoundedBalance.Items.Greens
         [ConfigField("Enable Homing?", "", false)]
         public static bool enableHoming;
 
-        [ConfigField("Size Multiplier", "Not actually to scale with Vanilla, I'm not sure why.", 2f)]
+        [ConfigField("Size Multiplier", "", 2f)]
         public static float sizeMultiplier;
 
         [ConfigField("Distance Multiplier", "", 0.5f)]

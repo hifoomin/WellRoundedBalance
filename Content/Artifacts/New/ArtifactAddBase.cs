@@ -1,4 +1,5 @@
 ﻿using BepInEx.Configuration;
+using System;
 
 namespace WellRoundedBalance.Artifacts.New
 {
@@ -21,14 +22,20 @@ namespace WellRoundedBalance.Artifacts.New
 
         public override ConfigFile Config => Main.WRBArtifactConfig;
 
+        public static event Action onTokenRegister;
+
         public override void Init()
         {
-            CreateLang();
-            CreateArtifact();
             base.Init();
+            CreateArtifact();
+            onTokenRegister += SetToken;
         }
 
-        protected void CreateLang()
+        [SystemInitializer(typeof(ArtifactCatalog))]
+        public static void OnItemInitialized()
+        { if (onTokenRegister != null) onTokenRegister(); }
+
+        public void SetToken()
         {
             LanguageAPI.Add("ARTIFACT_" + ArtifactLangTokenName + "_NAME_WRB", ArtifactName);
             LanguageAPI.Add("ARTIFACT_" + ArtifactLangTokenName + "_DESCRIPTION_WRB", ArtifactDescription);

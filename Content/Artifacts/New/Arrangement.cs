@@ -14,6 +14,11 @@
 
         public override string Name => ":: Artifacts ::::::::::::::::: Arrangement";
 
+        public override void Init()
+        {
+            base.Init();
+        }
+
         public override void Hooks()
         {
             Run.onRunStartGlobal += Run_onRunStartGlobal;
@@ -53,8 +58,16 @@
                     if (cardIndex.spawnCard.name.Contains("CategoryChest"))
                     {
                         Logger.LogError("Found CategoryChest " + cardIndex.spawnCard.name);
-                        cardIndex.selectionWeight = Mathf.RoundToInt(cardIndex.selectionWeight * chestWeight * Run.instance.treasureRng.RangeFloat(3.5f, 8f));
+
                         categoryChestsFound++;
+                        if (categoryChestsFound % 2 == 0)
+                        {
+                            cardIndex.selectionWeight = Mathf.RoundToInt(cardIndex.selectionWeight * chestWeight * Run.instance.treasureRng.RangeFloat(2.5f, 4f));
+                        }
+                        else
+                        {
+                            cardIndex.selectionWeight = Mathf.RoundToInt(cardIndex.selectionWeight * chestWeight * Run.instance.treasureRng.RangeFloat(6f, 9f));
+                        }
                     }
                 }
             }
@@ -76,11 +89,6 @@
                 }
             }
             return count;
-        }
-
-        public override void Init()
-        {
-            base.Init();
         }
     }
 }
