@@ -2,7 +2,7 @@
 {
     internal class Arrangement : ArtifactAddBase
     {
-        public override string ArtifactName => "Arrangement";
+        public override string ArtifactName => "Artifact of Arrangement";
 
         public override string ArtifactLangTokenName => "ARRANGEMENT";
 
