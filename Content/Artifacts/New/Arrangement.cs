@@ -57,7 +57,7 @@
                     }
                     if (cardIndex.spawnCard.name.Contains("CategoryChest"))
                     {
-                        Logger.LogError("Found CategoryChest " + cardIndex.spawnCard.name);
+                        // Logger.LogError("Found CategoryChest " + cardIndex.spawnCard.name);
 
                         categoryChestsFound++;
                         if (categoryChestsFound % 2 == 0)
