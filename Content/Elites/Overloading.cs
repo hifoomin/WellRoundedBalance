@@ -197,8 +197,10 @@ namespace WellRoundedBalance.Elites
                 return (hc.health / hc.fullCombinedHealth) > 0.5 ? aggressiveTeleportCooldown : defensiveTeleportCooldown;
             }
 
-            public void HandleTeleport(Vector3 pos)
-            {
+            public void HandleTeleport(Vector3 pos) {
+                if (cb.isPlayerControlled) {
+                    return;
+                }
                 Vector3 current = transform.position;
                 EffectManager.SpawnEffect(Utils.Paths.GameObject.ParentTeleportEffect.Load<GameObject>(), new EffectData
                 {

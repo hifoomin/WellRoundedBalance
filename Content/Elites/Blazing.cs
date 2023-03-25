@@ -119,40 +119,39 @@ namespace WellRoundedBalance.Elites
     public class BlazingController : MonoBehaviour
     {
         public CharacterBody body;
-        public GameObject projectile = Projectiles.Molotov.prefab;
+        public GameObject projectile = Projectiles.Molotov.singlePrefab;
         private float timer;
         public float interval;
-
+        public int projectileCount;
         public void Start()
         {
             body = GetComponent<CharacterBody>();
-            bool e3 = Run.instance.selectedDifficulty >= DifficultyIndex.Eclipse3 && Eclipse3.instance.isEnabled;
-            interval = e3 ? Blazing.fireProjectileIntervalE3 : Blazing.fireProjectileInterval;
-            timer = e3 ? Mathf.Max(0.5f, Blazing.fireProjectileIntervalE3 - 2f) : Mathf.Max(0.5f, Blazing.fireProjectileInterval - 2f);
+            float maxInterval = Eclipse3.CheckEclipse() ? Blazing.fireProjectileIntervalE3 : Blazing.fireProjectileIntervalE3;
+            float minInterval = maxInterval / 2f;
+            projectileCount = Mathf.RoundToInt(Util.Remap(body.baseMaxHealth, 20, 2500, 2, 6));
+            interval = Mathf.RoundToInt(Util.Remap(body.baseMaxHealth, 20, 2500, minInterval, maxInterval));
         }
 
         public void FixedUpdate()
         {
             timer += Time.fixedDeltaTime;
-            var angle = body.inputBank.GetAimRay().direction;
             if (timer >= interval)
             {
-                Vector3 randomVector = new(Run.instance.runRNG.RangeInt(0, 360), 0f, Run.instance.runRNG.RangeInt(0, 360));
-                if (Util.HasEffectiveAuthority(gameObject))
-                {
-                    var fpi = new FireProjectileInfo
-                    {
-                        owner = gameObject,
-                        rotation = Util.QuaternionSafeLookRotation(randomVector),
-                        projectilePrefab = projectile,
-                        crit = Util.CheckRoll(body.crit, body.master),
-                        position = body.corePosition,
-                        damage = Run.instance ? Mathf.Sqrt(Run.instance.ambientLevel * 9.08f) / Mathf.Sqrt(Run.instance.participatingPlayerCount) : 0f
-                    };
-                    ProjectileManager.instance.FireProjectile(fpi);
-                }
-
                 timer = 0f;
+                float num = 360f / projectileCount;
+                Vector3 normalized = Vector3.ProjectOnPlane(UnityEngine.Random.onUnitSphere, Vector3.up);
+                Vector3 position = body.corePosition + new Vector3(0, 3, 0);
+                for (int i = 0; i < projectileCount; i++) {
+                    Vector3 forward = Quaternion.AngleAxis(num * i, Vector3.up) * normalized;
+                    FireProjectileInfo info = new();
+                    info.owner = body.gameObject;
+                    info.damage = body.damage * 0.4f;
+                    info.crit = false;
+                    info.position = position;
+                    info.rotation = Quaternion.LookRotation(forward);
+                    info.projectilePrefab = projectile;
+                    ProjectileManager.instance.FireProjectile(info);
+                }
             }
         }
     }
