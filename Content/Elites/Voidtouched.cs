@@ -1,8 +1,6 @@
 ﻿using Mono.Cecil.Cil;
 using MonoMod.Cil;
-using System.Collections;
 using WellRoundedBalance.Buffs;
-using WellRoundedBalance.Eclipse;
 using WellRoundedBalance.Gamemodes.Eclipse;
 
 namespace WellRoundedBalance.Elites
@@ -22,7 +20,7 @@ namespace WellRoundedBalance.Elites
             useless.isHidden = true;
 
             hiddenCooldown = ScriptableObject.CreateInstance<BuffDef>();
-            hiddenCooldown.name = "spike cd";
+            hiddenCooldown.name = "Voidtouched Spike Cooldown";
             hiddenCooldown.isHidden = true;
 
             ContentAddition.AddBuffDef(useless);

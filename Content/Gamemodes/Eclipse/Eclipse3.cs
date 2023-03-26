@@ -1,6 +1,6 @@
 ﻿using MonoMod.Cil;
 
-namespace WellRoundedBalance.Eclipse
+namespace WellRoundedBalance.Gamemodes.Eclipse
 {
     internal class Eclipse3 : GamemodeBase<Eclipse3>
     {
@@ -32,7 +32,8 @@ namespace WellRoundedBalance.Eclipse
             }
         }
 
-        internal static bool CheckEclipse() {
+        internal static bool CheckEclipse()
+        {
             return instance.isEnabled && Run.instance.selectedDifficulty >= DifficultyIndex.Eclipse3;
         }
     }

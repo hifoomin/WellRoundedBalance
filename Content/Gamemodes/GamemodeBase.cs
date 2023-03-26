@@ -1,6 +1,6 @@
 ﻿using BepInEx.Configuration;
 
-namespace WellRoundedBalance.Eclipse
+namespace WellRoundedBalance.Gamemodes
 {
     public abstract class GamemodeBase : SharedBase
     {

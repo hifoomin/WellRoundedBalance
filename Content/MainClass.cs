@@ -9,7 +9,6 @@ using WellRoundedBalance.Equipment;
 using WellRoundedBalance.Interactables;
 using WellRoundedBalance.Enemies;
 using WellRoundedBalance.Projectiles;
-using WellRoundedBalance.Eclipse;
 using System.Runtime.CompilerServices;
 using WellRoundedBalance.Elites;
 using R2API.ContentManagement;
@@ -19,11 +18,11 @@ using WellRoundedBalance.Misc;
 using WellRoundedBalance.Artifacts;
 using WellRoundedBalance.Mechanics;
 
-using WellRoundedBalance.Items.ConsistentCategories;
 using WellRoundedBalance.Items.NoTier;
 using WellRoundedBalance.Difficulties;
 using WellRoundedBalance.Artifacts.Vanilla;
 using WellRoundedBalance.Artifacts.New;
+using WellRoundedBalance.Gamemodes;
 
 // using WellRoundedBalance.Enemies.FamilyEvents;
 

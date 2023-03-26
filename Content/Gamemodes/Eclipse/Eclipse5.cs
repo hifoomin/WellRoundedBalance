@@ -1,5 +1,4 @@
 ﻿using MonoMod.Cil;
-using WellRoundedBalance.Eclipse;
 
 namespace WellRoundedBalance.Gamemodes.Eclipse
 {

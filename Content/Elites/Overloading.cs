@@ -2,7 +2,6 @@
 using MonoMod.Cil;
 using RoR2.Navigation;
 using WellRoundedBalance.Buffs;
-using WellRoundedBalance.Eclipse;
 using WellRoundedBalance.Gamemodes.Eclipse;
 
 namespace WellRoundedBalance.Elites

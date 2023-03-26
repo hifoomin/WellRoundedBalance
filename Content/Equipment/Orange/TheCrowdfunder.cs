@@ -1,7 +1,7 @@
 ﻿using MonoMod.Cil;
 using System;
 
-namespace WellRoundedBalance.Equipment
+namespace WellRoundedBalance.Equipment.Orange
 {
     public class TheCrowdfunder : EquipmentBase
     {

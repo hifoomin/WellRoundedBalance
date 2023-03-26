@@ -1,4 +1,4 @@
-﻿namespace WellRoundedBalance.Equipment
+﻿namespace WellRoundedBalance.Equipment.Lunar
 {
     public class EffigyOfGrief : EquipmentBase
     {

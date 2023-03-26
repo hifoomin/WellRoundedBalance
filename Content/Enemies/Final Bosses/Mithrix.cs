@@ -1,6 +1,6 @@
 ﻿using UnityEngine.SceneManagement;
 
-namespace WellRoundedBalance.Enemies
+namespace WellRoundedBalance.Enemies.FinalBosses
 {
     public class Mithrix : EnemyBase
     {

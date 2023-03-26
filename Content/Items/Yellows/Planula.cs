@@ -35,7 +35,7 @@ namespace WellRoundedBalance.Items.Yellows
         {
             if (NetworkServer.active)
             {
-                body.AddItemBehavior<PlanulaSunBehavior>(body.inventory.GetItemCount(RoR2Content.Items.ParentEgg));
+                body.AddItemBehavior<PlanulaController>(body.inventory.GetItemCount(RoR2Content.Items.ParentEgg));
             }
         }
 
@@ -55,7 +55,7 @@ namespace WellRoundedBalance.Items.Yellows
         }
     }
 
-    public class PlanulaSunBehavior : CharacterBody.ItemBehavior
+    public class PlanulaController : CharacterBody.ItemBehavior
     {
         private float timer = 0;
         private float burnDistanceBase = 10000;

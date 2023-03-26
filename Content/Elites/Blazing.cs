@@ -2,7 +2,7 @@
 using MonoMod.Cil;
 using System;
 using WellRoundedBalance.Buffs;
-using WellRoundedBalance.Eclipse;
+using WellRoundedBalance.Gamemodes.Eclipse;
 
 namespace WellRoundedBalance.Elites
 {
@@ -123,6 +123,7 @@ namespace WellRoundedBalance.Elites
         private float timer;
         public float interval;
         public int projectileCount;
+
         public void Start()
         {
             body = GetComponent<CharacterBody>();
@@ -141,7 +142,8 @@ namespace WellRoundedBalance.Elites
                 float num = 360f / projectileCount;
                 Vector3 normalized = Vector3.ProjectOnPlane(UnityEngine.Random.onUnitSphere, Vector3.up);
                 Vector3 position = body.corePosition + new Vector3(0, 3, 0);
-                for (int i = 0; i < projectileCount; i++) {
+                for (int i = 0; i < projectileCount; i++)
+                {
                     Vector3 forward = Quaternion.AngleAxis(num * i, Vector3.up) * normalized;
                     FireProjectileInfo info = new();
                     info.owner = body.gameObject;

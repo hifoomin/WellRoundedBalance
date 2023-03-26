@@ -1,6 +1,4 @@
-﻿using WellRoundedBalance.Eclipse;
-
-namespace WellRoundedBalance.Gamemodes.Eclipse
+﻿namespace WellRoundedBalance.Gamemodes.Eclipse
 {
     internal class ChangeDesc : GamemodeBase
     {

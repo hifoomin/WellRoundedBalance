@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WellRoundedBalance.Eclipse
+namespace WellRoundedBalance.Gamemodes
 {
     public abstract class GamemodeBase<T> : GamemodeBase where T : GamemodeBase<T>
     {
