@@ -23,14 +23,14 @@ namespace WellRoundedBalance.Elites
         [ConfigField("Aggressive Teleport Cooldown", "Do not set it to the same value as Defensive Teleport Cooldown", 5f)]
         public static float aggressiveTeleportCooldown;
 
-        [ConfigField("Defensive Teleport Cooldown", "Do not set it to the same value as Defensive Teleport Cooldown", 6f)]
+        [ConfigField("Defensive Teleport Cooldown", "Do not set it to the same value as Aggressive Teleport Cooldown", 7f)]
         public static float defensiveTeleportCooldown;
 
-        [ConfigField("Maximum Speed Aura Radius", "Formula for aura radius: Minimum value between Body Radius + Speed Aura Radius Add and Maximum Speed Aura Radius", 40f)]
+        [ConfigField("Maximum Speed Aura Radius", "", 40f)]
         public static float maxSpeedAuraRadius;
 
-        [ConfigField("Speed Aura Radius Add", "Formula for aura radius: Minimum value between Body Radius + Speed Aura Radius Add and Maximum Speed Aura Radius", 10f)]
-        public static float speedAuraRadiusAdd;
+        [ConfigField("Minimum Speed Aura Radius", "", 13f)]
+        public static float minSpeedAuraRadius;
 
         private static GameObject SpeedAura;
 
@@ -44,6 +44,7 @@ namespace WellRoundedBalance.Elites
             overloadingSpeedBuff.canStack = false;
             overloadingSpeedBuff.buffColor = new Color32(66, 98, 219, 255);
             overloadingSpeedBuff.iconSprite = Sprite.Create(speedBuff, new Rect(0f, 0f, (float)speedBuff.width, (float)speedBuff.height), new Vector2(0f, 0f));
+            overloadingSpeedBuff.name = "Overloading Speed Buff";
 
             ContentAddition.AddBuffDef(overloadingSpeedBuff);
 
@@ -68,10 +69,12 @@ namespace WellRoundedBalance.Elites
             buffWard.buffDef = overloadingSpeedBuff;
             buffWard.expires = false;
             buffWard.expireDuration = 10000;
+            buffWard.invertTeamFilter = false;
 
             SpeedAura.RemoveComponent<SlowDownProjectiles>();
             var teamFilter = SpeedAura.AddComponent<TeamFilter>();
             teamFilter.teamIndex = TeamIndex.None;
+            teamFilter.defaultTeam = TeamIndex.Monster;
 
             PrefabAPI.RegisterNetworkPrefab(SpeedAura);
 
@@ -166,10 +169,10 @@ namespace WellRoundedBalance.Elites
                 {
                     wardInstance = GameObject.Instantiate(SpeedAura, transform);
                     teamFilter = wardInstance.GetComponent<TeamFilter>();
-                    teamFilter.teamIndex = cb.teamComponent.teamIndex;
+
                     ward = wardInstance.GetComponent<BuffWard>();
-                    ward.radius = Mathf.Min(cb.radius + speedAuraRadiusAdd, maxSpeedAuraRadius);
-                    ward.teamFilter = teamFilter;
+                    ward.radius = Util.Remap(cb.baseMaxHealth, 0f, 2800f, minSpeedAuraRadius, maxSpeedAuraRadius);
+
                     NetworkServer.Spawn(wardInstance);
                 }
             }
@@ -179,6 +182,8 @@ namespace WellRoundedBalance.Elites
                 stopwatch += Time.fixedDeltaTime;
                 if (ward.transform.localPosition != Vector3.zero) ward.transform.localPosition = Vector3.zero;
                 if (ward.transform.position != gameObject.transform.position) ward.transform.position = gameObject.transform.position;
+                if (ward.teamFilter.teamIndex != cb.teamComponent.teamIndex) teamFilter.teamIndex = cb.teamComponent.teamIndex;
+                if (ward.teamFilter != teamFilter) ward.teamFilter = teamFilter;
                 if (stopwatch >= GetDelay())
                 {
                     stopwatch = 0f;

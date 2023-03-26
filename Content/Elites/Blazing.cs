@@ -1,6 +1,5 @@
 ﻿using Mono.Cecil.Cil;
 using MonoMod.Cil;
-using System;
 using WellRoundedBalance.Buffs;
 using WellRoundedBalance.Gamemodes.Eclipse;
 
@@ -18,6 +17,15 @@ namespace WellRoundedBalance.Elites
 
         [ConfigField("Fire Trail Length", "", 10f)]
         public static float fireTrailLength;
+
+        [ConfigField("Fire Trail Radius", "", 5f)]
+        public static float fireTrailRadius;
+
+        [ConfigField("Fire Trail Damage Per Second", "Decimal.", 1.25f)]
+        public static float fireTrailDamagePerSecond;
+
+        [ConfigField("Fire Pool Damage Per Second", "Decimal.", 2f)]
+        public static float firePoolDamagePerSecond;
 
         public override void Init()
         {
@@ -53,7 +61,7 @@ namespace WellRoundedBalance.Elites
         {
             if (self && self.fireTrail)
             {
-                self.fireTrail.radius = 5f * self.radius;
+                self.fireTrail.radius = fireTrailRadius * self.radius;
             }
             orig(self);
         }
@@ -65,11 +73,7 @@ namespace WellRoundedBalance.Elites
             if (c.TryGotoNext(MoveType.Before,
                 x => x.MatchLdcR4(1.5f)))
             {
-                c.Index += 1;
-                c.EmitDelegate<Func<float, float>>((useless) =>
-                {
-                    return Run.instance ? 2f + Mathf.Sqrt(Run.instance.ambientLevel * 0.22f) / Mathf.Sqrt(Run.instance.participatingPlayerCount) : 0f;
-                });
+                c.Next.Operand = fireTrailDamagePerSecond;
             }
             else
             {
@@ -109,7 +113,7 @@ namespace WellRoundedBalance.Elites
             main.duration = fireTrailLength + 0.5f;
             var startSize = main.startSize;
             startSize.mode = ParticleSystemCurveMode.Constant;
-            startSize.constant = 5f;
+            startSize.constant = fireTrailRadius;
 
             var shape = trailPS.shape;
             shape.scale = new Vector3(2f, 0f, 2f);
@@ -145,13 +149,15 @@ namespace WellRoundedBalance.Elites
                 for (int i = 0; i < projectileCount; i++)
                 {
                     Vector3 forward = Quaternion.AngleAxis(num * i, Vector3.up) * normalized;
-                    FireProjectileInfo info = new();
-                    info.owner = body.gameObject;
-                    info.damage = body.damage * 0.4f;
-                    info.crit = false;
-                    info.position = position;
-                    info.rotation = Quaternion.LookRotation(forward);
-                    info.projectilePrefab = projectile;
+                    FireProjectileInfo info = new()
+                    {
+                        owner = body.gameObject,
+                        damage = body.damage * Blazing.firePoolDamagePerSecond * 0.2f,
+                        crit = false,
+                        position = position,
+                        rotation = Quaternion.LookRotation(forward),
+                        projectilePrefab = projectile
+                    };
                     ProjectileManager.instance.FireProjectile(info);
                 }
             }

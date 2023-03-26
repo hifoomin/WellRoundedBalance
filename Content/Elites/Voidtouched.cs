@@ -13,6 +13,21 @@ namespace WellRoundedBalance.Elites
 
         public override string Name => ":: Elites :::::: Voidtouched";
 
+        [ConfigField("Spike Count", "", 5)]
+        public static int spikeCount;
+
+        [ConfigField("Spike Count Eclipse 3+", "Only applies if you have Eclipse Changes enabled.", 8)]
+        public static int spikeCountE3;
+
+        [ConfigField("Spike Cooldown", "", 2f)]
+        public static float spikeCooldown;
+
+        [ConfigField("Spike Damage", "Decimal.", 2f)]
+        public static float spikeDamage;
+
+        [ConfigField("Permanent Damage Percent", "Eclipse 8 is 40", 30f)]
+        public static float permanentDamagePercent;
+
         public override void Init()
         {
             useless = ScriptableObject.CreateInstance<BuffDef>();
@@ -36,6 +51,13 @@ namespace WellRoundedBalance.Elites
             IL.RoR2.GlobalEventManager.OnHitEnemy += GlobalEventManager_OnHitEnemy;
             IL.RoR2.AffixVoidBehavior.FixedUpdate += AffixVoidBehavior_FixedUpdate;
             On.RoR2.CharacterBody.OnSkillActivated += OnSkillActivated;
+            On.RoR2.HealthComponent.Awake += HealthComponent_Awake;
+        }
+
+        private void HealthComponent_Awake(On.RoR2.HealthComponent.orig_Awake orig, HealthComponent self)
+        {
+            self.gameObject.AddComponent<VoidtouchedPermanentDamage>();
+            orig(self);
         }
 
         private void OnSkillActivated(On.RoR2.CharacterBody.orig_OnSkillActivated orig, CharacterBody body, GenericSkill slot)
@@ -49,24 +71,27 @@ namespace WellRoundedBalance.Elites
             Vector3 originalPosition = body.corePosition;
             Vector3 aimDirection = body.inputBank.aimDirection;
 
-            for (int i = 0; i < (Eclipse3.CheckEclipse() ? 8 : 4); i++)
+            for (int i = 0; i < (Eclipse3.CheckEclipse() ? spikeCountE3 : spikeCount); i++)
             {
                 Vector3 position = originalPosition + (aimDirection * (i * 10));
-                position.y = Eclipse3.CheckEclipse() ? 60 : 120;
+                position.y = 30;
                 if (Physics.Raycast(position, Vector3.down, out RaycastHit hit, 1000, ~0))
                 {
-                    FireProjectileInfo info = new();
-                    info.damage = body.damage * 2f;
-                    info.damageTypeOverride = DamageType.Nullify;
-                    info.crit = false;
-                    info.position = position;
-                    info.rotation = Quaternion.LookRotation(Vector3.down);
-                    info.projectilePrefab = spike;
-                    info.owner = body.gameObject;
+                    FireProjectileInfo info = new()
+                    {
+                        damage = body.damage * spikeDamage,
+                        damageTypeOverride = DamageType.Nullify,
+                        crit = false,
+                        position = position,
+                        rotation = Quaternion.LookRotation(Vector3.down),
+                        projectilePrefab = spike,
+                        owner = body.gameObject,
+                        speedOverride = 20
+                    };
                     ProjectileManager.instance.FireProjectile(info);
                 }
             }
-            body.AddTimedBuff(hiddenCooldown, 2);
+            body.AddTimedBuff(hiddenCooldown, spikeCooldown);
         }
 
         private void AffixVoidBehavior_FixedUpdate(ILContext il)
@@ -99,6 +124,43 @@ namespace WellRoundedBalance.Elites
             else
             {
                 Logger.LogError("Failed to apply Voidtouched Elite Needletick hook");
+            }
+        }
+    }
+
+    public class VoidtouchedPermanentDamage : MonoBehaviour, IOnTakeDamageServerReceiver
+    {
+        public HealthComponent hc;
+        public CharacterBody body;
+
+        public void Start()
+        {
+            hc = GetComponent<HealthComponent>();
+            if (!hc)
+            {
+                Destroy(this);
+                return;
+            }
+            body = hc.body;
+        }
+
+        public void OnTakeDamageServer(DamageReport damageReport)
+        {
+            if (body && damageReport.attacker && damageReport.attackerBody && damageReport.attackerBody.HasBuff(DLC1Content.Buffs.EliteVoid))
+            {
+                switch (body.teamComponent.teamIndex)
+                {
+                    case TeamIndex.Player:
+                        {
+                            float takenDamagePercent = damageReport.damageDealt / hc.fullCombinedHealth * 100f;
+                            int permanentDamage = Mathf.FloorToInt((takenDamagePercent * Voidtouched.permanentDamagePercent / 100f) * damageReport.damageInfo.procCoefficient);
+                            for (int l = 0; l < permanentDamage; l++)
+                            {
+                                body.AddBuff(RoR2Content.Buffs.PermanentCurse);
+                            }
+                        }
+                        break;
+                }
             }
         }
     }

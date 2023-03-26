@@ -190,7 +190,7 @@ namespace WellRoundedBalance.Elites
                         Vector3 aim = (target.transform.position - base.transform.position).normalized;
                         FireProjectileInfo info = new()
                         {
-                            damage = Run.instance ? 5f + Mathf.Sqrt(Run.instance.ambientLevel * 120f) / Mathf.Sqrt(Run.instance.participatingPlayerCount) : 0f,
+                            damage = owner.damage,
                             position = base.transform.position,
                             rotation = Util.QuaternionSafeLookRotation(aim),
                             owner = owner.gameObject,

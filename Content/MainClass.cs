@@ -23,6 +23,7 @@ using WellRoundedBalance.Difficulties;
 using WellRoundedBalance.Artifacts.Vanilla;
 using WellRoundedBalance.Artifacts.New;
 using WellRoundedBalance.Gamemodes;
+using WellRoundedBalance.Items.ConsistentCategories;
 
 // using WellRoundedBalance.Enemies.FamilyEvents;
 
@@ -316,9 +317,9 @@ namespace WellRoundedBalance
         private void ItemCatalog_Init(On.RoR2.ItemCatalog.orig_Init orig)
         {
             WRBLogger.LogDebug("ItemAPI.AddItemTag(\"Defense\") returns " + ItemAPI.AddItemTag("Defense"));
-            // BetterItemCategories.Init();
+            BetterItemCategories.Init();
             orig();
-            // BetterItemCategories.BetterAIBlacklist();
+            BetterItemCategories.BetterAIBlacklist();
         }
 
         public bool ValidateMechanic(MechanicBase gb)

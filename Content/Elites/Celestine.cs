@@ -15,16 +15,16 @@ namespace WellRoundedBalance.Elites
         public static GameObject BlindnessWard;
         public static PostProcessVolume CelestinePPV;
 
-        [ConfigField("Fog Radius", "", 25f)]
+        [ConfigField("Fog Radius", "", 35f)]
         public static float fogRadius;
 
-        [ConfigField("Fog Radius", "Only applies if you have Eclipse Changes enabled.", 40f)]
+        [ConfigField("Fog Radius", "Only applies if you have Eclipse Changes enabled.", 55f)]
         public static float fogRadiusE3;
 
         [ConfigField("Fog Lifetime", "", 10f)]
         public static float fogLifetime;
 
-        [ConfigField("Fog Blindness Duration", "", 2f)]
+        [ConfigField("Fog Blindness Duration", "", 2.5f)]
         public static float fogBlindnessDuration;
 
         [ConfigField("Bubble Armor Gain", "", 20f)]
@@ -51,7 +51,7 @@ namespace WellRoundedBalance.Elites
             ContentAddition.AddBuffDef(CelestineBoost);
 
             Blindness = ScriptableObject.CreateInstance<BuffDef>();
-            Blindness.buffColor = new Color32(100, 135, 132, 255);
+            Blindness.buffColor = new Color32(3, 49, 79, byte.MaxValue);
             Blindness.iconSprite = Utils.Paths.BuffDef.bdCloak.Load<BuffDef>().iconSprite;
             Blindness.canStack = false;
             Blindness.isHidden = false;
@@ -74,13 +74,13 @@ namespace WellRoundedBalance.Elites
             RampFog fog = postProcessProfile.AddSettings<RampFog>();
             fog.SetAllOverridesTo(true, true);
             fog.fogColorStart.value = new Color32(0, 0, 0, 165);
-            fog.fogColorMid.value = new Color32(20, 28, 7, byte.MaxValue);
-            fog.fogColorEnd.value = new Color32(100, 135, 132, byte.MaxValue);
+            fog.fogColorMid.value = new Color32(1, 2, 44, byte.MaxValue);
+            fog.fogColorEnd.value = new Color32(3, 49, 79, byte.MaxValue);
             fog.skyboxStrength.value = 0.02f;
             fog.fogPower.value = 0.35f;
             fog.fogIntensity.value = 1f;
             fog.fogZero.value = 0f;
-            fog.fogOne.value = 0.05f;
+            fog.fogOne.value = 0.3f;
             DepthOfField dof = postProcessProfile.AddSettings<DepthOfField>();
             dof.SetAllOverridesTo(true, true);
             dof.aperture.value = 5f;
