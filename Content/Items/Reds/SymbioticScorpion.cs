@@ -93,10 +93,10 @@ namespace WellRoundedBalance.Items.Reds
                 var victimBody = damageReport.victimBody;
                 if (attackerBody && victimBody)
                 {
-                    var based = victimBody.gameObject.GetComponent<FuckDoTAPIFuckDelegatesFuckComplicatedShit>();
+                    var based = victimBody.gameObject.GetComponent<SymbioticScorpionController>();
                     if (based)
                     {
-                        victimBody.gameObject.GetComponent<FuckDoTAPIFuckDelegatesFuckComplicatedShit>().attackerBody = attackerBody;
+                        victimBody.gameObject.GetComponent<SymbioticScorpionController>().attackerBody = attackerBody;
                     }
                     var inventory = attackerBody.inventory;
                     if (inventory)
@@ -109,7 +109,7 @@ namespace WellRoundedBalance.Items.Reds
                             attackerBody.AddTimedBuff(armorGain, 5f);
                             if (!based)
                             {
-                                victimBody.gameObject.AddComponent<FuckDoTAPIFuckDelegatesFuckComplicatedShit>();
+                                victimBody.gameObject.AddComponent<SymbioticScorpionController>();
                             }
                         }
                     }
@@ -142,7 +142,7 @@ namespace WellRoundedBalance.Items.Reds
         }
     }
 
-    public class FuckDoTAPIFuckDelegatesFuckComplicatedShit : MonoBehaviour
+    public class SymbioticScorpionController : MonoBehaviour
     {
         public float interval = 0.2f;
         public float timer;

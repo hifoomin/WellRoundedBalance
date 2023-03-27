@@ -13,7 +13,7 @@ namespace WellRoundedBalance.Mechanics.Scaling
 
         public override string Name => ":: Mechanics : Time Scaling";
 
-        [ConfigField("Time Scaling", "Formula for difficulty coefficient: ((Player Factor Base + Player Count * Player Count Multiplier) + (Time in minutes * Time Factor Multiplier * (Square Root Multiplier * Square Root(DifficultyDef Scaling Value (1.5 for WRB Drizzle, 2 for Rainstorm, 3 for Monsoon)))) * (Player Count ^ Player Count Exponent)) * (Custom Factor Add + Custom Time Factor Multiplier * (Square Root(Time in minutes) * Scaling Value Multiplier * DifficultyDef Scaling Value) * Square Root(Player Count ^ Player Count Exponent))\nFormula for ambient level: ", 0.75f)]
+        [ConfigField("Time Scaling", "Formula for difficulty coefficient: ((Player Factor Base + Player Count * Player Count Multiplier) + (Time in minutes * Time Factor Multiplier * (Square Root Multiplier * Square Root(DifficultyDef Scaling Value (1.5 for WRB Drizzle, 2 for Rainstorm, 3 for Monsoon)))) * (Player Count ^ Player Count Exponent)) * (Custom Factor Add + Custom Time Factor Multiplier * (Square Root(Time in minutes) * Scaling Value Multiplier * DifficultyDef Scaling Value) * Player Count ^ Player Count Exponent 2)\nFormula for ambient level: ", 0.75f)]
         public static float duhDoesNothing;
 
         [ConfigField("Scaling Debug Keybind", "Writes vanilla time scaling for comparison", ";")]
@@ -27,6 +27,9 @@ namespace WellRoundedBalance.Mechanics.Scaling
 
         [ConfigField("Player Count Exponent", "", 0.2f)]
         public static float playerCountExponent;
+
+        [ConfigField("Player Count Exponent 2", "", 0.07f)]
+        public static float playerCountExponent2;
 
         [ConfigField("Time Factor Multiplier", "", 0.0506f)]
         public static float timeFactorMultiplier;
@@ -70,12 +73,13 @@ namespace WellRoundedBalance.Mechanics.Scaling
         {
             On.RoR2.Run.RecalculateDifficultyCoefficentInternal += (orig, self) =>
             {
-                float playerCount = Mathf.Sqrt(self.participatingPlayerCount);
+                float playerCount = self.participatingPlayerCount;
                 float Time = self.GetRunStopwatch() * 0.016666668f; // stupid vanilla workaround
 
                 var playerfactorbase = playerFactorBase;
                 var playercountmultiplier = playerCountMultiplier;
                 var playercountexponent = playerCountExponent;
+                var playercountexponent2 = playerCountExponent2;
                 var timefactormultiplier = timeFactorMultiplier;
 
                 DifficultyDef difficultyDef = DifficultyCatalog.GetDifficultyDef(self.selectedDifficulty);
@@ -83,10 +87,11 @@ namespace WellRoundedBalance.Mechanics.Scaling
                 float playerFactor = playerfactorbase + playerCount * playercountmultiplier;
                 float timeFactor = Time * timefactormultiplier * (squareRootMultiplier * Mathf.Sqrt(difficultyDef.scalingValue));
                 float playerScalar = (float)Math.Pow(playerCount, playercountexponent);
+                float playerScalar2 = (float)Math.Pow(playerCount, playercountexponent2);
 
                 float customTimeFactor = Mathf.Sqrt(Time) * scalingValueMultiplier * difficultyDef.scalingValue;
 
-                float customFactor = customFactorAdd + customTimeFactorMultiplier * customTimeFactor * playerScalar;
+                float customFactor = customFactorAdd + customTimeFactorMultiplier * customTimeFactor * playerScalar2;
 
                 //
                 float finalDifficulty = (playerFactor + timeFactor * playerScalar) * customFactor;

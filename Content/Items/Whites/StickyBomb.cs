@@ -1,5 +1,6 @@
 ﻿using Mono.Cecil.Cil;
 using MonoMod.Cil;
+using R2API;
 using System;
 
 namespace WellRoundedBalance.Items.Whites
@@ -46,6 +47,9 @@ namespace WellRoundedBalance.Items.Whites
 
         [ConfigField("Proc Coefficient", "Decimal.", 0f)]
         public static float procChance;
+
+        [ConfigField("Radius", "", 10f)]
+        public static float radius;
 
         public override void Init()
         {
@@ -96,7 +100,25 @@ namespace WellRoundedBalance.Items.Whites
             var StickyBombImpact = Utils.Paths.GameObject.StickyBomb1.Load<GameObject>().GetComponent<ProjectileImpactExplosion>();
             StickyBombImpact.lifetime = lifetime;
             StickyBombImpact.falloffModel = changeFalloff;
+<<<<<<< HEAD
             StickyBombImpact.blastProcCoefficient = procChance * globalProc;
+=======
+            StickyBombImpact.blastProcCoefficient = proc;
+            StickyBombImpact.blastRadius = radius;
+
+            var projectileController = StickyBombImpact.GetComponent<ProjectileController>();
+            var ghostPrefab = projectileController.ghostPrefab;
+            ghostPrefab.transform.localScale = new Vector3(radius / 8f, radius / 8f, radius / 8f);
+
+            var coolerExplosion = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.OmniExplosionVFXQuick.Load<GameObject>(), "Sticky Bomb Explosion", false);
+            coolerExplosion.transform.localScale = new Vector3(radius, radius, radius);
+            var effectComponent = coolerExplosion.GetComponent<EffectComponent>();
+            effectComponent.soundName = "Play_item_proc_behemoth";
+
+            ContentAddition.AddEffect(coolerExplosion);
+
+            StickyBombImpact.impactEffect = coolerExplosion;
+>>>>>>> bd8d5e1eec079e925a79fe4634c3a2575e9b1365
         }
     }
 }

@@ -12,6 +12,7 @@ namespace WellRoundedBalance.Items.VoidWhites
         public override string PickupText => StackDesc(chance, chanceStack, init => $"Gain a {d(init)} chance to instantly kill a non-boss enemy. ", d) + "<style=cIsVoid>Corrupts all Lens-Maker's Glasses</style>.";
         public override string DescText => StackDesc(chance, chanceStack, init => $"Your attacks have a <style=cIsDamage>{d(init)}</style>{{Stack}} chance to <style=cIsDamage>instantly kill</style> a <style=cIsDamage>non-Boss enemy</style>. ", d) + "<style=cIsVoid>Corrupts all Lens-Maker's Glasses</style>.";
 
+<<<<<<< HEAD
         [ConfigField("Chance", "Decimal.", 0.01f)]
         public static float chance;
 
@@ -23,6 +24,10 @@ namespace WellRoundedBalance.Items.VoidWhites
 
         [ConfigField("Champion Chance Multiplier", "Decimal.", 0.5f)]
         public static float championMultiplier;
+=======
+        [ConfigField("Instant Kill Chance", 1f)]
+        public static float instantKillChance;
+>>>>>>> bd8d5e1eec079e925a79fe4634c3a2575e9b1365
 
         public override void Hooks()
         {
@@ -38,12 +43,12 @@ namespace WellRoundedBalance.Items.VoidWhites
                 if (characterBody && characterBody.inventory)
                 {
                     var delete = false;
-                    var chance = StackAmount(1f, 1f, characterBody.inventory.GetItemCount(DLC1Content.Items.CritGlassesVoid), 1f);
+                    var chance = StackAmount(instantKillChance, instantKillChance, characterBody.inventory.GetItemCount(DLC1Content.Items.CritGlassesVoid), 1f);
                     if (!self.body.isBoss && characterBody.inventory && Util.CheckRoll(chance, characterBody.master))
                     {
                         delete = true;
                         var vroggleVFX = HealthComponent.AssetReferences.critGlassesVoidExecuteEffectPrefab; // where did the r come from
-                        EffectManager.SpawnEffect(vroggleVFX, new EffectData
+                        EffectManager.SpawnEffect(vroggleVFX, new EffectData                                // vroggle = void croggle = void crit goggle
                         {
                             origin = self.body.corePosition,
                             scale = (self.body ? self.body.radius : 1f)

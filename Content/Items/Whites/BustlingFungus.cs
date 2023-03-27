@@ -37,10 +37,10 @@ namespace WellRoundedBalance.Items.Whites
         [ConfigField("Flat Healing is Hyperbolic", "Decimal, Max value. Set to 0 to make it linear.", 0f)]
         public static float flatHealingIsHyperbolic;
 
-        [ConfigField("Percent Healing", "Decimal.", 0.0125f)]
+        [ConfigField("Percent Healing", "Decimal. Formula for Healing Per Second: (Percent Healing + Percent Healing Per Stack * (Bustling Fungus - 1)) / Interval", 0.01f)]
         public static float percentHealing;
 
-        [ConfigField("Percent Healing Per Stack", "Decimal.", 0.00625f)]
+        [ConfigField("Percent Healing Per Stack", "Decimal.", 0.01f)]
         public static float percentHealingStack;
 
         [ConfigField("Percent Healing is Hyperbolic", "Decimal, Max value. Set to 0 to make it linear.", 0f)]

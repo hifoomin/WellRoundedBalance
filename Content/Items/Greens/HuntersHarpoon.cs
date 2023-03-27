@@ -66,6 +66,48 @@ namespace WellRoundedBalance.Items.Greens
             RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
         }
 
+        private void CharacterBody_AddTimedBuff_BuffDef_float(On.RoR2.CharacterBody.orig_AddTimedBuff_BuffDef_float orig, CharacterBody self, BuffDef buffDef, float duration)
+        {
+            if (buffDef == speedBuff && self.inventory)
+            {
+                var stack = self.inventory.GetItemCount(DLC1Content.Items.MoveSpeedOnKill);
+                var iter = 0;
+                var iter2 = -1;
+                var timer = 999f;
+                if (stack > 0)
+                {
+                    var maxBuffCount = baseMaxBuffCount + maxBuffCountPerStack * (stack - 1);
+                    for (int i = 0; i < self.timedBuffs.Count; i++)
+                    {
+                        var buffIndex = self.timedBuffs[i];
+                        if (buffIndex.buffIndex == speedBuff.buffIndex)
+                        {
+                            iter++;
+                            if (buffIndex.timer < timer)
+                            {
+                                iter2 = i;
+                                timer = buffIndex.timer;
+                            }
+                        }
+                    }
+                    if (iter < maxBuffCount)
+                    {
+                        self.timedBuffs.Add(new CharacterBody.TimedBuff()
+                        {
+                            buffIndex = buffDef.buffIndex,
+                            timer = duration
+                        });
+                        self.AddBuff(buffDef);
+                    }
+                    else if (iter2 > -1)
+                    {
+                        self.timedBuffs[iter2].timer = duration;
+                    }
+                }
+            }
+            orig(self, buffDef, duration);
+        }
+
         private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
             args.moveSpeedMultAdd += StackAmount(movementSpeed, movementSpeedStack, sender.GetBuffCount(speedBuff), movementSpeedIsHyperbolic);

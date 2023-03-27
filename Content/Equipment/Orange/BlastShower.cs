@@ -1,6 +1,6 @@
 ﻿using MonoMod.Cil;
 
-namespace WellRoundedBalance.Equipment
+namespace WellRoundedBalance.Equipment.Orange
 {
     public class BlastShower : EquipmentBase
     {

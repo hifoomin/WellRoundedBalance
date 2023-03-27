@@ -2,7 +2,7 @@
 using System;
 using WellRoundedBalance.Items;
 
-namespace WellRoundedBalance.Equipment
+namespace WellRoundedBalance.Equipment.Orange
 {
     public class DisposableMissileLauncher : EquipmentBase
     {

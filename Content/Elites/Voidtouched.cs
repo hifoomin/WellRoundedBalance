@@ -1,16 +1,32 @@
 ﻿using Mono.Cecil.Cil;
 using MonoMod.Cil;
-using System.Collections;
 using WellRoundedBalance.Buffs;
-using WellRoundedBalance.Eclipse;
+using WellRoundedBalance.Gamemodes.Eclipse;
 
 namespace WellRoundedBalance.Elites
 {
     internal class Voidtouched : EliteBase
     {
         public static BuffDef useless;
+        public static BuffDef hiddenCooldown;
+        public static GameObject spike; // cache this once so dont have to reload each time (i forgor if addressables already does this but just in case)
 
         public override string Name => ":: Elites :::::: Voidtouched";
+
+        [ConfigField("Spike Count", "", 5)]
+        public static int spikeCount;
+
+        [ConfigField("Spike Count Eclipse 3+", "Only applies if you have Eclipse Changes enabled.", 8)]
+        public static int spikeCountE3;
+
+        [ConfigField("Spike Cooldown", "", 2f)]
+        public static float spikeCooldown;
+
+        [ConfigField("Spike Damage", "Decimal.", 2f)]
+        public static float spikeDamage;
+
+        [ConfigField("Permanent Damage Percent", "Eclipse 8 is 40", 30f)]
+        public static float permanentDamagePercent;
 
         public override void Init()
         {
@@ -18,7 +34,14 @@ namespace WellRoundedBalance.Elites
             useless.name = "Voidtouched Deletion";
             useless.isHidden = true;
 
+            hiddenCooldown = ScriptableObject.CreateInstance<BuffDef>();
+            hiddenCooldown.name = "Voidtouched Spike Cooldown";
+            hiddenCooldown.isHidden = true;
+
             ContentAddition.AddBuffDef(useless);
+            ContentAddition.AddBuffDef(hiddenCooldown);
+
+            spike = Utils.Paths.GameObject.ImpVoidspikeProjectile.Load<GameObject>();
 
             base.Init();
         }
@@ -27,7 +50,7 @@ namespace WellRoundedBalance.Elites
         {
             IL.RoR2.GlobalEventManager.OnHitEnemy += GlobalEventManager_OnHitEnemy;
             IL.RoR2.AffixVoidBehavior.FixedUpdate += AffixVoidBehavior_FixedUpdate;
-            CharacterBody.onBodyInventoryChangedGlobal += CharacterBody_onBodyInventoryChangedGlobal;
+            On.RoR2.CharacterBody.OnSkillActivated += OnSkillActivated;
             On.RoR2.HealthComponent.Awake += HealthComponent_Awake;
         }
 
@@ -37,20 +60,38 @@ namespace WellRoundedBalance.Elites
             orig(self);
         }
 
-        private void CharacterBody_onBodyInventoryChangedGlobal(CharacterBody characterBody)
+        private void OnSkillActivated(On.RoR2.CharacterBody.orig_OnSkillActivated orig, CharacterBody body, GenericSkill slot)
         {
-            var vbm = characterBody.GetComponent<VoidtouchedBallsManager>();
-            if (characterBody.HasBuff(DLC1Content.Buffs.EliteVoid))
+            orig(body, slot);
+            if (!NetworkServer.active || body.HasBuff(hiddenCooldown) || !body.HasBuff(DLC1Content.Buffs.EliteVoid))
             {
-                if (vbm == null)
+                return;
+            }
+
+            Vector3 originalPosition = body.corePosition;
+            Vector3 aimDirection = body.inputBank.aimDirection;
+
+            for (int i = 0; i < (Eclipse3.CheckEclipse() ? spikeCountE3 : spikeCount); i++)
+            {
+                Vector3 position = originalPosition + (aimDirection * (i * 10));
+                position.y = 30;
+                if (Physics.Raycast(position, Vector3.down, out RaycastHit hit, 1000, ~0))
                 {
-                    characterBody.gameObject.AddComponent<VoidtouchedBallsManager>();
+                    FireProjectileInfo info = new()
+                    {
+                        damage = body.damage * spikeDamage,
+                        damageTypeOverride = DamageType.Nullify,
+                        crit = false,
+                        position = position,
+                        rotation = Quaternion.LookRotation(Vector3.down),
+                        projectilePrefab = spike,
+                        owner = body.gameObject,
+                        speedOverride = 20
+                    };
+                    ProjectileManager.instance.FireProjectile(info);
                 }
             }
-            else if (vbm != null)
-            {
-                characterBody.gameObject.RemoveComponent<VoidtouchedBallsManager>();
-            }
+            body.AddTimedBuff(hiddenCooldown, spikeCooldown);
         }
 
         private void AffixVoidBehavior_FixedUpdate(ILContext il)
@@ -87,73 +128,6 @@ namespace WellRoundedBalance.Elites
         }
     }
 
-    public class VoidtouchedBallsManager : MonoBehaviour
-    {
-        public CharacterBody body;
-        public GameObject prefab = Projectiles.VoidBall.prefab;
-        public int ballCount;
-
-        private void Start()
-        {
-            body = GetComponent<CharacterBody>();
-
-            if (Run.instance.selectedDifficulty >= DifficultyIndex.Eclipse3 && Eclipse3.instance.isEnabled)
-            {
-                ballCount = 4;
-            }
-            else
-            {
-                ballCount = 3;
-            }
-
-            if (body)
-            {
-                body.onSkillActivatedServer += Body_onSkillActivatedServer;
-            }
-        }
-
-        private void Body_onSkillActivatedServer(GenericSkill genericSkill)
-        {
-            StartCoroutine(SummonBalls());
-        }
-
-        public Vector3 RaycastToFloor(Vector3 position)
-        {
-            Ray ray = new(position, Vector3.down);
-            var maxDistance = 15f;
-            LayerIndex world = LayerIndex.world;
-            if (Physics.Raycast(ray, out RaycastHit raycastHit, maxDistance, world.mask, QueryTriggerInteraction.Ignore))
-            {
-                return raycastHit.point;
-            }
-            else
-            {
-                return Vector3.one;
-            }
-        }
-
-        public IEnumerator SummonBalls()
-        {
-            if (Util.HasEffectiveAuthority(gameObject))
-            {
-                for (int i = 0; i < ballCount; i++)
-                {
-                    var fpi = new FireProjectileInfo
-                    {
-                        projectilePrefab = prefab,
-                        damage = Run.instance ? 5f + Mathf.Sqrt(Run.instance.ambientLevel * 200f) / Mathf.Sqrt(Run.instance.participatingPlayerCount) : 0f,
-                        rotation = Quaternion.identity,
-                        owner = gameObject,
-                        crit = body.RollCrit(),
-                        position = RaycastToFloor(gameObject.transform.position + body.equipmentSlot.GetAimRay().GetPoint(i + 2))
-                    };
-                    ProjectileManager.instance.FireProjectile(fpi);
-                }
-            }
-            yield return null;
-        }
-    }
-
     public class VoidtouchedPermanentDamage : MonoBehaviour, IOnTakeDamageServerReceiver
     {
         public HealthComponent hc;
@@ -179,7 +153,7 @@ namespace WellRoundedBalance.Elites
                     case TeamIndex.Player:
                         {
                             float takenDamagePercent = damageReport.damageDealt / hc.fullCombinedHealth * 100f;
-                            int permanentDamage = Mathf.FloorToInt((takenDamagePercent * 30f / 100f) * damageReport.damageInfo.procCoefficient);
+                            int permanentDamage = Mathf.FloorToInt((takenDamagePercent * Voidtouched.permanentDamagePercent / 100f) * damageReport.damageInfo.procCoefficient);
                             for (int l = 0; l < permanentDamage; l++)
                             {
                                 body.AddBuff(RoR2Content.Buffs.PermanentCurse);

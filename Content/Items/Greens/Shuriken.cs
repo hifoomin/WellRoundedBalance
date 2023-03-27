@@ -11,16 +11,19 @@ namespace WellRoundedBalance.Items.Greens
 
         public override string PickupText => "Activating your Primary skill also throws a shuriken. Recharges over time.";
 
-        public override string DescText => "Activating your <style=cIsUtility>Primary skill</style> also throws a <style=cIsDamage>shuriken</style> that deals <style=cIsDamage>" + d(baseDamage) + "</style> <style=cStack>(+" + d(damagePerStack) + " per stack)</style> base damage. The <style=cIsDamage>shuriken</style> reloads over <style=cIsUtility>10</style> seconds.";
+        public override string DescText => "Activating your <style=cIsUtility>Primary skill</style> also throws a <style=cIsDamage>shuriken</style> that deals <style=cIsDamage>" + d(baseDamage) + "</style> <style=cStack>(+" + d(damagePerStack) + " per stack)</style> base damage. The <style=cIsDamage>shuriken</style> reloads over <style=cIsUtility>" + cooldown + "</style> seconds.";
 
-        [ConfigField("Base Damage", "Decimal.", 5f)]
+        [ConfigField("Base Damage", "Decimal.", 4f)]
         public static float baseDamage;
 
-        [ConfigField("Damage Per Stack", "Decimal.", 2.5f)]
+        [ConfigField("Damage Per Stack", "Decimal.", 2f)]
         public static float damagePerStack;
 
         [ConfigField("Projectile Lifetime", "", 10f)]
         public static float projectileLifetime;
+
+        [ConfigField("Cooldown", "", 12f)]
+        public static float cooldown;
 
         [ConfigField("Projectile Speed", "", 80f)]
         public static float projectileSpeed;
@@ -34,7 +37,7 @@ namespace WellRoundedBalance.Items.Greens
         [ConfigField("Enable Homing?", "", false)]
         public static bool enableHoming;
 
-        [ConfigField("Size Multiplier", "Not actually to scale with Vanilla, I'm not sure why.", 2f)]
+        [ConfigField("Size Multiplier", "", 2f)]
         public static float sizeMultiplier;
 
         [ConfigField("Distance Multiplier", "", 0.5f)]
@@ -49,11 +52,38 @@ namespace WellRoundedBalance.Items.Greens
 
         public override void Hooks()
         {
+            Changes();
             On.RoR2.PrimarySkillShurikenBehavior.FixedUpdate += PrimarySkillShurikenBehavior_FixedUpdate;
             IL.RoR2.PrimarySkillShurikenBehavior.FixedUpdate += PrimarySkillShurikenBehavior_FixedUpdate1;
             IL.RoR2.PrimarySkillShurikenBehavior.FireShuriken += PrimarySkillShurikenBehavior_FireShuriken;
             On.RoR2.PrimarySkillShurikenBehavior.GetRandomRollPitch += PrimarySkillShurikenBehavior_GetRandomRollPitch;
-            Changes();
+            On.RoR2.Projectile.ProjectileSimple.Start += ProjectileSimple_Start;
+        }
+
+        private void ProjectileSimple_Start(On.RoR2.Projectile.ProjectileSimple.orig_Start orig, ProjectileSimple self)
+        {
+            var shurikenProjectile = self.gameObject;
+            if (shurikenProjectile.name == "ShurikenProjectile(Clone)")
+            {
+                if (enablePierce || enableBoomerang && shurikenProjectile.transform.GetChild(0) == null)
+                {
+                    GameObject hitBox = new("hitBox");
+                    hitBox.transform.SetParent(shurikenProjectile.transform);
+                    hitBox.transform.localPosition = Vector3.zero;
+
+                    hitBox.AddComponent<HitBox>();
+
+                    hitBox.transform.localScale = new Vector3(sizeMultiplier, sizeMultiplier, sizeMultiplier);
+
+                    shurikenProjectile.layer = 13;
+                    hitBox.layer = 14;
+
+                    var hitBoxGroup = shurikenProjectile.GetComponent<HitBoxGroup>();
+                    hitBoxGroup.hitBoxes = new HitBox[] { hitBox.GetComponent<HitBox>() };
+                }
+            }
+
+            orig(self);
         }
 
         private Quaternion PrimarySkillShurikenBehavior_GetRandomRollPitch(On.RoR2.PrimarySkillShurikenBehavior.orig_GetRandomRollPitch orig, PrimarySkillShurikenBehavior self)
@@ -104,6 +134,18 @@ namespace WellRoundedBalance.Items.Greens
             {
                 Logger.LogError("Failed to apply Shuriken Count and Cooldown hook");
             }
+
+            c.Index = 0;
+
+            if (c.TryGotoNext(MoveType.Before,
+                x => x.MatchLdcR4(10f)))
+            {
+                c.Next.Operand = cooldown;
+            }
+            else
+            {
+                Main.WRBLogger.LogError("Failed to apply Shuriken Cooldown hook");
+            }
         }
 
         private void PrimarySkillShurikenBehavior_FixedUpdate(On.RoR2.PrimarySkillShurikenBehavior.orig_FixedUpdate orig, PrimarySkillShurikenBehavior self)
@@ -123,13 +165,11 @@ namespace WellRoundedBalance.Items.Greens
 
         public static BoomerangProjectile boomerangProjectile;
         public static ProjectileOverlapAttack projectileOverlapAttack;
-        public static GameObject shuriken;
         public UnityEvent UnityGames = new();
 
         private void Changes()
         {
             var shurikenProjectile = Utils.Paths.GameObject.ShurikenProjectile.Load<GameObject>();
-            shuriken = shurikenProjectile;
             var projectileSimple = shurikenProjectile.GetComponent<ProjectileSimple>();
             projectileSimple.lifetime = projectileLifetime;
             projectileSimple.desiredForwardSpeed = projectileSpeed;
@@ -138,7 +178,7 @@ namespace WellRoundedBalance.Items.Greens
 
             var projectileSingleTargetImpact = shurikenProjectile.GetComponent<ProjectileSingleTargetImpact>();
 
-            var sphereCollider = shuriken.GetComponent<SphereCollider>();
+            var sphereCollider = shurikenProjectile.GetComponent<SphereCollider>();
             sphereCollider.radius = sizeMultiplier / 5f;
 
             if (!enableHoming)
@@ -161,7 +201,7 @@ namespace WellRoundedBalance.Items.Greens
                 boomerangProjectile.canHitWorld = true;
                 boomerangProjectile.distanceMultiplier = distanceMultiplier;
                 boomerangProjectile.impactSpark = Utils.Paths.GameObject.ShurikenImpact.Load<GameObject>();
-
+                // shurikenProjectile.AddComponent<DestroyStuckObject>();
                 UnityGames.AddListener(OnFlyBack);
             }
 
@@ -177,7 +217,7 @@ namespace WellRoundedBalance.Items.Greens
                 UnityEngine.Object.Destroy(projectileSingleTargetImpact);
 
                 var projectileDotZone = shurikenProjectile.AddComponent<ProjectileDotZone>();
-                projectileDotZone.damageCoefficient = 1f;
+                projectileDotZone.damageCoefficient = 1f / 7f;
                 projectileDotZone.attackerFiltering = AttackerFiltering.NeverHitSelf;
                 projectileDotZone.impactEffect = Utils.Paths.GameObject.OmniImpactVFXSlash.Load<GameObject>();
                 projectileDotZone.forceVector = new Vector3(0f, 0f, 0f);
@@ -185,21 +225,6 @@ namespace WellRoundedBalance.Items.Greens
                 projectileDotZone.fireFrequency = 30f;
                 projectileDotZone.resetFrequency = 10f;
                 projectileDotZone.lifetime = -1f;
-            }
-
-            if (enablePierce || enableBoomerang)
-            {
-                GameObject hitBox = new("hitBox");
-                hitBox.transform.parent = shuriken.transform;
-
-                // Main.WRBLogger.LogError("HitBox GameObject is " + hitBox);
-                // Main.WRBLogger.LogError("static shuriken GameObject is " + shuriken);
-
-                hitBox.AddComponent<HitBox>();
-                var hitBoxGroup = shuriken.AddComponent<HitBoxGroup>();
-                hitBoxGroup.hitBoxes = new HitBox[] { hitBox.GetComponent<HitBox>() };
-
-                hitBox.transform.localScale = new Vector3(sizeMultiplier, sizeMultiplier, sizeMultiplier);
             }
         }
 

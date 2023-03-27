@@ -12,6 +12,7 @@ namespace WellRoundedBalance.Items
         public abstract string PickupText { get; }
         public abstract string DescText { get; }
         public override ConfigFile Config => Main.WRBItemConfig;
+
         public static event Action onTokenRegister;
 
         [ConfigField("Global Proc Chance", 1f)]
@@ -42,11 +43,15 @@ namespace WellRoundedBalance.Items
         }
 
         [SystemInitializer(typeof(ItemCatalog))]
-        public static void OnItemInitialized() { if (onTokenRegister != null) onTokenRegister(); }
+        public static void OnItemInitialized()
+        { if (onTokenRegister != null) onTokenRegister(); }
 
         public void SetToken()
         {
-            if (InternalPickup != null) {
+            if (InternalPickup != null)
+            {
+                InternalPickup.pickupToken += "_WRB";
+                InternalPickup.descriptionToken += "_WRB";
                 LanguageAPI.Add(InternalPickup.pickupToken, PickupText);
                 LanguageAPI.Add(InternalPickup.descriptionToken, DescText);
             };

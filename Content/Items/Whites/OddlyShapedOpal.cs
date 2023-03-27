@@ -71,11 +71,11 @@ namespace WellRoundedBalance.Items.Whites
 
         private void CharacterBody_onBodyInventoryChangedGlobal(CharacterBody characterBody)
         {
-            if (NetworkServer.active) characterBody.AddItemBehavior<OutOfCombatArmorBehavior>(characterBody.inventory.GetItemCount(DLC1Content.Items.OutOfCombatArmor));
+            if (NetworkServer.active) characterBody.AddItemBehavior<OddlyShapedOpalController>(characterBody.inventory.GetItemCount(DLC1Content.Items.OutOfCombatArmor));
         }
     }
 
-    public class OutOfCombatArmorBehavior : CharacterBody.ItemBehavior
+    public class OddlyShapedOpalController : CharacterBody.ItemBehavior
     {
         private void SetProvidingBuff(bool shouldProvideBuff)
         {
