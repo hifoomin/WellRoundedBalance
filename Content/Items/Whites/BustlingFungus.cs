@@ -12,7 +12,7 @@ namespace WellRoundedBalance.Items.Whites
 
         public override string PickupText => $"Heal all nearby allies after standing still for 0.5 second.";
 
-        public override string DescText => $"After standing still for <style=cIsHealing>0.5</style> second, create a zone that <style=cIsHealing>heals</style> for " +
+        public override string DescText => $"After standing still for <style=cIsHealing>0.5</style> seconds, create a zone that <style=cIsHealing>heals</style> for " +
             StackDesc(flatHealing, flatHealingStack, init => $"<style=cIsHealing>{init / healingInterval}</style>{{Stack}} ", stack => GetPerSecondStack(flatHealing, stack, flatHealingIsHyperbolic).ToString()) +
             StackDesc(percentHealing, percentHealingStack, init => (flatHealing > 0 || flatHealingStack > 0 ? "plus an additional " : "") + $"<style=cIsHealing>{d(init / healingInterval)}</style>{{Stack}} of <style=cIsHealing>maximum health</style> ", stack => d(GetPerSecondStack(percentHealing, stack, percentHealingIsHyperbolic))) +
             "every second to all allies " + StackDesc(baseRadius, radiusStack, init => $"within <style=cIsHealing>{m(init)}</style>{{Stack}}", m) + ".";
@@ -45,7 +45,7 @@ namespace WellRoundedBalance.Items.Whites
         [ConfigField("Percent Healing", "Decimal. Formula for Healing Per Second: (Percent Healing + Percent Healing Per Stack * (Bustling Fungus - 1)) / Interval", 0.01f)]
         public static float percentHealing;
 
-        [ConfigField("Percent Healing Per Stack", "Decimal.", 0.01f)]
+        [ConfigField("Percent Healing Per Stack", "Decimal. Formula for Healing Per Second: (Percent Healing + Percent Healing Per Stack * (Bustling Fungus - 1)) / Interval", 0.01f)]
         public static float percentHealingStack;
 
         [ConfigField("Percent Healing is Hyperbolic", "Decimal, Max value. Set to 0 to make it linear.", 0f)]
