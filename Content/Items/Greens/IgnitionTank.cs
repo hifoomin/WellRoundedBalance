@@ -60,7 +60,7 @@ namespace WellRoundedBalance.Items.Greens
                         var stack = inventory.GetItemCount(DLC1Content.Items.StrengthenBurn);
                         if (stack > 0)
                         {
-                            if (Util.CheckRoll(igniteChanceOnHit * damageInfo.procCoefficient, damageInfo.attacker.GetComponent<CharacterBody>().master.luck))
+                            if (Util.CheckRoll(igniteChanceOnHit * damageInfo.procCoefficient * globalProc, damageInfo.attacker.GetComponent<CharacterBody>().master.luck))
                             {
                                 InflictDotInfo blaze = new()
                                 {

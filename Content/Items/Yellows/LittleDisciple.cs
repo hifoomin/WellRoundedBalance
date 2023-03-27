@@ -14,6 +14,9 @@ namespace WellRoundedBalance.Items.Yellows
         [ConfigField("Range", 25f)]
         public static float range;
 
+        [ConfigField("Proc Chance", 0f)]
+        public static float procChance;
+
         public override void Init()
         {
             base.Init();
@@ -39,7 +42,7 @@ namespace WellRoundedBalance.Items.Yellows
                     x => x.MatchLdcR4(1f),
                     x => x.MatchStfld("RoR2.Orbs.DevilOrb", "procCoefficient")))
             {
-                c.Next.Operand = 0f;
+                c.Next.Operand = procChance * globalProc;
             }
             else
             {

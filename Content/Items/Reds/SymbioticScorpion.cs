@@ -27,6 +27,9 @@ namespace WellRoundedBalance.Items.Reds
         [ConfigField("Armor Steal Amount Per Stack", 10f)]
         public static float armorStealAmountPerStack;
 
+        [ConfigField("Proc Chance", 0f)]
+        public static float procChance;
+
         public override void Init()
         {
             var scorpion = Utils.Paths.Texture2D.texBuffPermanentDebuffIcon.Load<Texture2D>();
@@ -176,7 +179,7 @@ namespace WellRoundedBalance.Items.Reds
                         damage = damageCoefficient * attackerBody.damage,
                         damageColorIndex = DamageColorIndex.Poison,
                         force = Vector3.zero,
-                        procCoefficient = 0f,
+                        procCoefficient = SymbioticScorpion.procChance * ItemBase.globalProc,
                         damageType = DamageType.Generic,
                         position = victimHealthComponent.body.corePosition,
                         dotIndex = DotIndex.None,

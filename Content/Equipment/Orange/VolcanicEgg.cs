@@ -1,4 +1,6 @@
-﻿namespace WellRoundedBalance.Equipment.Orange
+﻿using WellRoundedBalance.Items;
+
+namespace WellRoundedBalance.Equipment.Orange
 {
     public class VolcanicEgg : EquipmentBase
     {
@@ -57,10 +59,10 @@
             vegg.initialSpeed = speed / 6f;
             vegg.acceleration = speed * 4f;
             vegg.blastDamageCoefficient = explosionDamage;
-            vegg.blastProcCoefficient = explosionProcCoefficient;
+            vegg.blastProcCoefficient = explosionProcCoefficient * ItemBase.globalProc;
             vegg.blastRadius = explosionRadius;
             vegg.overlapDamageCoefficient = impactDamage;
-            vegg.overlapProcCoefficient = impactProcCoefficient;
+            vegg.overlapProcCoefficient = impactProcCoefficient * ItemBase.globalProc;
             vegg.overlapVehicleDurationBonusPerHit = durationExtensionPerImpact;
         }
     }

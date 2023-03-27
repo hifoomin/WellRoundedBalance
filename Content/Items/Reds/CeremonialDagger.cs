@@ -9,6 +9,9 @@
 
         public override string DescText => "Killing an enemy fires out <style=cIsDamage>3</style> <style=cIsDamage>homing daggers</style> that deal <style=cIsDamage>150%</style> <style=cStack>(+150% per stack)</style> base damage.";
 
+        [ConfigField("Proc Chance", 0f)]
+        public static float procChance;
+
         public override void Init()
         {
             base.Init();
@@ -22,7 +25,7 @@
         public static void Changes()
         {
             var c = Utils.Paths.GameObject.DaggerProjectile.Load<GameObject>().GetComponent<ProjectileController>();
-            c.procCoefficient = 0f;
+            c.procCoefficient = procChance * globalProc;
         }
     }
 }

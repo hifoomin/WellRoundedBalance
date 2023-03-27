@@ -1,5 +1,6 @@
 ﻿using MonoMod.Cil;
 using System;
+using WellRoundedBalance.Items;
 
 namespace WellRoundedBalance.Equipment.Orange
 {
@@ -75,7 +76,7 @@ namespace WellRoundedBalance.Equipment.Orange
         {
             dmlMissilePrefab = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.MissileProjectile.Load<GameObject>(), "Disposable Missile");
             var missileProjectileController = dmlMissilePrefab.GetComponent<ProjectileController>();
-            missileProjectileController.procCoefficient = procCoefficient;
+            missileProjectileController.procCoefficient = procCoefficient * ItemBase.globalProc;
             var ghost = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.MissileGhost.Load<GameObject>(), "Disposable Missile Ghost", false);
             ghost.transform.localScale = new Vector3(2f, 2f, 2f);
             ghost.transform.GetChild(1).gameObject.SetActive(false);

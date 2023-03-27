@@ -17,6 +17,9 @@ namespace WellRoundedBalance.Items.Reds
         [ConfigField("Base Range", 25f)]
         public static float baseRange;
 
+        [ConfigField("Proc Chance", 0f)]
+        public static float procChance;
+
         public override void Init()
         {
             base.Init();
@@ -30,7 +33,7 @@ namespace WellRoundedBalance.Items.Reds
 
         private void DevilOrb_Begin(On.RoR2.Orbs.DevilOrb.orig_Begin orig, RoR2.Orbs.DevilOrb self)
         {
-            self.procCoefficient = 0f;
+            self.procCoefficient = procChance * globalProc;
             orig(self);
         }
 

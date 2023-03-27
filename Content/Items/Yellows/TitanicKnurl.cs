@@ -20,6 +20,9 @@ namespace WellRoundedBalance.Items.Yellows
         [ConfigField("Fist Base Damage", "Decimal.", 3.5f)]
         public static float fistBaseDamage;
 
+        [ConfigField("Proc Chance", 0f)]
+        public static float procChance;
+
         public override void Init()
         {
             base.Init();

@@ -1,4 +1,6 @@
-﻿namespace WellRoundedBalance.Equipment.Orange
+﻿using WellRoundedBalance.Items;
+
+namespace WellRoundedBalance.Equipment.Orange
 {
     public class Sawmerang : EquipmentBase
     {
@@ -49,9 +51,9 @@
             saw.GetComponent<BoomerangProjectile>().travelSpeed = speed;
             saw.GetComponent<BoomerangProjectile>().distanceMultiplier = distanceMultiplier;
             saw.GetComponent<ProjectileOverlapAttack>().damageCoefficient = frontSawDamage;
-            saw.GetComponent<ProjectileOverlapAttack>().overlapProcCoefficient = frontSawProcCoefficient;
+            saw.GetComponent<ProjectileOverlapAttack>().overlapProcCoefficient = frontSawProcCoefficient * ItemBase.globalProc;
             saw.GetComponent<ProjectileDotZone>().damageCoefficient = returningSawDamage;
-            saw.GetComponent<ProjectileDotZone>().overlapProcCoefficient = returningSawProcCoefficient;
+            saw.GetComponent<ProjectileDotZone>().overlapProcCoefficient = returningSawProcCoefficient * ItemBase.globalProc;
         }
     }
 }
