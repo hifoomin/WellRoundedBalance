@@ -17,7 +17,7 @@ namespace WellRoundedBalance.Items.Greens
         [ConfigField("Duration", "Decimal.", 4f)]
         public static float duration;
 
-        [ConfigField("Duration per Stack", "Decimal.", 4f)]
+        [ConfigField("Duration per Stack", "Decimal.", 0f)]
         public static float durationStack;
 
         [ConfigField("Duration is Hyperbolic", "Decimal, Max value. Set to 0 to make it linear.", 0f)]
@@ -82,7 +82,7 @@ namespace WellRoundedBalance.Items.Greens
             var maxDuration = StackAmount(duration, durationStack, stack, durationIsHyperbolic);
             var cap = Mathf.Min((int)StackAmount(maxCount, maxCountStack, stack, maxCountIsHyperbolic), (attackerBody.HasBuff(speedBuff) ? attackerBody.GetBuffCount(speedBuff) : 0) + 1);
             for (var i = maxDuration; i > 0; i -= maxDuration / cap) attackerBody.AddTimedBuff(speedBuff, i, cap);
-            
+
             EffectData effectData = new() { origin = attackerBody.corePosition };
 
             var characterMotor = attackerBody.characterMotor;

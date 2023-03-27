@@ -32,7 +32,7 @@ namespace WellRoundedBalance.Items.VoidWhites
 
         private void HealthComponent_TakeDamage2(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo)
         {
-            if (damageInfo.attacker)
+            if (damageInfo.attacker && damageInfo.attacker != self.gameObject)
             {
                 var characterBody = damageInfo.attacker.GetComponent<CharacterBody>();
                 if (characterBody && characterBody.inventory)
@@ -66,7 +66,7 @@ namespace WellRoundedBalance.Items.VoidWhites
             ILCursor c = new(il);
             int inv = -1;
             int info = -1;
-            if (c.TryGotoNext(x => x.MatchLdloc(out inv), x => x.MatchCallOrCallvirt<CharacterBody>("get_" + nameof(CharacterBody.inventory)), x => x.MatchLdsfld(typeof(DLC1Content.Items), nameof(DLC1Content.Items.CritGlassesVoid))) 
+            if (c.TryGotoNext(x => x.MatchLdloc(out inv), x => x.MatchCallOrCallvirt<CharacterBody>("get_" + nameof(CharacterBody.inventory)), x => x.MatchLdsfld(typeof(DLC1Content.Items), nameof(DLC1Content.Items.CritGlassesVoid)))
                 && c.TryGotoNext(x => x.MatchLdarg(out info), x => x.MatchLdfld<DamageInfo>(nameof(DamageInfo.procCoefficient)))
                 && c.TryGotoNext(x => x.MatchCallOrCallvirt(typeof(Util), nameof(Util.CheckRoll))) && c.TryGotoPrev(x => x.MatchLdloc(inv)))
             {

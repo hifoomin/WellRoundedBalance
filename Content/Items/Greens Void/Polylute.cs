@@ -11,9 +11,10 @@ namespace WellRoundedBalance.Items.VoidGreens
         public override ItemDef InternalPickup => DLC1Content.Items.ChainLightningVoid;
 
         public override string PickupText => "Chance to repeatedly strike a single enemy with lightning. <style=cIsVoid>Corrupts all Ukuleles</style>.";
-        public override string DescText => 
-            StackDesc(chance, chanceStack, init => $"<style=cIsDamage>{d(init)}</style>{{Stack}} chance to fire <style=cIsDamage>lightning</style>", d) + 
-            StackDesc(damage, damageStack, init => $" for <style=cIsDamage>{d(init)}</style>{{Stack}} {(damageIsTotal ? "TOTAL" : "base")} damage", d) + 
+
+        public override string DescText =>
+            StackDesc(chance, chanceStack, init => $"<style=cIsDamage>{d(init)}</style>{{Stack}} chance to fire <style=cIsDamage>lightning</style>", d) +
+            StackDesc(damage, damageStack, init => $" for <style=cIsDamage>{d(init)}</style>{{Stack}} {(damageIsTotal ? "TOTAL" : "base")} damage", d) +
             StackDesc(strikeCount, strikeCountPerStack, init => $" up to <style=cIsDamage>{init}</style>{{Stack}} times", noop) + ". <style=cIsVoid>Corrupts all Ukuleles</style>.";
 
         [ConfigField("Damage Coefficient", "Decimal.", 0.4f)]
@@ -37,7 +38,7 @@ namespace WellRoundedBalance.Items.VoidGreens
         [ConfigField("Chance is Hyperbolic", "Decimal, Max value. Set to 0 to make it linear.", 0f)]
         public static float chanceIsHyperbolic;
 
-        [ConfigField("Base Strike Count", "", 4)]
+        [ConfigField("Base Strike Count", "", 3)]
         public static int strikeCount;
 
         [ConfigField("Strike Count Per Stack", "", 2)]
