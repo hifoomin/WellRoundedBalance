@@ -25,6 +25,9 @@ namespace WellRoundedBalance.Items.VoidGreens
         [ConfigField("Range Per Stack", 0f)]
         public static float rangePerStack;
 
+        [ConfigField("Proc Chance", 0f)]
+        public static float procChance;
+
         public override void Init()
         {
             base.Init();
@@ -78,7 +81,7 @@ namespace WellRoundedBalance.Items.VoidGreens
         {
             var hopooGames = Utils.Paths.GameObject.ExplodeOnDeathVoidExplosion.Load<GameObject>();
             var delayBlast = hopooGames.GetComponent<DelayBlast>();
-            delayBlast.procCoefficient = 0f;
+            delayBlast.procCoefficient = procChance * globalProc;
         }
     }
 }

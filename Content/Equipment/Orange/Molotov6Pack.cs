@@ -1,4 +1,6 @@
-﻿namespace WellRoundedBalance.Equipment.Orange
+﻿using WellRoundedBalance.Items;
+
+namespace WellRoundedBalance.Equipment.Orange
 {
     public class Molotov6Pack : EquipmentBase
     {
@@ -47,12 +49,12 @@
         {
             var molotov = Addressables.LoadAssetAsync<GameObject>("RoR2/DLC1/Molotov/MolotovClusterProjectile.prefab").WaitForCompletion().GetComponent<ProjectileImpactExplosion>();
             molotov.childrenCount = molotovCount;
-            molotov.blastProcCoefficient = explosionProcCoefficient;
+            molotov.blastProcCoefficient = explosionProcCoefficient * ItemBase.globalProc;
             molotov.blastDamageCoefficient = explosionDamage;
             molotov.blastRadius = explosionRadius;
 
             var pool = Addressables.LoadAssetAsync<GameObject>("RoR2/DLC1/Molotov/MolotovProjectileDotZone.prefab").WaitForCompletion().GetComponent<ProjectileDotZone>();
-            pool.overlapProcCoefficient = poolProcCoefficient;
+            pool.overlapProcCoefficient = poolProcCoefficient * ItemBase.globalProc;
             pool.lifetime = poolLifetime;
 
             LanguageAPI.Add("EQUIPMENT_MOLOTOV_NAME", "Molotov (" + molotovCount + "-Pack)");

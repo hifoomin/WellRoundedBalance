@@ -221,7 +221,7 @@ namespace WellRoundedBalance.Items.Greens
                 projectileDotZone.attackerFiltering = AttackerFiltering.NeverHitSelf;
                 projectileDotZone.impactEffect = Utils.Paths.GameObject.OmniImpactVFXSlash.Load<GameObject>();
                 projectileDotZone.forceVector = new Vector3(0f, 0f, 0f);
-                projectileDotZone.overlapProcCoefficient = 1f;
+                projectileDotZone.overlapProcCoefficient = 1f * globalProc;
                 projectileDotZone.fireFrequency = 30f;
                 projectileDotZone.resetFrequency = 10f;
                 projectileDotZone.lifetime = -1f;

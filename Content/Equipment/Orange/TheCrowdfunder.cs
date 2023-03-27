@@ -1,5 +1,6 @@
 ﻿using MonoMod.Cil;
 using System;
+using WellRoundedBalance.Items;
 
 namespace WellRoundedBalance.Equipment.Orange
 {
@@ -71,7 +72,7 @@ namespace WellRoundedBalance.Equipment.Orange
             EntityStates.GoldGat.GoldGatFire.windUpDuration = windUpDuration;
             EntityStates.GoldGat.GoldGatFire.minFireFrequency = minimumFireRate;
             EntityStates.GoldGat.GoldGatFire.maxFireFrequency = maximumFireRate;
-            EntityStates.GoldGat.GoldGatFire.procCoefficient = procCoefficient;
+            EntityStates.GoldGat.GoldGatFire.procCoefficient = procCoefficient * ItemBase.globalProc;
             EntityStates.GoldGat.GoldGatFire.damageCoefficient = damage;
             orig(self);
         }

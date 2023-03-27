@@ -43,7 +43,7 @@ namespace WellRoundedBalance.Utils
         {
             if (count <= 0) return 0;
             float ret = init + (stack * (count - 1));
-            if (isHyperbolic > 0) ret = GetHyperbolic(init, isHyperbolic, ret);
+            if (isHyperbolic != 0) ret = GetHyperbolic(init, isHyperbolic, ret);
             return ret;
         }
 
@@ -51,7 +51,7 @@ namespace WellRoundedBalance.Utils
         {
             if (firstStack >= cap) return cap * (chance / firstStack); // should not happen, but failsafe
             float count = chance / firstStack;
-            float coeff = (100 * firstStack) / (cap - firstStack); // should be good
+            float coeff = 100 * firstStack / (cap - firstStack); // should be good
             return cap * (1 - (100 / ((count * coeff) + 100)));
         }
     }

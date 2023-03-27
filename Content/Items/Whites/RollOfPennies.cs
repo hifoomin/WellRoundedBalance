@@ -1,5 +1,7 @@
 ﻿using Mono.Cecil.Cil;
 using MonoMod.Cil;
+using RoR2;
+using System.Collections.ObjectModel;
 
 namespace WellRoundedBalance.Items.Whites
 {
@@ -45,7 +47,7 @@ namespace WellRoundedBalance.Items.Whites
         {
             IL.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
             On.RoR2.Inventory.GiveItem_ItemIndex_int += Inventory_GiveItem_ItemIndex_int;
-            On.RoR2.Stage.Start += Stage_Start;
+            Stage.onStageStartGlobal += Stage_onStageStartGlobal;
         }
 
         private void Inventory_GiveItem_ItemIndex_int(On.RoR2.Inventory.orig_GiveItem_ItemIndex_int orig, Inventory self, ItemIndex itemIndex, int count)
@@ -62,22 +64,20 @@ namespace WellRoundedBalance.Items.Whites
             }
         }
 
-        private void Stage_Start(On.RoR2.Stage.orig_Start orig, Stage self)
+        private void Stage_onStageStartGlobal(Stage _)
         {
-            orig(self);
             int stack = 0;
             var readOnlyInstancesList = CharacterMaster.readOnlyInstancesList;
             for (int i = 0; i < readOnlyInstancesList.Count; i++)
             {
                 CharacterMaster characterMaster = readOnlyInstancesList[i];
-                if (characterMaster.inventory)
-                {
-                    stack += characterMaster.inventory.GetItemCount(DLC1Content.Items.GoldOnHurt);
-                }
+                if (characterMaster.inventory && characterMaster.teamIndex == TeamIndex.Player) stack += characterMaster.inventory.GetItemCount(DLC1Content.Items.GoldOnHurt);
             }
             uint ret = (uint)StackAmount(baseGoldPerStage, goldPerStagePerStack, stack, goldPerStageIsHyperbolic);
             if (scaleOverTime) ret = (uint)Run.instance.GetDifficultyScaledCost((int)ret);
-            TeamManager.instance.GiveTeamMoney(TeamIndex.Player, ret);
+            ReadOnlyCollection<TeamComponent> players = TeamComponent.GetTeamMembers(TeamIndex.Player);
+            ret = (uint)Mathf.CeilToInt((float)ret / players.Count);
+            foreach (var pl in players) pl?.GetComponent<CharacterBody>()?.master?.GiveMoney(ret);
         }
 
         private void HealthComponent_TakeDamage(ILContext il)
