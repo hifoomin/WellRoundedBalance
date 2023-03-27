@@ -116,13 +116,8 @@ namespace WellRoundedBalance.Items.Lunars
                             var bodyMotor = body.characterMotor;
                             if (bodyMotor && stack > 0)
                             {
-<<<<<<< HEAD
-                                bodyMotor.velocity.y = Mathf.Min((Mathf.Abs(bodyMotor.velocity.y) - body.jumpPower - 35f) * damageInfo.procCoefficient * globalProc * stack, 0f);
-                                Main.WRBLogger.LogFatal("body y velocity is " + bodyMotor.velocity.y);
-=======
                                 bodyMotor.velocity.y = Mathf.Min((Mathf.Abs(bodyMotor.velocity.y) - body.jumpPower - 35f) * damageInfo.procCoefficient * stack, 0f);
                                 // Main.WRBLogger.LogFatal("body y velocity is " + bodyMotor.velocity.y);
->>>>>>> bd8d5e1eec079e925a79fe4634c3a2575e9b1365
                             }
                         }
                     }

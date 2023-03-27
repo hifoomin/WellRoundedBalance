@@ -100,10 +100,7 @@ namespace WellRoundedBalance.Items.Whites
             var StickyBombImpact = Utils.Paths.GameObject.StickyBomb1.Load<GameObject>().GetComponent<ProjectileImpactExplosion>();
             StickyBombImpact.lifetime = lifetime;
             StickyBombImpact.falloffModel = changeFalloff;
-<<<<<<< HEAD
             StickyBombImpact.blastProcCoefficient = procChance * globalProc;
-=======
-            StickyBombImpact.blastProcCoefficient = proc;
             StickyBombImpact.blastRadius = radius;
 
             var projectileController = StickyBombImpact.GetComponent<ProjectileController>();
@@ -118,7 +115,6 @@ namespace WellRoundedBalance.Items.Whites
             ContentAddition.AddEffect(coolerExplosion);
 
             StickyBombImpact.impactEffect = coolerExplosion;
->>>>>>> bd8d5e1eec079e925a79fe4634c3a2575e9b1365
         }
     }
 }

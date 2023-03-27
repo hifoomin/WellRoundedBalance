@@ -1,10 +1,6 @@
-<<<<<<< HEAD
-﻿using WellRoundedBalance.Items;
+using WellRoundedBalance.Items;
 
-namespace WellRoundedBalance.Equipment
-=======
-﻿namespace WellRoundedBalance.Equipment.Orange
->>>>>>> bd8d5e1eec079e925a79fe4634c3a2575e9b1365
+namespace WellRoundedBalance.Equipment.Orange
 {
     public class PreonAccumulator : EquipmentBase
     {
