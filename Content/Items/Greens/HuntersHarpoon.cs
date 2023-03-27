@@ -10,8 +10,7 @@ namespace WellRoundedBalance.Items.Greens
         public override ItemDef InternalPickup => DLC1Content.Items.MoveSpeedOnKill;
         public override string Name => ":: Items :: Greens :: Hunters Harpoon";
         public override string PickupText => "Killing an enemy gives you a burst of movement speed.";
-        public override string DescText => "Killing an enemy increases <style=cIsUtility>movement speed</style>" +
-            StackDesc(movementSpeed, movementSpeedStack - movementSpeed, init => $" by <style=cIsUtility>{d(init)}</style>{{Stack}}", d) +
+        public override string DescText => $"Killing an enemy increases <style=cIsUtility>movement speed</style> by <style=cIsUtility>{d(movementSpeed)}</style>" +
             StackDesc(maxCount, maxCountStack, init => $", up to <style=cIsUtility>{init}</style>{{Stack}} times", noop) +
             StackDesc(duration, durationStack, init => $", fading over <style=cIsUtility>{init}</style>{{Stack}} seconds", noop) + ".";
 
@@ -24,10 +23,10 @@ namespace WellRoundedBalance.Items.Greens
         [ConfigField("Duration is Hyperbolic", "Decimal, Max value. Set to 0 to make it linear.", 0f)]
         public static float durationIsHyperbolic;
 
-        [ConfigField("Movement Speed", "Decimal.", 0.16f)]
+        [ConfigField("Movement Speed for Initial Stack", "Decimal.", 0.16f)]
         public static float movementSpeed;
 
-        [ConfigField("Movement Speed per Stack", "Decimal.", 0.16f)]
+        [ConfigField("Movement Speed for Additional Stacks", "Decimal.", 0.16f)]
         public static float movementSpeedStack;
 
         [ConfigField("Movement Speed is Hyperbolic", "Decimal, Max value. Set to 0 to make it linear.", 0f)]
@@ -81,7 +80,7 @@ namespace WellRoundedBalance.Items.Greens
             var stack = inventory.GetItemCount(DLC1Content.Items.MoveSpeedOnKill);
             if (stack <= 0) return;
             var maxDuration = StackAmount(duration, durationStack, stack, durationIsHyperbolic);
-            var cap = (int)StackAmount(maxCount, maxCountStack, stack, maxCountIsHyperbolic);
+            var cap = Mathf.Min((int)StackAmount(maxCount, maxCountStack, stack, maxCountIsHyperbolic), (attackerBody.HasBuff(speedBuff) ? attackerBody.GetBuffCount(speedBuff) : 0) + 1);
             for (var i = maxDuration; i > 0; i -= maxDuration / cap) attackerBody.AddTimedBuff(speedBuff, i, cap);
             
             EffectData effectData = new() { origin = attackerBody.corePosition };
