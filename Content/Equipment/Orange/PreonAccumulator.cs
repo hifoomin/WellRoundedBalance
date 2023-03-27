@@ -1,4 +1,6 @@
-﻿namespace WellRoundedBalance.Equipment
+﻿using WellRoundedBalance.Items;
+
+namespace WellRoundedBalance.Equipment
 {
     public class PreonAccumulator : EquipmentBase
     {
@@ -57,11 +59,11 @@
             var bfg2 = bfg.GetComponent<ProjectileProximityBeamController>();
             bfg1.blastRadius = bigBallRange;
             bfg1.blastDamageCoefficient = bigBallDamage / 2f;
-            bfg1.blastProcCoefficient = bigBallProcCoefficient;
+            bfg1.blastProcCoefficient = bigBallProcCoefficient * ItemBase.globalProc;
             bfg2.attackRange = tendrilRange;
             bfg2.listClearInterval = 1f / tendrilFireRate;
             bfg2.damageCoefficient = tendrilDamage / 2f;
-            bfg2.procCoefficient = tendrilProcCoefficient;
+            bfg2.procCoefficient = tendrilProcCoefficient * ItemBase.globalProc;
         }
     }
 }

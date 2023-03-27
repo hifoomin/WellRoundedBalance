@@ -62,9 +62,11 @@ namespace WellRoundedBalance.Items.Whites
             ILCursor c = new(il);
             int stack = -1;
             int body = -1;
+            int report = -1;
             c.TryGotoNext(x => x.MatchLdarg(out stack), x => x.MatchConvR4());
             c.TryGotoNext(x => x.MatchLdarg(out body), x => x.MatchCallOrCallvirt<CharacterBody>("get_" + nameof(CharacterBody.radius)));
-            if (stack == -1 || body == -1) return;
+            c.TryGotoNext(x => x.MatchLdarg(out report), x => x.MatchLdfld<DamageReport>(nameof(DamageReport.attackerBody)));
+            if (stack == -1 || body == -1 || report == -1) return;
             c.Index = 0;
             if (c.TryGotoNext(x => x.MatchLdarg(stack)) && c.TryGotoNext(x => x.MatchStloc(out _)))
             {
@@ -84,14 +86,15 @@ namespace WellRoundedBalance.Items.Whites
             if (c.TryGotoNext(x => x.MatchLdarg(stack)) && c.TryGotoNext(x => x.MatchLdfld<DamageReport>(nameof(DamageReport.attackerBody)), x => x.MatchCallOrCallvirt<CharacterBody>("get_" + nameof(CharacterBody.damage))) && c.TryGotoNext(x => x.MatchStloc(out _)))
             {
                 c.Emit(OpCodes.Pop);
+                c.Emit(OpCodes.Ldarg, report);
                 c.Emit(OpCodes.Ldarg, stack);
-                c.EmitDelegate<Func<int, float>>(stack => StackAmount(baseBurnDamage, burnDamagePerStack, stack, burnDamageIsHyperbolic));
+                c.EmitDelegate<Func<DamageReport, int, float>>((report, stack) => StackAmount(baseBurnDamage, burnDamagePerStack, stack, burnDamageIsHyperbolic) * report.attackerBody.damage);
             }
             else Logger.LogError("Failed to apply Gasoline Burn Damage hook");
             if (c.TryGotoNext(x => x.MatchStfld<BlastAttack>(nameof(BlastAttack.procCoefficient))))
             {
                 c.Emit(OpCodes.Pop);
-                c.Emit(OpCodes.Ldc_R4, explosionProcCoefficient);
+                c.Emit(OpCodes.Ldc_R4, explosionProcCoefficient * globalProc);
             }
             else Logger.LogError("Failed to apply Gasoline Explosion Damage hook");
         }

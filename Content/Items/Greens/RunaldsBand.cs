@@ -130,7 +130,7 @@ namespace WellRoundedBalance.Items.Greens
                                 inflictor = null,
                                 position = damageInfo.position,
                                 procChainMask = procChainMask,
-                                procCoefficient = 1f
+                                procCoefficient = 1f * globalProc
                             };
 
                             victimBody.healthComponent.TakeDamage(baseDamageProc);

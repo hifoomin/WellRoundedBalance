@@ -20,6 +20,8 @@ namespace WellRoundedBalance.Items.Greens
         [ConfigField("Damage Per Stack", "Decimal.", 2f)]
         public static float damagePerStack;
 
+        [ConfigField("Proc Chance", 0f)]
+        public static float procChance;
         public override void Init()
         {
             razorwireCooldown = ScriptableObject.CreateInstance<BuffDef>();
@@ -73,7 +75,7 @@ namespace WellRoundedBalance.Items.Greens
                                         lightningType = LightningOrb.LightningType.RazorWire,
                                         origin = damageInfo.position,
                                         procChainMask = default,
-                                        procCoefficient = 0f,
+                                        procCoefficient = procChance * globalProc,
                                         range = 100000f,
                                         teamIndex = victimBody.teamComponent.teamIndex,
                                         target = attackerHurtBox,

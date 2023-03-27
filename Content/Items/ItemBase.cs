@@ -14,6 +14,9 @@ namespace WellRoundedBalance.Items
         public override ConfigFile Config => Main.WRBItemConfig;
         public static event Action onTokenRegister;
 
+        [ConfigField("Global Proc Chance", 1f)]
+        public static float globalProc;
+
         public static int GetItemLoc(ILCursor c, string item) // modify this on compat update
         {
             int ret = -1;

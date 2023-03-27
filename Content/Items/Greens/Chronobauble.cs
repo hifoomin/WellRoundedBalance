@@ -1,6 +1,7 @@
 ﻿using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using System;
+using WellRoundedBalance.Buffs;
 
 namespace WellRoundedBalance.Items.Greens
 {
@@ -13,20 +14,37 @@ namespace WellRoundedBalance.Items.Greens
 
         public override string PickupText => "Slow enemies on hit.";
 
-        public override string DescText => "<style=cIsUtility>Slow</style> enemies on hit for <style=cIsUtility>-" + (Mathf.Round(slowPercent * 100f)) + "%</style> <style=cIsUtility>movement speed</style> " +
-                                           (baseAttackSpeedReduction > 0 || attackSpeedReductionPerStack > 0 ? "and <style=cIsDamage>-" + d(baseAttackSpeedReduction) + "</style> <style=cStack>(-" + d(attackSpeedReductionPerStack) + " per stack)</style> <style=cIsDamage>attack speed</style> for <style=cIsUtility>" + debuffDuration + "s</style></style>." : ".");
+        public override string DescText => "<style=cIsUtility>Slow</style> enemies on hit" + 
+            StackDesc(movementDebuff, movementDebuffStack, init => $" for <style=cIsUtility>{d(init)}</style>{{Stack}} <style=cIsUtility>movement speed</style> ", d) +
+            StackDesc(attackSpeedDebuff, attackSpeedDebuffStack, init => $"{((movementDebuff != 0 || movementDebuffStack != 0) ? " and" : "")} <style=cIsDamage>{d(init)}</style>{{Stack}} <style=cIsDamage>attack speed</style>", d) + 
+            StackDesc(duration, durationStack, init => $" for <style=cIsUtility>{s(init, "second")}</style>{{Stack}}.", stack => s(stack, "second"));
 
-        [ConfigField("Slow Percent", "Decimal.", 1f / 3f)]
-        public static float slowPercent;
+        [ConfigField("Duration", "Decimal.", 5f)]
+        public static float duration;
 
-        [ConfigField("Debuff Duration", 5f)]
-        public static float debuffDuration;
+        [ConfigField("Duration per Stack", "Decimal.", 0f)]
+        public static float durationStack;
 
-        [ConfigField("Base Attack Speed Reduction", "Decimal.", 0.15f)]
-        public static float baseAttackSpeedReduction;
+        [ConfigField("Duration is Hyperbolic", "Decimal, Max value. Set to 0 to make it linear.", 0f)]
+        public static float durationIsHyperbolic;
 
-        [ConfigField("Attack Speed Reduction Per Stack", "Decimal.", 0.05f)]
-        public static float attackSpeedReductionPerStack;
+        [ConfigField("Movement Debuff", "Decimal.", 0.33f)]
+        public static float movementDebuff;
+
+        [ConfigField("Movement Debuff per Stack", "Decimal.", 0f)]
+        public static float movementDebuffStack;
+
+        [ConfigField("Movement Debuff is Hyperbolic", "Decimal, Max value. Set to 0 to make it linear.", 0f)]
+        public static float movementDebuffIsHyperbolic;
+
+        [ConfigField("Attack Speed Debuff", "Decimal.", 0.15f)]
+        public static float attackSpeedDebuff;
+
+        [ConfigField("Attack Speed Debuff per Stack", "Decimal.", 0.05f)]
+        public static float attackSpeedDebuffStack;
+
+        [ConfigField("Attack Speed Debuff is Hyperbolic", "Decimal, Max value. Set to 0 to make it linear.", 1f)]
+        public static float attackSpeedDebuffIsHyperbolic;
 
         public override void Init()
         {
@@ -34,9 +52,9 @@ namespace WellRoundedBalance.Items.Greens
 
             slow50 = ScriptableObject.CreateInstance<BuffDef>();
             slow50.isHidden = false;
-            slow50.canStack = false;
+            slow50.canStack = true;
             slow50.buffColor = new Color32(173, 156, 105, 255);
-            slow50.iconSprite = Sprite.Create(slowIcon, new Rect(0f, 0f, (float)slowIcon.width, (float)slowIcon.height), new Vector2(0f, 0f));
+            slow50.iconSprite = Sprite.Create(slowIcon, new Rect(0f, 0f, slowIcon.width, slowIcon.height), new Vector2(0f, 0f));
 
             slow50.name = "Chronobauble Slow";
 
@@ -55,12 +73,12 @@ namespace WellRoundedBalance.Items.Greens
         {
             if (sender.inventory)
             {
-                var stack = sender.inventory.GetItemCount(RoR2Content.Items.SlowOnHit);
-                if (sender.HasBuff(slow50) && stack > 0)
+                if (sender.HasBuff(slow50))
                 {
-                    args.moveSpeedReductionMultAdd += Mathf.Abs(1 - (1 / (1 - slowPercent)));
+                    var stack = sender.GetBuffCount(slow50);
+                    args.moveSpeedReductionMultAdd += Mathf.Abs(1 - (1 / (1 + StackAmount(movementDebuff, movementDebuffStack, stack, movementDebuffIsHyperbolic))));
                     // 1 - (1/(1+0.6)) for actual slow in vanilla
-                    args.attackSpeedReductionMultAdd += baseAttackSpeedReduction + attackSpeedReductionPerStack * (stack - 1);
+                    args.attackSpeedReductionMultAdd += StackAmount(attackSpeedDebuff, attackSpeedDebuffStack, stack, attackSpeedDebuffIsHyperbolic);
                 }
             }
         }
@@ -68,23 +86,26 @@ namespace WellRoundedBalance.Items.Greens
         private void GlobalEventManager_OnHitEnemy(ILContext il)
         {
             ILCursor c = new(il);
-            if (c.TryGotoNext(MoveType.Before,
-                x => x.MatchLdsfld("RoR2.RoR2Content/Buffs", "Slow60"),
-                x => x.MatchLdcR4(2f)))
+            int stack = GetItemLoc(c, nameof(RoR2Content.Items.SlowOnHit));
+            int body = -1;
+            if (c.TryGotoNext(MoveType.After, x => x.MatchLdloc(out body), x => x.MatchLdsfld(typeof(RoR2Content.Buffs), nameof(RoR2Content.Buffs.Slow60))))
             {
-                c.Remove();
-                c.Emit<Chronobauble>(OpCodes.Ldsfld, nameof(slow50));
-                c.Next.Operand = 5f;
-                c.Index += 1;
-                c.EmitDelegate<Func<float, float>>((useless) =>
-                {
-                    return debuffDuration;
+                c.Emit(OpCodes.Pop);
+                c.EmitDelegate(() => Buffs.Useless.uselessBuff);
+            }
+            else Logger.LogError("Failed to apply Chronobauble Buff Type hook");
+            if (c.TryGotoNext(MoveType.After, x => x.MatchCallOrCallvirt<CharacterBody>(nameof(CharacterBody.AddTimedBuff))))
+            {
+                c.Emit(OpCodes.Ldloc, body);
+                c.Emit(OpCodes.Ldloc, stack);
+                c.EmitDelegate<Action<CharacterBody, int>>((body, stack) => {
+                    float time = StackAmount(duration, durationStack, stack, durationIsHyperbolic);
+                    body.ClearTimedBuffs(slow50);
+                    for (var i = 0; i < stack; i++) body.AddTimedBuff(slow50, time, stack);
                 });
             }
-            else
-            {
-                Logger.LogError("Failed to apply Chronobauble Duration hook");
-            }
+            else Logger.LogError("Failed to apply Chronobauble Duration hook");
+            
         }
     }
 }

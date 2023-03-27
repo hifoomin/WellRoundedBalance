@@ -45,7 +45,7 @@ namespace WellRoundedBalance.Items.Whites
         public static BlastAttack.FalloffModel changeFalloff;
 
         [ConfigField("Proc Coefficient", "Decimal.", 0f)]
-        public static float proc;
+        public static float procChance;
 
         public override void Init()
         {
@@ -96,7 +96,7 @@ namespace WellRoundedBalance.Items.Whites
             var StickyBombImpact = Utils.Paths.GameObject.StickyBomb1.Load<GameObject>().GetComponent<ProjectileImpactExplosion>();
             StickyBombImpact.lifetime = lifetime;
             StickyBombImpact.falloffModel = changeFalloff;
-            StickyBombImpact.blastProcCoefficient = proc;
+            StickyBombImpact.blastProcCoefficient = procChance * globalProc;
         }
     }
 }

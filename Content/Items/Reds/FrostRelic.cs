@@ -12,6 +12,9 @@
         [ConfigField("Base Damage Per Tick", "Formula for DPS: Base Damage Per Tick * 4", 2.25f)]
         public static float baseDamagePerTick;
 
+        [ConfigField("Proc Chance", 0f)]
+        public static float procChance;
+
         public override void Init()
         {
             base.Init();
@@ -27,7 +30,7 @@
             var f = LegacyResourcesAPI.Load<GameObject>("prefabs/networkedobjects/IcicleAura");
             var fi = f.GetComponent<IcicleAuraController>();
             fi.icicleDamageCoefficientPerTick = baseDamagePerTick;
-            fi.icicleProcCoefficientPerTick = 0f;
+            fi.icicleProcCoefficientPerTick = procChance * globalProc;
         }
     }
 }

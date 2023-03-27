@@ -43,22 +43,23 @@ namespace WellRoundedBalance.Items.Whites
             IL.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
         }
 
-        public static void HealthComponent_TakeDamage(ILContext il)
+        public void HealthComponent_TakeDamage(ILContext il)
         {
             ILCursor c = new(il);
             int dmg = -1;
             c.TryGotoNext(x => x.MatchLdfld<DamageInfo>(nameof(DamageInfo.damage)), x => x.MatchStloc(out dmg));
             int stack = GetItemLoc(c, nameof(RoR2Content.Items.Crowbar));
+            int m = -1; c.TryGotoPrev(x => x.MatchLdloc(out m));
             if (dmg == -1 || stack == -1) return;
-            c.Index = 0;
-            if (c.TryGotoNext(x => x.MatchCallOrCallvirt<HealthComponent>("get_" + nameof(HealthComponent.fullCombinedHealth))) && c.TryGotoNext(x => x.MatchMul()))
+            if (c.TryGotoPrev(x => x.MatchCallOrCallvirt<HealthComponent>("get_" + nameof(HealthComponent.fullCombinedHealth))) && c.TryGotoNext(MoveType.After, x => x.MatchMul()))
             {
                 c.Emit(OpCodes.Pop);
-                c.Emit(OpCodes.Ldloc, stack);
-                c.EmitDelegate<Func<int, float>>(stack => StackAmount(healthThreshold, healthThresholdStack, stack, healthThresholdIsHyperbolic));
+                c.Emit(OpCodes.Ldarg_0);
+                c.Emit(OpCodes.Ldloc, m);
+                c.EmitDelegate<Func<HealthComponent, CharacterMaster, float>>((self, master) => self.fullCombinedHealth * StackAmount(healthThreshold, healthThresholdStack, master.inventory.GetItemCount(InternalPickup), healthThresholdIsHyperbolic));
             }
             else Logger.LogError("Failed to apply Crowbar Threshold hook");
-            if (c.TryGotoNext(x => x.MatchLdloc(stack)) && c.TryGotoNext(x => x.MatchStloc(dmg)))
+            if (c.TryGotoNext(x => x.MatchStloc(dmg)))
             {
                 c.Emit(OpCodes.Pop);
                 c.Emit(OpCodes.Ldloc, dmg);

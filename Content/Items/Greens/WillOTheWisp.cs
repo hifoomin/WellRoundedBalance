@@ -25,6 +25,9 @@ namespace WellRoundedBalance.Items.Greens
         [ConfigField("Range Per Stack", 0f)]
         public static float rangePerStack;
 
+        [ConfigField("Proc Chance", 0f)]
+        public static float procChance;
+
         public override void Init()
         {
             base.Init();
@@ -77,7 +80,7 @@ namespace WellRoundedBalance.Items.Greens
         public static void ChangeProc()
         {
             var w = LegacyResourcesAPI.Load<GameObject>("prefabs/networkedobjects/WilloWispDelay").GetComponent<DelayBlast>();
-            w.procCoefficient = 0f;
+            w.procCoefficient = procChance * globalProc;
         }
     }
 }

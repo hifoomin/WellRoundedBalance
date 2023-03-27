@@ -1,4 +1,5 @@
 ﻿using MonoMod.Cil;
+using WellRoundedBalance.Items;
 
 namespace WellRoundedBalance.Equipment.Orange
 {
@@ -52,7 +53,7 @@ namespace WellRoundedBalance.Equipment.Orange
             if (c.TryGotoNext(MoveType.Before,
                 x => x.MatchLdcR4(1f)))
             {
-                c.Next.Operand = procCoefficient;
+                c.Next.Operand = procCoefficient * ItemBase.globalProc;
             }
             else
             {

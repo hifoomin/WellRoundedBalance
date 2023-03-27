@@ -13,16 +13,11 @@ namespace WellRoundedBalance.Items.Whites
         public override string PickupText => $"Heal all nearby allies after standing still for 0.5 second.";
 
         public override string DescText => $"After standing still for <style=cIsHealing>0.5</style> second, create a zone that <style=cIsHealing>heals</style> for " +
-            StackDesc(flatHealing, flatHealingStack, init => $"<style=cIsHealing>{init / healingInterval}</style>{{Stack}} ", stack => GetPerSecondStack(flatHealing, stack, flatHealingIsHyperbolic).ToString()) +
-            StackDesc(percentHealing, percentHealingStack, init => (flatHealing > 0 || flatHealingStack > 0 ? "plus an additional " : "") + $"<style=cIsHealing>{d(init / healingInterval)}</style>{{Stack}} of <style=cIsHealing>maximum health</style> ", stack => d(GetPerSecondStack(percentHealing, stack, percentHealingIsHyperbolic))) +
+            StackDesc(flatHealing, flatHealingStack, init => $"<style=cIsHealing>{init / healingInterval}</style>{{Stack}} ", stack => GetPerSecondStack(flatHealing, stack).ToString()) +
+            StackDesc(percentHealing, percentHealingStack, init => (flatHealing > 0 || flatHealingStack > 0 ? "plus an additional " : "") + $"<style=cIsHealing>{d(init / healingInterval)}</style>{{Stack}} of <style=cIsHealing>maximum health</style> ", stack => d(GetPerSecondStack(percentHealing, stack))) +
             "every second to all allies " + StackDesc(baseRadius, radiusStack, init => $"within <style=cIsHealing>{m(init)}</style>{{Stack}}", m) + ".";
 
-        public static float GetPerSecondStack(float init, float stack, float hyper)
-        {
-            float a0 = init / healingInterval;
-            float a1 = StackAmount(init, stack, 1, hyper) / StackAmount(healingInterval, healingIntervalStack, 1, healingIntervalIsHyperbolic);
-            return a1 / a0 - 1f;
-        }
+        public static float GetPerSecondStack(float init, float stack) => ((init + stack) / (healingInterval + healingIntervalStack)) - (init / healingInterval);
 
         [ConfigField("Base Radius", 13f)]
         public static float baseRadius;
