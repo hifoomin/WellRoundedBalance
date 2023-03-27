@@ -14,9 +14,9 @@ namespace WellRoundedBalance.Items.Greens
 
         public override string PickupText => "Slow enemies on hit.";
 
-        public override string DescText => "<style=cIsUtility>Slow</style> enemies on hit" + 
-            StackDesc(movementDebuff, movementDebuffStack, init => $" for <style=cIsUtility>{d(init)}</style>{{Stack}} <style=cIsUtility>movement speed</style> ", d) +
-            StackDesc(attackSpeedDebuff, attackSpeedDebuffStack, init => $"{((movementDebuff != 0 || movementDebuffStack != 0) ? " and" : "")} <style=cIsDamage>{d(init)}</style>{{Stack}} <style=cIsDamage>attack speed</style>", d) + 
+        public override string DescText => "<style=cIsUtility>Slow</style> enemies on hit" +
+            StackDesc(movementDebuff, movementDebuffStack, init => $" for <style=cIsUtility>{d(init)}</style>{{Stack}} <style=cIsUtility>movement speed</style>", d) +
+            StackDesc(attackSpeedDebuff, attackSpeedDebuffStack, init => $"{((movementDebuff != 0 || movementDebuffStack != 0) ? " and" : "")} <style=cIsDamage>{d(init)}</style>{{Stack}} <style=cIsDamage>attack speed</style>", d) +
             StackDesc(duration, durationStack, init => $" for <style=cIsUtility>{s(init, "second")}</style>{{Stack}}.", stack => s(stack, "second"));
 
         [ConfigField("Duration", "Decimal.", 5f)]
@@ -98,14 +98,14 @@ namespace WellRoundedBalance.Items.Greens
             {
                 c.Emit(OpCodes.Ldloc, body);
                 c.Emit(OpCodes.Ldloc, stack);
-                c.EmitDelegate<Action<CharacterBody, int>>((body, stack) => {
+                c.EmitDelegate<Action<CharacterBody, int>>((body, stack) =>
+                {
                     float time = StackAmount(duration, durationStack, stack, durationIsHyperbolic);
                     body.ClearTimedBuffs(slow50);
                     for (var i = 0; i < stack; i++) body.AddTimedBuff(slow50, time, stack);
                 });
             }
             else Logger.LogError("Failed to apply Chronobauble Duration hook");
-            
         }
     }
 }
