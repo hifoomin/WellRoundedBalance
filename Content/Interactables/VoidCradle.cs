@@ -160,6 +160,31 @@ namespace WellRoundedBalance.Interactables
                 {
                     body.AddBuff(RoR2Content.Buffs.PermanentCurse);
                 }
+
+                EffectManager.SpawnEffect(Utils.Paths.GameObject.ExplodeOnDeathVoidExplosionEffect.Load<GameObject>(), new EffectData
+                {
+                    origin = transform.position,
+                    scale = 3f
+                }, true);
+
+                gameObject.SetActive(false);
+
+                var playerCharacterMasterController = body.master.GetComponent<PlayerCharacterMasterController>();
+                if (playerCharacterMasterController)
+                {
+                    var networkUser = playerCharacterMasterController.networkUser;
+                    if (networkUser)
+                    {
+                        var localUser = networkUser.localUser;
+                        if (localUser != null)
+                        {
+                            localUser.userProfile.DiscoverPickup(ItemCatalog.GetItemDef(GetCorruption(def)).GetPickupIndex());
+                            // Logger.LogError("getcorruption if itemindex is " + GetCorruption(def));
+                            // Logger.LogError("getitemdef of getcorruption of itemindex is " + ItemCatalog.GetItemDef(GetCorruption(def)));
+                            // Logger.LogError("getpickupindex of getitemdef of getcorruption of itemindex is " + ItemCatalog.GetItemDef(GetCorruption(def)).GetPickupIndex());
+                        }
+                    }
+                }
             }
 
             public void OnPurchase(Interactor interactor)
@@ -190,7 +215,7 @@ namespace WellRoundedBalance.Interactables
 
                     if (options.Count >= 1)
                     {
-                        Debug.Log("starting UI");
+                        // Debug.Log("starting UI");
                         controller.SetOptionsInternal(options.ToArray());
                         controller.SetOptionsServer(options.ToArray());
                         controller.OnInteractionBegin(interactor);

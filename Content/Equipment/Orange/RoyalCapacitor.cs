@@ -53,7 +53,7 @@ namespace WellRoundedBalance.Equipment.Orange
             if (c.TryGotoNext(MoveType.Before,
                 x => x.MatchLdcR4(1f)))
             {
-                c.Next.Operand = procCoefficient * ItemBase.globalProc;
+                c.Next.Operand = procCoefficient;
             }
             else
             {

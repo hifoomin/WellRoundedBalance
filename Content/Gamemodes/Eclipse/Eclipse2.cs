@@ -9,7 +9,7 @@ namespace WellRoundedBalance.Gamemodes.Eclipse
     {
         public override string Name => ":: Gamemode : Eclipse";
 
-        public float basePredictionAngle = 45f;
+        public float basePredictionAngle = 35f;
 
         public override void Init()
         {

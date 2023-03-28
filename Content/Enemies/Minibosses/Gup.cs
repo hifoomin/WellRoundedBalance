@@ -7,6 +7,11 @@
         [ConfigField("Base Max Health", "Disabled if playing Inferno.", 500f)]
         public static float baseMaxHealth;
 
+        public override void Init()
+        {
+            base.Init();
+        }
+
         public override void Hooks()
         {
             var gup = Addressables.LoadAssetAsync<GameObject>("RoR2/DLC1/Gup/GupBody.prefab").WaitForCompletion();

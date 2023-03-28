@@ -5,6 +5,7 @@
         public static BuffDef uselessBuff;
         public static BuffDef voidtouchedSaferSpaces;
         public static BuffDef oddlyShapedOpalUseless;
+        public static BuffDef chronobaubleUseless;
 
         public static void Create()
         {
@@ -23,9 +24,15 @@
             oddlyShapedOpalUseless.isDebuff = false;
             oddlyShapedOpalUseless.canStack = false;
 
+            chronobaubleUseless = ScriptableObject.CreateInstance<BuffDef>();
+            chronobaubleUseless.isHidden = true;
+            chronobaubleUseless.isDebuff = false;
+            chronobaubleUseless.canStack = false;
+
             ContentAddition.AddBuffDef(uselessBuff);
             ContentAddition.AddBuffDef(voidtouchedSaferSpaces);
             ContentAddition.AddBuffDef(oddlyShapedOpalUseless);
+            ContentAddition.AddBuffDef(chronobaubleUseless);
         }
     }
 }

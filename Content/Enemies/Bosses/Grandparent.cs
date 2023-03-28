@@ -2,7 +2,12 @@
 {
     internal class Grandparent : EnemyBase
     {
-        public override string Name => ":: Enemies ::::::::: Grandparent";
+        public override string Name => "::: Bosses :: Grandparent";
+
+        public override void Init()
+        {
+            base.Init();
+        }
 
         public override void Hooks()
         {

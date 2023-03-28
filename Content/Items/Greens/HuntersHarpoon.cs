@@ -9,7 +9,7 @@ namespace WellRoundedBalance.Items.Greens
 
         public override ItemDef InternalPickup => DLC1Content.Items.MoveSpeedOnKill;
         public override string Name => ":: Items :: Greens :: Hunters Harpoon";
-        public override string PickupText => "Killing an enemy gives you a burst of movement speed.";
+        public override string PickupText => "Kills increase movement speed up to 3 times.";
 
         public override string DescText => $"Killing an enemy increases <style=cIsUtility>movement speed</style> by <style=cIsUtility>{d(movementSpeed)}</style>" +
             StackDesc(maxCount, maxCountStack, init => $", up to <style=cIsUtility>{init}</style>{{Stack}} times", noop) +

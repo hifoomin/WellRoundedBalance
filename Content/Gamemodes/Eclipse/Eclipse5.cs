@@ -15,30 +15,17 @@ namespace WellRoundedBalance.Gamemodes.Eclipse
 
         public override void Hooks()
         {
-            Stage.onServerStageBegin += Stage_onServerStageBegin;
-            On.RoR2.Run.FixedUpdate += Run_FixedUpdate;
             IL.RoR2.HealthComponent.Heal += HealthComponent_Heal;
+            On.RoR2.CombatDirector.Awake += CombatDirector_Awake;
         }
 
-        private void Run_FixedUpdate(On.RoR2.Run.orig_FixedUpdate orig, Run self)
+        private void CombatDirector_Awake(On.RoR2.CombatDirector.orig_Awake orig, CombatDirector self)
         {
-            orig(self);
-            timer += Time.fixedDeltaTime;
-            var currentTime = (int)self.time;
-            if (currentTime - previousTime > 300 && timer > 300 && self.selectedDifficulty >= DifficultyIndex.Eclipse5)
+            if (Run.instance.selectedDifficulty >= DifficultyIndex.Eclipse5)
             {
-                for (int i = 0; i < 4 + Run.instance.participatingPlayerCount; i++)
-                {
-                    var meteorStormController = Object.Instantiate(LegacyResourcesAPI.Load<GameObject>("Prefabs/NetworkedObjects/MeteorStorm"), new Vector3(0f, 0f, 0f), Quaternion.identity).GetComponent<MeteorStormController>();
-                    meteorStormController.owner = null;
-                    meteorStormController.ownerDamage = 8f + Mathf.Sqrt(Run.instance.ambientLevel * 100f);
-                    meteorStormController.isCrit = false;
-                    NetworkServer.Spawn(meteorStormController.gameObject);
-                }
-
-                previousTime = 0;
-                timer = 0;
+                self.creditMultiplier += 0.03f * Run.instance.stageClearCount;
             }
+            orig(self);
         }
 
         private void Stage_onServerStageBegin(Stage stage)

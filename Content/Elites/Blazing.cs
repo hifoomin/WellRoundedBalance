@@ -149,16 +149,19 @@ namespace WellRoundedBalance.Elites
                 for (int i = 0; i < projectileCount; i++)
                 {
                     Vector3 forward = Quaternion.AngleAxis(num * i, Vector3.up) * normalized;
-                    FireProjectileInfo info = new()
+                    if (Util.HasEffectiveAuthority(gameObject))
                     {
-                        owner = body.gameObject,
-                        damage = body.damage * Blazing.firePoolDamagePerSecond * 0.2f,
-                        crit = false,
-                        position = position,
-                        rotation = Quaternion.LookRotation(forward),
-                        projectilePrefab = projectile
-                    };
-                    ProjectileManager.instance.FireProjectile(info);
+                        FireProjectileInfo info = new()
+                        {
+                            owner = body.gameObject,
+                            damage = body.damage * Blazing.firePoolDamagePerSecond * 0.2f,
+                            crit = false,
+                            position = position,
+                            rotation = Quaternion.LookRotation(forward),
+                            projectilePrefab = projectile
+                        };
+                        ProjectileManager.instance.FireProjectile(info);
+                    }
                 }
             }
         }

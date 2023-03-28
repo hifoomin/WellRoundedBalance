@@ -10,6 +10,11 @@
         [ConfigField("Director Credit Cost", "", 25)]
         public static int directorCreditCost;
 
+        public override void Init()
+        {
+            base.Init();
+        }
+
         public override void Hooks()
         {
             var larva = Utils.Paths.GameObject.AcidLarvaBody8.Load<GameObject>();

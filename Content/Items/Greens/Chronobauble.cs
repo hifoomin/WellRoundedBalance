@@ -1,7 +1,6 @@
 ﻿using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using System;
-using WellRoundedBalance.Buffs;
 
 namespace WellRoundedBalance.Items.Greens
 {
@@ -15,7 +14,7 @@ namespace WellRoundedBalance.Items.Greens
         public override string PickupText => "Slow enemies on hit.";
 
         public override string DescText => "<style=cIsUtility>Slow</style> enemies on hit" +
-            StackDesc(movementDebuff, movementDebuffStack, init => $" for <style=cIsUtility>{d(init)}</style>{{Stack}} <style=cIsUtility>movement speed</style>", d) +
+            StackDesc(movementDebuff, movementDebuffStack, init => $" for <style=cIsUtility>-{d(init)}</style>{{Stack}} <style=cIsUtility>movement speed</style>", d) +
             StackDesc(attackSpeedDebuff, attackSpeedDebuffStack, init => $"{((movementDebuff != 0 || movementDebuffStack != 0) ? " and" : "")} <style=cIsDamage>{d(init)}</style>{{Stack}} <style=cIsDamage>attack speed</style>", d) +
             StackDesc(duration, durationStack, init => $" for <style=cIsUtility>{s(init, "second")}</style>{{Stack}}.", stack => s(stack, "second"));
 
@@ -91,7 +90,7 @@ namespace WellRoundedBalance.Items.Greens
             if (c.TryGotoNext(MoveType.After, x => x.MatchLdloc(out body), x => x.MatchLdsfld(typeof(RoR2Content.Buffs), nameof(RoR2Content.Buffs.Slow60))))
             {
                 c.Emit(OpCodes.Pop);
-                c.EmitDelegate(() => Buffs.Useless.uselessBuff);
+                c.EmitDelegate(() => Buffs.Useless.chronobaubleUseless);
             }
             else Logger.LogError("Failed to apply Chronobauble Buff Type hook");
             if (c.TryGotoNext(MoveType.After, x => x.MatchCallOrCallvirt<CharacterBody>(nameof(CharacterBody.AddTimedBuff))))

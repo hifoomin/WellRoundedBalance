@@ -51,9 +51,9 @@ namespace WellRoundedBalance.Equipment.Orange
             saw.GetComponent<BoomerangProjectile>().travelSpeed = speed;
             saw.GetComponent<BoomerangProjectile>().distanceMultiplier = distanceMultiplier;
             saw.GetComponent<ProjectileOverlapAttack>().damageCoefficient = frontSawDamage;
-            saw.GetComponent<ProjectileOverlapAttack>().overlapProcCoefficient = frontSawProcCoefficient * ItemBase.globalProc;
+            saw.GetComponent<ProjectileOverlapAttack>().overlapProcCoefficient = frontSawProcCoefficient;
             saw.GetComponent<ProjectileDotZone>().damageCoefficient = returningSawDamage;
-            saw.GetComponent<ProjectileDotZone>().overlapProcCoefficient = returningSawProcCoefficient * ItemBase.globalProc;
+            saw.GetComponent<ProjectileDotZone>().overlapProcCoefficient = returningSawProcCoefficient;
         }
     }
 }

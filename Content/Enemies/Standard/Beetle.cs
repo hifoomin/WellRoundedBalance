@@ -7,6 +7,11 @@
         [ConfigField("Should Lunge?", "Disabled if playing Inferno.", true)]
         public static bool shouldLunge;
 
+        public override void Init()
+        {
+            base.Init();
+        }
+
         public override void Hooks()
         {
             if (shouldLunge)

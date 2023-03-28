@@ -26,8 +26,45 @@ namespace WellRoundedBalance.Items.Greens
 
         public override void Hooks()
         {
-            On.RoR2.GlobalEventManager.OnHitEnemy += AddBurn;
+            GlobalEventManager.onServerDamageDealt += GlobalEventManager_onServerDamageDealt;
             IL.RoR2.StrengthenBurnUtils.CheckDotForUpgrade += StrengthenBurnUtils_CheckDotForUpgrade;
+        }
+
+        private void GlobalEventManager_onServerDamageDealt(DamageReport report)
+        {
+            var attacker = report.attacker;
+            if (!attacker)
+            {
+                return;
+            }
+            var body = report.attackerBody;
+
+            if (!body)
+            {
+                return;
+            }
+            var inventory = body.inventory;
+            if (!inventory)
+            {
+                return;
+            }
+            var stack = inventory.GetItemCount(DLC1Content.Items.StrengthenBurn);
+            if (stack > 0)
+            {
+                if (Util.CheckRoll(igniteChanceOnHit * report.damageInfo.procCoefficient, body.master.luck))
+                {
+                    InflictDotInfo blaze = new()
+                    {
+                        attackerObject = report.damageInfo.attacker,
+                        victimObject = report.victim.gameObject,
+                        dotIndex = DotController.DotIndex.Burn,
+                        damageMultiplier = 1f,
+                        totalDamage = report.damageInfo.damage * 0.5f
+                    };
+                    StrengthenBurnUtils.CheckDotForUpgrade(inventory, ref blaze);
+                    DotController.InflictDot(ref blaze);
+                }
+            }
         }
 
         private void StrengthenBurnUtils_CheckDotForUpgrade(ILContext il)
@@ -44,40 +81,6 @@ namespace WellRoundedBalance.Items.Greens
             {
                 Logger.LogError("Failed to apply Ignition Tank Burn Damage hook");
             }
-        }
-
-        public void AddBurn(On.RoR2.GlobalEventManager.orig_OnHitEnemy orig, GlobalEventManager self, DamageInfo damageInfo, GameObject victim)
-        {
-            var attacker = damageInfo.attacker;
-            if (attacker)
-            {
-                var body = attacker.GetComponent<CharacterBody>();
-                if (body)
-                {
-                    var inventory = body.inventory;
-                    if (inventory)
-                    {
-                        var stack = inventory.GetItemCount(DLC1Content.Items.StrengthenBurn);
-                        if (stack > 0)
-                        {
-                            if (Util.CheckRoll(igniteChanceOnHit * damageInfo.procCoefficient * globalProc, damageInfo.attacker.GetComponent<CharacterBody>().master.luck))
-                            {
-                                InflictDotInfo blaze = new()
-                                {
-                                    attackerObject = damageInfo.attacker,
-                                    victimObject = victim,
-                                    dotIndex = DotController.DotIndex.Burn,
-                                    damageMultiplier = 1f,
-                                    totalDamage = damageInfo.damage * 0.5f
-                                };
-                                StrengthenBurnUtils.CheckDotForUpgrade(inventory, ref blaze);
-                                DotController.InflictDot(ref blaze);
-                            }
-                        }
-                    }
-                }
-            }
-            orig(self, damageInfo, victim);
         }
     }
 }

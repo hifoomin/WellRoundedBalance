@@ -86,33 +86,45 @@ namespace WellRoundedBalance.Items.Reds
         private void GlobalEventManager_onServerDamageDealt(DamageReport damageReport)
         {
             var attacker = damageReport.attacker;
-            var victim = damageReport.victim;
-            if (attacker && victim)
+            if (!attacker)
             {
-                var attackerBody = damageReport.attackerBody;
-                var victimBody = damageReport.victimBody;
-                if (attackerBody && victimBody)
+                return;
+            }
+            var victim = damageReport.victim;
+            if (!victim)
+            {
+                return;
+            }
+            var attackerBody = damageReport.attackerBody;
+            if (!attackerBody)
+            {
+                return;
+            }
+            var victimBody = damageReport.victimBody;
+            if (!victimBody)
+            {
+                return;
+            }
+
+            var based = victimBody.gameObject.GetComponent<SymbioticScorpionController>();
+            if (based)
+            {
+                victimBody.gameObject.GetComponent<SymbioticScorpionController>().attackerBody = attackerBody;
+            }
+            var inventory = attackerBody.inventory;
+            if (!inventory)
+            {
+                return;
+            }
+            var stack = inventory.GetItemCount(DLC1Content.Items.PermanentDebuffOnHit);
+            if (stack > 0 && damageReport.damageInfo.procCoefficient > 0)
+            {
+                victimBody.AddTimedBuff(armorReduction, 5f);
+                victimBody.AddTimedBuff(venom, 5f);
+                attackerBody.AddTimedBuff(armorGain, 5f);
+                if (!based)
                 {
-                    var based = victimBody.gameObject.GetComponent<SymbioticScorpionController>();
-                    if (based)
-                    {
-                        victimBody.gameObject.GetComponent<SymbioticScorpionController>().attackerBody = attackerBody;
-                    }
-                    var inventory = attackerBody.inventory;
-                    if (inventory)
-                    {
-                        var stack = inventory.GetItemCount(DLC1Content.Items.PermanentDebuffOnHit);
-                        if (stack > 0 && damageReport.damageInfo.procCoefficient > 0)
-                        {
-                            victimBody.AddTimedBuff(armorReduction, 5f);
-                            victimBody.AddTimedBuff(venom, 5f);
-                            attackerBody.AddTimedBuff(armorGain, 5f);
-                            if (!based)
-                            {
-                                victimBody.gameObject.AddComponent<SymbioticScorpionController>();
-                            }
-                        }
-                    }
+                    victimBody.gameObject.AddComponent<SymbioticScorpionController>();
                 }
             }
         }

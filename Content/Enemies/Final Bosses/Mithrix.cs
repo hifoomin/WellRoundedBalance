@@ -38,7 +38,7 @@ namespace WellRoundedBalance.Enemies.FinalBosses
 
         public override string Name => ":::: Final Bosses : Mithrix";
 
-        public void Init()
+        public override void Init()
         {
             base.Init();
         }

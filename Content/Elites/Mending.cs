@@ -107,14 +107,17 @@ namespace WellRoundedBalance.Elites
 
                 if (Util.CheckRoll(100f * info.procCoefficient))
                 {
-                    FireProjectileInfo pinfo = new()
+                    if (Util.HasEffectiveAuthority(info.attacker))
                     {
-                        position = info.position,
-                        projectilePrefab = healNovaPrefab,
-                        owner = info.attacker,
-                        damage = info.attacker.GetComponent<CharacterBody>().damage * 0.33f
-                    };
-                    ProjectileManager.instance.FireProjectile(pinfo);
+                        FireProjectileInfo pinfo = new()
+                        {
+                            position = info.position,
+                            projectilePrefab = healNovaPrefab,
+                            owner = info.attacker,
+                            damage = info.attacker.GetComponent<CharacterBody>().damage * 0.33f
+                        };
+                        ProjectileManager.instance.FireProjectile(pinfo);
+                    }
                 }
 
                 if (controller.target)

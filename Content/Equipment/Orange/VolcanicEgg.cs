@@ -59,10 +59,10 @@ namespace WellRoundedBalance.Equipment.Orange
             vegg.initialSpeed = speed / 6f;
             vegg.acceleration = speed * 4f;
             vegg.blastDamageCoefficient = explosionDamage;
-            vegg.blastProcCoefficient = explosionProcCoefficient * ItemBase.globalProc;
+            vegg.blastProcCoefficient = explosionProcCoefficient;
             vegg.blastRadius = explosionRadius;
             vegg.overlapDamageCoefficient = impactDamage;
-            vegg.overlapProcCoefficient = impactProcCoefficient * ItemBase.globalProc;
+            vegg.overlapProcCoefficient = impactProcCoefficient;
             vegg.overlapVehicleDurationBonusPerHit = durationExtensionPerImpact;
         }
     }

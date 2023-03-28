@@ -7,6 +7,11 @@
         [ConfigField("Base Max Health", "Disabled if playing Inferno.", 250f)]
         public static float baseMaxHealth;
 
+        public override void Init()
+        {
+            base.Init();
+        }
+
         public override void Hooks()
         {
             var geep = Addressables.LoadAssetAsync<GameObject>("RoR2/DLC1/Gup/GeepBody.prefab").WaitForCompletion();

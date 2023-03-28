@@ -12,7 +12,7 @@ namespace WellRoundedBalance.Equipment.Orange
         public override string PickupText => "Toggle to fire. Costs gold per bullet.";
 
         public override string DescText => "Wind up a continuous barrage that shoots up to <style=cIsDamage>" + maximumFireRate + " times per second</style>, dealing <style=cIsDamage>" + d(damage) + " damage per shot</style> (extremely low). Costs $1 per bullet." +
-                                           (fixGoldScaling ? " Cost scales over time." : " Cost increases by $1 every 4 levels.");
+                                           (fixGoldScaling ? " <style=cIsUtility>Cost scales over time</style>." : " <style=cIsUtility>Cost increases by $1 every 4 levels</style>.");
 
         [ConfigField("Wind Up Duration", "", 3f)]
         public static float windUpDuration;
@@ -72,7 +72,7 @@ namespace WellRoundedBalance.Equipment.Orange
             EntityStates.GoldGat.GoldGatFire.windUpDuration = windUpDuration;
             EntityStates.GoldGat.GoldGatFire.minFireFrequency = minimumFireRate;
             EntityStates.GoldGat.GoldGatFire.maxFireFrequency = maximumFireRate;
-            EntityStates.GoldGat.GoldGatFire.procCoefficient = procCoefficient * ItemBase.globalProc;
+            EntityStates.GoldGat.GoldGatFire.procCoefficient = procCoefficient;
             EntityStates.GoldGat.GoldGatFire.damageCoefficient = damage;
             orig(self);
         }

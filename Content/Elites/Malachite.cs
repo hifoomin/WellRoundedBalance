@@ -188,16 +188,20 @@ namespace WellRoundedBalance.Elites
                     if (target)
                     {
                         Vector3 aim = (target.transform.position - base.transform.position).normalized;
-                        FireProjectileInfo info = new()
+                        if (Util.HasEffectiveAuthority(gameObject))
                         {
-                            damage = owner.damage,
-                            position = base.transform.position,
-                            rotation = Util.QuaternionSafeLookRotation(aim),
-                            owner = owner.gameObject,
-                            projectilePrefab = Utils.Paths.GameObject.UrchinSeekingProjectile.Load<GameObject>()
-                        };
+                            FireProjectileInfo info = new()
+                            {
+                                damage = owner.damage,
+                                position = base.transform.position,
+                                rotation = Util.QuaternionSafeLookRotation(aim),
+                                owner = owner.gameObject,
+                                projectilePrefab = Utils.Paths.GameObject.UrchinSeekingProjectile.Load<GameObject>()
+                            };
 
-                        ProjectileManager.instance.FireProjectile(info);
+                            ProjectileManager.instance.FireProjectile(info);
+                        }
+
                         AkSoundEngine.PostEvent(Events.Play_elite_antiHeal_turret_shot, base.gameObject);
                     }
                 }
@@ -217,7 +221,7 @@ namespace WellRoundedBalance.Elites
 
             internal void Suicide()
             {
-                Destroy(base.gameObject);
+                if (gameObject) Destroy(base.gameObject);
             }
         }
 

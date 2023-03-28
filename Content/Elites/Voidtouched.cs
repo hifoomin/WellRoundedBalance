@@ -77,18 +77,21 @@ namespace WellRoundedBalance.Elites
                 position.y = 30;
                 if (Physics.Raycast(position, Vector3.down, out RaycastHit hit, 1000, ~0))
                 {
-                    FireProjectileInfo info = new()
+                    if (Util.HasEffectiveAuthority(body.gameObject))
                     {
-                        damage = body.damage * spikeDamage,
-                        damageTypeOverride = DamageType.Nullify,
-                        crit = false,
-                        position = position,
-                        rotation = Quaternion.LookRotation(Vector3.down),
-                        projectilePrefab = spike,
-                        owner = body.gameObject,
-                        speedOverride = 20
-                    };
-                    ProjectileManager.instance.FireProjectile(info);
+                        FireProjectileInfo info = new()
+                        {
+                            damage = body.damage * spikeDamage,
+                            damageTypeOverride = DamageType.Nullify,
+                            crit = false,
+                            position = position,
+                            rotation = Quaternion.LookRotation(Vector3.down),
+                            projectilePrefab = spike,
+                            owner = body.gameObject,
+                            speedOverride = 20
+                        };
+                        ProjectileManager.instance.FireProjectile(info);
+                    }
                 }
             }
             body.AddTimedBuff(hiddenCooldown, spikeCooldown);

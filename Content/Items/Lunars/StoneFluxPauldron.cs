@@ -44,7 +44,7 @@ namespace WellRoundedBalance.Items.Lunars
                             else if (self.body.rigidbody) mass = self.body.rigidbody.mass;
                             else mass = 1f;
 
-                            var force = 30f * damageInfo.procCoefficient * globalProc * stack;
+                            var force = 30f * damageInfo.procCoefficient * stack;
                             damageInfo.force += Vector3.Normalize(attackerBody.corePosition - self.body.corePosition) * force * mass;
                         }
                         if (inventory2)
