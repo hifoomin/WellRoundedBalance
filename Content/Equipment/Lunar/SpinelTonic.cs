@@ -1,4 +1,5 @@
 ﻿using MonoMod.Cil;
+using UnityEngine.Rendering.PostProcessing;
 
 namespace WellRoundedBalance.Equipment.Lunar
 {
@@ -54,6 +55,7 @@ namespace WellRoundedBalance.Equipment.Lunar
             IL.RoR2.CharacterBody.RecalculateStats += Changes;
             IL.RoR2.EquipmentSlot.FireTonic += ChangeAff;
             On.RoR2.EquipmentSlot.Start += ChangeDur;
+            Changess();
         }
 
         private void ChangeDur(On.RoR2.EquipmentSlot.orig_Start orig, EquipmentSlot self)
@@ -205,6 +207,18 @@ namespace WellRoundedBalance.Equipment.Lunar
             {
                 Logger.LogError("Failed to apply Tonic Affliction Curse hook");
             }
+        }
+
+        private void Changess()
+        {
+            var pp = Utils.Paths.GameObject.TonicBuffEffect.Load<GameObject>().transform.GetChild(1).GetChild(0);
+            var postProcessVolume = pp.GetComponent<PostProcessVolume>();
+            var profile = postProcessVolume.profile;
+            var lensDistortion = profile.GetSetting<LensDistortion>();
+            lensDistortion.intensity.value = -20f;
+
+            var colorGrading = profile.GetSetting<ColorGrading>();
+            colorGrading.contrast.value = 60f;
         }
     }
 }

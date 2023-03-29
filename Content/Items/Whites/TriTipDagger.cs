@@ -7,7 +7,7 @@
         public override string Name => ":: Items : Whites :: Tri Tip Dagger";
         public override ItemDef InternalPickup => RoR2Content.Items.BleedOnHit;
 
-        public override string PickupText => $"Gain +{bleedChance}% chance to bleed enemies on hit.";
+        public override string PickupText => $"Gain +{d(bleedChance)} chance to bleed enemies on hit.";
 
         public override string DescText =>
             StackDesc(bleedChance, bleedChanceStack, init => $"<style=cIsDamage>{d(init)}</style>{{Stack}} chance to <style=cIsDamage>bleed</style> an enemy for <style=cIsDamage>240%</style> base damage.", d);

@@ -6,6 +6,7 @@ namespace WellRoundedBalance.Mechanics.Bazaar
     {
         public static GameObject lunarPod;
         public static GameObject heresyStation;
+        public static GameObject table;
         public override string Name => ":: Mechanics :::::::: Bazaar Rework";
 
         public override void Init()

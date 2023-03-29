@@ -19,7 +19,18 @@ namespace WellRoundedBalance.Items.Yellows
             sunPrefabLessPP = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.GrandParentSun.Load<GameObject>(), "THEFUCKINGSUN");
             var postProcessingObject = sunPrefabLessPP.transform.GetChild(0).GetChild(0);
             var postProcessVolume = postProcessingObject.GetComponent<PostProcessVolume>();
-            postProcessVolume.weight = 0.1f;
+            var profile = postProcessVolume.sharedProfile;
+            var bloom = profile.GetSetting<Bloom>();
+            bloom.SetAllOverridesTo(true);
+            bloom.intensity.value = 0.3f;
+
+            var colorGrading = profile.GetSetting<ColorGrading>();
+            colorGrading.SetAllOverridesTo(true);
+            colorGrading.saturation.overrideState = false;
+            colorGrading.postExposure.value = 0.1f;
+            colorGrading.contrast.value = 30f;
+            colorGrading.mixerRedOutBlueIn.overrideState = false;
+            colorGrading.mixerGreenOutRedIn.overrideState = false;
 
             PrefabAPI.RegisterNetworkPrefab(sunPrefabLessPP);
             base.Init();
