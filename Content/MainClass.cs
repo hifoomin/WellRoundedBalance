@@ -24,6 +24,8 @@ using WellRoundedBalance.Artifacts.Vanilla;
 using WellRoundedBalance.Artifacts.New;
 using WellRoundedBalance.Gamemodes;
 using WellRoundedBalance.Items.ConsistentCategories;
+using MonoMod.RuntimeDetour;
+using RoR2.UI;
 
 // using WellRoundedBalance.Enemies.FamilyEvents;
 
@@ -69,7 +71,9 @@ namespace WellRoundedBalance
 
         public static bool InfernoLoaded = false;
         public static bool RiskyArtifactsLoaded = false;
+        public static bool PieceOfShitLoaded = false;
         public static DifficultyDef InfernoDef = null;
+        public static Hook hook;
 
         public void Awake()
         {
@@ -93,6 +97,7 @@ namespace WellRoundedBalance
 
             InfernoLoaded = BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("HIFU.Inferno");
             RiskyArtifactsLoaded = BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("com.Moffein.RiskyArtifacts");
+            PieceOfShitLoaded = BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("com.Wolfo.WolfoQualityOfLife");
 
             FunnyLabel.Hooks();
             // Useless.Create();
@@ -301,6 +306,45 @@ namespace WellRoundedBalance
             WRBLogger.LogDebug("==+----------------==INFO==----------------+==");
             WRBLogger.LogDebug("Initialized " + SharedBase.initList.Count + " classes");
             On.RoR2.UI.MainMenu.BaseMainMenuScreen.OnEnter += BaseMainMenuScreen_OnEnter;
+
+            if (PieceOfShitLoaded)
+            {
+                WRBLogger.LogDebug("The J Detected");
+                hook = new(typeof(WolfoQualityOfLife.WolfoQualityOfLife).GetMethod(nameof(WolfoQualityOfLife.WolfoQualityOfLife.PickupPickerController_OnDisplayBegin), BindingFlags.NonPublic | BindingFlags.Instance), typeof(Main).GetMethod(nameof(QualityOfLifeSoTrue), BindingFlags.Static | BindingFlags.NonPublic));
+            }
+        }
+
+        private static void QualityOfLifeSoTrue(
+            Action<On.RoR2.PickupPickerController.orig_OnDisplayBegin, PickupPickerController, NetworkUIPromptController, LocalUser, CameraRigController> orig,
+            WolfoQualityOfLife.WolfoQualityOfLife self,
+            On.RoR2.PickupPickerController.orig_OnDisplayBegin fucking,
+            PickupPickerController fuck,
+            NetworkUIPromptController piece,
+            LocalUser of,
+            CameraRigController shit)
+        {
+            var panelInstanceController = fuck.panelInstanceController;
+            if (panelInstanceController)
+            {
+                for (int i = 1; i < panelInstanceController.buttonContainer.childCount; i++)
+                {
+                    var tooltipProvider = panelInstanceController.buttonContainer.GetChild(i).GetComponent<TooltipProvider>();
+                    if (tooltipProvider)
+                    {
+                        if (tooltipProvider.titleToken.StartsWith("EQUIPMENT_"))
+                        {
+                            if (tooltipProvider.titleColor.r == 1f && tooltipProvider.titleColor.g > 0.9f)
+                            {
+                                tooltipProvider.titleColor = WolfoQualityOfLife.WolfoQualityOfLife.FakeYellowEquip;
+                            }
+                            else if (tooltipProvider.titleColor.b == 1f)
+                            {
+                                tooltipProvider.titleColor = WolfoQualityOfLife.WolfoQualityOfLife.FakeBlueEquip;
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         private void BaseMainMenuScreen_OnEnter(On.RoR2.UI.MainMenu.BaseMainMenuScreen.orig_OnEnter orig, RoR2.UI.MainMenu.BaseMainMenuScreen self, RoR2.UI.MainMenu.MainMenuController mainMenuController)

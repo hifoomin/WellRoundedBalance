@@ -118,6 +118,9 @@
       <HintPath>./libs/Unity.Postprocessing.Runtime.dll</HintPath>
       <Private>true</Private>
     </Reference>
+    <Reference Include="WolfoQualityOfLife">
+      <HintPath>..\..\..\..\..\..\Downloads\MonoMod stuff\WolfoQualityOfLife-nstrip.dll</HintPath>
+    </Reference>
     <Reference Include="Wwise">
       <HintPath>libs\Wwise.dll</HintPath>
     </Reference>
