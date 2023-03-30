@@ -28,11 +28,6 @@ namespace WellRoundedBalance.Gamemodes.Eclipse
             orig(self);
         }
 
-        private void Stage_onServerStageBegin(Stage stage)
-        {
-            previousTime = (int)stage.entryTime.t;
-        }
-
         private void HealthComponent_Heal(ILContext il)
         {
             ILCursor c = new(il);

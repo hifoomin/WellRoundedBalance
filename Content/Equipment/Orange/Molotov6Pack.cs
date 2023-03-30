@@ -1,6 +1,4 @@
-﻿using WellRoundedBalance.Items;
-
-namespace WellRoundedBalance.Equipment.Orange
+﻿namespace WellRoundedBalance.Equipment.Orange
 {
     public class Molotov6Pack : EquipmentBase
     {
@@ -32,6 +30,9 @@ namespace WellRoundedBalance.Equipment.Orange
         [ConfigField("Pool Lifetime", "", 7f)]
         public static float poolLifetime;
 
+        [ConfigField("Disable random rotation?", "", true)]
+        public static bool disableRandomRotation;
+
         public override void Init()
         {
             base.Init();
@@ -52,6 +53,25 @@ namespace WellRoundedBalance.Equipment.Orange
             molotov.blastProcCoefficient = explosionProcCoefficient;
             molotov.blastDamageCoefficient = explosionDamage;
             molotov.blastRadius = explosionRadius;
+            molotov.minAngleOffset = new Vector3(0f, 0f, 0f);
+            molotov.maxAngleOffset = new Vector3(0f, 0f, 0f);
+            molotov.rangeRollDegrees = 0f;
+            molotov.rangePitchDegrees = 0f;
+
+            if (disableRandomRotation)
+            {
+                var torque = molotov.gameObject.GetComponent<ApplyTorqueOnStart>();
+                torque.randomize = false;
+                torque.localTorque = new Vector3(0f, 200f, 0f);
+
+                var single = molotov.childrenProjectilePrefab;
+                var singleImpact = single.GetComponent<ProjectileImpactExplosion>();
+                singleImpact.rangeRollDegrees = 0f;
+
+                var singleTorque = single.GetComponent<ApplyTorqueOnStart>();
+                singleTorque.randomize = false;
+                singleTorque.localTorque = new Vector3(0f, 200f, 0f);
+            }
 
             var pool = Addressables.LoadAssetAsync<GameObject>("RoR2/DLC1/Molotov/MolotovProjectileDotZone.prefab").WaitForCompletion().GetComponent<ProjectileDotZone>();
             pool.overlapProcCoefficient = poolProcCoefficient;

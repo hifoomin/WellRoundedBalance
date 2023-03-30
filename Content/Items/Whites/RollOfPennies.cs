@@ -1,7 +1,5 @@
 ﻿using Mono.Cecil.Cil;
 using MonoMod.Cil;
-using RoR2;
-using System.Collections.ObjectModel;
 
 namespace WellRoundedBalance.Items.Whites
 {
@@ -47,7 +45,34 @@ namespace WellRoundedBalance.Items.Whites
         {
             IL.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
             On.RoR2.Inventory.GiveItem_ItemIndex_int += Inventory_GiveItem_ItemIndex_int;
-            Stage.onStageStartGlobal += Stage_onStageStartGlobal;
+            On.RoR2.Stage.Start += Stage_Start;
+        }
+
+        private void Stage_Start(On.RoR2.Stage.orig_Start orig, Stage self)
+        {
+            orig(self);
+            var masters = CharacterMaster.readOnlyInstancesList;
+
+            var stack = Util.GetItemCountForTeam(TeamIndex.Player, DLC1Content.Items.GoldOnHurt.itemIndex, false);
+
+            // Logger.LogError("stack count is " + stack);
+
+            if (stack > 0 && NetworkServer.active)
+            {
+                foreach (CharacterMaster master in masters)
+                {
+                    // Logger.LogError("master is " + master);
+                    if (master.playerCharacterMasterController)
+                    {
+                        // Logger.LogError("Iterating through " + master + " to give gold");
+                        uint ret = (uint)StackAmount(baseGoldPerStage, goldPerStagePerStack, stack, goldPerStageIsHyperbolic);
+                        if (scaleOverTime) ret = (uint)Run.instance.GetDifficultyScaledCost((int)ret);
+                        ret = (uint)Mathf.CeilToInt(ret);
+                        // Logger.LogError("ret for pennies is " + ret);
+                        master.GiveMoney(ret);
+                    }
+                }
+            }
         }
 
         private void Inventory_GiveItem_ItemIndex_int(On.RoR2.Inventory.orig_GiveItem_ItemIndex_int orig, Inventory self, ItemIndex itemIndex, int count)
@@ -62,22 +87,6 @@ namespace WellRoundedBalance.Items.Whites
                     TeamManager.instance.GiveTeamMoney(TeamIndex.Player, ret);
                 }
             }
-        }
-
-        private void Stage_onStageStartGlobal(Stage _)
-        {
-            int stack = 0;
-            var readOnlyInstancesList = CharacterMaster.readOnlyInstancesList;
-            for (int i = 0; i < readOnlyInstancesList.Count; i++)
-            {
-                CharacterMaster characterMaster = readOnlyInstancesList[i];
-                if (characterMaster.inventory && characterMaster.teamIndex == TeamIndex.Player) stack += characterMaster.inventory.GetItemCount(DLC1Content.Items.GoldOnHurt);
-            }
-            uint ret = (uint)StackAmount(baseGoldPerStage, goldPerStagePerStack, stack, goldPerStageIsHyperbolic);
-            if (scaleOverTime) ret = (uint)Run.instance.GetDifficultyScaledCost((int)ret);
-            ReadOnlyCollection<TeamComponent> players = TeamComponent.GetTeamMembers(TeamIndex.Player);
-            ret = (uint)Mathf.CeilToInt((float)ret / players.Count);
-            foreach (var pl in players) pl?.GetComponent<CharacterBody>()?.master?.GiveMoney(ret);
         }
 
         private void HealthComponent_TakeDamage(ILContext il)

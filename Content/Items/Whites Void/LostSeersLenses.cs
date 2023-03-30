@@ -9,74 +9,115 @@ namespace WellRoundedBalance.Items.VoidWhites
         public override string Name => ":: Items :::::: Voids :: Lost Seers Lenses";
         public override ItemDef InternalPickup => DLC1Content.Items.CritGlassesVoid;
 
-        public override string PickupText => StackDesc(chance, chanceStack, init => $"Gain a {d(init)} chance to instantly kill a non-boss enemy. ", d) + "<style=cIsVoid>Corrupts all Lens-Maker's Glasses</style>.";
-        public override string DescText => StackDesc(chance, chanceStack, init => $"Your attacks have a <style=cIsDamage>{d(init)}</style>{{Stack}} chance to <style=cIsDamage>instantly kill</style> a <style=cIsDamage>non-Boss enemy</style>. ", d) + "<style=cIsVoid>Corrupts all Lens-Maker's Glasses</style>.";
+        public override string PickupText => StackDesc(chance, chanceStack, init => $"Gain a {d(init)} chance to deal ", d) + "<style=cIsDamage>" + d(damage) + "</style> base damage. <style=cIsVoid>Corrupts all Lens-Maker's Glasses</style>.";
+        public override string DescText => StackDesc(chance, chanceStack, init => $"Your attacks have a <style=cIsDamage>{d(init)}</style>{{Stack}} chance to deal ", d) + "<style=cIsDamage>" + d(damage) + "</style> base damage. <style=cIsVoid>Corrupts all Lens-Maker's Glasses</style>.";
 
-        [ConfigField("Chance", "Decimal.", 0.01f)]
+        [ConfigField("Base Chance", "Decimal.", 0.005f)]
         public static float chance;
 
-        [ConfigField("Chance per Stack", "Decimal.", 0.01f)]
+        [ConfigField("Chance per Stackk", "Decimal.", 0.005f)]
         public static float chanceStack;
 
-        [ConfigField("Chance is Hyperbolic", "Decimal, Max value. Set to 0 to make it linear.", 1f)]
+        [ConfigField("Chance is Hyperbolicc", "Decimal, Max value. Set to 0 to make it linear.", 0f)]
         public static float chanceIsHyperbolic;
 
-        [ConfigField("Champion Chance Multiplier", "Decimal.", 0.5f)]
+        [ConfigField("Champion Chance Multiplierr", "Decimal.", 1f)]
         public static float championMultiplier;
+
+        [ConfigField("Damage", "Decimal.", 30f)]
+        public static float damage;
+
+        [ConfigField("Proc Coefficient", "Decimal.", 0f)]
+        public static float procCoefficient;
 
         public override void Hooks()
         {
             IL.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
-            On.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage2;
+            GlobalEventManager.onServerDamageDealt += GlobalEventManager_onServerDamageDealt;
+            Changes();
         }
 
-        private void HealthComponent_TakeDamage2(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo)
+        private void GlobalEventManager_onServerDamageDealt(DamageReport report)
         {
-            if (damageInfo.attacker && damageInfo.attacker != self.gameObject)
+            var victimBody = report.victimBody;
+            if (!victimBody)
             {
-                var characterBody = damageInfo.attacker.GetComponent<CharacterBody>();
-                if (characterBody && characterBody.inventory)
-                {
-                    var delete = false;
-                    var ch = StackAmount(chance, chanceStack, characterBody.inventory.GetItemCount(DLC1Content.Items.CritGlassesVoid), chanceIsHyperbolic);
-                    if (!self.body.isBoss && characterBody.inventory && Util.CheckRoll(ch, characterBody.master))
-                    {
-                        delete = true;
-                        var vroggleVFX = HealthComponent.AssetReferences.critGlassesVoidExecuteEffectPrefab; // where did the r come from
-                        EffectManager.SpawnEffect(vroggleVFX, new EffectData                                // vroggle = void croggle = void crit goggle
-                        {
-                            origin = self.body.corePosition,
-                            scale = (self.body ? self.body.radius : 1f)
-                        }, true);
-                        damageInfo.damageType |= DamageType.VoidDeath;
-                    }
-                    if (delete)
-                    {
-                        if (self.health > 0f) self.Networkhealth = 0f;
-                        if (self.shield > 0f) self.Networkshield = 0f;
-                        if (self.barrier > 0f) self.Networkbarrier = 0f;
-                    }
-                }
+                return;
             }
-            orig(self, damageInfo);
+
+            var victimHc = victimBody.healthComponent;
+            if (!victimHc)
+            {
+                return;
+            }
+
+            var attacker = report.attacker;
+            if (!attacker)
+            {
+                return;
+            }
+
+            var attackerBody = report.attackerBody;
+            if (!attackerBody)
+            {
+                return;
+            }
+
+            var inventory = attackerBody.inventory;
+            if (!inventory)
+            {
+                return;
+            }
+
+            var ch = StackAmount(chance, chanceStack, inventory.GetItemCount(DLC1Content.Items.CritGlassesVoid), chanceIsHyperbolic);
+
+            ProcType mask = (ProcType)58129798;
+            if (Util.CheckRoll(ch * 100f, attackerBody.master) && !report.damageInfo.procChainMask.HasProc(mask))
+            {
+                var vroggleVFX = HealthComponent.AssetReferences.critGlassesVoidExecuteEffectPrefab; // where did the r come from
+                EffectManager.SpawnEffect(vroggleVFX, new EffectData                                // vroggle = void croggle = void crit goggle
+                {
+                    origin = victimBody.corePosition,
+                    scale = victimBody.radius * 1.2f
+                }, true);
+                var pipeBomb = new DamageInfo()
+                {
+                    attacker = attacker,
+                    crit = false,
+                    damage = attackerBody.damage * damage,
+                    damageType = DamageType.Generic,
+                    inflictor = attacker,
+                    procCoefficient = procCoefficient,
+                    damageColorIndex = DamageColorIndex.Void,
+                    force = Vector3.zero,
+                    position = victimBody.transform.position,
+                };
+                pipeBomb.procChainMask.AddProc(mask);
+                victimHc.TakeDamage(pipeBomb);
+            }
         }
 
         private void HealthComponent_TakeDamage(ILContext il)
         {
             ILCursor c = new(il);
-            int inv = -1;
-            int info = -1;
-            if (c.TryGotoNext(x => x.MatchLdloc(out inv), x => x.MatchCallOrCallvirt<CharacterBody>("get_" + nameof(CharacterBody.inventory)), x => x.MatchLdsfld(typeof(DLC1Content.Items), nameof(DLC1Content.Items.CritGlassesVoid)))
-                && c.TryGotoNext(x => x.MatchLdarg(out info), x => x.MatchLdfld<DamageInfo>(nameof(DamageInfo.procCoefficient)))
-                && c.TryGotoNext(x => x.MatchCallOrCallvirt(typeof(Util), nameof(Util.CheckRoll))) && c.TryGotoPrev(x => x.MatchLdloc(inv)))
+
+            if (c.TryGotoNext(MoveType.Before,
+                x => x.MatchLdsfld(typeof(DLC1Content.Items), "CritGlassesVoid")))
             {
-                c.Emit(OpCodes.Pop);
-                c.Emit(OpCodes.Ldarg_0);
-                c.Emit(OpCodes.Ldarg, info);
-                c.Emit(OpCodes.Ldloc, inv);
-                c.EmitDelegate<Func<HealthComponent, DamageInfo, CharacterBody, float>>((self, info, body) => StackAmount(chance, chanceStack, body.inventory.GetItemCount(InternalPickup), chanceIsHyperbolic) * 100 * (self.body.isChampion ? championMultiplier : 1) * info.procCoefficient);
+                c.Remove();
+                c.Emit<Useless>(OpCodes.Ldsfld, nameof(Useless.uselessItem));
             }
-            else Logger.LogError("Failed to apply Lost Seer's Lenses Chance hook");
+            else
+            {
+                Logger.LogError("Failed to apply Lost Seers Lenses Deletion hook");
+            }
+        }
+
+        private void Changes()
+        {
+            var execute = Utils.Paths.GameObject.CritGlassesVoidExecuteEffect.Load<GameObject>();
+            var getReal = execute.transform.GetChild(9);
+            getReal.gameObject.SetActive(false);
         }
     }
 }
