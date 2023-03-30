@@ -30,6 +30,13 @@
 
             var lunarPodDropTable = ScriptableObject.CreateInstance<LunarPodDropTable>();
 
+            var lunarOptionPickup = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.OptionPickup.Load<GameObject>(), "LunarOptionPickup");
+            var pickupPickerController = lunarOptionPickup.GetComponent<PickupPickerController>();
+            pickupPickerController.contextString = "OPTION_PICKUP_INTERACTION_PROMPT_LUNAR";
+            LanguageAPI.Add("OPTION_PICKUP_INTERACTION_PROMPT_LUNAR", "Open Lunar Potential");
+
+            PrefabAPI.RegisterNetworkPrefab(lunarOptionPickup);
+
             optionChestBehavior.dropTable = lunarPodDropTable;
             // optionChestBehavior.dropTransform =
             optionChestBehavior.dropUpVelocityStrength = 20f;

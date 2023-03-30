@@ -1,4 +1,7 @@
 ﻿using EntityStates.Scrapper;
+using RoR2.Hologram;
+using UnityEngine;
+using WellRoundedBalance.Utils;
 
 namespace WellRoundedBalance.Interactables
 {
@@ -30,6 +33,10 @@ namespace WellRoundedBalance.Interactables
             var scrapper = Addressables.LoadAssetAsync<InteractableSpawnCard>("RoR2/Base/Scrapper/iscScrapper.asset").WaitForCompletion();
             scrapper.maxSpawnsPerStage = maxSpawnsPerStage;
             scrapper.directorCreditCost = 0;
+
+            var scrapperGO = Utils.Paths.GameObject.Scrapper.Load<GameObject>();
+            var hologram = scrapperGO.AddComponent<ScrapperHologram>();
+
             uses = new();
             Stage.onServerStageComplete += Stage_onServerStageComplete;
             On.EntityStates.Scrapper.ScrapperBaseState.OnEnter += ScrapperBaseState_OnEnter;
@@ -70,6 +77,8 @@ namespace WellRoundedBalance.Interactables
             if (scrapper != null && uses.ContainsKey(scrapper))
             {
                 uses[scrapper]--;
+                var hologram = self.outer.gameObject.GetComponent<PlainHologram.PlainHologramContent>();
+                hologram.text = uses[scrapper].ToString() + " Uses left";
             }
             orig(self);
         }
@@ -109,6 +118,43 @@ namespace WellRoundedBalance.Interactables
             if (uses[scrapper] <= 0)
             {
                 self.outer.GetComponent<PickupPickerController>().SetAvailable(false);
+
+                EffectManager.SpawnEffect(Utils.Paths.GameObject.ExplosionVFX.Load<GameObject>(), new EffectData
+                {
+                    origin = self.transform.position,
+                    scale = 3f
+                }, true);
+
+                self.outer.gameObject.SetActive(false);
+            }
+        }
+    }
+
+    public class ScrapperHologram : MonoBehaviour, IHologramContentProvider
+    {
+        public GameObject GetHologramContentPrefab()
+        {
+            return PlainHologram.hologramContentPrefab;
+        }
+
+        public bool ShouldDisplayHologram(GameObject viewer)
+        {
+            var distance = Vector3.Distance(viewer.transform.position, gameObject.transform.position);
+            if (distance <= 15f)
+            {
+                Main.WRBLogger.LogError("Distance is 15m or less");
+                return true;
+            }
+            return false;
+        }
+
+        public void UpdateHologramContent(GameObject self)
+        {
+            var hologram = self.GetComponent<PlainHologram.PlainHologramContent>();
+            if (hologram)
+            {
+                hologram.text = Scrapper.maxUses + " Uses left";
+                hologram.color = Color.white;
             }
         }
     }
