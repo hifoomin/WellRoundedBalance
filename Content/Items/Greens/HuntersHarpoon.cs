@@ -42,6 +42,7 @@ namespace WellRoundedBalance.Items.Greens
         [ConfigField("Max Count is Hyperbolic", "Decimal, Max value. Set to 0 to make it linear.", 0f)]
         public static float maxCountIsHyperbolic;
 
+
         public override void Init()
         {
             var arrow = Utils.Paths.Texture2D.texBuffKillMoveSpeed.Load<Texture2D>();

@@ -11,6 +11,7 @@ namespace WellRoundedBalance.Interactables
         public CostTypeIndex costTypeIndex = (CostTypeIndex)19;
         public CostTypeDef def;
         public GameObject optionPanel;
+        public static InteractableSpawnCard vradle;
 
         public override void Init()
         {
@@ -39,6 +40,9 @@ namespace WellRoundedBalance.Interactables
             controller.panelPrefab = optionPanel;
             LanguageAPI.Add("WRB_VOIDCHEST_CONTEXT", "Open?");
             VoidCradle.AddComponent<CradleManager>();
+            VoidCradle.RemoveComponent<ScriptedCombatEncounter>();
+
+            vradle = Utils.Paths.InteractableSpawnCard.iscVoidChest.Load<InteractableSpawnCard>();
 
             def = new();
             def.buildCostString = delegate (CostTypeDef def, CostTypeDef.BuildCostStringContext c)
@@ -102,6 +106,30 @@ namespace WellRoundedBalance.Interactables
                 c.bodyToken = def.descriptionToken;
                 tp.SetContent(c);
             };
+
+            On.RoR2.SceneDirector.SelectCard += (orig, self, deck, max) => {
+                DirectorCard card = null;
+                for (int i = 0; i < 10; i++) {
+                    DirectorCard next = orig(self, deck, max);
+                    if (next.spawnCard == vradle && ShouldBlockCradles()) {
+                        Main.WRBLogger.LogInfo("No players have corruptible items, blocking vradle spawn");
+                        continue;
+                    }
+                    card = next;
+                }
+
+                return card == null ? orig(self, deck, max) : card; // failsafe in the event cradles are the literal only thing it can afford (eg. void locus)
+            };
+        }
+
+        public static bool ShouldBlockCradles() {
+            foreach (PlayerCharacterMasterController pmc in PlayerCharacterMasterController.instances) {
+                if (pmc.master && HasAtLeastOneItem(pmc.master.inventory)) {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         public static bool HasAtLeastOneItem(Inventory inventory)
@@ -119,6 +147,9 @@ namespace WellRoundedBalance.Interactables
 
         public static bool IsCorruptible(ItemIndex index)
         {
+            if (ItemCatalog.GetItemDef(index).tier == ItemTier.Boss) { // boss items cant be selected by vradles so dont return true 
+                return false;
+            }
             ItemIndex item = RoR2.Items.ContagiousItemManager.GetTransformedItemIndex(index);
             return item != ItemIndex.None;
         }
@@ -135,6 +166,8 @@ namespace WellRoundedBalance.Interactables
             public bool wasDisabled = false;
             public PurchaseInteraction interaction => GetComponent<PurchaseInteraction>();
             public PickupPickerController controller => GetComponent<PickupPickerController>();
+            public List<PickupPickerController.Option> options = new();
+            public bool hasSet = false;
 
             private void Start()
             {
@@ -161,29 +194,9 @@ namespace WellRoundedBalance.Interactables
                     body.AddBuff(RoR2Content.Buffs.PermanentCurse);
                 }
 
-                EffectManager.SpawnEffect(Utils.Paths.GameObject.ExplodeOnDeathVoidExplosionEffect.Load<GameObject>(), new EffectData
-                {
-                    origin = transform.position,
-                    scale = 3f
-                }, true);
-
-                gameObject.SetActive(false);
-
-                var playerCharacterMasterController = body.master.GetComponent<PlayerCharacterMasterController>();
-                if (playerCharacterMasterController)
-                {
-                    var networkUser = playerCharacterMasterController.networkUser;
-                    if (networkUser)
-                    {
-                        var localUser = networkUser.localUser;
-                        if (localUser != null)
-                        {
-                            localUser.userProfile.DiscoverPickup(ItemCatalog.GetItemDef(GetCorruption(def)).GetPickupIndex());
-                            // Logger.LogError("getcorruption if itemindex is " + GetCorruption(def));
-                            // Logger.LogError("getitemdef of getcorruption of itemindex is " + ItemCatalog.GetItemDef(GetCorruption(def)));
-                            // Logger.LogError("getpickupindex of getitemdef of getcorruption of itemindex is " + ItemCatalog.GetItemDef(GetCorruption(def)).GetPickupIndex());
-                        }
-                    }
+                EntityStateMachine machine = GetComponent<EntityStateMachine>();
+                if (machine) {
+                    machine.SetNextState(new EntityStates.Barrel.Opening());
                 }
             }
 
@@ -192,11 +205,12 @@ namespace WellRoundedBalance.Interactables
                 if (interactor.GetComponent<CharacterBody>())
                 {
                     CharacterBody body = interactor.GetComponent<CharacterBody>();
-
-                    List<PickupPickerController.Option> options = new();
                     int c = 0;
                     foreach (ItemIndex index in body.inventory.itemAcquisitionOrder.OrderBy(x => UnityEngine.Random.value))
                     {
+                        if (hasSet) {
+                            continue;
+                        }
                         if (IsCorruptible(index))
                         {
                             ItemDef def = ItemCatalog.GetItemDef(index);
@@ -215,7 +229,8 @@ namespace WellRoundedBalance.Interactables
 
                     if (options.Count >= 1)
                     {
-                        // Debug.Log("starting UI");
+                        hasSet = true;
+                        Debug.Log("starting UI");
                         controller.SetOptionsInternal(options.ToArray());
                         controller.SetOptionsServer(options.ToArray());
                         controller.OnInteractionBegin(interactor);

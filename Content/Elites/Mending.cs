@@ -166,6 +166,7 @@ namespace WellRoundedBalance.Elites
                     if (target && NetworkServer.active)
                     {
                         target.Heal(body.damage * healFraction, new(), true);
+
                     }
 
                     if (target)
@@ -286,7 +287,7 @@ namespace WellRoundedBalance.Elites
                     {
                         if (!healed.Contains(com) && com.body && zone.IsInBounds(com.body.corePosition) && !com.body.HasBuff(DLC1Content.Buffs.EliteEarth))
                         {
-                            com.body.healthComponent.HealFraction(heal, new());
+                            com.body.healthComponent.Heal(heal, new());
                         }
                     }
                 }
