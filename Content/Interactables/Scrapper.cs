@@ -1,7 +1,5 @@
 ﻿using EntityStates.Scrapper;
 using RoR2.Hologram;
-using UnityEngine;
-using WellRoundedBalance.Utils;
 
 namespace WellRoundedBalance.Interactables
 {
@@ -35,7 +33,15 @@ namespace WellRoundedBalance.Interactables
             scrapper.directorCreditCost = 0;
 
             var scrapperGO = Utils.Paths.GameObject.Scrapper.Load<GameObject>();
-            var hologram = scrapperGO.AddComponent<ScrapperHologram>();
+            var counter = scrapperGO.AddComponent<ScrapperUseCounter>();
+            counter.useCount = maxUses;
+            var hologram = scrapperGO.AddComponent<HologramProjector>();
+            hologram.displayDistance = 15f;
+            hologram.hologramPivot = scrapperGO.transform.GetChild(0).GetChild(2).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0); // head.end heheheha
+            hologram.hologramPivot.transform.localScale *= 2f;
+            hologram.hologramPivot.transform.localPosition += new Vector3(0f, 1f, 0f);
+            hologram.disableHologramRotation = false;
+            var hologram2 = scrapperGO.AddComponent<ScrapperHologram>();
 
             uses = new();
             Stage.onServerStageComplete += Stage_onServerStageComplete;
@@ -77,8 +83,11 @@ namespace WellRoundedBalance.Interactables
             if (scrapper != null && uses.ContainsKey(scrapper))
             {
                 uses[scrapper]--;
-                var hologram = self.outer.gameObject.GetComponent<PlainHologram.PlainHologramContent>();
-                hologram.text = uses[scrapper].ToString() + " Uses left";
+                var counter = self.outer.gameObject.GetComponent<ScrapperUseCounter>();
+                if (counter)
+                {
+                    counter.useCount--;
+                }
             }
             orig(self);
         }
@@ -86,25 +95,6 @@ namespace WellRoundedBalance.Interactables
         private void Stage_onServerStageComplete(Stage stage)
         {
             uses.Clear();
-        }
-
-        public static int GetUses(GameObject gameObject)
-        {
-            if (uses.ContainsKey(gameObject) && uses[gameObject] > 0)
-            {
-                return uses[gameObject];
-            }
-            return -1;
-        }
-
-        public static void InitUses(GameObject self, int use)
-        {
-            if (!NetworkServer.active) return;
-            if (!uses.ContainsKey(self))
-            {
-                uses.Add(self, use);
-            }
-            else uses[self] = use;
         }
 
         private void ScrapperBaseState_OnEnter(On.EntityStates.Scrapper.ScrapperBaseState.orig_OnEnter orig, ScrapperBaseState self)
@@ -118,20 +108,47 @@ namespace WellRoundedBalance.Interactables
             if (uses[scrapper] <= 0)
             {
                 self.outer.GetComponent<PickupPickerController>().SetAvailable(false);
+            }
+        }
+    }
 
-                EffectManager.SpawnEffect(Utils.Paths.GameObject.ExplosionVFX.Load<GameObject>(), new EffectData
+    public class ScrapperUseCounter : MonoBehaviour
+    {
+        public int useCount;
+        public float timer;
+        public float explosionInterval = 0.4f;
+        public float deleteInterval = 0.5f;
+
+        private void FixedUpdate()
+        {
+            if (useCount <= 0)
+            {
+                timer += Time.fixedDeltaTime;
+                if (timer >= explosionInterval)
                 {
-                    origin = self.transform.position,
-                    scale = 3f
-                }, true);
-
-                self.outer.gameObject.SetActive(false);
+                    EffectManager.SpawnEffect(Utils.Paths.GameObject.ExplosionVFX.Load<GameObject>(), new EffectData
+                    {
+                        origin = transform.position,
+                        scale = 3f
+                    }, true);
+                }
+                if (timer >= deleteInterval)
+                {
+                    gameObject.SetActive(false);
+                }
             }
         }
     }
 
     public class ScrapperHologram : MonoBehaviour, IHologramContentProvider
     {
+        public ScrapperUseCounter counter;
+
+        private void Start()
+        {
+            counter = gameObject.GetComponent<ScrapperUseCounter>();
+        }
+
         public GameObject GetHologramContentPrefab()
         {
             return PlainHologram.hologramContentPrefab;
@@ -142,7 +159,6 @@ namespace WellRoundedBalance.Interactables
             var distance = Vector3.Distance(viewer.transform.position, gameObject.transform.position);
             if (distance <= 15f)
             {
-                Main.WRBLogger.LogError("Distance is 15m or less");
                 return true;
             }
             return false;
@@ -153,7 +169,7 @@ namespace WellRoundedBalance.Interactables
             var hologram = self.GetComponent<PlainHologram.PlainHologramContent>();
             if (hologram)
             {
-                hologram.text = Scrapper.maxUses + " Uses left";
+                hologram.text = counter.useCount + (counter.useCount == 1 ? " use left" : " uses left");
                 hologram.color = Color.white;
             }
         }

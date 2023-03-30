@@ -89,6 +89,8 @@ namespace WellRoundedBalance.Items.Reds
                 return;
             }
 
+            ProcType happiestMask = (ProcType)12096721;
+
             var stack = inventory.GetItemCount(RoR2Content.Items.GhostOnKill);
             if (stack > 0)
             {
@@ -107,6 +109,7 @@ namespace WellRoundedBalance.Items.Reds
                             {
                                 attackerBody.AddTimedBuff(happiestMaskCooldown.buffIndex, i);
                             }
+                            damageReport.damageInfo.procChainMask.AddProc(happiestMask);
                         }
                     }
                 }

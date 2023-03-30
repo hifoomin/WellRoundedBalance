@@ -1,3 +1,5 @@
+using R2API.Utils;
+
 namespace WellRoundedBalance.Mechanics.Bosses
 {
     public class OnKill : MechanicBase<OnKill>
@@ -113,6 +115,11 @@ namespace WellRoundedBalance.Mechanics.Bosses
             private void TriggerKill(DamageReport report)
             {
                 if (!NetworkServer.active)
+                {
+                    return;
+                }
+
+                if (report.damageInfo.procChainMask.HasProc((ProcType)12096721))
                 {
                     return;
                 }

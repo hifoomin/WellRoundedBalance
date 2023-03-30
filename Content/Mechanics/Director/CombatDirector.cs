@@ -10,7 +10,7 @@
         [ConfigField("Credit Multiplier", "", 1.25f)]
         public static float creditMultiplier;
 
-        [ConfigField("Elite Bias Multiplier", "", 0.9f)]
+        [ConfigField("Elite Bias Multiplierr", "", 0.2f)]
         public static float eliteBiasMultiplier;
 
         [ConfigField("Credit Multiplier for each Mountain Shrine", "", 1.05f)]

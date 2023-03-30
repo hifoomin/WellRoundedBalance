@@ -10,7 +10,7 @@ namespace WellRoundedBalance.Equipment.Lunar
 
         public override string PickupText => "Gain a massive boost to ALL stats. <color=#FF7F7F>Chance to gain an affliction that reduces ALL stats.</color>";
 
-        public override string DescText => "Drink the Tonic, gaining a boost for " + buffDuration + " seconds. Increases <style=cIsDamage>damage</style> by <style=cIsDamage>+" + d(damageIncrease) + "</style>. Increase <style=cIsDamage>attack speed</style> by <style=cIsDamage>+" + d(attackSpeedMultiplier - 1) + "</style>. Increases <style=cIsDamage>armor</style> by <style=cIsDamage>+" + armorGain + "</style>. Increases <style=cIsHealing>maximum health</style> by <style=cIsHealing>+" + d(percentMaximumHealthIncrease) + "</style>. Increases <style=cIsHealing>passive health regeneration</style> by <style=cIsHealing>+" + d(regenMultiplier) + "</style>. Increases <style=cIsUtility>movement speed</style> by <style=cIsUtility>+" + d(movementSpeedIncrease) + "</style>.\n\nWhen the Tonic wears off, you have a <style=cIsHealth>" + afflictionChance + "</style> chance to gain a <style=cIsHealth>Tonic Affliction, reducing all of your stats</style> by <style=cIsHealth>-" + d(afflictionAllStatsDecrease) + "</style> <style=cStack>(-" + d(afflictionAllStatsDecrease) + " per stack)</style>.";
+        public override string DescText => "Drink the Tonic, gaining a boost for " + buffDuration + " seconds. Increases <style=cIsDamage>damage</style> by <style=cIsDamage>+" + d(damageIncrease) + "</style>. Increase <style=cIsDamage>attack speed</style> by <style=cIsDamage>+" + d(attackSpeedMultiplier - 1) + "</style>. Increases <style=cIsDamage>armor</style> by <style=cIsDamage>+" + armorGain + "</style>. Increases <style=cIsHealing>maximum health</style> by <style=cIsHealing>+" + d(percentMaximumHealthIncrease) + "</style>. Increases <style=cIsHealing>passive health regeneration</style> by <style=cIsHealing>+" + d(regenMultiplier) + "</style>. Increases <style=cIsUtility>movement speed</style> by <style=cIsUtility>+" + d(movementSpeedIncrease) + "</style>.\n\nWhen the Tonic wears off, you have a <style=cIsHealth>" + afflictionChance + "%</style> chance to gain a <style=cIsHealth>Tonic Affliction, reducing all of your stats</style> by <style=cIsHealth>-" + d(afflictionAllStatsDecrease) + "</style> <style=cStack>(-" + d(afflictionAllStatsDecrease) + " per stack)</style>.";
 
         [ConfigField("Cooldown", "", 65f)]
         public static float cooldown;
@@ -36,7 +36,7 @@ namespace WellRoundedBalance.Equipment.Lunar
         [ConfigField("Movement Speed Increase", "Decimal.", 0.3f)]
         public static float movementSpeedIncrease;
 
-        [ConfigField("Affliction Chance", "", 20f)]
+        [ConfigField("Affliction Chancee", "", 25f)]
         public static float afflictionChance;
 
         [ConfigField("Affliction Curse Gain", "Decimal.", 0.1f)]

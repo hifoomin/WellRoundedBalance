@@ -1,4 +1,6 @@
-﻿namespace WellRoundedBalance.Interactables
+﻿using static UnityEngine.SpookyHash;
+
+namespace WellRoundedBalance.Interactables
 {
     public class LunarPod : InteractableBase
     {
@@ -42,7 +44,7 @@
             optionChestBehavior.dropUpVelocityStrength = 20f;
             optionChestBehavior.dropForwardVelocityStrength = 3f;
             optionChestBehavior.openState = new(typeof(EntityStates.Barrel.OpeningLunar));
-            optionChestBehavior.pickupPrefab = Utils.Paths.GameObject.OptionPickup.Load<GameObject>();
+            optionChestBehavior.pickupPrefab = lunarOptionPickup;
             optionChestBehavior.numOptions = choiceCount;
             optionChestBehavior.displayTier = ItemTier.Lunar;
 

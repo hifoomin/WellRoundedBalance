@@ -12,7 +12,7 @@ namespace WellRoundedBalance.Utils
             {
                 if (!_hologramContentPrefab)
                 {
-                    _hologramContentPrefab = PrefabAPI.InstantiateClone(Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Common/VFX/CostHologramContent.prefab").WaitForCompletion(), "MysticsRisky2UtilsPlainHologramContent", false);
+                    _hologramContentPrefab = PrefabAPI.InstantiateClone(Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Common/VFX/CostHologramContent.prefab").WaitForCompletion(), "WRB Hologram", false);
                     var costHologramContent = hologramContentPrefab.GetComponent<CostHologramContent>();
                     var plainHologramContent = hologramContentPrefab.AddComponent<PlainHologramContent>();
                     plainHologramContent.targetTextMesh = costHologramContent.targetTextMesh;
