@@ -307,46 +307,12 @@ namespace WellRoundedBalance
             WRBLogger.LogDebug("Initialized " + SharedBase.initList.Count + " classes");
             On.RoR2.UI.MainMenu.BaseMainMenuScreen.OnEnter += BaseMainMenuScreen_OnEnter;
 
+
             if (PieceOfShitLoaded)
             {
-                WRBLogger.LogDebug("The J Detected");
-                hook = new(typeof(WolfoQualityOfLife.WolfoQualityOfLife).GetMethod(nameof(WolfoQualityOfLife.WolfoQualityOfLife.PickupPickerController_OnDisplayBegin), BindingFlags.NonPublic | BindingFlags.Instance), typeof(Main).GetMethod(nameof(QualityOfLifeSoTrue), BindingFlags.Static | BindingFlags.NonPublic));
+                WolfoCompat.h();
             }
         }
-
-        private static void QualityOfLifeSoTrue(
-            Action<On.RoR2.PickupPickerController.orig_OnDisplayBegin, PickupPickerController, NetworkUIPromptController, LocalUser, CameraRigController> orig,
-            WolfoQualityOfLife.WolfoQualityOfLife self,
-            On.RoR2.PickupPickerController.orig_OnDisplayBegin fucking,
-            PickupPickerController fuck,
-            NetworkUIPromptController piece,
-            LocalUser of,
-            CameraRigController shit)
-        {
-            var panelInstanceController = fuck.panelInstanceController;
-            if (panelInstanceController)
-            {
-                for (int i = 1; i < panelInstanceController.buttonContainer.childCount; i++)
-                {
-                    var tooltipProvider = panelInstanceController.buttonContainer.GetChild(i).GetComponent<TooltipProvider>();
-                    if (tooltipProvider)
-                    {
-                        if (tooltipProvider.titleToken.StartsWith("EQUIPMENT_"))
-                        {
-                            if (tooltipProvider.titleColor.r == 1f && tooltipProvider.titleColor.g > 0.9f)
-                            {
-                                tooltipProvider.titleColor = WolfoQualityOfLife.WolfoQualityOfLife.FakeYellowEquip;
-                            }
-                            else if (tooltipProvider.titleColor.b == 1f)
-                            {
-                                tooltipProvider.titleColor = WolfoQualityOfLife.WolfoQualityOfLife.FakeBlueEquip;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
         private void BaseMainMenuScreen_OnEnter(On.RoR2.UI.MainMenu.BaseMainMenuScreen.orig_OnEnter orig, RoR2.UI.MainMenu.BaseMainMenuScreen self, RoR2.UI.MainMenu.MainMenuController mainMenuController)
         {
             orig(self, mainMenuController);
@@ -533,6 +499,44 @@ namespace WellRoundedBalance
                 return Inferno.Main.ProjectileSpeed.Value;
             }
             return 1f;
+        }
+    }
+
+    public class WolfoCompat {
+        [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)]
+        public static void h() {
+            Hook hook = new(
+                    typeof(WolfoQualityOfLife.WolfoQualityOfLife).GetMethod(nameof(WolfoQualityOfLife.WolfoQualityOfLife.PickupPickerController_OnDisplayBegin), (BindingFlags)(-1)),
+                    typeof(Main).GetMethod(nameof(WolfoCompat.thewolfogame), (BindingFlags)(-1))
+                );
+        }
+        public delegate void orig_h(WolfoQualityOfLife.WolfoQualityOfLife self, On.RoR2.PickupPickerController.orig_OnDisplayBegin o, PickupPickerController p, NetworkUIPromptController n, LocalUser l, CameraRigController c);
+        [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)]
+        public static void thewolfogame(orig_h orig, WolfoQualityOfLife.WolfoQualityOfLife self, On.RoR2.PickupPickerController.orig_OnDisplayBegin o, PickupPickerController p, NetworkUIPromptController n, LocalUser l, CameraRigController c) {
+            o.Invoke(p, n, l, c);
+            return; // bottom code isnt working and i dont know why
+            if (!p) {
+                return;
+            }
+            PickupPickerPanel panelInstanceController = p.panelInstanceController;
+            if (!panelInstanceController || !panelInstanceController.buttonContainer) {
+                return;
+            }
+            for (int i = 1; i < panelInstanceController.buttonContainer.childCount; i++)
+            {
+                TooltipProvider component = ((Component)((Transform)panelInstanceController.buttonContainer).GetChild(i)).GetComponent<TooltipProvider>();
+                if (component && component.titleToken.StartsWith("EQUIPMENT_"))
+                {
+                    if (component.titleColor.r == 1f && component.titleColor.g > 0.9f)
+                    {
+                        component.titleColor = WolfoQualityOfLife.WolfoQualityOfLife.FakeYellowEquip;
+                    }
+                    else if (component.titleColor.b == 1f)
+                    {
+                        component.titleColor = WolfoQualityOfLife.WolfoQualityOfLife.FakeBlueEquip;
+                    }
+                }
+            }
         }
     }
 }
