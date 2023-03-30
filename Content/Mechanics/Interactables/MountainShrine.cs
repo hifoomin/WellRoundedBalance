@@ -13,14 +13,12 @@
 
         public override void Init()
         {
-            var warbanner = Utils.Paths.Texture2D.texBuffWarbannerIcon.Load<Texture2D>();
-
             mountainShrineBuff = ScriptableObject.CreateInstance<BuffDef>();
             mountainShrineBuff.isHidden = false;
             mountainShrineBuff.canStack = true;
             mountainShrineBuff.isDebuff = false;
             mountainShrineBuff.buffColor = new Color32(72, 180, 255, 255);
-            mountainShrineBuff.iconSprite = Sprite.Create(warbanner, new Rect(0f, 0f, warbanner.width, warbanner.height), new Vector2(0f, 0f));
+            mountainShrineBuff.iconSprite = Main.wellroundedbalance.LoadAsset<Sprite>("texBuffMountainShrine.png");
 
             ContentAddition.AddBuffDef(mountainShrineBuff);
             base.Init();

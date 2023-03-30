@@ -211,9 +211,10 @@ namespace WellRoundedBalance.Equipment.Lunar
 
         private void Changess()
         {
-            var pp = Utils.Paths.GameObject.TonicBuffEffect.Load<GameObject>().transform.GetChild(1).GetChild(0);
+            var tonicVFX = Utils.Paths.GameObject.TonicBuffEffect.Load<GameObject>();
+            var pp = tonicVFX.transform.GetChild(1).GetChild(0);
             var postProcessVolume = pp.GetComponent<PostProcessVolume>();
-            var profile = postProcessVolume.profile;
+            var profile = postProcessVolume.sharedProfile;
             var lensDistortion = profile.GetSetting<LensDistortion>();
             lensDistortion.intensity.value = -20f;
 

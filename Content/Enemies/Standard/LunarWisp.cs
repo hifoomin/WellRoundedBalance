@@ -15,7 +15,7 @@ namespace WellRoundedBalance.Enemies.Standard
         [ConfigField("Should have damage falloff?", "", true)]
         public static bool shouldHaveDamageFalloff;
 
-        [ConfigField("Director Credit Costt", "", 1500)]
+        [ConfigField("Director Credit Cost", "", 1000)]
         public static int directorCreditCost;
 
         public override void Hooks()

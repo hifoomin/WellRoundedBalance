@@ -1,4 +1,5 @@
 ﻿using RoR2.Skills;
+using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
 using static RoR2.MasterSpawnSlotController;
 
@@ -65,9 +66,10 @@ namespace WellRoundedBalance.Items.Reds
 
         private void Changes()
         {
-            var pp = Utils.Paths.GameObject.NoCooldownEffect.Load<GameObject>().transform.GetChild(1).GetChild(0);
+            var brainstalksVFX = Utils.Paths.GameObject.NoCooldownEffect.Load<GameObject>();
+            var pp = brainstalksVFX.transform.GetChild(1).GetChild(0);
             var postProcessVolume = pp.GetComponent<PostProcessVolume>();
-            var profile = postProcessVolume.profile;
+            var profile = postProcessVolume.sharedProfile;
             var colorGrading = profile.GetSetting<ColorGrading>();
             colorGrading.saturation.value = 15f;
         }
