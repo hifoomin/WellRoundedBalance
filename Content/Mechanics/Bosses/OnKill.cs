@@ -1,3 +1,5 @@
+using R2API.Utils;
+
 namespace WellRoundedBalance.Mechanics.Bosses
 {
     public class OnKill : MechanicBase<OnKill>
@@ -117,14 +119,21 @@ namespace WellRoundedBalance.Mechanics.Bosses
                     return;
                 }
 
-                DamageInfo info = new();
-                info.attacker = report.attacker;
-                info.crit = report.damageInfo.crit;
-                info.damage = report.damageDealt;
-                info.damageType = report.damageInfo.damageType;
-                info.position = cb.corePosition;
-                info.damageColorIndex = report.damageInfo.damageColorIndex;
-                info.procCoefficient = report.damageInfo.procCoefficient;
+                if (report.damageInfo.procChainMask.HasProc((ProcType)12096721))
+                {
+                    return;
+                }
+
+                DamageInfo info = new()
+                {
+                    attacker = report.attacker,
+                    crit = report.damageInfo.crit,
+                    damage = report.damageDealt,
+                    damageType = report.damageInfo.damageType,
+                    position = cb.corePosition,
+                    damageColorIndex = report.damageInfo.damageColorIndex,
+                    procCoefficient = report.damageInfo.procCoefficient
+                };
 
                 GlobalEventManager.instance?.OnCharacterDeath(new(info, hc, info.damage, hc.combinedHealth));
             }

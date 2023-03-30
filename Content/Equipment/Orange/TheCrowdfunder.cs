@@ -1,7 +1,8 @@
 ﻿using MonoMod.Cil;
 using System;
+using WellRoundedBalance.Items;
 
-namespace WellRoundedBalance.Equipment
+namespace WellRoundedBalance.Equipment.Orange
 {
     public class TheCrowdfunder : EquipmentBase
     {
@@ -11,7 +12,7 @@ namespace WellRoundedBalance.Equipment
         public override string PickupText => "Toggle to fire. Costs gold per bullet.";
 
         public override string DescText => "Wind up a continuous barrage that shoots up to <style=cIsDamage>" + maximumFireRate + " times per second</style>, dealing <style=cIsDamage>" + d(damage) + " damage per shot</style> (extremely low). Costs $1 per bullet." +
-                                           (fixGoldScaling ? " Cost scales over time." : " Cost increases by $1 every 4 levels.");
+                                           (fixGoldScaling ? " <style=cIsUtility>Cost scales over time</style>." : " <style=cIsUtility>Cost increases by $1 every 4 levels</style>.");
 
         [ConfigField("Wind Up Duration", "", 3f)]
         public static float windUpDuration;

@@ -37,11 +37,14 @@ namespace WellRoundedBalance.Items.Greens
         [ConfigField("Enable Homing?", "", false)]
         public static bool enableHoming;
 
-        [ConfigField("Size Multiplier", "Not actually to scale with Vanilla, I'm not sure why.", 2f)]
+        [ConfigField("Size Multiplier", "", 2f)]
         public static float sizeMultiplier;
 
         [ConfigField("Distance Multiplier", "", 0.5f)]
         public static float distanceMultiplier;
+
+        [ConfigField("Proc Coefficient", "", 1f)]
+        public static float procCoefficient;
 
         public float timer;
 
@@ -181,6 +184,9 @@ namespace WellRoundedBalance.Items.Greens
             var sphereCollider = shurikenProjectile.GetComponent<SphereCollider>();
             sphereCollider.radius = sizeMultiplier / 5f;
 
+            var projectileController = shurikenProjectile.GetComponent<ProjectileController>();
+            projectileController.procCoefficient = procCoefficient;
+
             if (!enableHoming)
             {
                 var projectileSteerTowardTarget = shurikenProjectile.GetComponent<ProjectileSteerTowardTarget>();
@@ -201,7 +207,7 @@ namespace WellRoundedBalance.Items.Greens
                 boomerangProjectile.canHitWorld = true;
                 boomerangProjectile.distanceMultiplier = distanceMultiplier;
                 boomerangProjectile.impactSpark = Utils.Paths.GameObject.ShurikenImpact.Load<GameObject>();
-
+                // shurikenProjectile.AddComponent<DestroyStuckObject>();
                 UnityGames.AddListener(OnFlyBack);
             }
 
@@ -221,7 +227,7 @@ namespace WellRoundedBalance.Items.Greens
                 projectileDotZone.attackerFiltering = AttackerFiltering.NeverHitSelf;
                 projectileDotZone.impactEffect = Utils.Paths.GameObject.OmniImpactVFXSlash.Load<GameObject>();
                 projectileDotZone.forceVector = new Vector3(0f, 0f, 0f);
-                projectileDotZone.overlapProcCoefficient = 1f;
+                projectileDotZone.overlapProcCoefficient = procCoefficient;
                 projectileDotZone.fireFrequency = 30f;
                 projectileDotZone.resetFrequency = 10f;
                 projectileDotZone.lifetime = -1f;

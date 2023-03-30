@@ -1,4 +1,6 @@
-﻿namespace WellRoundedBalance.Equipment
+using WellRoundedBalance.Items;
+
+namespace WellRoundedBalance.Equipment.Orange
 {
     public class PreonAccumulator : EquipmentBase
     {

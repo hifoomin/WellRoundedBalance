@@ -18,6 +18,9 @@ namespace WellRoundedBalance.Items.Yellows
         [ConfigField("TOTAL Damage Per Stack", "Decimal.", 1.1f)]
         public static float totalDamagePerStack;
 
+        [ConfigField("Proc Chance", 0f)]
+        public static float procChance;
+
         public override void Init()
         {
             base.Init();
@@ -59,7 +62,7 @@ namespace WellRoundedBalance.Items.Yellows
         private void ChangeProcCoefficient()
         {
             var m = LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/firemeatball").GetComponent<ProjectileController>();
-            m.procCoefficient = 0f;
+            m.procCoefficient = procChance * globalProc;
         }
 
         private void Changes()

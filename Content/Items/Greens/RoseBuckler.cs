@@ -11,44 +11,32 @@ namespace WellRoundedBalance.Items.Greens
 
         public override string PickupText => "Reduce incoming damage while sprinting.";
 
-        public override string DescText => "<style=cIsHealing>Increase armor</style> by <style=cIsHealing>" + baseArmorGain + "</style> <style=cStack>(+" + armorGainPerStack + " per stack)</style> while <style=cIsUtility>sprinting</style>.";
+        public override string DescText => StackDesc(armor, armorStack, init => $"<style=cIsHealing>Increase armor</style> by <style=cIsHealing>{init}</style>{{Stack}} while <style=cIsUtility>sprinting</style>.", noop);
 
-        [ConfigField("Base Armor Gain", 25)]
-        public static int baseArmorGain;
+        [ConfigField("Armor Increase", "", 25)]
+        public static int armor;
 
-        [ConfigField("Armor Gain Per Stack", 15)]
-        public static int armorGainPerStack;
+        [ConfigField("Armor Increase per Stack", "", 15)]
+        public static int armorStack;
+
+        [ConfigField("Armor Increase is Hyperbolic", "Decimal, Max value. Set to 0 to make it linear.", 0f)]
+        public static float armorIsHyperbolic;
 
         public override void Init()
         {
             base.Init();
         }
-
         public override void Hooks()
         {
-            IL.RoR2.CharacterBody.RecalculateStats += ChangeArmor;
+            RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
         }
 
-        public static void ChangeArmor(ILContext il)
+        private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
-            ILCursor c = new(il);
-            if (c.TryGotoNext(MoveType.Before,
-                    x => x.MatchCallOrCallvirt<CharacterBody>("get_armor"),
-                    x => x.MatchLdloc(out _),
-                    x => x.MatchLdcI4(30)))
+            if (sender.inventory && sender.isSprinting)
             {
-                c.Index += 2;
-                c.Remove();
-                c.Emit(OpCodes.Ldc_I4, armorGainPerStack);
-                c.Index += 1;
-                c.EmitDelegate<Func<int, int>>((useless) =>
-                {
-                    return armorGainPerStack + (baseArmorGain - armorGainPerStack);
-                });
-            }
-            else
-            {
-                Logger.LogError("Failed to apply Rose Buckler Armor hook");
+                int stack = sender.inventory.GetItemCount(InternalPickup);
+                args.armorAdd += StackAmount(armor, armorStack, stack, armorIsHyperbolic) - (30 * stack);
             }
         }
     }

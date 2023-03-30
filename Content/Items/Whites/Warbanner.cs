@@ -59,8 +59,8 @@ namespace WellRoundedBalance.Items.Whites
                 if (sender.HasBuff(RoR2Content.Buffs.Warbanner.buffIndex))
                 {
                     float ret = StackAmount(attackSpeedAndMovementSpeed, attackSpeedAndMovementSpeedStack, stack, attackSpeedAndMovementSpeedIsHyperbolic);
-                    if (enableAttackSpeed) args.baseAttackSpeedAdd += ret;
-                    if (enableMovementSpeed) args.moveSpeedMultAdd += ret;
+                    if (enableAttackSpeed) args.baseAttackSpeedAdd += ret - 0.3f;
+                    if (enableMovementSpeed) args.moveSpeedMultAdd += ret - 0.3f;
                 }
             }
         }

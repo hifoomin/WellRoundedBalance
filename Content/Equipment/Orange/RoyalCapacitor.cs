@@ -1,4 +1,5 @@
 ﻿using MonoMod.Cil;
+using WellRoundedBalance.Items;
 
 namespace WellRoundedBalance.Equipment.Orange
 {

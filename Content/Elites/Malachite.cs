@@ -1,4 +1,4 @@
-using WellRoundedBalance.Eclipse;
+using WellRoundedBalance.Gamemodes.Eclipse;
 
 namespace WellRoundedBalance.Elites
 {
@@ -9,7 +9,7 @@ namespace WellRoundedBalance.Elites
         [ConfigField("Turret Count", "", 2)]
         public static int TurretCount;
 
-        [ConfigField("Turret Count Eclipse 3+", "Only applies if you have Eclipse Changes enabled.", 3)]
+        [ConfigField("Turret Count Eclipse 3+", "Only applies if you have Eclipse Changes enabled.", 4)]
         public static int turretCountE3;
 
         [ConfigField("Safe Zone Radius", "", 50f)]
@@ -188,16 +188,20 @@ namespace WellRoundedBalance.Elites
                     if (target)
                     {
                         Vector3 aim = (target.transform.position - base.transform.position).normalized;
-                        FireProjectileInfo info = new()
+                        if (Util.HasEffectiveAuthority(gameObject))
                         {
-                            damage = Run.instance ? 5f + Mathf.Sqrt(Run.instance.ambientLevel * 120f) / Mathf.Sqrt(Run.instance.participatingPlayerCount) : 0f,
-                            position = base.transform.position,
-                            rotation = Util.QuaternionSafeLookRotation(aim),
-                            owner = owner.gameObject,
-                            projectilePrefab = Utils.Paths.GameObject.UrchinSeekingProjectile.Load<GameObject>()
-                        };
+                            FireProjectileInfo info = new()
+                            {
+                                damage = owner.damage,
+                                position = base.transform.position,
+                                rotation = Util.QuaternionSafeLookRotation(aim),
+                                owner = owner.gameObject,
+                                projectilePrefab = Utils.Paths.GameObject.UrchinSeekingProjectile.Load<GameObject>()
+                            };
 
-                        ProjectileManager.instance.FireProjectile(info);
+                            ProjectileManager.instance.FireProjectile(info);
+                        }
+
                         AkSoundEngine.PostEvent(Events.Play_elite_antiHeal_turret_shot, base.gameObject);
                     }
                 }
@@ -217,7 +221,7 @@ namespace WellRoundedBalance.Elites
 
             internal void Suicide()
             {
-                Destroy(base.gameObject);
+                if (gameObject) Destroy(base.gameObject);
             }
         }
 

@@ -12,7 +12,11 @@ namespace WellRoundedBalance.Items
         public abstract string PickupText { get; }
         public abstract string DescText { get; }
         public override ConfigFile Config => Main.WRBItemConfig;
+
         public static event Action onTokenRegister;
+
+        [ConfigField("Global Proc Chance", "This is a multiplier to all items that can proc something themselves, not necessarily items like Ignition Tank for example. There are special cases where this doesn't work - Sticky Bomb (as it has a Proc Coefficient of 0 by default) and Shuriken (most people like it proccing even factoring Railgunner), so they are separate options. This also does not include equipment.", 1f)]
+        public static float globalProc;
 
         public static int GetItemLoc(ILCursor c, string item) // modify this on compat update
         {
@@ -39,11 +43,15 @@ namespace WellRoundedBalance.Items
         }
 
         [SystemInitializer(typeof(ItemCatalog))]
-        public static void OnItemInitialized() { if (onTokenRegister != null) onTokenRegister(); }
+        public static void OnItemInitialized()
+        { if (onTokenRegister != null) onTokenRegister(); }
 
         public void SetToken()
         {
-            if (InternalPickup != null) {
+            if (InternalPickup != null)
+            {
+                InternalPickup.pickupToken += "_WRB";
+                InternalPickup.descriptionToken += "_WRB";
                 LanguageAPI.Add(InternalPickup.pickupToken, PickupText);
                 LanguageAPI.Add(InternalPickup.descriptionToken, DescText);
             };

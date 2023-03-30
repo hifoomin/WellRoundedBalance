@@ -1,4 +1,7 @@
-﻿namespace WellRoundedBalance.Items.Whites
+﻿using Mono.Cecil.Cil;
+using MonoMod.Cil;
+
+namespace WellRoundedBalance.Items.Whites
 {
     public class OddlyShapedOpal : ItemBase
     {
@@ -44,13 +47,18 @@
             CharacterBody.onBodyInventoryChangedGlobal += CharacterBody_onBodyInventoryChangedGlobal;
             On.RoR2.OutOfCombatArmorBehavior.SetProvidingBuff += (_, __, ___) => { };
             On.RoR2.OutOfCombatArmorBehavior.FixedUpdate += (_, __) => { };
-            On.RoR2.CharacterBody.UpdateAllTemporaryVisualEffects += CharacterBody_UpdateAllTemporaryVisualEffects;
+            IL.RoR2.CharacterBody.UpdateAllTemporaryVisualEffects += CharacterBody_UpdateAllTemporaryVisualEffects;
         }
 
-        private void CharacterBody_UpdateAllTemporaryVisualEffects(On.RoR2.CharacterBody.orig_UpdateAllTemporaryVisualEffects orig, CharacterBody self)
+        private void CharacterBody_UpdateAllTemporaryVisualEffects(ILContext il)
         {
-            orig(self);
-            self.UpdateSingleTemporaryVisualEffect(ref self.outOfCombatArmorEffectInstance, CharacterBody.AssetReferences.outOfCombatArmorEffectPrefab, self.radius, self.HasBuff(opalArmor), "");
+            ILCursor c = new(il);
+            if (c.TryGotoNext(MoveType.After, x => x.MatchLdsfld(typeof(DLC1Content.Buffs), nameof(DLC1Content.Buffs.OutOfCombatArmorBuff))))
+            {
+                c.Emit(OpCodes.Pop);
+                c.EmitDelegate(() => opalArmor);
+            }
+            else Logger.LogError("Failed to apply Oddly Shaped Opal VFX hook");
         }
 
         private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
@@ -63,11 +71,11 @@
 
         private void CharacterBody_onBodyInventoryChangedGlobal(CharacterBody characterBody)
         {
-            if (NetworkServer.active) characterBody.AddItemBehavior<OutOfCombatArmorBehavior>(characterBody.inventory.GetItemCount(DLC1Content.Items.OutOfCombatArmor));
+            if (NetworkServer.active) characterBody.AddItemBehavior<OddlyShapedOpalController>(characterBody.inventory.GetItemCount(DLC1Content.Items.OutOfCombatArmor));
         }
     }
 
-    public class OutOfCombatArmorBehavior : CharacterBody.ItemBehavior
+    public class OddlyShapedOpalController : CharacterBody.ItemBehavior
     {
         private void SetProvidingBuff(bool shouldProvideBuff)
         {

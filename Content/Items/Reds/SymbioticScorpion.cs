@@ -27,6 +27,9 @@ namespace WellRoundedBalance.Items.Reds
         [ConfigField("Armor Steal Amount Per Stack", 10f)]
         public static float armorStealAmountPerStack;
 
+        [ConfigField("Proc Chance", 0f)]
+        public static float procChance;
+
         public override void Init()
         {
             var scorpion = Utils.Paths.Texture2D.texBuffPermanentDebuffIcon.Load<Texture2D>();
@@ -83,33 +86,45 @@ namespace WellRoundedBalance.Items.Reds
         private void GlobalEventManager_onServerDamageDealt(DamageReport damageReport)
         {
             var attacker = damageReport.attacker;
-            var victim = damageReport.victim;
-            if (attacker && victim)
+            if (!attacker)
             {
-                var attackerBody = damageReport.attackerBody;
-                var victimBody = damageReport.victimBody;
-                if (attackerBody && victimBody)
+                return;
+            }
+            var victim = damageReport.victim;
+            if (!victim)
+            {
+                return;
+            }
+            var attackerBody = damageReport.attackerBody;
+            if (!attackerBody)
+            {
+                return;
+            }
+            var victimBody = damageReport.victimBody;
+            if (!victimBody)
+            {
+                return;
+            }
+
+            var based = victimBody.gameObject.GetComponent<SymbioticScorpionController>();
+            if (based)
+            {
+                victimBody.gameObject.GetComponent<SymbioticScorpionController>().attackerBody = attackerBody;
+            }
+            var inventory = attackerBody.inventory;
+            if (!inventory)
+            {
+                return;
+            }
+            var stack = inventory.GetItemCount(DLC1Content.Items.PermanentDebuffOnHit);
+            if (stack > 0 && damageReport.damageInfo.procCoefficient > 0)
+            {
+                victimBody.AddTimedBuff(armorReduction, 5f);
+                victimBody.AddTimedBuff(venom, 5f);
+                attackerBody.AddTimedBuff(armorGain, 5f);
+                if (!based)
                 {
-                    var based = victimBody.gameObject.GetComponent<FuckDoTAPIFuckDelegatesFuckComplicatedShit>();
-                    if (based)
-                    {
-                        victimBody.gameObject.GetComponent<FuckDoTAPIFuckDelegatesFuckComplicatedShit>().attackerBody = attackerBody;
-                    }
-                    var inventory = attackerBody.inventory;
-                    if (inventory)
-                    {
-                        var stack = inventory.GetItemCount(DLC1Content.Items.PermanentDebuffOnHit);
-                        if (stack > 0 && damageReport.damageInfo.procCoefficient > 0)
-                        {
-                            victimBody.AddTimedBuff(armorReduction, 5f);
-                            victimBody.AddTimedBuff(venom, 5f);
-                            attackerBody.AddTimedBuff(armorGain, 5f);
-                            if (!based)
-                            {
-                                victimBody.gameObject.AddComponent<FuckDoTAPIFuckDelegatesFuckComplicatedShit>();
-                            }
-                        }
-                    }
+                    victimBody.gameObject.AddComponent<SymbioticScorpionController>();
                 }
             }
         }
@@ -139,7 +154,7 @@ namespace WellRoundedBalance.Items.Reds
         }
     }
 
-    public class FuckDoTAPIFuckDelegatesFuckComplicatedShit : MonoBehaviour
+    public class SymbioticScorpionController : MonoBehaviour
     {
         public float interval = 0.2f;
         public float timer;
@@ -176,7 +191,7 @@ namespace WellRoundedBalance.Items.Reds
                         damage = damageCoefficient * attackerBody.damage,
                         damageColorIndex = DamageColorIndex.Poison,
                         force = Vector3.zero,
-                        procCoefficient = 0f,
+                        procCoefficient = SymbioticScorpion.procChance * ItemBase.globalProc,
                         damageType = DamageType.Generic,
                         position = victimHealthComponent.body.corePosition,
                         dotIndex = DotIndex.None,

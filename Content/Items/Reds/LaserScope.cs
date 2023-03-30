@@ -12,7 +12,7 @@ namespace WellRoundedBalance.Items.Reds
         public override string PickupText => (removeBulletFalloff ? "Remove bullet falloff. " : "") +
                                              "Your 'Critical Strikes' deal an additional 50% damage.";
 
-        public override string DescText => (removeBulletFalloff ? "Remove <style=cIsUtility>bullet falloff</style>. " : "") +
+        public override string DescText => (removeBulletFalloff ? "Remove <style=cIsDamage>bullet falloff</style>. " : "") +
                                            (criticalChance > 0 ? "Gain <style=cIsDamage>" + criticalChance + "% critical chance</style>. " : "") +
                                            "<style=cIsDamage>Critical Strikes</style> deal an additional <style=cIsDamage>50%</style> <style=cStack>(+50% per stack)</style> damage.";
 

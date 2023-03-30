@@ -13,10 +13,10 @@ namespace WellRoundedBalance.Items.VoidGreens
                                            (rangePerStack > 0 ? " <style=cStack>(+" + rangePerStack + "m per stack)</style>" : "") +
                                            " radius burst for <style=cIsDamage>" + d(baseDamage) + "</style> <style=cStack>(+" + d(damagePerStack) + " per stack)</style> base damage. <style=cIsVoid>Corrupts all Will-o'-the-wisps</style>.";
 
-        [ConfigField("Base Damage", "Decimal.", 1.2f)]
+        [ConfigField("Base Damage", "Decimal.", 1.4f)]
         public static float baseDamage;
 
-        [ConfigField("Damage Per Stack", "Decimal.", 0.6f)]
+        [ConfigField("Damage Per Stack", "Decimal.", 0.7f)]
         public static float damagePerStack;
 
         [ConfigField("Base Range", 12f)]
@@ -24,6 +24,9 @@ namespace WellRoundedBalance.Items.VoidGreens
 
         [ConfigField("Range Per Stack", 0f)]
         public static float rangePerStack;
+
+        [ConfigField("Proc Chance", 0f)]
+        public static float procChance;
 
         public override void Init()
         {
@@ -78,7 +81,7 @@ namespace WellRoundedBalance.Items.VoidGreens
         {
             var hopooGames = Utils.Paths.GameObject.ExplodeOnDeathVoidExplosion.Load<GameObject>();
             var delayBlast = hopooGames.GetComponent<DelayBlast>();
-            delayBlast.procCoefficient = 0f;
+            delayBlast.procCoefficient = procChance * globalProc;
         }
     }
 }

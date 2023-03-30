@@ -22,8 +22,60 @@ namespace WellRoundedBalance.Items.Lunars
         public override void Hooks()
         {
             On.RoR2.HoldoutZoneController.FocusConvergenceController.Awake += Changes;
-            On.RoR2.TeleporterInteraction.Start += AddDifficulty;
             IL.RoR2.HoldoutZoneController.FocusConvergenceController.ApplyRadius += FocusConvergenceController_ApplyRadius;
+            On.RoR2.Inventory.GiveItem_ItemIndex_int += Inventory_GiveItem_ItemIndex_int;
+            On.RoR2.Inventory.RemoveItem_ItemIndex_int += Inventory_RemoveItem_ItemIndex_int;
+            On.RoR2.Stage.Start += Stage_Start;
+        }
+
+        private void Stage_Start(On.RoR2.Stage.orig_Start orig, Stage self)
+        {
+            orig(self);
+            var stack = Util.GetItemCountForTeam(TeamIndex.Player, RoR2Content.Items.FocusConvergence.itemIndex, false);
+            if (NetworkServer.active && stack > 0)
+            {
+                var tp = TeleporterInteraction.instance;
+                if (tp)
+                {
+                    for (int i = 0; i < stack * mountainShrineCount; i++)
+                    {
+                        tp.AddShrineStack();
+                    }
+                }
+            }
+        }
+
+        private void Inventory_RemoveItem_ItemIndex_int(On.RoR2.Inventory.orig_RemoveItem_ItemIndex_int orig, Inventory self, ItemIndex itemIndex, int count)
+        {
+            orig(self, itemIndex, count);
+            if (NetworkServer.active && itemIndex == RoR2Content.Items.FocusConvergence.itemIndex)
+            {
+                var tp = TeleporterInteraction.instance;
+                if (tp)
+                {
+                    if (tp.shrineBonusStacks - mountainShrineCount >= 0)
+                        for (int i = 0; i < mountainShrineCount; i++)
+                        {
+                            tp.shrineBonusStacks--;
+                        }
+                }
+            }
+        }
+
+        private void Inventory_GiveItem_ItemIndex_int(On.RoR2.Inventory.orig_GiveItem_ItemIndex_int orig, Inventory self, ItemIndex itemIndex, int count)
+        {
+            orig(self, itemIndex, count);
+            if (NetworkServer.active && itemIndex == RoR2Content.Items.FocusConvergence.itemIndex)
+            {
+                var tp = TeleporterInteraction.instance;
+                if (tp)
+                {
+                    for (int i = 0; i < mountainShrineCount; i++)
+                    {
+                        tp.AddShrineStack();
+                    }
+                }
+            }
         }
 
         private void FocusConvergenceController_ApplyRadius(ILContext il)
@@ -31,7 +83,8 @@ namespace WellRoundedBalance.Items.Lunars
             ILCursor c = new(il);
 
             if (c.TryGotoNext(MoveType.Before,
-                x => x.MatchLdfld(typeof(HoldoutZoneController.FocusConvergenceController), "currentFocusConvergenceCount")))
+                x => x.MatchLdfld(typeof(HoldoutZoneController.FocusConvergenceController), "currentFocusConvergenceCount"),
+                x => x.MatchConvR4()))
             {
                 c.Index++;
                 c.EmitDelegate<Func<int, int>>((useless) =>
@@ -43,19 +96,6 @@ namespace WellRoundedBalance.Items.Lunars
             {
                 Main.WRBLogger.LogError("Failed to apply Focused Convergence Radius hook");
             }
-        }
-
-        private void AddDifficulty(On.RoR2.TeleporterInteraction.orig_Start orig, TeleporterInteraction self)
-        {
-            var stack = Util.GetItemCountForTeam(TeamIndex.Player, RoR2Content.Items.FocusConvergence.itemIndex, false);
-            if (NetworkServer.active && stack > 0)
-            {
-                for (int i = 0; i < stack * mountainShrineCount; i++)
-                {
-                    self.AddShrineStack();
-                }
-            }
-            orig(self);
         }
 
         private void Changes(On.RoR2.HoldoutZoneController.FocusConvergenceController.orig_Awake orig, MonoBehaviour self)

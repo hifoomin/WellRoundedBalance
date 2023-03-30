@@ -12,7 +12,7 @@ namespace WellRoundedBalance.Items.Yellows
 
         public override string PickupText => "Summon the unmatched power of the sun after standing still for 1 second.";
 
-        public override string DescText => "After standing still for <style=cIsDamage>1</style> second, summon <style=cIsDamage>the unmatched power of the sun</style> that increasingly <style=cIsDamage>ignites</style> enemies.";
+        public override string DescText => "After standing still for <style=cIsDamage>1</style> second, summon <style=cIsDamage>the unmatched power of the sun</style> that <style=cIsDamage>ignites</style> enemies every <style=cIsDamage>0.5s</style> for <style=cIsDamage>5s</style> <style=cStack>(+3s per stack)</style>.";
 
         public override void Init()
         {
@@ -20,6 +20,19 @@ namespace WellRoundedBalance.Items.Yellows
             var postProcessingObject = sunPrefabLessPP.transform.GetChild(0).GetChild(0);
             var postProcessVolume = postProcessingObject.GetComponent<PostProcessVolume>();
             postProcessVolume.weight = 0.1f;
+
+            var profile = postProcessVolume.sharedProfile;
+            var bloom = profile.GetSetting<Bloom>();
+            bloom.SetAllOverridesTo(true);
+            bloom.intensity.value = 0.3f;
+
+            var colorGrading = profile.GetSetting<ColorGrading>();
+            colorGrading.SetAllOverridesTo(true);
+            colorGrading.saturation.value = -4f;
+            colorGrading.postExposure.value = 0.1f;
+            colorGrading.contrast.value = -15f;
+            colorGrading.mixerRedOutBlueIn.overrideState = false;
+            colorGrading.mixerGreenOutRedIn.overrideState = false;
 
             PrefabAPI.RegisterNetworkPrefab(sunPrefabLessPP);
             base.Init();
@@ -35,7 +48,7 @@ namespace WellRoundedBalance.Items.Yellows
         {
             if (NetworkServer.active)
             {
-                body.AddItemBehavior<PlanulaSunBehavior>(body.inventory.GetItemCount(RoR2Content.Items.ParentEgg));
+                body.AddItemBehavior<PlanulaController>(body.inventory.GetItemCount(RoR2Content.Items.ParentEgg));
             }
         }
 
@@ -55,7 +68,7 @@ namespace WellRoundedBalance.Items.Yellows
         }
     }
 
-    public class PlanulaSunBehavior : CharacterBody.ItemBehavior
+    public class PlanulaController : CharacterBody.ItemBehavior
     {
         private float timer = 0;
         private float burnDistanceBase = 10000;

@@ -13,7 +13,7 @@ namespace WellRoundedBalance.Mechanics.Scaling
 
         public override string Name => ":: Mechanics : Time Scaling";
 
-        [ConfigField("Time Scaling", "Formula for difficulty coefficient: ((Player Factor Base + Player Count * Player Count Multiplier) + (Time in minutes * Time Factor Multiplier * (Square Root Multiplier * Square Root(DifficultyDef Scaling Value (1.5 for WRB Drizzle, 2 for Rainstorm, 3 for Monsoon)))) * (Player Count ^ Player Count Exponent)) * (Custom Factor Add + Custom Time Factor Multiplier * (Square Root(Time in minutes) * Scaling Value Multiplier * DifficultyDef Scaling Value) * Player Count ^ Player Count Exponent 2)\nFormula for ambient level: ", 0.75f)]
+        [ConfigField("Time Scaling", "Formula for difficulty coefficient: ((Player Factor Base + Player Count * Player Count Multiplier) + (Time in minutes * Time Factor Multiplier * (Square Root Multiplier * Square Root(DifficultyDef Scaling Value (1.5 for WRB Drizzle, 2 for Rainstorm, 3 for Monsoon)))) * (Player Count ^ Player Count Exponent 1)) * (Custom Factor Add + Custom Time Factor Multiplier * (Square Root(Time in minutes) * Scaling Value Multiplier * DifficultyDef Scaling Value) * Player Count ^ Player Count Exponent 2)\nFormula for ambient level: ", 0.75f)]
         public static float duhDoesNothing;
 
         [ConfigField("Scaling Debug Keybind", "Writes vanilla time scaling for comparison", ";")]
@@ -25,7 +25,7 @@ namespace WellRoundedBalance.Mechanics.Scaling
         [ConfigField("Player Count Multiplier", "", 0.3f)]
         public static float playerCountMultiplier;
 
-        [ConfigField("Player Count Exponent", "", 0.2f)]
+        [ConfigField("Player Count Exponent 1", "", 0.13f)]
         public static float playerCountExponent;
 
         [ConfigField("Player Count Exponent 2", "", 0.07f)]

@@ -5,7 +5,7 @@
         public override string Name => ":: Equipment :: Primordial Cube";
         public override EquipmentDef InternalPickup => RoR2Content.Equipment.Blackhole;
 
-        public override string PickupText => "";
+        public override string PickupText => "Fire a black hole that draws enemies in.";
 
         public override string DescText => "Fire a black hole that <style=cIsUtility>draws enemies within " + range + "m" +
                                            (pullStrength > 0 ? " outside of" : " into") +

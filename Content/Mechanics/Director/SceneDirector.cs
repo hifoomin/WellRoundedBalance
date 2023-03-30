@@ -9,7 +9,7 @@ namespace WellRoundedBalance.Mechanics.Director
         [ConfigField("Pre-Spawn Gold and Exp Reward Multiplier", "", 3f)]
         public static float prespawnGoldAndExpRewardMultiplier;
 
-        [ConfigField("Pre-Spawn Elite Bias", "", 0.8f)]
+        [ConfigField("Pre-Spawn Elite Biass", "", 6f)]
         public static float prespawnEliteBias;
 
         [ConfigField("Pre-Spawn Credit Multiplier", "", 2.5f)]
@@ -29,7 +29,7 @@ namespace WellRoundedBalance.Mechanics.Director
         {
             sd.expRewardCoefficient *= prespawnGoldAndExpRewardMultiplier; // holy fuck why is it so low (literally like 0.0667)
             sd.monsterCredit = Convert.ToInt32(sd.monsterCredit * prespawnCreditMultiplier);
-            sd.eliteBias = prespawnEliteBias; // down from 2
+            sd.eliteBias = prespawnEliteBias; // up from 2
         }
     }
 }

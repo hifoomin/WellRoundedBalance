@@ -94,8 +94,11 @@ namespace WellRoundedBalance.Items.Whites
     {
         public void FixedUpdate()
         {
-            if (body.HasBuff(DelicateWatch.watchDamage) && !body.outOfDanger) body.RemoveBuff(DelicateWatch.watchDamage);
-            if (!body.HasBuff(DelicateWatch.watchDamage) && body.outOfDanger) body.AddBuff(DelicateWatch.watchDamage);
+            if (stack > 0)
+            {
+                if (body.HasBuff(DelicateWatch.watchDamage) && !body.outOfDanger) body.RemoveBuff(DelicateWatch.watchDamage);
+                if (!body.HasBuff(DelicateWatch.watchDamage) && body.outOfDanger) body.AddBuff(DelicateWatch.watchDamage);
+            }
         }
     }
 }

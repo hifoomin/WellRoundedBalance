@@ -48,6 +48,33 @@ namespace WellRoundedBalance.Items.Whites
             On.RoR2.Stage.Start += Stage_Start;
         }
 
+        private void Stage_Start(On.RoR2.Stage.orig_Start orig, Stage self)
+        {
+            orig(self);
+            var masters = CharacterMaster.readOnlyInstancesList;
+
+            var stack = Util.GetItemCountForTeam(TeamIndex.Player, DLC1Content.Items.GoldOnHurt.itemIndex, false);
+
+            // Logger.LogError("stack count is " + stack);
+
+            if (stack > 0 && NetworkServer.active)
+            {
+                foreach (CharacterMaster master in masters)
+                {
+                    // Logger.LogError("master is " + master);
+                    if (master.playerCharacterMasterController)
+                    {
+                        // Logger.LogError("Iterating through " + master + " to give gold");
+                        uint ret = (uint)StackAmount(baseGoldPerStage, goldPerStagePerStack, stack, goldPerStageIsHyperbolic);
+                        if (scaleOverTime) ret = (uint)Run.instance.GetDifficultyScaledCost((int)ret);
+                        ret = (uint)Mathf.CeilToInt(ret);
+                        // Logger.LogError("ret for pennies is " + ret);
+                        master.GiveMoney(ret);
+                    }
+                }
+            }
+        }
+
         private void Inventory_GiveItem_ItemIndex_int(On.RoR2.Inventory.orig_GiveItem_ItemIndex_int orig, Inventory self, ItemIndex itemIndex, int count)
         {
             orig(self, itemIndex, count);
@@ -60,24 +87,6 @@ namespace WellRoundedBalance.Items.Whites
                     TeamManager.instance.GiveTeamMoney(TeamIndex.Player, ret);
                 }
             }
-        }
-
-        private void Stage_Start(On.RoR2.Stage.orig_Start orig, Stage self)
-        {
-            orig(self);
-            int stack = 0;
-            var readOnlyInstancesList = CharacterMaster.readOnlyInstancesList;
-            for (int i = 0; i < readOnlyInstancesList.Count; i++)
-            {
-                CharacterMaster characterMaster = readOnlyInstancesList[i];
-                if (characterMaster.inventory)
-                {
-                    stack += characterMaster.inventory.GetItemCount(DLC1Content.Items.GoldOnHurt);
-                }
-            }
-            uint ret = (uint)StackAmount(baseGoldPerStage, goldPerStagePerStack, stack, goldPerStageIsHyperbolic);
-            if (scaleOverTime) ret = (uint)Run.instance.GetDifficultyScaledCost((int)ret);
-            TeamManager.instance.GiveTeamMoney(TeamIndex.Player, ret);
         }
 
         private void HealthComponent_TakeDamage(ILContext il)

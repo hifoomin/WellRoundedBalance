@@ -13,7 +13,9 @@ namespace WellRoundedBalance.Items.Reds
         public override string PickupText => "Prevent debuffs, instead gaining temporary movement speed. Recharges over time.";
 
         public override string DescText => (passiveMovementSpeedGain > 0 ? "Gain <style=cIsUtility>" + d(passiveMovementSpeedGain) + " movement speed</style>. " : "") +
-                                           "Prevents <style=cIsUtility>1 <style=cStack>(+1 per stack)</style></style> <style=cIsDamage>debuff</style> and instead grants <style=cIsUtility>" + d(baseBuffMovementSpeedGain) + "</style> <style=cStack>(+" + d(buffMovementSpeedGainPerStack) + " per stack)</style> <style=cIsUtility>movement speed</style> for <style=cIsUtility>" + buffDuration + "</style> seconds." +
+                                           "Prevents <style=cIsUtility>1 <style=cStack>(+1 per stack)</style></style> <style=cIsDamage>debuff</style> and instead grants <style=cIsUtility>" + d(baseBuffMovementSpeedGain) + "</style>" +
+                                           (buffMovementSpeedGainPerStack > 0 ? " <style=cStack>(+" + d(buffMovementSpeedGainPerStack) + " per stack)</style>" : "") +
+                                           " <style=cIsUtility>movement speed</style> for <style=cIsUtility>" + buffDuration + "</style> seconds." +
                                            (rechargeTime > 0 ? (rechargeTime != 1 ? " Recharges every <style=cIsUtility>" + rechargeTime + " seconds</style>." : " Recharges every <style=cIsUtility>second</style>.") : "");
 
         [ConfigField("Passive Movement Speed Gain", "Decimal.", 0.2f)]

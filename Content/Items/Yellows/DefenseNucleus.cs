@@ -118,7 +118,7 @@
                             maxDistance = 10000f,
                             aimVector = body.inputBank.aimDirection,
                             procChainMask = new(),
-                            procCoefficient = 0.5f,
+                            procCoefficient = 0.5f * globalProc,
                             hitEffectPrefab = hitEffectPrefab,
                             radius = 6f,
                             smartCollision = true,

@@ -194,9 +194,35 @@ namespace WellRoundedBalance.Interactables
                     body.AddBuff(RoR2Content.Buffs.PermanentCurse);
                 }
 
+<<<<<<< HEAD
                 EntityStateMachine machine = GetComponent<EntityStateMachine>();
                 if (machine) {
                     machine.SetNextState(new EntityStates.Barrel.Opening());
+=======
+                EffectManager.SpawnEffect(Utils.Paths.GameObject.ExplodeOnDeathVoidExplosionEffect.Load<GameObject>(), new EffectData
+                {
+                    origin = transform.position,
+                    scale = 3f
+                }, true);
+
+                gameObject.SetActive(false);
+
+                var playerCharacterMasterController = body.master.GetComponent<PlayerCharacterMasterController>();
+                if (playerCharacterMasterController)
+                {
+                    var networkUser = playerCharacterMasterController.networkUser;
+                    if (networkUser)
+                    {
+                        var localUser = networkUser.localUser;
+                        if (localUser != null)
+                        {
+                            localUser.userProfile.DiscoverPickup(ItemCatalog.GetItemDef(GetCorruption(def)).GetPickupIndex());
+                            // Logger.LogError("getcorruption if itemindex is " + GetCorruption(def));
+                            // Logger.LogError("getitemdef of getcorruption of itemindex is " + ItemCatalog.GetItemDef(GetCorruption(def)));
+                            // Logger.LogError("getpickupindex of getitemdef of getcorruption of itemindex is " + ItemCatalog.GetItemDef(GetCorruption(def)).GetPickupIndex());
+                        }
+                    }
+>>>>>>> 12bc3b7c0ffd56caaf2e2b9f99807b85c66ac14c
                 }
             }
 
@@ -229,8 +255,12 @@ namespace WellRoundedBalance.Interactables
 
                     if (options.Count >= 1)
                     {
+<<<<<<< HEAD
                         hasSet = true;
                         Debug.Log("starting UI");
+=======
+                        // Debug.Log("starting UI");
+>>>>>>> 12bc3b7c0ffd56caaf2e2b9f99807b85c66ac14c
                         controller.SetOptionsInternal(options.ToArray());
                         controller.SetOptionsServer(options.ToArray());
                         controller.OnInteractionBegin(interactor);

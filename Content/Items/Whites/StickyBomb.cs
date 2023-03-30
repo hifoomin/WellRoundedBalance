@@ -46,7 +46,7 @@ namespace WellRoundedBalance.Items.Whites
         public static BlastAttack.FalloffModel changeFalloff;
 
         [ConfigField("Proc Coefficient", "Decimal.", 0f)]
-        public static float proc;
+        public static float procChance;
 
         [ConfigField("Radius", "", 10f)]
         public static float radius;
@@ -100,8 +100,12 @@ namespace WellRoundedBalance.Items.Whites
             var StickyBombImpact = Utils.Paths.GameObject.StickyBomb1.Load<GameObject>().GetComponent<ProjectileImpactExplosion>();
             StickyBombImpact.lifetime = lifetime;
             StickyBombImpact.falloffModel = changeFalloff;
-            StickyBombImpact.blastProcCoefficient = proc;
+            StickyBombImpact.blastProcCoefficient = procChance * globalProc;
             StickyBombImpact.blastRadius = radius;
+
+            var projectileController = StickyBombImpact.GetComponent<ProjectileController>();
+            var ghostPrefab = projectileController.ghostPrefab;
+            ghostPrefab.transform.localScale = new Vector3(radius / 8f, radius / 8f, radius / 8f);
 
             var coolerExplosion = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.OmniExplosionVFXQuick.Load<GameObject>(), "Sticky Bomb Explosion", false);
             coolerExplosion.transform.localScale = new Vector3(radius, radius, radius);

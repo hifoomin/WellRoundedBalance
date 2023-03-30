@@ -1,4 +1,6 @@
-﻿namespace WellRoundedBalance.Equipment.Orange
+﻿using WellRoundedBalance.Items;
+
+namespace WellRoundedBalance.Equipment.Orange
 {
     public class Sawmerang : EquipmentBase
     {

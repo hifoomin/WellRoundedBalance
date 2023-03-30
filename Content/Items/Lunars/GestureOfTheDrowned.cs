@@ -8,7 +8,7 @@ namespace WellRoundedBalance.Items.Lunars
         public override string Name => ":: Items ::::: Lunars :: Gesture of The Drowned";
         public override ItemDef InternalPickup => RoR2Content.Items.AutoCastEquipment;
 
-        public override string PickupText => "Reduce Equipment cooldown... <color=#FF7F7F>BUT it automatically activates and randomizes.</color>";
+        public override string PickupText => "Reduce Equipment cooldown and automatically activate it... <color=#FF7F7F>BUT it randomizes.</color>";
         public override string DescText => "<style=cIsUtility>Reduce Equipment cooldown</style> by <style=cIsUtility>" + d(baseEquipmentCooldownReduction) + "</style>. Forces your Equipment to <style=cIsUtility>activate</style> and <style=cIsUtility>randomize</style> whenever it is off <style=cIsUtility>cooldown</style>.";
 
         [ConfigField("Base Equipment Cooldown Reduction", 0.3f)]

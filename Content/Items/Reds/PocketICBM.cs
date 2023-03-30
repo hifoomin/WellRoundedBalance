@@ -82,36 +82,38 @@ namespace WellRoundedBalance.Items.Reds
         {
             IL.RoR2.MissileUtils.FireMissile_Vector3_CharacterBody_ProcChainMask_GameObject_float_bool_GameObject_DamageColorIndex_Vector3_float_bool += Changes;
             IL.RoR2.GlobalEventManager.OnHitEnemy += ChangeMissileCount;
-            On.RoR2.GlobalEventManager.OnHitEnemy += GlobalEventManager_OnHitEnemy;
+            GlobalEventManager.onServerDamageDealt += GlobalEventManager_onServerDamageDealt;
         }
 
-        private void GlobalEventManager_OnHitEnemy(On.RoR2.GlobalEventManager.orig_OnHitEnemy orig, GlobalEventManager self, DamageInfo damageInfo, GameObject victim)
+        private void GlobalEventManager_onServerDamageDealt(DamageReport report)
         {
-            if (damageInfo.attacker)
+            var attacker = report.attacker;
+            if (!attacker)
             {
-                var body = damageInfo.attacker.GetComponent<CharacterBody>();
-                if (body)
+                return;
+            }
+            var body = report.attackerBody;
+            if (!body)
+            {
+                return;
+            }
+            var inventory = body.inventory;
+            if (!inventory)
+            {
+                return;
+            }
+            if (!report.damageInfo.procChainMask.HasProc(ProcType.Missile))
+            {
+                var stack = inventory.GetItemCount(DLC1Content.Items.MoreMissile);
+                if (stack > 0)
                 {
-                    var inventory = body.inventory;
-                    if (inventory)
+                    if (Util.CheckRoll((baseMissileChance + missileChancePerStack * (stack - 1)) * report.damageInfo.procCoefficient, body.master))
                     {
-                        if (!damageInfo.procChainMask.HasProc(ProcType.Missile))
-                        {
-                            var stack = inventory.GetItemCount(DLC1Content.Items.MoreMissile);
-                            if (stack > 0)
-                            {
-                                if (Util.CheckRoll((baseMissileChance + missileChancePerStack * (stack - 1)) * damageInfo.procCoefficient, body.master))
-                                {
-                                    float damage = Util.OnHitProcDamage(damageInfo.damage, body.damage, totalDamage);
-                                    MissileUtils.FireMissile(body.corePosition, body, damageInfo.procChainMask, victim, damage, damageInfo.crit, bigFuckingMissile, DamageColorIndex.Item, true);
-                                }
-                            }
-                        }
+                        float damage = Util.OnHitProcDamage(report.damageInfo.damage, body.damage, totalDamage);
+                        MissileUtils.FireMissile(body.corePosition, body, report.damageInfo.procChainMask, report.victim.gameObject, damage, report.damageInfo.crit, bigFuckingMissile, DamageColorIndex.Item, true);
                     }
                 }
             }
-
-            orig(self, damageInfo, victim);
         }
 
         private void ChangeMissileCount(ILContext il)

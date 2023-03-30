@@ -13,10 +13,10 @@ namespace WellRoundedBalance.Items.Greens
                                             (rangePerStack > 0 ? " <style=cStack>(+" + rangePerStack + "m per stack)</style>" : "") +
                                             " radius for <style=cIsDamage>" + d(baseDamage) + "</style> <style=cStack>(+" + d(damagePerStack) + " per stack)</style> base damage.";
 
-        [ConfigField("Base Damage", "Decimal.", 2f)]
+        [ConfigField("Base Damage", "Decimal.", 2.4f)]
         public static float baseDamage;
 
-        [ConfigField("Damage Per Stack", "Decimal.", 1f)]
+        [ConfigField("Damage Per Stack", "Decimal.", 1.2f)]
         public static float damagePerStack;
 
         [ConfigField("Base Range", 12f)]
@@ -24,6 +24,9 @@ namespace WellRoundedBalance.Items.Greens
 
         [ConfigField("Range Per Stack", 0f)]
         public static float rangePerStack;
+
+        [ConfigField("Proc Chance", 0f)]
+        public static float procChance;
 
         public override void Init()
         {
@@ -77,7 +80,7 @@ namespace WellRoundedBalance.Items.Greens
         public static void ChangeProc()
         {
             var w = LegacyResourcesAPI.Load<GameObject>("prefabs/networkedobjects/WilloWispDelay").GetComponent<DelayBlast>();
-            w.procCoefficient = 0f;
+            w.procCoefficient = procChance * globalProc;
         }
     }
 }

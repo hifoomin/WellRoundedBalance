@@ -33,6 +33,7 @@ namespace WellRoundedBalance.Mechanics.Bazaar
             {
                 var lunarShop = GameObject.Find("HOLDER: Store").transform.GetChild(0);
                 var table = lunarShop.GetChild(2);
+                table.gameObject.AddComponent<NetworkIdentity>();
 
                 List<PurchaseInteraction> interactions = GameObject.FindObjectsOfType<PurchaseInteraction>().Where(x => x.gameObject.name.Contains("LunarShopTerminal")).ToList();
                 for (int i = 0; i < 5; i++)
@@ -56,10 +57,12 @@ namespace WellRoundedBalance.Mechanics.Bazaar
 
                 var heresyItemServer = Object.Instantiate(heresyStation, table2Server);
                 heresyItemServer.transform.localPosition = new Vector3(1.695f, -1.307f, 1.196f);
+                heresyItemServer.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
                 NetworkServer.Spawn(heresyItemServer);
 
                 var heresyItemServer2 = Object.Instantiate(heresyStation, table2Server);
                 heresyItemServer2.transform.localPosition = new Vector3(0.315f, -2.07f, 1.196f);
+                heresyItemServer2.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
                 NetworkServer.Spawn(heresyItemServer2);
 
                 var slab = lunarShop.GetChild(3).gameObject;
@@ -96,7 +99,7 @@ namespace WellRoundedBalance.Mechanics.Bazaar
         public override PickupIndex GenerateDropPreReplacement(Xoroshiro128Plus rng)
         {
             GenerateWeightedSelection();
-            Debug.Log(GenerateDropFromWeightedSelection(rng, weighted));
+            // Debug.Log(GenerateDropFromWeightedSelection(rng, weighted));
             return GenerateDropFromWeightedSelection(rng, weighted);
         }
     }

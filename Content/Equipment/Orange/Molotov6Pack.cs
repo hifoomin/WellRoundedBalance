@@ -30,6 +30,9 @@
         [ConfigField("Pool Lifetime", "", 7f)]
         public static float poolLifetime;
 
+        [ConfigField("Disable random rotation?", "", true)]
+        public static bool disableRandomRotation;
+
         public override void Init()
         {
             base.Init();
@@ -50,6 +53,30 @@
             molotov.blastProcCoefficient = explosionProcCoefficient;
             molotov.blastDamageCoefficient = explosionDamage;
             molotov.blastRadius = explosionRadius;
+
+            /*
+            if (disableRandomRotation)
+            {
+                molotov.minAngleOffset = new Vector3(0f, 0f, 0f);
+                molotov.maxAngleOffset = new Vector3(0f, 0f, 0f);
+                molotov.rangeRollDegrees = 0f;
+                molotov.rangePitchDegrees = 0f;
+
+                var torque = molotov.gameObject.GetComponent<ApplyTorqueOnStart>();
+                torque.randomize = false;
+                torque.localTorque = new Vector3(0f, 200f, 0f);
+
+                var single = molotov.childrenProjectilePrefab;
+                var singleImpact = single.GetComponent<ProjectileImpactExplosion>();
+                singleImpact.rangeRollDegrees = 0f;
+
+                var singleTorque = single.GetComponent<ApplyTorqueOnStart>();
+                singleTorque.randomize = false;
+                singleTorque.localTorque = new Vector3(0f, 200f, 0f);
+            }
+            */
+
+            // TODO: Make them fire in a circle of equal slices, dunno how I'd do that yet on the hook side of things
 
             var pool = Addressables.LoadAssetAsync<GameObject>("RoR2/DLC1/Molotov/MolotovProjectileDotZone.prefab").WaitForCompletion().GetComponent<ProjectileDotZone>();
             pool.overlapProcCoefficient = poolProcCoefficient;

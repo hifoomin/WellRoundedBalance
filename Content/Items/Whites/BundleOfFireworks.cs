@@ -1,4 +1,5 @@
-﻿using Mono.Cecil.Cil;
+﻿using JetBrains.Annotations;
+using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using System;
 
@@ -64,8 +65,12 @@ namespace WellRoundedBalance.Items.Whites
             var firework = Utils.Paths.GameObject.FireworkProjectile.Load<GameObject>();
             var projectileImpactExplosion = firework.GetComponent<ProjectileImpactExplosion>();
             projectileImpactExplosion.blastRadius = blastRadius; // vanilla 5f
-            projectileImpactExplosion.blastDamageCoefficient = blastDamageCoefficient;
-            projectileImpactExplosion.blastProcCoefficient = blastProcCoefficient;
+            projectileImpactExplosion.blastDamageCoefficient = blastDamageCoefficient / 3f;
+            projectileImpactExplosion.blastProcCoefficient = blastProcCoefficient * globalProc;
+
+            var projectileController = firework.GetComponent<ProjectileController>();
+            var ghostPrefab = projectileController.ghostPrefab;
+            ghostPrefab.transform.localScale = new Vector3(blastRadius / 4f, blastRadius / 4f, blastRadius / 4f);
 
             if (improveTargeting)
             {
