@@ -97,7 +97,7 @@ namespace WellRoundedBalance.Elites
                 args.moveSpeedReductionMultAdd += 0.8f;
             }
 
-            bool flag = sender.HasBuff(RoR2Content.Buffs.AffixWhite);
+            /*bool flag = sender.HasBuff(RoR2Content.Buffs.AffixWhite);
             GlacialPillarController controller = sender.GetComponent<GlacialPillarController>();
 
             if (flag != controller)
@@ -110,7 +110,7 @@ namespace WellRoundedBalance.Elites
                 {
                     sender.gameObject.RemoveComponent<GlacialPillarController>();
                 }
-            }
+            }*/
         }
 
         private void GlobalEventManager_OnHitEnemy(ILContext il)
