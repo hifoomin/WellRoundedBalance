@@ -47,7 +47,7 @@ namespace WellRoundedBalance.Items.Lunars
                             var force = 30f * damageInfo.procCoefficient * stack;
                             damageInfo.force += Vector3.Normalize(attackerBody.corePosition - self.body.corePosition) * force * mass;
                         }
-                        if (inventory2)
+                        if (inventory2 && damageInfo.procCoefficient > 0)
                         {
                             // player pulling enemies on hit
                             var stack = inventory2.GetItemCount(DLC1Content.Items.HalfSpeedDoubleHealth);

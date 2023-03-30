@@ -1,6 +1,7 @@
 ﻿using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using System;
+using RoR2.Navigation;
 using WellRoundedBalance.Buffs;
 
 namespace WellRoundedBalance.Elites
@@ -10,9 +11,7 @@ namespace WellRoundedBalance.Elites
         public static BuffDef slow;
         public static GameObject iceExplosionPrefab;
         public override string Name => ":: Elites :::: Glacial";
-        public static GameObject ShieldPrefab;
-        public static GameObject ShieldGhostPrefab;
-        public static GameObject mdlGlacialShield;
+        public static GameObject IcePillarPrefab;
 
         public override void Init()
         {
@@ -30,51 +29,13 @@ namespace WellRoundedBalance.Elites
 
             ContentAddition.AddBuffDef(slow);
 
-            ShieldPrefab = PrefabAPI.InstantiateClone(new(""), "GlacialShield");
-            ShieldGhostPrefab = PrefabAPI.InstantiateClone(new(""), "GlacialShieldGhost", false);
-            mdlGlacialShield = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.mdlAegis.Load<GameObject>(), "mdlGlacialShield", false);
-            ShieldPrefab.AddComponent<TeamFilter>();
-            ShieldPrefab.AddComponent<NetworkIdentity>();
-            ProjectileController controller = ShieldPrefab.AddComponent<ProjectileController>();
-            controller.ghostPrefab = ShieldGhostPrefab;
-            controller.procCoefficient = 0;
-            controller.allowPrediction = false;
-
-            Rigidbody rigidbody = ShieldPrefab.AddComponent<Rigidbody>();
-            rigidbody.useGravity = false;
-            rigidbody.isKinematic = false;
-            rigidbody.drag = 0;
-            rigidbody.mass = 1000;
-
-            SphereCollider collider = ShieldPrefab.AddComponent<SphereCollider>();
-            collider.radius = 1f;
-            /*
-            ProjectileImpactExplosion impact = ShieldPrefab.AddComponent<ProjectileImpactExplosion>();
-            impact.blastRadius = 3;
-            impact.lifetime = 5;
-            impact.destroyOnEnemy = false;
-            impact.destroyOnWorld = false;
-            impact.impactOnWorld = false;
-            impact.impactEffect = Utils.Paths.GameObject.IceRingExplosion.Load<GameObject>();
-            */
-            mdlGlacialShield.transform.SetParent(ShieldPrefab.transform);
-            mdlGlacialShield.GetComponentInChildren<MeshRenderer>().material = Utils.Paths.Material.matIceOrbCore.Load<Material>();
-            mdlGlacialShield.transform.localScale *= 0.6f;
-
-            ProjectileTargetComponent target = ShieldPrefab.AddComponent<ProjectileTargetComponent>();
-
-            // GlacialRotationController glacialRotation = ShieldPrefab.AddComponent<GlacialRotationController>();
-
-            var shieldCharacterBody = ShieldPrefab.AddComponent<CharacterBody>();
-            shieldCharacterBody.baseMaxHealth = 60;
-            shieldCharacterBody.levelMaxHealth = 18;
-            var skillLocator = ShieldPrefab.AddComponent<SkillLocator>();
-            var shieldHealthComponent = ShieldPrefab.AddComponent<HealthComponent>();
-
-            ShieldPrefab.layer = LayerIndex.entityPrecise.intVal;
-
-            PrefabAPI.RegisterNetworkPrefab(ShieldPrefab);
-            ContentAddition.AddProjectile(ShieldPrefab);
+            IcePillarPrefab = Utils.Paths.GameObject.MageIcewallPillarProjectile.Load<GameObject>().InstantiateClone("GlacialPillar");
+            IcePillarPrefab.RemoveComponent<ProjectileDamage>();
+            IcePillarPrefab.RemoveComponent<ProjectileImpactExplosion>();
+            IcePillarPrefab.RemoveComponent<ProjectileController>();
+            IcePillarPrefab.layer = LayerIndex.world.intVal;
+            IcePillarPrefab.transform.localScale *= 2;
+            
             base.Init();
         }
 
@@ -137,17 +98,17 @@ namespace WellRoundedBalance.Elites
             }
 
             bool flag = sender.HasBuff(RoR2Content.Buffs.AffixWhite);
-            GlacialShieldsController controller = sender.GetComponent<GlacialShieldsController>();
+            GlacialPillarController controller = sender.GetComponent<GlacialPillarController>();
 
             if (flag != controller)
             {
                 if (flag)
                 {
-                    sender.gameObject.AddComponent<GlacialShieldsController>();
+                    sender.gameObject.AddComponent<GlacialPillarController>();
                 }
                 else
                 {
-                    sender.gameObject.RemoveComponent<GlacialShieldsController>();
+                    sender.gameObject.RemoveComponent<GlacialPillarController>();
                 }
             }
         }
@@ -231,85 +192,65 @@ namespace WellRoundedBalance.Elites
                 }
             }
         }
-    }
 
-    public class GlacialShieldsController : MonoBehaviour
-    {
-        /*
-        private float stopwatch = 0f;
-        private float delay = 3f;
-        private float stopwatchClear = 0f;
-        private float delayClear = 9f;
-        private TeamIndex index;
-        private List<CharacterBody> bodies = new();
-
-        public void Start()
-        {
-            index = GetComponent<TeamComponent>().teamIndex;
+        public class GlacialPillar : MonoBehaviour {
+            public void Die(object s, EventArgs e) {
+                Destroy(base.gameObject);
+            }
         }
 
-        public void FixedUpdate()
-        {
-            stopwatch += Time.fixedDeltaTime;
-            stopwatchClear += Time.fixedDeltaTime;
-            if (stopwatch >= delay)
-            {
-                Main.WRBLogger.LogFatal("stopwatch is past delay");
-                stopwatch = 0f;
-                Collider[] cols = Physics.OverlapSphere(transform.position, 25).Where(x => x.GetComponent<CharacterBody>()).ToArray();
-                foreach (Collider col in cols)
-                {
-                    CharacterBody body = col.GetComponent<CharacterBody>();
-                    if (body.teamComponent.teamIndex == index && body != GetComponent<CharacterBody>() && !bodies.Contains(body))
-                    {
-                        Main.WRBLogger.LogFatal("found body, initializing orbiter");
-                        bodies.Add(body);
-                        var projectileOwnerOrbiter = body.gameObject.AddComponent<ProjectileOwnerOrbiter>();
-                        var lunarSunProjectileController = body.gameObject.AddComponent<LunarSunProjectileController>();
-                        InitializeOrbiter(body, projectileOwnerOrbiter, lunarSunProjectileController);
-                    }
+        public class GlacialPillarController : MonoBehaviour {
+            private int totalActive;
+            private int maxActive = 4;
+            internal EventHandler onDeath;
+            private float stopwatch = 0f;
+            private float delay = 5f;
+
+            public void FixedUpdate() {
+                stopwatch += Time.fixedDeltaTime;
+                if (totalActive < maxActive && stopwatch >= delay) {
+                    stopwatch = 0f;
+
+                    Vector3 point = PickTeleportPosition();
+                    GameObject pillar = GameObject.Instantiate(IcePillarPrefab, point, Quaternion.Euler(-90, 0, 0));
+                    onDeath += pillar.GetComponent<GlacialPillar>().Die;
+                    totalActive++;
                 }
             }
 
-            if (stopwatchClear >= delayClear)
-            {
-                Main.WRBLogger.LogFatal("deleting bodies");
-                stopwatchClear = 0f;
-                bodies.Clear();
+            public void OnDestroy() {
+                onDeath?.Invoke(null, null);
             }
-        }
 
-        public void InitializeOrbiter(CharacterBody body, ProjectileOwnerOrbiter orbiter, LunarSunProjectileController controller)
-        {
-            float randomRadius = body.radius + 2f + UnityEngine.Random.Range(0.25f, 0.25f);
-            float what = randomRadius / 2f;
-            what *= what;
-            float degreesPerSecond = 180f * Mathf.Pow(0.9f, what);
-            Quaternion quaternion = Quaternion.AngleAxis(UnityEngine.Random.Range(0f, 360f), Vector3.up);
-            Quaternion quaternion2 = Quaternion.AngleAxis(UnityEngine.Random.Range(0f, 0f), Vector3.forward);
-            Vector3 planeNormal = quaternion * quaternion2 * Vector3.up;
-            float initialDegreesFromOwnerForward = UnityEngine.Random.Range(0f, 360f);
-            orbiter.Initialize(planeNormal, randomRadius, degreesPerSecond, initialDegreesFromOwnerForward);
-            onDisabled += DestroyOrbiter;
-            Main.WRBLogger.LogFatal("initialized orbiter");
-            void DestroyOrbiter(GlacialShieldsController glacialShield)
+            public void OnDisable() {
+                onDeath?.Invoke(null, null);
+            }
+
+            public Vector3 PickTeleportPosition()
             {
-                if (controller)
+                if (!SceneInfo.instance || !SceneInfo.instance.groundNodes)
                 {
-                    Main.WRBLogger.LogFatal("trying to detonate lunarSunProjectileController");
-                    controller.Detonate();
+                    return transform.position;
                 }
+
+                NodeGraph.Node[] nodes = SceneInfo.instance.groundNodes.nodes;
+                return PickValidPositions(10, 40, nodes).ToList().GetRandom();
+            }
+
+            public Vector3[] PickValidPositions(float min, float max, NodeGraph.Node[] nodes)
+            {
+                NodeGraph.Node[] validNodes = nodes.Where(x => Vector3.Distance(x.position, transform.position) > min && Vector3.Distance(x.position, transform.position) < max).ToArray();
+                if (validNodes.Length <= 1)
+                {
+                    return new Vector3[] { transform.position };
+                }
+                List<Vector3> guh = new();
+                foreach (NodeGraph.Node node in validNodes)
+                {
+                    guh.Add(node.position);
+                }
+                return guh.ToArray();
             }
         }
-
-        public event Action<GlacialShieldsController> onDisabled;
-
-        public void OnDestroy()
-        {
-            Main.WRBLogger.LogFatal("ondisabled event called in ondestroy");
-            onDisabled?.Invoke(this);
-            onDisabled = null;
-        }
-        */
     }
 }

@@ -32,6 +32,9 @@ namespace WellRoundedBalance.Items.Greens
         [ConfigField("Buff Duration Per Stack", 0f)]
         public static float buffDurationPerStack;
 
+        private static int GetMaxBuffs(int c) => baseMaxBuffCount + (maxBuffCountPerStack * (c - 1));
+        private static float GetDuration(int c) => baseBuffDuration + (buffDurationPerStack * (c - 1));
+
         public override void Init()
         {
             var arrow = Utils.Paths.Texture2D.texBuffKillMoveSpeed.Load<Texture2D>();
@@ -54,52 +57,6 @@ namespace WellRoundedBalance.Items.Greens
             IL.RoR2.GlobalEventManager.OnCharacterDeath += GlobalEventManager_OnCharacterDeath;
             GlobalEventManager.onCharacterDeathGlobal += GlobalEventManager_onCharacterDeathGlobal;
             RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
-            On.RoR2.CharacterBody.AddTimedBuff_BuffDef_float += CharacterBody_AddTimedBuff_BuffDef_float;
-        }
-
-        private void CharacterBody_AddTimedBuff_BuffDef_float(On.RoR2.CharacterBody.orig_AddTimedBuff_BuffDef_float orig, CharacterBody self, BuffDef buffDef, float duration)
-        {
-            if (buffDef == speedBuff && self.inventory)
-            {
-                var stack = self.inventory.GetItemCount(DLC1Content.Items.MoveSpeedOnKill);
-                var iter = 0;
-                var iter2 = -1;
-                var timer = 999f;
-                if (stack > 0)
-                {
-                    var maxBuffCount = baseMaxBuffCount + maxBuffCountPerStack * (stack - 1);
-                    for (int i = 0; i < self.timedBuffs.Count; i++)
-                    {
-                        var buffIndex = self.timedBuffs[i];
-                        if (buffIndex.buffIndex == speedBuff.buffIndex)
-                        {
-                            iter++;
-                            if (buffIndex.timer < timer)
-                            {
-                                iter2 = i;
-                                timer = buffIndex.timer;
-                            }
-                        }
-                    }
-
-                    if (iter < maxBuffCount)
-                    {
-                        self.timedBuffs.Add(new CharacterBody.TimedBuff()
-                        {
-                            buffIndex = buffDef.buffIndex,
-                            timer = duration
-                        });
-                        self.AddBuff(buffDef);
-                    }
-
-                    if (iter2 > -1)
-                    {
-                        self.timedBuffs[iter2].timer = duration;
-                    }
-                }
-            }
-
-            orig(self, buffDef, duration);
         }
 
         private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
@@ -126,7 +83,7 @@ namespace WellRoundedBalance.Items.Greens
             {
                 var maxDuration = baseBuffDuration + buffDurationPerStack * (stack - 1);
 
-                attackerBody.AddTimedBuff(speedBuff, maxDuration);
+                HandleBuffLogic(damageReport.attackerBody);
 
                 EffectData effectData = new()
                 {
@@ -150,6 +107,25 @@ namespace WellRoundedBalance.Items.Greens
                     effectData.rotation = attackerBody.transform.rotation;
                 }
                 EffectManager.SpawnEffect(LegacyResourcesAPI.Load<GameObject>("Prefabs/Effects/MoveSpeedOnKillActivate"), effectData, true);
+            }
+        }
+
+        private static void HandleBuffLogic(CharacterBody target) {
+            int harpoons = target.inventory.GetItemCount(DLC1Content.Items.MoveSpeedOnKill);
+            int maxBuffs = GetMaxBuffs(harpoons);
+            float duration = GetDuration(harpoons);
+            int toApply = target.HasBuff(speedBuff) ? 1 : 2;
+
+            for (int i = 0; i < toApply; i++) {
+                target.AddTimedBuff(speedBuff, duration, maxBuffs);
+            }
+
+            for (int i = 0; i < target.timedBuffs.Count; i++) {
+                CharacterBody.TimedBuff buff = target.timedBuffs[i];
+                if (buff.buffIndex != speedBuff.buffIndex) {
+                    continue;
+                }
+                buff.timer = duration;
             }
         }
 
