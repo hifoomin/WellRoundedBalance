@@ -476,14 +476,6 @@ namespace WellRoundedBalance
             return false;
         }
 
-        public static List<string> SortAlphabetically(List<string> input)
-        {
-            input.Sort();
-            return input;
-
-            // TODO - doesnt do anything currently, cant figure out a way to sort item names, etc alphabetically including the semicolons, so whites are first, then greens etc.
-        }
-
         private void InfernoCompat()
         {
             if (InfernoLoaded)
