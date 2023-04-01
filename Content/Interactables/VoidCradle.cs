@@ -106,6 +106,7 @@ namespace WellRoundedBalance.Interactables
                 c.titleColor = ColorCatalog.GetColor(ColorCatalog.ColorIndex.VoidItemDark);
                 c.overrideTitleText = "Transmutes into: " + Language.GetString(def.nameToken);
                 c.bodyToken = def.descriptionToken;
+                c.titleToken = "";
                 tp.SetContent(c);
             };
 
@@ -208,6 +209,7 @@ namespace WellRoundedBalance.Interactables
                 float amount = body.healthComponent.fullCombinedHealth * 0.1f;
                 float curse = Mathf.RoundToInt(amount / body.healthComponent.fullCombinedHealth * 100f);
                 controller.networkUIPromptController.SetParticipantMaster(null);
+
                 for (int j = 0; j < curse; j++)
                 {
                     body.AddBuff(RoR2Content.Buffs.PermanentCurse);
