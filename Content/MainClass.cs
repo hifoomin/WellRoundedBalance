@@ -307,12 +307,19 @@ namespace WellRoundedBalance
             WRBLogger.LogDebug("Initialized " + SharedBase.initList.Count + " classes");
             On.RoR2.UI.MainMenu.BaseMainMenuScreen.OnEnter += BaseMainMenuScreen_OnEnter;
 
-
             if (PieceOfShitLoaded)
             {
-                WolfoCompat.h();
+                WRBLogger.LogDebug("Wolfo QoL detected");
+                On.RoR2.PickupPickerController.OnDisplayBegin += PickupPickerController_OnDisplayBegin;
             }
         }
+
+        private void PickupPickerController_OnDisplayBegin(On.RoR2.PickupPickerController.orig_OnDisplayBegin orig, PickupPickerController self, NetworkUIPromptController networkUIPromptController, LocalUser localUser, CameraRigController cameraRigController)
+        {
+            orig(self, networkUIPromptController, localUser, cameraRigController);
+            return;
+        }
+
         private void BaseMainMenuScreen_OnEnter(On.RoR2.UI.MainMenu.BaseMainMenuScreen.orig_OnEnter orig, RoR2.UI.MainMenu.BaseMainMenuScreen self, RoR2.UI.MainMenu.MainMenuController mainMenuController)
         {
             orig(self, mainMenuController);
@@ -491,44 +498,6 @@ namespace WellRoundedBalance
                 return Inferno.Main.ProjectileSpeed.Value;
             }
             return 1f;
-        }
-    }
-
-    public class WolfoCompat {
-        [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)]
-        public static void h() {
-            Hook hook = new(
-                    typeof(WolfoQualityOfLife.WolfoQualityOfLife).GetMethod(nameof(WolfoQualityOfLife.WolfoQualityOfLife.PickupPickerController_OnDisplayBegin), (BindingFlags)(-1)),
-                    typeof(Main).GetMethod(nameof(WolfoCompat.thewolfogame), (BindingFlags)(-1))
-                );
-        }
-        public delegate void orig_h(WolfoQualityOfLife.WolfoQualityOfLife self, On.RoR2.PickupPickerController.orig_OnDisplayBegin o, PickupPickerController p, NetworkUIPromptController n, LocalUser l, CameraRigController c);
-        [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)]
-        public static void thewolfogame(orig_h orig, WolfoQualityOfLife.WolfoQualityOfLife self, On.RoR2.PickupPickerController.orig_OnDisplayBegin o, PickupPickerController p, NetworkUIPromptController n, LocalUser l, CameraRigController c) {
-            o.Invoke(p, n, l, c);
-            return; // bottom code isnt working and i dont know why
-            if (!p) {
-                return;
-            }
-            PickupPickerPanel panelInstanceController = p.panelInstanceController;
-            if (!panelInstanceController || !panelInstanceController.buttonContainer) {
-                return;
-            }
-            for (int i = 1; i < panelInstanceController.buttonContainer.childCount; i++)
-            {
-                TooltipProvider component = ((Component)((Transform)panelInstanceController.buttonContainer).GetChild(i)).GetComponent<TooltipProvider>();
-                if (component && component.titleToken.StartsWith("EQUIPMENT_"))
-                {
-                    if (component.titleColor.r == 1f && component.titleColor.g > 0.9f)
-                    {
-                        component.titleColor = WolfoQualityOfLife.WolfoQualityOfLife.FakeYellowEquip;
-                    }
-                    else if (component.titleColor.b == 1f)
-                    {
-                        component.titleColor = WolfoQualityOfLife.WolfoQualityOfLife.FakeBlueEquip;
-                    }
-                }
-            }
         }
     }
 }
