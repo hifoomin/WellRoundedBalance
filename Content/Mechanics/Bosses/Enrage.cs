@@ -32,9 +32,9 @@ namespace WellRoundedBalance.Mechanics.Bosses
                 var increase = Mathf.Clamp01(1f - sender.healthComponent.combinedHealthFraction);
                 if (Run.instance.selectedDifficulty >= DifficultyIndex.Eclipse6 && Eclipse6.instance.isEnabled)
                 {
-                    args.moveSpeedMultAdd += increase * (maximumMovementSpeedGain * 2f);
-                    args.attackSpeedMultAdd += increase * (maximumAttackSpeedGain * 2f);
-                    args.cooldownMultAdd -= increase * (maximumCooldownReductionGain * 2f);
+                    args.moveSpeedMultAdd += increase * (maximumMovementSpeedGain * 1.6f);
+                    args.attackSpeedMultAdd += increase * (maximumAttackSpeedGain * 1.6f);
+                    args.cooldownMultAdd -= increase * (maximumCooldownReductionGain * 1.6f);
                 }
                 else
                 {

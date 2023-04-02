@@ -1,5 +1,6 @@
 ﻿using Mono.Cecil.Cil;
 using MonoMod.Cil;
+using RoR2.Items;
 using System;
 
 namespace WellRoundedBalance.Items.Whites
@@ -9,9 +10,9 @@ namespace WellRoundedBalance.Items.Whites
         public override string Name => ":: Items : Whites :: Warbanner";
         public override ItemDef InternalPickup => RoR2Content.Items.WardOnLevel;
 
-        public override string PickupText => $"Drop a Warbanner on level up or starting the Teleporter event. Grants allies{(enableMovementSpeed ? " movement speed" : "")}{(enableAttackSpeed ? (enableMovementSpeed ? " and" : "") + " attack speed" : "")}.";
+        public override string PickupText => $"Drop a Warbanner upon levelling up or encountering a boss. Grants allies{(enableMovementSpeed ? " movement speed" : "")}{(enableAttackSpeed ? (enableMovementSpeed ? " and" : "") + " attack speed" : "")}.";
 
-        public override string DescText => "On <style=cIsUtility>level up</style> or starting the <style=cIsUtility>Teleporter event</style>, drop a banner that strengthens all allies" +
+        public override string DescText => "Upon <style=cIsUtility>levelling up</style> or <style=cIsUtility>encountering a boss</style>, drop a banner that strengthens all allies" +
             StackDesc(baseRadius, radiusPerStack, init => $" within <style=cIsUtility>{m(init)}</style>{{Stack}}", m) + "." +
             StackDesc(attackSpeedAndMovementSpeed, attackSpeedAndMovementSpeedStack, init => $" Raise {(enableMovementSpeed ? " <style=cIsUtility>movement speed</style>" : "")}{(enableAttackSpeed ? (enableMovementSpeed ? " and" : "") + " <style=cIsDamage>attack speed</style>" : "")} by <style=cIsDamage>{d(init)}</style>{{Stack}}.", d);
 
@@ -49,6 +50,46 @@ namespace WellRoundedBalance.Items.Whites
             IL.RoR2.TeleporterInteraction.ChargingState.OnEnter += Change;
             IL.RoR2.Items.WardOnLevelManager.OnCharacterLevelUp += Change;
             RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
+            // On.EntityStates.Missions.BrotherEncounter.BrotherEncounterPhaseBaseState.OnEnter += BrotherEncounterPhaseBaseState_OnEnter;
+            // On.EntityStates.Missions.Goldshores.GoldshoresBossfight.SpawnBoss += GoldshoresBossfight_SpawnBoss;
+            On.RoR2.ScriptedCombatEncounter.BeginEncounter += ScriptedCombatEncounter_BeginEncounter;
+        }
+
+        private void ScriptedCombatEncounter_BeginEncounter(On.RoR2.ScriptedCombatEncounter.orig_BeginEncounter orig, ScriptedCombatEncounter self)
+        {
+            orig(self);
+            if (NetworkServer.active)
+                SpawnWarbanner();
+        }
+
+        private void GoldshoresBossfight_SpawnBoss(On.EntityStates.Missions.Goldshores.GoldshoresBossfight.orig_SpawnBoss orig, EntityStates.Missions.Goldshores.GoldshoresBossfight self)
+        {
+            orig(self);
+            SpawnWarbanner();
+        }
+
+        private void SpawnWarbanner()
+        {
+            foreach (CharacterBody body in CharacterBody.readOnlyInstancesList)
+            {
+                if (body.isPlayerControlled && body.inventory)
+                {
+                    var stack = body.inventory.GetItemCount(RoR2Content.Items.WardOnLevel);
+                    if (stack > 0)
+                    {
+                        var warbanner = UnityEngine.Object.Instantiate(WardOnLevelManager.wardPrefab, body.transform.position, Quaternion.identity);
+                        warbanner.GetComponent<TeamFilter>().teamIndex = body.teamComponent.teamIndex;
+                        warbanner.GetComponent<BuffWard>().Networkradius = baseRadius + radiusPerStack * (stack - 1);
+                        NetworkServer.Spawn(warbanner);
+                    }
+                }
+            }
+        }
+
+        private void BrotherEncounterPhaseBaseState_OnEnter(On.EntityStates.Missions.BrotherEncounter.BrotherEncounterPhaseBaseState.orig_OnEnter orig, EntityStates.Missions.BrotherEncounter.BrotherEncounterPhaseBaseState self)
+        {
+            orig(self);
+            SpawnWarbanner();
         }
 
         public static void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)

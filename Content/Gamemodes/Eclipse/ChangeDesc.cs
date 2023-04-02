@@ -11,7 +11,7 @@
             var e3 = "\n<mspace=0.5em>(3)</mspace> Elite Enemies are <style=cIsHealth>stronger in unique ways</style></style>";
             var e4 = "\n<mspace=0.5em>(4)</mspace> Enemies: <style=cIsHealth>+40% Faster</style></style>";
             var e5 = "\n<mspace=0.5em>(5)</mspace> Combat Director <style=cIsHealth>gains +3% credits every stage</style></style>";
-            var e6 = "\n<mspace=0.5em>(6)</mspace> Bosses: <style=cIsHealth>+100% More Aggressive</style></style>";
+            var e6 = "\n<mspace=0.5em>(6)</mspace> Bosses: <style=cIsHealth>+60% More Aggressive</style></style>";
             var e7 = "\n<mspace=0.5em>(7)</mspace> Enemy Cooldowns: <style=cIsHealth>-50%</style></style>";
             var e8 = "\n<mspace=0.5em>(8)</mspace> Allies recieve <style=cIsHealth>permanent damage</style></style>";
             var e8prefix = "\"You only celebrate in the light... because I allow it.\" \n\n";

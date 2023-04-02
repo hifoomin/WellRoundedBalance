@@ -45,13 +45,14 @@ namespace WellRoundedBalance
     [BepInDependency(ItemAPI.PluginGUID)]
     [BepInDependency(DamageAPI.PluginGUID)]
     [BepInDependency(EliteAPI.PluginGUID)]
+    [BepInDependency(DotAPI.PluginGUID)]
     [BepInPlugin(PluginGUID, PluginName, PluginVersion)]
     public class Main : BaseUnityPlugin
     {
         public const string PluginGUID = PluginAuthor + "." + PluginName;
         public const string PluginAuthor = "BALLS";
         public const string PluginName = "WellRoundedBalance";
-        public const string PluginVersion = "1.1.5";
+        public const string PluginVersion = "1.1.6";
         public static ConfigFile WRBConfig;
         public static ConfigFile WRBItemConfig;
         public static ConfigFile WRBMechanicConfig;

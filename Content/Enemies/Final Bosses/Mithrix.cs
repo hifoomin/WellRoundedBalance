@@ -52,6 +52,8 @@ namespace WellRoundedBalance.Enemies.FinalBosses
             On.EntityStates.Missions.BrotherEncounter.Phase2.OnEnter += Phase2_OnEnter;
             On.EntityStates.Missions.BrotherEncounter.Phase3.OnEnter += Phase3_OnEnter;
             On.EntityStates.Missions.BrotherEncounter.Phase4.OnEnter += Phase4_OnEnter;
+            On.EntityStates.Missions.BrotherEncounter.BrotherEncounterPhaseBaseState.OnExit += BrotherEncounterPhaseBaseState_OnExit;
+            On.EntityStates.Missions.BrotherEncounter.BrotherEncounterPhaseBaseState.FixedUpdate += BrotherEncounterPhaseBaseState_FixedUpdate;
             On.EntityStates.BrotherMonster.HoldSkyLeap.OnEnter += HoldSkyLeap_OnEnter;
             On.EntityStates.BrotherMonster.ExitSkyLeap.OnEnter += ExitSkyLeap_OnEnter;
             On.EntityStates.BrotherMonster.WeaponSlam.OnEnter += WeaponSlam_OnEnter;
@@ -68,6 +70,54 @@ namespace WellRoundedBalance.Enemies.FinalBosses
             On.EntityStates.BrotherMonster.TrueDeathState.OnEnter += TrueDeathState_OnEnter;
             On.EntityStates.BrotherMonster.UltChannelState.OnEnter += UltChannelState_OnEnter;
             On.EntityStates.BrotherHaunt.FireRandomProjectiles.OnEnter += FireRandomProjectiles_OnEnter;
+            On.RoR2.MasterSummon.Perform += MasterSummon_Perform;
+        }
+
+        private void BrotherEncounterPhaseBaseState_OnExit(On.EntityStates.Missions.BrotherEncounter.BrotherEncounterPhaseBaseState.orig_OnExit orig, EntityStates.Missions.BrotherEncounter.BrotherEncounterPhaseBaseState self)
+        {
+            if (self is EntityStates.Missions.BrotherEncounter.Phase4)
+            {
+                disableAllyNPC = false;
+            }
+            orig(self);
+        }
+
+        public static bool disableAllyNPC = false;
+
+        private CharacterMaster MasterSummon_Perform(On.RoR2.MasterSummon.orig_Perform orig, MasterSummon self)
+        {
+            var master = self.masterPrefab.GetComponent<CharacterMaster>();
+            if (disableAllyNPC && NetworkServer.active)
+            {
+                if (master && (self.teamIndexOverride == TeamIndex.Player || master.teamIndex == TeamIndex.Player))
+                    return null;
+            }
+            return orig(self);
+        }
+
+        public static float timer;
+        public static float interval = 0.1f;
+
+        private void BrotherEncounterPhaseBaseState_FixedUpdate(On.EntityStates.Missions.BrotherEncounter.BrotherEncounterPhaseBaseState.orig_FixedUpdate orig, EntityStates.Missions.BrotherEncounter.BrotherEncounterPhaseBaseState self)
+        {
+            if (self is EntityStates.Missions.BrotherEncounter.Phase4 && NetworkServer.active)
+            {
+                disableAllyNPC = true;
+
+                timer += Time.fixedDeltaTime;
+                if (timer >= interval)
+                {
+                    for (int i = 0; i < CharacterBody.readOnlyInstancesList.Count; i++)
+                    {
+                        var body = CharacterBody.readOnlyInstancesList[i];
+                        if (body.teamComponent.teamIndex == TeamIndex.Player && !body.isPlayerControlled)
+                        {
+                            body.healthComponent.Suicide();
+                        }
+                    }
+                }
+            }
+            orig(self);
         }
 
         private void UltChannelState_OnEnter(On.EntityStates.BrotherMonster.UltChannelState.orig_OnEnter orig, EntityStates.BrotherMonster.UltChannelState self)
@@ -401,6 +451,8 @@ namespace WellRoundedBalance.Enemies.FinalBosses
                         cb.sprintingSpeedMultiplier = phase4SprintingSpeedMultiplier;
                         cb.baseMaxHealth = phase4BaseMaxHealth;
                         cb.levelMaxHealth = phase4BaseMaxHealth * 0.3f;
+                        cb.baseDamage = 8f;
+                        cb.levelDamage = 1.6f;
                         if (removeFallDamage)
                         {
                             cb.bodyFlags |= CharacterBody.BodyFlags.IgnoreFallDamage;

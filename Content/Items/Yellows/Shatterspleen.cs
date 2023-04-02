@@ -2,17 +2,25 @@
 
 namespace WellRoundedBalance.Items.Yellows
 {
-    public class Shatterspleen : ItemBase
+    public class Shatterspleen : ItemBase<Shatterspleen>
     {
         public override string Name => ":: Items :::: Yellows :: Shatterspleen";
         public override ItemDef InternalPickup => RoR2Content.Items.BleedOnHitAndExplode;
 
         public override string PickupText => "Critical strikes always bleed enemies. Bleeding enemies now explode.";
 
-        public override string DescText => "<style=cIsDamage>Critical Strikes bleed</style> enemies for <style=cIsDamage>240%</style> base damage. <style=cIsDamage>Bleeding</style> enemies <style=cIsDamage>explode</style> on death for <style=cIsDamage>" + d(baseExplosionDamage) + "</style> <style=cStack>(+" + d(baseExplosionDamage) + " per stack)</style> damage.";
+        public override string DescText => "<style=cIsDamage>Critical Strikes bleed</style> enemies up to <style=cIsDamage>" + baseBleedCapPerTarget + "</style>" +
+            (bleedCapPerTargetPerStack > 0 ? " <style=cStack>(+" + bleedCapPerTargetPerStack + " per stack)</style>" : "") +
+            " times for <style=cIsDamage>240%</style> base damage. <style=cIsDamage>Bleeding</style> enemies <style=cIsDamage>explode</style> on death for <style=cIsDamage>" + d(baseExplosionDamage) + "</style> <style=cStack>(+" + d(baseExplosionDamage) + " per stack)</style> damage.";
 
         [ConfigField("Base Explosion Damage", "Decimal.", 2f)]
         public static float baseExplosionDamage;
+
+        [ConfigField("Base Bleed Cap Per Target", "", 16)]
+        public static int baseBleedCapPerTarget;
+
+        [ConfigField("Bleed Cap Per Target Per Stack", "", 0)]
+        public static int bleedCapPerTargetPerStack;
 
         public override void Init()
         {

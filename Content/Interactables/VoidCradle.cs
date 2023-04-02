@@ -106,7 +106,7 @@ namespace WellRoundedBalance.Interactables
                 c.titleColor = ColorCatalog.GetColor(ColorCatalog.ColorIndex.VoidItemDark);
                 c.overrideTitleText = "Transmutes into: " + Language.GetString(def.nameToken);
                 c.bodyToken = def.descriptionToken;
-                c.titleToken = "";
+                c.titleToken = "gdfgdfgdfghgh";
                 tp.SetContent(c);
             };
 
