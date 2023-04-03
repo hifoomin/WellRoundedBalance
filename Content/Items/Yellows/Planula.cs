@@ -19,7 +19,7 @@ namespace WellRoundedBalance.Items.Yellows
             sunPrefabLessPP = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.GrandParentSun.Load<GameObject>(), "THEFUCKINGSUN");
             var postProcessingObject = sunPrefabLessPP.transform.GetChild(0).GetChild(0);
             var postProcessVolume = postProcessingObject.GetComponent<PostProcessVolume>();
-            postProcessVolume.weight = 0.1f;
+            postProcessVolume.weight = 1f;
 
             var profile = postProcessVolume.sharedProfile;
             var bloom = profile.GetSetting<Bloom>();

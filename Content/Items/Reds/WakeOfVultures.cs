@@ -1,4 +1,6 @@
+using Mono.Cecil.Cil;
 using MonoMod.Cil;
+using UnityEngine.UIElements;
 
 namespace WellRoundedBalance.Items.Reds
 {
@@ -76,21 +78,19 @@ namespace WellRoundedBalance.Items.Reds
             orig(self, damage);
         }
 
-        private void DisableVanilla(ILContext context)
+        private void DisableVanilla(ILContext il)
         {
-            ILCursor c = new(context);
-            bool found = c.TryGotoNext(MoveType.After,
-                x => x.MatchLdloc(69),
-                x => x.MatchLdcI4(0)
-            );
+            ILCursor c = new(il);
 
-            if (found)
+            if (c.TryGotoNext(MoveType.Before,
+                x => x.MatchLdsfld(typeof(RoR2Content.Items), "HeadHunter")))
             {
-                c.Prev.Operand = int.MaxValue;
+                c.Remove();
+                c.Emit<Useless>(OpCodes.Ldsfld, nameof(Useless.uselessItem));
             }
             else
             {
-                Logger.LogError("Failed to apply Wake of Vultures Deletion hook");
+                Main.WRBLogger.LogError("Failed to apply Wake of Vultures Deletion hook");
             }
         }
 

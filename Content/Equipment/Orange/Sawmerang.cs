@@ -1,4 +1,5 @@
 ﻿using WellRoundedBalance.Items;
+using WellRoundedBalance.Misc;
 
 namespace WellRoundedBalance.Equipment.Orange
 {
@@ -47,13 +48,21 @@ namespace WellRoundedBalance.Equipment.Orange
 
         private void Changes()
         {
-            var saw = Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Saw/Sawmerang.prefab").WaitForCompletion();
-            saw.GetComponent<BoomerangProjectile>().travelSpeed = speed;
-            saw.GetComponent<BoomerangProjectile>().distanceMultiplier = distanceMultiplier;
-            saw.GetComponent<ProjectileOverlapAttack>().damageCoefficient = frontSawDamage;
-            saw.GetComponent<ProjectileOverlapAttack>().overlapProcCoefficient = frontSawProcCoefficient;
-            saw.GetComponent<ProjectileDotZone>().damageCoefficient = returningSawDamage;
-            saw.GetComponent<ProjectileDotZone>().overlapProcCoefficient = returningSawProcCoefficient;
+            var saw = Utils.Paths.GameObject.Sawmerang.Load<GameObject>();
+            var destroyStuckObject = saw.AddComponent<DestroyStuckObject>();
+            destroyStuckObject.initialDelay = 1.3f;
+            var projectileOverlapAttack = saw.GetComponent<ProjectileOverlapAttack>();
+            var boomerangProjectile = saw.GetComponent<BoomerangProjectile>();
+            var projectileDotZone = saw.GetComponent<ProjectileDotZone>();
+
+            boomerangProjectile.travelSpeed = speed;
+            boomerangProjectile.distanceMultiplier = distanceMultiplier;
+
+            projectileOverlapAttack.damageCoefficient = frontSawDamage;
+            projectileOverlapAttack.overlapProcCoefficient = frontSawProcCoefficient;
+
+            projectileDotZone.damageCoefficient = returningSawDamage * (1f / 7f);
+            projectileDotZone.overlapProcCoefficient = returningSawProcCoefficient;
         }
     }
 }

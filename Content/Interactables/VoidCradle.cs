@@ -44,19 +44,21 @@ namespace WellRoundedBalance.Interactables
 
             vradle = Utils.Paths.InteractableSpawnCard.iscVoidChest.Load<InteractableSpawnCard>();
 
-            def = new();
-            def.buildCostString = delegate (CostTypeDef def, CostTypeDef.BuildCostStringContext c)
+            def = new()
             {
-                c.stringBuilder.Append("<style=cDeath>10% Curse</style>");
-            };
+                buildCostString = delegate (CostTypeDef def, CostTypeDef.BuildCostStringContext c)
+                {
+                    c.stringBuilder.Append("<style=cDeath>10% Curse</style>");
+                },
 
-            def.isAffordable = delegate (CostTypeDef def, CostTypeDef.IsAffordableContext c)
-            {
-                return HasAtLeastOneItem(c.activator.GetComponent<CharacterBody>().inventory);
-            };
+                isAffordable = delegate (CostTypeDef def, CostTypeDef.IsAffordableContext c)
+                {
+                    return HasAtLeastOneItem(c.activator.GetComponent<CharacterBody>().inventory);
+                },
 
-            def.payCost = delegate (CostTypeDef def, CostTypeDef.PayCostContext c)
-            {
+                payCost = delegate (CostTypeDef def, CostTypeDef.PayCostContext c)
+                {
+                }
             };
 
             On.RoR2.CostTypeCatalog.Init += (orig) =>
@@ -104,15 +106,19 @@ namespace WellRoundedBalance.Interactables
                 c.titleColor = ColorCatalog.GetColor(ColorCatalog.ColorIndex.VoidItemDark);
                 c.overrideTitleText = "Transmutes into: " + Language.GetString(def.nameToken);
                 c.bodyToken = def.descriptionToken;
+                c.titleToken = "gdfgdfgdfghgh";
                 tp.SetContent(c);
             };
 
-            On.RoR2.SceneDirector.SelectCard += (orig, self, deck, max) => {
+            On.RoR2.SceneDirector.SelectCard += (orig, self, deck, max) =>
+            {
                 DirectorCard card = null;
-                for (int i = 0; i < 10; i++) {
+                for (int i = 0; i < 10; i++)
+                {
                     DirectorCard next = orig(self, deck, max);
-                    if (next.spawnCard == vradle && ShouldBlockCradles()) {
-                        Main.WRBLogger.LogInfo("No players have corruptible items, blocking vradle spawn");
+                    if (next.spawnCard == vradle && ShouldBlockCradles())
+                    {
+                        // Main.WRBLogger.LogError("No players have corruptible items, blocking vradle spawn");
                         continue;
                     }
                     card = next;
@@ -122,10 +128,19 @@ namespace WellRoundedBalance.Interactables
             };
         }
 
-        public static bool ShouldBlockCradles() {
-            foreach (PlayerCharacterMasterController pmc in PlayerCharacterMasterController.instances) {
-                if (pmc.master && HasAtLeastOneItem(pmc.master.inventory)) {
+        public static bool ShouldBlockCradles()
+        {
+            foreach (PlayerCharacterMasterController pmc in PlayerCharacterMasterController.instances)
+            {
+                if (pmc.master && HasAtLeastOneItem(pmc.master.inventory))
+                {
+                    // Main.WRBLogger.LogError("Should Block Cradles returned false");
                     return false;
+                }
+                else
+                {
+                    // Main.WRBLogger.LogError("Should Block Cradles returned TRUE");
+                    return true;
                 }
             }
 
@@ -140,14 +155,19 @@ namespace WellRoundedBalance.Interactables
                 {
                     return true;
                 }
+                else
+                {
+                    return false;
+                }
             }
-
             return false;
         }
 
         public static bool IsCorruptible(ItemIndex index)
         {
-            if (ItemCatalog.GetItemDef(index).tier == ItemTier.Boss) { // boss items cant be selected by vradles so dont return true 
+            if (ItemCatalog.GetItemDef(index).tier == ItemTier.Boss)
+            { // boss items cant be selected by vradles so dont return true
+                // Main.WRBLogger.LogError("ItemTier was boss");
                 return false;
             }
             ItemIndex item = RoR2.Items.ContagiousItemManager.GetTransformedItemIndex(index);
@@ -189,13 +209,15 @@ namespace WellRoundedBalance.Interactables
                 float amount = body.healthComponent.fullCombinedHealth * 0.1f;
                 float curse = Mathf.RoundToInt(amount / body.healthComponent.fullCombinedHealth * 100f);
                 controller.networkUIPromptController.SetParticipantMaster(null);
+
                 for (int j = 0; j < curse; j++)
                 {
                     body.AddBuff(RoR2Content.Buffs.PermanentCurse);
                 }
 
                 EntityStateMachine machine = GetComponent<EntityStateMachine>();
-                if (machine) {
+                if (machine)
+                {
                     machine.SetNextState(new EntityStates.Barrel.Opening());
                 }
             }
@@ -208,7 +230,8 @@ namespace WellRoundedBalance.Interactables
                     int c = 0;
                     foreach (ItemIndex index in body.inventory.itemAcquisitionOrder.OrderBy(x => UnityEngine.Random.value))
                     {
-                        if (hasSet) {
+                        if (hasSet)
+                        {
                             continue;
                         }
                         if (IsCorruptible(index))
@@ -230,7 +253,7 @@ namespace WellRoundedBalance.Interactables
                     if (options.Count >= 1)
                     {
                         hasSet = true;
-                        Debug.Log("starting UI");
+                        // Debug.Log("starting UI");
                         controller.SetOptionsInternal(options.ToArray());
                         controller.SetOptionsServer(options.ToArray());
                         controller.OnInteractionBegin(interactor);

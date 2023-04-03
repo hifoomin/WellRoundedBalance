@@ -1,6 +1,7 @@
 ﻿using MonoMod.Cil;
 using System;
 using UnityEngine.Events;
+using WellRoundedBalance.Misc;
 
 namespace WellRoundedBalance.Items.Greens
 {
@@ -76,7 +77,7 @@ namespace WellRoundedBalance.Items.Greens
 
                     hitBox.AddComponent<HitBox>();
 
-                    hitBox.transform.localScale = new Vector3(sizeMultiplier, sizeMultiplier, sizeMultiplier);
+                    hitBox.transform.localScale = new Vector3(sizeMultiplier * 1.2f, sizeMultiplier * 1.2f, sizeMultiplier * 1.2f);
 
                     shurikenProjectile.layer = 13;
                     hitBox.layer = 14;
@@ -168,6 +169,7 @@ namespace WellRoundedBalance.Items.Greens
 
         public static BoomerangProjectile boomerangProjectile;
         public static ProjectileOverlapAttack projectileOverlapAttack;
+        public static ProjectileDotZone projectileDotZone;
         public UnityEvent UnityGames = new();
 
         private void Changes()
@@ -182,7 +184,7 @@ namespace WellRoundedBalance.Items.Greens
             var projectileSingleTargetImpact = shurikenProjectile.GetComponent<ProjectileSingleTargetImpact>();
 
             var sphereCollider = shurikenProjectile.GetComponent<SphereCollider>();
-            sphereCollider.radius = sizeMultiplier / 5f;
+            sphereCollider.radius = sizeMultiplier / 10f;
 
             var projectileController = shurikenProjectile.GetComponent<ProjectileController>();
             projectileController.procCoefficient = procCoefficient;
@@ -207,7 +209,7 @@ namespace WellRoundedBalance.Items.Greens
                 boomerangProjectile.canHitWorld = true;
                 boomerangProjectile.distanceMultiplier = distanceMultiplier;
                 boomerangProjectile.impactSpark = Utils.Paths.GameObject.ShurikenImpact.Load<GameObject>();
-                // shurikenProjectile.AddComponent<DestroyStuckObject>();
+                shurikenProjectile.AddComponent<DestroyStuckObject>();
                 UnityGames.AddListener(OnFlyBack);
             }
 
@@ -222,23 +224,26 @@ namespace WellRoundedBalance.Items.Greens
 
                 UnityEngine.Object.Destroy(projectileSingleTargetImpact);
 
-                var projectileDotZone = shurikenProjectile.AddComponent<ProjectileDotZone>();
+                projectileDotZone = shurikenProjectile.AddComponent<ProjectileDotZone>();
                 projectileDotZone.damageCoefficient = 1f / 7f;
                 projectileDotZone.attackerFiltering = AttackerFiltering.NeverHitSelf;
                 projectileDotZone.impactEffect = Utils.Paths.GameObject.OmniImpactVFXSlash.Load<GameObject>();
                 projectileDotZone.forceVector = new Vector3(0f, 0f, 0f);
                 projectileDotZone.overlapProcCoefficient = procCoefficient;
-                projectileDotZone.fireFrequency = 30f;
-                projectileDotZone.resetFrequency = 10f;
+                projectileDotZone.fireFrequency = 8f;
+                projectileDotZone.resetFrequency = -1f;
                 projectileDotZone.lifetime = -1f;
             }
         }
 
         public void OnFlyBack()
         {
-            if (boomerangProjectile && projectileOverlapAttack && UnityGames != null)
+            if (boomerangProjectile && UnityGames != null)
             {
-                projectileOverlapAttack.ResetOverlapAttack();
+                if (projectileOverlapAttack)
+                    projectileOverlapAttack.ResetOverlapAttack();
+                if (projectileDotZone)
+                    projectileDotZone.ResetOverlap();
             }
         }
     }

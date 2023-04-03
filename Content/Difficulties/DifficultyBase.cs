@@ -25,7 +25,7 @@ namespace WellRoundedBalance.Difficulties
         {
             if (InternalDiff == DifficultyIndex.Invalid) return;
             DifficultyDef def = DifficultyCatalog.GetDifficultyDef(InternalDiff);
-            //Logger.LogMessage(def.descriptionToken);
+            def.descriptionToken += "_WRB";
             if (def != null) LanguageAPI.Add(def.descriptionToken, DescText);
         }
     }

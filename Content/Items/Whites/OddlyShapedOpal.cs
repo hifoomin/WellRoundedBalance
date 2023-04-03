@@ -77,28 +77,20 @@ namespace WellRoundedBalance.Items.Whites
 
     public class OddlyShapedOpalController : CharacterBody.ItemBehavior
     {
-        private void SetProvidingBuff(bool shouldProvideBuff)
+        private void Start()
         {
-            if (shouldProvideBuff == providingBuff) return;
-            providingBuff = shouldProvideBuff;
-            if (providingBuff)
-            {
-                body.AddBuff(OddlyShapedOpal.opalArmor);
-                return;
-            }
-            body.RemoveBuff(OddlyShapedOpal.opalArmor);
-        }
-
-        private void OnDisable()
-        {
-            SetProvidingBuff(false);
         }
 
         private void FixedUpdate()
         {
-            SetProvidingBuff(body.outOfCombat);
         }
 
-        private bool providingBuff;
+        private void OnEnable()
+        {
+        }
+
+        private void OnDisable()
+        {
+        }
     }
 }

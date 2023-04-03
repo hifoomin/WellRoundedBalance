@@ -9,6 +9,7 @@ namespace WellRoundedBalance.Equipment
         public abstract string PickupText { get; }
         public abstract string DescText { get; }
         public override ConfigFile Config => Main.WRBEquipmentConfig;
+
         public static event Action onTokenRegister;
 
         public override void Init()
@@ -18,12 +19,15 @@ namespace WellRoundedBalance.Equipment
         }
 
         [SystemInitializer(typeof(EquipmentCatalog))]
-        public static void OnEquipmentInitialized() { if (onTokenRegister != null) onTokenRegister(); }
+        public static void OnEquipmentInitialized()
+        { if (onTokenRegister != null) onTokenRegister(); }
 
         public void SetToken()
         {
             if (InternalPickup != null)
             {
+                InternalPickup.pickupToken += "_WRB";
+                InternalPickup.descriptionToken += "_WRB";
                 LanguageAPI.Add(InternalPickup.pickupToken, PickupText);
                 LanguageAPI.Add(InternalPickup.descriptionToken, DescText);
             };

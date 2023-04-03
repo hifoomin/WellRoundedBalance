@@ -8,6 +8,7 @@ namespace WellRoundedBalance.Items.Reds
         public static BuffDef venom;
         public static BuffDef armorReduction;
         public static BuffDef armorGain;
+        public static DotDef venomDot;
         public override string Name => ":: Items ::: Reds :: Symbiotic Scorpion";
         public override ItemDef InternalPickup => DLC1Content.Items.PermanentDebuffOnHit;
 
@@ -59,6 +60,20 @@ namespace WellRoundedBalance.Items.Reds
             ContentAddition.AddBuffDef(venom);
             ContentAddition.AddBuffDef(armorReduction);
             ContentAddition.AddBuffDef(armorGain);
+
+            venomDot = new DotDef
+            {
+                damageColorIndex = DamageColorIndex.SuperBleed,
+                interval = 0.2f,
+                resetTimerOnAdd = true,
+                damageCoefficient = 1f,
+                terminalTimedBuff = venom,
+                terminalTimedBuffDuration = 5f
+            };
+
+            DotAPI.RegisterDotDef(venomDot);
+
+            // dotapi is ****************************, dunno if i can make this work
 
             base.Init();
         }
