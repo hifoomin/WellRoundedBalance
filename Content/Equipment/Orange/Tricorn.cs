@@ -8,8 +8,9 @@ namespace WellRoundedBalance.Equipment.Orange {
 
         public override string DescText => $"<style=cIsUtility>Execute</style> a boss at or below <style=cDeath>30%</style> health and <style=cIsUtility>obtain its boss item</style>. Consumed on use.";
 
-        public override string Name => "Equipment :: Trophy Hunters Tricorn";
-        [ConfigField("Execute Threshold", "The health threshold (in %) before a boss can be executed", 30)]
+        public override string Name => ":: Equipment :: Trophy Hunters Tricorn";
+        public override EquipmentDef InternalPickup => DLC1Content.Equipment.BossHunter;
+        [ConfigField("Execute Threshold", "The health threshold (in %) before a boss can be executed", 30f)]
         public static float ExecuteThreshold;
         private static float GetActualThreshold => ExecuteThreshold * 0.01f;
         public override void Hooks()
@@ -25,7 +26,7 @@ namespace WellRoundedBalance.Equipment.Orange {
                 }
 
                 HealthComponent hc = self.currentTarget.hurtBox.healthComponent;
-                if (hc.health >= (hc.fullCombinedHealth * ExecuteThreshold)) {
+                if (hc.health >= (hc.fullCombinedHealth * GetActualThreshold)) {
                     HurtBox box = null; // prevents ambiguous call error
                     self.currentTarget = new(box);
                     self.targetIndicator.active = false;
