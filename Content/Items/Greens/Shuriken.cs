@@ -5,7 +5,7 @@ using WellRoundedBalance.Misc;
 
 namespace WellRoundedBalance.Items.Greens
 {
-    public class Shuriken : ItemBase
+    public class Shuriken : ItemBase<Shuriken>
     {
         public override string Name => ":: Items :: Greens :: Shuriken";
         public override ItemDef InternalPickup => DLC1Content.Items.PrimarySkillShuriken;

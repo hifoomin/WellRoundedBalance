@@ -4,7 +4,7 @@ using UnityEngine.UIElements;
 
 namespace WellRoundedBalance.Items.Reds
 {
-    public class WakeOfVultures : ItemBase
+    public class WakeOfVultures : ItemBase<WakeOfVultures>
     {
         public override string Name => ":: Items ::: Reds :: Wake Of Vultures";
         public override ItemDef InternalPickup => RoR2Content.Items.HeadHunter;

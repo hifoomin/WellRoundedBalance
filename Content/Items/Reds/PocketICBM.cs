@@ -4,7 +4,7 @@ using System;
 
 namespace WellRoundedBalance.Items.Reds
 {
-    public class PocketICBM : ItemBase
+    public class PocketICBM : ItemBase<PocketICBM>
     {
         public static GameObject bigFuckingMissile;
         public static GameObject bigFuckingMissileGhost;

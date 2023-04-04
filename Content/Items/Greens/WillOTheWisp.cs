@@ -2,7 +2,7 @@
 
 namespace WellRoundedBalance.Items.Greens
 {
-    public class WillOTheWisp : ItemBase
+    public class WillOTheWisp : ItemBase<WillOTheWisp>
     {
         public override string Name => ":: Items :: Greens :: Will O The Wisp";
         public override ItemDef InternalPickup => RoR2Content.Items.ExplodeOnDeath;

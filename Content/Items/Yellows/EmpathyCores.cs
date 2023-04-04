@@ -2,7 +2,7 @@
 
 namespace WellRoundedBalance.Items.Yellows
 {
-    public class EmpathyCores : ItemBase
+    public class EmpathyCores : ItemBase<EmpathyCores>
     {
         public override string Name => ":: Items :::: Yellows :: Empathy Cores";
         public override ItemDef InternalPickup => RoR2Content.Items.RoboBallBuddy;

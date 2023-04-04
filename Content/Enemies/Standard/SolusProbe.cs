@@ -1,6 +1,6 @@
 ﻿namespace WellRoundedBalance.Enemies.Standard
 {
-    internal class SolusProbe : EnemyBase
+    internal class SolusProbe : EnemyBase<SolusProbe>
     {
         public override string Name => ":: Enemies ::::::: Solus Probe";
 

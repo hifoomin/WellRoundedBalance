@@ -2,7 +2,7 @@
 
 namespace WellRoundedBalance.Items.Lunars
 {
-    public class StoneFluxPauldron : ItemBase
+    public class StoneFluxPauldron : ItemBase<StoneFluxPauldron>
     {
         public override string Name => ":: Items ::::: Lunars :: Stone Flux Pauldron";
         public override ItemDef InternalPickup => DLC1Content.Items.HalfSpeedDoubleHealth;

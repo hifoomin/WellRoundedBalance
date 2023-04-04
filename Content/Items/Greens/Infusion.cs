@@ -4,7 +4,7 @@ using System;
 
 namespace WellRoundedBalance.Items.Greens
 {
-    public class Infusion : ItemBase
+    public class Infusion : ItemBase<Infusion>
     {
         // ////////////
         //

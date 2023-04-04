@@ -2,7 +2,7 @@
 
 namespace WellRoundedBalance.Mechanics.Movement
 {
-    public class GetNotMoving : MechanicBase
+    public class GetNotMoving : MechanicBase<GetNotMoving>
     {
         public override string Name => ":: Mechanics ::: Movement";
 

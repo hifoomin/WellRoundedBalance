@@ -1,6 +1,6 @@
 ﻿namespace WellRoundedBalance.Mechanics.Interactables
 {
-    internal class LegendaryChest : MechanicBase
+    internal class LegendaryChest : MechanicBase<LegendaryChest>
     {
         public override string Name => ":: Mechanics :::::::::: Legendary Chest For All";
 

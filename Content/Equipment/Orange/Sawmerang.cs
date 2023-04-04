@@ -3,7 +3,7 @@ using WellRoundedBalance.Misc;
 
 namespace WellRoundedBalance.Equipment.Orange
 {
-    public class Sawmerang : EquipmentBase
+    public class Sawmerang : EquipmentBase<Sawmerang>
     {
         public override string Name => ":: Equipment :: Sawmerang";
         public override EquipmentDef InternalPickup => RoR2Content.Equipment.Saw;

@@ -1,6 +1,6 @@
 ﻿namespace WellRoundedBalance.Mechanics.Allies
 {
-    internal class DisableAllyPickup : MechanicBase
+    internal class DisableAllyPickup : MechanicBase<DisableAllyPickup>
     {
         public override string Name => ":: Mechanics ::::::::::::::: Disable Ally Pickup";
 

@@ -3,7 +3,7 @@ using MonoMod.Cil;
 
 namespace WellRoundedBalance.Items.Lunars
 {
-    public class ShapedGlass : ItemBase
+    public class ShapedGlass : ItemBase<ShapedGlass>
     {
         public override string Name => ":: Items ::::: Lunars :: Shaped Glass";
         public override ItemDef InternalPickup => RoR2Content.Items.LunarDagger;

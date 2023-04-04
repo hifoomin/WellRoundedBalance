@@ -3,7 +3,7 @@ using System;
 
 namespace WellRoundedBalance.Items.Greens
 {
-    public class KjarosBand : ItemBase
+    public class KjarosBand : ItemBase<KjarosBand>
     {
         public override string Name => ":: Items :: Greens :: Kjaros Band";
         public override ItemDef InternalPickup => RoR2Content.Items.FireRing;

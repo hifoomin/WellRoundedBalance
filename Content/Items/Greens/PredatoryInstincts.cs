@@ -2,7 +2,7 @@
 
 namespace WellRoundedBalance.Items.Greens
 {
-    public class PredatoryInstincts : ItemBase
+    public class PredatoryInstincts : ItemBase<PredatoryInstincts>
     {
         public override string Name => ":: Items :: Greens :: Predatory Instincts";
         public override ItemDef InternalPickup => RoR2Content.Items.AttackSpeedOnCrit;

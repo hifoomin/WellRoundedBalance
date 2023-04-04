@@ -2,7 +2,7 @@
 
 namespace WellRoundedBalance.Items.Reds
 {
-    public class SoulboundCatalyst : ItemBase
+    public class SoulboundCatalyst : ItemBase<SoulboundCatalyst>
     {
         public static float BaseCdr;
         public static float StackCdr;

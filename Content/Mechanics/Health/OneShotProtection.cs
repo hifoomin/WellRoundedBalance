@@ -2,7 +2,7 @@
 
 namespace WellRoundedBalance.Mechanics.Health
 {
-    public class OneShotProtection : MechanicBase
+    public class OneShotProtection : MechanicBase<OneShotProtection>
     {
         public static BuffDef osp;
         public override string Name => ":: Mechanics :: One Shot Protection";

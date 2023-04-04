@@ -2,7 +2,7 @@
 
 namespace WellRoundedBalance.Mechanics.Monsters
 {
-    internal class KjaroAndRunald : MechanicBase
+    internal class KjaroAndRunald : MechanicBase<KjaroAndRunald>
     {
         public override string Name => ":: Mechanics ::::::::: Kjaro And Runald Scaling";
 

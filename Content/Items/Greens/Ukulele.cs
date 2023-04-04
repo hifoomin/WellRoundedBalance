@@ -4,7 +4,7 @@ using System;
 
 namespace WellRoundedBalance.Items.Greens
 {
-    public class Ukulele : ItemBase
+    public class Ukulele : ItemBase<Ukulele>
     {
         public override string Name => ":: Items :: Greens :: Ukulele";
         public override ItemDef InternalPickup => RoR2Content.Items.ChainLightning;

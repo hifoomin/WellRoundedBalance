@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace WellRoundedBalance.Interactables
 {
-    internal class VoidCradle : InteractableBase
+    internal class VoidCradle : InteractableBase<VoidCradle>
     {
         public override string Name => ":: Interactables : Void Cradle";
         public CostTypeIndex costTypeIndex = (CostTypeIndex)19;

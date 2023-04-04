@@ -1,6 +1,6 @@
 ﻿namespace WellRoundedBalance.Mechanics.Monsters
 {
-    internal class LoopScaling : MechanicBase
+    internal class LoopScaling : MechanicBase<LoopScaling>
     {
         public override string Name => ":: Mechanics ::::::::: Monster Loop Armor";
 

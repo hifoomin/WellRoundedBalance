@@ -4,7 +4,7 @@ using System;
 
 namespace WellRoundedBalance.Items.Whites
 {
-    public class Medkit : ItemBase
+    public class Medkit : ItemBase<Medkit>
     {
         public override string Name => ":: Items : Whites :: Medkit";
         public override ItemDef InternalPickup => RoR2Content.Items.Medkit;

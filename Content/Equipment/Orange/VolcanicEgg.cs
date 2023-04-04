@@ -2,7 +2,7 @@
 
 namespace WellRoundedBalance.Equipment.Orange
 {
-    public class VolcanicEgg : EquipmentBase
+    public class VolcanicEgg : EquipmentBase<VolcanicEgg>
     {
         public override string Name => ":: Equipment :: Volcanic Egg";
         public override EquipmentDef InternalPickup => RoR2Content.Equipment.FireBallDash;

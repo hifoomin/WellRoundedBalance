@@ -3,7 +3,7 @@ using System;
 
 namespace WellRoundedBalance.Equipment.Orange
 {
-    public class OcularHud : EquipmentBase
+    public class OcularHud : EquipmentBase<OcularHud>
     {
         public override string Name => ":: Equipment :: Ocular HUD";
         public override EquipmentDef InternalPickup => RoR2Content.Equipment.CritOnUse;

@@ -2,7 +2,7 @@
 
 namespace WellRoundedBalance.Mechanics.Interactables
 {
-    internal class ItemFallPrevention : MechanicBase
+    internal class ItemFallPrevention : MechanicBase<ItemFallPrevention>
     {
         public override string Name => ":: Mechanics :::::::::::: Item Fall Prevention";
 

@@ -2,7 +2,7 @@
 
 namespace WellRoundedBalance.Items.Yellows
 {
-    public class LittleDisciple : ItemBase
+    public class LittleDisciple : ItemBase<LittleDisciple>
     {
         public override string Name => ":: Items :::: Yellows :: Little Disciple";
         public override ItemDef InternalPickup => RoR2Content.Items.SprintWisp;

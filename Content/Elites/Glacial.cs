@@ -6,7 +6,7 @@ using WellRoundedBalance.Buffs;
 
 namespace WellRoundedBalance.Elites
 {
-    internal class Glacial : EliteBase
+    internal class Glacial : EliteBase<Glacial>
     {
         public static BuffDef slow;
         public static GameObject iceExplosionPrefab;
@@ -35,7 +35,7 @@ namespace WellRoundedBalance.Elites
             IcePillarPrefab.RemoveComponent<ProjectileController>();
             IcePillarPrefab.layer = LayerIndex.world.intVal;
             IcePillarPrefab.transform.localScale *= 2;
-            
+
             base.Init();
         }
 
@@ -193,22 +193,27 @@ namespace WellRoundedBalance.Elites
             }
         }
 
-        public class GlacialPillar : MonoBehaviour {
-            public void Die(object s, EventArgs e) {
+        public class GlacialPillar : MonoBehaviour
+        {
+            public void Die(object s, EventArgs e)
+            {
                 Destroy(base.gameObject);
             }
         }
 
-        public class GlacialPillarController : MonoBehaviour {
+        public class GlacialPillarController : MonoBehaviour
+        {
             private int totalActive;
             private int maxActive = 4;
             internal EventHandler onDeath;
             private float stopwatch = 0f;
             private float delay = 5f;
 
-            public void FixedUpdate() {
+            public void FixedUpdate()
+            {
                 stopwatch += Time.fixedDeltaTime;
-                if (totalActive < maxActive && stopwatch >= delay) {
+                if (totalActive < maxActive && stopwatch >= delay)
+                {
                     stopwatch = 0f;
 
                     Vector3 point = PickTeleportPosition();
@@ -218,11 +223,13 @@ namespace WellRoundedBalance.Elites
                 }
             }
 
-            public void OnDestroy() {
+            public void OnDestroy()
+            {
                 onDeath?.Invoke(null, null);
             }
 
-            public void OnDisable() {
+            public void OnDisable()
+            {
                 onDeath?.Invoke(null, null);
             }
 

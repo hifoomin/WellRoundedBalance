@@ -1,6 +1,6 @@
 ﻿namespace WellRoundedBalance.Items.Yellows
 {
-    internal class DefenseNucleus : ItemBase
+    internal class DefenseNucleus : ItemBase<DefenseNucleus>
     {
         public override string Name => ":: Items :::: Yellows :: Defense Nucleus";
 

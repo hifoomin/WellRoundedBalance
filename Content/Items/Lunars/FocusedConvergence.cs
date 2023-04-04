@@ -3,7 +3,7 @@ using System;
 
 namespace WellRoundedBalance.Items.Lunars
 {
-    public class FocusedConvergence : ItemBase
+    public class FocusedConvergence : ItemBase<FocusedConvergence>
     {
         public override string Name => ":: Items ::::: Lunars :: Focused Convergence";
         public override ItemDef InternalPickup => RoR2Content.Items.FocusConvergence;

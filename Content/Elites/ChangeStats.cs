@@ -4,7 +4,7 @@ using BepInEx.Configuration;
 
 namespace WellRoundedBalance.Elites
 {
-    public class ChangeStats : EliteBase
+    public class ChangeStats : EliteBase<ChangeStats>
     {
         public static ConfigEntry<bool> enable { get; set; }
 

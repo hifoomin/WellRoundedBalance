@@ -3,7 +3,7 @@ using System;
 
 namespace WellRoundedBalance.Items.Lunars
 {
-    public class LightFluxPauldron : ItemBase
+    public class LightFluxPauldron : ItemBase<LightFluxPauldron>
     {
         public override string Name => ":: Items ::::: Lunars :: Light Flux Pauldron";
         public override ItemDef InternalPickup => DLC1Content.Items.HalfAttackSpeedHalfCooldowns;

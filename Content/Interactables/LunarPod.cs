@@ -2,7 +2,7 @@
 
 namespace WellRoundedBalance.Interactables
 {
-    public class LunarPod : InteractableBase
+    public class LunarPod : InteractableBase<LunarPod>
     {
         public override string Name => ":: Interactables ::::::: Lunar Pod";
 

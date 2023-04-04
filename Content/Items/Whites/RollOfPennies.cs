@@ -3,7 +3,7 @@ using MonoMod.Cil;
 
 namespace WellRoundedBalance.Items.Whites
 {
-    internal class RollOfPennies : ItemBase
+    internal class RollOfPennies : ItemBase<RollOfPennies>
     {
         public override string Name => ":: Items : Whites :: Roll of Pennies";
 

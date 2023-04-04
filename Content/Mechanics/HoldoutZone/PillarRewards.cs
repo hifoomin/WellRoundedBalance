@@ -2,7 +2,7 @@
 
 namespace WellRoundedBalance.Mechanics.HoldoutZone
 {
-    internal class PillarRewards : MechanicBase
+    internal class PillarRewards : MechanicBase<PillarRewards>
     {
         private static float offset = 3f;
         public override string Name => ":: Mechanics :::::: Pillar Rewards";

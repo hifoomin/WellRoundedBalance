@@ -3,7 +3,7 @@ using RoR2.Artifacts;
 
 namespace WellRoundedBalance.Items.Lunars
 {
-    public class GestureOfTheDrowned : ItemBase
+    public class GestureOfTheDrowned : ItemBase<GestureOfTheDrowned>
     {
         public override string Name => ":: Items ::::: Lunars :: Gesture of The Drowned";
         public override ItemDef InternalPickup => RoR2Content.Items.AutoCastEquipment;

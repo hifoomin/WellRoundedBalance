@@ -1,6 +1,6 @@
 ﻿namespace WellRoundedBalance.Interactables
 {
-    internal class Chests : InteractableBase
+    internal class Chests : InteractableBase<Chests>
     {
         public override string Name => ":: Interactables :: Chests";
 

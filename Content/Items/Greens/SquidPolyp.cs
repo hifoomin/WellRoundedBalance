@@ -1,6 +1,6 @@
 ﻿namespace WellRoundedBalance.Items.Greens
 {
-    public class SquidPolyp : ItemBase
+    public class SquidPolyp : ItemBase<SquidPolyp>
     {
         public override string Name => ":: Items :: Greens :: Squid Polyp";
         public override ItemDef InternalPickup => RoR2Content.Items.Squid;

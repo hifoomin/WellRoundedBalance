@@ -1,6 +1,6 @@
 ﻿namespace WellRoundedBalance.Interactables
 {
-    internal class CleansingPool : InteractableBase
+    internal class CleansingPool : InteractableBase<CleansingPool>
     {
         public override string Name => ":: Interactables :::::::::: Cleansing Pool";
 

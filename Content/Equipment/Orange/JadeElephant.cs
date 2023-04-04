@@ -2,7 +2,7 @@
 
 namespace WellRoundedBalance.Equipment.Orange
 {
-    public class JadeElephant : EquipmentBase
+    public class JadeElephant : EquipmentBase<JadeElephant>
     {
         public override string Name => ":: Equipment :: Jade Elephant";
         public override EquipmentDef InternalPickup => RoR2Content.Equipment.GainArmor;

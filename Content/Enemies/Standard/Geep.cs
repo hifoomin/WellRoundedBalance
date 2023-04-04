@@ -1,6 +1,6 @@
 ﻿namespace WellRoundedBalance.Enemies.Standard
 {
-    internal class Geep : EnemyBase
+    internal class Geep : EnemyBase<Geep>
     {
         public override string Name => ":: Enemies :: Geep";
 

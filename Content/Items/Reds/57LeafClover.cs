@@ -1,6 +1,6 @@
 ﻿namespace WellRoundedBalance.Items.Reds
 {
-    public class _57LeafClover : ItemBase
+    public class _57LeafClover : ItemBase<_57LeafClover>
     {
         public override string Name => ":: Items ::: Reds :: 57 Leaf Clover";
         public override ItemDef InternalPickup => RoR2Content.Items.Clover;

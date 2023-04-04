@@ -5,7 +5,7 @@ using WellRoundedBalance.Gamemodes.Eclipse;
 
 namespace WellRoundedBalance.Elites
 {
-    internal class Voidtouched : EliteBase
+    internal class Voidtouched : EliteBase<Voidtouched>
     {
         public static BuffDef useless;
         public static BuffDef hiddenCooldown;

@@ -2,7 +2,7 @@
 
 namespace WellRoundedBalance.Mechanics.Bazaar
 {
-    internal class Rework : MechanicBase
+    internal class Rework : MechanicBase<Rework>
     {
         public static GameObject lunarPod;
         public static GameObject heresyStation;

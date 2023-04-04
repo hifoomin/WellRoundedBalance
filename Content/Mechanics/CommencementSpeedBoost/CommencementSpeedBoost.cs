@@ -2,7 +2,7 @@
 
 namespace WellRoundedBalance.Mechanics.CommencementSpeedBoost
 {
-    internal class CommencementSpeedBoost : MechanicBase
+    internal class CommencementSpeedBoost : MechanicBase<CommencementSpeedBoost>
     {
         public static BuffDef commencementSpeed;
         public override string Name => ":: Mechanics ::::::: Commencement Speed Boost";

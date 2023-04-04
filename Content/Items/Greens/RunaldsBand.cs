@@ -3,7 +3,7 @@ using System;
 
 namespace WellRoundedBalance.Items.Greens
 {
-    public class RunaldsBand : ItemBase
+    public class RunaldsBand : ItemBase<RunaldsBand>
     {
         public override string Name => ":: Items :: Greens :: Runalds Band";
         public override ItemDef InternalPickup => RoR2Content.Items.IceRing;

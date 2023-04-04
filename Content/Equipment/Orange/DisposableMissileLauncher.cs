@@ -4,7 +4,7 @@ using WellRoundedBalance.Items;
 
 namespace WellRoundedBalance.Equipment.Orange
 {
-    public class DisposableMissileLauncher : EquipmentBase
+    public class DisposableMissileLauncher : EquipmentBase<DisposableMissileLauncher>
     {
         public static GameObject dmlMissilePrefab;
         public override string Name => ":: Equipment :: Disposable Missile Launcher";

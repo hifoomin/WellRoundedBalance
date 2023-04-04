@@ -3,7 +3,7 @@ using System;
 
 namespace WellRoundedBalance.Artifacts.Vanilla
 {
-    internal class Sacrifice : ArtifactEditBase
+    internal class Sacrifice : ArtifactEditBase<Sacrifice>
     {
         public override string Name => ":: Artifacts :::::::::::: Sacrifice";
 

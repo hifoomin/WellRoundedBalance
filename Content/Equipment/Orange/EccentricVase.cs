@@ -2,7 +2,7 @@
 
 namespace WellRoundedBalance.Equipment.Orange
 {
-    public class EccentricVase : EquipmentBase
+    public class EccentricVase : EquipmentBase<EccentricVase>
     {
         public override string Name => ":: Equipment :: Eccentric Vase";
         public override EquipmentDef InternalPickup => RoR2Content.Equipment.Gateway;

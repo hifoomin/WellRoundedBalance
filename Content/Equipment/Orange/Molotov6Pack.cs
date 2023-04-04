@@ -1,6 +1,6 @@
 ﻿namespace WellRoundedBalance.Equipment.Orange
 {
-    public class Molotov6Pack : EquipmentBase
+    public class Molotov6Pack : EquipmentBase<Molotov6Pack>
     {
         public override string Name => ":: Equipment :: Molotov 6 Pack";
         public override EquipmentDef InternalPickup => DLC1Content.Equipment.Molotov;

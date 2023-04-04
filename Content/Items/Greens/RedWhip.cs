@@ -2,7 +2,7 @@
 
 namespace WellRoundedBalance.Items.Greens
 {
-    public class RedWhip : ItemBase
+    public class RedWhip : ItemBase<RedWhip>
     {
         public override string Name => ":: Items :: Greens :: Red Whip";
         public override ItemDef InternalPickup => RoR2Content.Items.SprintOutOfCombat;

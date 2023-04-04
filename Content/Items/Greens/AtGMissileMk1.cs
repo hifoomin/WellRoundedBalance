@@ -3,7 +3,7 @@ using System;
 
 namespace WellRoundedBalance.Items.Greens
 {
-    public class AtGMissileMk1 : ItemBase
+    public class AtGMissileMk1 : ItemBase<AtGMissileMk1>
     {
         public override string Name => ":: Items :: Greens :: AtG Missile Mk1";
         public override ItemDef InternalPickup => RoR2Content.Items.Missile;

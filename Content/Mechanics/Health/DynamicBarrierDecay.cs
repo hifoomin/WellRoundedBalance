@@ -1,6 +1,6 @@
 ﻿namespace WellRoundedBalance.Mechanics.Health
 {
-    public class DynamicBarrierDecay : MechanicBase
+    public class DynamicBarrierDecay : MechanicBase<DynamicBarrierDecay>
     {
         // lab ver
         public override string Name => ":: Mechanics :: Dynamic Barrier Decay";

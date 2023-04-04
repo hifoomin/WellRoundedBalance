@@ -1,6 +1,6 @@
 ﻿namespace WellRoundedBalance.Interactables
 {
-    public class AllPrinters : InteractableBase
+    public class AllPrinters : InteractableBase<AllPrinters>
     {
         public override string Name => ":: Interactables :::: Printers";
 

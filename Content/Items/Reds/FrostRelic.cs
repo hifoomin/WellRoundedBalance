@@ -1,6 +1,6 @@
 ﻿namespace WellRoundedBalance.Items.Reds
 {
-    public class FrostRelic : ItemBase
+    public class FrostRelic : ItemBase<FrostRelic>
     {
         public override string Name => ":: Items ::: Reds :: Frost Relic";
         public override ItemDef InternalPickup => RoR2Content.Items.Icicle;

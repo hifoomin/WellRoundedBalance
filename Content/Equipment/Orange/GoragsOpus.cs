@@ -2,7 +2,7 @@
 
 namespace WellRoundedBalance.Equipment.Orange
 {
-    public class GoragsOpus : EquipmentBase
+    public class GoragsOpus : EquipmentBase<GoragsOpus>
     {
         public override string Name => ":: Equipment :: Gorags Opus";
         public override EquipmentDef InternalPickup => RoR2Content.Equipment.TeamWarCry;

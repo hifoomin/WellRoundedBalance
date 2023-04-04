@@ -1,6 +1,6 @@
 ﻿namespace WellRoundedBalance.Items.Lunars
 {
-    internal class EssenceOfHeresy : ItemBase
+    internal class EssenceOfHeresy : ItemBase<EssenceOfHeresy>
     {
         public override string Name => ":: Items ::::: Lunars :: Essence of Heresy";
 

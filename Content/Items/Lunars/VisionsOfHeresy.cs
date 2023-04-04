@@ -2,7 +2,7 @@
 
 namespace WellRoundedBalance.Items.Lunars
 {
-    public class VisionsOfHeresy : ItemBase
+    public class VisionsOfHeresy : ItemBase<VisionsOfHeresy>
     {
         public static Component[] burdel;
         public static Component[] butla;

@@ -2,7 +2,7 @@
 
 namespace WellRoundedBalance.Items.VoidGreens
 {
-    public class VoidsentFlame : ItemBase
+    public class VoidsentFlame : ItemBase<VoidsentFlame>
     {
         public override string Name => ":: Items :::::: Voids :: Voidsent Flame";
         public override ItemDef InternalPickup => DLC1Content.Items.ExplodeOnDeathVoid;

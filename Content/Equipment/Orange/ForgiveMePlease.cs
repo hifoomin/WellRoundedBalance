@@ -2,7 +2,7 @@
 
 namespace WellRoundedBalance.Equipment.Orange
 {
-    public class ForgiveMePlease : EquipmentBase
+    public class ForgiveMePlease : EquipmentBase<ForgiveMePlease>
     {
         public override string Name => ":: Equipment :: Forgive Me Please";
         public override EquipmentDef InternalPickup => RoR2Content.Equipment.DeathProjectile;

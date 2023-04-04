@@ -1,6 +1,6 @@
 ﻿namespace WellRoundedBalance.Equipment.Orange
 {
-    public class MilkyChrysalis : EquipmentBase
+    public class MilkyChrysalis : EquipmentBase<MilkyChrysalis>
     {
         public override string Name => ":: Equipment :: Milky Chrysalis";
         public override EquipmentDef InternalPickup => RoR2Content.Equipment.Jetpack;

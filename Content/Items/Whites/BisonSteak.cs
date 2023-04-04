@@ -1,6 +1,6 @@
 ﻿namespace WellRoundedBalance.Items.Whites
 {
-    public class BisonSteak : ItemBase
+    public class BisonSteak : ItemBase<BisonSteak>
     {
         public override string Name => ":: Items : Whites :: Bison Steak";
         public override ItemDef InternalPickup => RoR2Content.Items.FlatHealth;

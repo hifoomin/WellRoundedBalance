@@ -3,7 +3,7 @@ using MonoMod.Cil;
 
 namespace WellRoundedBalance.Items.Whites
 {
-    public class OddlyShapedOpal : ItemBase
+    public class OddlyShapedOpal : ItemBase<OddlyShapedOpal>
     {
         public static BuffDef opalArmor;
         public override string Name => ":: Items : Whites :: Oddly Shaped Opal";

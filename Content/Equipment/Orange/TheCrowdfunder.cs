@@ -4,7 +4,7 @@ using WellRoundedBalance.Items;
 
 namespace WellRoundedBalance.Equipment.Orange
 {
-    public class TheCrowdfunder : EquipmentBase
+    public class TheCrowdfunder : EquipmentBase<TheCrowdfunder>
     {
         public override string Name => ":: Equipment :: The Crowdfunder";
         public override EquipmentDef InternalPickup => RoR2Content.Equipment.GoldGat;

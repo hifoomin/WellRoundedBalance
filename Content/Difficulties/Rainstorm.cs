@@ -1,6 +1,6 @@
 ﻿namespace WellRoundedBalance.Difficulties
 {
-    internal class Rainstorm : DifficultyBase
+    internal class Rainstorm : DifficultyBase<Rainstorm>
     {
         public override string Name => ":: Difficulties :: Rainstorm";
         public override DifficultyIndex InternalDiff => DifficultyIndex.Normal;

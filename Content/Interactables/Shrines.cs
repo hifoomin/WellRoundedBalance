@@ -1,6 +1,6 @@
 ﻿namespace WellRoundedBalance.Interactables
 {
-    internal class AllShrines : InteractableBase
+    internal class AllShrines : InteractableBase<AllShrines>
     {
         public override string Name => ":: Interactables ::: Shrines";
 

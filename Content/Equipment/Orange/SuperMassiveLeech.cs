@@ -3,7 +3,7 @@ using System;
 
 namespace WellRoundedBalance.Equipment.Orange
 {
-    public class SuperMassiveLeech : EquipmentBase
+    public class SuperMassiveLeech : EquipmentBase<SuperMassiveLeech>
     {
         public override string Name => ":: Equipment :: Super Massive Leech";
         public override EquipmentDef InternalPickup => RoR2Content.Equipment.LifestealOnHit;

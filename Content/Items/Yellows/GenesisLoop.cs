@@ -5,7 +5,7 @@ using System;
 
 namespace WellRoundedBalance.Items.Yellows
 {
-    public class GenesisLoop : ItemBase
+    public class GenesisLoop : ItemBase<GenesisLoop>
     {
         public override string Name => ":: Items :::: Yellows :: Genesis Loop";
         public override ItemDef InternalPickup => RoR2Content.Items.NovaOnLowHealth;

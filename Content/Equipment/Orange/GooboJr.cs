@@ -1,6 +1,6 @@
 ﻿namespace WellRoundedBalance.Equipment.Orange
 {
-    public class GooboJr : EquipmentBase
+    public class GooboJr : EquipmentBase<GooboJr>
     {
         public override string Name => ":: Equipment :: Goobo Jr";
 

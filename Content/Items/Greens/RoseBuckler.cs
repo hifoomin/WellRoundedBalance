@@ -4,7 +4,7 @@ using System;
 
 namespace WellRoundedBalance.Items.Greens
 {
-    public class RoseBuckler : ItemBase
+    public class RoseBuckler : ItemBase<RoseBuckler>
     {
         public override string Name => ":: Items :: Greens :: Rose Buckler";
         public override ItemDef InternalPickup => RoR2Content.Items.SprintArmor;
@@ -26,6 +26,7 @@ namespace WellRoundedBalance.Items.Greens
         {
             base.Init();
         }
+
         public override void Hooks()
         {
             RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;

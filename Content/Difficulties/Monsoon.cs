@@ -2,7 +2,7 @@
 
 namespace WellRoundedBalance.Difficulties
 {
-    internal class Monsoon : DifficultyBase
+    internal class Monsoon : DifficultyBase<Monsoon>
     {
         public override string Name => ":: Difficulties ::: Monsoon";
         public override DifficultyIndex InternalDiff => DifficultyIndex.Hard;

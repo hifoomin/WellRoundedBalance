@@ -1,6 +1,6 @@
 ﻿namespace WellRoundedBalance.Enemies.Standard
 {
-    internal class Beetle : EnemyBase
+    internal class Beetle : EnemyBase<Beetle>
     {
         public override string Name => ":: Enemies ::::: Beetle";
 
@@ -59,9 +59,9 @@
                         var direction = self.GetAimRay().direction;
                         var ahead = direction.normalized * 2f * self.moveSpeedStat;
                         var up = Vector3.up * 5f;
-                        var idk = new Vector3(direction.x, 0f, direction.z).normalized;
+                        var normalized = new Vector3(direction.x, 0f, direction.z).normalized;
                         self.characterMotor.Motor.ForceUnground();
-                        self.characterMotor.velocity = ahead + up + idk;
+                        self.characterMotor.velocity = ahead + up + normalized;
                     }
                 }
             }

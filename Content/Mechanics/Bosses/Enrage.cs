@@ -2,7 +2,7 @@
 
 namespace WellRoundedBalance.Mechanics.Bosses
 {
-    internal class Enrage : MechanicBase
+    internal class Enrage : MechanicBase<Enrage>
     {
         public override string Name => ":: Mechanics ::::: Boss Enrage";
 
@@ -32,9 +32,19 @@ namespace WellRoundedBalance.Mechanics.Bosses
                 var increase = Mathf.Clamp01(1f - sender.healthComponent.combinedHealthFraction);
                 if (Run.instance.selectedDifficulty >= DifficultyIndex.Eclipse6 && Eclipse6.instance.isEnabled)
                 {
-                    args.moveSpeedMultAdd += increase * (maximumMovementSpeedGain * 1.6f);
-                    args.attackSpeedMultAdd += increase * (maximumAttackSpeedGain * 1.6f);
-                    args.cooldownMultAdd -= increase * (maximumCooldownReductionGain * 1.6f);
+                    if (sender.bodyIndex == BodyCatalog.FindBodyIndex("BrotherBody(Clone)") || sender.bodyIndex == BodyCatalog.FindBodyIndex("BrotherHurtBody(Clone)"))
+                    {
+                        Main.WRBLogger.LogError("Affecting Mithrix");
+                        args.moveSpeedMultAdd += increase * (maximumMovementSpeedGain * 1.3f);
+                        args.attackSpeedMultAdd += increase * (maximumAttackSpeedGain * 1.3f);
+                        args.cooldownMultAdd -= increase * (maximumCooldownReductionGain * 1.3f);
+                    }
+                    else
+                    {
+                        args.moveSpeedMultAdd += increase * (maximumMovementSpeedGain * 1.75f);
+                        args.attackSpeedMultAdd += increase * (maximumAttackSpeedGain * 1.75f);
+                        args.cooldownMultAdd -= increase * (maximumCooldownReductionGain * 1.75f);
+                    }
                 }
                 else
                 {

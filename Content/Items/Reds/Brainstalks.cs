@@ -5,7 +5,7 @@ using static RoR2.MasterSpawnSlotController;
 
 namespace WellRoundedBalance.Items.Reds
 {
-    public class Brainstalks : ItemBase
+    public class Brainstalks : ItemBase<Brainstalks>
     {
         public override string Name => ":: Items ::: Reds :: Brainstalks";
         public override ItemDef InternalPickup => RoR2Content.Items.KillEliteFrenzy;

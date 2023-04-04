@@ -1,6 +1,6 @@
 ﻿namespace WellRoundedBalance.Equipment.Orange
 {
-    public class RadarScanner : EquipmentBase
+    public class RadarScanner : EquipmentBase<RadarScanner>
     {
         public override string Name => ":: Equipment :: Radar Scanner";
         public override EquipmentDef InternalPickup => RoR2Content.Equipment.Scanner;

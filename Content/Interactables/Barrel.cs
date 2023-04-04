@@ -1,6 +1,6 @@
 ﻿namespace WellRoundedBalance.Interactables
 {
-    internal class Barrel : InteractableBase
+    internal class Barrel : InteractableBase<Barrel>
     {
         public override string Name => ":: Interactables : Barrel";
 

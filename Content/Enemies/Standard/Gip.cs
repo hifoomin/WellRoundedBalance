@@ -1,6 +1,6 @@
 ﻿namespace WellRoundedBalance.Enemies.Standard
 {
-    internal class Gip : EnemyBase
+    internal class Gip : EnemyBase<Gip>
     {
         public override string Name => ":: Enemies ::: Gip";
 

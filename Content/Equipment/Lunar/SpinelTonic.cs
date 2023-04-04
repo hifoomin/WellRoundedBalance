@@ -3,7 +3,7 @@ using UnityEngine.Rendering.PostProcessing;
 
 namespace WellRoundedBalance.Equipment.Lunar
 {
-    public class SpinelTonic : EquipmentBase
+    public class SpinelTonic : EquipmentBase<SpinelTonic>
     {
         public override string Name => ":: Equipment ::: Spinel Tonic";
         public override EquipmentDef InternalPickup => RoR2Content.Equipment.Tonic;
@@ -39,7 +39,7 @@ namespace WellRoundedBalance.Equipment.Lunar
         [ConfigField("Affliction Chancee", "", 25f)]
         public static float afflictionChance;
 
-        [ConfigField("Affliction Curse Gain", "Decimal.", 0.1f)]
+        [ConfigField("Affliction Curse Gainn", "Decimal.", 0.12f)]
         public static float afflictionCurseGain;
 
         [ConfigField("Affliction All Stats Decrease", "Decimal.", 0.05f)]

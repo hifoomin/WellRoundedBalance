@@ -3,7 +3,7 @@ using MonoMod.Cil;
 
 namespace WellRoundedBalance.Items.Whites
 {
-    public class MonsterTooth : ItemBase
+    public class MonsterTooth : ItemBase<MonsterTooth>
     {
         public override string Name => ":: Items : Whites :: MonsterTooth";
         public override ItemDef InternalPickup => RoR2Content.Items.Tooth;

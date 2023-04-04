@@ -1,30 +1,30 @@
 ﻿using MonoMod.Cil;
+using System;
 
 namespace WellRoundedBalance.Equipment.Lunar
 {
-    public class HelfireTincture : EquipmentBase
+    public class HelfireTincture : EquipmentBase<HelfireTincture>
     {
         public override string Name => ":: Equipment ::: Helfire Tincture";
         public override EquipmentDef InternalPickup => RoR2Content.Equipment.BurnNearby;
 
         public override string PickupText => "Ignite everything nearby... <color=#FF7F7F>including you and allies.</color>\n";
 
-        public override string DescText => "<style=cIsDamage>Ignite</style> ALL characters within " + range + "m for " + duration + " seconds. Deal <style=cIsDamage>" + d(selfDamage * 5) + " of your maximum health/second as burning</style> to yourself. The burn is <style=cIsDamage>" + d(Mathf.Abs(damageToAllies - selfDamage / Mathf.Abs(selfDamage))) + "</style>" +
-                                           (selfDamage > damageToAllies ? " weaker" : " stronger") +
-                                           " on allies, and <style=cIsDamage>" + d(Mathf.Abs(damageToEnemies - selfDamage / Mathf.Abs(selfDamage))) + "</style>" +
-                                           (selfDamage > damageToEnemies ? " weaker" : " stronger") +
-                                            " on enemies.";
+        public override string DescText => "<style=cIsDamage>Ignite</style> ALL characters within " + range + "m for " + duration + " seconds." +
+                                           " Deal <style=cIsDamage>" + Math.Round(selfDamage * 100, 1) + "% of your maximum health per second as burning</style> to yourself," +
+                                           " <style=cIsDamage>" + Math.Round(damageToEnemies * 100, 1) + "%</style> to enemies and" +
+                                           " <style=cIsDamage>" + Math.Round(damageToAlliesMultiplier * selfDamage * 100, 1) + "%</style> to allies";
 
         [ConfigField("Cooldown", "", 55f)]
         public static float cooldown;
 
-        [ConfigField("Self Damage", "Decimal.", 0.007f)]
+        [ConfigField("Self Damagee", "Decimal.", 0.05f)]
         public static float selfDamage;
 
-        [ConfigField("Damage to Allies", "Decimal.", 0.0025f)]
-        public static float damageToAllies;
+        [ConfigField("Damage to Allies Multiplierr", ".", 1f)]
+        public static float damageToAlliesMultiplier;
 
-        [ConfigField("Damage To Enemies", "Decimal.", 0.18f)]
+        [ConfigField("Damage To Enemiess", "Decimal.", 0.75f)]
         public static float damageToEnemies;
 
         [ConfigField("Range", "", 15f)]
@@ -71,9 +71,9 @@ namespace WellRoundedBalance.Equipment.Lunar
             hel.dotDuration = burnDuration;
             //hel.interval = FireRate;
             // how the hell does this work, the interval is literally 0.25 in game and it attacks 5x per sec???
-            hel.healthFractionPerSecond = selfDamage * 10f;
-            hel.allyDamageScalar = 1f / (selfDamage * 10f / (damageToAllies * 10f));
-            hel.enemyDamageScalar = damageToEnemies * 100f;
+            hel.healthFractionPerSecond = selfDamage * 0.2f;
+            hel.allyDamageScalar = damageToAlliesMultiplier * selfDamage * 20f;
+            hel.enemyDamageScalar = damageToEnemies * 20f; // this is correct, at damageToEnemies being 0.18 it dealt 180k per tick
         }
     }
 }

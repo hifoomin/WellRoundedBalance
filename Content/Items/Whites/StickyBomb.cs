@@ -5,7 +5,7 @@ using System;
 
 namespace WellRoundedBalance.Items.Whites
 {
-    public class StickyBomb : ItemBase
+    public class StickyBomb : ItemBase<StickyBomb>
     {
         public override string Name => ":: Items : Whites :: Sticky Bomb";
         public override ItemDef InternalPickup => RoR2Content.Items.StickyBomb;

@@ -2,7 +2,7 @@
 
 namespace WellRoundedBalance.Items.Lunars
 {
-    public class Corpsebloom : ItemBase
+    public class Corpsebloom : ItemBase<Corpsebloom>
     {
         public override string Name => ":: Items ::::: Lunars :: Corpsebloom";
         public override ItemDef InternalPickup => RoR2Content.Items.RepeatHeal;

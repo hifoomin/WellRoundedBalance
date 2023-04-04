@@ -1,6 +1,6 @@
 ﻿namespace WellRoundedBalance.Enemies.Minibosses
 {
-    internal class Gup : EnemyBase
+    internal class Gup : EnemyBase<Gup>
     {
         public override string Name => ":: Enemies : Gup";
 

@@ -2,7 +2,7 @@
 
 namespace WellRoundedBalance.Items.Reds
 {
-    public class NkuhanasOpinion : ItemBase
+    public class NkuhanasOpinion : ItemBase<NkuhanasOpinion>
     {
         public override string Name => ":: Items ::: Reds :: Nkuhanas Opinion";
         public override ItemDef InternalPickup => RoR2Content.Items.NovaOnHeal;

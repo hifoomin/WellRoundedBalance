@@ -2,7 +2,7 @@
 
 namespace WellRoundedBalance.Items.Greens
 {
-    public class IgnitionTank : ItemBase
+    public class IgnitionTank : ItemBase<IgnitionTank>
     {
         public override string Name => ":: Items :: Greens :: Ignition Tank";
         public override ItemDef InternalPickup => DLC1Content.Items.StrengthenBurn;

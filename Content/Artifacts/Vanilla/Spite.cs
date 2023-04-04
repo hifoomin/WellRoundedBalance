@@ -2,7 +2,7 @@
 
 namespace WellRoundedBalance.Artifacts.Vanilla
 {
-    internal class Spite : ArtifactEditBase
+    internal class Spite : ArtifactEditBase<Spite>
     {
         public override string Name => ":: Artifacts :::::::::::::: Spite";
 

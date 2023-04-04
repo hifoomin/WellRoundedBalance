@@ -4,7 +4,7 @@ using System;
 
 namespace WellRoundedBalance.Items.Whites
 {
-    public class Crowbar : ItemBase
+    public class Crowbar : ItemBase<Crowbar>
     {
         public override string Name => ":: Items : Whites :: Crowbar";
         public override ItemDef InternalPickup => RoR2Content.Items.Crowbar;

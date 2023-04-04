@@ -5,7 +5,7 @@ using System;
 
 namespace WellRoundedBalance.Items.Whites
 {
-    public class BustlingFungus : ItemBase
+    public class BustlingFungus : ItemBase<BustlingFungus>
     {
         public override string Name => ":: Items : Whites :: Bustling Fungus";
         public override ItemDef InternalPickup => RoR2Content.Items.Mushroom;

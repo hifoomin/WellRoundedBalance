@@ -3,7 +3,7 @@ using MonoMod.Cil;
 
 namespace WellRoundedBalance.Items.Reds
 {
-    public class HappiestMask : ItemBase
+    public class HappiestMask : ItemBase<HappiestMask>
     {
         public static BuffDef happiestMaskReady;
         public static BuffDef happiestMaskCooldown;

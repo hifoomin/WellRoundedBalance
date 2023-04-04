@@ -4,7 +4,7 @@ using System;
 
 namespace WellRoundedBalance.Enemies.Bosses
 {
-    internal class ClayDunestrider : EnemyBase
+    internal class ClayDunestrider : EnemyBase<ClayDunestrider>
     {
         public override string Name => "::: Bosses :::: Clay Dunestrider";
 

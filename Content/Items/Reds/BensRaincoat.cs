@@ -3,7 +3,7 @@ using RoR2.Items;
 
 namespace WellRoundedBalance.Items.Reds
 {
-    internal class BensRaincoat : ItemBase
+    internal class BensRaincoat : ItemBase<BensRaincoat>
     {
         public static BuffDef braincoatSpeed;
         public override string Name => ":: Items ::: Reds :: Bens Raincoat";

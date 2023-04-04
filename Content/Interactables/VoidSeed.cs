@@ -1,6 +1,6 @@
 ﻿namespace WellRoundedBalance.Interactables
 {
-    internal class VoidSeed : InteractableBase
+    internal class VoidSeed : InteractableBase<VoidSeed>
     {
         public override string Name => ":: Interactables :::::: Void Seed";
 

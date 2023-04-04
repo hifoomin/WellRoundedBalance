@@ -2,7 +2,7 @@
 
 namespace WellRoundedBalance.Mechanics.Director
 {
-    internal class SceneDirector : MechanicBase
+    internal class SceneDirector : MechanicBase<SceneDirector>
     {
         public override string Name => ":: Mechanics :::: Scene Director";
 
