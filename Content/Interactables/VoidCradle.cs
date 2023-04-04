@@ -91,7 +91,7 @@ namespace WellRoundedBalance.Interactables
             On.RoR2.UI.PickupPickerPanel.OnCreateButton += (orig, self, i, button) =>
             {
                 orig(self, i, button);
-                if (!self.gameObject.name.Contains("VoidCradle"))
+                if (!self.gameObject.name.Contains("VoidChest"))
                 {
                     return;
                 }
@@ -126,6 +126,15 @@ namespace WellRoundedBalance.Interactables
 
                 return card == null ? orig(self, deck, max) : card; // failsafe in the event cradles are the literal only thing it can afford (eg. void locus)
             };
+
+            On.RoR2.PickupPickerController.OnInteractionBegin += (orig, self, interactor) => {
+                // Debug.Log(self.gameObject.name);
+                if (self.gameObject.name.Contains("VoidChest")) {
+                    // Debug.Log("void cradle, returning");
+                    return; // dont run this method on cradles since cradlemanager implements its own version
+                }
+                orig(self, interactor);
+            };
         }
 
         public static bool ShouldBlockCradles()
@@ -136,11 +145,6 @@ namespace WellRoundedBalance.Interactables
                 {
                     // Main.WRBLogger.LogError("Should Block Cradles returned false");
                     return false;
-                }
-                else
-                {
-                    // Main.WRBLogger.LogError("Should Block Cradles returned TRUE");
-                    return true;
                 }
             }
 
@@ -154,10 +158,6 @@ namespace WellRoundedBalance.Interactables
                 if (IsCorruptible(index))
                 {
                     return true;
-                }
-                else
-                {
-                    return false;
                 }
             }
             return false;
@@ -226,8 +226,19 @@ namespace WellRoundedBalance.Interactables
             {
                 if (interactor.GetComponent<CharacterBody>())
                 {
+                    // Main.WRBLogger.LogError("Running OnPurchase");
                     CharacterBody body = interactor.GetComponent<CharacterBody>();
                     int c = 0;
+                    for (int i = 0; i < options.Count; i++) {
+                        PickupPickerController.Option opt = options[i];
+                        if (body.inventory.GetItemCount(opt.pickupIndex.itemIndex) <= 0) {
+                            options.Remove(opt);
+                        }
+                    }
+                    if (options.Count == 0) {
+                        // Main.WRBLogger.LogError("Options count 0, regenerating.");
+                        hasSet = false;
+                    }
                     foreach (ItemIndex index in body.inventory.itemAcquisitionOrder.OrderBy(x => UnityEngine.Random.value))
                     {
                         if (hasSet)
@@ -256,7 +267,8 @@ namespace WellRoundedBalance.Interactables
                         // Debug.Log("starting UI");
                         controller.SetOptionsInternal(options.ToArray());
                         controller.SetOptionsServer(options.ToArray());
-                        controller.OnInteractionBegin(interactor);
+                        controller.onServerInteractionBegin.Invoke(interactor);
+                        controller.networkUIPromptController.SetParticipantMasterFromInteractor(interactor);
                     }
                     interaction.SetAvailableTrue();
                 }
