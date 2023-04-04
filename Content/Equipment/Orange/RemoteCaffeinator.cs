@@ -1,6 +1,6 @@
 ﻿namespace WellRoundedBalance.Equipment.Orange
 {
-    public class RemoteCaffeinator : EquipmentBase
+    public class RemoteCaffeinator : EquipmentBase<RemoteCaffeinator>
     {
         public override string Name => ":: Equipment :: Remote Caffeinator";
         public override EquipmentDef InternalPickup => DLC1Content.Equipment.VendingMachine;

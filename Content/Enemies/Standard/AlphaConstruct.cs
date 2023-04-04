@@ -1,6 +1,6 @@
 ﻿namespace WellRoundedBalance.Enemies.Standard
 {
-    internal class AlphaConstruct : EnemyBase
+    internal class AlphaConstruct : EnemyBase<AlphaConstruct>
     {
         public override string Name => ":: Enemies :::::::: Alpha Construct";
 

@@ -1,6 +1,6 @@
 ﻿namespace WellRoundedBalance.Gamemodes.Eclipse
 {
-    internal class ChangeDesc : GamemodeBase
+    internal class ChangeDesc : GamemodeBase<ChangeDesc>
     {
         public override string Name => ":: Gamemode : Eclipse";
 

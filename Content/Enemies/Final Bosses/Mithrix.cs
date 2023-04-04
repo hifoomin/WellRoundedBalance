@@ -2,7 +2,7 @@
 
 namespace WellRoundedBalance.Enemies.FinalBosses
 {
-    public class Mithrix : EnemyBase
+    public class Mithrix : EnemyBase<Mithrix>
     {
         [ConfigField("Phase 1 & 3 Base Move Speed", "Disabled if playing Inferno.", 17f)]
         public static float phase13BaseMoveSpeed;

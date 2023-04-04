@@ -4,7 +4,7 @@ using System;
 
 namespace WellRoundedBalance.Items.Greens
 {
-    public class DeathMark : ItemBase
+    public class DeathMark : ItemBase<DeathMark>
     {
         public override string Name => ":: Items :: Greens :: Death Mark";
         public override ItemDef InternalPickup => RoR2Content.Items.DeathMark;

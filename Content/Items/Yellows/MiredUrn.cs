@@ -2,7 +2,7 @@
 
 namespace WellRoundedBalance.Items.Yellows
 {
-    public class MiredUrn : ItemBase
+    public class MiredUrn : ItemBase<MiredUrn>
     {
         public override string Name => ":: Items :::: Yellows :: Mired Urn";
         public override ItemDef InternalPickup => RoR2Content.Items.SiphonOnLowHealth;

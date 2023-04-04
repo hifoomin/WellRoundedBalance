@@ -2,7 +2,7 @@
 
 namespace WellRoundedBalance.Equipment.Orange
 {
-    public class ForeignFruit : EquipmentBase
+    public class ForeignFruit : EquipmentBase<ForeignFruit>
     {
         public override string Name => ":: Equipment :: Foreign Fruit";
 

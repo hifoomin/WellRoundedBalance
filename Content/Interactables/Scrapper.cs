@@ -3,7 +3,7 @@ using RoR2.Hologram;
 
 namespace WellRoundedBalance.Interactables
 {
-    public class Scrapper : InteractableBase
+    public class Scrapper : InteractableBase<Scrapper>
     {
         public override string Name => ":: Interactables ::::: Scrapper";
 

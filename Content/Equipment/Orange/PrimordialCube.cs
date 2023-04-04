@@ -1,6 +1,6 @@
 ﻿namespace WellRoundedBalance.Equipment.Orange
 {
-    public class PrimordialCube : EquipmentBase
+    public class PrimordialCube : EquipmentBase<PrimordialCube>
     {
         public override string Name => ":: Equipment :: Primordial Cube";
         public override EquipmentDef InternalPickup => RoR2Content.Equipment.Blackhole;

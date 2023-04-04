@@ -3,7 +3,7 @@ using MonoMod.Cil;
 
 namespace WellRoundedBalance.Items.Reds
 {
-    public class BottledChaos : ItemBase
+    public class BottledChaos : ItemBase<BottledChaos>
     {
         public override string Name => ":: Items ::: Reds :: Bottled Chaos";
         public override ItemDef InternalPickup => DLC1Content.Items.RandomEquipmentTrigger;

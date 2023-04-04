@@ -1,6 +1,6 @@
 ﻿namespace WellRoundedBalance.Enemies.Bosses
 {
-    internal class AlloyWorshipUnit : EnemyBase
+    internal class AlloyWorshipUnit : EnemyBase<AlloyWorshipUnit>
     {
         /* TODO:
             bring back spinning laser (lmaoo voidling's only good move isn't even original)

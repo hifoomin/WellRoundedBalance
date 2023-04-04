@@ -2,7 +2,7 @@
 
 namespace WellRoundedBalance.Items.Greens
 {
-    public class GhorsTome : ItemBase
+    public class GhorsTome : ItemBase<GhorsTome>
     {
         public override string Name => ":: Items :: Greens :: Ghors Tome";
         public override ItemDef InternalPickup => RoR2Content.Items.BonusGoldPackOnKill;

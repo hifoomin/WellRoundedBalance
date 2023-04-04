@@ -4,7 +4,7 @@ using System;
 
 namespace WellRoundedBalance.Items.Greens
 {
-    internal class Chronobauble : ItemBase
+    internal class Chronobauble : ItemBase<Chronobauble>
     {
         public static BuffDef slow50;
         public override string Name => ":: Items :: Greens :: Chronobauble";

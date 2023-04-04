@@ -2,7 +2,7 @@
 
 namespace WellRoundedBalance.Items.Reds
 {
-    public class AlienHead : ItemBase
+    public class AlienHead : ItemBase<AlienHead>
     {
         public override string Name => ":: Items ::: Reds :: Alien Head";
         public override ItemDef InternalPickup => RoR2Content.Items.AlienHead;

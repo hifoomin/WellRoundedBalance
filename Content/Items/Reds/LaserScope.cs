@@ -4,7 +4,7 @@ using System;
 
 namespace WellRoundedBalance.Items.Reds
 {
-    public class LaserScope : ItemBase
+    public class LaserScope : ItemBase<LaserScope>
     {
         public override string Name => ":: Items ::: Reds :: Laser Scope";
         public override ItemDef InternalPickup => DLC1Content.Items.CritDamage;

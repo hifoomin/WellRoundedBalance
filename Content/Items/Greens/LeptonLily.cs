@@ -3,7 +3,7 @@ using MonoMod.Cil;
 
 namespace WellRoundedBalance.Items.Greens
 {
-    internal class LeptonLily : ItemBase
+    internal class LeptonLily : ItemBase<LeptonLily>
     {
         public override string Name => ":: Items :: Greens :: Lepton Lily";
         public override ItemDef InternalPickup => RoR2Content.Items.TPHealingNova;

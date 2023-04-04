@@ -1,6 +1,6 @@
 ﻿namespace WellRoundedBalance.Equipment.Lunar
 {
-    public class EffigyOfGrief : EquipmentBase
+    public class EffigyOfGrief : EquipmentBase<EffigyOfGrief>
     {
         public override string Name => ":: Equipment ::: Effigy Of Grief";
         public override EquipmentDef InternalPickup => RoR2Content.Equipment.CrippleWard;

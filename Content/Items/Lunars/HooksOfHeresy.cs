@@ -1,6 +1,6 @@
 ﻿namespace WellRoundedBalance.Items.Lunars
 {
-    public class HooksOfHeresy : ItemBase
+    public class HooksOfHeresy : ItemBase<HooksOfHeresy>
     {
         public override string Name => ":: Items ::::: Lunars :: Hooks of Heresy";
         public override ItemDef InternalPickup => RoR2Content.Items.LunarSecondaryReplacement;

@@ -3,7 +3,7 @@ using MonoMod.Cil;
 
 namespace WellRoundedBalance.Items.VoidGreens
 {
-    public class SingularityBand : ItemBase
+    public class SingularityBand : ItemBase<SingularityBand>
     {
         public override string Name => ":: Items :::::: Voids :: Singularity Band";
         public override ItemDef InternalPickup => DLC1Content.Items.ElementalRingVoid;

@@ -2,7 +2,7 @@
 
 namespace WellRoundedBalance.Equipment.Orange
 {
-    public class ExecutiveCard : EquipmentBase
+    public class ExecutiveCard : EquipmentBase<ExecutiveCard>
     {
         public override string Name => ":: Equipment :: Executive Card";
 

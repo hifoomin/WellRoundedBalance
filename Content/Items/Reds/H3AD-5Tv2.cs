@@ -1,6 +1,6 @@
 ﻿namespace WellRoundedBalance.Items.Reds
 {
-    public class Headstompers : ItemBase
+    public class Headstompers : ItemBase<Headstompers>
     {
         public override string Name => ":: Items ::: Reds :: H3AD-5T v2";
         public override ItemDef InternalPickup => RoR2Content.Items.FallBoots;

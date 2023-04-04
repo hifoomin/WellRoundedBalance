@@ -1,6 +1,6 @@
 ﻿namespace WellRoundedBalance.Items.Greens
 {
-    public class WaxQuail : ItemBase
+    public class WaxQuail : ItemBase<WaxQuail>
     {
         public override string Name => ":: Items :: Greens :: Wax Quail";
         public override ItemDef InternalPickup => RoR2Content.Items.JumpBoost;

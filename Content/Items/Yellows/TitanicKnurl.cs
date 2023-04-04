@@ -2,7 +2,7 @@
 
 namespace WellRoundedBalance.Items.Yellows
 {
-    public class TitanicKnurl : ItemBase
+    public class TitanicKnurl : ItemBase<TitanicKnurl>
     {
         public override string Name => ":: Items :::: Yellows :: Titanic Knurl";
         public override ItemDef InternalPickup => RoR2Content.Items.Knurl;

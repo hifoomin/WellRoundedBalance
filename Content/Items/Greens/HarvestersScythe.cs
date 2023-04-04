@@ -3,7 +3,7 @@ using MonoMod.Cil;
 
 namespace WellRoundedBalance.Items.Greens
 {
-    public class HarvestersScythe : ItemBase
+    public class HarvestersScythe : ItemBase<HarvestersScythe>
     {
         public override string Name => ":: Items :: Greens :: Harvesters Scythe";
         public override ItemDef InternalPickup => RoR2Content.Items.HealOnCrit;

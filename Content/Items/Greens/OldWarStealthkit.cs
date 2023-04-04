@@ -5,7 +5,7 @@ using System;
 
 namespace WellRoundedBalance.Items.Greens
 {
-    public class OldWarStealthkit : ItemBase
+    public class OldWarStealthkit : ItemBase<OldWarStealthkit>
     {
         public override string Name => ":: Items :: Greens :: Old War Stealthkit";
         public override ItemDef InternalPickup => RoR2Content.Items.Phasing;

@@ -3,7 +3,7 @@ using System;
 
 namespace WellRoundedBalance.Equipment.Lunar
 {
-    internal class GlowingMeteorite : EquipmentBase
+    internal class GlowingMeteorite : EquipmentBase<GlowingMeteorite>
     {
         public override string Name => ":: Equipment ::: Glowing Meteorite";
 

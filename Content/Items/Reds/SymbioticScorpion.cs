@@ -3,7 +3,7 @@ using static RoR2.DotController;
 
 namespace WellRoundedBalance.Items.Reds
 {
-    public class SymbioticScorpion : ItemBase
+    public class SymbioticScorpion : ItemBase<SymbioticScorpion>
     {
         public static BuffDef venom;
         public static BuffDef armorReduction;

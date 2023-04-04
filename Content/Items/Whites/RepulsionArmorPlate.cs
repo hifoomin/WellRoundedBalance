@@ -4,7 +4,7 @@ using System;
 
 namespace WellRoundedBalance.Items.Whites
 {
-    public class RepulsionArmorPlate : ItemBase
+    public class RepulsionArmorPlate : ItemBase<RepulsionArmorPlate>
     {
         public override string Name => ":: Items : Whites :: Repulsion Armor Plate";
         public override ItemDef InternalPickup => RoR2Content.Items.ArmorPlate;

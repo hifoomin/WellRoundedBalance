@@ -1,6 +1,6 @@
 ﻿namespace WellRoundedBalance.Items.Whites
 {
-    public class EncrustedKey : ItemBase
+    public class EncrustedKey : ItemBase<EncrustedKey>
     {
         public override string Name => ":: Items :::::: Voids :: Encrusted Key";
         public override ItemDef InternalPickup => DLC1Content.Items.TreasureCacheVoid;

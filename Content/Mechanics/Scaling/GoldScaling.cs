@@ -2,7 +2,7 @@
 
 namespace WellRoundedBalance.Mechanics.Scaling
 {
-    public class GoldScaling : MechanicBase
+    public class GoldScaling : MechanicBase<GoldScaling>
     {
         public override string Name => ":: Mechanics : Gold Scaling";
 

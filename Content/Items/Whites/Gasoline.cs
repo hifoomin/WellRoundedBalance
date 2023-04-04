@@ -4,7 +4,7 @@ using System;
 
 namespace WellRoundedBalance.Items.Whites
 {
-    internal class Gasoline : ItemBase
+    internal class Gasoline : ItemBase<Gasoline>
     {
         public override string Name => ":: Items : Whites :: Gasoline";
 

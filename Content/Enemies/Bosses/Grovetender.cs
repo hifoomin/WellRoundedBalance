@@ -1,6 +1,6 @@
 ﻿namespace WellRoundedBalance.Enemies.Bosses
 {
-    internal class Grovetender : EnemyBase
+    internal class Grovetender : EnemyBase<Grovetender>
     {
         public override string Name => "::: Bosses ::: Grovetender";
 

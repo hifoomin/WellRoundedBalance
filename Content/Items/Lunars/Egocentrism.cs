@@ -2,7 +2,7 @@
 
 namespace WellRoundedBalance.Items.Lunars
 {
-    public class Egocentrism : ItemBase
+    public class Egocentrism : ItemBase<Egocentrism>
     {
         public static float Damage;
 

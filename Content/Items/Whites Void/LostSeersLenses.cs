@@ -4,7 +4,7 @@ using System;
 
 namespace WellRoundedBalance.Items.VoidWhites
 {
-    public class LostSeersLenses : ItemBase
+    public class LostSeersLenses : ItemBase<LostSeersLenses>
     {
         public override string Name => ":: Items :::::: Voids :: Lost Seers Lenses";
         public override ItemDef InternalPickup => DLC1Content.Items.CritGlassesVoid;

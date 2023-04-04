@@ -4,7 +4,7 @@ using System;
 
 namespace WellRoundedBalance.Mechanics.Bosses
 {
-    internal class ForcedBossVariety : MechanicBase
+    internal class ForcedBossVariety : MechanicBase<ForcedBossVariety>
     {
         public override string Name => ":: Mechanics ::::: Forced Boss Variety";
 

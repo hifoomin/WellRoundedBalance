@@ -2,7 +2,7 @@
 
 namespace WellRoundedBalance.Equipment.Orange
 {
-    public class GnarledWoodsprite : EquipmentBase
+    public class GnarledWoodsprite : EquipmentBase<GnarledWoodsprite>
     {
         public override string Name => ":: Equipment :: Gnarled Woodsprite";
         public override EquipmentDef InternalPickup => RoR2Content.Equipment.PassiveHealing;

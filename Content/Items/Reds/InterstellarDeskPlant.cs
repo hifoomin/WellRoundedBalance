@@ -2,7 +2,7 @@
 
 namespace WellRoundedBalance.Items.Reds
 {
-    internal class InterstellarDeskPlant : ItemBase
+    internal class InterstellarDeskPlant : ItemBase<InterstellarDeskPlant>
     {
         public override string Name => ":: Items ::: Reds :: Interstellar Desk Plant";
 

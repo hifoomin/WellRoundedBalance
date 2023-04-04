@@ -3,7 +3,7 @@ using System;
 
 namespace WellRoundedBalance.Equipment.Orange
 {
-    public class TheBackup : EquipmentBase
+    public class TheBackup : EquipmentBase<TheBackup>
     {
         public override string Name => ":: Equipment :: The Backup";
         public override EquipmentDef InternalPickup => RoR2Content.Equipment.DroneBackup;

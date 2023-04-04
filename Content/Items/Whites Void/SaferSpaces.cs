@@ -2,7 +2,7 @@
 
 namespace WellRoundedBalance.Items.VoidWhites
 {
-    public class SaferSpaces : ItemBase
+    public class SaferSpaces : ItemBase<SaferSpaces>
     {
         public override string Name => ":: Items :::::: Voids :: Safer Spaces";
         public override ItemDef InternalPickup => DLC1Content.Items.BearVoid;

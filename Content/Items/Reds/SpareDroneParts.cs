@@ -1,6 +1,6 @@
 ﻿namespace WellRoundedBalance.Items.Reds
 {
-    public class SpareDroneParts : ItemBase
+    public class SpareDroneParts : ItemBase<SpareDroneParts>
     {
         public override string Name => ":: Items ::: Reds :: Spare Drone Parts";
         public override ItemDef InternalPickup => DLC1Content.Items.DroneWeapons;

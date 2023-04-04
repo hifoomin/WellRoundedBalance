@@ -3,7 +3,7 @@ using MonoMod.Cil;
 
 namespace WellRoundedBalance.Items.Greens
 {
-    public class WarHorn : ItemBase
+    public class WarHorn : ItemBase<WarHorn>
     {
         public static BuffDef warHornBuff;
         public override string Name => ":: Items :: Greens :: War Horn";

@@ -3,7 +3,7 @@ using WellRoundedBalance.Items;
 
 namespace WellRoundedBalance.Equipment.Orange
 {
-    public class RoyalCapacitor : EquipmentBase
+    public class RoyalCapacitor : EquipmentBase<RoyalCapacitor>
     {
         public override string Name => ":: Equipment :: Royal Capacitor";
         public override EquipmentDef InternalPickup => RoR2Content.Equipment.Lightning;

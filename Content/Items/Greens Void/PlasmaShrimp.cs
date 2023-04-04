@@ -2,7 +2,7 @@
 
 namespace WellRoundedBalance.Items.VoidGreens
 {
-    public class PlasmaShrimp : ItemBase
+    public class PlasmaShrimp : ItemBase<PlasmaShrimp>
     {
         public override string Name => ":: Items :::::: Voids :: Plasma Shrimp";
         public override ItemDef InternalPickup => DLC1Content.Items.MissileVoid;

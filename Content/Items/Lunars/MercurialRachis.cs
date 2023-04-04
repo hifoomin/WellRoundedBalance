@@ -1,6 +1,6 @@
 ﻿namespace WellRoundedBalance.Items.Lunars
 {
-    public class MercurialRachis : ItemBase
+    public class MercurialRachis : ItemBase<MercurialRachis>
     {
         public override string Name => ":: Items ::::: Lunars :: Mercurial Rachis";
         public override ItemDef InternalPickup => RoR2Content.Items.RandomDamageZone;

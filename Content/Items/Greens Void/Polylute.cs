@@ -5,7 +5,7 @@ using System;
 
 namespace WellRoundedBalance.Items.VoidGreens
 {
-    public class Polylute : ItemBase
+    public class Polylute : ItemBase<Polylute>
     {
         public override string Name => ":: Items :::::: Voids :: Polylute";
         public override ItemDef InternalPickup => DLC1Content.Items.ChainLightningVoid;

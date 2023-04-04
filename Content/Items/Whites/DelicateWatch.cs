@@ -3,7 +3,7 @@ using MonoMod.Cil;
 
 namespace WellRoundedBalance.Items.Whites
 {
-    public class DelicateWatch : ItemBase
+    public class DelicateWatch : ItemBase<DelicateWatch>
     {
         public static BuffDef watchDamage;
 

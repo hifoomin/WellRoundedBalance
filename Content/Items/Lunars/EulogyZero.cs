@@ -2,7 +2,7 @@
 
 namespace WellRoundedBalance.Items.Lunars
 {
-    public class EulogyZero : ItemBase
+    public class EulogyZero : ItemBase<EulogyZero>
     {
         public override string Name => ":: Items ::::: Lunars :: Eulogy Zero";
         public override ItemDef InternalPickup => DLC1Content.Items.RandomlyLunar;

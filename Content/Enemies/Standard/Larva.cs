@@ -1,6 +1,6 @@
 ﻿namespace WellRoundedBalance.Enemies.Standard
 {
-    internal class Larva : EnemyBase
+    internal class Larva : EnemyBase<Larva>
     {
         public override string Name => ":: Enemies :::::: Larva";
 

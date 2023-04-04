@@ -5,7 +5,7 @@ using System;
 
 namespace WellRoundedBalance.Items.Whites
 {
-    public class BundleOfFireworks : ItemBase
+    public class BundleOfFireworks : ItemBase<BundleOfFireworks>
     {
         public override string Name => ":: Items : Whites :: Bundle of Fireworks";
         public override ItemDef InternalPickup => RoR2Content.Items.Firework;

@@ -2,7 +2,7 @@
 
 namespace WellRoundedBalance.Items.Reds
 {
-    public class BrilliantBehemoth : ItemBase
+    public class BrilliantBehemoth : ItemBase<BrilliantBehemoth>
     {
         public override string Name => ":: Items ::: Reds :: Brilliant Behemoth";
         public override ItemDef InternalPickup => RoR2Content.Items.Behemoth;

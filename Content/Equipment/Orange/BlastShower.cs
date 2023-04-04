@@ -2,7 +2,7 @@
 
 namespace WellRoundedBalance.Equipment.Orange
 {
-    public class BlastShower : EquipmentBase
+    public class BlastShower : EquipmentBase<BlastShower>
     {
         public override string Name => ":: Equipment :: Blast Shower";
         public override EquipmentDef InternalPickup => RoR2Content.Equipment.Cleanse;

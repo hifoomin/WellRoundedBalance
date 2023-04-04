@@ -4,7 +4,7 @@ using System;
 
 namespace WellRoundedBalance.Items.Whites
 {
-    public class FocusCrystal : ItemBase
+    public class FocusCrystal : ItemBase<FocusCrystal>
     {
         public override string Name => ":: Items : Whites :: Focus Crystal";
         public override ItemDef InternalPickup => RoR2Content.Items.NearbyDamageBonus;

@@ -3,7 +3,7 @@ using MonoMod.Cil;
 
 namespace WellRoundedBalance.Items.Greens
 {
-    public class HuntersHarpoon : ItemBase
+    public class HuntersHarpoon : ItemBase<HuntersHarpoon>
     {
         public static BuffDef speedBuff;
 
@@ -41,7 +41,6 @@ namespace WellRoundedBalance.Items.Greens
 
         [ConfigField("Max Count is Hyperbolic", "Decimal, Max value. Set to 0 to make it linear.", 0f)]
         public static float maxCountIsHyperbolic;
-
 
         public override void Init()
         {

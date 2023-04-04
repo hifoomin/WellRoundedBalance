@@ -1,6 +1,6 @@
 ﻿namespace WellRoundedBalance.Enemies.Bosses
 {
-    internal class Grandparent : EnemyBase
+    internal class Grandparent : EnemyBase<Grandparent>
     {
         public override string Name => "::: Bosses :: Grandparent";
 

@@ -4,7 +4,7 @@ using RoR2.Orbs;
 
 namespace WellRoundedBalance.Items.Greens
 {
-    public class Razorwire : ItemBase
+    public class Razorwire : ItemBase<Razorwire>
     {
         public static BuffDef razorwireCooldown;
 
@@ -22,6 +22,7 @@ namespace WellRoundedBalance.Items.Greens
 
         [ConfigField("Proc Chance", 0f)]
         public static float procChance;
+
         public override void Init()
         {
             razorwireCooldown = ScriptableObject.CreateInstance<BuffDef>();

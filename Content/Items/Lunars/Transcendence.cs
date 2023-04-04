@@ -4,7 +4,7 @@ using System;
 
 namespace WellRoundedBalance.Items.Lunars
 {
-    public class Transcendence : ItemBase
+    public class Transcendence : ItemBase<Transcendence>
     {
         public override string Name => ":: Items ::::: Lunars :: Transcendence";
         public override ItemDef InternalPickup => RoR2Content.Items.ShieldOnly;

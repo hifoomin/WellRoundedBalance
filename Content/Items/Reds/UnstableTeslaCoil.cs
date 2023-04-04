@@ -2,7 +2,7 @@
 
 namespace WellRoundedBalance.Items.Reds
 {
-    public class UnstableTeslaCoil : ItemBase
+    public class UnstableTeslaCoil : ItemBase<UnstableTeslaCoil>
     {
         public override string Name => ":: Items ::: Reds :: Unstable Tesla Coil";
         public override ItemDef InternalPickup => RoR2Content.Items.ShockNearby;

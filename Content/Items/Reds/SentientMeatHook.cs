@@ -2,7 +2,7 @@
 
 namespace WellRoundedBalance.Items.Reds
 {
-    public class SentientMeatHook : ItemBase
+    public class SentientMeatHook : ItemBase<SentientMeatHook>
     {
         public override string Name => ":: Items ::: Reds :: Sentient Meat Hook";
         public override ItemDef InternalPickup => RoR2Content.Items.BounceNearby;

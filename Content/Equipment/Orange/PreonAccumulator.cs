@@ -2,7 +2,7 @@ using WellRoundedBalance.Items;
 
 namespace WellRoundedBalance.Equipment.Orange
 {
-    public class PreonAccumulator : EquipmentBase
+    public class PreonAccumulator : EquipmentBase<PreonAccumulator>
     {
         public override string Name => ":: Equipment :: Preon Accumulator";
         public override EquipmentDef InternalPickup => RoR2Content.Equipment.BFG;

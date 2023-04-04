@@ -1,6 +1,6 @@
 ﻿namespace WellRoundedBalance.Enemies.Standard
 {
-    internal class BlindPest : EnemyBase
+    internal class BlindPest : EnemyBase<BlindPest>
     {
         public override string Name => ":: Enemies :::: Blind Pest";
 

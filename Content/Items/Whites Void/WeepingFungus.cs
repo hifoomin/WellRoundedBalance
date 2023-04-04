@@ -4,7 +4,7 @@ using System;
 
 namespace WellRoundedBalance.Items.VoidWhites
 {
-    public class WeepingFungus : ItemBase
+    public class WeepingFungus : ItemBase<WeepingFungus>
     {
         public override string Name => ":: Items :::::: Voids :: Weeping Fungus";
         public override ItemDef InternalPickup => DLC1Content.Items.MushroomVoid;

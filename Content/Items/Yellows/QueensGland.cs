@@ -5,7 +5,7 @@ using System;
 
 namespace WellRoundedBalance.Items.Yellows
 {
-    public class QueensGland : ItemBase
+    public class QueensGland : ItemBase<QueensGland>
     {
         public override string Name => ":: Items :::: Yellows :: Queens Gland";
         public override ItemDef InternalPickup => RoR2Content.Items.BeetleGland;

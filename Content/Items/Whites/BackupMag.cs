@@ -1,6 +1,6 @@
 ﻿namespace WellRoundedBalance.Items.Whites
 {
-    public class BackupMag : ItemBase
+    public class BackupMag : ItemBase<BackupMag>
     {
         public override string Name => ":: Items : Whites :: Backup Mag";
         public override ItemDef InternalPickup => RoR2Content.Items.SecondarySkillMagazine;

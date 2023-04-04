@@ -1,6 +1,6 @@
 ﻿namespace WellRoundedBalance.Mechanics.Bosses
 {
-    public class TeleportWhenOOB : MechanicBase
+    public class TeleportWhenOOB : MechanicBase<TeleportWhenOOB>
     {
         public override string Name => ":: Mechanics ::::: Boss Teleport OOB";
 

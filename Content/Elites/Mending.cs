@@ -2,7 +2,7 @@ using WellRoundedBalance.Gamemodes.Eclipse;
 
 namespace WellRoundedBalance.Elites
 {
-    internal class Mending : EliteBase
+    internal class Mending : EliteBase<Mending>
     {
         public override string Name => "Elites :::: Mending";
 
@@ -166,7 +166,6 @@ namespace WellRoundedBalance.Elites
                     if (target && NetworkServer.active)
                     {
                         target.Heal(body.damage * healFraction, new(), true);
-
                     }
 
                     if (target)

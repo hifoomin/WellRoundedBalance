@@ -2,7 +2,7 @@
 
 namespace WellRoundedBalance.Mechanics.Interactables
 {
-    internal class FasterInteractables : MechanicBase
+    internal class FasterInteractables : MechanicBase<FasterInteractables>
     {
         public override string Name => ":: Mechanics ::::::::::::: Faster Interactables";
 

@@ -2,7 +2,7 @@
 
 namespace WellRoundedBalance.Items.Greens
 {
-    public class Bandolier : ItemBase
+    public class Bandolier : ItemBase<Bandolier>
     {
         public override string Name => ":: Items :: Greens :: Bandolier";
         public override ItemDef InternalPickup => RoR2Content.Items.Bandolier;

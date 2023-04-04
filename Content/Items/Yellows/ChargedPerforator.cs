@@ -3,7 +3,7 @@ using System;
 
 namespace WellRoundedBalance.Items.Yellows
 {
-    public class ChargedPerforator : ItemBase
+    public class ChargedPerforator : ItemBase<ChargedPerforator>
     {
         public override string Name => ":: Items :::: Yellows :: Charged Perforator";
         public override ItemDef InternalPickup => RoR2Content.Items.LightningStrikeOnHit;

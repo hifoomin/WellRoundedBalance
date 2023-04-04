@@ -1,6 +1,6 @@
 ﻿namespace WellRoundedBalance.Interactables
 {
-    public class ScavengerBag : InteractableBase
+    public class ScavengerBag : InteractableBase<ScavengerBag>
     {
         public override string Name => ":: Interactables :::::::: Scavenger Bag";
 

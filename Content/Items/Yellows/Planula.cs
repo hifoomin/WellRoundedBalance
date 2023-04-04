@@ -4,7 +4,7 @@ using UnityEngine.Rendering.PostProcessing;
 
 namespace WellRoundedBalance.Items.Yellows
 {
-    public class Planula : ItemBase
+    public class Planula : ItemBase<Planula>
     {
         public static GameObject sunPrefabLessPP;
         public override string Name => ":: Items :::: Yellows :: Planula";

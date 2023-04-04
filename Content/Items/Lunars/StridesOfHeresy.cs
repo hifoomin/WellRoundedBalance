@@ -2,7 +2,7 @@
 
 namespace WellRoundedBalance.Items.Lunars
 {
-    public class StridesOfHeresy : ItemBase
+    public class StridesOfHeresy : ItemBase<StridesOfHeresy>
     {
         public override string Name => ":: Items ::::: Lunars :: Strides of Heresy";
         public override ItemDef InternalPickup => RoR2Content.Items.LunarUtilityReplacement;

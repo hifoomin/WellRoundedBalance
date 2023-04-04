@@ -4,7 +4,7 @@ using System;
 
 namespace WellRoundedBalance.Items.Whites
 {
-    internal class TopazBrooch : ItemBase
+    internal class TopazBrooch : ItemBase<TopazBrooch>
     {
         public override string Name => ":: Items : Whites :: Topaz Brooch";
 

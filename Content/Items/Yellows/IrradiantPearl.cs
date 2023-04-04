@@ -1,6 +1,6 @@
 ﻿namespace WellRoundedBalance.Items.Yellows
 {
-    public class IrradiantPearl : ItemBase
+    public class IrradiantPearl : ItemBase<IrradiantPearl>
     {
         public override string Name => ":: Items :::: Yellows :: Irradiant Pearl";
         public override ItemDef InternalPickup => RoR2Content.Items.ShinyPearl;

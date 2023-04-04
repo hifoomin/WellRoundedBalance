@@ -7,7 +7,7 @@ using System;
 
 namespace WellRoundedBalance.Mechanics.Allies
 {
-    internal class PingOrdering : MechanicBase
+    internal class PingOrdering : MechanicBase<PingOrdering>
     {
         public static Dictionary<CharacterMaster, AwaitOrders> subordinateDict = new();
         public override string Name => ":: Mechanics :::::::::::::: Ping Ordering";

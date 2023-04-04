@@ -1,6 +1,6 @@
 ﻿namespace WellRoundedBalance.Items.Reds
 {
-    public class CeremonialDagger : ItemBase
+    public class CeremonialDagger : ItemBase<CeremonialDagger>
     {
         public override string Name => ":: Items ::: Reds :: Ceremonial Dagger";
         public override ItemDef InternalPickup => RoR2Content.Items.Dagger;

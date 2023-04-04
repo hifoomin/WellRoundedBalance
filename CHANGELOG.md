@@ -2,8 +2,11 @@
 - Buffed Mithrix Phase 4 Base Damage 3 => **8**.
 - Buffed Monster Armor Per Loop 7 => **10**.
 - Buffed Warbanner to spawn on **final boss encounters**.
-- Nerfed Eclipse 6 Enrage Stat Multiplier 2x => **1.6x**.
+- Nerfed Eclipse 6 Enrage Stat Multiplier 2x => **1.75x**.
+- Nerfed Eclipse 6 Enrage Stat Multiplier for Mithrix 1.75x => **1.3x**.
 - Nerfed Interstellar Desk Plant Base Range 12m => **10m**.
+- Nerfed Spinel Tonic Curse Gain 10% => **12%**.
+- Nerfed Mithrix Big Spinny => **No longer Cripples**.
 - Nerfed Interstellar Desk Plant Percent Healing 6% => **5%**.
 - Nerfed Shatterspleen to have a **16 bleed cap**.
 - Nerfed Tri-Tip Dagger to have an **8 (+4 per stack) bleed cap**.
@@ -12,7 +15,9 @@
 - Fixed Sawmerang and Shuriken getting stuck.
 - Fixed Sawmerang doing way more damage than intended.
 - Fixed Shuriken hitting more amount of times than intended.
+- Fixed Helfire Tincture damage and description being incorrect in every possible way ever imaginable.
 - Fixed difficulty and equipment descriptions being overwritten by other mods.
+- Fixed minor item descriptions.
 - - Probably the last small update unless issues arise. ~HIFU.
 
 # 1.1.5 Patch Notes

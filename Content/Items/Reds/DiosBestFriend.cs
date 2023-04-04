@@ -2,7 +2,7 @@
 
 namespace WellRoundedBalance.Items.Reds
 {
-    public class DiosBestFriend : ItemBase
+    public class DiosBestFriend : ItemBase<DiosBestFriend>
     {
         public override string Name => ":: Items ::: Reds :: Dios Best Friend";
         public override ItemDef InternalPickup => RoR2Content.Items.ExtraLife;

@@ -5,7 +5,7 @@ using System;
 
 namespace WellRoundedBalance.Items.Whites
 {
-    public class Warbanner : ItemBase
+    public class Warbanner : ItemBase<Warbanner>
     {
         public override string Name => ":: Items : Whites :: Warbanner";
         public override ItemDef InternalPickup => RoR2Content.Items.WardOnLevel;

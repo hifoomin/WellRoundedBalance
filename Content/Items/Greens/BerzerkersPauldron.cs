@@ -4,7 +4,7 @@ using R2API.Utils;
 
 namespace WellRoundedBalance.Items.Greens
 {
-    public class BerzerkersPauldron : ItemBase
+    public class BerzerkersPauldron : ItemBase<BerzerkersPauldron>
     {
         public override string Name => ":: Items :: Greens :: Berzerkers Pauldron";
         public override ItemDef InternalPickup => RoR2Content.Items.WarCryOnMultiKill;

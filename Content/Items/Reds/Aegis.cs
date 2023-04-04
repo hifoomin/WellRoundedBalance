@@ -2,7 +2,7 @@
 
 namespace WellRoundedBalance.Items.Reds
 {
-    public class Aegis : ItemBase
+    public class Aegis : ItemBase<Aegis>
     {
         public override string Name => ":: Items ::: Reds :: Aegis";
         public override ItemDef InternalPickup => RoR2Content.Items.BarrierOnOverHeal;

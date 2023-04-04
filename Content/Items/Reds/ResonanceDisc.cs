@@ -1,6 +1,6 @@
 ﻿namespace WellRoundedBalance.Items.Reds
 {
-    public class ResonanceDisc : ItemBase
+    public class ResonanceDisc : ItemBase<ResonanceDisc>
     {
         public override string Name => ":: Items ::: Reds :: Resonance Disc";
         public override ItemDef InternalPickup => RoR2Content.Items.LaserTurbine;

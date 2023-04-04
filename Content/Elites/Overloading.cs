@@ -6,7 +6,7 @@ using WellRoundedBalance.Gamemodes.Eclipse;
 
 namespace WellRoundedBalance.Elites
 {
-    internal class Overloading : EliteBase
+    internal class Overloading : EliteBase<Overloading>
     {
         public static BuffDef overloadingSpeedBuff;
         public override string Name => ":: Elites ::: Overloading";

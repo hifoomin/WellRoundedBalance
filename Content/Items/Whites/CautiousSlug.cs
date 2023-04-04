@@ -1,6 +1,6 @@
 ﻿namespace WellRoundedBalance.Items.Whites
 {
-    public class CautiousSlug : ItemBase
+    public class CautiousSlug : ItemBase<CautiousSlug>
     {
         public override string Name => ":: Items : Whites :: Cautious Slug";
         public override ItemDef InternalPickup => RoR2Content.Items.HealWhileSafe;

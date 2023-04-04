@@ -2,7 +2,7 @@
 
 namespace WellRoundedBalance.Items.Lunars
 {
-    public class Purity : ItemBase
+    public class Purity : ItemBase<Purity>
     {
         public override string Name => ":: Items ::::: Lunars :: Purity";
         public override ItemDef InternalPickup => RoR2Content.Items.LunarBadLuck;

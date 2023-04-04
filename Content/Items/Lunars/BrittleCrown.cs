@@ -2,7 +2,7 @@
 
 namespace WellRoundedBalance.Items.Lunars
 {
-    public class BrittleCrown : ItemBase
+    public class BrittleCrown : ItemBase<BrittleCrown>
     {
         public override string Name => ":: Items ::::: Lunars :: Brittle Crown";
         public override ItemDef InternalPickup => RoR2Content.Items.GoldOnHit;

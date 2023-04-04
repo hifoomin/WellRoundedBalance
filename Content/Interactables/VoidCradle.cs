@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace WellRoundedBalance.Interactables
 {
-    internal class VoidCradle : InteractableBase
+    internal class VoidCradle : InteractableBase<VoidCradle>
     {
         public override string Name => ":: Interactables : Void Cradle";
         public CostTypeIndex costTypeIndex = (CostTypeIndex)19;
@@ -137,11 +137,6 @@ namespace WellRoundedBalance.Interactables
                     // Main.WRBLogger.LogError("Should Block Cradles returned false");
                     return false;
                 }
-                else
-                {
-                    // Main.WRBLogger.LogError("Should Block Cradles returned TRUE");
-                    return true;
-                }
             }
 
             return true;
@@ -154,10 +149,6 @@ namespace WellRoundedBalance.Interactables
                 if (IsCorruptible(index))
                 {
                     return true;
-                }
-                else
-                {
-                    return false;
                 }
             }
             return false;

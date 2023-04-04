@@ -2,7 +2,7 @@
 
 namespace WellRoundedBalance.Items.VoidGreens
 {
-    public class LysateCell : ItemBase
+    public class LysateCell : ItemBase<LysateCell>
     {
         public override string Name => ":: Items :::::: Voids :: Lysate Cell";
         public override ItemDef InternalPickup => DLC1Content.Items.EquipmentMagazineVoid;

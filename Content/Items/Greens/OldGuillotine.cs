@@ -3,7 +3,7 @@ using MonoMod.Cil;
 
 namespace WellRoundedBalance.Items.Greens
 {
-    public class OldGuillotine : ItemBase
+    public class OldGuillotine : ItemBase<OldGuillotine>
     {
         public static GameObject guillotineVFX;
         public override string Name => ":: Items :: Greens :: Old Guillotine";

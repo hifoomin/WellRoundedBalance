@@ -5,7 +5,7 @@ using WellRoundedBalance.Gamemodes.Eclipse;
 
 namespace WellRoundedBalance.Elites
 {
-    internal class Blazing : EliteBase
+    internal class Blazing : EliteBase<Blazing>
     {
         public override string Name => ":: Elites :: Blazing";
 

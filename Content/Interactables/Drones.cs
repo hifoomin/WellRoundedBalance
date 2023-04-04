@@ -1,6 +1,6 @@
 ﻿namespace WellRoundedBalance.Interactables
 {
-    internal class AllDrones : InteractableBase
+    internal class AllDrones : InteractableBase<AllDrones>
     {
         public override string Name => ":: Interactables ::::::::: Drones";
 

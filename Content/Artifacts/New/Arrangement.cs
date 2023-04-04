@@ -1,6 +1,6 @@
 ﻿namespace WellRoundedBalance.Artifacts.New
 {
-    internal class Arrangement : ArtifactAddBase
+    internal class Arrangement : ArtifactAddBase<Arrangement>
     {
         public override string ArtifactName => "Artifact of Arrangement";
 

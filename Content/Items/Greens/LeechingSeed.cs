@@ -1,6 +1,6 @@
 ﻿namespace WellRoundedBalance.Items.Greens
 {
-    public class LeechingSeed : ItemBase
+    public class LeechingSeed : ItemBase<LeechingSeed>
     {
         public override string Name => ":: Items :: Greens :: Leeching Seed";
         public override ItemDef InternalPickup => RoR2Content.Items.Seed;

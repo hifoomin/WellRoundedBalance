@@ -1,6 +1,6 @@
 ﻿namespace WellRoundedBalance.Items.Greens
 {
-    public class ShippingRequestForm : ItemBase
+    public class ShippingRequestForm : ItemBase<ShippingRequestForm>
     {
         public override string Name => ":: Items :: Greens :: Shipping Request Form";
         public override ItemDef InternalPickup => DLC1Content.Items.FreeChest;
