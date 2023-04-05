@@ -1,11 +1,12 @@
 ﻿using MonoMod.Cil;
+using System;
 
 namespace WellRoundedBalance.Gamemodes.Eclipse
 {
     internal class Eclipse3 : GamemodeBase<Eclipse3>
     {
         // look at Elites folder
-        public override string Name => ":: Gamemode : Eclipse";
+        public override string Name => ":: Gamemode : Eclipse 3";
 
         public override void Init()
         {
@@ -22,9 +23,13 @@ namespace WellRoundedBalance.Gamemodes.Eclipse
             ILCursor c = new(il);
 
             if (c.TryGotoNext(MoveType.Before,
-                x => x.MatchLdcR4(2f)))
+                x => x.MatchLdcI4(5)))
             {
-                c.Next.Operand = 1f;
+                c.Index++;
+                c.EmitDelegate<Func<int, int>>((useless) =>
+                {
+                    return int.MaxValue;
+                });
             }
             else
             {

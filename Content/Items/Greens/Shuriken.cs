@@ -7,6 +7,7 @@ namespace WellRoundedBalance.Items.Greens
 {
     public class Shuriken : ItemBase<Shuriken>
     {
+        public static BuffDef countdown;
         public override string Name => ":: Items :: Greens :: Shuriken";
         public override ItemDef InternalPickup => DLC1Content.Items.PrimarySkillShuriken;
 
@@ -51,6 +52,17 @@ namespace WellRoundedBalance.Items.Greens
 
         public override void Init()
         {
+            countdown = ScriptableObject.CreateInstance<BuffDef>();
+            countdown.isCooldown = true;
+            countdown.isDebuff = false;
+            countdown.isHidden = false;
+            countdown.canStack = true;
+            countdown.buffColor = new Color(0.4151f, 0.4014f, 0.4014f, 1f); // wolfo consistency :kirn:
+            countdown.iconSprite = Utils.Paths.BuffDef.bdPrimarySkillShurikenBuff.Load<BuffDef>().iconSprite;
+            countdown.name = "Shuriken Cooldown";
+
+            ContentAddition.AddBuffDef(countdown);
+
             base.Init();
         }
 
@@ -60,8 +72,22 @@ namespace WellRoundedBalance.Items.Greens
             On.RoR2.PrimarySkillShurikenBehavior.FixedUpdate += PrimarySkillShurikenBehavior_FixedUpdate;
             IL.RoR2.PrimarySkillShurikenBehavior.FixedUpdate += PrimarySkillShurikenBehavior_FixedUpdate1;
             IL.RoR2.PrimarySkillShurikenBehavior.FireShuriken += PrimarySkillShurikenBehavior_FireShuriken;
+            On.RoR2.PrimarySkillShurikenBehavior.FireShuriken += PrimarySkillShurikenBehavior_FireShuriken1;
+            On.RoR2.PrimarySkillShurikenBehavior.Start += PrimarySkillShurikenBehavior_Start;
             On.RoR2.PrimarySkillShurikenBehavior.GetRandomRollPitch += PrimarySkillShurikenBehavior_GetRandomRollPitch;
             On.RoR2.Projectile.ProjectileSimple.Start += ProjectileSimple_Start;
+        }
+
+        private void PrimarySkillShurikenBehavior_Start(On.RoR2.PrimarySkillShurikenBehavior.orig_Start orig, PrimarySkillShurikenBehavior self)
+        {
+            orig(self);
+            self.body.AddTimedBuff(countdown, cooldown - 2f / 60f);
+        }
+
+        private void PrimarySkillShurikenBehavior_FireShuriken1(On.RoR2.PrimarySkillShurikenBehavior.orig_FireShuriken orig, PrimarySkillShurikenBehavior self)
+        {
+            orig(self);
+            self.body.AddTimedBuff(countdown, cooldown - 2f / 60f);
         }
 
         private void ProjectileSimple_Start(On.RoR2.Projectile.ProjectileSimple.orig_Start orig, ProjectileSimple self)

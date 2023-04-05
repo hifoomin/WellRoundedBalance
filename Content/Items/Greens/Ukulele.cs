@@ -30,6 +30,9 @@ namespace WellRoundedBalance.Items.Greens
         [ConfigField("Range Per Stack", 4f)]
         public static float rangePerStack;
 
+        [ConfigField("Proc Coefficient", 0.33f)]
+        public static float procCoefficient;
+
         public override void Init()
         {
             base.Init();
@@ -115,7 +118,7 @@ namespace WellRoundedBalance.Items.Greens
                     x => x.MatchLdcR4(0.2f)))
             {
                 c.Index += 4;
-                c.Next.Operand = 0f;
+                c.Next.Operand = procCoefficient * globalProc;
             }
             else
             {

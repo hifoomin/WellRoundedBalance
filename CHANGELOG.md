@@ -1,7 +1,32 @@
 # 1.1.6 Patch Notes
+- Added Shuriken countdown buff.
 - Buffed Mithrix Phase 4 Base Damage 3 => **8**.
 - Buffed Monster Armor Per Loop 7 => **10**.
+- Buffed Harvester's Scythe Base Missing Health Healing Percent 1.5% => **1.8%**.
+- Buffed Harvester's Scythe Missing Health Healing Percent Per Stack 0.75% =. **0.9%**.
 - Buffed Warbanner to spawn on **final boss encounters**.
+- Buffed Elite Aspect Drop Chance 0.025% => **0.15%**.
+- Buffed Boss Log Drop Chance 3% => **4.5%**.
+- Buffed Monster Log Drop Chance 1% => **1.5%**.
+- Buffed AtG Missile Mk.1 Proc Coefficient 0 => **0.75**.
+- Buffed Razorwire Proc Coefficient 0 => **1**.
+- Buffed Will-o'-The-Wisp Proc Coefficient 0 => **0.5**.
+- Buffed Ceremonial Dagger Proc Coefficient 0 => **1**.
+- Buffed Frost Relic Proc Coefficient 0 => **0.25**.
+- Buffed N'kuhana's Opinion Proc Coefficient 0 => **0.33**.
+- Buffed N'kuhana's Opinion Base Damage 320% => **350%**.
+- Buffed Resonance Disc Proc Coefficient 0 => **1**.
+- Buffed Resonance Disc Bomb Explosion Radius 14m => **16m**.
+- Buffed Resonance Disc Bomb Falloff Type Sweetspot => **None**.
+- Buffed Resonance Disc Beam Radius 1m => **3m**.
+- Buffed Molten Peripherator Proc Coefficient 0 => **0.75**.
+- Buffed Little Disciple Proc Coefficient 0 => **0.33**.
+- Buffed Charged Perforator Proc Coefficient 0 => **1**.
+- Buffed Pocket I.C.B.M Proc Coefficient 0 => **0.33**.
+- Buffed Bundle of Fireworks Proc Coefficient 0 => **0.25**.
+- Buffed Titanic Knurl Proc Coefficient 0 => **1**.
+- Buffed Ukulele Proc Coefficient 0 => **0.33**.
+- Nerfed Defense Nucleus Proc Coefficient 0.5 => **0.25**.
 - Nerfed Eclipse 6 Enrage Stat Multiplier 2x => **1.75x**.
 - Nerfed Eclipse 6 Enrage Stat Multiplier for Mithrix 1.75x => **1.3x**.
 - Nerfed Interstellar Desk Plant Base Range 12m => **10m**.
@@ -10,13 +35,20 @@
 - Nerfed Interstellar Desk Plant Percent Healing 6% => **5%**.
 - Nerfed Shatterspleen to have a **16 bleed cap**.
 - Nerfed Tri-Tip Dagger to have an **8 (+4 per stack) bleed cap**.
+- Nerfed Shrine of Order Max Spawns Per Stage 2 => **1**.
+- Nerfed Global Item Proc Coefficient Multiplier 1 => **0.1**.
+- Nerfed Ceremonial Dagger Range 130m => **40m**.
+- Nerfed Scene Director Credit Multiplier 2.5 => **Starts at 2.5 and lowers by 0.25 every stage**.
 - Reworked Oddly-shaped Opal to give armor **for each enemy nearby**.
 - Reworked Trophy Hunter's Tricorn to execute bosses **under 30% max health**.
 - Fixed Sawmerang and Shuriken getting stuck.
+- Fixed Eclipse 3 not removing lethal fall damage.
+- Fixed self damage contributing to Eclipse 8 permanent damage.
 - Fixed Sawmerang doing way more damage than intended.
 - Fixed Shuriken hitting more amount of times than intended.
 - Fixed Helfire Tincture damage and description being incorrect in every possible way ever imaginable.
 - Fixed difficulty and equipment descriptions being overwritten by other mods.
+- Fixed some allies trying to attack you.
 - Fixed minor item descriptions.
 - - Probably the last small update unless issues arise. ~HIFU.
 

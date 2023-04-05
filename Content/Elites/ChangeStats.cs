@@ -8,7 +8,7 @@ namespace WellRoundedBalance.Elites
     {
         public static ConfigEntry<bool> enable { get; set; }
 
-        public override string Name => ":: Elites : Stat Changes";
+        public override string Name => ":: Elites : Stat & Drop Rate Changes";
 
         [ConfigField("Tier 1 Cost Multiplier", "", 8f)]
         public static float tier1CostMultiplier;
@@ -30,6 +30,9 @@ namespace WellRoundedBalance.Elites
 
         [ConfigField("All Tier Honor Damage Multiplier", "", 1f)]
         public static float allTierHonorDamageMultiplier;
+
+        [ConfigField("Aspect Chance", "Decimal.", 0.015f)]
+        public static float aspectChance;
 
         public override void Init()
         {
@@ -83,6 +86,15 @@ namespace WellRoundedBalance.Elites
                             }
                         }
                     }
+                }
+            }
+
+            for (int i = 0; i < EliteCatalog.eliteDefs.Length; i++)
+            {
+                var index = EliteCatalog.eliteDefs[i];
+                if (index.eliteEquipmentDef)
+                {
+                    index.eliteEquipmentDef.dropOnDeathChance = aspectChance;
                 }
             }
         }

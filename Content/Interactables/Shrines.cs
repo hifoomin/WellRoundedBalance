@@ -10,7 +10,7 @@
         [ConfigField("Shrine Of Combat Max Spawns Per Stage", "", 2)]
         public static int shrineOfCombatMaxSpawnsPerStage;
 
-        [ConfigField("Shrine Of Order Max Spawns Per Stage", "", 2)]
+        [ConfigField("Shrine Of Order Max Spawns Per Stage", "", 1)]
         public static int shrineOfOrderMaxSpawnsPerStage;
 
         [ConfigField("Altar Of Gold Max Spawns Per Stage", "", 1)]

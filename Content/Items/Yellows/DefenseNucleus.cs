@@ -20,6 +20,9 @@
         [ConfigField("Damage Per Second Per Stack", "Decimal.", 0.8f)]
         public static float damagePerSecondPerStack;
 
+        [ConfigField("Proc Coefficient", "", 0.25f)]
+        public static float procCoefficient;
+
         public override void Init()
         {
             BubbleShieldEffectPrefab = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.MajorConstructBubbleShield.Load<GameObject>(), "DucleusShield");
@@ -118,7 +121,7 @@
                             maxDistance = 10000f,
                             aimVector = body.inputBank.aimDirection,
                             procChainMask = new(),
-                            procCoefficient = 0.5f * globalProc,
+                            procCoefficient = procCoefficient * globalProc,
                             hitEffectPrefab = hitEffectPrefab,
                             radius = 6f,
                             smartCollision = true,

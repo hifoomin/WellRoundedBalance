@@ -28,8 +28,8 @@ namespace WellRoundedBalance.Items.Reds
         [ConfigField("Armor Steal Amount Per Stack", 10f)]
         public static float armorStealAmountPerStack;
 
-        [ConfigField("Proc Chance", 0f)]
-        public static float procChance;
+        [ConfigField("Proc Coefficient", 0f)]
+        public static float procCoefficient;
 
         public override void Init()
         {
@@ -206,7 +206,7 @@ namespace WellRoundedBalance.Items.Reds
                         damage = damageCoefficient * attackerBody.damage,
                         damageColorIndex = DamageColorIndex.Poison,
                         force = Vector3.zero,
-                        procCoefficient = SymbioticScorpion.procChance * ItemBase.globalProc,
+                        procCoefficient = SymbioticScorpion.procCoefficient * ItemBase.globalProc,
                         damageType = DamageType.Generic,
                         position = victimHealthComponent.body.corePosition,
                         dotIndex = DotIndex.None,

@@ -20,8 +20,8 @@ namespace WellRoundedBalance.Items.Greens
         [ConfigField("Improve targeting?", "Affects all missile items and equipment.", true)]
         public static bool improveTargeting;
 
-        [ConfigField("Proc Chance", 0f)]
-        public static float procChance;
+        [ConfigField("Proc Coefficient", 0.75f)]
+        public static float procCoefficient;
 
         public override void Init()
         {
@@ -64,7 +64,7 @@ namespace WellRoundedBalance.Items.Greens
             var missileProjectile = Utils.Paths.GameObject.MissileProjectile.Load<GameObject>();
             missileProjectile.name = "Generic Missile";
             var missileProjectileController = missileProjectile.GetComponent<ProjectileController>();
-            missileProjectileController.procCoefficient = procChance * globalProc;
+            missileProjectileController.procCoefficient = procCoefficient * globalProc;
             var ghost = missileProjectileController.ghostPrefab;
             ghost.transform.localScale = new Vector3(2f, 2f, 2f);
             ghost.transform.GetChild(1).gameObject.SetActive(false);

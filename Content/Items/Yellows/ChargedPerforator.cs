@@ -18,8 +18,8 @@ namespace WellRoundedBalance.Items.Yellows
         [ConfigField("TOTAL Damage Per Stack", "Decimal. ", 2f)]
         public static float totalDamagePerStack;
 
-        [ConfigField("Proc Chance", 0f)]
-        public static float procChance;
+        [ConfigField("Proc Coefficient", 1f)]
+        public static float procCoefficient;
 
         public override void Init()
         {
@@ -54,7 +54,7 @@ namespace WellRoundedBalance.Items.Yellows
                 {
                     c.EmitDelegate<Func<RoR2.Orbs.SimpleLightningStrikeOrb, RoR2.Orbs.SimpleLightningStrikeOrb>>((orb) =>
                     {
-                        orb.procCoefficient = procChance * globalProc;
+                        orb.procCoefficient = procCoefficient * globalProc;
                         return orb;
                     });
                 }

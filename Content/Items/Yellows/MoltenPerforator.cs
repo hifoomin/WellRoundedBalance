@@ -18,8 +18,8 @@ namespace WellRoundedBalance.Items.Yellows
         [ConfigField("TOTAL Damage Per Stack", "Decimal.", 1.1f)]
         public static float totalDamagePerStack;
 
-        [ConfigField("Proc Chance", 0f)]
-        public static float procChance;
+        [ConfigField("Proc Coefficient", 0.75f)]
+        public static float procCoefficient;
 
         public override void Init()
         {
@@ -30,7 +30,6 @@ namespace WellRoundedBalance.Items.Yellows
         {
             IL.RoR2.GlobalEventManager.OnHitEnemy += Changes;
             ChangeProcCoefficient();
-            Changes();
         }
 
         private void Changes(ILContext il)
@@ -62,11 +61,8 @@ namespace WellRoundedBalance.Items.Yellows
         private void ChangeProcCoefficient()
         {
             var m = LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/firemeatball").GetComponent<ProjectileController>();
-            m.procCoefficient = procChance * globalProc;
-        }
+            m.procCoefficient = procCoefficient * globalProc;
 
-        private void Changes()
-        {
             LanguageAPI.Add("ITEM_fireballsOnHit_NAME".ToUpper(), "Molten Peripherator");
         }
     }

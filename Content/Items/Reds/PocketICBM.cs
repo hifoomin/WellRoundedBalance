@@ -24,6 +24,9 @@ namespace WellRoundedBalance.Items.Reds
         [ConfigField("Missile Chance Per Stack", 10f)]
         public static float missileChancePerStack;
 
+        [ConfigField("Proc Coefficient", 0.33f)]
+        public static float procCoefficient;
+
         public override void Init()
         {
             bigFuckingMissile = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.MissileProjectile.Load<GameObject>(), "Pocket ICBM Missile");
@@ -38,6 +41,7 @@ namespace WellRoundedBalance.Items.Reds
             missileController.acceleration = 3f * 2.5f;
 
             var projectileController = bigFuckingMissile.GetComponent<ProjectileController>();
+            projectileController.procCoefficient = procCoefficient * globalProc;
 
             bigFuckingMissileGhost = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.MissileGhost.Load<GameObject>(), "Pocket ICBM Missile Ghost", false);
             bigFuckingMissileGhost.transform.localScale = new Vector3(9f, 9f, 9f);

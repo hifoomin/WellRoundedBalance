@@ -4,7 +4,7 @@ namespace WellRoundedBalance.Gamemodes.Eclipse
 {
     internal class Eclipse1 : GamemodeBase<Eclipse1>
     {
-        public override string Name => ":: Gamemode : Eclipse";
+        public override string Name => ":: Gamemode : Eclipse 1";
 
         public override void Init()
         {

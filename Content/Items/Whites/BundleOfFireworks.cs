@@ -33,7 +33,7 @@ namespace WellRoundedBalance.Items.Whites
         [ConfigField("Blast Damage Coefficient", 3f)]
         public static float blastDamageCoefficient;
 
-        [ConfigField("Blast Proc Coefficient", 0f)]
+        [ConfigField("Blast Proc Coefficient", 0.25f)]
         public static float blastProcCoefficient;
 
         public override void Init()

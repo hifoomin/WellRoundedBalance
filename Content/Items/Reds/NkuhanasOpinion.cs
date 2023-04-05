@@ -11,14 +11,14 @@ namespace WellRoundedBalance.Items.Reds
 
         public override string DescText => "Store <style=cIsHealing>100%</style> <style=cStack>(+100% per stack)</style> of healing as <style=cIsHealing>Soul Energy</style>. After your <style=cIsHealing>Soul Energy</style> reaches <style=cIsHealing>10%</style> of your <style=cIsHealing>maximum health</style>, <style=cIsDamage>fire a skull</style> that deals <style=cIsDamage>" + d(baseDamage) + "</style> of your <style=cIsHealing>Soul Energy</style> as <style=cIsDamage>damage</style>.";
 
-        [ConfigField("Base Damage", "Decimal.", 3.2f)]
+        [ConfigField("Base Damage", "Decimal.", 3.5f)]
         public static float baseDamage;
 
         [ConfigField("Base Range", 25f)]
         public static float baseRange;
 
-        [ConfigField("Proc Chance", 0f)]
-        public static float procChance;
+        [ConfigField("Proc Coefficient", 0.33f)]
+        public static float procCoefficient;
 
         public override void Init()
         {
@@ -33,7 +33,7 @@ namespace WellRoundedBalance.Items.Reds
 
         private void DevilOrb_Begin(On.RoR2.Orbs.DevilOrb.orig_Begin orig, RoR2.Orbs.DevilOrb self)
         {
-            self.procCoefficient = procChance * globalProc;
+            self.procCoefficient = procCoefficient * globalProc;
             orig(self);
         }
 

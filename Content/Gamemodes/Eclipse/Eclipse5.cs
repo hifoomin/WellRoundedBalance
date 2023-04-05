@@ -6,7 +6,7 @@ namespace WellRoundedBalance.Gamemodes.Eclipse
     {
         public static float timer;
         public static float previousTime;
-        public override string Name => ":: Gamemode : Eclipse";
+        public override string Name => ":: Gamemode : Eclipse 5";
 
         public override void Init()
         {

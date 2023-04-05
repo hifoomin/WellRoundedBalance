@@ -16,8 +16,8 @@ namespace WellRoundedBalance.Items.VoidGreens
         [ConfigField("Percent Shield", "Decimal.", 0.12f)]
         public static float percentShield;
 
-        [ConfigField("Proc Chance", 0f)]
-        public static float procChance;
+        [ConfigField("Proc Coefficient", 0f)]
+        public static float procCoefficient;
 
         public override void Init()
         {
@@ -50,7 +50,7 @@ namespace WellRoundedBalance.Items.VoidGreens
                     x => x.MatchLdcR4(0.2f),
                     x => x.MatchStfld<RoR2.Orbs.GenericDamageOrb>("procCoefficient")))
             {
-                c.Next.Operand = procChance * globalProc;
+                c.Next.Operand = procCoefficient * globalProc;
             }
             else
             {

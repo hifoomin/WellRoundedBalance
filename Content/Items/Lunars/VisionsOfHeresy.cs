@@ -40,11 +40,11 @@ namespace WellRoundedBalance.Items.Lunars
             var thej = LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/LunarNeedleProjectile");
             var p1 = thej.GetComponent<ProjectileImpactExplosion>();
             var p2 = thej.GetComponent<ProjectileDirectionalTargetFinder>();
-            thej.GetComponent<ProjectileController>().procCoefficient = 1f * globalProc;
+            thej.GetComponent<ProjectileController>().procCoefficient = 1f;
             thej.GetComponent<ProjectileSimple>().desiredForwardSpeed = 70f;
             p1.blastRadius = 6f;
             p1.blastDamageCoefficient = 2f; // multiplier of EntityStates.GlobalSkills.LunarNeedle.FireLunarNeedle.damageCoefficient = 0.7f;
-            p1.blastProcCoefficient = 1f * globalProc; // multiplier of thej.GetComponent<ProjectileController>().procCoefficient = 1f * globalProc;
+            p1.blastProcCoefficient = 1f; // multiplier of thej.GetComponent<ProjectileController>().procCoefficient = 1f;
 
             var olbart = LegacyResourcesAPI.Load<SkillDef>("skilldefs/lunarreplacements/LunarPrimaryReplacement");
             olbart.baseRechargeInterval = 1.7f;

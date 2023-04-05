@@ -53,8 +53,8 @@ namespace WellRoundedBalance.Items.VoidGreens
         [ConfigField("Strike Interval is Hyperbolic", "Decimal, Max value. Set to 0 to make it linear.", 0f)]
         public static float intervalIsHyperbolic;
 
-        [ConfigField("Proc Chance", 0f)]
-        public static float procChance;
+        [ConfigField("Proc Coefficient", 0f)]
+        public static float procCoefficient;
 
         public override void Init()
         {
@@ -103,7 +103,7 @@ namespace WellRoundedBalance.Items.VoidGreens
             if (c.TryGotoNext(x => x.MatchStfld<VoidLightningOrb>(nameof(VoidLightningOrb.procCoefficient))))
             {
                 c.Emit(OpCodes.Pop);
-                c.EmitDelegate(() => procChance * globalProc);
+                c.EmitDelegate(() => procCoefficient * globalProc);
             }
             else Logger.LogError("Failed to apply Polylute Proc Coefficient hook");
             c.Index = idx;

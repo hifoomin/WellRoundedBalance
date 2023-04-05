@@ -6,22 +6,26 @@ namespace WellRoundedBalance.Items.Whites
     public class OddlyShapedOpal : ItemBase<OddlyShapedOpal>
     {
         public static BuffDef opalArmor;
+        public static GameObject indicator;
         public override string Name => ":: Items : Whites :: Oddly Shaped Opal";
         public override ItemDef InternalPickup => DLC1Content.Items.OutOfCombatArmor;
 
-        public override string PickupText => "Reduce damage the first time you are hit.";
+        public override string PickupText => "Increase armor for every enemy nearby.";
 
         public override string DescText =>
-            StackDesc(armorGain, armorGainStack, init => $"<style=cIsHealing>Increase armor</style> by <style=cIsHealing>{init}</style>{{Stack}} while out of combat.", noop);
+            StackDesc(armorGain, armorGainStack, init => $"<style=cIsHealing>Increase armor</style> by <style=cIsHealing>{init}</style>{{Stack}} for every enemy within <style=cIsHealing>" + radius + "m</style>.", noop);
 
-        [ConfigField("Armor Gain", 40f)]
+        [ConfigField("Armor Gain", 3f)]
         public static float armorGain;
 
-        [ConfigField("Armor Gain per Stack", 40f)]
+        [ConfigField("Armor Gain per Stack", 3f)]
         public static float armorGainStack;
 
         [ConfigField("Armor Gain is Hyperbolic", "Decimal, Max value. Set to 0 to make it linear.", 0f)]
         public static float armorGainIsHyperbolic;
+
+        [ConfigField("Radius", 13f)]
+        public static float radius;
 
         public override void Init()
         {
@@ -29,7 +33,7 @@ namespace WellRoundedBalance.Items.Whites
 
             opalArmor = ScriptableObject.CreateInstance<BuffDef>();
             opalArmor.isHidden = false;
-            opalArmor.canStack = false;
+            opalArmor.canStack = true;
             opalArmor.isCooldown = false;
             opalArmor.isDebuff = false;
             opalArmor.iconSprite = Sprite.Create(opalIcon, new Rect(0f, 0f, opalIcon.width, opalIcon.height), new Vector2(0f, 0f));
@@ -43,6 +47,20 @@ namespace WellRoundedBalance.Items.Whites
 
         public override void Hooks()
         {
+            indicator = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.NearbyDamageBonusIndicator.Load<GameObject>(), "Opal Visual", true);
+            var radiusTrans = indicator.transform.Find("Radius, Spherical");
+            radiusTrans.localScale = new Vector3(radius * 2f, radius * 2f, radius * 2f);
+
+            var opalMat = Object.Instantiate(Utils.Paths.Material.matNearbyDamageBonusRangeIndicator.Load<Material>());
+            var cloudTexture = Utils.Paths.Texture2D.PerlinNoise.Load<Texture2D>();
+            opalMat.SetTexture("_MainTex", cloudTexture);
+            opalMat.SetTexture("_Cloud1Tex", cloudTexture);
+            opalMat.SetColor("_TintColor", new Color32(54, 20, 176, 128));
+
+            radiusTrans.GetComponent<MeshRenderer>().material = opalMat;
+
+            PrefabAPI.RegisterNetworkPrefab(indicator);
+
             RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
             CharacterBody.onBodyInventoryChangedGlobal += CharacterBody_onBodyInventoryChangedGlobal;
             On.RoR2.OutOfCombatArmorBehavior.SetProvidingBuff += (_, __, ___) => { };
@@ -56,7 +74,7 @@ namespace WellRoundedBalance.Items.Whites
             if (c.TryGotoNext(MoveType.After, x => x.MatchLdsfld(typeof(DLC1Content.Buffs), nameof(DLC1Content.Buffs.OutOfCombatArmorBuff))))
             {
                 c.Emit(OpCodes.Pop);
-                c.EmitDelegate(() => opalArmor);
+                c.EmitDelegate(() => Buffs.Useless.oddlyShapedOpalUseless);
             }
             else Logger.LogError("Failed to apply Oddly Shaped Opal VFX hook");
         }
@@ -64,9 +82,11 @@ namespace WellRoundedBalance.Items.Whites
         private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
             var inventory = sender.inventory;
-            if (sender.HasBuff(opalArmor) && inventory)
-                args.armorAdd += StackAmount(armorGain, armorGainStack,
-                    inventory.GetItemCount(DLC1Content.Items.OutOfCombatArmor), armorGainIsHyperbolic);
+            if (inventory)
+            {
+                var stack = inventory.GetItemCount(DLC1Content.Items.OutOfCombatArmor);
+                args.armorAdd += StackAmount(armorGain, armorGainStack, stack, armorGainIsHyperbolic) * sender.GetBuffCount(opalArmor);
+            }
         }
 
         private void CharacterBody_onBodyInventoryChangedGlobal(CharacterBody characterBody)
@@ -77,20 +97,95 @@ namespace WellRoundedBalance.Items.Whites
 
     public class OddlyShapedOpalController : CharacterBody.ItemBehavior
     {
+        public float checkInterval = 0.1f;
+        public float timer;
+        public float distance = OddlyShapedOpal.radius;
+        public TeamIndex ownerIndex;
+        public GameObject radiusIndicator;
+
         private void Start()
         {
+            ownerIndex = body.teamComponent.teamIndex;
+            enableRadiusIndicator = true;
+            var radiusTrans = radiusIndicator.transform.GetChild(1);
+            radiusTrans.localScale = new Vector3(OddlyShapedOpal.radius * 2f, OddlyShapedOpal.radius * 2f, OddlyShapedOpal.radius * 2f);
         }
 
         private void FixedUpdate()
         {
+            timer += Time.fixedDeltaTime;
+            if (timer >= checkInterval)
+            {
+                var count = 0;
+                for (TeamIndex teamIndex2 = TeamIndex.Neutral; teamIndex2 < TeamIndex.Count; teamIndex2 += 1)
+                {
+                    bool flag2 = teamIndex2 != ownerIndex && teamIndex2 > TeamIndex.Neutral;
+                    if (flag2)
+                    {
+                        foreach (TeamComponent teamComponent in TeamComponent.GetTeamMembers(teamIndex2))
+                        {
+                            bool flag3 = (teamComponent.transform.position - body.corePosition).sqrMagnitude <= 400f;
+                            if (flag3)
+                            {
+                                count++;
+                            }
+                        }
+                    }
+                }
+                UpdateBuff(count);
+                timer = 0f;
+            }
         }
 
-        private void OnEnable()
+        private void UpdateBuff(int buffCountAdd)
         {
+            var currentBuffCount = body.GetBuffCount(OddlyShapedOpal.opalArmor);
+            if (currentBuffCount != buffCountAdd)
+            {
+                if (currentBuffCount < buffCountAdd)
+                {
+                    for (int j = 0; j < buffCountAdd - currentBuffCount; j++)
+                    {
+                        body.AddBuff(OddlyShapedOpal.opalArmor);
+                    }
+                }
+                else
+                {
+                    for (int k = 0; k < currentBuffCount - buffCountAdd; k++)
+                    {
+                        body.RemoveBuff(OddlyShapedOpal.opalArmor);
+                    }
+                }
+            }
+        }
+
+        private bool enableRadiusIndicator
+        {
+            get
+            {
+                return radiusIndicator;
+            }
+            set
+            {
+                if (enableRadiusIndicator != value)
+                {
+                    if (value)
+                    {
+                        radiusIndicator = Instantiate(OddlyShapedOpal.indicator, body.corePosition, Quaternion.identity);
+                        radiusIndicator.GetComponent<NetworkedBodyAttachment>().AttachToGameObjectAndSpawn(gameObject, null);
+                    }
+                    else
+                    {
+                        Object.Destroy(radiusIndicator);
+                        radiusIndicator = null;
+                    }
+                }
+            }
         }
 
         private void OnDisable()
         {
+            enableRadiusIndicator = false;
         }
     }
 }
