@@ -14,7 +14,6 @@ namespace WellRoundedBalance.Gamemodes.Eclipse
 
         public override void Hooks()
         {
-            On.EntityStates.VagrantMonster.ChargeMegaNova.OnEnter += ChargeMegaNova_OnEnter;
             IL.RoR2.DeathRewards.OnKilledServer += DeathRewards_OnKilledServer;
         }
 
@@ -31,13 +30,6 @@ namespace WellRoundedBalance.Gamemodes.Eclipse
             {
                 Logger.LogError("Failed to apply Eclipse 6 hook");
             }
-        }
-
-        private void ChargeMegaNova_OnEnter(On.EntityStates.VagrantMonster.ChargeMegaNova.orig_OnEnter orig, EntityStates.VagrantMonster.ChargeMegaNova self)
-        {
-            self.duration = Mathf.Max(3.5f, EntityStates.VagrantMonster.ChargeMegaNova.baseDuration / self.attackSpeedStat);
-            // make nova enrage consistent kirn
-            orig(self);
         }
     }
 }

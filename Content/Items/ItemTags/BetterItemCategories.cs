@@ -127,6 +127,9 @@ namespace WellRoundedBalance.Items.ConsistentCategories
             var shuriken = Utils.Paths.ItemDef.PrimarySkillShuriken.Load<ItemDef>();
             shuriken.tags = new ItemTag[] { ItemTag.Damage, ItemTag.AIBlacklist, ItemTag.BrotherBlacklist };
 
+            var harpoon = Utils.Paths.ItemDef.MoveSpeedOnKill.Load<ItemDef>();
+            harpoon.tags = new ItemTag[] { ItemTag.Utility, ItemTag.OnKillEffect };
+
             var defenseTag = ItemAPI.FindItemTagByName("Defense");
             Main.WRBLogger.LogDebug("ItemAPI.FindItemTagByName(\"Defense\") tag returns " + defenseTag);
 
@@ -232,7 +235,8 @@ namespace WellRoundedBalance.Items.ConsistentCategories
                     List<ItemTag> tags = itemDef.tags.ToList();
                     tags.Add(ItemTag.AIBlacklist);
                     itemDef.tags = tags.ToArray();
-                    // Main.WRBLogger.LogError("Added AI Blacklist to " + Language.GetString(itemDef.nameToken));
+                    if (Main.enableLogging.Value)
+                        Main.WRBLogger.LogError("Added AI Blacklist to " + Language.GetString(itemDef.nameToken));
                 }
             }
         }

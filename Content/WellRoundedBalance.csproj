@@ -131,8 +131,4 @@
     </Reference>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Gamemodes\Simulacrum\" />
-  </ItemGroup>
-
 </Project>
