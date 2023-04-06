@@ -2,7 +2,7 @@
 {
     internal class BlindPest : EnemyBase<BlindPest>
     {
-        public override string Name => ":: Enemies :::: Blind Pest";
+        public override string Name => ":: Enemies ::: Blind Pest";
 
         [ConfigField("Base Damage", "Disabled if playing Inferno.", 10f)]
         public static float baseDamage;

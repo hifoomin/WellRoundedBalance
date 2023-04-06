@@ -20,6 +20,9 @@ namespace WellRoundedBalance.Items.Reds
         [ConfigField("Range", 20f)]
         public static float range;
 
+        [ConfigField("Proc Coefficient", 0.33f)]
+        public static float procCoefficient;
+
         public override void Init()
         {
             base.Init();
@@ -69,7 +72,7 @@ namespace WellRoundedBalance.Items.Reds
                     x => x.MatchLdcR4(0.33f)))
             {
                 c.Index += 1;
-                c.Next.Operand = 0f;
+                c.Next.Operand = procCoefficient;
             }
             else
             {

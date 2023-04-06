@@ -2,7 +2,7 @@
 {
     internal class Beetle : EnemyBase<Beetle>
     {
-        public override string Name => ":: Enemies ::::: Beetle";
+        public override string Name => ":: Enemies :::: Beetle";
 
         [ConfigField("Should Lunge?", "Disabled if playing Inferno.", true)]
         public static bool shouldLunge;

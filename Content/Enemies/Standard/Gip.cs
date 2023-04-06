@@ -2,7 +2,7 @@
 {
     internal class Gip : EnemyBase<Gip>
     {
-        public override string Name => ":: Enemies ::: Gip";
+        public override string Name => ":: Enemies :: Gip";
 
         [ConfigField("Base Max Health", "Disabled if playing Inferno.", 125f)]
         public static float baseMaxHealth;

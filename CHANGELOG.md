@@ -1,5 +1,7 @@
 # 1.1.6 Patch Notes
 - Added Shuriken countdown buff.
+- Added config versioning.
+- Added better Resonance Disc VFX.
 - Buffed Mithrix Phase 4 Base Damage 3 => **8**.
 - Buffed Monster Armor Per Loop 7 => **10**.
 - Buffed Harvester's Scythe Base Missing Health Healing Percent 1.5% => **1.8%**.
@@ -26,6 +28,7 @@
 - Buffed Bundle of Fireworks Proc Coefficient 0 => **0.25**.
 - Buffed Titanic Knurl Proc Coefficient 0 => **1**.
 - Buffed Ukulele Proc Coefficient 0 => **0.33**.
+- Buffed Elder Lemurian Spawn Sound Volume :^).
 - Nerfed Defense Nucleus Proc Coefficient 0.5 => **0.25**.
 - Nerfed Eclipse 6 Enrage Stat Multiplier 2x => **1.75x**.
 - Nerfed Eclipse 6 Enrage Stat Multiplier for Mithrix 1.75x => **1.3x**.
@@ -38,11 +41,14 @@
 - Nerfed Shrine of Order Max Spawns Per Stage 2 => **1**.
 - Nerfed Global Item Proc Coefficient Multiplier 1 => **0.1**.
 - Nerfed Ceremonial Dagger Range 130m => **40m**.
-- Nerfed Scene Director Credit Multiplier 2.5 => **Starts at 2.5 and lowers by 0.25 every stage**.
+- Nerfed Scene Director Credit Multiplier 2.5 => **Starts at 2.5 and lowers by 0.15 every stage per loop**.
 - Reworked Oddly-shaped Opal to give armor **for each enemy nearby**.
 - Reworked Trophy Hunter's Tricorn to execute bosses **under 30% max health**.
+- Reworked Combat Director a bit to **spawn more unique enemies and skip fodder much less during loops**.
+- Fixed Scavenger appearing on Sundered Grove Pre-loop.
 - Fixed Sawmerang and Shuriken getting stuck.
 - Fixed Eclipse 3 not removing lethal fall damage.
+- Fixed Ukulele.
 - Fixed self damage contributing to Eclipse 8 permanent damage.
 - Fixed Sawmerang doing way more damage than intended.
 - Fixed Shuriken hitting more amount of times than intended.
@@ -51,6 +57,7 @@
 - Fixed some allies trying to attack you.
 - Fixed minor item descriptions.
 - - Probably the last small update unless issues arise. ~HIFU.
+- - I don't play trash sorry. ~Kirn.
 
 # 1.1.5 Patch Notes
 - Added Exchange Changes.

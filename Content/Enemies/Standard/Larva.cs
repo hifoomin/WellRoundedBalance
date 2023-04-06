@@ -2,7 +2,7 @@
 {
     internal class Larva : EnemyBase<Larva>
     {
-        public override string Name => ":: Enemies :::::: Larva";
+        public override string Name => ":: Enemies ::::: Larva";
 
         [ConfigField("Base Move Speed", "Disabled if playing Inferno.", 1f)]
         public static float baseMoveSpeed;

@@ -36,10 +36,10 @@ namespace WellRoundedBalance.Equipment.Lunar
         [ConfigField("Movement Speed Increase", "Decimal.", 0.3f)]
         public static float movementSpeedIncrease;
 
-        [ConfigField("Affliction Chancee", "", 25f)]
+        [ConfigField("Affliction Chance", "", 25f)]
         public static float afflictionChance;
 
-        [ConfigField("Affliction Curse Gainn", "Decimal.", 0.12f)]
+        [ConfigField("Affliction Curse Gain", "Decimal.", 0.12f)]
         public static float afflictionCurseGain;
 
         [ConfigField("Affliction All Stats Decrease", "Decimal.", 0.05f)]

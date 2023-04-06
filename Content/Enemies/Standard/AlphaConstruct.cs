@@ -2,7 +2,7 @@
 {
     internal class AlphaConstruct : EnemyBase<AlphaConstruct>
     {
-        public override string Name => ":: Enemies :::::::: Alpha Construct";
+        public override string Name => ":: Enemies ::::::: Alpha Construct";
 
         public override void Init()
         {

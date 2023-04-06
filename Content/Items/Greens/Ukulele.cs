@@ -27,8 +27,8 @@ namespace WellRoundedBalance.Items.Greens
         [ConfigField("Base Range", 12f)]
         public static float baseRange;
 
-        [ConfigField("Range Per Stack", 4f)]
-        public static float rangePerStack;
+        [ConfigField("Range Per Stack", 4)]
+        public static int rangePerStack;
 
         [ConfigField("Proc Coefficient", 0.33f)]
         public static float procCoefficient;
@@ -82,35 +82,6 @@ namespace WellRoundedBalance.Items.Greens
             c.Index = 0;
 
             if (c.TryGotoNext(MoveType.Before,
-                    x => x.MatchStfld<LightningOrb>("isCrit"),
-                    x => x.MatchLdloc(out _),
-                    x => x.MatchLdcI4(2)))
-            {
-                c.Index += 2;
-                c.Next.Operand = maxTargetsPerStack;
-            }
-            else
-            {
-                Logger.LogError("Failed to apply Ukulele Target hook");
-            }
-
-            c.Index = 0;
-
-            if (c.TryGotoNext(MoveType.Before,
-                    x => x.MatchLdfld<LightningOrb>("range"),
-                    x => x.MatchLdcI4(2)))
-            {
-                c.Index += 1;
-                c.Next.Operand = rangePerStack;
-            }
-            else
-            {
-                Logger.LogError("Failed to apply Ukulele Range hook");
-            }
-
-            c.Index = 0;
-
-            if (c.TryGotoNext(MoveType.Before,
                     x => x.MatchLdflda<LightningOrb>("procChainMask"),
                     x => x.MatchLdcI4(3),
                     x => x.MatchCallOrCallvirt<ProcChainMask>("AddProc"),
@@ -133,8 +104,23 @@ namespace WellRoundedBalance.Items.Greens
                 orig(self);
                 if (self.lightningType is LightningOrb.LightningType.Ukulele)
                 {
-                    self.bouncesRemaining = baseMaxTargets;
-                    self.range = baseRange;
+                    var attacker = self.attacker;
+                    if (attacker)
+                    {
+                        Main.WRBLogger.LogError("attacker is " + attacker.name);
+                        var body = attacker.GetComponent<CharacterBody>();
+                        if (body)
+                        {
+                            var inventory = body.inventory;
+                            if (inventory)
+                            {
+                                Logger.LogError("inventory exists");
+                                var stack = inventory.GetItemCount(RoR2Content.Items.ChainLightning);
+                                self.bouncesRemaining = baseMaxTargets + maxTargetsPerStack * (stack - 1);
+                                self.range = baseRange + rangePerStack * (stack - 1);
+                            }
+                        }
+                    }
                 }
             };
         }

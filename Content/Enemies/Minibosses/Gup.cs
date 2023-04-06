@@ -2,7 +2,7 @@
 {
     internal class Gup : EnemyBase<Gup>
     {
-        public override string Name => ":: Enemies : Gup";
+        public override string Name => ":: Minibosses : Gup";
 
         [ConfigField("Base Max Health", "Disabled if playing Inferno.", 500f)]
         public static float baseMaxHealth;
