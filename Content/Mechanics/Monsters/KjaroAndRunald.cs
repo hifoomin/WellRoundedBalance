@@ -23,6 +23,8 @@ namespace WellRoundedBalance.Mechanics.Monsters
                 if (body.inventory)
                 {
                     body.inventory.GiveItem(RoR2Content.Items.UseAmbientLevel);
+                    body.inventory.RemoveItem(RoR2Content.Items.IceRing);
+                    body.inventory.RemoveItem(RoR2Content.Items.FireRing);
                 }
             }
         }

@@ -26,7 +26,7 @@ namespace WellRoundedBalance.Gamemodes.Eclipse
                 {
                     baseAI.fullVision = true;
                     baseAI.aimVectorMaxSpeed = 250f;
-                    if (master.name != "GolemMaster(Clone)")
+                    if (master.name != "GolemMaster(Clone)" || master.name != "MegaConstructMaster(Clone)")
                     {
                         baseAI.aimVectorDampTime = 0.031f;
                     }

@@ -25,7 +25,7 @@ namespace WellRoundedBalance.Elites
         [ConfigField("Spike Damage", "Decimal.", 2f)]
         public static float spikeDamage;
 
-        [ConfigField("Permanent Damage Percent", "Eclipse 8 is 40", 30f)]
+        [ConfigField("Permanent Damage Percent", "Eclipse 8 is 40", 40f)]
         public static float permanentDamagePercent;
 
         public override void Init()
@@ -41,7 +41,18 @@ namespace WellRoundedBalance.Elites
             ContentAddition.AddBuffDef(useless);
             ContentAddition.AddBuffDef(hiddenCooldown);
 
-            spike = Utils.Paths.GameObject.ImpVoidspikeProjectile.Load<GameObject>();
+            spike = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.ImpVoidspikeProjectile.Load<GameObject>(), "Voidtouched Spike");
+
+            var projectileController = spike.GetComponent<ProjectileController>();
+
+            var projectileImpactExplosion = spike.GetComponent<ProjectileImpactExplosion>();
+            projectileImpactExplosion.blastRadius = 6f;
+            /*
+            var proximityTrigger = spike.transform.GetChild(0).GetChild(5);
+            var sphereCollider = proximityTrigger.GetComponent<SphereCollider>();
+            sphereCollider.radius = 6f;
+            */
+            PrefabAPI.RegisterNetworkPrefab(spike);
 
             base.Init();
         }
@@ -74,7 +85,7 @@ namespace WellRoundedBalance.Elites
             for (int i = 0; i < (Eclipse3.CheckEclipse() ? spikeCountE3 : spikeCount); i++)
             {
                 Vector3 position = originalPosition + (aimDirection * (i * 10));
-                position.y = 30;
+                position.y = 20;
                 if (Physics.Raycast(position, Vector3.down, out RaycastHit hit, 1000, ~0))
                 {
                     if (Util.HasEffectiveAuthority(body.gameObject))
@@ -88,7 +99,7 @@ namespace WellRoundedBalance.Elites
                             rotation = Quaternion.LookRotation(Vector3.down),
                             projectilePrefab = spike,
                             owner = body.gameObject,
-                            speedOverride = 20
+                            speedOverride = 50
                         };
                         ProjectileManager.instance.FireProjectile(info);
                     }

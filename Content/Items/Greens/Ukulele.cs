@@ -107,14 +107,14 @@ namespace WellRoundedBalance.Items.Greens
                     var attacker = self.attacker;
                     if (attacker)
                     {
-                        Main.WRBLogger.LogError("attacker is " + attacker.name);
+                        // Main.WRBLogger.LogError("attacker is " + attacker.name);
                         var body = attacker.GetComponent<CharacterBody>();
                         if (body)
                         {
                             var inventory = body.inventory;
                             if (inventory)
                             {
-                                Logger.LogError("inventory exists");
+                                // Logger.LogError("inventory exists");
                                 var stack = inventory.GetItemCount(RoR2Content.Items.ChainLightning);
                                 self.bouncesRemaining = baseMaxTargets + maxTargetsPerStack * (stack - 1);
                                 self.range = baseRange + rangePerStack * (stack - 1);

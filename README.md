@@ -22,7 +22,7 @@ And of course, the mod is still in its early days, so it's bound to change. We a
 https://docs.google.com/document/d/1uP1Bp4tBOMoKyhyjuvXk5IHuuV373sa77NsX-l_vUUA/
 
 ## Scaling Reworks
-Scaling is now linear but more aggressive, meaning it will be faster in the early game and cool off slightly during loops. This is intended to encourage players to play efficiently and make the game more engaging. Difficulty now actually scales with time, and the director spawns more enemies at a much faster pace. Gold scaling has also been heavily reworked, so you can't just kill a few enemies and buy out the whole stage. Pre-spawned enemies now give gold as well.
+Scaling is now linear but more aggressive, meaning it will be faster in the early game and cool off slightly during loops. This is intended to encourage players to play efficiently and make the game more engaging. The difficulty now actually scales with time, and the director spawns more enemies at a much faster pace. Gold scaling has also been heavily reworked, so you can't just kill a few enemies and buy out the whole stage. Pre-spawned enemies now give gold as well.
 
 ## Major Item Reworks
 There are too many to list here, so please check the google doc for more information.
@@ -58,7 +58,7 @@ The mod integrates some smaller mods to give players the intended, better experi
 This means you don't need to have these installed with Well Rounded Balance enabled.
 
 ## Contact/Feedback
-Join The BALLS Group discord server and send any suggestion or bug reports in their respective channels.
+Join The BALLS Group discord server and send any suggestions or bug reports in their respective channels.
 
 ## Credits
 The dev team consists of:

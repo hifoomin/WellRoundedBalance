@@ -31,7 +31,7 @@ namespace WellRoundedBalance.Elites
         [ConfigField("All Tier Honor Damage Multiplier", "", 1f)]
         public static float allTierHonorDamageMultiplier;
 
-        [ConfigField("Aspect Chance", "Decimal.", 0.015f)]
+        [ConfigField("Aspect Chance", "Decimal.", 0.01f)]
         public static float aspectChance;
 
         public override void Init()

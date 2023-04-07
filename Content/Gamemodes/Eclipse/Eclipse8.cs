@@ -31,16 +31,15 @@ namespace WellRoundedBalance.Gamemodes.Eclipse
                 c.Emit(OpCodes.Ldarg_1);
                 c.EmitDelegate<Func<float, HealthComponent, DamageInfo, float>>((orig, healthComponent, damageInfo) =>
                 {
-                    var isSelfDamage = damageInfo.attacker != healthComponent.body.gameObject;
-                    if (!isSelfDamage)
+                    var fallDamage = (damageInfo.damageType & DamageType.FallDamage) > DamageType.Generic;
+                    var isSelfDamage = damageInfo.attacker == null && healthComponent.body.gameObject && !fallDamage;
+                    if (isSelfDamage)
                     {
-                        Logger.LogError("not is self damage");
-                        return orig;
+                        return 0f;
                     }
                     else
                     {
-                        Logger.LogError("is self damage");
-                        return 0f;
+                        return orig;
                     }
                 });
             }

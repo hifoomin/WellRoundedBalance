@@ -43,7 +43,7 @@ namespace WellRoundedBalance.Items.Reds
         private void CharacterMaster_RespawnExtraLife(On.RoR2.CharacterMaster.orig_RespawnExtraLife orig, CharacterMaster self)
         {
             orig(self);
-            if (NetworkServer.active)
+            if (NetworkServer.active && self.inventory)
             {
                 self.inventory.GiveItem(RoR2Content.Items.Bear);
                 CharacterMasterNotificationQueue.SendTransformNotification(self, RoR2Content.Items.ExtraLife.itemIndex, RoR2Content.Items.Bear.itemIndex, CharacterMasterNotificationQueue.TransformationType.Default);

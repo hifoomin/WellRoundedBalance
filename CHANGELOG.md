@@ -1,15 +1,15 @@
-# 1.1.6 Patch Notes
+# 1.2.0 Patch Notes
 - Added Shuriken countdown buff.
 - Added config versioning.
 - Added better Resonance Disc VFX.
-- Buffed Mithrix Phase 4 Base Damage 3 => **8**.
+- Added better Eclipse config.
+- Buffed Mithrix Phase 4 Base Damage 3 => **13**.
 - Buffed Monster Armor Per Loop 7 => **10**.
 - Buffed Harvester's Scythe Base Missing Health Healing Percent 1.5% => **1.8%**.
 - Buffed Harvester's Scythe Missing Health Healing Percent Per Stack 0.75% =. **0.9%**.
 - Buffed Warbanner to spawn on **final boss encounters**.
-- Buffed Elite Aspect Drop Chance 0.025% => **0.15%**.
+- Buffed Elite Aspect Drop Chance 0.025% => **0.1%**.
 - Buffed Boss Log Drop Chance 3% => **4.5%**.
-- Buffed Monster Log Drop Chance 1% => **1.5%**.
 - Buffed AtG Missile Mk.1 Proc Coefficient 0 => **0.75**.
 - Buffed Razorwire Proc Coefficient 0 => **1**.
 - Buffed Will-o'-The-Wisp Proc Coefficient 0 => **0.5**.
@@ -28,7 +28,12 @@
 - Buffed Bundle of Fireworks Proc Coefficient 0 => **0.25**.
 - Buffed Titanic Knurl Proc Coefficient 0 => **1**.
 - Buffed Ukulele Proc Coefficient 0 => **0.33**.
+- Buffed Voidtouched Spike Size 2m => **6m**.
+- Buffed Voidtouched Permanent Damage Percent 30 => **40**.
+- Buffed Voidtouched Projectile Speed 20m/s => **50m/s**.
+- Buffed Escape Sequence Lines => **now move and rotate**.
 - Buffed Elder Lemurian Spawn Sound Volume :^).
+- Nerfed Escape Sequence Lines Damage 9 => **7.5**.
 - Nerfed Defense Nucleus Proc Coefficient 0.5 => **0.25**.
 - Nerfed Eclipse 6 Enrage Stat Multiplier 2x => **1.75x**.
 - Nerfed Eclipse 6 Enrage Stat Multiplier for Mithrix 1.75x => **1.3x**.
@@ -44,19 +49,24 @@
 - Nerfed Scene Director Credit Multiplier 2.5 => **Starts at 2.5 and lowers by 0.15 every stage per loop**.
 - Reworked Oddly-shaped Opal to give armor **for each enemy nearby**.
 - Reworked Trophy Hunter's Tricorn to execute bosses **under 30% max health**.
-- Reworked Combat Director a bit to **spawn more unique enemies and skip fodder much less during loops**.
-- Fixed Scavenger appearing on Sundered Grove Pre-loop.
+- Reworked Simulacrum to be **faster paced**.
+- Reworked Combat Director a bit to spawn **more unique enemies** and **fodder enemies more often lategame**.
+- Fixed Scavenger appearing on Sundered Grove Stage 4.
+- Fixed WolfoQoL giving Kjaro and Runald their bands.
+- Fixed Xi Construct being too accurate on Eclipse 1.
 - Fixed Sawmerang and Shuriken getting stuck.
 - Fixed Eclipse 3 not removing lethal fall damage.
+- Fixed Laser Scope config.
 - Fixed Ukulele.
 - Fixed self damage contributing to Eclipse 8 permanent damage.
 - Fixed Sawmerang doing way more damage than intended.
+- Fixed Clay Dunestrider Suck not having an attacker/inflictor.
 - Fixed Shuriken hitting more amount of times than intended.
 - Fixed Helfire Tincture damage and description being incorrect in every possible way ever imaginable.
 - Fixed difficulty and equipment descriptions being overwritten by other mods.
 - Fixed some allies trying to attack you.
 - Fixed minor item descriptions.
-- - Probably the last small update unless issues arise. ~HIFU.
+- - Bunch of more fixes and proc rebalance for the main part. ~HIFU.
 - - I don't play trash sorry. ~Kirn.
 
 # 1.1.5 Patch Notes
@@ -127,7 +137,7 @@
 - Added FixKjaroRunald.
 - Added GoldChestForAll.
 - Added Inferno Mithrix Lite.
-- Added One Shot Protection indicators when it's procced - a buff, visual and sound.
+- Added One Shot Protection indicators when it's procced - a buff, visual, and sound.
 - Added Pocket I.C.B.M VFX.
 - Added ShurikenFix.
 - Added a LOT of config options. Now the most configurable mod ever!
@@ -205,7 +215,7 @@
 - Nerfed Topaz Brooch Flat Barrier Per Stack 10 => **0**.
 - Nerfed Weeping Fungus Base Percent Healing 1.5% => **1.2%**.
 - Nerfed White Printer Director Credit Cost 5 => **6**.
-- Reworked Blazing Elites to fire fire projectiles in a **fixed pattern** and **scale** their fire rate with base max health.
+- Reworked Blazing Elites to fire projectiles in a **fixed pattern** and **scale** their fire rate with base max health.
 - Reworked Elite Effect Damage stuff.
 - Reworked Hunter's Harpoon to **smooth out** the movement speed curve.
 - Reworked Light Flux Pauldron internally to work **much better**.
@@ -222,7 +232,7 @@
 - Fixed Defense Nucleus shield appearing.
 - Fixed Elites giving their effects to Elites of the same type.
 - Fixed Focused Convergence reducing Teleporter Event Radius.
-- Fixed Helfire Tincture VFX having wrong scale.
+- Fixed Helfire Tincture VFX having the wrong scale.
 - Fixed Oddly-shaped Opal giving two buffs.
 - Fixed Oddly-shaped Opal improperly showing VFX.
 - Fixed Planula not stacking.
@@ -230,9 +240,9 @@
 - Fixed Wake of Vultures giving curse upon killing a Voidtouched elite.
 - Fixed in-game version number.
 - Fixed item descriptions being overwritten by other mods.
-- Fixed WolfoQoL incompat.
+- Fixed WolfoQoL incompatibility.
 - Fixed minor item descriptions.
 - Fixed the readme.
 - Small optimizations.
 - Item mod compatibility will be addressed in a later update.
-- - I'm sorry but the release wasn't very well communicated (and therefore unpolished) so in turn we had to do a bunch of fixing. ~HIFU
+- - I'm sorry but the release wasn't very well communicated (and therefore unpolished) so in turn we had to do a bunch of fixes. ~HIFU

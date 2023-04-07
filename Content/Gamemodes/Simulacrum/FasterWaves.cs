@@ -57,10 +57,9 @@ namespace WellRoundedBalance.Gamemodes.Simulacrum
         {
             if (instantWave)
             {
-                var sim = (InfiniteTowerRun)InfiniteTowerRun.instance;
-                if (sim && gameObject.name == "OptionPickup(Clone)")
+                if (Run.instance is InfiniteTowerRun itRun && gameObject.name == "OptionPickup(Clone)")
                 {
-                    sim.waveController.OnTimerExpire();
+                    itRun.waveController.OnTimerExpire();
                 }
             }
         }

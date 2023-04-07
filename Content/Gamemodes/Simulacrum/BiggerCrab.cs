@@ -26,9 +26,9 @@ namespace WellRoundedBalance.Gamemodes.Simulacrum
 
             var positions1 = thing1.transform.GetChild(2);
             var reward1 = positions1.GetChild(0);
-            reward1.position = new Vector3(0, 4.625f, 0); // 1.85 * 2.5
+            reward1.position = new Vector3(0, 15f, 0);
             var monster1 = positions1.GetChild(1);
-            monster1.position = new Vector3(0, 4.625f, 0);
+            monster1.position = new Vector3(0, 15f, 0);
 
             var thing2 = Utils.Paths.GameObject.InfiniteTowerSafeWard.Load<GameObject>();
             var model2 = thing2.transform.GetChild(0);
@@ -36,9 +36,9 @@ namespace WellRoundedBalance.Gamemodes.Simulacrum
 
             var positions2 = thing2.transform.GetChild(2);
             var reward2 = positions2.GetChild(0);
-            reward2.position = new Vector3(0, 4.625f, 0); // 1.85 * 2.5
+            reward2.position = new Vector3(0, 15f, 0);
             var monster2 = positions2.GetChild(1);
-            monster2.position = new Vector3(0, 4.625f, 0);
+            monster2.position = new Vector3(0, 15f, 0);
         }
     }
 }

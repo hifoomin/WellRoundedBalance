@@ -46,7 +46,7 @@ namespace WellRoundedBalance.Items.Reds
                 c.EmitDelegate<Func<float, DamageInfo, float>>((self, damageInfo) =>
                 {
                     var attackerBody = damageInfo.attacker.GetComponent<CharacterBody>();
-                    if (attackerBody)
+                    if (attackerBody && removeBulletFalloff)
                     {
                         var inventory = attackerBody.inventory;
                         if (inventory)
@@ -80,7 +80,7 @@ namespace WellRoundedBalance.Items.Reds
                 c.EmitDelegate<Func<float, DamageInfo, float>>((self, damageInfo) =>
                 {
                     var attackerBody = damageInfo.attacker.GetComponent<CharacterBody>();
-                    if (attackerBody)
+                    if (attackerBody && removeBulletFalloff)
                     {
                         var inventory = attackerBody.inventory;
                         if (inventory)
@@ -111,7 +111,7 @@ namespace WellRoundedBalance.Items.Reds
                 var stack = sender.inventory.GetItemCount(DLC1Content.Items.CritDamage);
                 if (stack > 0)
                 {
-                    args.critAdd += 10f;
+                    args.critAdd += criticalChance;
                 }
             }
         }

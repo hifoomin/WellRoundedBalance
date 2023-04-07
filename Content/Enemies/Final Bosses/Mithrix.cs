@@ -1,4 +1,8 @@
-﻿using UnityEngine.SceneManagement;
+﻿using EntityStates.BrotherMonster;
+using Inferno.Stat_AI;
+using Rewired.ComponentControls.Effects;
+using System;
+using UnityEngine.SceneManagement;
 
 namespace WellRoundedBalance.Enemies.FinalBosses
 {
@@ -31,6 +35,12 @@ namespace WellRoundedBalance.Enemies.FinalBosses
         [ConfigField("Disable Phase 2?", "Disabled if playing Inferno.", true)]
         public static bool disablePhase2;
 
+        [ConfigField("Disable Big Spinny Cripple?", "", true)]
+        public static bool disableCripple;
+
+        [ConfigField("Enable Moving Escape Lines?", "", true)]
+        public static bool enableMovingEscapeLines;
+
         public static GameObject ramp1;
         public static GameObject ramp2;
         public static GameObject ramp3;
@@ -61,6 +71,7 @@ namespace WellRoundedBalance.Enemies.FinalBosses
             On.EntityStates.BrotherMonster.SprintBash.OnEnter += SprintBash_OnEnter;
             On.EntityStates.BrotherMonster.Weapon.FireLunarShards.OnEnter += FireLunarShards_OnEnter;
             On.EntityStates.BrotherMonster.FistSlam.OnEnter += FistSlam_OnEnter;
+            On.EntityStates.BrotherMonster.FistSlam.OnExit += FistSlam_OnExit;
             On.EntityStates.BrotherMonster.SpellChannelEnterState.OnEnter += SpellChannelEnterState_OnEnter;
             On.EntityStates.BrotherMonster.SpellChannelState.OnEnter += SpellChannelState_OnEnter;
             On.EntityStates.BrotherMonster.SpellChannelExitState.OnEnter += SpellChannelExitState_OnEnter;
@@ -71,6 +82,31 @@ namespace WellRoundedBalance.Enemies.FinalBosses
             On.EntityStates.BrotherMonster.UltChannelState.OnEnter += UltChannelState_OnEnter;
             On.EntityStates.BrotherHaunt.FireRandomProjectiles.OnEnter += FireRandomProjectiles_OnEnter;
             On.RoR2.MasterSummon.Perform += MasterSummon_Perform;
+            Changes();
+        }
+
+        private void FistSlam_OnExit(On.EntityStates.BrotherMonster.FistSlam.orig_OnExit orig, FistSlam self)
+        {
+            orig(self);
+            if (enableSkillAndAIChanges)
+            {
+                var body = self.characterBody;
+                if (self.isAuthority)
+                {
+                    var projectileCount = 30;
+                    var slices = 360f / projectileCount;
+                    var upVector = Vector3.ProjectOnPlane(body.inputBank.aimDirection, Vector3.up);
+                    var footPosition = body.footPosition;
+                    for (int i = 0; i < projectileCount; i++)
+                    {
+                        var vector2 = Quaternion.AngleAxis(slices * i, Vector3.up) * upVector;
+                        if (self.isAuthority)
+                        {
+                            ProjectileManager.instance.FireProjectile(ExitSkyLeap.waveProjectilePrefab, footPosition, Util.QuaternionSafeLookRotation(vector2), body.gameObject, body.damage * ExitSkyLeap.waveProjectileDamageCoefficient, ExitSkyLeap.waveProjectileForce, Util.CheckRoll(body.crit, body.master), DamageColorIndex.Default, null, -1f);
+                        }
+                    }
+                }
+            }
         }
 
         private void BrotherEncounterPhaseBaseState_OnExit(On.EntityStates.Missions.BrotherEncounter.BrotherEncounterPhaseBaseState.orig_OnExit orig, EntityStates.Missions.BrotherEncounter.BrotherEncounterPhaseBaseState self)
@@ -124,8 +160,8 @@ namespace WellRoundedBalance.Enemies.FinalBosses
         {
             if (enableSkillAndAIChanges)
             {
-                EntityStates.BrotherMonster.UltChannelState.totalWaves = 8;
-                EntityStates.BrotherMonster.UltChannelState.maxDuration = 8f;
+                UltChannelState.totalWaves = 8;
+                UltChannelState.maxDuration = 8f;
             }
             orig(self);
         }
@@ -137,7 +173,7 @@ namespace WellRoundedBalance.Enemies.FinalBosses
                 EntityStates.BrotherHaunt.FireRandomProjectiles.maximumCharges = 150;
                 EntityStates.BrotherHaunt.FireRandomProjectiles.chargeRechargeDuration = 0.06f;
                 EntityStates.BrotherHaunt.FireRandomProjectiles.chanceToFirePerSecond = 0.33f;
-                EntityStates.BrotherHaunt.FireRandomProjectiles.damageCoefficient = 9f;
+                EntityStates.BrotherHaunt.FireRandomProjectiles.damageCoefficient = 7.5f;
             }
             orig(self);
         }
@@ -146,7 +182,7 @@ namespace WellRoundedBalance.Enemies.FinalBosses
         {
             if (enableSkillAndAIChanges)
             {
-                EntityStates.BrotherMonster.TrueDeathState.dissolveDuration = 5f;
+                TrueDeathState.dissolveDuration = 5f;
             }
             orig(self);
         }
@@ -182,8 +218,8 @@ namespace WellRoundedBalance.Enemies.FinalBosses
         {
             if (enableSkillAndAIChanges)
             {
-                EntityStates.BrotherMonster.SpellChannelExitState.lendInterval = 0f;
-                EntityStates.BrotherMonster.SpellChannelExitState.duration = 2.5f;
+                SpellChannelExitState.lendInterval = 0f;
+                SpellChannelExitState.duration = 2.5f;
             }
             orig(self);
         }
@@ -192,9 +228,9 @@ namespace WellRoundedBalance.Enemies.FinalBosses
         {
             if (enableSkillAndAIChanges)
             {
-                EntityStates.BrotherMonster.SpellChannelState.stealInterval = 0f;
-                EntityStates.BrotherMonster.SpellChannelState.delayBeforeBeginningSteal = 0f;
-                EntityStates.BrotherMonster.SpellChannelState.maxDuration = 1f;
+                SpellChannelState.stealInterval = 0f;
+                SpellChannelState.delayBeforeBeginningSteal = 0f;
+                SpellChannelState.maxDuration = 1f;
             }
             orig(self);
         }
@@ -203,7 +239,7 @@ namespace WellRoundedBalance.Enemies.FinalBosses
         {
             if (enableSkillAndAIChanges)
             {
-                EntityStates.BrotherMonster.SpellChannelEnterState.duration = 3f;
+                SpellChannelEnterState.duration = 3f;
             }
             orig(self);
         }
@@ -212,10 +248,10 @@ namespace WellRoundedBalance.Enemies.FinalBosses
         {
             if (enableSkillAndAIChanges)
             {
-                EntityStates.BrotherMonster.FistSlam.waveProjectileDamageCoefficient = 1.2f;
-                EntityStates.BrotherMonster.FistSlam.healthCostFraction = 0f;
-                EntityStates.BrotherMonster.FistSlam.waveProjectileCount = 20;
-                EntityStates.BrotherMonster.FistSlam.baseDuration = 3.5f;
+                FistSlam.waveProjectileDamageCoefficient = 1.2f;
+                FistSlam.healthCostFraction = 0f;
+                FistSlam.waveProjectileCount = 20;
+                FistSlam.baseDuration = 3.5f;
             }
 
             orig(self);
@@ -249,15 +285,15 @@ namespace WellRoundedBalance.Enemies.FinalBosses
             {
                 switch (self)
                 {
-                    case EntityStates.BrotherMonster.SlideBackwardState:
+                    case SlideBackwardState:
                         self.slideRotation = Quaternion.identity;
                         break;
 
-                    case EntityStates.BrotherMonster.SlideLeftState:
+                    case SlideLeftState:
                         self.slideRotation = Quaternion.AngleAxis(-40f, Vector3.up);
                         break;
 
-                    case EntityStates.BrotherMonster.SlideRightState:
+                    case SlideRightState:
                         self.slideRotation = Quaternion.AngleAxis(40f, Vector3.up);
                         break;
                 }
@@ -269,11 +305,11 @@ namespace WellRoundedBalance.Enemies.FinalBosses
         {
             if (enableSkillAndAIChanges)
             {
-                EntityStates.BrotherMonster.WeaponSlam.waveProjectileArc = 360f;
-                EntityStates.BrotherMonster.WeaponSlam.waveProjectileCount = 8;
-                EntityStates.BrotherMonster.WeaponSlam.waveProjectileForce = -2000f;
-                EntityStates.BrotherMonster.WeaponSlam.weaponForce = -3000f;
-                EntityStates.BrotherMonster.WeaponSlam.duration = 3f;
+                WeaponSlam.waveProjectileArc = 360f;
+                WeaponSlam.waveProjectileCount = 8;
+                WeaponSlam.waveProjectileForce = -2000f;
+                WeaponSlam.weaponForce = -3000f;
+                WeaponSlam.duration = 3f;
             }
             orig(self);
         }
@@ -282,8 +318,8 @@ namespace WellRoundedBalance.Enemies.FinalBosses
         {
             if (enableSkillAndAIChanges)
             {
-                EntityStates.BrotherMonster.ExitSkyLeap.waveProjectileCount = 20;
-                EntityStates.BrotherMonster.ExitSkyLeap.waveProjectileDamageCoefficient = 2.5f;
+                ExitSkyLeap.waveProjectileCount = 20;
+                ExitSkyLeap.waveProjectileDamageCoefficient = 2.5f;
             }
             orig(self);
         }
@@ -292,7 +328,7 @@ namespace WellRoundedBalance.Enemies.FinalBosses
         {
             if (enableSkillAndAIChanges)
             {
-                EntityStates.BrotherMonster.HoldSkyLeap.duration = 2f;
+                HoldSkyLeap.duration = 2f;
                 if (NetworkServer.active)
                 {
                     Util.CleanseBody(self.characterBody, true, false, false, true, true, false);
@@ -311,6 +347,25 @@ namespace WellRoundedBalance.Enemies.FinalBosses
                 rocks.SetActive(false);
             }
             orig(self);
+            if (enableSkillAndAIChanges)
+            {
+                var players = CharacterBody.readOnlyInstancesList.Where(x => x.isPlayerControlled);
+                foreach (CharacterBody body in players)
+                {
+                    var directorSpawnRequest = new DirectorSpawnRequest(LegacyResourcesAPI.Load<SpawnCard>("SpawnCards/CharacterSpawnCards/cscBrotherGlass"), new DirectorPlacementRule
+                    {
+                        placementMode = DirectorPlacementRule.PlacementMode.Approximate,
+                        minDistance = 25f,
+                        maxDistance = 45f,
+                        spawnOnTarget = body.transform,
+                    }, RoR2Application.rng);
+                    directorSpawnRequest.summonerBodyObject = self.gameObject;
+                    directorSpawnRequest.teamIndexOverride = self.teamComponent.teamIndex;
+                    directorSpawnRequest.ignoreTeamMemberLimit = true;
+
+                    DirectorCore.instance.TrySpawnObject(directorSpawnRequest);
+                }
+            }
         }
 
         private void Phase3_OnEnter(On.EntityStates.Missions.BrotherEncounter.Phase3.orig_OnEnter orig, EntityStates.Missions.BrotherEncounter.Phase3 self)
@@ -451,8 +506,8 @@ namespace WellRoundedBalance.Enemies.FinalBosses
                         cb.sprintingSpeedMultiplier = phase4SprintingSpeedMultiplier;
                         cb.baseMaxHealth = phase4BaseMaxHealth;
                         cb.levelMaxHealth = phase4BaseMaxHealth * 0.3f;
-                        cb.baseDamage = 8f;
-                        cb.levelDamage = 1.6f;
+                        cb.baseDamage = 13f;
+                        cb.levelDamage = 2.6f;
                         if (removeFallDamage)
                         {
                             cb.bodyFlags |= CharacterBody.BodyFlags.IgnoreFallDamage;
@@ -462,7 +517,38 @@ namespace WellRoundedBalance.Enemies.FinalBosses
                             cb.bodyFlags |= CharacterBody.BodyFlags.SprintAnyDirection;
                         }
                         break;
+
+                    case "BrotherGlassBody(Clone)":
+                        cb.baseMaxHealth = phase4BaseMaxHealth;
+                        cb.levelMaxHealth = phase4BaseMaxHealth * 0.3f;
+                        break;
                 }
+            }
+        }
+
+        private void Changes()
+        {
+            if (disableCripple)
+            {
+                var leftWave = Utils.Paths.GameObject.BrotherUltLineProjectileRotateLeft.Load<GameObject>();
+                var projectileDamage1 = leftWave.GetComponent<ProjectileDamage>();
+                projectileDamage1.damageType = DamageType.Generic;
+
+                var rightWave = Utils.Paths.GameObject.BrotherUltLineProjectileRotateRight.Load<GameObject>();
+                var projectileDamage2 = rightWave.GetComponent<ProjectileDamage>();
+                projectileDamage2.damageType = DamageType.Generic;
+            }
+
+            if (enableMovingEscapeLines)
+            {
+                var escapeLine = Utils.Paths.GameObject.BrotherUltLineProjectileStatic.Load<GameObject>();
+                var rotateAroundAxis = escapeLine.GetComponent<RotateAroundAxis>();
+                rotateAroundAxis.enabled = true;
+                rotateAroundAxis.slowRotationSpeed = 25f;
+                rotateAroundAxis.fastRotationSpeed = 25f;
+
+                var projectileSimple = escapeLine.GetComponent<ProjectileSimple>();
+                projectileSimple.desiredForwardSpeed = 50f;
             }
         }
     }
