@@ -1,5 +1,6 @@
 ﻿using Mono.Cecil.Cil;
 using MonoMod.Cil;
+using System.Reflection;
 using WellRoundedBalance.Buffs;
 using WellRoundedBalance.Gamemodes.Eclipse;
 
@@ -45,13 +46,24 @@ namespace WellRoundedBalance.Elites
 
             var projectileController = spike.GetComponent<ProjectileController>();
 
+            var spikeGhost = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.ImpVoidspikeProjectileGhost.Load<GameObject>(), "Voidtouched Spike Ghost", false);
+            spikeGhost.transform.localScale = new Vector3(3f, 3f, 3f);
+
+            projectileController.ghostPrefab = spikeGhost;
+
             var projectileImpactExplosion = spike.GetComponent<ProjectileImpactExplosion>();
             projectileImpactExplosion.blastRadius = 6f;
-            /*
+
+            spike.transform.localScale = new Vector3(3f, 3f, 3f);
+
             var proximityTrigger = spike.transform.GetChild(0).GetChild(5);
             var sphereCollider = proximityTrigger.GetComponent<SphereCollider>();
             sphereCollider.radius = 6f;
-            */
+
+            var projectileStickOnImpact = spike.GetComponent<ProjectileStickOnImpact>();
+            // remove projectileimpactexplosion setexplosionradius event
+            // add projectileimpactexplosion setexplosionradius event to make spike have a 7.5m explosion radius
+
             PrefabAPI.RegisterNetworkPrefab(spike);
 
             base.Init();
