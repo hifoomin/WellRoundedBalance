@@ -9,7 +9,7 @@ namespace WellRoundedBalance.Items.Lunars
 
         public override string PickupText => "Pull enemies on hit... <color=#FF7F7F>BUT enemies pull you on hit.</color>\n";
 
-        public override string DescText => "<style=cIsUtility>Pull</style> enemies on hit. Enemies <style=cIsUtility>pull</style> you on hit. <style=cStack>(Pull strength increases per stack)</style>.";
+        public override string DescText => "Gain <style=cIsHealing>10 armor</style>. <style=cIsUtility>Pull</style> enemies on hit. Enemies <style=cIsUtility>pull</style> you on hit. <style=cStack>(Pull strength increases per stack)</style>.";
 
         public override void Init()
         {
@@ -20,6 +20,19 @@ namespace WellRoundedBalance.Items.Lunars
         {
             IL.RoR2.CharacterBody.RecalculateStats += Changes;
             On.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
+            RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
+        }
+
+        private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
+        {
+            if (sender && sender.inventory)
+            {
+                var stack = sender.inventory.GetItemCount(DLC1Content.Items.HalfSpeedDoubleHealth);
+                if (stack > 0)
+                {
+                    args.armorAdd += 10f;
+                }
+            }
         }
 
         private void HealthComponent_TakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo)

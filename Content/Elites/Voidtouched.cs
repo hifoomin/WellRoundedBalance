@@ -96,8 +96,8 @@ namespace WellRoundedBalance.Elites
 
             for (int i = 0; i < (Eclipse3.CheckEclipse() ? spikeCountE3 : spikeCount); i++)
             {
-                Vector3 position = originalPosition + (aimDirection * (i * 10));
-                position.y = 20;
+                Vector3 position = originalPosition + (aimDirection * (i * 15));
+                position.y = 30;
                 if (Physics.Raycast(position, Vector3.down, out RaycastHit hit, 1000, ~0))
                 {
                     if (Util.HasEffectiveAuthority(body.gameObject))
@@ -111,7 +111,7 @@ namespace WellRoundedBalance.Elites
                             rotation = Quaternion.LookRotation(Vector3.down),
                             projectilePrefab = spike,
                             owner = body.gameObject,
-                            speedOverride = 50
+                            speedOverride = 40
                         };
                         ProjectileManager.instance.FireProjectile(info);
                     }

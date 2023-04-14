@@ -71,7 +71,7 @@ namespace WellRoundedBalance.Items.Yellows
     public class PlanulaController : CharacterBody.ItemBehavior
     {
         private float timer = 0;
-        private float burnDistanceBase = 10000;
+        private float burnDistanceBase = 100f;
         private float burnInterval = 0.5f;
         private float burnDuration = 5f;
 

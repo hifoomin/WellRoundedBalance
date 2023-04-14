@@ -93,7 +93,7 @@ namespace WellRoundedBalance.Enemies.FinalBosses
                 var body = self.characterBody;
                 if (self.isAuthority)
                 {
-                    var projectileCount = 30;
+                    var projectileCount = 10;
                     var slices = 360f / projectileCount;
                     var upVector = Vector3.ProjectOnPlane(body.inputBank.aimDirection, Vector3.up);
                     var footPosition = body.footPosition;
@@ -102,7 +102,7 @@ namespace WellRoundedBalance.Enemies.FinalBosses
                         var vector2 = Quaternion.AngleAxis(slices * i, Vector3.up) * upVector;
                         if (self.isAuthority)
                         {
-                            ProjectileManager.instance.FireProjectile(ExitSkyLeap.waveProjectilePrefab, footPosition, Util.QuaternionSafeLookRotation(vector2), body.gameObject, body.damage * ExitSkyLeap.waveProjectileDamageCoefficient, ExitSkyLeap.waveProjectileForce, Util.CheckRoll(body.crit, body.master), DamageColorIndex.Default, null, -1f);
+                            ProjectileManager.instance.FireProjectile(ExitSkyLeap.waveProjectilePrefab, footPosition, Util.QuaternionSafeLookRotation(vector2), body.gameObject, body.damage * 0.66f, ExitSkyLeap.waveProjectileForce, Util.CheckRoll(body.crit, body.master), DamageColorIndex.Default, null, -1f);
                         }
                     }
                 }
@@ -156,7 +156,7 @@ namespace WellRoundedBalance.Enemies.FinalBosses
             orig(self);
         }
 
-        private void UltChannelState_OnEnter(On.EntityStates.BrotherMonster.UltChannelState.orig_OnEnter orig, EntityStates.BrotherMonster.UltChannelState self)
+        private void UltChannelState_OnEnter(On.EntityStates.BrotherMonster.UltChannelState.orig_OnEnter orig, UltChannelState self)
         {
             if (enableSkillAndAIChanges)
             {
@@ -178,7 +178,7 @@ namespace WellRoundedBalance.Enemies.FinalBosses
             orig(self);
         }
 
-        private void TrueDeathState_OnEnter(On.EntityStates.BrotherMonster.TrueDeathState.orig_OnEnter orig, EntityStates.BrotherMonster.TrueDeathState self)
+        private void TrueDeathState_OnEnter(On.EntityStates.BrotherMonster.TrueDeathState.orig_OnEnter orig, TrueDeathState self)
         {
             if (enableSkillAndAIChanges)
             {
@@ -187,7 +187,7 @@ namespace WellRoundedBalance.Enemies.FinalBosses
             orig(self);
         }
 
-        private void StaggerLoop_OnEnter(On.EntityStates.BrotherMonster.StaggerLoop.orig_OnEnter orig, EntityStates.BrotherMonster.StaggerLoop self)
+        private void StaggerLoop_OnEnter(On.EntityStates.BrotherMonster.StaggerLoop.orig_OnEnter orig, StaggerLoop self)
         {
             if (enableSkillAndAIChanges)
             {
@@ -196,7 +196,7 @@ namespace WellRoundedBalance.Enemies.FinalBosses
             orig(self);
         }
 
-        private void StaggerExit_OnEnter(On.EntityStates.BrotherMonster.StaggerExit.orig_OnEnter orig, EntityStates.BrotherMonster.StaggerExit self)
+        private void StaggerExit_OnEnter(On.EntityStates.BrotherMonster.StaggerExit.orig_OnEnter orig, StaggerExit self)
         {
             if (enableSkillAndAIChanges)
             {
@@ -205,7 +205,7 @@ namespace WellRoundedBalance.Enemies.FinalBosses
             orig(self);
         }
 
-        private void StaggerEnter_OnEnter(On.EntityStates.BrotherMonster.StaggerEnter.orig_OnEnter orig, EntityStates.BrotherMonster.StaggerEnter self)
+        private void StaggerEnter_OnEnter(On.EntityStates.BrotherMonster.StaggerEnter.orig_OnEnter orig, StaggerEnter self)
         {
             if (enableSkillAndAIChanges)
             {
@@ -214,7 +214,7 @@ namespace WellRoundedBalance.Enemies.FinalBosses
             orig(self);
         }
 
-        private void SpellChannelExitState_OnEnter(On.EntityStates.BrotherMonster.SpellChannelExitState.orig_OnEnter orig, EntityStates.BrotherMonster.SpellChannelExitState self)
+        private void SpellChannelExitState_OnEnter(On.EntityStates.BrotherMonster.SpellChannelExitState.orig_OnEnter orig, SpellChannelExitState self)
         {
             if (enableSkillAndAIChanges)
             {
@@ -224,7 +224,7 @@ namespace WellRoundedBalance.Enemies.FinalBosses
             orig(self);
         }
 
-        private void SpellChannelState_OnEnter(On.EntityStates.BrotherMonster.SpellChannelState.orig_OnEnter orig, EntityStates.BrotherMonster.SpellChannelState self)
+        private void SpellChannelState_OnEnter(On.EntityStates.BrotherMonster.SpellChannelState.orig_OnEnter orig, SpellChannelState self)
         {
             if (enableSkillAndAIChanges)
             {
@@ -235,7 +235,7 @@ namespace WellRoundedBalance.Enemies.FinalBosses
             orig(self);
         }
 
-        private void SpellChannelEnterState_OnEnter(On.EntityStates.BrotherMonster.SpellChannelEnterState.orig_OnEnter orig, EntityStates.BrotherMonster.SpellChannelEnterState self)
+        private void SpellChannelEnterState_OnEnter(On.EntityStates.BrotherMonster.SpellChannelEnterState.orig_OnEnter orig, SpellChannelEnterState self)
         {
             if (enableSkillAndAIChanges)
             {
@@ -244,7 +244,7 @@ namespace WellRoundedBalance.Enemies.FinalBosses
             orig(self);
         }
 
-        private void FistSlam_OnEnter(On.EntityStates.BrotherMonster.FistSlam.orig_OnEnter orig, EntityStates.BrotherMonster.FistSlam self)
+        private void FistSlam_OnEnter(On.EntityStates.BrotherMonster.FistSlam.orig_OnEnter orig, FistSlam self)
         {
             if (enableSkillAndAIChanges)
             {
@@ -267,7 +267,7 @@ namespace WellRoundedBalance.Enemies.FinalBosses
             orig(self);
         }
 
-        private void SprintBash_OnEnter(On.EntityStates.BrotherMonster.SprintBash.orig_OnEnter orig, EntityStates.BrotherMonster.SprintBash self)
+        private void SprintBash_OnEnter(On.EntityStates.BrotherMonster.SprintBash.orig_OnEnter orig, SprintBash self)
         {
             if (enableSkillAndAIChanges)
             {
@@ -279,7 +279,7 @@ namespace WellRoundedBalance.Enemies.FinalBosses
             orig(self);
         }
 
-        private static void BaseSlideState_OnEnter(On.EntityStates.BrotherMonster.BaseSlideState.orig_OnEnter orig, EntityStates.BrotherMonster.BaseSlideState self)
+        private static void BaseSlideState_OnEnter(On.EntityStates.BrotherMonster.BaseSlideState.orig_OnEnter orig, BaseSlideState self)
         {
             if (enableSkillAndAIChanges)
             {
@@ -301,7 +301,7 @@ namespace WellRoundedBalance.Enemies.FinalBosses
             orig(self);
         }
 
-        private void WeaponSlam_OnEnter(On.EntityStates.BrotherMonster.WeaponSlam.orig_OnEnter orig, EntityStates.BrotherMonster.WeaponSlam self)
+        private void WeaponSlam_OnEnter(On.EntityStates.BrotherMonster.WeaponSlam.orig_OnEnter orig, WeaponSlam self)
         {
             if (enableSkillAndAIChanges)
             {
@@ -314,7 +314,7 @@ namespace WellRoundedBalance.Enemies.FinalBosses
             orig(self);
         }
 
-        private void ExitSkyLeap_OnEnter(On.EntityStates.BrotherMonster.ExitSkyLeap.orig_OnEnter orig, EntityStates.BrotherMonster.ExitSkyLeap self)
+        private void ExitSkyLeap_OnEnter(On.EntityStates.BrotherMonster.ExitSkyLeap.orig_OnEnter orig, ExitSkyLeap self)
         {
             if (enableSkillAndAIChanges)
             {
@@ -324,7 +324,7 @@ namespace WellRoundedBalance.Enemies.FinalBosses
             orig(self);
         }
 
-        private void HoldSkyLeap_OnEnter(On.EntityStates.BrotherMonster.HoldSkyLeap.orig_OnEnter orig, EntityStates.BrotherMonster.HoldSkyLeap self)
+        private void HoldSkyLeap_OnEnter(On.EntityStates.BrotherMonster.HoldSkyLeap.orig_OnEnter orig, HoldSkyLeap self)
         {
             if (enableSkillAndAIChanges)
             {
@@ -360,7 +360,7 @@ namespace WellRoundedBalance.Enemies.FinalBosses
                         spawnOnTarget = body.transform,
                     }, RoR2Application.rng);
                     directorSpawnRequest.summonerBodyObject = self.gameObject;
-                    directorSpawnRequest.teamIndexOverride = self.teamComponent.teamIndex;
+                    directorSpawnRequest.teamIndexOverride = TeamIndex.Monster;
                     directorSpawnRequest.ignoreTeamMemberLimit = true;
 
                     DirectorCore.instance.TrySpawnObject(directorSpawnRequest);

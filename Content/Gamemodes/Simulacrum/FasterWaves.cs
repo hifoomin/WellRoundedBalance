@@ -1,12 +1,10 @@
-﻿using R2API.Utils;
-
-namespace WellRoundedBalance.Gamemodes.Simulacrum
+﻿namespace WellRoundedBalance.Gamemodes.Simulacrum
 {
     internal class FasterWaves : GamemodeBase<FasterWaves>
     {
         public override string Name => ":: Gamemode :: Simulacrum Faster Waves";
 
-        [ConfigField("Crab Speed Multiplier", "", 2f)]
+        [ConfigField("Crab Speed Multiplier", "", 1.7f)]
         public static float crabSpeedMultiplier;
 
         [ConfigField("Fog Speed Multiplier", "", 1.6f)]
@@ -57,7 +55,7 @@ namespace WellRoundedBalance.Gamemodes.Simulacrum
         {
             if (instantWave)
             {
-                if (Run.instance is InfiniteTowerRun itRun && gameObject.name == "OptionPickup(Clone)")
+                if (Run.instance is InfiniteTowerRun itRun && gameObject.name == "OptionPickup(Clone)" && NetworkServer.active)
                 {
                     itRun.waveController.OnTimerExpire();
                 }

@@ -7,17 +7,20 @@
 
         public override string PickupText => "Randomly create a Ward of Power. ALL characters have bonus stats while in the Ward.";
 
-        public override string DescText => "Creates a Ward of Power in a random location nearby that buffs both enemies and allies within <style=cIsUtility>" + baseRadius + "m</style> <style=cStack>(+" + d(radiusIncreasePerStack) + " per stack)</style>, causing them to gain <style=cIsDamage>" + d(attackSpeedAndMovementSpeedGain) + " attack speed</style> and <style=cIsUtility>movement speed</style>. Enemies benefit from the ward twice as much.";
+        public override string DescText => "Creates a Ward of Power in a random location nearby that buffs both enemies and allies within <style=cIsUtility>" + baseRadius + "m</style> <style=cStack>(+" + d(radiusIncreasePerStack) + " per stack)</style>, causing them to gain <style=cIsDamage>" + d(baseAttackSpeedAndMovementSpeedGain) + " attack speed</style> and <style=cIsUtility>movement speed</style>. Enemies benefit from the ward twice as much.";
 
         public static BuffDef rachisBuff;
 
-        [ConfigField("Attack Speed and Movement Speed Gain", "", 0.35f)]
-        public static float attackSpeedAndMovementSpeedGain;
+        [ConfigField("Base Attack Speed and Movement Speed Gain", "", 0.35f)]
+        public static float baseAttackSpeedAndMovementSpeedGain;
+
+        [ConfigField("Attack Speed and Movement Speed Gain Per Stack", "", 0.15f)]
+        public static float attackSpeedAndMovementSpeedGainPerStack;
 
         [ConfigField("Base Radius", "", 30f)]
         public static float baseRadius;
 
-        [ConfigField("Radius Increase Per Stack", "Decimal.", 0.5f)]
+        [ConfigField("Radius Increase Per Stack", "Decimal.", 0.3f)]
         public static float radiusIncreasePerStack;
 
         [ConfigField("Ward Duration", "", 25f)]
@@ -38,15 +41,16 @@
 
         private void AddBehavior(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
+            var stack = Util.GetItemCountGlobal(RoR2Content.Items.RandomDamageZone.itemIndex, true);
             if (sender && sender.teamComponent._teamIndex == TeamIndex.Player && sender.HasBuff(rachisBuff))
             {
-                args.baseAttackSpeedAdd += attackSpeedAndMovementSpeedGain;
-                args.moveSpeedMultAdd += attackSpeedAndMovementSpeedGain;
+                args.baseAttackSpeedAdd += baseAttackSpeedAndMovementSpeedGain + attackSpeedAndMovementSpeedGainPerStack * (stack - 1);
+                args.moveSpeedMultAdd += baseAttackSpeedAndMovementSpeedGain + attackSpeedAndMovementSpeedGainPerStack * (stack - 1);
             }
             if (sender && sender.teamComponent._teamIndex != TeamIndex.Player && sender.HasBuff(rachisBuff))
             {
-                args.baseAttackSpeedAdd += attackSpeedAndMovementSpeedGain * 2f;
-                args.moveSpeedMultAdd += attackSpeedAndMovementSpeedGain * 2f;
+                args.baseAttackSpeedAdd += (baseAttackSpeedAndMovementSpeedGain + attackSpeedAndMovementSpeedGainPerStack * (stack - 1)) * 2f;
+                args.moveSpeedMultAdd += (baseAttackSpeedAndMovementSpeedGain + attackSpeedAndMovementSpeedGainPerStack * (stack - 1)) * 2f;
             }
         }
 

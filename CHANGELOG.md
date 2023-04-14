@@ -30,7 +30,7 @@
 - Buffed Ukulele Proc Coefficient 0 => **0.33**.
 - Buffed Voidtouched Spike Size 2m => **6m**.
 - Buffed Voidtouched Permanent Damage Percent 30 => **40**.
-- Buffed Voidtouched Projectile Speed 20m/s => **50m/s**.
+- Buffed Voidtouched Projectile Speed 20m/s => **40m/s**.
 - Buffed Escape Sequence Lines => **now move and rotate**.
 - Buffed Elder Lemurian Spawn Sound Volume :^).
 - Nerfed Escape Sequence Lines Damage 9 => **7.5**.
@@ -44,6 +44,7 @@
 - Nerfed Shatterspleen to have a **16 bleed cap**.
 - Nerfed Tri-Tip Dagger to have an **8 (+4 per stack) bleed cap**.
 - Nerfed Shrine of Order Max Spawns Per Stage 2 => **1**.
+- Nerfed Planula Range 10000m => **100m**.
 - Nerfed Global Item Proc Coefficient Multiplier 1 => **0.1**.
 - Nerfed Ceremonial Dagger Range 130m => **40m**.
 - Nerfed Scene Director Credit Multiplier 2.5 => **Starts at 2.5 and lowers by 0.15 every stage per loop**.
@@ -187,6 +188,7 @@
 - Buffed Weeping Fungus Percent Healing Per Stack 0.5% => **1.2%**.
 - Buffed Will-o'-The-Wisp Base Damage 180% => **240%**.
 - Buffed Will-o'-The-Wisp Damage Per Stack 90% => **120%**.
+- Nerfed Helfire Tincture Ally Damage Multiplier 1x => **0.25x**.
 - Nerfed Ben's Raincoat Buff Movement Speed Gain Per Stack 10% => **0%**.
 - Nerfed Bustling Fungus Base Percent Healing 5% => **4%**.
 - Nerfed Defense Nucleus Damage Reduction 25% => **20%**.
