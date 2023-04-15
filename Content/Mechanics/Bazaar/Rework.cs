@@ -8,6 +8,15 @@ namespace WellRoundedBalance.Mechanics.Bazaar
         public static GameObject heresyStation;
         public override string Name => ":: Mechanics :::::::: Bazaar Rework";
 
+        [ConfigField("Enable Heresy Station?", "", true)]
+        public static bool enableHeresyStation;
+
+        [ConfigField("Enable Lunar Pods?", "", true)]
+        public static bool enableLunarPods;
+
+        [ConfigField("Enable Lunar Reroller?", "", false)]
+        public static bool enableLunarReroller;
+
         public override void Init()
         {
             lunarPod = Utils.Paths.GameObject.LunarChest.Load<GameObject>();
@@ -34,39 +43,45 @@ namespace WellRoundedBalance.Mechanics.Bazaar
                 var lunarShop = GameObject.Find("HOLDER: Store").transform.GetChild(0);
                 var table = lunarShop.GetChild(2);
                 table.gameObject.AddComponent<NetworkIdentity>();
-
-                List<PurchaseInteraction> interactions = GameObject.FindObjectsOfType<PurchaseInteraction>().Where(x => x.gameObject.name.Contains("LunarShopTerminal")).ToList();
-                for (int i = 0; i < 5; i++)
+                if (enableLunarPods)
                 {
-                    if (i == 1 || i == 5)
+                    List<PurchaseInteraction> interactions = GameObject.FindObjectsOfType<PurchaseInteraction>().Where(x => x.gameObject.name.Contains("LunarShopTerminal")).ToList();
+                    for (int i = 0; i < 5; i++)
                     {
-                        GameObject.Destroy(interactions[i].gameObject);
-                        continue;
-                    }
+                        if (i == 1 || i == 5)
+                        {
+                            GameObject.Destroy(interactions[i].gameObject);
+                            continue;
+                        }
 
-                    Vector3 position = interactions[i].transform.position;
-                    GameObject.Destroy(interactions[i].gameObject);
-                    var lunarPodServer = Object.Instantiate(lunarPod, position, Quaternion.identity);
-                    NetworkServer.Spawn(lunarPodServer);
+                        Vector3 position = interactions[i].transform.position;
+                        GameObject.Destroy(interactions[i].gameObject);
+                        var lunarPodServer = Object.Instantiate(lunarPod, position, Quaternion.identity);
+                        NetworkServer.Spawn(lunarPodServer);
+                    }
                 }
 
-                var table2Server = Object.Instantiate(table, lunarShop);
-                table2Server.transform.localPosition = new Vector3(11f, -7.5f, 9f);
-                table2Server.transform.eulerAngles = new Vector3(270f, 250f, 0f);
-                NetworkServer.Spawn(table2Server.gameObject);
+                if (enableHeresyStation)
+                {
+                    var table2Server = Object.Instantiate(table, lunarShop);
+                    table2Server.transform.localPosition = new Vector3(11f, -7.5f, 9f);
+                    table2Server.transform.eulerAngles = new Vector3(270f, 250f, 0f);
+                    NetworkServer.Spawn(table2Server.gameObject);
+                    var heresyItemServer = Object.Instantiate(heresyStation, table2Server);
+                    heresyItemServer.transform.localPosition = new Vector3(1.695f, -1.307f, 1.196f);
+                    heresyItemServer.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+                    NetworkServer.Spawn(heresyItemServer);
 
-                var heresyItemServer = Object.Instantiate(heresyStation, table2Server);
-                heresyItemServer.transform.localPosition = new Vector3(1.695f, -1.307f, 1.196f);
-                heresyItemServer.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
-                NetworkServer.Spawn(heresyItemServer);
-
-                var heresyItemServer2 = Object.Instantiate(heresyStation, table2Server);
-                heresyItemServer2.transform.localPosition = new Vector3(0.315f, -2.07f, 1.196f);
-                heresyItemServer2.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
-                NetworkServer.Spawn(heresyItemServer2);
-
-                var slab = lunarShop.GetChild(3).gameObject;
-                slab.SetActive(false);
+                    var heresyItemServer2 = Object.Instantiate(heresyStation, table2Server);
+                    heresyItemServer2.transform.localPosition = new Vector3(0.315f, -2.07f, 1.196f);
+                    heresyItemServer2.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+                    NetworkServer.Spawn(heresyItemServer2);
+                }
+                if (!enableLunarReroller)
+                {
+                    var slab = lunarShop.GetChild(3).gameObject;
+                    slab.SetActive(false);
+                }
             }
             orig(self);
         }

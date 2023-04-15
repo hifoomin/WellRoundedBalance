@@ -21,7 +21,7 @@ namespace WellRoundedBalance.Equipment.Lunar
         [ConfigField("Self Damagee", "Decimal.", 0.05f)]
         public static float selfDamage;
 
-        [ConfigField("Damage to Allies Multiplierr", ".", 1f)]
+        [ConfigField("Damage to Allies Multiplierr", ".", 0.25f)]
         public static float damageToAlliesMultiplier;
 
         [ConfigField("Damage To Enemiess", "Decimal.", 0.75f)]

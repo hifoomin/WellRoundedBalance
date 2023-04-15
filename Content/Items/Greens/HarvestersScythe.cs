@@ -14,10 +14,10 @@ namespace WellRoundedBalance.Items.Greens
 
         private static ProcType Backstab = (ProcType)38921;
 
-        [ConfigField("Base Missing Health Healing Percent", "Decimal. Formula for healing: (Maximum Health - Current Health) * (Base Missing Health Healing Percent + (Missing Health Healing Percent Per Stack * (Harvesters Scythe - 1)))", 0.015f)]
+        [ConfigField("Base Missing Health Healing Percent", "Decimal. Formula for healing: (Maximum Health - Current Health) * (Base Missing Health Healing Percent + (Missing Health Healing Percent Per Stack * (Harvesters Scythe - 1)))", 0.018f)]
         public static float baseMissingHealthHealingPercent;
 
-        [ConfigField("Missing Health Healing Percent Per Stack", "Decimal. Formula for healing: (Maximum Health - Current Health) * (Base Missing Health Healing Percent + (Missing Health Healing Percent Per Stack * (Harvesters Scythe - 1)))", 0.0075f)]
+        [ConfigField("Missing Health Healing Percent Per Stack", "Decimal. Formula for healing: (Maximum Health - Current Health) * (Base Missing Health Healing Percent + (Missing Health Healing Percent Per Stack * (Harvesters Scythe - 1)))", 0.009f)]
         public static float missingHealthHealingPercentPerStack;
 
         public override void Init()

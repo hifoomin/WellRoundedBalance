@@ -1,4 +1,7 @@
-﻿namespace WellRoundedBalance.Interactables
+﻿using System;
+using UnityEngine.UIElements.UIR;
+
+namespace WellRoundedBalance.Interactables
 {
     internal class AllShrines : InteractableBase<AllShrines>
     {
@@ -24,6 +27,9 @@
 
         [ConfigField("Shrine Of Wood Cost", "", 15)]
         public static int shrineOfWoodInitialCost;
+
+        [ConfigField("Remove Shrine of Wood from Distant Roost?", "", true)]
+        public static bool removeShrineWood;
 
         [ConfigField("Shrine Of Wood Base Radius", "", 13f)]
         public static float shrineOfWoodBaseRadius;
@@ -112,6 +118,10 @@
             LanguageAPI.Add("WRB_SHRINE_RESTACK_CONTEXT", "Offer to Shrine of Order (+3 Lunar Coins)");
 
             AddShrineOfOrderToMoreStages();
+            if (removeShrineWood)
+            {
+                Unroost();
+            }
         }
 
         private void GlobalEventManager_OnInteractionsGlobal(Interactor interactor, IInteractable interactable, GameObject interactableObject)
@@ -142,6 +152,50 @@
 
             DirectorAPI.AddCard(sirensDCCS, shrineOfOrderCardHolder);
             DirectorAPI.AddCard(sirensDCCSDLC, shrineOfOrderCardHolder);
+        }
+
+        private void Unroost()
+        {
+            var shrineBloodDC = new DirectorCard
+            {
+                spawnCard = Utils.Paths.InteractableSpawnCard.iscShrineBlood.Load<InteractableSpawnCard>(),
+                selectionWeight = 3,
+                spawnDistance = DirectorCore.MonsterSpawnDistance.Standard,
+                preventOverhead = false,
+                minimumStageCompletions = 0
+            };
+
+            var shrineBossDC = new DirectorCard
+            {
+                spawnCard = Utils.Paths.InteractableSpawnCard.iscShrineBoss.Load<InteractableSpawnCard>(),
+                selectionWeight = 1,
+                spawnDistance = DirectorCore.MonsterSpawnDistance.Standard,
+                preventOverhead = false,
+                minimumStageCompletions = 0
+            };
+
+            var shrineChanceDC = new DirectorCard
+            {
+                spawnCard = Utils.Paths.InteractableSpawnCard.iscShrineChance.Load<InteractableSpawnCard>(),
+                selectionWeight = 4,
+                spawnDistance = DirectorCore.MonsterSpawnDistance.Standard,
+                preventOverhead = false,
+                minimumStageCompletions = 0
+            };
+
+            var roost1 = Utils.Paths.DirectorCardCategorySelection.dccsBlackBeachInteractables.Load<DirectorCardCategorySelection>();
+            var shrines1 = roost1.categories[2].cards;
+            Array.Resize(ref shrines1, 3);
+            shrines1[0] = shrineBloodDC;
+            shrines1[1] = shrineBossDC;
+            shrines1[2] = shrineChanceDC;
+
+            var roost2 = Utils.Paths.DirectorCardCategorySelection.dccsBlackBeachInteractablesDLC1.Load<DirectorCardCategorySelection>();
+            var shrines2 = roost2.categories[2].cards;
+            Array.Resize(ref shrines2, 3);
+            shrines2[0] = shrineBloodDC;
+            shrines2[1] = shrineBossDC;
+            shrines2[2] = shrineChanceDC;
         }
     }
 }

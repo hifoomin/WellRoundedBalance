@@ -4,7 +4,7 @@
     {
         public override string Name => ":: Mechanics ::::::::: Monster Loop Armor";
 
-        [ConfigField("Armor Per Loopp", "", 10f)]
+        [ConfigField("Armor Per Loop", "", 10f)]
         public static float armorPerLoop;
 
         public override void Init()

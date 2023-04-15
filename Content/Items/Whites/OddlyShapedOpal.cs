@@ -13,13 +13,20 @@ namespace WellRoundedBalance.Items.Whites
         public override string PickupText => "Increase armor for every enemy nearby.";
 
         public override string DescText =>
-            StackDesc(armorGain, armorGainStack, init => $"<style=cIsHealing>Increase armor</style> by <style=cIsHealing>{init}</style>{{Stack}} for every enemy within <style=cIsHealing>" + radius + "m</style>.", noop);
+            StackDesc(armorGain, armorGainStack, init => $"<style=cIsHealing>Increase armor</style> by <style=cIsHealing>{init}</style>{{Stack}} for every enemy within <style=cIsHealing>" + radius + "m</style> up to <style=cIsHealing>" + maxBuffCount + "</style>" +
+            " times.", noop);
 
         [ConfigField("Armor Gain", 3f)]
         public static float armorGain;
 
-        [ConfigField("Armor Gain per Stack", 3f)]
+        [ConfigField("Armor Gain per Stack", 0f)]
         public static float armorGainStack;
+
+        [ConfigField("BaseMax Buff Count", 3)]
+        public static int maxBuffCount;
+
+        [ConfigField("Max Buff Count Per Stack", 3)]
+        public static int maxBuffCountStack;
 
         [ConfigField("Armor Gain is Hyperbolic", "Decimal, Max value. Set to 0 to make it linear.", 0f)]
         public static float armorGainIsHyperbolic;
@@ -99,9 +106,11 @@ namespace WellRoundedBalance.Items.Whites
     {
         public float checkInterval = 0.1f;
         public float timer;
+        public float radiusSquared = 400f;
         public float distance = OddlyShapedOpal.radius;
         public TeamIndex ownerIndex;
         public GameObject radiusIndicator;
+        public int maxBuffs;
 
         private void Start()
         {
@@ -109,34 +118,40 @@ namespace WellRoundedBalance.Items.Whites
             enableRadiusIndicator = true;
             var radiusTrans = radiusIndicator.transform.GetChild(1);
             radiusTrans.localScale = new Vector3(OddlyShapedOpal.radius * 2f, OddlyShapedOpal.radius * 2f, OddlyShapedOpal.radius * 2f);
+            if (stack > 0)
+                maxBuffs = OddlyShapedOpal.maxBuffCount + OddlyShapedOpal.maxBuffCountStack * (stack - 1);
+            else maxBuffs = 0;
         }
 
         private void FixedUpdate()
         {
             timer += Time.fixedDeltaTime;
-            if (timer >= checkInterval)
+            if (timer < checkInterval)
             {
-                var count = 0;
-                for (TeamIndex teamIndex2 = TeamIndex.Neutral; teamIndex2 < TeamIndex.Count; teamIndex2 += 1)
+                return;
+            }
+
+            var count = 0;
+            for (TeamIndex firstIndex = TeamIndex.Neutral; firstIndex < TeamIndex.Count && count < maxBuffs; firstIndex++)
+            {
+                if (firstIndex == ownerIndex || firstIndex <= TeamIndex.Neutral)
                 {
-                    bool flag2 = teamIndex2 != ownerIndex && teamIndex2 > TeamIndex.Neutral;
-                    if (flag2)
+                    continue;
+                }
+
+                foreach (TeamComponent teamComponent in TeamComponent.GetTeamMembers(firstIndex))
+                {
+                    if ((teamComponent.transform.position - body.corePosition).sqrMagnitude <= radiusSquared)
                     {
-                        foreach (TeamComponent teamComponent in TeamComponent.GetTeamMembers(teamIndex2))
-                        {
-                            bool flag3 = (teamComponent.transform.position - body.corePosition).sqrMagnitude <= 400f;
-                            if (flag3)
-                            {
-                                count++;
-                            }
-                        }
+                        count++;
                     }
                 }
-                UpdateBuff(count);
-                timer = 0f;
             }
+            UpdateBuff(count);
+            timer = 0f;
         }
 
+        /*
         private void UpdateBuff(int buffCountAdd)
         {
             var currentBuffCount = body.GetBuffCount(OddlyShapedOpal.opalArmor);
@@ -152,6 +167,30 @@ namespace WellRoundedBalance.Items.Whites
                 else
                 {
                     for (int k = 0; k < currentBuffCount - buffCountAdd; k++)
+                    {
+                        body.RemoveBuff(OddlyShapedOpal.opalArmor);
+                    }
+                }
+            }
+        }
+        */
+
+        private void UpdateBuff(int buffCountAdd)
+        {
+            var currentBuffCount = body.GetBuffCount(OddlyShapedOpal.opalArmor);
+            if (currentBuffCount != buffCountAdd)
+            {
+                int buffCountDiff = buffCountAdd - currentBuffCount;
+                if (buffCountDiff > 0)
+                {
+                    for (int j = 0; j < buffCountDiff; j++)
+                    {
+                        body.AddBuff(OddlyShapedOpal.opalArmor);
+                    }
+                }
+                else
+                {
+                    for (int k = 0; k < -buffCountDiff; k++)
                     {
                         body.RemoveBuff(OddlyShapedOpal.opalArmor);
                     }

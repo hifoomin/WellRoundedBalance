@@ -33,7 +33,7 @@ namespace WellRoundedBalance.Items.Greens
             IL.RoR2.HealthComponent.TakeDamage += Changes;
         }
 
-        public static void Changes(ILContext il)
+        private void Changes(ILContext il)
         {
             ILCursor c = new(il);
             if (c.TryGotoNext(
@@ -55,7 +55,7 @@ namespace WellRoundedBalance.Items.Greens
                 {
                     if (self.body && attacker.master && attacker.master.inventory)
                     {
-                        int DeathMarkCount = Util.GetItemCountForTeam(attacker.master.teamIndex, RoR2Content.Items.DeathMark.itemIndex, false, true);
+                        int DeathMarkCount = Util.GetItemCountForTeam(attacker.master.teamIndex, RoR2Content.Items.DeathMark.itemIndex, false);
                         int debuffCount = 0;
                         foreach (BuffIndex buffType in BuffCatalog.debuffBuffIndices)
                         {
@@ -91,7 +91,7 @@ namespace WellRoundedBalance.Items.Greens
             }
         }
 
-        public static void ChangeDebuffsReq(ILContext il)
+        private void ChangeDebuffsReq(ILContext il)
         {
             ILCursor c = new(il);
             if (c.TryGotoNext(

@@ -50,9 +50,15 @@ namespace WellRoundedBalance.Items.Whites
             IL.RoR2.TeleporterInteraction.ChargingState.OnEnter += Change;
             IL.RoR2.Items.WardOnLevelManager.OnCharacterLevelUp += Change;
             RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
-            // On.EntityStates.Missions.BrotherEncounter.BrotherEncounterPhaseBaseState.OnEnter += BrotherEncounterPhaseBaseState_OnEnter;
-            // On.EntityStates.Missions.Goldshores.GoldshoresBossfight.SpawnBoss += GoldshoresBossfight_SpawnBoss;
             On.RoR2.ScriptedCombatEncounter.BeginEncounter += ScriptedCombatEncounter_BeginEncounter;
+            CharacterBody.onBodyInventoryChangedGlobal += CharacterBody_onBodyInventoryChangedGlobal;
+        }
+
+        public static int globalStack = 0;
+
+        private void CharacterBody_onBodyInventoryChangedGlobal(CharacterBody body)
+        {
+            globalStack = Util.GetItemCountGlobal(RoR2Content.Items.WardOnLevel.itemIndex, false);
         }
 
         private void ScriptedCombatEncounter_BeginEncounter(On.RoR2.ScriptedCombatEncounter.orig_BeginEncounter orig, ScriptedCombatEncounter self)
@@ -60,12 +66,6 @@ namespace WellRoundedBalance.Items.Whites
             orig(self);
             if (NetworkServer.active)
                 SpawnWarbanner();
-        }
-
-        private void GoldshoresBossfight_SpawnBoss(On.EntityStates.Missions.Goldshores.GoldshoresBossfight.orig_SpawnBoss orig, EntityStates.Missions.Goldshores.GoldshoresBossfight self)
-        {
-            orig(self);
-            SpawnWarbanner();
         }
 
         private void SpawnWarbanner()
@@ -86,20 +86,14 @@ namespace WellRoundedBalance.Items.Whites
             }
         }
 
-        private void BrotherEncounterPhaseBaseState_OnEnter(On.EntityStates.Missions.BrotherEncounter.BrotherEncounterPhaseBaseState.orig_OnEnter orig, EntityStates.Missions.BrotherEncounter.BrotherEncounterPhaseBaseState self)
-        {
-            orig(self);
-            SpawnWarbanner();
-        }
-
         public static void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
             if (sender.inventory)
             {
-                var stack = Util.GetItemCountForTeam(sender.teamComponent.teamIndex, RoR2Content.Items.WardOnLevel.itemIndex, false);
                 if (sender.HasBuff(RoR2Content.Buffs.Warbanner.buffIndex))
                 {
-                    float ret = StackAmount(attackSpeedAndMovementSpeed, attackSpeedAndMovementSpeedStack, stack, attackSpeedAndMovementSpeedIsHyperbolic);
+                    float ret = StackAmount(attackSpeedAndMovementSpeed, attackSpeedAndMovementSpeedStack, globalStack, attackSpeedAndMovementSpeedIsHyperbolic);
+
                     if (enableAttackSpeed) args.baseAttackSpeedAdd += ret - 0.3f;
                     if (enableMovementSpeed) args.moveSpeedMultAdd += ret - 0.3f;
                 }

@@ -1,4 +1,5 @@
-﻿using MonoMod.Cil;
+﻿using Inferno.Stat_AI;
+using MonoMod.Cil;
 using System;
 
 namespace WellRoundedBalance.Items.Lunars
@@ -38,23 +39,14 @@ namespace WellRoundedBalance.Items.Lunars
             orig(self, itemIndex, count);
             if (NetworkServer.active && itemIndex == DLC1Content.Items.HalfAttackSpeedHalfCooldowns.itemIndex)
             {
-                var master = self.gameObject.GetComponent<CharacterMaster>();
-                if (master)
+                var lfpc = self.GetComponent<LightFluxPauldronComponent>();
+                if (lfpc == null)
                 {
-                    var body = master.GetBodyObject();
-
-                    if (body)
-                    {
-                        var lfpc = body.GetComponent<LightFluxPauldronComponent>();
-                        if (lfpc == null)
-                        {
-                            body.AddComponent<LightFluxPauldronComponent>();
-                        }
-                        else
-                        {
-                            lfpc.Refresh();
-                        }
-                    }
+                    self.gameObject.AddComponent<LightFluxPauldronComponent>();
+                }
+                else
+                {
+                    lfpc.Refresh();
                 }
             }
         }

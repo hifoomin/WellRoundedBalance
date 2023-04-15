@@ -37,6 +37,12 @@ namespace WellRoundedBalance.Utils
             }
         }
 
+        public static T GetRandom<T>(this T[] array)
+        {
+            int index = UnityEngine.Random.Range(0, array.Length);
+            return array[index];
+        }
+
         public static string ToPercentage(this float self)
         {
             return (self * 100).ToString() + "%";

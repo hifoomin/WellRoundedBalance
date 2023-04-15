@@ -1,10 +1,8 @@
-﻿using BepInEx.Configuration;
-
-namespace WellRoundedBalance.Mechanics.Monsters
+﻿namespace WellRoundedBalance.Mechanics.Monsters
 {
-    internal class SpeedBoost
+    internal class SpeedBoost : MechanicBase<SpeedBoost>
     {
-        public static ConfigEntry<bool> enable { get; set; }
+        public override string Name => ":: Mechanics ::::::::: Monster Movement Speed Buff";
 
         [ConfigField("Flat Movement Speed Gain", "", 1f)]
         public static float flatMovementSpeedGain;
@@ -12,16 +10,17 @@ namespace WellRoundedBalance.Mechanics.Monsters
         [ConfigField("Percent Movement Speed Gain", "Decimal.", 0.1f)]
         public static float percentMovementSpeedGain;
 
-        public static void Init()
+        public override void Init()
         {
-            enable = Main.WRBMechanicConfig.Bind(":: Mechanics ::::::::: Monster Movement Speed Buff", "Enable?", true, "Vanilla is false");
-            if (enable.Value)
-            {
-                RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
-            }
+            base.Init();
         }
 
-        private static void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
+        public override void Hooks()
+        {
+            RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
+        }
+
+        private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
             if (sender.teamComponent.teamIndex != TeamIndex.Player)
             {

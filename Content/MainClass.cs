@@ -13,9 +13,8 @@ using System.Runtime.CompilerServices;
 using WellRoundedBalance.Elites;
 using R2API.ContentManagement;
 
-// using WellRoundedBalance.Mechanics.Monsters;
 using WellRoundedBalance.Misc;
-using WellRoundedBalance.Artifacts;
+
 using WellRoundedBalance.Mechanics;
 
 using WellRoundedBalance.Items.NoTier;
@@ -25,7 +24,8 @@ using WellRoundedBalance.Artifacts.New;
 using WellRoundedBalance.Gamemodes;
 using WellRoundedBalance.Items.ConsistentCategories;
 using MonoMod.RuntimeDetour;
-using RoR2.UI;
+
+using WellRoundedBalance.Mechanics.Monsters;
 
 // using WellRoundedBalance.Enemies.FamilyEvents;
 
@@ -277,8 +277,6 @@ namespace WellRoundedBalance
                 }
             }
 
-            // SpeedBoost.Init();
-            // BetterScaling.Init();
             // FamilyEvents.Init();
             EmptyBottle.Init();
 
@@ -301,12 +299,12 @@ namespace WellRoundedBalance
                 for (int i = 0; i < SharedBase.initList.Count; i++)
                 {
                     var index = SharedBase.initList[i];
-                    WRBLogger.LogDebug("Initialized " + index);
+                    WRBLogger.LogDebug("Initialized abstract " + index);
                 }
             }
 
             WRBLogger.LogDebug("==+----------------==INFO==----------------+==");
-            WRBLogger.LogDebug("Initialized " + SharedBase.initList.Count + " classes");
+            WRBLogger.LogDebug("Initialized " + SharedBase.initList.Count + " abstract classes");
             On.RoR2.UI.MainMenu.BaseMainMenuScreen.OnEnter += BaseMainMenuScreen_OnEnter;
 
             if (PieceOfShitLoaded)

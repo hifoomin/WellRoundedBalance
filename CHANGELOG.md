@@ -23,6 +23,7 @@
 - Buffed Resonance Disc Beam Radius 1m => **3m**.
 - Buffed Molten Peripherator Proc Coefficient 0 => **0.75**.
 - Buffed Little Disciple Proc Coefficient 0 => **0.33**.
+- Buffed Overloading Elite Speed Boost Buff Radius slightly.
 - Buffed Charged Perforator Proc Coefficient 0 => **1**.
 - Buffed Pocket I.C.B.M Proc Coefficient 0 => **0.33**.
 - Buffed Bundle of Fireworks Proc Coefficient 0 => **0.25**.
@@ -32,7 +33,10 @@
 - Buffed Voidtouched Permanent Damage Percent 30 => **40**.
 - Buffed Voidtouched Projectile Speed 20m/s => **40m/s**.
 - Buffed Escape Sequence Lines => **now move and rotate**.
+- Buffed Distant Roost => **now no longer spawns Shrine of the Woods**.
 - Buffed Elder Lemurian Spawn Sound Volume :^).
+- Buffed Shattering Justice Armor Reduction Per Stack 0 => **30**.
+- Nerfed Shattering Justice Debuff Duration Per Stack 8s => **0s**.
 - Nerfed Escape Sequence Lines Damage 9 => **7.5**.
 - Nerfed Defense Nucleus Proc Coefficient 0.5 => **0.25**.
 - Nerfed Eclipse 6 Enrage Stat Multiplier 2x => **1.75x**.
@@ -46,19 +50,24 @@
 - Nerfed Shrine of Order Max Spawns Per Stage 2 => **1**.
 - Nerfed Planula Range 10000m => **100m**.
 - Nerfed Global Item Proc Coefficient Multiplier 1 => **0.1**.
+- Nerfed Better Scaling Base Value 1.055 => **1.035**.
 - Nerfed Ceremonial Dagger Range 130m => **40m**.
 - Nerfed Scene Director Credit Multiplier 2.5 => **Starts at 2.5 and lowers by 0.15 every stage per loop**.
 - Reworked Oddly-shaped Opal to give armor **for each enemy nearby**.
 - Reworked Trophy Hunter's Tricorn to execute bosses **under 30% max health**.
 - Reworked Simulacrum to be **faster paced**.
 - Reworked Combat Director a bit to spawn **more unique enemies** and **fodder enemies more often lategame**.
+- Reworked Beads of Fealty => **now also increases Combat Director Credits and Base Regeneration, stacks Twisted Scavengers and Combat Director Credits**.
+- Fixed Speed Boost and Better Scaling mechanics not working .O_O.
 - Fixed Scavenger appearing on Sundered Grove Stage 4.
+- Fixed Beads of Fealty description.
 - Fixed WolfoQoL giving Kjaro and Runald their bands.
 - Fixed Xi Construct being too accurate on Eclipse 1.
 - Fixed Sawmerang and Shuriken getting stuck.
 - Fixed Eclipse 3 not removing lethal fall damage.
 - Fixed Laser Scope config.
 - Fixed Ukulele.
+- Fixed some config options.
 - Fixed self damage contributing to Eclipse 8 permanent damage.
 - Fixed Sawmerang doing way more damage than intended.
 - Fixed Clay Dunestrider Suck not having an attacker/inflictor.
@@ -67,6 +76,7 @@
 - Fixed difficulty and equipment descriptions being overwritten by other mods.
 - Fixed some allies trying to attack you.
 - Fixed minor item descriptions.
+- Small optimizations.
 - - Bunch of more fixes and proc rebalance for the main part. ~HIFU.
 - - I don't play trash sorry. ~Kirn.
 
@@ -188,6 +198,9 @@
 - Buffed Weeping Fungus Percent Healing Per Stack 0.5% => **1.2%**.
 - Buffed Will-o'-The-Wisp Base Damage 180% => **240%**.
 - Buffed Will-o'-The-Wisp Damage Per Stack 90% => **120%**.
+- Buffed Stone Flux Pauldron to give **10 armor** on the first stack.
+- Berfed Mercurial Rachis Radius Increase Per Stack 50% => **30%**.
+- Berfed Mercurial Rachis Attack Speed and Movement Speed Increase Per Stack 0% => **15%**.
 - Nerfed Helfire Tincture Ally Damage Multiplier 1x => **0.25x**.
 - Nerfed Ben's Raincoat Buff Movement Speed Gain Per Stack 10% => **0%**.
 - Nerfed Bustling Fungus Base Percent Healing 5% => **4%**.

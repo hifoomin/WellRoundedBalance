@@ -4,8 +4,6 @@ namespace WellRoundedBalance.Items.Reds
 {
     public class SoulboundCatalyst : ItemBase<SoulboundCatalyst>
     {
-        public static float BaseCdr;
-        public static float StackCdr;
         public override string Name => ":: Items ::: Reds :: Soulbound Catalyst";
         public override ItemDef InternalPickup => RoR2Content.Items.Talisman;
 
@@ -26,10 +24,10 @@ namespace WellRoundedBalance.Items.Reds
 
         public override void Hooks()
         {
-            IL.RoR2.GlobalEventManager.OnCharacterDeath += Changes;
+            IL.RoR2.GlobalEventManager.OnCharacterDeath += GlobalEventManager_OnCharacterDeath;
         }
 
-        public static void Changes(ILContext il)
+        private void GlobalEventManager_OnCharacterDeath(ILContext il)
         {
             ILCursor c = new(il);
 

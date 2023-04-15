@@ -171,7 +171,7 @@ namespace WellRoundedBalance.Elites
                     teamFilter = wardInstance.GetComponent<TeamFilter>();
 
                     ward = wardInstance.GetComponent<BuffWard>();
-                    ward.radius = Util.Remap(cb.baseMaxHealth, 0f, 2800f, minSpeedAuraRadius, maxSpeedAuraRadius);
+                    ward.radius = Util.Remap(cb.baseMaxHealth, 0f, 2100f, minSpeedAuraRadius, maxSpeedAuraRadius);
 
                     NetworkServer.Spawn(wardInstance);
                 }
@@ -224,6 +224,7 @@ namespace WellRoundedBalance.Elites
                 TeleportHelper.TeleportBody(cb, pos + new Vector3(0, 1, 0));
             }
 
+            /*
             public Vector3 PickTeleportPosition()
             {
                 if (!SceneInfo.instance || !SceneInfo.instance.groundNodes)
@@ -255,6 +256,37 @@ namespace WellRoundedBalance.Elites
                     guh.Add(node.position);
                 }
                 return guh.ToArray();
+            }
+            */
+
+            public Vector3[] PickValidPositions(float min, float max, NodeGraph.Node[] nodes)
+            {
+                NodeGraph.Node[] validNodes = nodes.Where(x => Vector3.Distance(x.position, transform.position) > min && Vector3.Distance(x.position, transform.position) < max).ToArray();
+                if (validNodes.Length <= 1)
+                {
+                    return new Vector3[] { transform.position };
+                }
+                return validNodes.Select(node => node.position).ToArray();
+            }
+
+            public Vector3 PickTeleportPosition()
+            {
+                if (!SceneInfo.instance || !SceneInfo.instance.groundNodes)
+                {
+                    return transform.position;
+                }
+
+                NodeGraph.Node[] nodes = SceneInfo.instance.groundNodes.nodes;
+                Vector3[] validPositions;
+                if (GetDelay() == aggressiveTeleportCooldown)
+                {
+                    validPositions = PickValidPositions(0, 25, nodes);
+                }
+                else
+                {
+                    validPositions = PickValidPositions(25, 45, nodes);
+                }
+                return validPositions.GetRandom();
             }
         }
     }

@@ -1,10 +1,8 @@
-﻿using BepInEx.Configuration;
-
-namespace WellRoundedBalance.Mechanics.Monsters
+﻿namespace WellRoundedBalance.Mechanics.Monsters
 {
-    internal class BetterScaling
+    internal class BetterScaling : MechanicBase<BetterScaling>
     {
-        public static ConfigEntry<bool> enable { get; set; }
+        public override string Name => ":: Mechanics ::::::::: Monster Health and Armor Adjustment";
 
         [ConfigField("Health Multiplier", "", 0.7f)]
         public static float healthMultiplier;
@@ -12,19 +10,20 @@ namespace WellRoundedBalance.Mechanics.Monsters
         [ConfigField("Armor Cap", "Formula for current armor gain: Armor Cap - Armor Cap / Base Value ^ Stages Cleared", 200f)]
         public static float armorCap;
 
-        [ConfigField("Base Value", "Formula for current armor gain: Armor Cap - Armor Cap / Base Value ^ Stages Cleared", 1.055f)]
+        [ConfigField("Base Value", "Formula for current armor gain: Armor Cap - Armor Cap / Base Value ^ Stages Cleared", 1.035f)]
         public static float baseValue;
 
-        public static void Init()
+        public override void Init()
         {
-            enable = Main.WRBMechanicConfig.Bind(":: Mechanics ::::::::: Monster Health and Armor Adjustment", "Enable?", true, "Vanilla is false");
-            if (enable.Value)
-            {
-                RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
-            }
+            base.Init();
         }
 
-        private static void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
+        public override void Hooks()
+        {
+            RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
+        }
+
+        private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
             if (sender.teamComponent.teamIndex != TeamIndex.Player)
             {

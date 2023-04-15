@@ -7,7 +7,11 @@
 
         public override string PickupText => "Randomly create a Ward of Power. ALL characters have bonus stats while in the Ward.";
 
-        public override string DescText => "Creates a Ward of Power in a random location nearby that buffs both enemies and allies within <style=cIsUtility>" + baseRadius + "m</style> <style=cStack>(+" + d(radiusIncreasePerStack) + " per stack)</style>, causing them to gain <style=cIsDamage>" + d(baseAttackSpeedAndMovementSpeedGain) + " attack speed</style> and <style=cIsUtility>movement speed</style>. Enemies benefit from the ward twice as much.";
+        public override string DescText => "Creates a Ward of Power in a random location nearby that buffs both enemies and allies within <style=cIsUtility>" + baseRadius + "m</style>" +
+            (radiusIncreasePerStack > 0 ? " <style=cStack>(+" + d(radiusIncreasePerStack) + " per stack)</style>" : "") +
+            ", causing them to gain <style=cIsDamage>" + d(baseAttackSpeedAndMovementSpeedGain) +
+            (attackSpeedAndMovementSpeedGainPerStack > 0 ? " <style=cStack>(+" + d(attackSpeedAndMovementSpeedGainPerStack) + " per stack)</style>" : "") +
+            " attack speed</style> and <style=cIsUtility>movement speed</style>. Enemies benefit from the ward <style=cIsUtility>" + enemyStatMultiplier + "x</style> as much.";
 
         public static BuffDef rachisBuff;
 
@@ -26,6 +30,9 @@
         [ConfigField("Ward Duration", "", 25f)]
         public static float wardDuration;
 
+        [ConfigField("Enemy Stat Multiplier", "", 2f)]
+        public static float enemyStatMultiplier;
+
         public override void Init()
         {
             base.Init();
@@ -34,23 +41,33 @@
         public override void Hooks()
         {
             AddBuff();
-            RecalculateStatsAPI.GetStatCoefficients += AddBehavior;
+            RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
             On.RoR2.Items.RandomDamageZoneBodyBehavior.FixedUpdate += RandomDamageZoneBodyBehavior_FixedUpdate;
+            CharacterBody.onBodyInventoryChangedGlobal += CharacterBody_onBodyInventoryChangedGlobal;
             Changes();
         }
 
-        private void AddBehavior(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
+        public static int globalStack = 0;
+
+        private void CharacterBody_onBodyInventoryChangedGlobal(CharacterBody body)
         {
-            var stack = Util.GetItemCountGlobal(RoR2Content.Items.RandomDamageZone.itemIndex, true);
-            if (sender && sender.teamComponent._teamIndex == TeamIndex.Player && sender.HasBuff(rachisBuff))
+            globalStack = Util.GetItemCountGlobal(RoR2Content.Items.RandomDamageZone.itemIndex, true);
+        }
+
+        private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
+        {
+            if (sender && sender.HasBuff(rachisBuff))
             {
-                args.baseAttackSpeedAdd += baseAttackSpeedAndMovementSpeedGain + attackSpeedAndMovementSpeedGainPerStack * (stack - 1);
-                args.moveSpeedMultAdd += baseAttackSpeedAndMovementSpeedGain + attackSpeedAndMovementSpeedGainPerStack * (stack - 1);
-            }
-            if (sender && sender.teamComponent._teamIndex != TeamIndex.Player && sender.HasBuff(rachisBuff))
-            {
-                args.baseAttackSpeedAdd += (baseAttackSpeedAndMovementSpeedGain + attackSpeedAndMovementSpeedGainPerStack * (stack - 1)) * 2f;
-                args.moveSpeedMultAdd += (baseAttackSpeedAndMovementSpeedGain + attackSpeedAndMovementSpeedGainPerStack * (stack - 1)) * 2f;
+                if (sender.teamComponent.teamIndex == TeamIndex.Player)
+                {
+                    args.baseAttackSpeedAdd += baseAttackSpeedAndMovementSpeedGain + attackSpeedAndMovementSpeedGainPerStack * (globalStack - 1);
+                    args.moveSpeedMultAdd += baseAttackSpeedAndMovementSpeedGain + attackSpeedAndMovementSpeedGainPerStack * (globalStack - 1);
+                }
+                else
+                {
+                    args.baseAttackSpeedAdd += (baseAttackSpeedAndMovementSpeedGain + attackSpeedAndMovementSpeedGainPerStack * (globalStack - 1)) * enemyStatMultiplier;
+                    args.moveSpeedMultAdd += (baseAttackSpeedAndMovementSpeedGain + attackSpeedAndMovementSpeedGainPerStack * (globalStack - 1)) * enemyStatMultiplier;
+                }
             }
         }
 

@@ -1,5 +1,6 @@
 ﻿using Mono.Cecil.Cil;
 using MonoMod.Cil;
+using System.Collections;
 using WellRoundedBalance.Buffs;
 using WellRoundedBalance.Gamemodes.Eclipse;
 
@@ -127,6 +128,8 @@ namespace WellRoundedBalance.Elites
         private float timer;
         public float interval;
         public int projectileCount;
+        public float angle;
+        public float delayBetweenProjectiles = 0.1f;
 
         public void Start()
         {
@@ -135,6 +138,7 @@ namespace WellRoundedBalance.Elites
             float minInterval = maxInterval / 2f;
             projectileCount = Mathf.RoundToInt(Util.Remap(body.baseMaxHealth, 20, 2500, 2, 6));
             interval = Mathf.RoundToInt(Util.Remap(body.baseMaxHealth, 20, 2500, minInterval, maxInterval));
+            angle = 360f / projectileCount;
         }
 
         public void FixedUpdate()
@@ -143,26 +147,59 @@ namespace WellRoundedBalance.Elites
             if (timer >= interval)
             {
                 timer = 0f;
-                float num = 360f / projectileCount;
-                Vector3 normalized = Vector3.ProjectOnPlane(UnityEngine.Random.onUnitSphere, Vector3.up);
-                Vector3 position = body.corePosition + new Vector3(0, 3, 0);
-                for (int i = 0; i < projectileCount; i++)
+                StartCoroutine(FireProjectiles());
+            }
+        }
+
+        /*
+        public IEnumerator FireProjectiles()
+        {
+            Vector3 normalized = Vector3.ProjectOnPlane(Random.onUnitSphere, Vector3.up);
+            Vector3 position = body.corePosition + new Vector3(0, 3, 0);
+            for (int i = 0; i < projectileCount; i++)
+            {
+                Vector3 forward = Quaternion.AngleAxis(angle * i, Vector3.up) * normalized;
+                if (Util.HasEffectiveAuthority(gameObject))
                 {
-                    Vector3 forward = Quaternion.AngleAxis(num * i, Vector3.up) * normalized;
-                    if (Util.HasEffectiveAuthority(gameObject))
+                    FireProjectileInfo info = new()
                     {
-                        FireProjectileInfo info = new()
-                        {
-                            owner = body.gameObject,
-                            damage = body.damage * Blazing.firePoolDamagePerSecond * 0.2f,
-                            crit = false,
-                            position = position,
-                            rotation = Quaternion.LookRotation(forward),
-                            projectilePrefab = projectile
-                        };
-                        ProjectileManager.instance.FireProjectile(info);
-                    }
+                        owner = body.gameObject,
+                        damage = body.damage * Blazing.firePoolDamagePerSecond * 0.2f,
+                        crit = false,
+                        position = position,
+                        rotation = Quaternion.LookRotation(forward),
+                        projectilePrefab = projectile
+                    };
+                    ProjectileManager.instance.FireProjectile(info);
                 }
+                yield return new WaitForSeconds(delayBetweenProjectiles);
+            }
+        }
+        */
+
+        public IEnumerator FireProjectiles()
+        {
+            var normalized = Vector3.ProjectOnPlane(Random.onUnitSphere, Vector3.up);
+            var position = body.corePosition + new Vector3(0, 3, 0);
+            var rotationIncrement = Quaternion.AngleAxis(angle / (float)projectileCount, Vector3.up);
+            var rotation = Quaternion.LookRotation(normalized);
+            for (int i = 0; i < projectileCount; i++)
+            {
+                if (Util.HasEffectiveAuthority(gameObject))
+                {
+                    FireProjectileInfo info = new()
+                    {
+                        owner = body.gameObject,
+                        damage = body.damage * Blazing.firePoolDamagePerSecond * 0.2f,
+                        crit = false,
+                        position = position,
+                        rotation = rotation,
+                        projectilePrefab = projectile
+                    };
+                    ProjectileManager.instance.FireProjectile(info);
+                }
+                rotation *= rotationIncrement;
+                yield return new WaitForSeconds(delayBetweenProjectiles);
             }
         }
     }
