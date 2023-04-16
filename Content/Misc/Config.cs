@@ -24,6 +24,7 @@ namespace WellRoundedBalance.Attributes
     public class ConfigManager
     {
         internal static bool ConfigChanged = false;
+        internal static bool VersionChanged = false;
         public static void HandleConfigAttributes(Type type, string section, ConfigFile config)
         {
             TypeInfo info = type.GetTypeInfo();
@@ -39,8 +40,11 @@ namespace WellRoundedBalance.Attributes
                 MethodInfo method = typeof(ConfigFile).GetMethods().Where(x => x.Name == nameof(ConfigFile.Bind)).First();
                 method = method.MakeGenericMethod(t);
                 ConfigEntryBase val = (ConfigEntryBase)method.Invoke(config, new object[] { new ConfigDefinition(section, configattr.name), configattr.defaultValue, new ConfigDescription(configattr.desc) });
-
-                if (!ConfigEqual(val.DefaultValue, val.BoxedValue)) ConfigChanged = true;
+                if (!ConfigEqual(val.DefaultValue, val.BoxedValue))
+                {
+                    if (VersionChanged) val.BoxedValue = val.DefaultValue;
+                    else ConfigChanged = true;
+                }
                 field.SetValue(null, val.BoxedValue);
             }
         }

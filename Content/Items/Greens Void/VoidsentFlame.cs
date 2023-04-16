@@ -1,4 +1,6 @@
-﻿using MonoMod.Cil;
+﻿using Mono.Cecil.Cil;
+using MonoMod.Cil;
+using System;
 
 namespace WellRoundedBalance.Items.VoidGreens
 {
@@ -7,17 +9,20 @@ namespace WellRoundedBalance.Items.VoidGreens
         public override string Name => ":: Items :::::: Voids :: Voidsent Flame";
         public override ItemDef InternalPickup => DLC1Content.Items.ExplodeOnDeathVoid;
 
-        public override string PickupText => "Full health enemies also detonate on hit. <style=cIsVoid>Corrupts all Will-o'-the-wisps</style>.";
+        public override string PickupText => (firstHit ? "First hit on" : "Full Health") + " enemies also detonate on hit. <style=cIsVoid>Corrupts all Will-o'-the-wisps</style>.";
 
-        public override string DescText => "Upon hitting an enemy at <style=cIsDamage>100% health</style>, <style=cIsDamage>detonate</style> them in a <style=cIsDamage>" + baseRange + "m</style>" +
-                                           (rangePerStack > 0 ? " <style=cStack>(+" + rangePerStack + "m per stack)</style>" : "") +
-                                           " radius burst for <style=cIsDamage>" + d(baseDamage) + "</style> <style=cStack>(+" + d(damagePerStack) + " per stack)</style> base damage. <style=cIsVoid>Corrupts all Will-o'-the-wisps</style>.";
+        public override string DescText => (firstHit ? "On first hit" : "Upon hitting an enemy at <style=cIsDamage>100% health</style>") + "," + 
+            StackDesc(baseRange, rangePerStack, init => $" <style=cIsDamage>detonate</style> them in a <style=cIsDamage>{m(init)}</style>{{Stack}} radius burst", m) + 
+            StackDesc(baseDamage, damagePerStack, init => $"for <style=cIsDamage>{d(init)}</style>{{Stack}} base damage", d) + ". <style=cIsVoid>Corrupts all Will-o'-the-wisps</style>.";
 
         [ConfigField("Base Damage", "Decimal.", 1.4f)]
         public static float baseDamage;
 
         [ConfigField("Damage Per Stack", "Decimal.", 0.7f)]
         public static float damagePerStack;
+
+        [ConfigField("First Hit", "If enabled, Health Threshold configs will be ignored.", true)]
+        public static bool firstHit;
 
         [ConfigField("Base Range", 12f)]
         public static float baseRange;
@@ -28,6 +33,8 @@ namespace WellRoundedBalance.Items.VoidGreens
         [ConfigField("Proc Coefficient", 0f)]
         public static float procCoefficient;
 
+        public static Dictionary<CharacterBody, List<CharacterBody>> db = new();
+
         public override void Init()
         {
             base.Init();
@@ -35,45 +42,64 @@ namespace WellRoundedBalance.Items.VoidGreens
 
         public override void Hooks()
         {
+            Stage.onStageStartGlobal += _ => db.Clear();
             IL.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
+            On.RoR2.GlobalEventManager.OnCharacterDeath += GlobalEventManager_OnCharacterDeath;
             Changes();
         }
 
         private void HealthComponent_TakeDamage(ILContext il)
         {
             ILCursor c = new(il);
-
-            if (c.TryGotoNext(MoveType.Before,
-                    x => x.MatchLdcR4(12f),
-                    x => x.MatchLdcR4(2.4f)))
+            int stack = GetItemLoc(c, nameof(DLC1Content.Items.ExplodeOnDeathVoid));
+            int m = -1; c.TryGotoPrev(x => x.MatchLdloc(out m));
+            if (c.TryGotoPrev(MoveType.After, x => x.MatchCallOrCallvirt<HealthComponent>("get_" + nameof(HealthComponent.fullCombinedHealth))))
             {
-                c.Next.Operand = baseRange;
-                c.Index += 1;
-                c.Next.Operand = rangePerStack;
+                c.Emit(OpCodes.Ldloc, m); // master
+                c.Emit(OpCodes.Ldarg_0);
+                c.EmitDelegate<Func<float, CharacterMaster, HealthComponent, float>>((orig, master, self) =>
+                {
+                    if (firstHit)
+                    {
+                        CharacterBody from = master.GetBody();
+                        CharacterBody to = self.body;
+                        if (from && to)
+                        {
+                            if (db.ContainsKey(from)) db.Add(from, new());
+                            if (db[from].Contains(to)) return float.MaxValue;
+                            db[from].Add(to);
+                            return 0;
+                        }
+                    }
+                    return orig;
+                });
             }
-            else
+            else Logger.LogError("Failed to apply Voidsent Flame Threshold hook");
+            if (c.TryGotoNext(x => x.MatchStfld<DelayBlast>(nameof(DelayBlast.radius))))
             {
-                Logger.LogError("Failed to apply Voidsent Flame Radius hook");
+                c.Emit(OpCodes.Pop);
+                c.Emit(OpCodes.Ldloc, stack);
+                c.EmitDelegate<Func<int, float>>(stack => StackAmount(baseRange, rangePerStack, stack));
             }
-
-            c.Index = 0;
-
-            if (c.TryGotoNext(MoveType.Before,
-                    x => x.MatchLdcR4(2.6f),
-                    x => x.MatchLdcR4(1f),
-                    x => x.MatchLdloc(out _),
-                    x => x.MatchLdcI4(1),
-                    x => x.MatchSub(),
-                    x => x.MatchConvR4(),
-                    x => x.MatchLdcR4(0.6f)))
+            else Logger.LogError("Failed to apply Voidsent Flame Radius hook");
+            int bd = -1, dc = -1;
+            if (c.TryGotoPrev(x => x.MatchStfld<DelayBlast>(nameof(DelayBlast.baseDamage))) && c.TryGotoPrev(x => x.MatchLdloc(out bd))
+                && c.TryGotoPrev(x => x.MatchStloc(bd)) && c.TryGotoPrev(x => x.MatchLdloc(out dc)) && c.TryGotoPrev(x => x.MatchStloc(dc)))
             {
-                c.Next.Operand = baseDamage;
-                c.Index += 6;
-                c.Next.Operand = damagePerStack / baseDamage;
+                c.Emit(OpCodes.Pop);
+                c.Emit(OpCodes.Ldloc, stack);
+                c.EmitDelegate<Func<int, float>>(stack => StackAmount(baseDamage, damagePerStack, stack));
             }
-            else
+            else Logger.LogError("Failed to apply Voidsent Flame Damage hook");
+        }
+
+        private void GlobalEventManager_OnCharacterDeath(On.RoR2.GlobalEventManager.orig_OnCharacterDeath orig, GlobalEventManager self, DamageReport damageReport)
+        {
+            orig(self, damageReport);
+            if (damageReport.victimBody)
             {
-                Logger.LogError("Failed to apply Voidsent Flame Damage hook");
+                db.Remove(damageReport.victimBody);
+                foreach (var k in db.Keys) db[k].Remove(damageReport.victimBody);
             }
         }
 
