@@ -4,12 +4,6 @@
     {
         public override string Name => ":: Mechanics :::::: Abandoned Aqueduct Pressure Plate";
 
-        [ConfigField("Attack Speed Gain per Mountain Shrine", "", 0.1f)]
-        public static float attackSpeedGainPerMountainShrine;
-
-        [ConfigField("Movement Speed Gain per Mountain Shrine", "", 0.1f)]
-        public static float movementSpeedGainPerMountainShrine;
-
         public override void Init()
         {
             base.Init();
