@@ -3,6 +3,8 @@
 - Added config versioning.
 - Added better Resonance Disc VFX.
 - Added better Eclipse config.
+- Added better Bazaar Rework config.
+- Added Fix Playercount.
 - Buffed Mithrix Phase 4 Base Damage 3 => **13**.
 - Buffed Monster Armor Per Loop 7 => **10**.
 - Buffed Harvester's Scythe Base Missing Health Healing Percent 1.5% => **1.8%**.
@@ -43,7 +45,7 @@
 - Nerfed Eclipse 6 Enrage Stat Multiplier for Mithrix 1.75x => **1.3x**.
 - Nerfed Interstellar Desk Plant Base Range 12m => **10m**.
 - Nerfed Spinel Tonic Curse Gain 10% => **12%**.
-- Nerfed Mithrix Big Spinny => **No longer Cripples**.
+- Nerfed Mithrix Big Spinny => **no longer Cripples**.
 - Nerfed Interstellar Desk Plant Percent Healing 6% => **5%**.
 - Nerfed Shatterspleen to have a **16 bleed cap**.
 - Nerfed Tri-Tip Dagger to have an **8 (+4 per stack) bleed cap**.
@@ -52,13 +54,19 @@
 - Nerfed Global Item Proc Coefficient Multiplier 1 => **0.1**.
 - Nerfed Better Scaling Base Value 1.055 => **1.035**.
 - Nerfed Ceremonial Dagger Range 130m => **40m**.
-- Nerfed Scene Director Credit Multiplier 2.5 => **Starts at 2.5 and lowers by 0.15 every stage per loop**.
+- Nerfed Scene Director Credit Multiplier 2.5 => **starts at 2.5 and lowers by 0.15 every stage per loop**.
+- Nerfed Yellow Printer => **now only appears in loops**.
+- Nerfed Bandolier => **now only reduces cooldowns up to 8s on pickup**.
 - Reworked Oddly-shaped Opal to give armor **for each enemy nearby**.
 - Reworked Trophy Hunter's Tricorn to execute bosses **under 30% max health**.
 - Reworked Simulacrum to be **faster paced**.
 - Reworked Combat Director a bit to spawn **more unique enemies** and **fodder enemies more often lategame**.
 - Reworked Beads of Fealty => **now also increases Combat Director Credits and Base Regeneration, stacks Twisted Scavengers and Combat Director Credits**.
-- Fixed Speed Boost and Better Scaling mechanics not working .O_O.
+- Reworked Crowbar to deal bonus damage on **your first hit**.
+- Reworked Voidsent Flame to explode on **your first hit**.
+- Reworked Void Potential => **now has a small chance to contain a Void Red or Void Yellow item**.
+- Fixed Speed Boost not working .O_O.
+- Fixed Better Scaling not working .O_O.
 - Fixed Scavenger appearing on Sundered Grove Stage 4.
 - Fixed Beads of Fealty description.
 - Fixed WolfoQoL giving Kjaro and Runald their bands.

@@ -38,6 +38,8 @@ namespace WellRoundedBalance
     [BepInDependency("com.Moffein.AI_Blacklist", BepInDependency.DependencyFlags.SoftDependency)]
     [BepInDependency("com.Wolfo.WolfoQualityOfLife", BepInDependency.DependencyFlags.SoftDependency)]
     [BepInDependency("com.Wolfo.LittleGameplayTweaks", BepInDependency.DependencyFlags.SoftDependency)]
+    [BepInDependency("dev.wildbook.multitudes", BepInDependency.DependencyFlags.SoftDependency)]
+    [BepInDependency("com.TPDespair.ZetArtifacts", BepInDependency.DependencyFlags.SoftDependency)]
     [BepInDependency(LanguageAPI.PluginGUID)]
     [BepInDependency(RecalculateStatsAPI.PluginGUID)]
     [BepInDependency(DirectorAPI.PluginGUID)]
@@ -74,6 +76,8 @@ namespace WellRoundedBalance
         public static bool InfernoLoaded = false;
         public static bool RiskyArtifactsLoaded = false;
         public static bool PieceOfShitLoaded = false;
+        public static bool ZetArtifactsLoaded = false;
+        public static bool WildbookMultitudesLoaded = false;
         public static DifficultyDef InfernoDef = null;
         public static Hook hook;
 
@@ -100,6 +104,8 @@ namespace WellRoundedBalance
             InfernoLoaded = BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("HIFU.Inferno");
             RiskyArtifactsLoaded = BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("com.Moffein.RiskyArtifacts");
             PieceOfShitLoaded = BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("com.Wolfo.WolfoQualityOfLife");
+            ZetArtifactsLoaded = BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("com.TPDespair.ZetArtifacts");
+            WildbookMultitudesLoaded = BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("dev.wildbook.multitudes");
 
             FunnyLabel.Hooks();
             // Useless.Create();

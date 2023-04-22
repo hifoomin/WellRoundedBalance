@@ -2,7 +2,7 @@
 {
     public class ScavengerBag : InteractableBase<ScavengerBag>
     {
-        public override string Name => ":: Interactables :::::::: Scavenger Bag";
+        public override string Name => ":: Interactables :::::: Scavenger Bag";
 
         [ConfigField("Item Drop Count", "", 3)]
         public static int itemDropCount;

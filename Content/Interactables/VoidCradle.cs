@@ -7,7 +7,7 @@ namespace WellRoundedBalance.Interactables
 {
     internal class VoidCradle : InteractableBase<VoidCradle>
     {
-        public override string Name => ":: Interactables : Void Cradle";
+        public override string Name => ":: Interactables :::: Void Cradle";
         public CostTypeIndex costTypeIndex = (CostTypeIndex)19;
         public CostTypeDef def;
         public GameObject optionPanel;
@@ -127,9 +127,11 @@ namespace WellRoundedBalance.Interactables
                 return card == null ? orig(self, deck, max) : card; // failsafe in the event cradles are the literal only thing it can afford (eg. void locus)
             };
 
-            On.RoR2.PickupPickerController.OnInteractionBegin += (orig, self, interactor) => {
+            On.RoR2.PickupPickerController.OnInteractionBegin += (orig, self, interactor) =>
+            {
                 // Debug.Log(self.gameObject.name);
-                if (self.gameObject.name.Contains("VoidChest")) {
+                if (self.gameObject.name.Contains("VoidChest"))
+                {
                     // Debug.Log("void cradle, returning");
                     return; // dont run this method on cradles since cradlemanager implements its own version
                 }
@@ -229,13 +231,16 @@ namespace WellRoundedBalance.Interactables
                     // Main.WRBLogger.LogError("Running OnPurchase");
                     CharacterBody body = interactor.GetComponent<CharacterBody>();
                     int c = 0;
-                    for (int i = 0; i < options.Count; i++) {
+                    for (int i = 0; i < options.Count; i++)
+                    {
                         PickupPickerController.Option opt = options[i];
-                        if (body.inventory.GetItemCount(opt.pickupIndex.itemIndex) <= 0) {
+                        if (body.inventory.GetItemCount(opt.pickupIndex.itemIndex) <= 0)
+                        {
                             options.Remove(opt);
                         }
                     }
-                    if (options.Count == 0) {
+                    if (options.Count == 0)
+                    {
                         // Main.WRBLogger.LogError("Options count 0, regenerating.");
                         hasSet = false;
                     }

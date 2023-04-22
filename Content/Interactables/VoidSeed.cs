@@ -2,7 +2,7 @@
 {
     internal class VoidSeed : InteractableBase<VoidSeed>
     {
-        public override string Name => ":: Interactables :::::: Void Seed";
+        public override string Name => ":: Interactables :::: Void Seed";
 
         [ConfigField("Max Spawns Per Stage", "", 1)]
         public static int maxSpawnsPerStage;
