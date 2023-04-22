@@ -22,6 +22,9 @@
         [ConfigField("Boss Printer Max Spawns Per Stage", "", 1)]
         public static int bossPrinterMaxSpawnsPerStage;
 
+        [ConfigField("Boss Printer is Loop Only", true)]
+        public static bool bossPrinterLoopOnly;
+
         public override void Init()
         {
             base.Init();
@@ -42,6 +45,11 @@
 
             var yellowPrinter = Addressables.LoadAssetAsync<InteractableSpawnCard>("RoR2/Base/DuplicatorWild/iscDuplicatorWild.asset").WaitForCompletion();
             yellowPrinter.maxSpawnsPerStage = bossPrinterMaxSpawnsPerStage;
+            if (bossPrinterLoopOnly) On.RoR2.ClassicStageInfo.RebuildCards += (orig, self) =>
+            {
+                orig(self);
+                if (Run.instance.loopClearCount <= 0) self.interactableCategories.RemoveCardsThatFailFilter(x => x.spawnCard != yellowPrinter);
+            };
         }
     }
 }

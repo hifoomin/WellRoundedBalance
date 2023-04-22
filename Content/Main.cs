@@ -70,6 +70,8 @@ namespace WellRoundedBalance
         public static ManualLogSource WRBLogger;
 
         public static ConfigEntry<bool> enableLogging { get; set; }
+        public ConfigEntry<bool> enableAutoConfig { get; private set; }
+        public ConfigEntry<string> latestVersion { get; private set; }
 
         public static AssetBundle wellroundedbalance;
 
@@ -100,6 +102,15 @@ namespace WellRoundedBalance
             WRBMiscConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Misc.cfg", true);
 
             enableLogging = WRBMiscConfig.Bind("Logging", "Enable Initialization logging?", false, "Enabling this slows down loading times, but can help with resolving mod compatibility issues in some cases.");
+            enableAutoConfig = WRBMiscConfig.Bind("Config", "Enable Auto Config Sync", true, "Disabling this would stop WRB from syncing config whenever a new version is found.");
+            bool _preVersioning = WRBMiscConfig.Keys.Any(x => x.Key == "Latest Version");
+            latestVersion = WRBMiscConfig.Bind("Config", "Latest Version", PluginVersion, "DO NOT CHANGE THIS");
+            if (enableAutoConfig.Value && (_preVersioning || latestVersion.Value != PluginVersion))
+            {
+                latestVersion.Value = PluginVersion;
+                ConfigManager.VersionChanged = true;
+                WRBLogger.LogInfo("Config Autosync Enabled.");
+            }
 
             InfernoLoaded = BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("HIFU.Inferno");
             RiskyArtifactsLoaded = BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("com.Moffein.RiskyArtifacts");
