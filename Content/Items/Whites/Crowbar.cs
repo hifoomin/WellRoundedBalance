@@ -63,7 +63,8 @@ namespace WellRoundedBalance.Items.Whites
                 c.Emit(OpCodes.Pop);
                 c.Emit(OpCodes.Ldarg_0);
                 c.Emit(OpCodes.Ldloc, m);
-                c.EmitDelegate<Func<HealthComponent, CharacterMaster, float>>((self, master) => {
+                c.EmitDelegate<Func<HealthComponent, CharacterMaster, float>>((self, master) =>
+                {
                     if (firstHit)
                     {
                         CharacterBody from = master.GetBody();

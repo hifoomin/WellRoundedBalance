@@ -38,7 +38,17 @@ namespace WellRoundedBalance.Items.Greens
         private void GenericSkill_ApplyAmmoPack(On.RoR2.GenericSkill.orig_ApplyAmmoPack orig, GenericSkill self)
         {
             if (maxCooldownReduction != 0)
-                self.rechargeStopwatch += Mathf.Min(self.rechargeStopwatch, maxCooldownReduction);
+            {
+                if (self.rechargeStopwatch <= maxCooldownReduction)
+                {
+                    self.rechargeStopwatch += maxCooldownReduction;
+                }
+                else
+                {
+                    self.rechargeStopwatch += Mathf.Min(self.rechargeStopwatch, maxCooldownReduction);
+                }
+            }
+
             if (maxCooldownReduction == 0)
                 orig(self);
         }
