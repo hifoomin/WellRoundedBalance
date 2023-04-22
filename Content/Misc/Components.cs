@@ -39,7 +39,7 @@
                     }
                     else
                     {
-                        Main.WRBLogger.LogError("below threshold, destroying");
+                        // Main.WRBLogger.LogError("below threshold, destroying");
                         Destroy(gameObject);
                     }
                 }

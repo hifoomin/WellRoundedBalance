@@ -1,4 +1,4 @@
-﻿using MonoMod.Cil;
+﻿using RoR2.Orbs;
 
 namespace WellRoundedBalance.Equipment.Orange
 {
@@ -12,7 +12,7 @@ namespace WellRoundedBalance.Equipment.Orange
 
         public override string DescText => "Whenever you make a gold purchase, get <style=cIsUtility>" + d(cashBackPercent) + "</style> of the spent gold back. If the purchase is a <style=cIsUtility>multishop</style> terminal, the other terminals will <style=cIsUtility>remain open</style>.";
 
-        [ConfigField("Cooldown", "", 20f)]
+        [ConfigField("Cooldown", "", 25f)]
         public static float cooldown;
 
         [ConfigField("Cash Back Percent", "Decimal.", 0.1f)]
@@ -28,21 +28,55 @@ namespace WellRoundedBalance.Equipment.Orange
             var Card = Utils.Paths.EquipmentDef.MultiShopCard.Load<EquipmentDef>();
             Card.cooldown = cooldown;
 
-            IL.RoR2.Items.MultiShopCardUtils.OnPurchase += MultiShopCardUtils_OnPurchase;
+            On.RoR2.Items.MultiShopCardUtils.OnPurchase += MultiShopCardUtils_OnPurchase1;
         }
 
-        private void MultiShopCardUtils_OnPurchase(ILContext il)
+        private void MultiShopCardUtils_OnPurchase1(On.RoR2.Items.MultiShopCardUtils.orig_OnPurchase orig, CostTypeDef.PayCostContext context, int moneyCost)
         {
-            ILCursor c = new(il);
+            var activatorMaster = context.activatorMaster;
+            if (activatorMaster && activatorMaster.hasBody && activatorMaster.inventory && activatorMaster.inventory.currentEquipmentIndex == DLC1Content.Equipment.MultiShopCard.equipmentIndex)
+            {
+                var body = activatorMaster.GetBody();
+                var shouldActivate = false;
+                var purchasedObject = context.purchasedObject;
+                if (moneyCost > 0)
+                {
+                    var goldOrb = new GoldOrb();
+                    Orb orb = goldOrb;
 
-            if (c.TryGotoNext(MoveType.Before,
-                x => x.MatchLdcR4(0.1f)))
-            {
-                c.Next.Operand = cashBackPercent;
-            }
-            else
-            {
-                Logger.LogError("Failed to apply Disposable Missile Launcher Missile Count hook");
+                    Vector3? vector;
+                    if (purchasedObject == null)
+                    {
+                        vector = null;
+                    }
+                    else
+                    {
+                        Transform transform = purchasedObject.transform;
+                        vector = ((transform != null) ? new Vector3?(transform.position) : null);
+                    }
+                    orb.origin = vector ?? body.corePosition;
+                    goldOrb.target = body.mainHurtBox;
+                    goldOrb.goldAmount = (uint)(cashBackPercent * moneyCost);
+                    OrbManager.instance.AddOrb(goldOrb);
+                }
+                if (body.equipmentSlot.stock > 0)
+                {
+                    var shopTerminalBehavior = (purchasedObject != null) ? purchasedObject.GetComponent<ShopTerminalBehavior>() : null;
+                    if (shopTerminalBehavior && shopTerminalBehavior.serverMultiShopController)
+                    {
+                        shouldActivate = true;
+                        shopTerminalBehavior.serverMultiShopController.SetCloseOnTerminalPurchase(context.purchasedObject.GetComponent<PurchaseInteraction>(), false);
+                    }
+                    if (shouldActivate)
+                    {
+                        if (body.hasAuthority)
+                        {
+                            body.equipmentSlot.OnEquipmentExecuted();
+                            return;
+                        }
+                        body.equipmentSlot.CallCmdOnEquipmentExecuted();
+                    }
+                }
             }
         }
     }

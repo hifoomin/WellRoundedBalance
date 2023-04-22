@@ -11,19 +11,19 @@
 - Buffed Ceremonial Dagger Proc Coefficient 0 => **1**.
 - Buffed Charged Perforator Proc Coefficient 0 => **1**.
 - Buffed Distant Roost => **now no longer spawns Shrine of the Woods**.
-- Buffed Elder Lemurian Spawn Sound Volume :^).
+- Buffed Elder Lemurian Spawn Sound Volume.
 - Buffed Elite Aspect Drop Chance 0.025% => **0.1%**.
 - Buffed Escape Sequence Lines => **now move and rotate**.
 - Buffed Frost Relic Proc Coefficient 0 => **0.25**.
 - Buffed Harvester's Scythe Base Missing Health Healing Percent 1.5% => **1.8%**.
-- Buffed Harvester's Scythe Missing Health Healing Percent Per Stack 0.75% =. **0.9%**.
+- Buffed Harvester's Scythe Missing Health Healing Percent Per Stack 0.75% => **0.9%**.
 - Buffed Little Disciple Proc Coefficient 0 => **0.33**.
 - Buffed Mithrix Phase 4 Base Damage 3 => **13**.
 - Buffed Molten Peripherator Proc Coefficient 0 => **0.75**.
 - Buffed Monster Armor Per Loop 7 => **10**.
 - Buffed N'kuhana's Opinion Base Damage 320% => **350%**.
 - Buffed N'kuhana's Opinion Proc Coefficient 0 => **0.33**.
-- Buffed Overloading Elite Speed Boost Buff Radius slightly.
+- Buffed Overloading Elite Speed Boost Buff Radius **slightly**.
 - Buffed Pocket I.C.B.M Proc Coefficient 0 => **0.33**.
 - Buffed Razorwire Proc Coefficient 0 => **1**.
 - Buffed Resonance Disc Beam Radius 1m => **3m**.
@@ -38,8 +38,7 @@
 - Buffed Voidtouched Spike Size 2m => **6m**.
 - Buffed Warbanner to spawn on **final boss encounters**.
 - Buffed Will-o'-The-Wisp Proc Coefficient 0 => **0.5**.
-- Nerfed Bandolier => **now only reduces cooldowns up to 8s on pickup**.
-- Nerfed Better Scaling Base Value 1.055 => **1.035**.
+- Nerfed Bandolier to **only reduce cooldowns up to 8s on pickup**.
 - Nerfed Ceremonial Dagger Range 130m => **40m**.
 - Nerfed Defense Nucleus Proc Coefficient 0.5 => **0.25**.
 - Nerfed Eclipse 6 Enrage Stat Multiplier 2x => **1.75x**.
@@ -48,7 +47,7 @@
 - Nerfed Global Item Proc Coefficient Multiplier 1 => **0.1**.
 - Nerfed Interstellar Desk Plant Base Range 12m => **10m**.
 - Nerfed Interstellar Desk Plant Percent Healing 6% => **5%**.
-- Nerfed Mithrix Big Spinny => **no longer Cripples**.
+- Nerfed Mithrix Big Spinny to **no longer inflict Cripple**.
 - Nerfed Planula Range 10000m => **100m**.
 - Nerfed Scene Director Credit Multiplier 2.5 => **starts at 2.5 and lowers by 0.15 every stage per loop**.
 - Nerfed Shattering Justice Debuff Duration Per Stack 8s => **0s**.
@@ -56,16 +55,17 @@
 - Nerfed Shrine of Order Max Spawns Per Stage 2 => **1**.
 - Nerfed Spinel Tonic Curse Gain 10% => **12%**.
 - Nerfed Tri-Tip Dagger to have an **8 (+4 per stack) bleed cap**.
-- Nerfed Yellow Printer => **now only appears in loops**.
-- Reworked Abandoned Aqueduct Pressure Plate => **now stays pressed**.
-- Reworked Beads of Fealty => **now also increases Combat Director Credits and Base Regeneration, stacks Twisted Scavengers and Combat Director Credits**.
-- Reworked Combat Director a bit to spawn **more unique enemies** and **fodder enemies more often lategame**.
-- Reworked Crowbar to deal bonus damage on **your first hit**.
-- Reworked Oddly-shaped Opal to give armor **for each enemy nearby**.
+- Nerfed Yellow Printer to **only appear in loops**.
+- Reworked Abandoned Aqueduct Pressure Plate to **stay pressed**.
+- Reworked Beads of Fealty to also increase **Combat Director Credits** and **Base Regeneration**, and stack **Twisted Scavengers** and **Combat Director Credits**.
+- Reworked Combat Director a bit to **spawn more unique enemies and fodder enemies more often lategame**.
+- Reworked Crowbar to **deal bonus damage on your first hit**.
+- Reworked Oddly-shaped Opal to **give armor for each enemy nearby**.
 - Reworked Simulacrum to be **faster paced**.
-- Reworked Trophy Hunter's Tricorn to execute bosses **under 30% max health**.
-- Reworked Void Potential => **now has a small chance to contain a Void Red or Void Yellow item**.
-- Reworked Voidsent Flame to explode on **your first hit**.
+- Reworked Trophy Hunter's Tricorn to execute bosses under 30% max health.
+- Reworked Void Fields to have **5** waves that **each** increase the amount of monster types and items.
+- Reworked Void Potential to have a **small chance of containing a Void Red or Void Yellow item**.
+- Reworked Voidsent Flame to **explode on your first hit**.
 - Fixed Beads of Fealty description.
 - Fixed Better Scaling not working .O_O.
 - Fixed Clay Dunestrider Suck not having an attacker/inflictor.
@@ -86,7 +86,7 @@
 - Fixed some config options.
 - Fixed minor item descriptions.
 - Small optimizations.
-- - Bunch of more fixes and proc rebalance for the main part. ~HIFU.
+- - Bunch of more fixes, QoL and proc rebalance for the main part. ~HIFU.
 - - I don't play trash sorry. ~Kirn.
 
 # 1.1.5 Patch Notes
@@ -208,8 +208,10 @@
 - Buffed Will-o'-The-Wisp Base Damage 180% => **240%**.
 - Buffed Will-o'-The-Wisp Damage Per Stack 90% => **120%**.
 - Buffed Stone Flux Pauldron to give **10 armor** on the first stack.
+- Buffed Corpsebloom Percent Healing Cap Per Second Per Stack -50% => **-35%**.
 - Berfed Mercurial Rachis Radius Increase Per Stack 50% => **30%**.
 - Berfed Mercurial Rachis Attack Speed and Movement Speed Increase Per Stack 0% => **15%**.
+- Nerfed Corpsebloom => **now no longer double dips with Rejuvenation Rack**.
 - Nerfed Helfire Tincture Ally Damage Multiplier 1x => **0.25x**.
 - Nerfed Ben's Raincoat Buff Movement Speed Gain Per Stack 10% => **0%**.
 - Nerfed Bustling Fungus Base Percent Healing 5% => **4%**.
@@ -251,6 +253,7 @@
 - Fixed Alpha Constructs not spawning on Commencement.
 - Fixed Ben's Raincoat not giving Speed Buff.
 - Fixed Bundle of Fireworks not working.
+- Fixed Corpsebloom description.
 - Fixed Crowdfunder gold scaling.
 - Fixed Defense Nucleus networking.
 - Fixed Defense Nucleus shield appearing.
