@@ -13,7 +13,7 @@ namespace WellRoundedBalance.Items.Greens
 
         public override string PickupText => "Activating your Primary skill also throws a shuriken. Recharges over time.";
 
-        public override string DescText => "Activating your <style=cIsUtility>Primary skill</style> also throws a <style=cIsDamage>shuriken</style> that deals <style=cIsDamage>" + d(baseDamage) + "</style> <style=cStack>(+" + d(damagePerStack) + " per stack)</style> base damage. The <style=cIsDamage>shuriken</style> reloads over <style=cIsUtility>" + cooldown + "</style> seconds.";
+        public override string DescText => "Activating your <style=cIsUtility>Primary skill</style> also throws a <style=cIsDamage>shuriken</style> that deals <style=cIsDamage>" + d(baseDamage) + "</style> <style=cStack>(+" + d(damagePerStack) + " per stack)</style> base damage. The <style=cIsDamage>shuriken</style> reloads over <style=cIsDamage>" + cooldown + "</style> seconds.";
 
         [ConfigField("Base Damage", "Decimal.", 4f)]
         public static float baseDamage;

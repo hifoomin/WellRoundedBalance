@@ -10,8 +10,8 @@
 - Buffed Bundle of Fireworks Proc Coefficient 0 => **0.25**.
 - Buffed Ceremonial Dagger Proc Coefficient 0 => **1**.
 - Buffed Charged Perforator Proc Coefficient 0 => **1**.
+- Buffed Corpsebloom Healing Cap Reduction Per Stack -50% => **-25%**.
 - Buffed Distant Roost => **now no longer spawns Shrine of the Woods**.
-- Buffed Elder Lemurian Spawn Sound Volume.
 - Buffed Elite Aspect Drop Chance 0.025% => **0.1%**.
 - Buffed Escape Sequence Lines => **now move and rotate**.
 - Buffed Frost Relic Proc Coefficient 0 => **0.25**.
@@ -48,6 +48,7 @@
 - Nerfed Interstellar Desk Plant Base Range 12m => **10m**.
 - Nerfed Interstellar Desk Plant Percent Healing 6% => **5%**.
 - Nerfed Mithrix Big Spinny to **no longer inflict Cripple**.
+- Nerfed Legendary Chest Cost $200 => **$300**.
 - Nerfed Planula Range 10000m => **100m**.
 - Nerfed Scene Director Credit Multiplier 2.5 => **starts at 2.5 and lowers by 0.15 every stage per loop**.
 - Nerfed Shattering Justice Debuff Duration Per Stack 8s => **0s**.
@@ -57,8 +58,10 @@
 - Nerfed Tri-Tip Dagger to have an **8 (+4 per stack) bleed cap**.
 - Nerfed Yellow Printer to **only appear in loops**.
 - Reworked Abandoned Aqueduct Pressure Plate to **stay pressed**.
+- Reworked Artifact of Command to **limit your item count to your current level**.
 - Reworked Beads of Fealty to also increase **Combat Director Credits** and **Base Regeneration**, and stack **Twisted Scavengers** and **Combat Director Credits**.
 - Reworked Combat Director a bit to **spawn more unique enemies and fodder enemies more often lategame**.
+- Reworked Corpsebloom stacking to be **fully linear**.
 - Reworked Crowbar to **deal bonus damage on your first hit**.
 - Reworked Oddly-shaped Opal to **give armor for each enemy nearby**.
 - Reworked Simulacrum to be **faster paced**.
@@ -68,10 +71,15 @@
 - Reworked Voidsent Flame to **explode on your first hit**.
 - Fixed Beads of Fealty description.
 - Fixed Better Scaling not working .O_O.
+- Fixed Boss OOB Check soft-locking REX: Dunked.
 - Fixed Clay Dunestrider Suck not having an attacker/inflictor.
+- Fixed Dragged Below being way too difficult.
 - Fixed Eclipse 3 not removing lethal fall damage.
+- Fixed Elder Lemurian Spawn Sound Volume.
 - Fixed Helfire Tincture damage and description being incorrect in every possible way ever imaginable.
 - Fixed Laser Scope config.
+- Fixed Legendary Chest Cost changes not applying to pre-spawned ones.
+- Fixed Railgunner: Annihilator being way too difficult.
 - Fixed Sawmerang and Shuriken getting stuck.
 - Fixed Sawmerang doing way more damage than intended.
 - Fixed Scavenger appearing on Sundered Grove Stage 4.
@@ -87,7 +95,6 @@
 - Fixed minor item descriptions.
 - Small optimizations.
 - - Bunch of more fixes, QoL and proc rebalance for the main part. ~HIFU.
-- - I don't play trash sorry. ~Kirn.
 
 # 1.1.5 Patch Notes
 - Added Exchange Changes.
@@ -97,11 +104,11 @@
 - Added SnappierStalks.
 - Added funny Scrapper explosion animation.
 - Added proper buff icon for Shrine Of The Mountain buff.
+- Buffed Spinel Tonic Affliction Chance 20% => **25%**.
 - Nerfed Brainstalks Post Processing.
 - Nerfed Grandparent Sun Burn Duration 1s => **0.75s**.
 - Nerfed Planula Post Processing :^).
 - Nerfed Scene Director Elite Bias 0.8 => **6**.
-- Nerfed Spinel Tonic Affliction Chance 20% => **25%**.
 - Nerfed Spinel Tonic Post Processing.
 - Reworked Lost Seer's Lenses to have a **0.5%** chance of doing **3000%** base damage.
 - Fixed Bazaar Rework networking a bit.
@@ -157,7 +164,7 @@
 - Added FixKjaroRunald.
 - Added GoldChestForAll.
 - Added Inferno Mithrix Lite.
-- Added One Shot Protection indicators when it's procced - a buff, visual, and sound.
+- Added One Shot Protection indicators when it's procced - a buff, visual and sound.
 - Added Pocket I.C.B.M VFX.
 - Added ShurikenFix.
 - Added a LOT of config options. Now the most configurable mod ever!
@@ -207,12 +214,6 @@
 - Buffed Weeping Fungus Percent Healing Per Stack 0.5% => **1.2%**.
 - Buffed Will-o'-The-Wisp Base Damage 180% => **240%**.
 - Buffed Will-o'-The-Wisp Damage Per Stack 90% => **120%**.
-- Buffed Stone Flux Pauldron to give **10 armor** on the first stack.
-- Buffed Corpsebloom Percent Healing Cap Per Second Per Stack -50% => **-35%**.
-- Berfed Mercurial Rachis Radius Increase Per Stack 50% => **30%**.
-- Berfed Mercurial Rachis Attack Speed and Movement Speed Increase Per Stack 0% => **15%**.
-- Nerfed Corpsebloom => **now no longer double dips with Rejuvenation Rack**.
-- Nerfed Helfire Tincture Ally Damage Multiplier 1x => **0.25x**.
 - Nerfed Ben's Raincoat Buff Movement Speed Gain Per Stack 10% => **0%**.
 - Nerfed Bustling Fungus Base Percent Healing 5% => **4%**.
 - Nerfed Defense Nucleus Damage Reduction 25% => **20%**.
@@ -241,7 +242,7 @@
 - Nerfed Topaz Brooch Flat Barrier Per Stack 10 => **0**.
 - Nerfed Weeping Fungus Base Percent Healing 1.5% => **1.2%**.
 - Nerfed White Printer Director Credit Cost 5 => **6**.
-- Reworked Blazing Elites to fire projectiles in a **fixed pattern** and **scale** their fire rate with base max health.
+- Reworked Blazing Elites to fire fire projectiles in a **fixed pattern** and **scale** their fire rate with base max health.
 - Reworked Elite Effect Damage stuff.
 - Reworked Hunter's Harpoon to **smooth out** the movement speed curve.
 - Reworked Light Flux Pauldron internally to work **much better**.
@@ -253,13 +254,12 @@
 - Fixed Alpha Constructs not spawning on Commencement.
 - Fixed Ben's Raincoat not giving Speed Buff.
 - Fixed Bundle of Fireworks not working.
-- Fixed Corpsebloom description.
 - Fixed Crowdfunder gold scaling.
 - Fixed Defense Nucleus networking.
 - Fixed Defense Nucleus shield appearing.
 - Fixed Elites giving their effects to Elites of the same type.
 - Fixed Focused Convergence reducing Teleporter Event Radius.
-- Fixed Helfire Tincture VFX having the wrong scale.
+- Fixed Helfire Tincture VFX having wrong scale.
 - Fixed Oddly-shaped Opal giving two buffs.
 - Fixed Oddly-shaped Opal improperly showing VFX.
 - Fixed Planula not stacking.
@@ -267,9 +267,9 @@
 - Fixed Wake of Vultures giving curse upon killing a Voidtouched elite.
 - Fixed in-game version number.
 - Fixed item descriptions being overwritten by other mods.
-- Fixed WolfoQoL incompatibility.
+- Fixed WolfoQoL incompat.
 - Fixed minor item descriptions.
 - Fixed the readme.
 - Small optimizations.
 - Item mod compatibility will be addressed in a later update.
-- - I'm sorry but the release wasn't very well communicated (and therefore unpolished) so in turn we had to do a bunch of fixes. ~HIFU
+- - I'm sorry but the release wasn't very well communicated (and therefore unpolished) so in turn we had to do a bunch of fixing. ~HIFU

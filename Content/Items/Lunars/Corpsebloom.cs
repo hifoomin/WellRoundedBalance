@@ -44,7 +44,7 @@ namespace WellRoundedBalance.Items.Lunars
 
             var stack = inventory.GetItemCount(RoR2Content.Items.RepeatHeal);
             var bruh = percentHealingCapPerSecond * whatTheFuck;
-            repeatHealComponent.healthFractionToRestorePerSecond = Mathf.Max(0.0001f, percentHealingCapPerSecond - ((stack - 1) * bruh / 100f));
+            repeatHealComponent.healthFractionToRestorePerSecond = Mathf.Max(0.001f, percentHealingCapPerSecond - ((stack - 1) * bruh / 100f));
         }
 
         private void HealthComponent_Heal(ILContext il)

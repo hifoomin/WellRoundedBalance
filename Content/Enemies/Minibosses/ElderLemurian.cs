@@ -18,6 +18,7 @@
         {
             Util.PlaySound("Play_lemurianBruiser_spawn", self.gameObject);
             Util.PlaySound("Play_lemurianBruiser_spawn", self.gameObject);
+            Util.PlaySound("Play_lemurianBruiser_spawn", self.gameObject);
             orig(self);
         }
     }

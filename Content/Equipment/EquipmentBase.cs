@@ -1,7 +1,5 @@
-﻿using System.Diagnostics;
-using BepInEx.Configuration;
+﻿using BepInEx.Configuration;
 using System;
-using System.CodeDom.Compiler;
 
 namespace WellRoundedBalance.Equipment
 {

@@ -26,6 +26,7 @@ using WellRoundedBalance.Items.ConsistentCategories;
 using MonoMod.RuntimeDetour;
 
 using WellRoundedBalance.Mechanics.Monsters;
+using WellRoundedBalance.Achievements;
 
 // using WellRoundedBalance.Enemies.FamilyEvents;
 
@@ -66,6 +67,7 @@ namespace WellRoundedBalance
         public static ConfigFile WRBGamemodeConfig;
         public static ConfigFile WRBArtifactConfig;
         public static ConfigFile WRBDifficultyConfig;
+        public static ConfigFile WRBAchievementConfig;
         public static ConfigFile WRBMiscConfig;
         public static ManualLogSource WRBLogger;
 
@@ -99,6 +101,7 @@ namespace WellRoundedBalance
             WRBGamemodeConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Gamemodes.cfg", true);
             WRBArtifactConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Artifacts.cfg", true);
             WRBDifficultyConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Difficulties.cfg", true);
+            WRBAchievementConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Achievements.cfg", true);
             WRBMiscConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Misc.cfg", true);
 
             enableLogging = WRBMiscConfig.Bind("Logging", "Enable Initialization logging?", false, "Enabling this slows down loading times, but can help with resolving mod compatibility issues in some cases.");
@@ -129,13 +132,13 @@ namespace WellRoundedBalance
 
             On.RoR2.ItemCatalog.Init += ItemCatalog_Init;
 
-            IEnumerable<Type> enumerable = from type in Assembly.GetExecutingAssembly().GetTypes()
-                                           where !type.IsAbstract && type.IsSubclassOf(typeof(MechanicBase))
-                                           select type;
+            IEnumerable<Type> mechanic = from type in Assembly.GetExecutingAssembly().GetTypes()
+                                         where !type.IsAbstract && type.IsSubclassOf(typeof(MechanicBase))
+                                         select type;
 
             WRBLogger.LogInfo("==+----------------==MECHANICS==----------------+==");
 
-            foreach (Type type in enumerable)
+            foreach (Type type in mechanic)
             {
                 MechanicBase based = (MechanicBase)Activator.CreateInstance(type);
                 if (ValidateMechanic(based))
@@ -144,14 +147,14 @@ namespace WellRoundedBalance
                 }
             }
 
-            IEnumerable<Type> enumerable2 = from type in Assembly.GetExecutingAssembly().GetTypes()
-                                            where !type.IsAbstract && type.IsSubclassOf(typeof(ItemBase))
-                                            select type;
+            IEnumerable<Type> item = from type in Assembly.GetExecutingAssembly().GetTypes()
+                                     where !type.IsAbstract && type.IsSubclassOf(typeof(ItemBase))
+                                     select type;
 
             WRBLogger.LogInfo("==+----------------==ITEMS==----------------+==");
             // List<ItemBase> baseds = new();
 
-            foreach (Type type in enumerable2)
+            foreach (Type type in item)
             {
                 ItemBase based = (ItemBase)Activator.CreateInstance(type);
                 if (ValidateItem(based))
@@ -175,13 +178,13 @@ namespace WellRoundedBalance
             }
             */
 
-            IEnumerable<Type> enumerable3 = from type in Assembly.GetExecutingAssembly().GetTypes()
-                                            where !type.IsAbstract && type.IsSubclassOf(typeof(EquipmentBase))
-                                            select type;
+            IEnumerable<Type> equipment = from type in Assembly.GetExecutingAssembly().GetTypes()
+                                          where !type.IsAbstract && type.IsSubclassOf(typeof(EquipmentBase))
+                                          select type;
 
             WRBLogger.LogInfo("==+----------------==EQUIPMENT==----------------+==");
 
-            foreach (Type type in enumerable3)
+            foreach (Type type in equipment)
             {
                 EquipmentBase based = (EquipmentBase)Activator.CreateInstance(type);
                 if (ValidateEquipment(based))
@@ -190,13 +193,13 @@ namespace WellRoundedBalance
                 }
             }
 
-            IEnumerable<Type> enumerable4 = from type in Assembly.GetExecutingAssembly().GetTypes()
-                                            where !type.IsAbstract && type.IsSubclassOf(typeof(InteractableBase))
-                                            select type;
+            IEnumerable<Type> interactable = from type in Assembly.GetExecutingAssembly().GetTypes()
+                                             where !type.IsAbstract && type.IsSubclassOf(typeof(InteractableBase))
+                                             select type;
 
             WRBLogger.LogInfo("==+----------------==INTERACTABLES==----------------+==");
 
-            foreach (Type type in enumerable4)
+            foreach (Type type in interactable)
             {
                 InteractableBase based = (InteractableBase)Activator.CreateInstance(type);
                 if (ValidateInteractable(based))
@@ -205,13 +208,13 @@ namespace WellRoundedBalance
                 }
             }
 
-            IEnumerable<Type> enumerable5 = from type in Assembly.GetExecutingAssembly().GetTypes()
-                                            where !type.IsAbstract && type.IsSubclassOf(typeof(EnemyBase))
-                                            select type;
+            IEnumerable<Type> enemy = from type in Assembly.GetExecutingAssembly().GetTypes()
+                                      where !type.IsAbstract && type.IsSubclassOf(typeof(EnemyBase))
+                                      select type;
 
             WRBLogger.LogInfo("==+----------------==ENEMIES==----------------+==");
 
-            foreach (Type type in enumerable5)
+            foreach (Type type in enemy)
             {
                 EnemyBase based = (EnemyBase)Activator.CreateInstance(type);
                 if (ValidateEnemy(based))
@@ -220,13 +223,13 @@ namespace WellRoundedBalance
                 }
             }
 
-            IEnumerable<Type> enumerable6 = from type in Assembly.GetExecutingAssembly().GetTypes()
-                                            where !type.IsAbstract && type.IsSubclassOf(typeof(EliteBase))
-                                            select type;
+            IEnumerable<Type> elite = from type in Assembly.GetExecutingAssembly().GetTypes()
+                                      where !type.IsAbstract && type.IsSubclassOf(typeof(EliteBase))
+                                      select type;
 
             WRBLogger.LogInfo("==+----------------==ELITES==----------------+==");
 
-            foreach (Type type in enumerable6)
+            foreach (Type type in elite)
             {
                 EliteBase based = (EliteBase)Activator.CreateInstance(type);
                 if (ValidateElite(based))
@@ -235,13 +238,13 @@ namespace WellRoundedBalance
                 }
             }
 
-            IEnumerable<Type> enumerable9 = from type in Assembly.GetExecutingAssembly().GetTypes()
-                                            where !type.IsAbstract && type.IsSubclassOf(typeof(DifficultyBase))
-                                            select type;
+            IEnumerable<Type> difficulty = from type in Assembly.GetExecutingAssembly().GetTypes()
+                                           where !type.IsAbstract && type.IsSubclassOf(typeof(DifficultyBase))
+                                           select type;
 
             WRBLogger.LogInfo("==+----------------==DIFFICULTIES==----------------+==");
 
-            foreach (Type type in enumerable9)
+            foreach (Type type in difficulty)
             {
                 DifficultyBase based = (DifficultyBase)Activator.CreateInstance(type);
                 if (ValidateDifficulty(based))
@@ -250,13 +253,13 @@ namespace WellRoundedBalance
                 }
             }
 
-            IEnumerable<Type> enumerable7 = from type in Assembly.GetExecutingAssembly().GetTypes()
-                                            where !type.IsAbstract && type.IsSubclassOf(typeof(GamemodeBase))
-                                            select type;
+            IEnumerable<Type> gamemode = from type in Assembly.GetExecutingAssembly().GetTypes()
+                                         where !type.IsAbstract && type.IsSubclassOf(typeof(GamemodeBase))
+                                         select type;
 
             WRBLogger.LogInfo("==+----------------==GAMEMODES==----------------+==");
 
-            foreach (Type type in enumerable7)
+            foreach (Type type in gamemode)
             {
                 GamemodeBase based = (GamemodeBase)Activator.CreateInstance(type);
                 if (ValidateGamemode(based))
@@ -265,17 +268,17 @@ namespace WellRoundedBalance
                 }
             }
 
-            IEnumerable<Type> enumerable8 = from type in Assembly.GetExecutingAssembly().GetTypes()
-                                            where !type.IsAbstract && type.IsSubclassOf(typeof(ArtifactEditBase))
-                                            select type;
-
-            IEnumerable<Type> enumerable10 = from type in Assembly.GetExecutingAssembly().GetTypes()
-                                             where !type.IsAbstract && type.IsSubclassOf(typeof(ArtifactAddBase))
+            IEnumerable<Type> artifactEdit = from type in Assembly.GetExecutingAssembly().GetTypes()
+                                             where !type.IsAbstract && type.IsSubclassOf(typeof(ArtifactEditBase))
                                              select type;
+
+            IEnumerable<Type> artifactAdd = from type in Assembly.GetExecutingAssembly().GetTypes()
+                                            where !type.IsAbstract && type.IsSubclassOf(typeof(ArtifactAddBase))
+                                            select type;
 
             WRBLogger.LogInfo("==+----------------==ARTIFACTS==----------------+==");
 
-            foreach (Type type in enumerable8)
+            foreach (Type type in artifactEdit)
             {
                 ArtifactEditBase based = (ArtifactEditBase)Activator.CreateInstance(type);
                 if (ValidateArtifactEdit(based))
@@ -284,13 +287,28 @@ namespace WellRoundedBalance
                 }
             }
 
-            foreach (Type type in enumerable10)
+            foreach (Type type in artifactAdd)
             {
                 ArtifactAddBase based = (ArtifactAddBase)Activator.CreateInstance(type);
                 if (ValidateArtifactAdd(based))
                 {
                     // based.Init();
                     // disabled until icon is done
+                }
+            }
+
+            IEnumerable<Type> achievement = from type in Assembly.GetExecutingAssembly().GetTypes()
+                                            where !type.IsAbstract && type.IsSubclassOf(typeof(AchievementBase))
+                                            select type;
+
+            WRBLogger.LogInfo("==+----------------==ACHIEVEMENTS==----------------+==");
+
+            foreach (Type type in achievement)
+            {
+                AchievementBase based = (AchievementBase)Activator.CreateInstance(type);
+                if (ValidateAchievement(based))
+                {
+                    based.Init();
                 }
             }
 
@@ -460,6 +478,17 @@ namespace WellRoundedBalance
             if (db.isEnabled)
             {
                 bool enabledfr = WRBDifficultyConfig.Bind(db.Name, "Enable Changes?", true, "Vanilla is false").Value;
+                if (enabledfr) return true;
+                else ConfigManager.ConfigChanged = true;
+            }
+            return false;
+        }
+
+        public bool ValidateAchievement(AchievementBase ab)
+        {
+            if (ab.isEnabled)
+            {
+                bool enabledfr = WRBAchievementConfig.Bind(ab.Name, "Enable Changes?", true, "Vanilla is false").Value;
                 if (enabledfr) return true;
                 else ConfigManager.ConfigChanged = true;
             }
