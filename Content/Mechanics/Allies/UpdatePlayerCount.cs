@@ -2,7 +2,6 @@
 using R2API.Utils;
 using System.Runtime.CompilerServices;
 using System;
-using TPDespair.ZetArtifacts;
 
 namespace WellRoundedBalance.Mechanics.Allies
 {
@@ -57,9 +56,9 @@ namespace WellRoundedBalance.Mechanics.Allies
         [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)]
         private static int ApplyZetMultitudesArtifact(int origPlayerCount)
         {
-            if (ZetMultifact.Enabled && RunArtifactManager.instance.IsArtifactEnabled(ZetArtifactsContent.Artifacts.ZetMultifact))
+            if (TPDespair.ZetArtifacts.ZetMultifact.Enabled && RunArtifactManager.instance.IsArtifactEnabled(TPDespair.ZetArtifacts.ZetArtifactsContent.Artifacts.ZetMultifact))
             {
-                return origPlayerCount * Math.Max(2, ZetArtifactsPlugin.MultifactMultiplier.Value); //GetMultiplier is private so I copypasted the code.
+                return origPlayerCount * Math.Max(2, TPDespair.ZetArtifacts.ZetArtifactsPlugin.MultifactMultiplier.Value); //GetMultiplier is private so I copypasted the code.
             }
             else
             {

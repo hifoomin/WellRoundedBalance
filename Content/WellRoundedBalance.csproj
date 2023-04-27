@@ -73,7 +73,7 @@
       <Private>false</Private>
     </Reference>
     <Reference Include="Multitudes">
-      <HintPath>..\..\..\..\..\Multitudes.dll</HintPath>
+      <HintPath>libs\Multitudes.dll</HintPath>
     </Reference>
     <Reference Include="RiskOfOptions">
       <HintPath>libs/RiskOfOptions.dll</HintPath>
@@ -129,7 +129,7 @@
       <HintPath>libs\Wwise.dll</HintPath>
     </Reference>
     <Reference Include="ZetArtifacts">
-      <HintPath>..\..\..\..\..\ZetArtifacts.dll</HintPath>
+      <HintPath>libs\ZetArtifacts.dll</HintPath>
     </Reference>
     <Reference Include="Zio">
       <HintPath>libs\Zio.dll</HintPath>

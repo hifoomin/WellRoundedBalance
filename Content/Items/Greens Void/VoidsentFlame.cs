@@ -65,7 +65,7 @@ namespace WellRoundedBalance.Items.VoidGreens
                         CharacterBody to = self.body;
                         if (from && to)
                         {
-                            if (db.ContainsKey(from)) db.Add(from, new());
+                            if (!db.ContainsKey(from)) db.Add(from, new());
                             if (db[from].Contains(to)) return float.MaxValue;
                             db[from].Add(to);
                             return 0;
