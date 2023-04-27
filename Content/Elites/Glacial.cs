@@ -217,7 +217,7 @@ namespace WellRoundedBalance.Elites
                     stopwatch = 0f;
 
                     Vector3 point = PickTeleportPosition();
-                    GameObject pillar = GameObject.Instantiate(IcePillarPrefab, point, Quaternion.Euler(-90, 0, 0));
+                    GameObject pillar = GameObject.Instantiate(IcePillarPrefab, point, Quaternion.Euler(90, 0, 0));
                     onDeath += pillar.GetComponent<GlacialPillar>().Die;
                     totalActive++;
                 }
@@ -241,7 +241,7 @@ namespace WellRoundedBalance.Elites
                 }
 
                 NodeGraph.Node[] nodes = SceneInfo.instance.groundNodes.nodes;
-                return PickValidPositions(10, 40, nodes).ToList().GetRandom();
+                return PickValidPositions(3, 15, nodes).ToList().GetRandom();
             }
 
             public Vector3[] PickValidPositions(float min, float max, NodeGraph.Node[] nodes)
