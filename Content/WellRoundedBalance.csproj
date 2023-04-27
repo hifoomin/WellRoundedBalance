@@ -72,6 +72,9 @@
       <HintPath>libs\KdTreeLib.dll</HintPath>
       <Private>false</Private>
     </Reference>
+    <Reference Include="Multitudes">
+      <HintPath>libs\Multitudes.dll</HintPath>
+    </Reference>
     <Reference Include="RiskOfOptions">
       <HintPath>libs/RiskOfOptions.dll</HintPath>
     </Reference>
@@ -124,6 +127,9 @@
     </Reference>
     <Reference Include="Wwise">
       <HintPath>libs\Wwise.dll</HintPath>
+    </Reference>
+    <Reference Include="ZetArtifacts">
+      <HintPath>libs\ZetArtifacts.dll</HintPath>
     </Reference>
     <Reference Include="Zio">
       <HintPath>libs\Zio.dll</HintPath>

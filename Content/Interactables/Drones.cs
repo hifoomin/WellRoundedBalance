@@ -2,7 +2,7 @@
 {
     internal class AllDrones : InteractableBase<AllDrones>
     {
-        public override string Name => ":: Interactables ::::::::: Drones";
+        public override string Name => ":: Interactables :::::::: Drones";
 
         [ConfigField("Max Spawns Per Stage", "", 2)]
         public static int maxSpawnsPerStage;

@@ -49,6 +49,7 @@ The mod integrates some smaller mods to give players the intended, better experi
 - BetterSpite
 - ExchangeChanges
 - FixKjaroRunald
+- Fix Playercount
 - GoldChestForAll
 - LunarWispFalloff
 - PingOrdering

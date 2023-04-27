@@ -2,7 +2,7 @@
 {
     internal class CleansingPool : InteractableBase<CleansingPool>
     {
-        public override string Name => ":: Interactables :::::::::: Cleansing Pool";
+        public override string Name => ":: Interactables :: Cleansing Pool";
 
         [ConfigField("Max Spawns Per Stage", "", 1)]
         public static int maxSpawnsPerStage;

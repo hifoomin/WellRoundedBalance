@@ -7,7 +7,7 @@
         [ConfigField("Equipment Trishop Max Spawns Per Stage", "", 2)]
         public static int equipmentTrishopMaxSpawnsPerStage;
 
-        [ConfigField("Legendary Chest Cost", "", 200)]
+        [ConfigField("Legendary Chest Cost", "", 300)]
         public static int legendaryChestCost;
 
         [ConfigField("Small Category Chest Cost", "", 25)]
@@ -26,6 +26,7 @@
             var legendaryChest = Utils.Paths.GameObject.GoldChest.Load<GameObject>();
             var legendaryChesturchaseInteraction = legendaryChest.GetComponent<PurchaseInteraction>();
             legendaryChesturchaseInteraction.cost = legendaryChestCost;
+            On.RoR2.Run.GetDifficultyScaledCost_int_float += Run_GetDifficultyScaledCost_int_float;
 
             var stealthedChest = Utils.Paths.InteractableSpawnCard.iscChest1Stealthed.Load<InteractableSpawnCard>();
             stealthedChest.maxSpawnsPerStage = 2;
@@ -51,6 +52,15 @@
 
             var equipTrishop = Utils.Paths.InteractableSpawnCard.iscTripleShopEquipment.Load<InteractableSpawnCard>();
             equipTrishop.maxSpawnsPerStage = equipmentTrishopMaxSpawnsPerStage;
+        }
+
+        private int Run_GetDifficultyScaledCost_int_float(On.RoR2.Run.orig_GetDifficultyScaledCost_int_float orig, Run self, int baseCost, float difficultyCoefficient)
+        {
+            if (baseCost == 400)
+            {
+                baseCost = legendaryChestCost;
+            }
+            return orig(self, baseCost, difficultyCoefficient);
         }
     }
 }

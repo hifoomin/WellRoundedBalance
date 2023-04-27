@@ -14,7 +14,7 @@ namespace WellRoundedBalance.Items.Whites
 
         public override string DescText =>
             StackDesc(armorGain, armorGainStack, init => $"<style=cIsHealing>Increase armor</style> by <style=cIsHealing>{init}</style>{{Stack}} for every enemy within <style=cIsHealing>" + radius + "m</style> up to <style=cIsHealing>" + maxBuffCount + "</style>" +
-            " times.", noop);
+            (maxBuffCountStack > 0 ? " <style=cStack>(+" + maxBuffCount + " per stack)</style>" : "") + " times.", noop);
 
         [ConfigField("Armor Gain", 3f)]
         public static float armorGain;
@@ -22,10 +22,10 @@ namespace WellRoundedBalance.Items.Whites
         [ConfigField("Armor Gain per Stack", 0f)]
         public static float armorGainStack;
 
-        [ConfigField("BaseMax Buff Count", 3)]
+        [ConfigField("BaseMax Buff Count", 4)]
         public static int maxBuffCount;
 
-        [ConfigField("Max Buff Count Per Stack", 3)]
+        [ConfigField("Max Buff Count Per Stack", 4)]
         public static int maxBuffCountStack;
 
         [ConfigField("Armor Gain is Hyperbolic", "Decimal, Max value. Set to 0 to make it linear.", 0f)]
@@ -106,7 +106,7 @@ namespace WellRoundedBalance.Items.Whites
     {
         public float checkInterval = 0.1f;
         public float timer;
-        public float radiusSquared = 400f;
+        public float radiusSquared = 169f;
         public float distance = OddlyShapedOpal.radius;
         public TeamIndex ownerIndex;
         public GameObject radiusIndicator;
@@ -151,36 +151,12 @@ namespace WellRoundedBalance.Items.Whites
             timer = 0f;
         }
 
-        /*
         private void UpdateBuff(int buffCountAdd)
         {
             var currentBuffCount = body.GetBuffCount(OddlyShapedOpal.opalArmor);
             if (currentBuffCount != buffCountAdd)
             {
-                if (currentBuffCount < buffCountAdd)
-                {
-                    for (int j = 0; j < buffCountAdd - currentBuffCount; j++)
-                    {
-                        body.AddBuff(OddlyShapedOpal.opalArmor);
-                    }
-                }
-                else
-                {
-                    for (int k = 0; k < currentBuffCount - buffCountAdd; k++)
-                    {
-                        body.RemoveBuff(OddlyShapedOpal.opalArmor);
-                    }
-                }
-            }
-        }
-        */
-
-        private void UpdateBuff(int buffCountAdd)
-        {
-            var currentBuffCount = body.GetBuffCount(OddlyShapedOpal.opalArmor);
-            if (currentBuffCount != buffCountAdd)
-            {
-                int buffCountDiff = buffCountAdd - currentBuffCount;
+                var buffCountDiff = buffCountAdd - currentBuffCount;
                 if (buffCountDiff > 0)
                 {
                     for (int j = 0; j < buffCountDiff; j++)

@@ -2,7 +2,7 @@
 {
     public class AllPrinters : InteractableBase<AllPrinters>
     {
-        public override string Name => ":: Interactables :::: Printers";
+        public override string Name => ":: Interactables ::::: Printers";
 
         [ConfigField("Common Printer Max Spawns Per Stage", "", 2)]
         public static int commonPrinterMaxSpawnsPerStage;

@@ -17,6 +17,8 @@
         private void SpawnState_OnEnter(On.EntityStates.LemurianBruiserMonster.SpawnState.orig_OnEnter orig, EntityStates.LemurianBruiserMonster.SpawnState self)
         {
             Util.PlaySound("Play_lemurianBruiser_spawn", self.gameObject);
+            Util.PlaySound("Play_lemurianBruiser_spawn", self.gameObject);
+            Util.PlaySound("Play_lemurianBruiser_spawn", self.gameObject);
             orig(self);
         }
     }

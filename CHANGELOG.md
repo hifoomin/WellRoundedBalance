@@ -1,84 +1,100 @@
 # 1.2.0 Patch Notes
+- Added Fix Playercount.
 - Added Shuriken countdown buff.
-- Added config versioning.
-- Added better Resonance Disc VFX.
+- Added better Bazaar Rework config.
 - Added better Eclipse config.
-- Buffed Mithrix Phase 4 Base Damage 3 => **13**.
-- Buffed Monster Armor Per Loop 7 => **10**.
-- Buffed Harvester's Scythe Base Missing Health Healing Percent 1.5% => **1.8%**.
-- Buffed Harvester's Scythe Missing Health Healing Percent Per Stack 0.75% =. **0.9%**.
-- Buffed Warbanner to spawn on **final boss encounters**.
-- Buffed Elite Aspect Drop Chance 0.025% => **0.1%**.
-- Buffed Boss Log Drop Chance 3% => **4.5%**.
+- Added better Resonance Disc VFX.
+- Added config versioning.
 - Buffed AtG Missile Mk.1 Proc Coefficient 0 => **0.75**.
-- Buffed Razorwire Proc Coefficient 0 => **1**.
-- Buffed Will-o'-The-Wisp Proc Coefficient 0 => **0.5**.
+- Buffed Boss Log Drop Chance 3% => **4.5%**.
+- Buffed Bundle of Fireworks Proc Coefficient 0 => **0.25**.
 - Buffed Ceremonial Dagger Proc Coefficient 0 => **1**.
+- Buffed Charged Perforator Proc Coefficient 0 => **1**.
+- Buffed Corpsebloom Healing Cap Reduction Per Stack -50% => **-25%**.
+- Buffed Distant Roost => **now no longer spawns Shrine of the Woods**.
+- Buffed Elite Aspect Drop Chance 0.025% => **0.1%**.
+- Buffed Escape Sequence Lines => **now move and rotate**.
 - Buffed Frost Relic Proc Coefficient 0 => **0.25**.
-- Buffed N'kuhana's Opinion Proc Coefficient 0 => **0.33**.
+- Buffed Harvester's Scythe Base Missing Health Healing Percent 1.5% => **1.8%**.
+- Buffed Harvester's Scythe Missing Health Healing Percent Per Stack 0.75% => **0.9%**.
+- Buffed Little Disciple Proc Coefficient 0 => **0.33**.
+- Buffed Mithrix Phase 4 Base Damage 3 => **13**.
+- Buffed Molten Peripherator Proc Coefficient 0 => **0.75**.
+- Buffed Monster Armor Per Loop 7 => **10**.
 - Buffed N'kuhana's Opinion Base Damage 320% => **350%**.
-- Buffed Resonance Disc Proc Coefficient 0 => **1**.
+- Buffed N'kuhana's Opinion Proc Coefficient 0 => **0.33**.
+- Buffed Overloading Elite Speed Boost Buff Radius **slightly**.
+- Buffed Pocket I.C.B.M Proc Coefficient 0 => **0.33**.
+- Buffed Razorwire Proc Coefficient 0 => **1**.
+- Buffed Resonance Disc Beam Radius 1m => **3m**.
 - Buffed Resonance Disc Bomb Explosion Radius 14m => **16m**.
 - Buffed Resonance Disc Bomb Falloff Type Sweetspot => **None**.
-- Buffed Resonance Disc Beam Radius 1m => **3m**.
-- Buffed Molten Peripherator Proc Coefficient 0 => **0.75**.
-- Buffed Little Disciple Proc Coefficient 0 => **0.33**.
-- Buffed Overloading Elite Speed Boost Buff Radius slightly.
-- Buffed Charged Perforator Proc Coefficient 0 => **1**.
-- Buffed Pocket I.C.B.M Proc Coefficient 0 => **0.33**.
-- Buffed Bundle of Fireworks Proc Coefficient 0 => **0.25**.
+- Buffed Resonance Disc Proc Coefficient 0 => **1**.
+- Buffed Shattering Justice Armor Reduction Per Stack 0 => **30**.
 - Buffed Titanic Knurl Proc Coefficient 0 => **1**.
 - Buffed Ukulele Proc Coefficient 0 => **0.33**.
-- Buffed Voidtouched Spike Size 2m => **6m**.
 - Buffed Voidtouched Permanent Damage Percent 30 => **40**.
 - Buffed Voidtouched Projectile Speed 20m/s => **40m/s**.
-- Buffed Escape Sequence Lines => **now move and rotate**.
-- Buffed Distant Roost => **now no longer spawns Shrine of the Woods**.
-- Buffed Elder Lemurian Spawn Sound Volume :^).
-- Buffed Shattering Justice Armor Reduction Per Stack 0 => **30**.
-- Nerfed Shattering Justice Debuff Duration Per Stack 8s => **0s**.
-- Nerfed Escape Sequence Lines Damage 9 => **7.5**.
+- Buffed Voidtouched Spike Size 2m => **6m**.
+- Buffed Warbanner to spawn on **final boss encounters**.
+- Buffed Will-o'-The-Wisp Proc Coefficient 0 => **0.5**.
+- Nerfed Bandolier to **only reduce cooldowns up to 8s on pickup**.
+- Nerfed Ceremonial Dagger Range 130m => **40m**.
 - Nerfed Defense Nucleus Proc Coefficient 0.5 => **0.25**.
 - Nerfed Eclipse 6 Enrage Stat Multiplier 2x => **1.75x**.
 - Nerfed Eclipse 6 Enrage Stat Multiplier for Mithrix 1.75x => **1.3x**.
-- Nerfed Interstellar Desk Plant Base Range 12m => **10m**.
-- Nerfed Spinel Tonic Curse Gain 10% => **12%**.
-- Nerfed Mithrix Big Spinny => **No longer Cripples**.
-- Nerfed Interstellar Desk Plant Percent Healing 6% => **5%**.
-- Nerfed Shatterspleen to have a **16 bleed cap**.
-- Nerfed Tri-Tip Dagger to have an **8 (+4 per stack) bleed cap**.
-- Nerfed Shrine of Order Max Spawns Per Stage 2 => **1**.
-- Nerfed Planula Range 10000m => **100m**.
+- Nerfed Escape Sequence Lines Damage 9 => **7.5**.
 - Nerfed Global Item Proc Coefficient Multiplier 1 => **0.1**.
-- Nerfed Better Scaling Base Value 1.055 => **1.035**.
-- Nerfed Ceremonial Dagger Range 130m => **40m**.
-- Nerfed Scene Director Credit Multiplier 2.5 => **Starts at 2.5 and lowers by 0.15 every stage per loop**.
-- Reworked Oddly-shaped Opal to give armor **for each enemy nearby**.
-- Reworked Trophy Hunter's Tricorn to execute bosses **under 30% max health**.
+- Nerfed Interstellar Desk Plant Base Range 12m => **10m**.
+- Nerfed Interstellar Desk Plant Percent Healing 6% => **5%**.
+- Nerfed Mithrix Big Spinny to **no longer inflict Cripple**.
+- Nerfed Legendary Chest Cost $200 => **$300**.
+- Nerfed Planula Range 10000m => **100m**.
+- Nerfed Scene Director Credit Multiplier 2.5 => **starts at 2.5 and lowers by 0.15 every stage per loop**.
+- Nerfed Shattering Justice Debuff Duration Per Stack 8s => **0s**.
+- Nerfed Shatterspleen to have a **16 bleed cap**.
+- Nerfed Shrine of Order Max Spawns Per Stage 2 => **1**.
+- Nerfed Spinel Tonic Curse Gain 10% => **12%**.
+- Nerfed Tri-Tip Dagger to have an **8 (+4 per stack) bleed cap**.
+- Nerfed Yellow Printer to **only appear in loops**.
+- Reworked Abandoned Aqueduct Pressure Plate to **stay pressed**.
+- Reworked Artifact of Command to **limit your item count to your current level**.
+- Reworked Beads of Fealty to also increase **Combat Director Credits** and **Base Regeneration**, and stack **Twisted Scavengers** and **Combat Director Credits**.
+- Reworked Combat Director a bit to **spawn more unique enemies and fodder enemies more often lategame**.
+- Reworked Corpsebloom stacking to be **fully linear**.
+- Reworked Crowbar to **deal bonus damage on your first hit**.
+- Reworked Oddly-shaped Opal to **give armor for each enemy nearby**.
 - Reworked Simulacrum to be **faster paced**.
-- Reworked Combat Director a bit to spawn **more unique enemies** and **fodder enemies more often lategame**.
-- Reworked Beads of Fealty => **now also increases Combat Director Credits and Base Regeneration, stacks Twisted Scavengers and Combat Director Credits**.
-- Fixed Speed Boost and Better Scaling mechanics not working .O_O.
-- Fixed Scavenger appearing on Sundered Grove Stage 4.
+- Reworked Trophy Hunter's Tricorn to execute bosses under 30% max health.
+- Reworked Void Fields to have **5** waves that **each** increase the amount of monster types and items.
+- Reworked Void Potential to have a **small chance of containing a Void Red or Void Yellow item**.
+- Reworked Voidsent Flame to **explode on your first hit**.
 - Fixed Beads of Fealty description.
+- Fixed Better Scaling not working .O_O.
+- Fixed Boss OOB Check soft-locking REX: Dunked.
+- Fixed Clay Dunestrider Suck not having an attacker/inflictor.
+- Fixed Dragged Below being way too difficult.
+- Fixed Eclipse 3 not removing lethal fall damage.
+- Fixed Elder Lemurian Spawn Sound Volume.
+- Fixed Helfire Tincture damage and description being incorrect in every possible way ever imaginable.
+- Fixed Laser Scope config.
+- Fixed Legendary Chest Cost changes not applying to pre-spawned ones.
+- Fixed Railgunner: Annihilator being way too difficult.
+- Fixed Sawmerang and Shuriken getting stuck.
+- Fixed Sawmerang doing way more damage than intended.
+- Fixed Scavenger appearing on Sundered Grove Stage 4.
+- Fixed Shuriken hitting more amount of times than intended.
+- Fixed Speed Boost not working .O_O.
+- Fixed Ukulele.
 - Fixed WolfoQoL giving Kjaro and Runald their bands.
 - Fixed Xi Construct being too accurate on Eclipse 1.
-- Fixed Sawmerang and Shuriken getting stuck.
-- Fixed Eclipse 3 not removing lethal fall damage.
-- Fixed Laser Scope config.
-- Fixed Ukulele.
-- Fixed some config options.
-- Fixed self damage contributing to Eclipse 8 permanent damage.
-- Fixed Sawmerang doing way more damage than intended.
-- Fixed Clay Dunestrider Suck not having an attacker/inflictor.
-- Fixed Shuriken hitting more amount of times than intended.
-- Fixed Helfire Tincture damage and description being incorrect in every possible way ever imaginable.
 - Fixed difficulty and equipment descriptions being overwritten by other mods.
+- Fixed self damage contributing to Eclipse 8 permanent damage.
 - Fixed some allies trying to attack you.
+- Fixed some config options.
 - Fixed minor item descriptions.
 - Small optimizations.
-- - Bunch of more fixes and proc rebalance for the main part. ~HIFU.
-- - I don't play trash sorry. ~Kirn.
+- - Bunch of more fixes, QoL and proc rebalance for the main part. ~HIFU.
 
 # 1.1.5 Patch Notes
 - Added Exchange Changes.
@@ -88,11 +104,11 @@
 - Added SnappierStalks.
 - Added funny Scrapper explosion animation.
 - Added proper buff icon for Shrine Of The Mountain buff.
+- Buffed Spinel Tonic Affliction Chance 20% => **25%**.
 - Nerfed Brainstalks Post Processing.
 - Nerfed Grandparent Sun Burn Duration 1s => **0.75s**.
 - Nerfed Planula Post Processing :^).
 - Nerfed Scene Director Elite Bias 0.8 => **6**.
-- Nerfed Spinel Tonic Affliction Chance 20% => **25%**.
 - Nerfed Spinel Tonic Post Processing.
 - Reworked Lost Seer's Lenses to have a **0.5%** chance of doing **3000%** base damage.
 - Fixed Bazaar Rework networking a bit.
@@ -148,7 +164,7 @@
 - Added FixKjaroRunald.
 - Added GoldChestForAll.
 - Added Inferno Mithrix Lite.
-- Added One Shot Protection indicators when it's procced - a buff, visual, and sound.
+- Added One Shot Protection indicators when it's procced - a buff, visual and sound.
 - Added Pocket I.C.B.M VFX.
 - Added ShurikenFix.
 - Added a LOT of config options. Now the most configurable mod ever!
@@ -198,10 +214,6 @@
 - Buffed Weeping Fungus Percent Healing Per Stack 0.5% => **1.2%**.
 - Buffed Will-o'-The-Wisp Base Damage 180% => **240%**.
 - Buffed Will-o'-The-Wisp Damage Per Stack 90% => **120%**.
-- Buffed Stone Flux Pauldron to give **10 armor** on the first stack.
-- Berfed Mercurial Rachis Radius Increase Per Stack 50% => **30%**.
-- Berfed Mercurial Rachis Attack Speed and Movement Speed Increase Per Stack 0% => **15%**.
-- Nerfed Helfire Tincture Ally Damage Multiplier 1x => **0.25x**.
 - Nerfed Ben's Raincoat Buff Movement Speed Gain Per Stack 10% => **0%**.
 - Nerfed Bustling Fungus Base Percent Healing 5% => **4%**.
 - Nerfed Defense Nucleus Damage Reduction 25% => **20%**.
@@ -230,7 +242,7 @@
 - Nerfed Topaz Brooch Flat Barrier Per Stack 10 => **0**.
 - Nerfed Weeping Fungus Base Percent Healing 1.5% => **1.2%**.
 - Nerfed White Printer Director Credit Cost 5 => **6**.
-- Reworked Blazing Elites to fire projectiles in a **fixed pattern** and **scale** their fire rate with base max health.
+- Reworked Blazing Elites to fire fire projectiles in a **fixed pattern** and **scale** their fire rate with base max health.
 - Reworked Elite Effect Damage stuff.
 - Reworked Hunter's Harpoon to **smooth out** the movement speed curve.
 - Reworked Light Flux Pauldron internally to work **much better**.
@@ -247,7 +259,7 @@
 - Fixed Defense Nucleus shield appearing.
 - Fixed Elites giving their effects to Elites of the same type.
 - Fixed Focused Convergence reducing Teleporter Event Radius.
-- Fixed Helfire Tincture VFX having the wrong scale.
+- Fixed Helfire Tincture VFX having wrong scale.
 - Fixed Oddly-shaped Opal giving two buffs.
 - Fixed Oddly-shaped Opal improperly showing VFX.
 - Fixed Planula not stacking.
@@ -255,9 +267,9 @@
 - Fixed Wake of Vultures giving curse upon killing a Voidtouched elite.
 - Fixed in-game version number.
 - Fixed item descriptions being overwritten by other mods.
-- Fixed WolfoQoL incompatibility.
+- Fixed WolfoQoL incompat.
 - Fixed minor item descriptions.
 - Fixed the readme.
 - Small optimizations.
 - Item mod compatibility will be addressed in a later update.
-- - I'm sorry but the release wasn't very well communicated (and therefore unpolished) so in turn we had to do a bunch of fixes. ~HIFU
+- - I'm sorry but the release wasn't very well communicated (and therefore unpolished) so in turn we had to do a bunch of fixing. ~HIFU

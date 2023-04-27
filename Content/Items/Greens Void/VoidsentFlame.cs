@@ -11,8 +11,8 @@ namespace WellRoundedBalance.Items.VoidGreens
 
         public override string PickupText => (firstHit ? "First hit on" : "Full Health") + " enemies also detonate on hit. <style=cIsVoid>Corrupts all Will-o'-the-wisps</style>.";
 
-        public override string DescText => (firstHit ? "On first hit" : "Upon hitting an enemy at <style=cIsDamage>100% health</style>") + "," + 
-            StackDesc(baseRange, rangePerStack, init => $" <style=cIsDamage>detonate</style> them in a <style=cIsDamage>{m(init)}</style>{{Stack}} radius burst", m) + 
+        public override string DescText => (firstHit ? "On first hit" : "Upon hitting an enemy at <style=cIsDamage>100% health</style>") + "," +
+            StackDesc(baseRange, rangePerStack, init => $" <style=cIsDamage>detonate</style> them in a <style=cIsDamage>{m(init)}</style>{{Stack}} radius burst", m) +
             StackDesc(baseDamage, damagePerStack, init => $"for <style=cIsDamage>{d(init)}</style>{{Stack}} base damage", d) + ". <style=cIsVoid>Corrupts all Will-o'-the-wisps</style>.";
 
         [ConfigField("Base Damage", "Decimal.", 1.4f)]
@@ -65,7 +65,7 @@ namespace WellRoundedBalance.Items.VoidGreens
                         CharacterBody to = self.body;
                         if (from && to)
                         {
-                            if (db.ContainsKey(from)) db.Add(from, new());
+                            if (!db.ContainsKey(from)) db.Add(from, new());
                             if (db[from].Contains(to)) return float.MaxValue;
                             db[from].Add(to);
                             return 0;

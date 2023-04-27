@@ -9,3 +9,5 @@ global using System.Collections.Generic;
 global using UnityEngine;
 global using System.Linq;
 global using WellRoundedBalance.Attributes;
+global using MonoMod.Cil;
+global using Mono.Cecil.Cil;
