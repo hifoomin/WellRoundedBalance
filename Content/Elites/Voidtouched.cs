@@ -52,7 +52,7 @@ namespace WellRoundedBalance.Elites
             projectileController.ghostPrefab = spikeGhost;
 
             var projectileImpactExplosion = spike.GetComponent<ProjectileImpactExplosion>();
-            projectileImpactExplosion.blastRadius = 6f;
+            projectileImpactExplosion.blastRadius = 7.5f;
 
             spike.transform.localScale = new Vector3(3f, 3f, 3f);
 
@@ -60,11 +60,21 @@ namespace WellRoundedBalance.Elites
             var sphereCollider = proximityTrigger.GetComponent<SphereCollider>();
             sphereCollider.radius = 6f;
 
+            GameObject impactEffect = spike.transform.GetChild(0).gameObject;
+
             var projectileStickOnImpact = spike.GetComponent<ProjectileStickOnImpact>();
             // remove projectileimpactexplosion setexplosionradius event
             // add projectileimpactexplosion setexplosionradius event to make spike have a 7.5m explosion radius
+            
 
-            PrefabAPI.RegisterNetworkPrefab(spike);
+            On.RoR2.Projectile.ProjectileExplosion.SetExplosionRadius += (orig, self, radius) => {
+                if (self.gameObject.name.Contains("Voidtouched Spike")) {
+                    return;
+                }
+
+                orig(self, radius);
+            };
+
 
             base.Init();
         }
@@ -98,23 +108,20 @@ namespace WellRoundedBalance.Elites
             {
                 Vector3 position = originalPosition + (aimDirection * (i * 15));
                 position.y = 30;
-                if (Physics.Raycast(position, Vector3.down, out RaycastHit hit, 1000, ~0))
+                if (Util.HasEffectiveAuthority(body.gameObject))
                 {
-                    if (Util.HasEffectiveAuthority(body.gameObject))
+                    FireProjectileInfo info = new()
                     {
-                        FireProjectileInfo info = new()
-                        {
-                            damage = body.damage * spikeDamage,
-                            damageTypeOverride = DamageType.Nullify,
-                            crit = false,
-                            position = position,
-                            rotation = Quaternion.LookRotation(Vector3.down),
-                            projectilePrefab = spike,
-                            owner = body.gameObject,
-                            speedOverride = 40
-                        };
-                        ProjectileManager.instance.FireProjectile(info);
-                    }
+                        damage = body.damage * spikeDamage,
+                        damageTypeOverride = DamageType.Nullify,
+                        crit = false,
+                        position = position,
+                        rotation = Quaternion.LookRotation(Vector3.down),
+                        projectilePrefab = spike,
+                        owner = body.gameObject,
+                        speedOverride = 40
+                    };
+                    ProjectileManager.instance.FireProjectile(info);
                 }
             }
             body.AddTimedBuff(hiddenCooldown, spikeCooldown);
