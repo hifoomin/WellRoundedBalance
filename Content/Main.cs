@@ -27,6 +27,7 @@ using MonoMod.RuntimeDetour;
 
 using WellRoundedBalance.Mechanics.Monsters;
 using WellRoundedBalance.Achievements;
+using HarmonyLib;
 
 // using WellRoundedBalance.Enemies.FamilyEvents;
 
@@ -106,7 +107,7 @@ namespace WellRoundedBalance
 
             enableLogging = WRBMiscConfig.Bind("Logging", "Enable Initialization logging?", false, "Enabling this slows down loading times, but can help with resolving mod compatibility issues in some cases.");
             enableAutoConfig = WRBMiscConfig.Bind("Config", "Enable Auto Config Sync", true, "Disabling this would stop WRB from syncing config whenever a new version is found.");
-            bool _preVersioning = WRBMiscConfig.Keys.Any(x => x.Key == "Latest Version");
+            bool _preVersioning = !((Dictionary<ConfigDefinition, string>)AccessTools.DeclaredPropertyGetter(typeof(ConfigFile), "OrphanedEntries").Invoke(WRBMiscConfig, null)).Keys.Any(x => x.Key == "Latest Version");
             latestVersion = WRBMiscConfig.Bind("Config", "Latest Version", PluginVersion, "DO NOT CHANGE THIS");
             if (enableAutoConfig.Value && (_preVersioning || latestVersion.Value != PluginVersion))
             {
