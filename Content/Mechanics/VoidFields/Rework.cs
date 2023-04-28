@@ -6,9 +6,6 @@ namespace WellRoundedBalance.Mechanics.VoidFields
     {
         public override string Name => ":: Mechanics :::::::::::::::: Void Fields Rework";
 
-        [ConfigField("Wave Count", "", 5)]
-        public static int waveCount;
-
         [ConfigField("Charge Multiplier", "Affected by Faster Holdout Zone mechanic.", 0.55f)]
         public static float chargeMultiplier;
 
@@ -61,18 +58,6 @@ namespace WellRoundedBalance.Mechanics.VoidFields
                     case 5:
                         self.AddItemStack();
                         break;
-
-                    case 6:
-                        self.AddMonsterType();
-                        break;
-
-                    case 7:
-                        self.AddMonsterType();
-                        break;
-
-                    case 8:
-                        self.AddMonsterType();
-                        break;
                 }
             }
 
@@ -81,7 +66,7 @@ namespace WellRoundedBalance.Mechanics.VoidFields
 
         private void ArenaMissionController_Awake(On.RoR2.ArenaMissionController.orig_Awake orig, ArenaMissionController self)
         {
-            if (self.currentRound == waveCount)
+            if (self.currentRound == 5)
                 return;
             orig(self);
         }

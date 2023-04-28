@@ -26,6 +26,7 @@
 - Buffed Overloading Elite Speed Boost Buff Radius **slightly**.
 - Buffed Pocket I.C.B.M Proc Coefficient 0 => **0.33**.
 - Buffed Razorwire Proc Coefficient 0 => **1**.
+- Buffed Rejuvenation Rack to **remove knockback**.
 - Buffed Resonance Disc Beam Radius 1m => **3m**.
 - Buffed Resonance Disc Bomb Explosion Radius 14m => **16m**.
 - Buffed Resonance Disc Bomb Falloff Type Sweetspot => **None**.
@@ -59,13 +60,13 @@
 - Nerfed Yellow Printer to **only appear in loops**.
 - Reworked Abandoned Aqueduct Pressure Plate to **stay pressed**.
 - Reworked Artifact of Command to **limit your item count to your current level**.
-- Reworked Beads of Fealty to also increase **Combat Director Credits** and **Base Regeneration**, and stack **Twisted Scavengers** and **Combat Director Credits**.
+- Reworked Beads of Fealty to also increase **Combat Director Credits** and **Base Regeneration**, stack **Twisted Scavengers** and **Combat Director Credits**.
 - Reworked Combat Director a bit to **spawn more unique enemies and fodder enemies more often lategame**.
 - Reworked Corpsebloom stacking to be **fully linear**.
 - Reworked Crowbar to **deal bonus damage on your first hit**.
 - Reworked Oddly-shaped Opal to **give armor for each enemy nearby**.
-- Reworked Simulacrum to be **faster paced**.
-- Reworked Trophy Hunter's Tricorn to execute bosses under 30% max health.
+- Reworked Simulacrum to be **faster paced** and **much harder**.
+- Reworked Trophy Hunter's Tricorn to execute bosses **under 30% max health**.
 - Reworked Void Fields to have **5** waves that **each** increase the amount of monster types and items.
 - Reworked Void Potential to have a **small chance of containing a Void Red or Void Yellow item**.
 - Reworked Voidsent Flame to **explode on your first hit**.

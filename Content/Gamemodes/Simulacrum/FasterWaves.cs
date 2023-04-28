@@ -4,7 +4,7 @@
     {
         public override string Name => ":: Gamemode :: Simulacrum Faster Waves";
 
-        [ConfigField("Crab Speed Multiplier", "", 1.7f)]
+        [ConfigField("Crab Speed Multiplier", "", 1.5f)]
         public static float crabSpeedMultiplier;
 
         [ConfigField("Fog Speed Multiplier", "", 1.6f)]
@@ -51,6 +51,7 @@
             self.secondsAfterWave = waveTimer;
         }
 
+        
         private void GlobalEventManager_OnInteractionsGlobal(Interactor interactor, IInteractable interactable, GameObject gameObject)
         {
             if (instantWave)
