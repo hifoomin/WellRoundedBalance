@@ -26,7 +26,8 @@
 
         public override void Hooks()
         {
-            GlobalEventManager.OnInteractionsGlobal += GlobalEventManager_OnInteractionsGlobal;
+            // GlobalEventManager.OnInteractionsGlobal += GlobalEventManager_OnInteractionsGlobal;
+            On.RoR2.PickupPickerController.HandlePickupSelected += ProgressOnPickup;
             On.RoR2.InfiniteTowerWaveController.Initialize += InfiniteTowerWaveController_Initialize;
             On.EntityStates.InfiniteTowerSafeWard.Travelling.OnEnter += Travelling_OnEnter;
         }
@@ -58,6 +59,16 @@
                 if (Run.instance is InfiniteTowerRun itRun && gameObject.name == "OptionPickup(Clone)" && NetworkServer.active)
                 {
                     itRun.waveController.OnTimerExpire();
+                }
+            }
+        }
+
+        private void ProgressOnPickup(On.RoR2.PickupPickerController.orig_HandlePickupSelected orig, PickupPickerController self, int choice) {
+            orig(self, choice);
+
+            if (instantWave) {
+                if (Run.instance is InfiniteTowerRun run && self.gameObject.name == "OptionPickup(Clone)") {
+                    run.waveController.OnTimerExpire();
                 }
             }
         }
