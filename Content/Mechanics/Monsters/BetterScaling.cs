@@ -10,7 +10,7 @@
         [ConfigField("Armor Cap", "Formula for current armor gain: Armor Cap - Armor Cap / Base Value ^ Stages Cleared", 200f)]
         public static float armorCap;
 
-        [ConfigField("Base Value", "Formula for current armor gain: Armor Cap - Armor Cap / Base Value ^ Stages Cleared", 1.045f)]
+        [ConfigField("Base Value", "Formula for current armor gain: Armor Cap - Armor Cap / Base Value ^ Stages Cleared", 1.02f)]
         public static float baseValue;
 
         public override void Init()

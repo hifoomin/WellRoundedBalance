@@ -1,3 +1,16 @@
+# 1.2.1 Patch Notes
+- Nerfed Better Scaling Base Value 1.045 => **1.02**.
+- Nerfed Mountain Shrine Credit Multiplier For Each Mountain Shrine to also scale with player count.
+- Nerfed Overloading Worm Health 12000 => **9000**.
+- Nerfed Overloading Worm Damage 50 => **42**.
+- Reworked Artifact of Dissonance to **not limit monster type amount**.
+- Reworked Artifact of Evolution to **give monters 2 items per stage**.
+- Fixed Artifact of Dissonance not spawning Hermit Crabs.
+- Fixed Charged Peripherator rolling its own crit.
+- Fixed Milky Chrysalis description.
+- Fixed Simulacrum Instant Wave applying on potential interact.
+- Fixed minor item descriptions.
+
 # 1.2.0 Patch Notes
 - Added Fix Playercount.
 - Added Shuriken countdown buff.

@@ -110,22 +110,7 @@ namespace WellRoundedBalance.Interactables
                 tp.SetContent(c);
             };
 
-            On.RoR2.SceneDirector.SelectCard += (orig, self, deck, max) =>
-            {
-                DirectorCard card = null;
-                for (int i = 0; i < 10; i++)
-                {
-                    DirectorCard next = orig(self, deck, max);
-                    if (next.spawnCard == vradle && ShouldBlockCradles())
-                    {
-                        // Main.WRBLogger.LogError("No players have corruptible items, blocking vradle spawn");
-                        continue;
-                    }
-                    card = next;
-                }
-
-                return card == null ? orig(self, deck, max) : card; // failsafe in the event cradles are the literal only thing it can afford (eg. void locus)
-            };
+            On.RoR2.SceneDirector.SelectCard += SceneDirector_SelectCard;
 
             On.RoR2.PickupPickerController.OnInteractionBegin += (orig, self, interactor) =>
             {
@@ -137,6 +122,23 @@ namespace WellRoundedBalance.Interactables
                 }
                 orig(self, interactor);
             };
+        }
+
+        private DirectorCard SceneDirector_SelectCard(On.RoR2.SceneDirector.orig_SelectCard orig, SceneDirector self, WeightedSelection<DirectorCard> deck, int max)
+        {
+            DirectorCard card = null;
+            for (int i = 0; i < 10; i++)
+            {
+                DirectorCard next = orig(self, deck, max);
+                if (next.spawnCard && next.spawnCard == vradle && ShouldBlockCradles())
+                {
+                    // Main.WRBLogger.LogError("No players have corruptible items, blocking vradle spawn");
+                    continue;
+                }
+                card = next;
+            }
+
+            return card == null ? orig(self, deck, max) : card; // failsafe in the event cradles are the literal only thing it can afford (eg. void locus)
         }
 
         public static bool ShouldBlockCradles()

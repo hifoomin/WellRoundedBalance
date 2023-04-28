@@ -7,9 +7,9 @@ namespace WellRoundedBalance.Equipment.Orange
         public override string Name => ":: Equipment :: Eccentric Vase";
         public override EquipmentDef InternalPickup => RoR2Content.Equipment.Gateway;
 
-        public override string PickupText => "Create a quantum tunnel between two locations.";
+        public override string PickupText => (chargeSpeedIncrease > 0 ? "Passively increase the speed of Teleporter Charging. " : "") + "Create a quantum tunnel between two locations.";
 
-        public override string DescText => "Create a <style=cIsUtility>quantum tunnel</style> of up to <style=cIsUtility>" + maxDistance + "m</style> in length. Lasts " + duration + " seconds.";
+        public override string DescText => (chargeSpeedIncrease > 0 ? "Teleporters charge <style=cIsUtility>" + d(chargeSpeedIncrease) + " faster</style>. " : "") + "Create a <style=cIsUtility>quantum tunnel</style> of up to <style=cIsUtility>" + maxDistance + "m</style> in length. Lasts " + duration + " seconds.";
 
         [ConfigField("Cooldown", "", 20f)]
         public static float cooldown;
@@ -19,6 +19,9 @@ namespace WellRoundedBalance.Equipment.Orange
 
         [ConfigField("Duration", "", 15f)]
         public static float duration;
+
+        // [ConfigField("Passive Holdout Zone Charge Speed Increase", "Decimal", 0.2f)]
+        public static float chargeSpeedIncrease = 0;
 
         public override void Init()
         {
@@ -31,6 +34,33 @@ namespace WellRoundedBalance.Equipment.Orange
 
             var Vase = Utils.Paths.EquipmentDef.Gateway.Load<EquipmentDef>();
             Vase.cooldown = cooldown;
+            // On.RoR2.HoldoutZoneController.Awake += HoldoutZoneController_Awake;
+        }
+
+        public static float increase = 0;
+
+        private void HoldoutZoneController_Awake(On.RoR2.HoldoutZoneController.orig_Awake orig, HoldoutZoneController self)
+        {
+            orig(self);
+            for (int i = 0; i < CharacterBody.readOnlyInstancesList.Count; i++)
+            {
+                var index = CharacterBody.readOnlyInstancesList[i];
+                if (index.teamComponent.teamIndex == TeamIndex.Player)
+                {
+                    var inventory = index.inventory;
+                    if (inventory && inventory.currentEquipmentIndex == RoR2Content.Equipment.Gateway.equipmentIndex)
+                    {
+                        increase += chargeSpeedIncrease;
+                        Main.WRBLogger.LogError("vase increase is " + increase);
+                    }
+                }
+            }
+            self.calcChargeRate += Self_calcChargeRate;
+        }
+
+        private void Self_calcChargeRate(ref float rate)
+        {
+            rate *= 1f + increase;
         }
 
         private void Changes(ILContext il)
