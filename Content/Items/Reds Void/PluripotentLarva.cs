@@ -1,4 +1,7 @@
-﻿namespace WellRoundedBalance.Items.Reds
+﻿using System.Collections;
+using System.Collections.Generic;
+
+namespace WellRoundedBalance.Items.Reds
 {
     public class PluripotentLarva : ItemBase<PluripotentLarva>
     {
@@ -16,44 +19,52 @@
 
         public override void Hooks()
         {
-            Inventory.onServerItemGiven += Inventory_onServerItemGiven;
+            On.RoR2.Inventory.GiveItem_ItemIndex_int += Inventory_GiveItem_ItemIndex_int;
         }
 
-        private void Inventory_onServerItemGiven(Inventory inventory, ItemIndex itemIndex, int count)
+        private void Inventory_GiveItem_ItemIndex_int(On.RoR2.Inventory.orig_GiveItem_ItemIndex_int orig, Inventory self, ItemIndex itemIndex, int count)
         {
-            if (itemIndex != DLC1Content.Items.ExtraLifeVoid.itemIndex) return;
-            /*
-            List<ItemIndex> tier1Indices = new();
-
-            for (int i = 0; i < inventory.itemAcquisitionOrder.Count; i++)
+            orig(self, itemIndex, count);
+            if (itemIndex == DLC1Content.Items.ExtraLifeVoid.itemIndex)
             {
-                var index = inventory.itemAcquisitionOrder[i];
-                var itemDef = ItemCatalog.GetItemDef(index);
+                List<ItemIndex> tier1Indices = new();
+                List<int> stacks = new();
 
-                if (itemDef.tier == ItemTier.Tier1 || itemDef.deprecatedTier == ItemTier.Tier1)
+                // Store the indices and stack counts of all Tier 1 items in the inventory
+                for (int i = 0; i < self.itemAcquisitionOrder.Count; i++)
                 {
-                    tier1Indices.Add(index);
-                }
-            }
-            for (int i = 0; i < tier1Indices.Count; i++)
-            {
-                var index = tier1Indices[i];
-                index = Run.instance.stageRng.RangeInt(tier1Indices, tier1Indices.Count);
-            }
-            // what am i doing uhhh this is dumber than i thought
-            Chat.SendBroadcastChat(new Chat.SimpleChatMessage { baseToken = "<style=cWorldEvent>You have been... corrupted.</color>" });
-            */
+                    var index = self.itemAcquisitionOrder[i];
+                    var itemDef = ItemCatalog.GetItemDef(index);
 
-            int[] idx = { };
-            int[] value = { };
-            for (var i = 0; i < inventory.itemStacks.Length; i++) if (inventory.itemStacks[i] > 0 && ItemCatalog.GetItemDef((ItemIndex)i).tier == ItemTier.Tier1)
-                {
-                    HG.ArrayUtils.ArrayAppend(ref idx, i);
-                    HG.ArrayUtils.ArrayAppend(ref value, inventory.itemStacks[i]);
+                    if (itemDef.tier == ItemTier.Tier1 || itemDef.deprecatedTier == ItemTier.Tier1)
+                    {
+                        tier1Indices.Add(index);
+                        stacks.Add(self.GetItemCount(index));
+                    }
                 }
-            idx = idx.OrderBy(x => Run.instance.runRNG.Next()).ToArray();
-            for (var i = 0; i < idx.Length; i++) inventory.itemStacks[idx[i]] = value[i];
-            if (LocalUserManager.GetFirstLocalUser()?.cachedBody?.inventory == inventory) Chat.SendBroadcastChat(new Chat.SimpleChatMessage { baseToken = "<style=cWorldEvent>You have been... corrupted.</color>" });
+
+                // Shuffle the stack counts using Fisher-Yates shuffle algorithm
+                int n = stacks.Count;
+                while (n > 1)
+                {
+                    n--;
+                    int k = Random.Range(0, n + 1);
+                    int temp = stacks[k];
+                    stacks[k] = stacks[n];
+                    stacks[n] = temp;
+                }
+
+                // Assign the shuffled stack counts to the Tier 1 items
+                for (int i = 0; i < tier1Indices.Count; i++)
+                {
+                    var index = tier1Indices[i];
+                    var stackCount = stacks[i];
+                    self.RemoveItem(index, self.GetItemCount(index));
+                    self.GiveItem(index, stackCount);
+                }
+
+                Chat.SendBroadcastChat(new Chat.SimpleChatMessage { baseToken = "<style=cWorldEvent>You have been... corrupted.</color>" });
+            }
         }
     }
 }

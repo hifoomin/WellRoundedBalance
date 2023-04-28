@@ -45,11 +45,12 @@
 - Nerfed Eclipse 6 Enrage Stat Multiplier 2x => **1.75x**.
 - Nerfed Eclipse 6 Enrage Stat Multiplier for Mithrix 1.75x => **1.3x**.
 - Nerfed Escape Sequence Lines Damage 9 => **7.5**.
+- Nerfed Executive Card Cooldown 20s => **25s**.
 - Nerfed Global Item Proc Coefficient Multiplier 1 => **0.1**.
 - Nerfed Interstellar Desk Plant Base Range 12m => **10m**.
 - Nerfed Interstellar Desk Plant Percent Healing 6% => **5%**.
-- Nerfed Mithrix Big Spinny to **no longer inflict Cripple**.
 - Nerfed Legendary Chest Cost $200 => **$300**.
+- Nerfed Mithrix Big Spinny to **no longer inflict Cripple**.
 - Nerfed Planula Range 10000m => **100m**.
 - Nerfed Scene Director Credit Multiplier 2.5 => **starts at 2.5 and lowers by 0.15 every stage per loop**.
 - Nerfed Shattering Justice Debuff Duration Per Stack 8s => **0s**.
@@ -64,6 +65,7 @@
 - Reworked Combat Director a bit to **spawn more unique enemies and fodder enemies more often lategame**.
 - Reworked Corpsebloom stacking to be **fully linear**.
 - Reworked Crowbar to **deal bonus damage on your first hit**.
+- Reworked Executive Card to **only go on cooldown when buying from multishops**.
 - Reworked Oddly-shaped Opal to **give armor for each enemy nearby**.
 - Reworked Simulacrum to be **faster paced** and **much harder**.
 - Reworked Trophy Hunter's Tricorn to execute bosses **under 30% max health**.
@@ -80,6 +82,7 @@
 - Fixed Helfire Tincture damage and description being incorrect in every possible way ever imaginable.
 - Fixed Laser Scope config.
 - Fixed Legendary Chest Cost changes not applying to pre-spawned ones.
+- Fixed Pluripotent Larva not shuffling items.
 - Fixed Railgunner: Annihilator being way too difficult.
 - Fixed Sawmerang and Shuriken getting stuck.
 - Fixed Sawmerang doing way more damage than intended.
@@ -87,6 +90,7 @@
 - Fixed Shuriken hitting more amount of times than intended.
 - Fixed Speed Boost not working .O_O.
 - Fixed Ukulele.
+- Fixed Void Cradles.
 - Fixed WolfoQoL giving Kjaro and Runald their bands.
 - Fixed Xi Construct being too accurate on Eclipse 1.
 - Fixed difficulty and equipment descriptions being overwritten by other mods.

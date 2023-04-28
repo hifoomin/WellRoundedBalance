@@ -79,6 +79,7 @@ Thanks to Moffein for the code/idea for:
 - Eclipse 3
 - Lunar Wisp Falloff
 - Forced Boss Variety
+- Void Fields
 
 Thanks to Skell for the code for:
 - Death Mark

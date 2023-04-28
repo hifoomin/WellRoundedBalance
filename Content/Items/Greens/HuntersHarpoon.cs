@@ -15,10 +15,10 @@ namespace WellRoundedBalance.Items.Greens
             StackDesc(maxCount, maxCountStack, init => $", up to <style=cIsUtility>{init}</style>{{Stack}} times", noop) +
             StackDesc(duration, durationStack, init => $", fading over <style=cIsUtility>{init}</style>{{Stack}} seconds", noop) + ".";
 
-        [ConfigField("Duration", "Decimal.", 5f)]
+        [ConfigField("Duration", "", 5f)]
         public static float duration;
 
-        [ConfigField("Duration per Stack", "Decimal.", 0f)]
+        [ConfigField("Duration per Stack", "", 0f)]
         public static float durationStack;
 
         [ConfigField("Duration is Hyperbolic", "Decimal, Max value. Set to 0 to make it linear.", 0f)]
@@ -33,10 +33,10 @@ namespace WellRoundedBalance.Items.Greens
         [ConfigField("Movement Speed is Hyperbolic", "Decimal, Max value. Set to 0 to make it linear.", 0f)]
         public static float movementSpeedIsHyperbolic;
 
-        [ConfigField("Max Count", "Decimal.", 3)]
+        [ConfigField("Max Count", "", 3)]
         public static int maxCount;
 
-        [ConfigField("Max Count per Stack", "Decimal.", 2)]
+        [ConfigField("Max Count per Stack", "", 2)]
         public static int maxCountStack;
 
         [ConfigField("Max Count is Hyperbolic", "Decimal, Max value. Set to 0 to make it linear.", 0f)]
