@@ -15,9 +15,11 @@
         public override void Hooks()
         {
             var dropTable = Utils.Paths.BasicPickupDropTable.dtVoidTriple.Load<BasicPickupDropTable>();
-            dropTable.tier3Weight = 0.011f;
-            dropTable.voidTier3Weight = 0.033f;
-            dropTable.voidBossWeight = 0.033f;
+            dropTable.tier1Weight = 0.35f;
+            dropTable.tier2Weight = 0.6f;
+            dropTable.tier3Weight = 0.012f;
+            dropTable.voidTier3Weight = 0.075f;
+            dropTable.voidBossWeight = 0.075f;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using RoR2;
+﻿using Inferno.Stat_AI;
+using RoR2;
 using WolfoQualityOfLife;
 
 namespace WellRoundedBalance.Artifacts.Vanilla
@@ -14,10 +15,35 @@ namespace WellRoundedBalance.Artifacts.Vanilla
 
         public override void Hooks()
         {
-            // On.RoR2.Inventory.GiveItem_ItemIndex_int += Inventory_GiveItem_ItemIndex_int;
+            On.RoR2.Inventory.GiveItem_ItemIndex_int += Inventory_GiveItem_ItemIndex_int;
             On.RoR2.GenericPickupController.BodyHasPickupPermission += GenericPickupController_BodyHasPickupPermission;
             CharacterBody.onBodyInventoryChangedGlobal += CharacterBody_onBodyInventoryChangedGlobal;
             Changes();
+        }
+
+        private void Inventory_GiveItem_ItemIndex_int(On.RoR2.Inventory.orig_GiveItem_ItemIndex_int orig, Inventory self, ItemIndex itemIndex, int count)
+        {
+            if (RunArtifactManager.instance.IsArtifactEnabled(RoR2Content.Artifacts.commandArtifactDef))
+            {
+                var player = self.GetComponent<PlayerCharacterMasterController>();
+                if (player)
+                {
+                    var master = self.GetComponent<CharacterMaster>();
+                    if (master)
+                    {
+                        var body = master.GetBody();
+                        if (body)
+                        {
+                            var ic = body.GetComponent<ItemCount>();
+                            if (ic && (ic.items + 1) > body.level)
+                            {
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
+            orig(self, itemIndex, count);
         }
 
         private void CharacterBody_onBodyInventoryChangedGlobal(CharacterBody body)
