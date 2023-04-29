@@ -1,6 +1,7 @@
 using System.Reflection;
 using System;
 using BepInEx.Configuration;
+using System.Text.RegularExpressions;
 
 namespace WellRoundedBalance.Attributes
 {
@@ -40,9 +41,15 @@ namespace WellRoundedBalance.Attributes
                 MethodInfo method = typeof(ConfigFile).GetMethods().Where(x => x.Name == nameof(ConfigFile.Bind)).First();
                 method = method.MakeGenericMethod(t);
                 ConfigEntryBase val = (ConfigEntryBase)method.Invoke(config, new object[] { new ConfigDefinition(section, configattr.name), configattr.defaultValue, new ConfigDescription(configattr.desc) });
+                ConfigEntryBase backupVal = (ConfigEntryBase)method.Invoke(Main.WRBBackupConfig, new object[] { new ConfigDefinition(Regex.Replace(config.ConfigFilePath, "\\W", "") + " : " + section, configattr.name), val.DefaultValue, new ConfigDescription(configattr.desc) });
+                // Main.WRBLogger.LogDebug(val.DefaultValue + " / " + val.BoxedValue + " ... " + backupVal.DefaultValue + " / " + backupVal.BoxedValue + " >> " + VersionChanged);
                 if (!ConfigEqual(val.DefaultValue, val.BoxedValue))
                 {
-                    if (VersionChanged) val.BoxedValue = val.DefaultValue;
+                    if (!ConfigEqual(backupVal.DefaultValue, backupVal.BoxedValue))
+                    {
+                        if (VersionChanged) val.BoxedValue = val.DefaultValue;
+                        backupVal.BoxedValue = backupVal.DefaultValue;
+                    }
                     else ConfigChanged = true;
                 }
                 field.SetValue(null, val.BoxedValue);
