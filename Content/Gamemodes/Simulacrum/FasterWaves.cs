@@ -10,7 +10,7 @@
         [ConfigField("Fog Speed Multiplier", "", 1.6f)]
         public static float fogSpeedMultiplier;
 
-        [ConfigField("Instant Wave On Potential Interact?", "", true)]
+        [ConfigField("Instant Wave On Picking an item?", "", true)]
         public static bool instantWave;
 
         [ConfigField("Wave Timer", "", 15)]
@@ -52,23 +52,13 @@
             self.secondsAfterWave = waveTimer;
         }
 
-        
-        private void GlobalEventManager_OnInteractionsGlobal(Interactor interactor, IInteractable interactable, GameObject gameObject)
+        private void ProgressOnPickup(On.RoR2.PickupPickerController.orig_HandlePickupSelected orig, PickupPickerController self, int choice)
         {
+            orig(self, choice);
             if (instantWave)
             {
-                if (Run.instance is InfiniteTowerRun itRun && gameObject.name == "OptionPickup(Clone)" && NetworkServer.active)
+                if (Run.instance is InfiniteTowerRun run && self.gameObject.name == "OptionPickup(Clone)")
                 {
-                    itRun.waveController.OnTimerExpire();
-                }
-            }
-        }
-
-        private void ProgressOnPickup(On.RoR2.PickupPickerController.orig_HandlePickupSelected orig, PickupPickerController self, int choice) {
-            orig(self, choice);
-
-            if (instantWave) {
-                if (Run.instance is InfiniteTowerRun run && self.gameObject.name == "OptionPickup(Clone)") {
                     run.waveController.OnTimerExpire();
                 }
             }

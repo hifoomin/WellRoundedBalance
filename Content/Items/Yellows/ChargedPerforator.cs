@@ -1,4 +1,5 @@
 ﻿using MonoMod.Cil;
+using Rewired.Data.Mapping;
 using System;
 
 namespace WellRoundedBalance.Items.Yellows
@@ -62,13 +63,34 @@ namespace WellRoundedBalance.Items.Yellows
             }
             if (error)
             {
-                Logger.LogError("Failed to apply Charged Perforator hook");
+                Logger.LogError("Failed to apply Charged Perforator Damage and Proc Coefficient hook");
+            }
+
+            c.Index = 0;
+
+            if (c.TryGotoNext(MoveType.Before,
+                x => x.MatchLdloc(1),
+                x => x.MatchCallOrCallvirt<CharacterBody>("get_crit"),
+                x => x.MatchLdloc(out _),
+                x => x.MatchCallOrCallvirt(typeof(Util).GetMethod("CheckRoll", new Type[] { typeof(float), typeof(CharacterMaster) })),
+                x => x.MatchStfld<RoR2.Orbs.GenericDamageOrb>("isCrit")))
+            {
+                for (int i = 0; i < 4; i++)
+                {
+                    c.Remove();
+                }
+                c.Emit(OpCodes.Ldarg_1);
+                c.Emit(OpCodes.Ldfld, typeof(DamageInfo).GetField("crit"));
+            }
+            else
+            {
+                Logger.LogError("Failed to apply Charged Perforator Crit hook");
             }
         }
 
         private void Changes()
         {
-            LanguageAPI.Add("ITEM_lightningStrikeOnHit_NAME".ToUpper(), "Charged Peripherator");
+            LanguageAPI.Add("ITEM_lightningStrikeOnHit_NAME_WRB".ToUpper(), "Charged Peripherator");
         }
     }
 }

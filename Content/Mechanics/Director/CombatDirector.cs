@@ -57,7 +57,7 @@
             {
                 for (int i = 0; i < teleporter.shrineBonusStacks; i++)
                 {
-                    self.creditMultiplier *= creditMultiplierForEachMountainShrine;
+                    self.creditMultiplier *= creditMultiplierForEachMountainShrine * Mathf.Pow(Run.instance.participatingPlayerCount, 0.05f);
                     self.expRewardCoefficient *= goldAndExperienceMultiplierForEachMountainShrine;
                     self.goldRewardCoefficient *= goldAndExperienceMultiplierForEachMountainShrine;
                 }

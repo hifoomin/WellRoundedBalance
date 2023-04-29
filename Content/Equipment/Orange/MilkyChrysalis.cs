@@ -7,7 +7,7 @@
 
         public override string PickupText => "Gain temporary flight.";
 
-        public override string DescText => "Sprout wings and <style=cIsUtility>fly for 15 seconds</style>. Gain <style=cIsUtility>+20% movement speed</style> for the duration.";
+        public override string DescText => "Sprout wings and <style=cIsUtility>fly for 15 seconds</style>.";
 
         [ConfigField("Cooldown", "", 45f)]
         public static float cooldown;

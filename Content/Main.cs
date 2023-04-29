@@ -57,7 +57,7 @@ namespace WellRoundedBalance
         public const string PluginGUID = PluginAuthor + "." + PluginName;
         public const string PluginAuthor = "BALLS";
         public const string PluginName = "WellRoundedBalance";
-        public const string PluginVersion = "1.2.0";
+        public const string PluginVersion = "1.2.1";
         public static ConfigFile WRBConfig;
         public static ConfigFile WRBItemConfig;
         public static ConfigFile WRBMechanicConfig;
@@ -70,6 +70,7 @@ namespace WellRoundedBalance
         public static ConfigFile WRBDifficultyConfig;
         public static ConfigFile WRBAchievementConfig;
         public static ConfigFile WRBMiscConfig;
+        public static ConfigFile WRBBackupConfig; // DO NOT USE THIS !! JJJJJ
         public static ManualLogSource WRBLogger;
 
         public static ConfigEntry<bool> enableLogging { get; set; }
@@ -104,6 +105,9 @@ namespace WellRoundedBalance
             WRBDifficultyConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Difficulties.cfg", true);
             WRBAchievementConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Achievements.cfg", true);
             WRBMiscConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Misc.cfg", true);
+
+            WRBBackupConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Backup.cfg", true);
+            WRBBackupConfig.Bind(": DO NOT MODIFY THIS FILES CONTENTS :", ": DO NOT MODIFY THIS FILES CONTENTS :", ": DO NOT MODIFY THIS FILES CONTENTS :", ": DO NOT MODIFY THIS FILES CONTENTS :");
 
             enableLogging = WRBMiscConfig.Bind("Logging", "Enable Initialization logging?", false, "Enabling this slows down loading times, but can help with resolving mod compatibility issues in some cases.");
             enableAutoConfig = WRBMiscConfig.Bind("Config", "Enable Auto Config Sync", true, "Disabling this would stop WRB from syncing config whenever a new version is found.");
