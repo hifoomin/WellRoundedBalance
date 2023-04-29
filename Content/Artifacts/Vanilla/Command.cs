@@ -16,7 +16,8 @@ namespace WellRoundedBalance.Artifacts.Vanilla
         public override void Hooks()
         {
             On.RoR2.Inventory.GiveItem_ItemIndex_int += Inventory_GiveItem_ItemIndex_int;
-            On.RoR2.GenericPickupController.BodyHasPickupPermission += GenericPickupController_BodyHasPickupPermission;
+            // On.RoR2.GenericPickupController.BodyHasPickupPermission += GenericPickupController_BodyHasPickupPermission;
+            On.RoR2.GenericPickupController.AttemptGrant += DisallowPickups;
             CharacterBody.onBodyInventoryChangedGlobal += CharacterBody_onBodyInventoryChangedGlobal;
             Changes();
         }
@@ -93,6 +94,7 @@ namespace WellRoundedBalance.Artifacts.Vanilla
             {
                 var player = body.isPlayerControlled;
                 var inventory = body.inventory;
+
                 if (player && inventory)
                 {
                     var ic = body.GetComponent<ItemCount>();
@@ -102,7 +104,24 @@ namespace WellRoundedBalance.Artifacts.Vanilla
                     }
                 }
             }
+            
             return orig(body);
+        }
+
+        private void DisallowPickups(On.RoR2.GenericPickupController.orig_AttemptGrant orig, GenericPickupController self, CharacterBody body) {
+            if (RunArtifactManager.instance.IsArtifactEnabled(RoR2Content.Artifacts.commandArtifactDef)) {
+                ItemDef item = ItemCatalog.GetItemDef(self.pickupIndex.itemIndex);
+
+                if (item) {
+                    ItemCount ic = body.GetComponent<ItemCount>();
+
+                    if (ic && (ic.items + 1) > body.level) {
+                        return;
+                    }
+                }
+            }
+
+            orig(self, body);
         }
 
         private void Changes()
