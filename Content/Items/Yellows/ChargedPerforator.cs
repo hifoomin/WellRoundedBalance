@@ -90,7 +90,7 @@ namespace WellRoundedBalance.Items.Yellows
 
         private void Changes()
         {
-            LanguageAPI.Add("ITEM_lightningStrikeOnHit_NAME_WRB".ToUpper(), "Charged Peripherator");
+            LanguageAPI.Add("ITEM_lightningStrikeOnHit_NAME".ToUpper(), "Charged Peripherator");
         }
     }
 }

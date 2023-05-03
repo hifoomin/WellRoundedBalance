@@ -4,7 +4,7 @@
     {
         public override string Name => ":: Enemies :: Blind Pest";
 
-        [ConfigField("Base Damage", "Disabled if playing Inferno.", 10f)]
+        [ConfigField("Base Damage", "Disabled if playing Inferno.", 11f)]
         public static float baseDamage;
 
         [ConfigField("Director Credit Cost", "", 35)]
@@ -32,29 +32,6 @@
 
             var blindPestSC2 = Utils.Paths.CharacterSpawnCard.cscFlyingVerminSnowy.Load<CharacterSpawnCard>();
             blindPestSC2.directorCreditCost = directorCreditCost;
-
-            var spit = Utils.Paths.GameObject.VerminSpitProjectile.Load<GameObject>();
-            var projectileSimple = spit.GetComponent<ProjectileSimple>();
-            projectileSimple.desiredForwardSpeed = 30f;
-            projectileSimple.lifetime = 10f;
-
-            spit.transform.localScale = new Vector3(0.15f, 0.15f, 3f);
-
-            var projectileController = spit.GetComponent<ProjectileController>();
-            projectileController.ghostPrefab.transform.localScale = new Vector3(5f, 5f, 5f);
-
-            spit.AddComponent<ProjectileTargetComponent>();
-            var steer = spit.AddComponent<ProjectileSteerTowardTarget>();
-            steer.enabled = true;
-            steer.rotationSpeed = 25f;
-            steer.yAxisOnly = false;
-
-            var finder = spit.AddComponent<ProjectileDirectionalTargetFinder>();
-            finder.enabled = true;
-            finder.lookRange = 13f;
-            finder.lookCone = 35f;
-            finder.targetSearchInterval = 0.1f;
-            finder.onlySearchIfNoTarget = true;
         }
     }
 }

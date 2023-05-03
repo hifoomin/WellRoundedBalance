@@ -9,7 +9,7 @@ namespace WellRoundedBalance.Items.VoidWhites
         public override string Name => ":: Items :::::: Voids :: Lost Seers Lenses";
         public override ItemDef InternalPickup => DLC1Content.Items.CritGlassesVoid;
 
-        public override string PickupText => StackDesc(chance, chanceStack, init => $"Gain a {d(init)} chance to deal ", d) + "<style=cIsDamage>" + d(damage) + "</style> base damage. <style=cIsVoid>Corrupts all Lens-Maker's Glasses</style>.";
+        public override string PickupText => StackDesc(chance, chanceStack, init => $"Gain a <style=cIsDamage>{d(init)}</style> chance to deal ", d) + "<style=cIsDamage>" + d(damage) + "</style> base damage. <style=cIsVoid>Corrupts all Lens-Maker's Glasses</style>.";
         public override string DescText => StackDesc(chance, chanceStack, init => $"Your attacks have a <style=cIsDamage>{d(init)}</style>{{Stack}} chance to deal ", d) + "<style=cIsDamage>" + d(damage) + "</style> base damage. <style=cIsVoid>Corrupts all Lens-Maker's Glasses</style>.";
 
         [ConfigField("Base Chance", "Decimal.", 0.005f)]

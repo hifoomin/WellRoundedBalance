@@ -66,7 +66,7 @@ namespace WellRoundedBalance.Items.Greens
 
         private void HopooGames()
         {
-            LanguageAPI.Add("ITEM_TPHEALINGNOVA_NAME_WRB", "Lepton Lily");
+            LanguageAPI.Add("ITEM_TPHEALINGNOVA_NAME", "Lepton Lily");
         }
     }
 }

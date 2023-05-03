@@ -57,7 +57,7 @@ namespace WellRoundedBalance
         public const string PluginGUID = PluginAuthor + "." + PluginName;
         public const string PluginAuthor = "BALLS";
         public const string PluginName = "WellRoundedBalance";
-        public const string PluginVersion = "1.2.3";
+        public const string PluginVersion = "1.3.0";
         public static ConfigFile WRBConfig;
         public static ConfigFile WRBItemConfig;
         public static ConfigFile WRBMechanicConfig;
@@ -148,7 +148,7 @@ namespace WellRoundedBalance
                 MechanicBase based = (MechanicBase)Activator.CreateInstance(type);
                 if (ValidateMechanic(based))
                 {
-                    based.Init();
+                    try { based.Init(); } catch (Exception ex) { WRBLogger.LogError($"Failed to initialize {type.Name}: {ex}"); }
                 }
             }
 
@@ -164,7 +164,7 @@ namespace WellRoundedBalance
                 ItemBase based = (ItemBase)Activator.CreateInstance(type);
                 if (ValidateItem(based))
                 {
-                    based.Init();
+                    try { based.Init(); } catch (Exception ex) { WRBLogger.LogError($"Failed to initialize {type.Name}: {ex}"); }
                 }
 
                 // done alphabetically
@@ -194,7 +194,7 @@ namespace WellRoundedBalance
                 EquipmentBase based = (EquipmentBase)Activator.CreateInstance(type);
                 if (ValidateEquipment(based))
                 {
-                    based.Init();
+                    try { based.Init(); } catch (Exception ex) { WRBLogger.LogError($"Failed to initialize {type.Name}: {ex}"); }
                 }
             }
 
@@ -209,7 +209,7 @@ namespace WellRoundedBalance
                 InteractableBase based = (InteractableBase)Activator.CreateInstance(type);
                 if (ValidateInteractable(based))
                 {
-                    based.Init();
+                    try { based.Init(); } catch (Exception ex) { WRBLogger.LogError($"Failed to initialize {type.Name}: {ex}"); }
                 }
             }
 
@@ -224,7 +224,7 @@ namespace WellRoundedBalance
                 EnemyBase based = (EnemyBase)Activator.CreateInstance(type);
                 if (ValidateEnemy(based))
                 {
-                    based.Init();
+                    try { based.Init(); } catch (Exception ex) { WRBLogger.LogError($"Failed to initialize {type.Name}: {ex}"); }
                 }
             }
 
@@ -239,7 +239,7 @@ namespace WellRoundedBalance
                 EliteBase based = (EliteBase)Activator.CreateInstance(type);
                 if (ValidateElite(based))
                 {
-                    based.Init();
+                    try { based.Init(); } catch (Exception ex) { WRBLogger.LogError($"Failed to initialize {type.Name}: {ex}"); }
                 }
             }
 
@@ -254,7 +254,7 @@ namespace WellRoundedBalance
                 DifficultyBase based = (DifficultyBase)Activator.CreateInstance(type);
                 if (ValidateDifficulty(based))
                 {
-                    based.Init();
+                    try { based.Init(); } catch (Exception ex) { WRBLogger.LogError($"Failed to initialize {type.Name}: {ex}"); }
                 }
             }
 
@@ -269,7 +269,7 @@ namespace WellRoundedBalance
                 GamemodeBase based = (GamemodeBase)Activator.CreateInstance(type);
                 if (ValidateGamemode(based))
                 {
-                    based.Init();
+                    try { based.Init(); } catch (Exception ex) { WRBLogger.LogError($"Failed to initialize {type.Name}: {ex}"); }
                 }
             }
 
@@ -288,7 +288,7 @@ namespace WellRoundedBalance
                 ArtifactEditBase based = (ArtifactEditBase)Activator.CreateInstance(type);
                 if (ValidateArtifactEdit(based))
                 {
-                    based.Init();
+                    try { based.Init(); } catch (Exception ex) { WRBLogger.LogError($"Failed to initialize {type.Name}: {ex}"); }
                 }
             }
 
@@ -313,7 +313,7 @@ namespace WellRoundedBalance
                 AchievementBase based = (AchievementBase)Activator.CreateInstance(type);
                 if (ValidateAchievement(based))
                 {
-                    based.Init();
+                    try { based.Init(); } catch (Exception ex) { WRBLogger.LogError($"Failed to initialize {type.Name}: {ex}"); }
                 }
             }
 
@@ -352,6 +352,8 @@ namespace WellRoundedBalance
                 WRBLogger.LogDebug("Wolfo QoL detected");
                 On.RoR2.PickupPickerController.OnDisplayBegin += PickupPickerController_OnDisplayBegin;
             }
+
+            InfernoCompat();
         }
 
         private void PickupPickerController_OnDisplayBegin(On.RoR2.PickupPickerController.orig_OnDisplayBegin orig, PickupPickerController self, NetworkUIPromptController networkUIPromptController, LocalUser localUser, CameraRigController cameraRigController)
@@ -538,7 +540,7 @@ namespace WellRoundedBalance
             {
                 if (DifficultyCatalog.GetDifficultyDef(Run.instance.selectedDifficulty) == InfernoDef)
                 {
-                    WRBLogger.LogError("Difficulty is inferno");
+                    // WRBLogger.LogError("Difficulty is inferno");
                     return true;
                 }
             }

@@ -1,3 +1,18 @@
+# 1.3.0 Patch Notes
+- Added pre-made config for VanillaVoid.
+- Buffed most Fodder, Miniboss and Boss enemies.
+- Buffed Opal Armor Gain Per Stack 0 => **2**.
+- Nerfed Opal Armor Gain 3 => **2**.
+- Nerfed Opal Base Max Buff Count 4 => **3**.
+- Nerfed Opal Max Buff Count Per Stack 4 => **0**.
+- Reworked Enemy Spawn Pools.
+- Reworked some Boss enemies.
+- Improved Overloading Teleport VFX.
+- Fixed Glacial Aspect spamming visual as a player.
+- Fixed Inferno compatibility.
+- Fixed Newt using Planula with Bazaar Is My Home.
+- Fixed Scrapper.
+
 # 1.2.2 Patch Notes
 - Added LunarConstruct.
 - Buffed Beetle Movement Speed 7.7m/s => **9m/s**.

@@ -8,7 +8,7 @@ namespace WellRoundedBalance.Items.Greens
         public override ItemDef InternalPickup => RoR2Content.Items.Bandolier;
 
         public override string PickupText => "Chance on kill to drop an ammo pack that" +
-                               (maxCooldownReduction == 0 ? " resets" : "reduces") +
+                               (maxCooldownReduction == 0 ? " resets" : " reduces") +
                                " all skill cooldowns.";
 
         public override string DescText => "<style=cIsUtility>" + Mathf.Round((1 - (1 / Mathf.Pow(baseValue + 1, exponent))) * 100f) + "%</style> <style=cStack>(+" + (Mathf.Round((1 - (1 / Mathf.Pow(baseValue + 2, exponent))) * 100f) - Mathf.Round((1 - (1 / Mathf.Pow(baseValue + 1, exponent))) * 100f)) + "% per stack)</style> chance on kill to drop an ammo pack that<style=cIsUtility>" +

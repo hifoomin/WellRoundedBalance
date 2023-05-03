@@ -63,7 +63,7 @@ namespace WellRoundedBalance.Items.Yellows
             var m = LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/firemeatball").GetComponent<ProjectileController>();
             m.procCoefficient = procCoefficient * globalProc;
 
-            LanguageAPI.Add("ITEM_fireballsOnHit_NAME_WRB".ToUpper(), "Molten Peripherator");
+            LanguageAPI.Add("ITEM_fireballsOnHit_NAME".ToUpper(), "Molten Peripherator");
         }
     }
 }

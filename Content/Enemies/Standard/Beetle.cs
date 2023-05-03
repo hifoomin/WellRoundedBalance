@@ -42,19 +42,16 @@
             {
                 return;
             }
-            if (master.name == "BeetleMaster(Clone)")
+            switch (master.name)
             {
-                switch (master.name)
-                {
-                    case "BeetleMaster(Clone)":
-                        AISkillDriver BeetleHeadbutt = (from x in master.GetComponents<AISkillDriver>()
-                                                        where x.customName == "HeadbuttOffNodegraph"
-                                                        select x).First();
-                        BeetleHeadbutt.maxDistance = 9f;
-                        BeetleHeadbutt.selectionRequiresOnGround = true;
-                        BeetleHeadbutt.activationRequiresAimTargetLoS = true;
-                        break;
-                }
+                case "BeetleMaster(Clone)":
+                    AISkillDriver BeetleHeadbutt = (from x in master.GetComponents<AISkillDriver>()
+                                                    where x.customName == "HeadbuttOffNodegraph"
+                                                    select x).First();
+                    BeetleHeadbutt.maxDistance = 9f;
+                    BeetleHeadbutt.selectionRequiresOnGround = true;
+                    BeetleHeadbutt.activationRequiresAimTargetLoS = true;
+                    break;
             }
         }
 

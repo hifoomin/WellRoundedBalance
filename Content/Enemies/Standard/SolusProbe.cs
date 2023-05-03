@@ -4,7 +4,7 @@
     {
         public override string Name => ":: Enemies :: Solus Probe";
 
-        [ConfigField("Base Damage", "Disabled if playing Inferno.", 12f)]
+        [ConfigField("Base Damage", "Disabled if playing Inferno.", 13f)]
         public static float baseDamage;
 
         public override void Init()
