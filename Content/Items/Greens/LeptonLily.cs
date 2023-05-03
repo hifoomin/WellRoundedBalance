@@ -27,6 +27,7 @@ namespace WellRoundedBalance.Items.Greens
         {
             IL.EntityStates.TeleporterHealNovaController.TeleporterHealNovaGeneratorMain.CalculatePulseCount += TeleporterHealNovaGeneratorMain_CalculatePulseCount;
             IL.EntityStates.TeleporterHealNovaController.TeleporterHealNovaPulse.OnEnter += TeleporterHealNovaPulse_OnEnter;
+            HopooGames();
         }
 
         private void TeleporterHealNovaPulse_OnEnter(ILContext il)
@@ -61,6 +62,11 @@ namespace WellRoundedBalance.Items.Greens
             {
                 Logger.LogError("Failed to apply Lepton Lily Count hook");
             }
+        }
+
+        private void HopooGames()
+        {
+            LanguageAPI.Add("ITEM_TPHEALINGNOVA_NAME_WRB", "Lepton Lily");
         }
     }
 }

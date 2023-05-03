@@ -7,6 +7,7 @@ Are you tired of repetitive runs or RoR2's unbalanced gameplay? WRB is a mod tha
 Please note that the following mods are likely to be incompatible with WRB:
 - RiskyMod
 - EliteReworks
+- ZetAspects
 - FlatItemBuff
 - Hex3Reworks
 - SacrificeTweaks
