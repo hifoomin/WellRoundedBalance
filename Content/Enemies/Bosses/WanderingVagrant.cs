@@ -2,7 +2,7 @@
 {
     internal class WanderingVagrant : EnemyBase<WanderingVagrant>
     {
-        public override string Name => "::: Bosses :::::: Wandering Vagrant";
+        public override string Name => "::: Bosses :: Wandering Vagrant";
 
         public override void Init()
         {

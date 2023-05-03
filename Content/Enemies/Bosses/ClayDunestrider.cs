@@ -7,7 +7,7 @@ namespace WellRoundedBalance.Enemies.Bosses
 {
     internal class ClayDunestrider : EnemyBase<ClayDunestrider>
     {
-        public override string Name => "::: Bosses :::: Clay Dunestrider";
+        public override string Name => "::: Bosses :: Clay Dunestrider";
 
         public override void Init()
         {

@@ -2,7 +2,7 @@
 {
     internal class Scavenger : EnemyBase<Scavenger>
     {
-        public override string Name => "::: Bosses ::::: Scavenger";
+        public override string Name => "::: Bosses :: Scavenger";
 
         public override void Init()
         {

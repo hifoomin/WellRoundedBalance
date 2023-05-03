@@ -57,7 +57,7 @@ namespace WellRoundedBalance
         public const string PluginGUID = PluginAuthor + "." + PluginName;
         public const string PluginAuthor = "BALLS";
         public const string PluginName = "WellRoundedBalance";
-        public const string PluginVersion = "1.2.2";
+        public const string PluginVersion = "1.2.3";
         public static ConfigFile WRBConfig;
         public static ConfigFile WRBItemConfig;
         public static ConfigFile WRBMechanicConfig;
@@ -536,7 +536,11 @@ namespace WellRoundedBalance
         {
             if (InfernoLoaded && Run.instance)
             {
-                if (DifficultyCatalog.GetDifficultyDef(Run.instance.selectedDifficulty) == InfernoDef) return true;
+                if (DifficultyCatalog.GetDifficultyDef(Run.instance.selectedDifficulty) == InfernoDef)
+                {
+                    WRBLogger.LogError("Difficulty is inferno");
+                    return true;
+                }
             }
             return false;
         }

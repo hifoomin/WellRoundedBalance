@@ -2,7 +2,7 @@
 {
     internal class OverloadingWorm : EnemyBase<OverloadingWorm>
     {
-        public override string Name => "::: Bosses ::::::: Overloading Worm";
+        public override string Name => "::: Bosses :: Overloading Worm";
 
         public override void Init()
         {

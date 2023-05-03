@@ -74,6 +74,8 @@ namespace WellRoundedBalance.Interactables
         private void ScrapperController_Start(On.RoR2.ScrapperController.orig_Start orig, ScrapperController self)
         {
             self.maxItemsToScrapAtATime = maxScrapCountPerUse;
+            var counter = self.gameObject.GetComponent<ScrapperUseCounter>();
+            counter.useCount = maxUses * Run.instance.livingPlayerCount;
             orig(self);
         }
 
@@ -102,7 +104,7 @@ namespace WellRoundedBalance.Interactables
             var scrapper = self.outer.gameObject;
             if (!uses.ContainsKey(scrapper))
             {
-                uses.Add(scrapper, maxUses);
+                uses.Add(scrapper, maxUses * Run.instance.livingPlayerCount);
             }
             orig(self);
             if (uses[scrapper] <= 0)

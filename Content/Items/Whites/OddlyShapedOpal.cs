@@ -16,16 +16,16 @@ namespace WellRoundedBalance.Items.Whites
             StackDesc(armorGain, armorGainStack, init => $"<style=cIsHealing>Increase armor</style> by <style=cIsHealing>{init}</style>{{Stack}} for every enemy within <style=cIsHealing>" + radius + "m</style> up to <style=cIsHealing>" + maxBuffCount + "</style>" +
             (maxBuffCountStack > 0 ? " <style=cStack>(+" + maxBuffCount + " per stack)</style>" : "") + " times.", noop);
 
-        [ConfigField("Armor Gain", 3f)]
+        [ConfigField("Armor Gain", 2f)]
         public static float armorGain;
 
-        [ConfigField("Armor Gain per Stack", 0f)]
+        [ConfigField("Armor Gain per Stack", 2f)]
         public static float armorGainStack;
 
-        [ConfigField("BaseMax Buff Count", 4)]
+        [ConfigField("Base Max Buff Count", 3)]
         public static int maxBuffCount;
 
-        [ConfigField("Max Buff Count Per Stack", 4)]
+        [ConfigField("Max Buff Count Per Stack", 0)]
         public static int maxBuffCountStack;
 
         [ConfigField("Armor Gain is Hyperbolic", "Decimal, Max value. Set to 0 to make it linear.", 0f)]

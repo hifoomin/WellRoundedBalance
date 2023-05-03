@@ -5,7 +5,7 @@ namespace WellRoundedBalance.Enemies.Standard
 {
     internal class LunarWisp : EnemyBase<LunarWisp>
     {
-        public override string Name => ":: Enemies :::::::: Lunar Wisp";
+        public override string Name => ":: Enemies :: Lunar Wisp";
 
         public override void Init()
         {

@@ -2,7 +2,7 @@
 {
     internal class Beetle : EnemyBase<Beetle>
     {
-        public override string Name => ":: Enemies :::: Beetle";
+        public override string Name => ":: Enemies :: Beetle";
 
         [ConfigField("Should Lunge?", "Disabled if playing Inferno.", true)]
         public static bool shouldLunge;
@@ -24,6 +24,10 @@
 
         private void CharacterBody_onBodyStartGlobal(CharacterBody body)
         {
+            if (Main.IsInfernoDef())
+            {
+                return;
+            }
             switch (body.name)
             {
                 case "BeetleBody(Clone)":
@@ -36,9 +40,9 @@
         {
             if (Main.IsInfernoDef())
             {
-                // pass
+                return;
             }
-            else
+            if (master.name == "BeetleMaster(Clone)")
             {
                 switch (master.name)
                 {
@@ -56,11 +60,7 @@
 
         private void HeadbuttState_FixedUpdate(On.EntityStates.BeetleMonster.HeadbuttState.orig_FixedUpdate orig, EntityStates.BeetleMonster.HeadbuttState self)
         {
-            if (Main.IsInfernoDef())
-            {
-                // pass
-            }
-            else
+            if (!Main.IsInfernoDef())
             {
                 EntityStates.BeetleMonster.HeadbuttState.baseDuration = 2.4f;
                 if (self.isAuthority)

@@ -91,7 +91,7 @@ namespace WellRoundedBalance.Enemies.FinalBosses
         public static GameObject ramp3;
         public static GameObject rocks;
 
-        public override string Name => ":::: Final Bosses : Mithrix";
+        public override string Name => ":::: Final Bosses :: Mithrix";
 
         public override void Init()
         {

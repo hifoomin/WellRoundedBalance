@@ -2,7 +2,7 @@
 {
     internal class SolusProbe : EnemyBase<SolusProbe>
     {
-        public override string Name => ":: Enemies :::::: Solus Probe";
+        public override string Name => ":: Enemies :: Solus Probe";
 
         [ConfigField("Base Damage", "Disabled if playing Inferno.", 12f)]
         public static float baseDamage;

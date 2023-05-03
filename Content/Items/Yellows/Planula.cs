@@ -70,10 +70,12 @@ namespace WellRoundedBalance.Items.Yellows
 
     public class PlanulaController : CharacterBody.ItemBehavior
     {
-        private float timer = 0;
-        private float burnDistanceBase = 100f;
-        private float burnInterval = 0.5f;
-        private float burnDuration = 5f;
+        public float timer = 0;
+        public float burnDistanceBase = 100f;
+        public float burnInterval = 0.5f;
+        public float burnDuration = 5f;
+        public BodyIndex index;
+        public BodyIndex newtIndex;
 
         private GameObject sunInstance;
 
@@ -88,11 +90,13 @@ namespace WellRoundedBalance.Items.Yellows
             sunPlacementMinDistance += body.radius;
             sunPlacementIdealAltitudeBonus += body.radius;
             burnDuration = 5f + 3f * (stack - 1);
+            index = body.bodyIndex;
+            newtIndex = BodyCatalog.FindBodyIndex("ShopkeeperBody");
         }
 
         private void FixedUpdate()
         {
-            if (!NetworkServer.active)
+            if (!NetworkServer.active || index == newtIndex)
             {
                 return;
             }

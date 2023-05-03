@@ -52,6 +52,7 @@ The mod integrates some smaller mods to give players the intended, better experi
 - FixKjaroRunald
 - Fix Playercount
 - GoldChestForAll
+- LunarConstruct
 - LunarWispFalloff
 - PingOrdering
 - ShurikenFix

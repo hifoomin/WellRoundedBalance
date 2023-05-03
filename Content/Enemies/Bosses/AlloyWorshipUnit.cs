@@ -6,7 +6,7 @@
             bring back spinning laser (lmaoo voidling's only good move isn't even original)
             add a component that does something with the solus probes possibly
         */
-        public override string Name => "::: Bosses : Alloy Worship Unit";
+        public override string Name => "::: Bosses :: Alloy Worship Unit";
 
         public override void Init()
         {

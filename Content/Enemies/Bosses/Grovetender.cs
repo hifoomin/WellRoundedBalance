@@ -2,7 +2,7 @@
 {
     internal class Grovetender : EnemyBase<Grovetender>
     {
-        public override string Name => "::: Bosses ::: Grovetender";
+        public override string Name => "::: Bosses :: Grovetender";
 
         [ConfigField("Should replace Clay Dunestriders on Sundered Grove?", "", true)]
         public static bool shouldReplaceClayDunestriderOnSunderedGrove;
