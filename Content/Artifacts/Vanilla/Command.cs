@@ -1,5 +1,6 @@
 ﻿using Inferno.Stat_AI;
 using RoR2;
+using System.ComponentModel;
 using WolfoQualityOfLife;
 
 namespace WellRoundedBalance.Artifacts.Vanilla
@@ -23,7 +24,7 @@ namespace WellRoundedBalance.Artifacts.Vanilla
 
         private void Inventory_GiveItem_ItemIndex_int(On.RoR2.Inventory.orig_GiveItem_ItemIndex_int orig, Inventory self, ItemIndex itemIndex, int count)
         {
-            if (RunArtifactManager.instance.IsArtifactEnabled(RoR2Content.Artifacts.commandArtifactDef))
+            if (RunArtifactManager.instance && RunArtifactManager.instance.IsArtifactEnabled(RoR2Content.Artifacts.commandArtifactDef))
             {
                 var player = self.GetComponent<PlayerCharacterMasterController>();
                 if (player)
@@ -48,6 +49,10 @@ namespace WellRoundedBalance.Artifacts.Vanilla
 
         private void CharacterBody_onBodyInventoryChangedGlobal(CharacterBody body)
         {
+            if (!RunArtifactManager.instance)
+            {
+                return;
+            }
             if (!RunArtifactManager.instance.IsArtifactEnabled(RoR2Content.Artifacts.commandArtifactDef))
             {
                 return;

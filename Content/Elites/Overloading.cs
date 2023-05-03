@@ -184,6 +184,7 @@ namespace WellRoundedBalance.Elites
                 if (ward.transform.position != gameObject.transform.position) ward.transform.position = gameObject.transform.position;
                 if (ward.teamFilter.teamIndex != cb.teamComponent.teamIndex) teamFilter.teamIndex = cb.teamComponent.teamIndex;
                 if (ward.teamFilter != teamFilter) ward.teamFilter = teamFilter;
+                if (!hc.alive && NetworkServer.active) Destroy(this);
                 if (stopwatch >= GetDelay())
                 {
                     stopwatch = 0f;

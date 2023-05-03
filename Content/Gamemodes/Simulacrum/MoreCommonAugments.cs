@@ -22,6 +22,7 @@ namespace WellRoundedBalance.Gamemodes.Simulacrum
         private GameObject InfiniteTowerWaveCategory_SelectWavePrefab(On.RoR2.InfiniteTowerWaveCategory.orig_SelectWavePrefab orig, InfiniteTowerWaveCategory self, InfiniteTowerRun run, Xoroshiro128Plus rng)
         {
             self.wavePrefabs[0].weight = defaultWaveWeight;
+            self.wavePrefabs[7].weight = 0;
             return orig(self, run, rng);
         }
     }

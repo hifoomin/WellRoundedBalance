@@ -37,7 +37,7 @@ namespace WellRoundedBalance.Artifacts.Vanilla
 
             MonsterTeamGainsItemsArtifactManager.dropPattern = duplicatedPattern;
 
-            Logger.LogError("dropPattern has this many elements: " + MonsterTeamGainsItemsArtifactManager.dropPattern.Length);
+            // Logger.LogError("dropPattern has this many elements: " + MonsterTeamGainsItemsArtifactManager.dropPattern.Length);
         }
 
         private void MonsterTeamGainsItemsArtifactManager_EnsureMonsterItemCountMatchesStageCount(ILContext il)

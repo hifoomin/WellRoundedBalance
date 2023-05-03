@@ -1,4 +1,5 @@
-﻿using Mono.Cecil.Cil;
+﻿using Inferno.Stat_AI;
+using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using System.Reflection;
 using WellRoundedBalance.Buffs;
@@ -65,16 +66,16 @@ namespace WellRoundedBalance.Elites
             var projectileStickOnImpact = spike.GetComponent<ProjectileStickOnImpact>();
             // remove projectileimpactexplosion setexplosionradius event
             // add projectileimpactexplosion setexplosionradius event to make spike have a 7.5m explosion radius
-            
 
-            On.RoR2.Projectile.ProjectileExplosion.SetExplosionRadius += (orig, self, radius) => {
-                if (self.gameObject.name.Contains("Voidtouched Spike")) {
+            On.RoR2.Projectile.ProjectileExplosion.SetExplosionRadius += (orig, self, radius) =>
+            {
+                if (self.gameObject.name.Contains("Voidtouched Spike"))
+                {
                     return;
                 }
 
                 orig(self, radius);
             };
-
 
             base.Init();
         }
@@ -84,13 +85,27 @@ namespace WellRoundedBalance.Elites
             IL.RoR2.GlobalEventManager.OnHitEnemy += GlobalEventManager_OnHitEnemy;
             IL.RoR2.AffixVoidBehavior.FixedUpdate += AffixVoidBehavior_FixedUpdate;
             On.RoR2.CharacterBody.OnSkillActivated += OnSkillActivated;
-            On.RoR2.HealthComponent.Awake += HealthComponent_Awake;
+            On.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
         }
 
-        private void HealthComponent_Awake(On.RoR2.HealthComponent.orig_Awake orig, HealthComponent self)
+        private void HealthComponent_TakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo)
         {
-            self.gameObject.AddComponent<VoidtouchedPermanentDamage>();
-            orig(self);
+            orig(self, damageInfo);
+            var body = self.body;
+            var attacker = damageInfo.attacker;
+            if (body && attacker)
+            {
+                var attackerBody = attacker.GetComponent<CharacterBody>();
+                if (attackerBody && attackerBody.HasBuff(DLC1Content.Buffs.EliteVoid))
+                {
+                    float takenDamagePercent = damageInfo.damage / self.fullCombinedHealth * 100f;
+                    int permanentDamage = Mathf.FloorToInt((takenDamagePercent * permanentDamagePercent / 100f) * damageInfo.procCoefficient);
+                    for (int l = 0; l < permanentDamage; l++)
+                    {
+                        body.AddBuff(RoR2Content.Buffs.PermanentCurse);
+                    }
+                }
+            }
         }
 
         private void OnSkillActivated(On.RoR2.CharacterBody.orig_OnSkillActivated orig, CharacterBody body, GenericSkill slot)
@@ -157,43 +172,6 @@ namespace WellRoundedBalance.Elites
             else
             {
                 Logger.LogError("Failed to apply Voidtouched Elite Needletick hook");
-            }
-        }
-    }
-
-    public class VoidtouchedPermanentDamage : MonoBehaviour, IOnTakeDamageServerReceiver
-    {
-        public HealthComponent hc;
-        public CharacterBody body;
-
-        public void Start()
-        {
-            hc = GetComponent<HealthComponent>();
-            if (!hc)
-            {
-                Destroy(this);
-                return;
-            }
-            body = hc.body;
-        }
-
-        public void OnTakeDamageServer(DamageReport damageReport)
-        {
-            if (body && damageReport.attacker && damageReport.attackerBody && damageReport.attackerBody.HasBuff(DLC1Content.Buffs.EliteVoid))
-            {
-                switch (body.teamComponent.teamIndex)
-                {
-                    case TeamIndex.Player:
-                        {
-                            float takenDamagePercent = damageReport.damageDealt / hc.fullCombinedHealth * 100f;
-                            int permanentDamage = Mathf.FloorToInt((takenDamagePercent * Voidtouched.permanentDamagePercent / 100f) * damageReport.damageInfo.procCoefficient);
-                            for (int l = 0; l < permanentDamage; l++)
-                            {
-                                body.AddBuff(RoR2Content.Buffs.PermanentCurse);
-                            }
-                        }
-                        break;
-                }
             }
         }
     }

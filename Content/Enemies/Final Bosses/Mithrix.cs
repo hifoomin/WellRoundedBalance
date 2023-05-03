@@ -26,8 +26,53 @@ namespace WellRoundedBalance.Enemies.FinalBosses
         [ConfigField("Should Sprint in Any Direction?", "Disabled if playing Inferno.", true)]
         public static bool shouldSprintInAnyDirection;
 
-        [ConfigField("Enable Skill and AI Changes?", "Disabled if playing Inferno.", true)]
-        public static bool enableSkillAndAIChanges;
+        [ConfigField("Enable Orb Slam Aftershock?", "Disabled if playing Inferno.", true)]
+        public static bool aftershock;
+
+        [ConfigField("Enable Killing NPC on Phase 4?", "Disabled if playing Inferno.", true)]
+        public static bool npc;
+
+        [ConfigField("Enable Faster Big Spinny?", "Disabled if playing Inferno.", true)]
+        public static bool bigSpinny;
+
+        [ConfigField("Enable Escape Sequence Damage and Count changes?", "Disabled if playing Inferno.", true)]
+        public static bool escapeSequence;
+
+        [ConfigField("Enable Faster Mithrix Dissolve?", "Disabled if playing Inferno.", true)]
+        public static bool dissolve;
+
+        [ConfigField("Disable Mithrix Stagger?", "Disabled if playing Inferno.", true)]
+        public static bool stagger;
+
+        [ConfigField("Enable Item Steal Rework?", "Disabled if playing Inferno.", true)]
+        public static bool stealRework;
+
+        [ConfigField("Enable Orb Slam Changes?", "Disabled if playing Inferno.", true)]
+        public static bool orbSlam;
+
+        [ConfigField("Enable Lunar Shards Changes?", "Disabled if playing Inferno.", true)]
+        public static bool shards;
+
+        [ConfigField("Enable Hammer Bash Changes?", "Disabled if playing Inferno.", true)]
+        public static bool bash;
+
+        [ConfigField("Enable Slide Changes?", "Disabled if playing Inferno.", true)]
+        public static bool slide;
+
+        [ConfigField("Enable Hammer Slam Changes?", "Disabled if playing Inferno.", true)]
+        public static bool slam;
+
+        [ConfigField("Enable Sky Leap Changes?", "Disabled if playing Inferno.", true)]
+        public static bool leap;
+
+        [ConfigField("Enable Clones?", "Disabled if playing Inferno.", true)]
+        public static bool clones;
+
+        [ConfigField("Enable AI Changes?", "Disabled if playing Inferno.", true)]
+        public static bool ai;
+
+        [ConfigField("Enable Stat Changes?", "Disabled if playing Inferno.", true)]
+        public static bool stat;
 
         [ConfigField("Disable Ramps?", "Disabled if playing Inferno.", true)]
         public static bool disableRamps;
@@ -88,7 +133,7 @@ namespace WellRoundedBalance.Enemies.FinalBosses
         private void FistSlam_OnExit(On.EntityStates.BrotherMonster.FistSlam.orig_OnExit orig, FistSlam self)
         {
             orig(self);
-            if (enableSkillAndAIChanges)
+            if (aftershock)
             {
                 var body = self.characterBody;
                 if (self.isAuthority)
@@ -111,7 +156,7 @@ namespace WellRoundedBalance.Enemies.FinalBosses
 
         private void BrotherEncounterPhaseBaseState_OnExit(On.EntityStates.Missions.BrotherEncounter.BrotherEncounterPhaseBaseState.orig_OnExit orig, EntityStates.Missions.BrotherEncounter.BrotherEncounterPhaseBaseState self)
         {
-            if (self is EntityStates.Missions.BrotherEncounter.Phase4)
+            if (self is EntityStates.Missions.BrotherEncounter.Phase4 && npc)
             {
                 disableAllyNPC = false;
             }
@@ -122,12 +167,16 @@ namespace WellRoundedBalance.Enemies.FinalBosses
 
         private CharacterMaster MasterSummon_Perform(On.RoR2.MasterSummon.orig_Perform orig, MasterSummon self)
         {
-            var master = self.masterPrefab.GetComponent<CharacterMaster>();
-            if (disableAllyNPC && NetworkServer.active)
+            if (npc)
             {
-                if (master && (self.teamIndexOverride == TeamIndex.Player || master.teamIndex == TeamIndex.Player))
-                    return null;
+                var master = self.masterPrefab.GetComponent<CharacterMaster>();
+                if (disableAllyNPC && NetworkServer.active)
+                {
+                    if (master && (self.teamIndexOverride == TeamIndex.Player || master.teamIndex == TeamIndex.Player))
+                        return null;
+                }
             }
+
             return orig(self);
         }
 
@@ -136,7 +185,7 @@ namespace WellRoundedBalance.Enemies.FinalBosses
 
         private void BrotherEncounterPhaseBaseState_FixedUpdate(On.EntityStates.Missions.BrotherEncounter.BrotherEncounterPhaseBaseState.orig_FixedUpdate orig, EntityStates.Missions.BrotherEncounter.BrotherEncounterPhaseBaseState self)
         {
-            if (self is EntityStates.Missions.BrotherEncounter.Phase4 && NetworkServer.active)
+            if (self is EntityStates.Missions.BrotherEncounter.Phase4 && NetworkServer.active && npc)
             {
                 disableAllyNPC = true;
 
@@ -158,7 +207,7 @@ namespace WellRoundedBalance.Enemies.FinalBosses
 
         private void UltChannelState_OnEnter(On.EntityStates.BrotherMonster.UltChannelState.orig_OnEnter orig, UltChannelState self)
         {
-            if (enableSkillAndAIChanges)
+            if (bigSpinny)
             {
                 UltChannelState.totalWaves = 8;
                 UltChannelState.maxDuration = 8f;
@@ -168,19 +217,19 @@ namespace WellRoundedBalance.Enemies.FinalBosses
 
         private void FireRandomProjectiles_OnEnter(On.EntityStates.BrotherHaunt.FireRandomProjectiles.orig_OnEnter orig, EntityStates.BrotherHaunt.FireRandomProjectiles self)
         {
-            if (enableSkillAndAIChanges)
+            if (escapeSequence)
             {
                 EntityStates.BrotherHaunt.FireRandomProjectiles.maximumCharges = 150;
                 EntityStates.BrotherHaunt.FireRandomProjectiles.chargeRechargeDuration = 0.06f;
                 EntityStates.BrotherHaunt.FireRandomProjectiles.chanceToFirePerSecond = 0.33f;
-                EntityStates.BrotherHaunt.FireRandomProjectiles.damageCoefficient = 7.5f;
+                EntityStates.BrotherHaunt.FireRandomProjectiles.damageCoefficient = 6.5f;
             }
             orig(self);
         }
 
         private void TrueDeathState_OnEnter(On.EntityStates.BrotherMonster.TrueDeathState.orig_OnEnter orig, TrueDeathState self)
         {
-            if (enableSkillAndAIChanges)
+            if (dissolve)
             {
                 TrueDeathState.dissolveDuration = 5f;
             }
@@ -189,7 +238,7 @@ namespace WellRoundedBalance.Enemies.FinalBosses
 
         private void StaggerLoop_OnEnter(On.EntityStates.BrotherMonster.StaggerLoop.orig_OnEnter orig, StaggerLoop self)
         {
-            if (enableSkillAndAIChanges)
+            if (stagger)
             {
                 self.duration = 0f;
             }
@@ -198,7 +247,7 @@ namespace WellRoundedBalance.Enemies.FinalBosses
 
         private void StaggerExit_OnEnter(On.EntityStates.BrotherMonster.StaggerExit.orig_OnEnter orig, StaggerExit self)
         {
-            if (enableSkillAndAIChanges)
+            if (stagger)
             {
                 self.duration = 0f;
             }
@@ -207,7 +256,7 @@ namespace WellRoundedBalance.Enemies.FinalBosses
 
         private void StaggerEnter_OnEnter(On.EntityStates.BrotherMonster.StaggerEnter.orig_OnEnter orig, StaggerEnter self)
         {
-            if (enableSkillAndAIChanges)
+            if (stagger)
             {
                 self.duration = 0f;
             }
@@ -216,7 +265,7 @@ namespace WellRoundedBalance.Enemies.FinalBosses
 
         private void SpellChannelExitState_OnEnter(On.EntityStates.BrotherMonster.SpellChannelExitState.orig_OnEnter orig, SpellChannelExitState self)
         {
-            if (enableSkillAndAIChanges)
+            if (stealRework)
             {
                 SpellChannelExitState.lendInterval = 0f;
                 SpellChannelExitState.duration = 2.5f;
@@ -226,7 +275,7 @@ namespace WellRoundedBalance.Enemies.FinalBosses
 
         private void SpellChannelState_OnEnter(On.EntityStates.BrotherMonster.SpellChannelState.orig_OnEnter orig, SpellChannelState self)
         {
-            if (enableSkillAndAIChanges)
+            if (stealRework)
             {
                 SpellChannelState.stealInterval = 0f;
                 SpellChannelState.delayBeforeBeginningSteal = 0f;
@@ -237,7 +286,7 @@ namespace WellRoundedBalance.Enemies.FinalBosses
 
         private void SpellChannelEnterState_OnEnter(On.EntityStates.BrotherMonster.SpellChannelEnterState.orig_OnEnter orig, SpellChannelEnterState self)
         {
-            if (enableSkillAndAIChanges)
+            if (stealRework)
             {
                 SpellChannelEnterState.duration = 3f;
             }
@@ -246,7 +295,7 @@ namespace WellRoundedBalance.Enemies.FinalBosses
 
         private void FistSlam_OnEnter(On.EntityStates.BrotherMonster.FistSlam.orig_OnEnter orig, FistSlam self)
         {
-            if (enableSkillAndAIChanges)
+            if (orbSlam)
             {
                 FistSlam.waveProjectileDamageCoefficient = 1.2f;
                 FistSlam.healthCostFraction = 0f;
@@ -259,7 +308,7 @@ namespace WellRoundedBalance.Enemies.FinalBosses
 
         private static void FireLunarShards_OnEnter(On.EntityStates.BrotherMonster.Weapon.FireLunarShards.orig_OnEnter orig, EntityStates.BrotherMonster.Weapon.FireLunarShards self)
         {
-            if (enableSkillAndAIChanges)
+            if (shards)
             {
                 EntityStates.BrotherMonster.Weapon.FireLunarShards.spreadBloomValue = 20f;
                 EntityStates.BrotherMonster.Weapon.FireLunarShards.recoilAmplitude = 2f;
@@ -269,7 +318,7 @@ namespace WellRoundedBalance.Enemies.FinalBosses
 
         private void SprintBash_OnEnter(On.EntityStates.BrotherMonster.SprintBash.orig_OnEnter orig, SprintBash self)
         {
-            if (enableSkillAndAIChanges)
+            if (bash)
             {
                 self.baseDuration = 1.4f;
                 self.damageCoefficient = 1.5f;
@@ -281,7 +330,7 @@ namespace WellRoundedBalance.Enemies.FinalBosses
 
         private static void BaseSlideState_OnEnter(On.EntityStates.BrotherMonster.BaseSlideState.orig_OnEnter orig, BaseSlideState self)
         {
-            if (enableSkillAndAIChanges)
+            if (slide)
             {
                 switch (self)
                 {
@@ -303,7 +352,7 @@ namespace WellRoundedBalance.Enemies.FinalBosses
 
         private void WeaponSlam_OnEnter(On.EntityStates.BrotherMonster.WeaponSlam.orig_OnEnter orig, WeaponSlam self)
         {
-            if (enableSkillAndAIChanges)
+            if (slam)
             {
                 WeaponSlam.waveProjectileArc = 360f;
                 WeaponSlam.waveProjectileCount = 8;
@@ -316,7 +365,7 @@ namespace WellRoundedBalance.Enemies.FinalBosses
 
         private void ExitSkyLeap_OnEnter(On.EntityStates.BrotherMonster.ExitSkyLeap.orig_OnEnter orig, ExitSkyLeap self)
         {
-            if (enableSkillAndAIChanges)
+            if (leap)
             {
                 ExitSkyLeap.waveProjectileCount = 20;
                 ExitSkyLeap.waveProjectileDamageCoefficient = 2.5f;
@@ -326,7 +375,7 @@ namespace WellRoundedBalance.Enemies.FinalBosses
 
         private void HoldSkyLeap_OnEnter(On.EntityStates.BrotherMonster.HoldSkyLeap.orig_OnEnter orig, HoldSkyLeap self)
         {
-            if (enableSkillAndAIChanges)
+            if (leap)
             {
                 HoldSkyLeap.duration = 2f;
                 if (NetworkServer.active)
@@ -347,7 +396,7 @@ namespace WellRoundedBalance.Enemies.FinalBosses
                 rocks.SetActive(false);
             }
             orig(self);
-            if (enableSkillAndAIChanges)
+            if (clones)
             {
                 var players = CharacterBody.readOnlyInstancesList.Where(x => x.isPlayerControlled);
                 foreach (CharacterBody body in players)
@@ -424,6 +473,10 @@ namespace WellRoundedBalance.Enemies.FinalBosses
 
         private void CharacterMaster_onStartGlobal(CharacterMaster cm)
         {
+            if (!ai)
+            {
+                return;
+            }
             if (Main.IsInfernoDef())
             {
                 // pass
@@ -434,42 +487,36 @@ namespace WellRoundedBalance.Enemies.FinalBosses
                 {
                     case "BrotherMaster(Clone)":
                         {
-                            if (enableSkillAndAIChanges)
-                            {
-                                AISkillDriver MithrixFireShards = (from x in cm.GetComponents<AISkillDriver>()
-                                                                   where x.customName == "Sprint and FireLunarShards"
-                                                                   select x).First();
-                                MithrixFireShards.minDistance = 0f;
-                                MithrixFireShards.maxUserHealthFraction = Mathf.Infinity;
-
-                                AISkillDriver MithrixSprint = (from x in cm.GetComponents<AISkillDriver>()
-                                                               where x.customName == "Sprint After Target"
+                            AISkillDriver MithrixFireShards = (from x in cm.GetComponents<AISkillDriver>()
+                                                               where x.customName == "Sprint and FireLunarShards"
                                                                select x).First();
-                                MithrixSprint.minDistance = 40f;
+                            MithrixFireShards.minDistance = 0f;
+                            MithrixFireShards.maxUserHealthFraction = Mathf.Infinity;
 
-                                AISkillDriver DashStrafe = (from x in cm.GetComponents<AISkillDriver>()
-                                                            where x.customName == "DashStrafe"
-                                                            select x).First();
-                                DashStrafe.nextHighPriorityOverride = MithrixFireShards;
-                            }
+                            AISkillDriver MithrixSprint = (from x in cm.GetComponents<AISkillDriver>()
+                                                           where x.customName == "Sprint After Target"
+                                                           select x).First();
+                            MithrixSprint.minDistance = 40f;
+
+                            AISkillDriver DashStrafe = (from x in cm.GetComponents<AISkillDriver>()
+                                                        where x.customName == "DashStrafe"
+                                                        select x).First();
+                            DashStrafe.nextHighPriorityOverride = MithrixFireShards;
                         }
 
                         break;
 
                     case "BrotherHurtMaster(Clone)":
-                        if (enableSkillAndAIChanges)
-                        {
-                            AISkillDriver MithrixWeakSlam = (from x in cm.GetComponents<AISkillDriver>()
-                                                             where x.customName == "SlamGround"
-                                                             select x).First();
-                            MithrixWeakSlam.maxUserHealthFraction = Mathf.Infinity;
-                            MithrixWeakSlam.movementType = AISkillDriver.MovementType.StrafeMovetarget;
+                        AISkillDriver MithrixWeakSlam = (from x in cm.GetComponents<AISkillDriver>()
+                                                         where x.customName == "SlamGround"
+                                                         select x).First();
+                        MithrixWeakSlam.maxUserHealthFraction = Mathf.Infinity;
+                        MithrixWeakSlam.movementType = AISkillDriver.MovementType.StrafeMovetarget;
 
-                            AISkillDriver MithrixWeakShards = (from x in cm.GetComponents<AISkillDriver>()
-                                                               where x.customName == "Shoot"
-                                                               select x).First();
-                            MithrixWeakShards.movementType = AISkillDriver.MovementType.StrafeMovetarget;
-                        }
+                        AISkillDriver MithrixWeakShards = (from x in cm.GetComponents<AISkillDriver>()
+                                                           where x.customName == "Shoot"
+                                                           select x).First();
+                        MithrixWeakShards.movementType = AISkillDriver.MovementType.StrafeMovetarget;
 
                         break;
                 }
@@ -478,6 +525,10 @@ namespace WellRoundedBalance.Enemies.FinalBosses
 
         private void CharacterBody_onBodyAwakeGlobal(CharacterBody cb)
         {
+            if (!stat)
+            {
+                return;
+            }
             if (Main.IsInfernoDef())
             {
                 // pass
@@ -519,8 +570,10 @@ namespace WellRoundedBalance.Enemies.FinalBosses
                         break;
 
                     case "BrotherGlassBody(Clone)":
-                        cb.baseMaxHealth = phase4BaseMaxHealth;
-                        cb.levelMaxHealth = phase4BaseMaxHealth * 0.3f;
+                        cb.baseMaxHealth = phase4BaseMaxHealth * 0.25f;
+                        cb.levelMaxHealth = phase4BaseMaxHealth * 0.25f * 0.3f;
+                        cb.baseDamage = 9f;
+                        cb.levelDamage = 1.8f;
                         break;
                 }
             }
@@ -544,8 +597,8 @@ namespace WellRoundedBalance.Enemies.FinalBosses
                 var escapeLine = Utils.Paths.GameObject.BrotherUltLineProjectileStatic.Load<GameObject>();
                 var rotateAroundAxis = escapeLine.GetComponent<RotateAroundAxis>();
                 rotateAroundAxis.enabled = true;
-                rotateAroundAxis.slowRotationSpeed = 25f;
-                rotateAroundAxis.fastRotationSpeed = 25f;
+                rotateAroundAxis.slowRotationSpeed = 13f;
+                rotateAroundAxis.fastRotationSpeed = 13f;
 
                 var projectileSimple = escapeLine.GetComponent<ProjectileSimple>();
                 projectileSimple.desiredForwardSpeed = 50f;

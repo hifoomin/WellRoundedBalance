@@ -19,6 +19,10 @@ namespace WellRoundedBalance.Gamemodes.Eclipse
 
         private void CharacterMaster_onStartGlobal(CharacterMaster master)
         {
+            if (!Run.instance)
+            {
+                return;
+            }
             if (Run.instance.selectedDifficulty >= DifficultyIndex.Eclipse1 && master.teamIndex == TeamIndex.Monster)
             {
                 var baseAI = master.GetComponent<BaseAI>();
@@ -26,7 +30,7 @@ namespace WellRoundedBalance.Gamemodes.Eclipse
                 {
                     baseAI.fullVision = true;
                     baseAI.aimVectorMaxSpeed = 250f;
-                    if (master.name != "GolemMaster(Clone)" || master.name != "MegaConstructMaster(Clone)")
+                    if (master.name != "GolemMaster(Clone)" || master.name != "MegaConstructMaster(Clone)" || master.name != "ClayBruiserMaster(Clone)")
                     {
                         baseAI.aimVectorDampTime = 0.031f;
                     }

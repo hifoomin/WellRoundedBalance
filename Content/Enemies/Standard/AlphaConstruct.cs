@@ -12,7 +12,7 @@
         [ConfigField("Should replace Blind Pests on Siphoned Forest?", "", true)]
         public static bool shouldReplaceBlindPestsOnSiphonedForest;
 
-        [ConfigField("Should spawn on Commencement?", "", true)]
+        [ConfigField("Should spawn on Commencement?", "", false)]
         public static bool shouldSpawnOnCommencement;
 
         public override void Hooks()

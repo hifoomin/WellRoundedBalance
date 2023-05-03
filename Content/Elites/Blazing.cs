@@ -1,6 +1,4 @@
-﻿using Mono.Cecil.Cil;
-using MonoMod.Cil;
-using System.Collections;
+﻿using System.Collections;
 using WellRoundedBalance.Buffs;
 using WellRoundedBalance.Gamemodes.Eclipse;
 
@@ -124,6 +122,7 @@ namespace WellRoundedBalance.Elites
     public class BlazingController : MonoBehaviour
     {
         public CharacterBody body;
+        public HealthComponent hc;
         public GameObject projectile = Projectiles.Molotov.singlePrefab;
         private float timer;
         public float interval;
@@ -134,6 +133,7 @@ namespace WellRoundedBalance.Elites
         public void Start()
         {
             body = GetComponent<CharacterBody>();
+            hc = body.healthComponent;
             float maxInterval = Eclipse3.CheckEclipse() ? Blazing.fireProjectileIntervalE3 : Blazing.fireProjectileIntervalE3;
             float minInterval = maxInterval / 2f;
             projectileCount = Mathf.RoundToInt(Util.Remap(body.baseMaxHealth, 20, 2500, 2, 6));
@@ -144,38 +144,13 @@ namespace WellRoundedBalance.Elites
         public void FixedUpdate()
         {
             timer += Time.fixedDeltaTime;
+            if (!hc.alive && NetworkServer.active) Destroy(this);
             if (timer >= interval)
             {
                 timer = 0f;
                 StartCoroutine(FireProjectiles());
             }
         }
-
-        /*
-        public IEnumerator FireProjectiles()
-        {
-            Vector3 normalized = Vector3.ProjectOnPlane(Random.onUnitSphere, Vector3.up);
-            Vector3 position = body.corePosition + new Vector3(0, 3, 0);
-            for (int i = 0; i < projectileCount; i++)
-            {
-                Vector3 forward = Quaternion.AngleAxis(angle * i, Vector3.up) * normalized;
-                if (Util.HasEffectiveAuthority(gameObject))
-                {
-                    FireProjectileInfo info = new()
-                    {
-                        owner = body.gameObject,
-                        damage = body.damage * Blazing.firePoolDamagePerSecond * 0.2f,
-                        crit = false,
-                        position = position,
-                        rotation = Quaternion.LookRotation(forward),
-                        projectilePrefab = projectile
-                    };
-                    ProjectileManager.instance.FireProjectile(info);
-                }
-                yield return new WaitForSeconds(delayBetweenProjectiles);
-            }
-        }
-        */
 
         public IEnumerator FireProjectiles()
         {

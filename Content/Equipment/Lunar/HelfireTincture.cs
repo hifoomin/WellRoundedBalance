@@ -11,20 +11,20 @@ namespace WellRoundedBalance.Equipment.Lunar
         public override string PickupText => "Ignite everything nearby... <color=#FF7F7F>including you and allies.</color>\n";
 
         public override string DescText => "<style=cIsDamage>Ignite</style> ALL characters within " + range + "m for " + duration + " seconds." +
-                                           " Deal <style=cIsDamage>" + Math.Round(selfDamage * 100, 1) + "% of your maximum health per second as burning</style> to yourself," +
-                                           " <style=cIsDamage>" + Math.Round(damageToEnemies * 100, 1) + "%</style> to enemies and" +
-                                           " <style=cIsDamage>" + Math.Round(damageToAlliesMultiplier * selfDamage * 100, 1) + "%</style> to allies";
+                                           " Deal <style=cIsDamage>" + Math.Round(selfDamage * 100, 2) + "% of your maximum health per second as burning</style> to yourself," +
+                                           " <style=cIsDamage>" + Math.Round(damageToEnemies * 100, 2) + "%</style> to enemies and" +
+                                           " <style=cIsDamage>" + Math.Round(damageToAlliesMultiplier * selfDamage * 100, 2) + "%</style> to allies";
 
         [ConfigField("Cooldown", "", 55f)]
         public static float cooldown;
 
-        [ConfigField("Self Damagee", "Decimal.", 0.05f)]
+        [ConfigField("Self Damage", "Decimal.", 0.05f)]
         public static float selfDamage;
 
-        [ConfigField("Damage to Allies Multiplierr", ".", 0.25f)]
+        [ConfigField("Damage to Allies Multiplier", ".", 0.25f)]
         public static float damageToAlliesMultiplier;
 
-        [ConfigField("Damage To Enemiess", "Decimal.", 0.75f)]
+        [ConfigField("Damage To Enemies", "Decimal.", 0.65f)]
         public static float damageToEnemies;
 
         [ConfigField("Range", "", 15f)]

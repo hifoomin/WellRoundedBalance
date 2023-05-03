@@ -61,7 +61,7 @@
 
             projectileDotZonePool.damageCoefficient = 1f;
             projectileDotZonePool.overlapProcCoefficient = 0f;
-            projectileDotZonePool.lifetime = 8f;
+            projectileDotZonePool.lifetime = 6f;
             projectileDotZonePool.fireFrequency = 12f;
             projectileDotZonePool.resetFrequency = 5f;
 

@@ -18,6 +18,17 @@
             {
                 On.EntityStates.BeetleMonster.HeadbuttState.FixedUpdate += HeadbuttState_FixedUpdate;
                 CharacterMaster.onStartGlobal += CharacterMaster_onStartGlobal;
+                CharacterBody.onBodyStartGlobal += CharacterBody_onBodyStartGlobal;
+            }
+        }
+
+        private void CharacterBody_onBodyStartGlobal(CharacterBody body)
+        {
+            switch (body.name)
+            {
+                case "BeetleBody(Clone)":
+                    body.baseMoveSpeed = 9f;
+                    break;
             }
         }
 
@@ -35,7 +46,7 @@
                         AISkillDriver BeetleHeadbutt = (from x in master.GetComponents<AISkillDriver>()
                                                         where x.customName == "HeadbuttOffNodegraph"
                                                         select x).First();
-                        BeetleHeadbutt.maxDistance = 8f;
+                        BeetleHeadbutt.maxDistance = 9f;
                         BeetleHeadbutt.selectionRequiresOnGround = true;
                         BeetleHeadbutt.activationRequiresAimTargetLoS = true;
                         break;
@@ -51,13 +62,13 @@
             }
             else
             {
-                EntityStates.BeetleMonster.HeadbuttState.baseDuration = 2.5f;
+                EntityStates.BeetleMonster.HeadbuttState.baseDuration = 2.4f;
                 if (self.isAuthority)
                 {
                     if (self.modelAnimator && self.modelAnimator.GetFloat("Headbutt.hitBoxActive") > 0.5f)
                     {
                         var direction = self.GetAimRay().direction;
-                        var ahead = direction.normalized * 2f * self.moveSpeedStat;
+                        var ahead = direction.normalized * 2.2f * self.moveSpeedStat;
                         var up = Vector3.up * 5f;
                         var normalized = new Vector3(direction.x, 0f, direction.z).normalized;
                         self.characterMotor.Motor.ForceUnground();

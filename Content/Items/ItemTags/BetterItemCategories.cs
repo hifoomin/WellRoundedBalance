@@ -130,10 +130,13 @@ namespace WellRoundedBalance.Items.ConsistentCategories
             var harpoon = Utils.Paths.ItemDef.MoveSpeedOnKill.Load<ItemDef>();
             harpoon.tags = new ItemTag[] { ItemTag.Utility, ItemTag.OnKillEffect };
 
+            var beads = Utils.Paths.ItemDef.LunarTrinket.Load<ItemDef>();
+            beads.tags = new ItemTag[] { ItemTag.Healing, ItemTag.Utility, ItemTag.ObliterationRelated };
+
             var defenseTag = ItemAPI.FindItemTagByName("Defense");
             Main.WRBLogger.LogDebug("ItemAPI.FindItemTagByName(\"Defense\") tag returns " + defenseTag);
 
-            // special cases (NREs at any point)
+            // special cases
 
             var irradiantPearl = Utils.Paths.ItemDef.ShinyPearl.Load<ItemDef>();
             irradiantPearl.tags = new ItemTag[] { ItemTag.Damage, ItemTag.Utility, ItemTag.WorldUnique };
@@ -181,6 +184,10 @@ namespace WellRoundedBalance.Items.ConsistentCategories
             medkit.tags = new ItemTag[] { ItemTag.AIBlacklist };
             ItemAPI.ApplyTagToItem("Defense", medkit);
 
+            var dios = Utils.Paths.ItemDef.ExtraLife.Load<ItemDef>();
+            dios.tags = new ItemTag[] { ItemTag.AIBlacklist };
+            ItemAPI.ApplyTagToItem("Defense", dios);
+
             // removals and defense additions
 
             ReplaceWithDefense("ArmorPlate"); // Repulsion Armor Plate
@@ -189,7 +196,6 @@ namespace WellRoundedBalance.Items.ConsistentCategories
             ReplaceWithDefense("Bear"); // Tougher Times
             ReplaceWithDefense("BeetleGland"); // Queen's Gland
             ReplaceWithDefense("CaptainDefenseMatrix"); // Defensive Microbots
-            ReplaceWithDefense("ExtraLife"); // Dio's Best Friend
             ReplaceWithDefense("FlatHealth"); // Bison Steak
             ReplaceWithDefense("GhostOnKill"); // Happiest Mask
             ReplaceWithDefense("HeadHunter"); // Wake of Vultures

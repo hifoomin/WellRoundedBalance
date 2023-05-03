@@ -18,6 +18,9 @@ namespace WellRoundedBalance.Equipment.Orange
         [ConfigField("Duration", "", 25f)]
         public static float duration;
 
+        [ConfigField("Cooldown", "", 70f)]
+        public static float cooldown;
+
         public override void Init()
         {
             base.Init();
@@ -26,6 +29,9 @@ namespace WellRoundedBalance.Equipment.Orange
         public override void Hooks()
         {
             IL.RoR2.EquipmentSlot.FireDroneBackup += Changes;
+
+            var Backup = Utils.Paths.EquipmentDef.DroneBackup.Load<EquipmentDef>();
+            Backup.cooldown = cooldown;
         }
 
         private void Changes(ILContext il)

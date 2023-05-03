@@ -6,8 +6,8 @@ namespace WellRoundedBalance.Gamemodes.Simulacrum
     {
         public override string Name => ":: Gamemode :: Simulacrum More Enemy Items";
 
-        [ConfigField("Item Gain", "Monsters Gain an item every Nth wave", 2)]
-        public static int itemGain;
+        [ConfigField("Item Gain Period", "Monsters Gain an item every Nth wave", 3)]
+        public static int itemGainPeriod;
 
         public override void Init()
         {
@@ -22,7 +22,7 @@ namespace WellRoundedBalance.Gamemodes.Simulacrum
         private void InfiniteTowerRun_Start(On.RoR2.InfiniteTowerRun.orig_Start orig, InfiniteTowerRun self)
         {
             orig(self);
-            self.enemyItemPeriod = itemGain;
+            self.enemyItemPeriod = itemGainPeriod;
         }
     }
 }

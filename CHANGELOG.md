@@ -1,3 +1,27 @@
+# 1.2.2 Patch Notes
+- Added LunarConstruct.
+- Buffed Beetle Movement Speed 7.7m/s => **9m/s**.
+- Buffed Beetle lunge distance and animation speed **slightly**.
+- Buffed Mithrix Clone Base Damage 4 => **9**.
+- Buffed The Back-up cooldown 100s => **70s**.
+- Nerfed Blazing Elite Pool Lifetime 8s => **6s**.
+- Nerfed Escape Sequence Lines Damage 7.5 => **6.5**.
+- Nerfed Escape Sequence Lines Rotation Speed 25°/s => **13°/s**.
+- Nerfed Elite Aspect Drop Chance 0.1% => **0.07%**.
+- Nerfed Helfire Tincture Percent Health Damage To Enemies 15% => **13%**.
+- Nerfed Mithrix Clone Base Max Health 700 => **175**.
+- Nerfed Simulacrum Item Gain Period 2 => **3**.
+- Removed Alpha Construct from Commencement.
+- Fixed Artifact of Command including Lunar Coin and Equipment pickups to its limit.
+- Fixed Augment of Command appearing in Simulacrum.
+- Fixed Blazing Elite firing projectile post-mortem.
+- Fixed Clay Templar being too accurate on Eclipse 1.
+- Fixed Config Versioning resetting all configs instead of only changed ones.
+- Fixed Lost Seer's Lenses proccing on 0 Proc Coefficient hits.
+- Fixed Overloading Elite keeping its aura post-mortem.
+- Fixed Overloading Elite teleporting post-mortem.
+- Fixed some item categories/tags.
+
 # 1.2.1 Patch Notes
 - Nerfed Better Scaling Base Value 1.045 => **1.02**.
 - Nerfed Mountain Shrine Credit Multiplier For Each Mountain Shrine to also scale with player count.
@@ -17,7 +41,7 @@
 - Added better Bazaar Rework config.
 - Added better Eclipse config.
 - Added better Resonance Disc VFX.
-- Added config versioning.
+- Added Config Versioning.
 - Buffed AtG Missile Mk.1 Proc Coefficient 0 => **0.75**.
 - Buffed Boss Log Drop Chance 3% => **4.5%**.
 - Buffed Bundle of Fireworks Proc Coefficient 0 => **0.25**.
@@ -60,6 +84,8 @@
 - Nerfed Escape Sequence Lines Damage 9 => **7.5**.
 - Nerfed Executive Card Cooldown 20s => **25s**.
 - Nerfed Global Item Proc Coefficient Multiplier 1 => **0.1**.
+- Nerfed Helfire Tincture Percent Health Damage To Enemies 24% => **15%**.
+- Nerfed Helfire Tincture Percent Health Self Damage 2.5% => **5%**.
 - Nerfed Interstellar Desk Plant Base Range 12m => **10m**.
 - Nerfed Interstellar Desk Plant Percent Healing 6% => **5%**.
 - Nerfed Legendary Chest Cost $200 => **$300**.
