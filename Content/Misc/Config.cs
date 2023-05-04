@@ -42,16 +42,19 @@ namespace WellRoundedBalance.Attributes
                 method = method.MakeGenericMethod(t);
                 ConfigEntryBase val = (ConfigEntryBase)method.Invoke(config, new object[] { new ConfigDefinition(section, configattr.name), configattr.defaultValue, new ConfigDescription(configattr.desc) });
                 ConfigEntryBase backupVal = (ConfigEntryBase)method.Invoke(Main.WRBBackupConfig, new object[] { new ConfigDefinition(Regex.Replace(config.ConfigFilePath, "\\W", "") + " : " + section, configattr.name), val.DefaultValue, new ConfigDescription(configattr.desc) });
-                // Main.WRBLogger.LogDebug(val.DefaultValue + " / " + val.BoxedValue + " ... " + backupVal.DefaultValue + " / " + backupVal.BoxedValue + " >> " + VersionChanged);
-                if (!ConfigEqual(val.DefaultValue, val.BoxedValue))
+                // Main.WRBLogger.LogDebug(section + " : " + configattr.name + " " + val.DefaultValue + " / " + val.BoxedValue + " ... " + backupVal.DefaultValue + " / " + backupVal.BoxedValue + " >> " + VersionChanged);
+
+                if (!ConfigEqual(backupVal.DefaultValue, backupVal.BoxedValue))
                 {
-                    if (!ConfigEqual(backupVal.DefaultValue, backupVal.BoxedValue))
+                    // Main.WRBLogger.LogDebug("Config Updated: " + section + " : " + configattr.name + " from " + val.BoxedValue + " to " + val.DefaultValue);
+                    if (VersionChanged)
                     {
-                        if (VersionChanged) val.BoxedValue = val.DefaultValue;
+                        // Main.WRBLogger.LogDebug("Autosyncing...");
+                        val.BoxedValue = val.DefaultValue;
                         backupVal.BoxedValue = backupVal.DefaultValue;
                     }
-                    else ConfigChanged = true;
                 }
+                if (!ConfigEqual(val.DefaultValue, val.BoxedValue)) ConfigChanged = true;
                 field.SetValue(null, val.BoxedValue);
             }
         }
@@ -61,7 +64,6 @@ namespace WellRoundedBalance.Attributes
             if (a.Equals(b)) return true;
             float fa, fb;
             if (float.TryParse(a.ToString(), out fa) && float.TryParse(b.ToString(), out fb) && Mathf.Abs(fa - fb) < 0.0001) return true;
-
             return false;
         }
     }

@@ -116,7 +116,7 @@ namespace WellRoundedBalance
             enableAutoConfig = WRBMiscConfig.Bind("Config", "Enable Auto Config Sync", true, "Disabling this would stop WRB from syncing config whenever a new version is found.");
             bool _preVersioning = !((Dictionary<ConfigDefinition, string>)AccessTools.DeclaredPropertyGetter(typeof(ConfigFile), "OrphanedEntries").Invoke(WRBMiscConfig, null)).Keys.Any(x => x.Key == "Latest Version");
             latestVersion = WRBMiscConfig.Bind("Config", "Latest Version", PluginVersion, "DO NOT CHANGE THIS");
-            if (enableAutoConfig.Value && (_preVersioning || latestVersion.Value != PluginVersion))
+            if (enableAutoConfig.Value && (_preVersioning || (latestVersion.Value != PluginVersion)))
             {
                 latestVersion.Value = PluginVersion;
                 ConfigManager.VersionChanged = true;
