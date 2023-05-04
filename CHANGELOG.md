@@ -4,6 +4,7 @@
 - Added pre-made config for VanillaVoid.
 - Buffed most Fodder, Miniboss and Boss enemies.
 - Buffed Opal Armor Gain Per Stack 0 => **2**.
+- Nerfed Frog Max Pets 10 => **1**.
 - Nerfed Heretic base stats.
 - Nerfed Opal Armor Gain 3 => **2**.
 - Nerfed Opal Base Max Buff Count 4 => **3**.

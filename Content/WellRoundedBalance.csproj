@@ -139,6 +139,7 @@
 
   <ItemGroup>
     <Folder Include="Enemies\States\" />
+    <Folder Include="SkillDefs\" />
   </ItemGroup>
 
 </Project>

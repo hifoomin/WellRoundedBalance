@@ -58,7 +58,7 @@ namespace WellRoundedBalance.Items.Yellows
                 c.Emit(OpCodes.Ldarg_0);
                 c.EmitDelegate<Func<int, BaseItemBodyBehavior, int>>((useless, self) =>
                 {
-                    return 3;
+                    return beetleGuardCount;
                 });
             }
             else
@@ -71,7 +71,7 @@ namespace WellRoundedBalance.Items.Yellows
         {
             if (slot is DeployableSlot.BeetleGuardAlly)
             {
-                return 3;
+                return beetleGuardCount;
             }
             else
             {
