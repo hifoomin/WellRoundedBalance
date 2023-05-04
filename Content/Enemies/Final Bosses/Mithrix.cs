@@ -3,6 +3,7 @@ using Inferno.Stat_AI;
 using Rewired.ComponentControls.Effects;
 using System;
 using UnityEngine.SceneManagement;
+using static RoR2.MasterCatalog;
 
 namespace WellRoundedBalance.Enemies.FinalBosses
 {
@@ -91,6 +92,11 @@ namespace WellRoundedBalance.Enemies.FinalBosses
         public static GameObject ramp3;
         public static GameObject rocks;
 
+        public static CharacterBody stationaryBody = Utils.Paths.GameObject.EngiTurretBody.Load<GameObject>().GetComponent<CharacterBody>();
+        public static CharacterBody walkerBody = Utils.Paths.GameObject.EngiWalkerTurretBody.Load<GameObject>().GetComponent<CharacterBody>();
+        public static CharacterMaster stationaryMaster = Utils.Paths.GameObject.EngiTurretMaster.Load<GameObject>().GetComponent<CharacterMaster>();
+        public static CharacterMaster walkerMaster = Utils.Paths.GameObject.EngiWalkerTurretMaster.Load<GameObject>().GetComponent<CharacterMaster>();
+
         public override string Name => ":::: Final Bosses :: Mithrix";
 
         public override void Init()
@@ -172,7 +178,7 @@ namespace WellRoundedBalance.Enemies.FinalBosses
                 var master = self.masterPrefab.GetComponent<CharacterMaster>();
                 if (disableAllyNPC && NetworkServer.active)
                 {
-                    if (master && (self.teamIndexOverride == TeamIndex.Player || master.teamIndex == TeamIndex.Player))
+                    if (master && (self.teamIndexOverride == TeamIndex.Player || master.teamIndex == TeamIndex.Player) && master != stationaryMaster && master != walkerMaster)
                         return null;
                 }
             }
@@ -195,7 +201,7 @@ namespace WellRoundedBalance.Enemies.FinalBosses
                     for (int i = 0; i < CharacterBody.readOnlyInstancesList.Count; i++)
                     {
                         var body = CharacterBody.readOnlyInstancesList[i];
-                        if (body.teamComponent.teamIndex == TeamIndex.Player && !body.isPlayerControlled)
+                        if (body.teamComponent.teamIndex == TeamIndex.Player && !body.isPlayerControlled && body != stationaryBody && body != walkerBody)
                         {
                             body.healthComponent.Suicide();
                         }

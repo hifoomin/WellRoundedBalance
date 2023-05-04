@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-
-namespace WellRoundedBalance.Items.Reds
+﻿namespace WellRoundedBalance.Items.Reds
 {
     public class PluripotentLarva : ItemBase<PluripotentLarva>
     {
@@ -14,6 +11,8 @@ namespace WellRoundedBalance.Items.Reds
 
         public override void Init()
         {
+            LanguageAPI.Add("PLURI_CORRUPTED", "<style=cWorldEvent>{0} has been... corrupted.</color>");
+            LanguageAPI.Add("PLURI_CORRUPTED_2P", "<style=cWorldEvent>You have been... corrupted.</color>"); // me
             base.Init();
         }
 
@@ -63,7 +62,16 @@ namespace WellRoundedBalance.Items.Reds
                     self.GiveItem(index, stackCount);
                 }
 
-                Chat.SendBroadcastChat(new Chat.SimpleChatMessage { baseToken = "<style=cWorldEvent>You have been... corrupted.</color>" });
+                var body = self.gameObject.GetComponent<CharacterMaster>()?.GetBody();
+
+                if (NetworkServer.active)
+                {
+                    Chat.SendBroadcastChat(new Chat.SubjectFormatChatMessage
+                    {
+                        subjectAsCharacterBody = body,
+                        baseToken = "PLURI_CORRUPTED"
+                    });
+                }
             }
         }
     }

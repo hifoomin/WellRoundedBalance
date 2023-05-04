@@ -74,8 +74,6 @@ namespace WellRoundedBalance.Items.Yellows
         public float burnDistanceBase = 100f;
         public float burnInterval = 0.5f;
         public float burnDuration = 5f;
-        public BodyIndex index;
-        public BodyIndex newtIndex;
 
         private GameObject sunInstance;
 
@@ -90,13 +88,11 @@ namespace WellRoundedBalance.Items.Yellows
             sunPlacementMinDistance += body.radius;
             sunPlacementIdealAltitudeBonus += body.radius;
             burnDuration = 5f + 3f * (stack - 1);
-            index = body.bodyIndex;
-            newtIndex = BodyCatalog.FindBodyIndex("ShopkeeperBody");
         }
 
         private void FixedUpdate()
         {
-            if (!NetworkServer.active || index == newtIndex)
+            if (!NetworkServer.active || body.name == "ShopkeeperBody(Clone)")
             {
                 return;
             }

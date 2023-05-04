@@ -1,17 +1,26 @@
 # 1.3.0 Patch Notes
+- Added AugmentedVoidReaver.
+- Added FathomlessVoidling.
 - Added pre-made config for VanillaVoid.
 - Buffed most Fodder, Miniboss and Boss enemies.
 - Buffed Opal Armor Gain Per Stack 0 => **2**.
+- Nerfed Heretic base stats.
 - Nerfed Opal Armor Gain 3 => **2**.
 - Nerfed Opal Base Max Buff Count 4 => **3**.
 - Nerfed Opal Max Buff Count Per Stack 4 => **0**.
-- Reworked Enemy Spawn Pools.
-- Reworked some Boss enemies.
+- Nerfed Repulsion Armor Plate Minimum Damage 8 => **10**.
+- Reworked some Fodder and Boss enemies.
+- Reworked Strides of Heresy to **dash and heal, stacking in dash length and end-lag**.
 - Improved Overloading Teleport VFX.
+- Fixed Engineer Turret breaking on Mithrix Phase 4.
 - Fixed Glacial Aspect spamming visual as a player.
 - Fixed Inferno compatibility.
 - Fixed Newt using Planula with Bazaar Is My Home.
 - Fixed Scrapper.
+- Fixed Visions of Heresy sound.
+- Fixed some config options.
+- Fixed minor item descriptions.
+- - Finally, an update I've always been wanting to do! <img src="https://cdn.discordapp.com/emojis/855240421898453003.gif?size=24&quality=lossless" width="24"/> Next up should be Enemy Spawn Pool changes and more item mod compatibility! <img src="https://cdn.discordapp.com/emojis/855240421898453003.gif?size=24&quality=lossless" width="24"/> ~HIFU
 
 # 1.2.2 Patch Notes
 - Added LunarConstruct.
@@ -157,7 +166,7 @@
 - Fixed some config options.
 - Fixed minor item descriptions.
 - Small optimizations.
-- - Bunch of more fixes, QoL and proc rebalance for the main part. ~HIFU.
+- - Bunch of more fixes, QoL and proc rebalance for the main part. ~HIFU
 
 # 1.1.5 Patch Notes
 - Added Exchange Changes.

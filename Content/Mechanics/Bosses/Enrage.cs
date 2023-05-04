@@ -34,7 +34,7 @@ namespace WellRoundedBalance.Mechanics.Bosses
                 {
                     if (sender.bodyIndex == BodyCatalog.FindBodyIndex("BrotherBody(Clone)") || sender.bodyIndex == BodyCatalog.FindBodyIndex("BrotherHurtBody(Clone)"))
                     {
-                        Main.WRBLogger.LogError("Affecting Mithrix");
+                        // Main.WRBLogger.LogError("Affecting Mithrix");
                         args.moveSpeedMultAdd += increase * (maximumMovementSpeedGain * 1.3f);
                         args.attackSpeedMultAdd += increase * (maximumAttackSpeedGain * 1.3f);
                         args.cooldownMultAdd -= increase * (maximumCooldownReductionGain * 1.3f);

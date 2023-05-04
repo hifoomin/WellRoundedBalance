@@ -21,21 +21,24 @@ namespace WellRoundedBalance.Items.Lunars
 
         public override void Hooks()
         {
-            Change();
+            Changes();
+            On.EntityStates.GlobalSkills.LunarNeedle.FireLunarNeedle.OnEnter += FireLunarNeedle_OnEnter;
         }
 
-        public static void Change()
+        private void FireLunarNeedle_OnEnter(On.EntityStates.GlobalSkills.LunarNeedle.FireLunarNeedle.orig_OnEnter orig, EntityStates.GlobalSkills.LunarNeedle.FireLunarNeedle self)
+        {
+            EntityStates.GlobalSkills.LunarNeedle.FireLunarNeedle.baseDuration = 0.1f;
+            EntityStates.GlobalSkills.LunarNeedle.FireLunarNeedle.damageCoefficient = 0.7f;
+            EntityStates.GlobalSkills.LunarNeedle.FireLunarNeedle.recoilAmplitude = 2f;
+            EntityStates.GlobalSkills.LunarNeedle.FireLunarNeedle.spreadBloomValue = 0f;
+            EntityStates.GlobalSkills.LunarNeedle.FireLunarNeedle.maxSpread = 3f;
+            EntityStates.GlobalSkills.LunarNeedle.FireLunarNeedle.fireSound = "Play_MULT_m1_grenade_launcher_shoot";
+            orig(self);
+        }
+
+        private void Changes()
         {
             Vector3 configsize = new Vector3(4f, 4f, 4f);
-            On.EntityStates.GlobalSkills.LunarNeedle.FireLunarNeedle.OnEnter += (orig, self) =>
-            {
-                EntityStates.GlobalSkills.LunarNeedle.FireLunarNeedle.baseDuration = 0.1f;
-                EntityStates.GlobalSkills.LunarNeedle.FireLunarNeedle.damageCoefficient = 0.7f;
-                EntityStates.GlobalSkills.LunarNeedle.FireLunarNeedle.recoilAmplitude = 2f;
-                EntityStates.GlobalSkills.LunarNeedle.FireLunarNeedle.spreadBloomValue = 0f;
-                EntityStates.GlobalSkills.LunarNeedle.FireLunarNeedle.maxSpread = 3f;
-                orig(self);
-            };
 
             var thej = LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/LunarNeedleProjectile");
             var p1 = thej.GetComponent<ProjectileImpactExplosion>();
@@ -52,12 +55,6 @@ namespace WellRoundedBalance.Items.Lunars
             olbart.rechargeStock = 5;
             olbart.fullRestockOnAssign = true;
 
-            On.EntityStates.GlobalSkills.LunarNeedle.FireLunarNeedle.OnEnter += (orig, self) =>
-            {
-                orig(self);
-                EntityStates.GlobalSkills.LunarNeedle.FireLunarNeedle.fireSound = "Play_MULT_m1_grenade_launcher_shoot";
-            };
-
             var a = LegacyResourcesAPI.Load<GameObject>("prefabs/effects/impacteffects/LunarNeedleDamageEffect");
             a.transform.localScale = configsize;
 
@@ -69,7 +66,7 @@ namespace WellRoundedBalance.Items.Lunars
             }
 
             var b = LegacyResourcesAPI.Load<GameObject>("prefabs/effects/impacteffects/LunarNeedleExplosionEffect");
-            b.GetComponent<EffectComponent>().soundName = "Play_imp_overlord_attack1_throw";
+            b.GetComponent<EffectComponent>().soundName = "Play_voidRaid_m1_explode";
             b.transform.localScale = configsize;
 
             butla = b.GetComponentsInChildren<Transform>();

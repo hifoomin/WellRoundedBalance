@@ -46,9 +46,11 @@ There are too many to list here, so please check the google doc for more informa
 
 ## Smaller Features
 The mod integrates some smaller mods to give players the intended, better experience, such as:
+- AugmentedVoidReaver
 - BetterMeteorite
 - BetterSpite
 - ExchangeChanges
+- FathomlessVoidling
 - FixKjaroRunald
 - Fix Playercount
 - GoldChestForAll

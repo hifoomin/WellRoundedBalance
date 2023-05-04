@@ -28,6 +28,7 @@ using MonoMod.RuntimeDetour;
 using WellRoundedBalance.Mechanics.Monsters;
 using WellRoundedBalance.Achievements;
 using HarmonyLib;
+using WellRoundedBalance.Survivors;
 
 // using WellRoundedBalance.Enemies.FamilyEvents;
 
@@ -68,6 +69,7 @@ namespace WellRoundedBalance
         public static ConfigFile WRBGamemodeConfig;
         public static ConfigFile WRBArtifactConfig;
         public static ConfigFile WRBDifficultyConfig;
+        public static ConfigFile WRBSurvivorConfig;
         public static ConfigFile WRBAchievementConfig;
         public static ConfigFile WRBMiscConfig;
         public static ConfigFile WRBBackupConfig; // DO NOT USE THIS !! JJJJJ
@@ -103,6 +105,7 @@ namespace WellRoundedBalance
             WRBGamemodeConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Gamemodes.cfg", true);
             WRBArtifactConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Artifacts.cfg", true);
             WRBDifficultyConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Difficulties.cfg", true);
+            WRBSurvivorConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Survivors.cfg", true);
             WRBAchievementConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Achievements.cfg", true);
             WRBMiscConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Misc.cfg", true);
 
@@ -268,6 +271,21 @@ namespace WellRoundedBalance
             {
                 GamemodeBase based = (GamemodeBase)Activator.CreateInstance(type);
                 if (ValidateGamemode(based))
+                {
+                    try { based.Init(); } catch (Exception ex) { WRBLogger.LogError($"Failed to initialize {type.Name}: {ex}"); }
+                }
+            }
+
+            IEnumerable<Type> survivor = from type in Assembly.GetExecutingAssembly().GetTypes()
+                                         where !type.IsAbstract && type.IsSubclassOf(typeof(SurvivorBase))
+                                         select type;
+
+            WRBLogger.LogInfo("==+----------------==SURVIVORS==----------------+==");
+
+            foreach (Type type in survivor)
+            {
+                SurvivorBase based = (SurvivorBase)Activator.CreateInstance(type);
+                if (ValidateSurvivor(based))
                 {
                     try { based.Init(); } catch (Exception ex) { WRBLogger.LogError($"Failed to initialize {type.Name}: {ex}"); }
                 }
@@ -452,6 +470,17 @@ namespace WellRoundedBalance
             if (gmb.isEnabled)
             {
                 bool enabledfr = WRBGamemodeConfig.Bind(gmb.Name, "Enable Changes?", true, "Vanilla is false").Value;
+                if (enabledfr) return true;
+                else ConfigManager.ConfigChanged = true;
+            }
+            return false;
+        }
+
+        public bool ValidateSurvivor(SurvivorBase sb)
+        {
+            if (sb.isEnabled)
+            {
+                bool enabledfr = WRBSurvivorConfig.Bind(sb.Name, "Enable Changes?", true, "Vanilla is false").Value;
                 if (enabledfr) return true;
                 else ConfigManager.ConfigChanged = true;
             }

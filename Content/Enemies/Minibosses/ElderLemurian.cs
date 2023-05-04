@@ -20,7 +20,8 @@
             if (!Main.IsInfernoDef())
             {
                 EntityStates.LemurianBruiserMonster.Flamebreath.maxSpread = 5f;
-                EntityStates.LemurianBruiserMonster.Flamebreath.radius = 9f;
+                EntityStates.LemurianBruiserMonster.Flamebreath.radius = 6.5f;
+                EntityStates.LemurianBruiserMonster.Flamebreath.totalDamageCoefficient = 4f;
             }
             orig(self);
         }

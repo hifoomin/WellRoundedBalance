@@ -25,7 +25,7 @@ namespace WellRoundedBalance.Items.Whites
         [ConfigField("Flat Damage Reduction is Hyperbolic", "Decimal, Max value. Set to 0 to make it linear.", 0f)]
         public static float flatDamageReductionIsHyperbolic;
 
-        [ConfigField("Minimum Damage", 8f)]
+        [ConfigField("Minimum Damage", 10f)]
         public static float minimumDamage;
 
         [ConfigField("Minimum Damage per Stack", 0f)]
