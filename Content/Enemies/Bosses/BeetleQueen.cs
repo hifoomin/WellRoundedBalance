@@ -31,11 +31,11 @@ namespace WellRoundedBalance.Enemies.Bosses
         {
             if (!Main.IsInfernoDef())
             {
-                EntityStates.BeetleQueenMonster.FireSpit.damageCoefficient = 0.3f;
+                EntityStates.BeetleQueenMonster.FireSpit.damageCoefficient = 0.35f;
                 EntityStates.BeetleQueenMonster.FireSpit.force = 1200f;
-                EntityStates.BeetleQueenMonster.FireSpit.yawSpread = 0f;
-                EntityStates.BeetleQueenMonster.FireSpit.minSpread = 8f;
-                EntityStates.BeetleQueenMonster.FireSpit.maxSpread = 13f;
+                EntityStates.BeetleQueenMonster.FireSpit.yawSpread = 15f;
+                EntityStates.BeetleQueenMonster.FireSpit.minSpread = 15f;
+                EntityStates.BeetleQueenMonster.FireSpit.maxSpread = 30f;
                 EntityStates.BeetleQueenMonster.FireSpit.projectileHSpeed = 40f;
             }
             orig(self);
@@ -64,15 +64,16 @@ namespace WellRoundedBalance.Enemies.Bosses
 
             var spitDoT = Utils.Paths.GameObject.BeetleQueenAcid.Load<GameObject>();
             var projectileDotZone = spitDoT.GetComponent<ProjectileDotZone>();
-            projectileDotZone.lifetime = 10f;
-            projectileDotZone.damageCoefficient = 1.45f;
-            spitDoT.transform.localScale = new Vector3(1.8f, 1.8f, 1.8f);
+            projectileDotZone.lifetime = 9f;
+            projectileDotZone.damageCoefficient = 1.75f;
+            spitDoT.transform.localScale = new Vector3(3.5f, 3.5f, 3.5f);
 
             var beetleWard = Utils.Paths.GameObject.BeetleWard.Load<GameObject>();
             var buffWard = beetleWard.GetComponent<BuffWard>();
-            buffWard.radius = 9f;
+            buffWard.radius = 7.5f;
             buffWard.interval = 0.5f;
             buffWard.buffDuration = 3f;
+            buffWard.expireDuration = 10f;
 
             var egg = Utils.Paths.SkillDef.BeetleQueen2BodySpawnWards.Load<SkillDef>();
             egg.baseRechargeInterval = 12f;
