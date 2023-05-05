@@ -1,5 +1,6 @@
 ﻿using EntityStates;
 using RoR2.Skills;
+using RoR2.ConVar;
 
 namespace WellRoundedBalance.Enemies.Bosses
 {
@@ -129,7 +130,100 @@ namespace WellRoundedBalance.Enemies.Bosses
             titanBody.levelDamage = 5f;
 
             var laserSD = Utils.Paths.SkillDef.TitanBodyLaser.Load<SkillDef>();
-            laserSD.activationState = new SerializableEntityStateType(typeof(ChargeLaserSpam));
+            laserSD.activationState = new SerializableEntityStateType(typeof(LaserAttack));
+
+            GameObject master = Utils.Paths.GameObject.TitanMaster.Load<GameObject>();
+            BaseAI ai = master.GetComponent<BaseAI>();
+            ai.aimVectorMaxSpeed = 720;
+            ai.aimVectorDampTime = 0.03f;
+        }
+    }
+
+    public class LaserAttack : BaseState {
+        public float durationPerLaser => 0.4f;
+        public int baseLasers => 12;
+        public static GameObject effect = Utils.Paths.GameObject.LaserGolem.Load<GameObject>();
+        public static GameObject tracer = Utils.Paths.GameObject.TracerGolem.Load<GameObject>();
+        private int count = 0;
+        private float delay => durationPerLaser / base.attackSpeedStat;
+        private float stopwatch = 0f;
+        private GameObject laserInstance;
+        private LineRenderer lr;
+        private Vector3 targetDir;
+        private uint chargeID;
+
+        // public static IntConVar lasers = new IntConVar("titan_laser_count", ConVarFlags.None, "12", "h");
+        // public static FloatConVar durationPer = new FloatConVar("titan_laser_dur", ConVarFlags.None, "0.3", "h");
+        // public static IntConVar trackPen = new IntConVar("titan_laser_track", ConVarFlags.None, "4", "h");
+
+        public override void OnEnter()
+        {
+            base.OnEnter();
+
+            laserInstance = GameObject.Instantiate(effect, base.FindModelChild("MuzzleLaser"));
+            lr = laserInstance.GetComponent<LineRenderer>();
+
+            chargeID = AkSoundEngine.PostEvent(Events.Play_titanboss_R_laser_preshoot, base.gameObject);
+        }
+
+        public override void OnExit()
+        {
+            base.OnExit();
+            Destroy(laserInstance);
+            AkSoundEngine.StopPlayingID(chargeID);
+        }
+
+        public override void FixedUpdate()
+        {
+            base.FixedUpdate();
+
+            stopwatch += Time.fixedDeltaTime;
+
+            Ray aimRay = base.GetAimRay();
+            float width = durationPerLaser - stopwatch < 0.1f ? 0.1f : durationPerLaser - stopwatch;
+
+            lr.startWidth = width;
+            lr.endWidth = width;
+            lr.SetPosition(0, laserInstance.transform.position);
+            lr.SetPosition(1, aimRay.GetPoint(1000));
+
+            laserInstance.transform.forward = targetDir;
+
+            if (durationPerLaser - stopwatch > durationPerLaser / 2) {
+                targetDir = aimRay.direction; // grace period before firing so it's dodgeable
+            }
+
+            if (stopwatch >= delay) {
+                count++;
+                stopwatch = 0f;
+
+                BulletAttack attack = new();
+                attack.origin = aimRay.origin;
+                attack.damage = base.damageStat * 2f;
+                attack.procCoefficient = 0.6f;
+                attack.falloffModel = BulletAttack.FalloffModel.None;
+                attack.aimVector = targetDir;
+                attack.muzzleName = "MuzzleLaser";
+                attack.tracerEffectPrefab = tracer;
+                attack.minSpread = 0;
+                attack.maxSpread = 0;
+                attack.maxDistance = 2000;
+                attack.owner = base.gameObject;
+                attack.smartCollision = true;
+                attack.radius = 1f;
+                attack.force = 400f;
+                attack.queryTriggerInteraction = QueryTriggerInteraction.Ignore;
+
+                if (base.isAuthority) {
+                    attack.Fire();
+                }
+
+                AkSoundEngine.PostEvent(Events.Play_golem_laser_fire, base.gameObject);
+
+                if (count > baseLasers) {
+                    outer.SetNextStateToMain();
+                }
+            }
         }
     }
 
@@ -196,7 +290,7 @@ namespace WellRoundedBalance.Enemies.Bosses
             }
             if (characterBody)
             {
-                characterBody.SetAimTimer(duration);
+                // characterBody.SetAimTimer(duration);
             }
             flashTimer = 0f;
             laserOn = true;
@@ -224,7 +318,8 @@ namespace WellRoundedBalance.Enemies.Bosses
                 var aimRay = GetAimRay();
                 var position = laserEffect.transform.parent.position;
                 var endPoint = aimRay.GetPoint(1000f);
-                laserDirection = endPoint - position;
+                // laserDirection = endPoint - position;
+                laserDirection = aimRay.direction;
                 if (Physics.Raycast(aimRay, out RaycastHit raycastHit, 1000f, LayerIndex.world.mask | LayerIndex.entityPrecise.mask))
                 {
                     endPoint = raycastHit.point;
