@@ -1,33 +1,31 @@
-# 1.3.0 Patch Notes
+# 1.3.0 Patch Notes - The *Compatibility Update May* Update
 - Added AugmentedVoidReaver.
 - Added FathomlessVoidling.
-- Added GoldenCoastPlus.
 - Added pre-made config for VanillaVoid.
-- Added pre-made config for GoldenCoastPlus.
 - Buffed Legendary Chest Cost $300 => **$250**.
-- Buffed most Fodder, Miniboss and Boss enemies.
 - Buffed Opal Armor Gain Per Stack 0 => **2**.
+- Buffed most Fodder, Miniboss and Boss enemies.
 - Nerfed Frog Max Pets 10 => **1**.
 - Nerfed Heretic base stats.
 - Nerfed Opal Armor Gain 3 => **2**.
 - Nerfed Opal Base Max Buff Count 4 => **3**.
 - Nerfed Opal Max Buff Count Per Stack 4 => **0**.
-- Nerfed Shaped Glass Damage Increase 100% => **75%**.
 - Nerfed Repulsion Armor Plate Minimum Damage 8 => **10**.
-- Reworked some Fodder and Boss enemies.
+- Nerfed Shaped Glass Damage Increase 100% => **75%**.
 - Reworked Strides of Heresy to **dash and heal, stacking in dash length and end-lag**.
+- Reworked some Fodder and Boss enemies.
 - Made Wandering Vagrant's Detonation VFX scale with Attack Speed.
 - Improved Overloading Teleport VFX.
 - Fixed Engineer Turret throwing NREs on Mithrix Phase 4.
-- Fixed Royal Capacitor doing lower damage.
 - Fixed Glacial Aspect spamming visual as a player.
 - Fixed Inferno compatibility.
 - Fixed Newt using Planula with Bazaar Is My Home.
+- Fixed Royal Capacitor doing lower damage.
 - Fixed Scrapper.
 - Fixed Visions of Heresy sound.
 - Fixed some config options.
 - Fixed minor item descriptions.
-- - Finally, an update I've always been wanting to do! <img src="https://cdn.discordapp.com/emojis/855240421898453003.gif?size=24&quality=lossless" width="24"/> Next up should be Enemy Spawn Pool changes and more item mod compatibility! <img src="https://cdn.discordapp.com/emojis/855240421898453003.gif?size=24&quality=lossless" width="24"/> ~HIFU
+- - Finally, an update I've always been wanting to do! <img src="https://cdn.discordapp.com/emojis/855240421898453003.gif?size=24&quality=lossless" width="24"/> Next up should be more Enemy Tweaks, Enemy Spawn Pool changes and more item mod compatibility! <img src="https://cdn.discordapp.com/emojis/855240421898453003.gif?size=24&quality=lossless" width="24"/> ~HIFU
 
 # 1.2.2 Patch Notes
 - Added LunarConstruct.
