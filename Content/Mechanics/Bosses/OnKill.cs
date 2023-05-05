@@ -1,4 +1,5 @@
 using R2API.Utils;
+using WellRoundedBalance.Items.Reds;
 
 namespace WellRoundedBalance.Mechanics.Bosses
 {
@@ -77,13 +78,15 @@ namespace WellRoundedBalance.Mechanics.Bosses
 
             private void Start()
             {
-                activeThresholds = new();
-                activeThresholds.Add(new Threshold { fraction = 80 });
-                activeThresholds.Add(new Threshold { fraction = 65 });
-                activeThresholds.Add(new Threshold { fraction = 50 });
-                activeThresholds.Add(new Threshold { fraction = 35 });
-                activeThresholds.Add(new Threshold { fraction = 20 });
-                activeThresholds.Add(new Threshold { fraction = 5 });
+                activeThresholds = new()
+                {
+                    new Threshold { fraction = 80 },
+                    new Threshold { fraction = 65 },
+                    new Threshold { fraction = 50 },
+                    new Threshold { fraction = 35 },
+                    new Threshold { fraction = 20 },
+                    new Threshold { fraction = 5 }
+                };
                 // reset this since it only checks on hc awake
                 hc.onTakeDamageReceivers = base.GetComponents<IOnTakeDamageServerReceiver>();
             }
@@ -119,10 +122,7 @@ namespace WellRoundedBalance.Mechanics.Bosses
                     return;
                 }
 
-                if (report.damageInfo.procChainMask.HasProc((ProcType)12096721))
-                {
-                    return;
-                }
+                ProcType noHappiestMask = (ProcType)12096721;
 
                 DamageInfo info = new()
                 {
@@ -132,8 +132,10 @@ namespace WellRoundedBalance.Mechanics.Bosses
                     damageType = report.damageInfo.damageType,
                     position = cb.corePosition,
                     damageColorIndex = report.damageInfo.damageColorIndex,
-                    procCoefficient = report.damageInfo.procCoefficient
+                    procCoefficient = report.damageInfo.procCoefficient,
                 };
+
+                info.procChainMask.AddProc(noHappiestMask);
 
                 GlobalEventManager.instance?.OnCharacterDeath(new(info, hc, info.damage, hc.combinedHealth));
             }

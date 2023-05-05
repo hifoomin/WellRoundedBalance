@@ -1,7 +1,4 @@
-﻿using Mono.Cecil.Cil;
-using MonoMod.Cil;
-
-namespace WellRoundedBalance.Items.Reds
+﻿namespace WellRoundedBalance.Items.Reds
 {
     public class HappiestMask : ItemBase<HappiestMask>
     {
@@ -25,6 +22,8 @@ namespace WellRoundedBalance.Items.Reds
 
         [ConfigField("Damage Per Stack", "Decimal.", 4)]
         public static int damagePerStack;
+
+        public static string[] blacklistedBodies = { "BrotherHurtBody(Clone)", "MiniVoidRaidCrabBodyBase(Clone)", "MiniVoidRaidCrabBodyPhase1(Clone)", "MiniVoidRaidCrabBodyPhase2(Clone)", "MiniVoidRaidCrabBodyPhase3(Clone)" };
 
         public override void Init()
         {
@@ -89,7 +88,15 @@ namespace WellRoundedBalance.Items.Reds
                 return;
             }
 
-            ProcType happiestMask = (ProcType)12096721;
+            if (blacklistedBodies.Contains(victimBody.name))
+            {
+                return;
+            }
+
+            if (damageReport.damageInfo.procChainMask.HasProc((ProcType)12096721))
+            {
+                return;
+            }
 
             var stack = inventory.GetItemCount(RoR2Content.Items.GhostOnKill);
             if (stack > 0)
@@ -109,7 +116,6 @@ namespace WellRoundedBalance.Items.Reds
                             {
                                 attackerBody.AddTimedBuff(happiestMaskCooldown.buffIndex, i);
                             }
-                            damageReport.damageInfo.procChainMask.AddProc(happiestMask);
                         }
                     }
                 }

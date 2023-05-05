@@ -63,7 +63,7 @@
         {
             var fastProj = Utils.Paths.GameObject.VagrantCannon.Load<GameObject>();
             var projectileSimple = fastProj.GetComponent<ProjectileSimple>();
-            projectileSimple.desiredForwardSpeed = 55f;
+            projectileSimple.desiredForwardSpeed = 45f;
 
             var projectileImpactExplosion = fastProj.GetComponent<ProjectileImpactExplosion>();
             projectileImpactExplosion.falloffModel = BlastAttack.FalloffModel.None;

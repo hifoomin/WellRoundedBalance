@@ -23,6 +23,8 @@ namespace WellRoundedBalance.Items.Lunars
 
         private void Changes()
         {
+            ContentAddition.AddEntityState(typeof(StrideState), out _);
+
             var stridesSD = Addressables.LoadAssetAsync<SkillDef>("RoR2/Base/LunarSkillReplacements/LunarUtilityReplacement.asset").WaitForCompletion();
             stridesSD.activationState = new SerializableEntityStateType(typeof(StrideState));
             stridesSD.baseRechargeInterval = 6f;

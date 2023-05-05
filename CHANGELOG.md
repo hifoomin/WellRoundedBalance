@@ -12,6 +12,7 @@
 - Nerfed Opal Armor Gain 3 => **2**.
 - Nerfed Opal Base Max Buff Count 4 => **3**.
 - Nerfed Opal Max Buff Count Per Stack 4 => **0**.
+- Nerfed Shaped Glass Damage Increase 100% => **75%**.
 - Nerfed Repulsion Armor Plate Minimum Damage 8 => **10**.
 - Reworked some Fodder and Boss enemies.
 - Reworked Strides of Heresy to **dash and heal, stacking in dash length and end-lag**.
