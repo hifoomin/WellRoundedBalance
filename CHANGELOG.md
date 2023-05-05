@@ -1,4 +1,4 @@
-# 1.3.0 Patch Notes
+# 1.3.0 Patch Notes - The *Compatibility Update May* Update
 - Added AugmentedVoidReaver.
 - Added FathomlessVoidling.
 - Added pre-made config for VanillaVoid.
