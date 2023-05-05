@@ -1,6 +1,4 @@
-﻿using Mono.Cecil.Cil;
-using MonoMod.Cil;
-using RoR2.Navigation;
+﻿using RoR2.Navigation;
 using WellRoundedBalance.Buffs;
 using WellRoundedBalance.Gamemodes.Eclipse;
 
@@ -33,6 +31,8 @@ namespace WellRoundedBalance.Elites
         public static float minSpeedAuraRadius;
 
         private static GameObject SpeedAura;
+
+        public static GameObject tpEffect;
 
         public override void Init()
         {
@@ -77,6 +77,30 @@ namespace WellRoundedBalance.Elites
             teamFilter.defaultTeam = TeamIndex.Monster;
 
             PrefabAPI.RegisterNetworkPrefab(SpeedAura);
+
+            tpEffect = PrefabAPI.InstantiateClone(Addressables.LoadAssetAsync<GameObject>("RoR2/Junk/Parent/ParentTeleportEffect.prefab").WaitForCompletion(), "LunarConstructTeleport", false);
+            var particles = tpEffect.transform.GetChild(0);
+            var ringParticle = particles.GetChild(0).GetComponent<ParticleSystemRenderer>();
+
+            var moonRamp = Addressables.LoadAssetAsync<Texture2D>("RoR2/Base/Common/ColorRamps/texRampLunarWispFire.png").WaitForCompletion();
+
+            var newRing = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/Parent/matParentTeleportPortal.mat").WaitForCompletion());
+            newRing.SetTexture("_RemapTex", moonRamp);
+
+            ringParticle.sharedMaterial = newRing;
+
+            particles.GetChild(1).gameObject.SetActive(false);
+
+            var energyInitialParticle = particles.GetChild(3).GetComponent<ParticleSystemRenderer>();
+            energyInitialParticle.sharedMaterial = newRing;
+            energyInitialParticle.gameObject.transform.localScale = Vector3.one * 0.25f;
+
+            var eps = particles.GetChild(3).GetComponent<ParticleSystem>().main;
+            eps.duration = 0.17f;
+
+            particles.GetChild(4).gameObject.SetActive(false);
+
+            ContentAddition.AddEffect(tpEffect);
 
             base.Init();
         }
@@ -212,53 +236,18 @@ namespace WellRoundedBalance.Elites
                     return;
                 }
                 Vector3 current = transform.position;
-                EffectManager.SpawnEffect(Utils.Paths.GameObject.ParentTeleportEffect.Load<GameObject>(), new EffectData
+                EffectManager.SpawnEffect(tpEffect, new EffectData
                 {
-                    scale = 1,
+                    scale = 0.66f,
                     origin = current
                 }, true);
-                EffectManager.SpawnEffect(Utils.Paths.GameObject.ParentTeleportEffect.Load<GameObject>(), new EffectData
+                EffectManager.SpawnEffect(tpEffect, new EffectData
                 {
-                    scale = 1,
+                    scale = 0.66f,
                     origin = pos
                 }, true);
                 TeleportHelper.TeleportBody(cb, pos + new Vector3(0, 1, 0));
             }
-
-            /*
-            public Vector3 PickTeleportPosition()
-            {
-                if (!SceneInfo.instance || !SceneInfo.instance.groundNodes)
-                {
-                    return transform.position;
-                }
-
-                NodeGraph.Node[] nodes = SceneInfo.instance.groundNodes.nodes;
-                if (GetDelay() == aggressiveTeleportCooldown)
-                {
-                    return PickValidPositions(0, 25, nodes).ToList().GetRandom();
-                }
-                else
-                {
-                    return PickValidPositions(25, 45, nodes).ToList().GetRandom();
-                }
-            }
-
-            public Vector3[] PickValidPositions(float min, float max, NodeGraph.Node[] nodes)
-            {
-                NodeGraph.Node[] validNodes = nodes.Where(x => Vector3.Distance(x.position, transform.position) > min && Vector3.Distance(x.position, transform.position) < max).ToArray();
-                if (validNodes.Length <= 1)
-                {
-                    return new Vector3[] { transform.position };
-                }
-                List<Vector3> guh = new();
-                foreach (NodeGraph.Node node in validNodes)
-                {
-                    guh.Add(node.position);
-                }
-                return guh.ToArray();
-            }
-            */
 
             public Vector3[] PickValidPositions(float min, float max, NodeGraph.Node[] nodes)
             {

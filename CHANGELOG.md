@@ -1,7 +1,6 @@
 # 1.3.0 Patch Notes
 - Added AugmentedVoidReaver.
 - Added FathomlessVoidling.
-- Added pre-made config for GoldenCoastPlus.
 - Added pre-made config for VanillaVoid.
 - Buffed Legendary Chest Cost $300 => **$250**.
 - Buffed Opal Armor Gain Per Stack 0 => **2**.
