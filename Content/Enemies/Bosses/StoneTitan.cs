@@ -32,18 +32,63 @@
                 EntityStates.TitanMonster.FireFist.fistDamageCoefficient = 1.6f;
                 if (self.isAuthority)
                 {
-                    for (int i = 0; i < 3; i++)
+                    for (int i = 1; i < 3; i++)
                     {
                         var fpi = new FireProjectileInfo
                         {
                             projectilePrefab = self.fistProjectilePrefab,
-                            position = self.characterBody.footPosition + new Vector3(Run.instance.spawnRng.RangeFloat(-25f * i, 25f * i), 0f, Run.instance.spawnRng.RangeFloat(-25f * i, 25f * i)),
+                            position = self.characterBody.footPosition + new Vector3(i * 8, 0, i * 8),
                             rotation = Quaternion.identity,
                             owner = self.gameObject,
                             damage = self.damageStat,
                             force = EntityStates.TitanMonster.FireFist.fistForce,
                             crit = self.RollCrit(),
-                            fuseOverride = EntityStates.TitanMonster.FireFist.entryDuration - EntityStates.TitanMonster.FireFist.trackingDuration + (i / 2f)
+                            fuseOverride = EntityStates.TitanMonster.FireFist.entryDuration - EntityStates.TitanMonster.FireFist.trackingDuration + (i / 3f)
+                        };
+                        ProjectileManager.instance.FireProjectile(fpi);
+                    }
+                    for (int i = 1; i < 3; i++)
+                    {
+                        var fpi = new FireProjectileInfo
+                        {
+                            projectilePrefab = self.fistProjectilePrefab,
+                            position = self.characterBody.footPosition + new Vector3(-i * 8, 0, -i * 8),
+                            rotation = Quaternion.identity,
+                            owner = self.gameObject,
+                            damage = self.damageStat,
+                            force = EntityStates.TitanMonster.FireFist.fistForce,
+                            crit = self.RollCrit(),
+                            fuseOverride = EntityStates.TitanMonster.FireFist.entryDuration - EntityStates.TitanMonster.FireFist.trackingDuration + (i / 3.6f)
+                        };
+                        ProjectileManager.instance.FireProjectile(fpi);
+                    }
+                    for (int i = 1; i < 3; i++)
+                    {
+                        var fpi = new FireProjectileInfo
+                        {
+                            projectilePrefab = self.fistProjectilePrefab,
+                            position = self.characterBody.footPosition + new Vector3(-i * 8, 0, i * 8),
+                            rotation = Quaternion.identity,
+                            owner = self.gameObject,
+                            damage = self.damageStat,
+                            force = EntityStates.TitanMonster.FireFist.fistForce,
+                            crit = self.RollCrit(),
+                            fuseOverride = EntityStates.TitanMonster.FireFist.entryDuration - EntityStates.TitanMonster.FireFist.trackingDuration + (i / 3.3f)
+                        };
+                        ProjectileManager.instance.FireProjectile(fpi);
+                    }
+                    for (int i = 1; i < 3; i++)
+                    {
+                        var fpi = new FireProjectileInfo
+                        {
+                            projectilePrefab = self.fistProjectilePrefab,
+                            position = self.characterBody.footPosition + new Vector3(i * 8, 0, -i * 8),
+                            rotation = Quaternion.identity,
+                            owner = self.gameObject,
+                            damage = self.damageStat,
+                            force = EntityStates.TitanMonster.FireFist.fistForce,
+                            crit = self.RollCrit(),
+                            fuseOverride = EntityStates.TitanMonster.FireFist.entryDuration - EntityStates.TitanMonster.FireFist.trackingDuration + (i / 3.9f)
                         };
                         ProjectileManager.instance.FireProjectile(fpi);
                     }
