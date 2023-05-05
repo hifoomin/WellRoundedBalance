@@ -1,5 +1,7 @@
 ﻿using EntityStates.BrotherMonster;
 using Inferno.Stat_AI;
+using R2API.Utils;
+using Rewired;
 using Rewired.ComponentControls.Effects;
 using System;
 using UnityEngine.SceneManagement;
@@ -413,10 +415,12 @@ namespace WellRoundedBalance.Enemies.FinalBosses
                         minDistance = 25f,
                         maxDistance = 45f,
                         spawnOnTarget = body.transform,
-                    }, RoR2Application.rng);
-                    directorSpawnRequest.summonerBodyObject = self.gameObject;
-                    directorSpawnRequest.teamIndexOverride = TeamIndex.Monster;
-                    directorSpawnRequest.ignoreTeamMemberLimit = true;
+                    }, RoR2Application.rng)
+                    {
+                        summonerBodyObject = self.gameObject,
+                        teamIndexOverride = TeamIndex.Monster,
+                        ignoreTeamMemberLimit = true
+                    };
 
                     DirectorCore.instance.TrySpawnObject(directorSpawnRequest);
                 }
@@ -574,19 +578,18 @@ namespace WellRoundedBalance.Enemies.FinalBosses
                             cb.bodyFlags |= CharacterBody.BodyFlags.SprintAnyDirection;
                         }
                         break;
-
-                    case "BrotherGlassBody(Clone)":
-                        cb.baseMaxHealth = phase4BaseMaxHealth * 0.25f;
-                        cb.levelMaxHealth = phase4BaseMaxHealth * 0.25f * 0.3f;
-                        cb.baseDamage = 9f;
-                        cb.levelDamage = 1.8f;
-                        break;
                 }
             }
         }
 
         private void Changes()
         {
+            var glass = Utils.Paths.GameObject.BrotherGlassBody.Load<GameObject>().GetComponent<CharacterBody>();
+            glass.baseMaxHealth = phase4BaseMaxHealth * 0.25f;
+            glass.levelMaxHealth = phase4BaseMaxHealth * 0.25f * 0.3f;
+            glass.baseDamage = 9f;
+            glass.levelDamage = 1.8f;
+
             if (disableCripple)
             {
                 var leftWave = Utils.Paths.GameObject.BrotherUltLineProjectileRotateLeft.Load<GameObject>();
