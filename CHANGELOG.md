@@ -1,7 +1,10 @@
 # 1.3.0 Patch Notes
 - Added AugmentedVoidReaver.
 - Added FathomlessVoidling.
+- Added GoldenCoastPlus.
 - Added pre-made config for VanillaVoid.
+- Added pre-made config for GoldenCoastPlus.
+- Buffed Legendary Chest Cost $300 => **$250**.
 - Buffed most Fodder, Miniboss and Boss enemies.
 - Buffed Opal Armor Gain Per Stack 0 => **2**.
 - Nerfed Frog Max Pets 10 => **1**.
@@ -12,8 +15,10 @@
 - Nerfed Repulsion Armor Plate Minimum Damage 8 => **10**.
 - Reworked some Fodder and Boss enemies.
 - Reworked Strides of Heresy to **dash and heal, stacking in dash length and end-lag**.
+- Made Wandering Vagrant's Detonation VFX scale with Attack Speed.
 - Improved Overloading Teleport VFX.
-- Fixed Engineer Turret breaking on Mithrix Phase 4.
+- Fixed Engineer Turret throwing NREs on Mithrix Phase 4.
+- Fixed Royal Capacitor doing lower damage.
 - Fixed Glacial Aspect spamming visual as a player.
 - Fixed Inferno compatibility.
 - Fixed Newt using Planula with Bazaar Is My Home.

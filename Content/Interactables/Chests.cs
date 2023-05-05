@@ -7,7 +7,7 @@
         [ConfigField("Equipment Trishop Max Spawns Per Stage", "", 2)]
         public static int equipmentTrishopMaxSpawnsPerStage;
 
-        [ConfigField("Legendary Chest Cost", "", 300)]
+        [ConfigField("Legendary Chest Cost", "", 250)]
         public static int legendaryChestCost;
 
         [ConfigField("Small Category Chest Cost", "", 25)]

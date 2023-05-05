@@ -15,7 +15,7 @@ namespace WellRoundedBalance.Equipment.Orange
         [ConfigField("Cooldown", "", 25f)]
         public static float cooldown;
 
-        [ConfigField("Damage", "Decimal.", 20f)]
+        [ConfigField("Damage", "Decimal.", 30f)]
         public static float damage;
 
         [ConfigField("Proc Coefficient", "", 1f)]

@@ -48,7 +48,7 @@ namespace WellRoundedBalance.Enemies.Minibosses
         {
             if (!Main.IsInfernoDef())
             {
-                EntityStates.Bison.Headbutt.baseHeadbuttDuration = 1.85f;
+                EntityStates.Bison.Headbutt.baseHeadbuttDuration = 2.25f;
                 EntityStates.Bison.Headbutt.damageCoefficient = 4f;
             }
             orig(self);
