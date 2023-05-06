@@ -4,6 +4,9 @@
     {
         public override string Name => ":: Mechanics ::::::::: Frog";
 
+        [ConfigField("Max Pets", "", 1)]
+        public static int maxPets;
+
         public override void Init()
         {
             base.Init();
@@ -16,7 +19,7 @@
 
         private void FrogController_Pet(On.RoR2.FrogController.orig_Pet orig, FrogController self, Interactor interactor)
         {
-            self.maxPets = 1;
+            self.maxPets = maxPets;
             orig(self, interactor);
         }
     }

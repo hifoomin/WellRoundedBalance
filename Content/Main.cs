@@ -58,7 +58,7 @@ namespace WellRoundedBalance
         public const string PluginGUID = PluginAuthor + "." + PluginName;
         public const string PluginAuthor = "BALLS";
         public const string PluginName = "WellRoundedBalance";
-        public const string PluginVersion = "1.3.0";
+        public const string PluginVersion = "1.3.2";
         public static ConfigFile WRBConfig;
         public static ConfigFile WRBItemConfig;
         public static ConfigFile WRBMechanicConfig;
@@ -88,6 +88,8 @@ namespace WellRoundedBalance
         public static bool WildbookMultitudesLoaded = false;
         public static DifficultyDef InfernoDef = null;
         public static Hook hook;
+
+        private bool mp = false;
 
         public void Awake()
         {
@@ -121,6 +123,12 @@ namespace WellRoundedBalance
                 latestVersion.Value = PluginVersion;
                 ConfigManager.VersionChanged = true;
                 WRBLogger.LogInfo("Config Autosync Enabled.");
+            }
+
+            if (mp)
+            {
+                On.RoR2.Networking.NetworkManagerSystemSteam.OnClientConnect += (s, u, t) => { };
+                // nvm cant cause of backup config sharing violation on path
             }
 
             InfernoLoaded = BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("HIFU.Inferno");
