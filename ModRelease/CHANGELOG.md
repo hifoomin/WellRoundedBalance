@@ -6,7 +6,9 @@
 - Buffed Gip.
 - Buffed Grovetender.
 - Buffed Gup.
-- Buffed Plasma Shrimp Shield Percent 12% => **16%**.
+- Buffed Plasma Shrimp Shield Percent 12% => **20%**.
+- Buffed Plasma Shrimp Proc Coefficient 0 => **0.2**.
+- Buffed Polylute Proc Coefficient 0 => **0.1**.
 - Buffed Scavenger Max Bag Count 1 => **Infinite**.
 - Nerfed Beetle Queen.
 - Nerfed Eclipse 1 aim on Clay Templar, Stone Golem and Xi Construct a bit.

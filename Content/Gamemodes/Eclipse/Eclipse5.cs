@@ -36,10 +36,6 @@ namespace WellRoundedBalance.Gamemodes.Eclipse
                     {
                         baseAI.aimVectorDampTime = 0.031f;
                     }
-                    else
-                    {
-                        baseAI.aimVectorDampTime = 0.12f;
-                    }
                 }
             }
         }

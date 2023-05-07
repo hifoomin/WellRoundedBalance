@@ -139,6 +139,7 @@ namespace WellRoundedBalance
             Molotov.Create();
             DucleusLaser.Create();
             TitanFist.Create();
+            EarthQuakeWave.Create();
 
             On.RoR2.ItemCatalog.Init += ItemCatalog_Init;
 

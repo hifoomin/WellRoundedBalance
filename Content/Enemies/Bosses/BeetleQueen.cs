@@ -1,5 +1,4 @@
 ﻿using EntityStates;
-using Inferno.Stat_AI;
 using RoR2.Skills;
 using System;
 
@@ -28,7 +27,6 @@ namespace WellRoundedBalance.Enemies.Bosses
             orig(self);
             if (self.master && self.master.masterIndex == MasterCatalog.FindMasterIndex("BeetleQueenMaster"))
             {
-                Main.WRBLogger.LogError("beetle queen spawned");
                 if (self.skillDrivers[0].customName != "SummonEarthquake")
                 {
                     var driversList = self.skillDrivers.ToList();
@@ -141,7 +139,7 @@ namespace WellRoundedBalance.Enemies.Bosses
             ed.selectionRequiresTargetLoS = false;
             ed.selectionRequiresOnGround = false;
             ed.selectionRequiresAimTarget = false;
-            ed.moveTargetType = AISkillDriver.TargetType.CurrentLeader;
+            ed.moveTargetType = AISkillDriver.TargetType.CurrentEnemy;
             ed.activationRequiresAimTargetLoS = false;
             ed.activationRequiresAimConfirmation = false;
             ed.activationRequiresTargetLoS = false;
@@ -189,56 +187,51 @@ namespace WellRoundedBalance.Enemies.Bosses
         }
     }
 
+    // replace projectile if ai reoreder infally works ioajdocjnduie54ryguifdvbhncuijuero89isdfjvcu9ix
+
     public class Earthquake : BaseState
     {
-        public static float baseDuration = 3f;
-
-        public static float baseDurationUntilRecastInterrupt = 1.5f;
+        public static float baseDuration = 5f;
+        public float durationBetweenWaves = 1.5f;
 
         public static string soundString = "Play_beetle_guard_impact";
+        public static string soundString2 = "Play_beetle_queen_impact";
 
-        public static GameObject waveProjectilePrefab = Utils.Paths.GameObject.BrotherSunderWave.Load<GameObject>();
+        public static GameObject waveProjectilePrefab = Projectiles.EarthQuakeWave.prefab;
 
         public static int waveProjectileCount = 12;
 
-        public static float waveProjectileDamageCoefficient = 1f;
+        public static float waveProjectileDamageCoefficient = 0.25f;
 
         public static float waveProjectileForce = 1000f;
 
-        public static SkillDef replacementSkillDef;
-
-        public float duration;
+        public float timer;
+        public float tellTimer;
 
         public override void OnEnter()
         {
             base.OnEnter();
-            duration = baseDuration / attackSpeedStat;
-            Util.PlaySound(soundString, gameObject);
-            PlayAnimation("Body", "ExitSkyLeap", "SkyLeap.playbackRate", duration);
-            PlayAnimation("FullBody Override", "BufferEmpty");
-            characterBody.AddTimedBuff(RoR2Content.Buffs.ArmorBoost, baseDuration);
-            AimAnimator aimAnimator = GetAimAnimator();
+            PlayCrossfade("Gesture", "SummonEggs", 0.5f);
+            var aimAnimator = GetAimAnimator();
             if (aimAnimator)
             {
                 aimAnimator.enabled = true;
             }
-            if (isAuthority)
-            {
-                FireRingAuthority();
-            }
         }
 
-        private void FireRingAuthority()
+        private void FireWave()
         {
-            float num = 360f / waveProjectileCount;
-            Vector3 vector = Vector3.ProjectOnPlane(inputBank.aimDirection, Vector3.up);
-            Vector3 footPosition = characterBody.footPosition;
+            for (int i = 0; i < 5; i++)
+                Util.PlaySound(soundString2, gameObject);
+            var slices = 360f / waveProjectileCount;
+            var upVector = Vector3.ProjectOnPlane(inputBank.aimDirection, Vector3.up);
+            var footPosition = characterBody.footPosition;
             for (int i = 0; i < waveProjectileCount; i++)
             {
-                Vector3 vector2 = Quaternion.AngleAxis(num * i, Vector3.up) * vector;
+                var quat = Quaternion.AngleAxis(slices * i, Vector3.up) * upVector;
                 if (isAuthority)
                 {
-                    ProjectileManager.instance.FireProjectile(waveProjectilePrefab, footPosition, Util.QuaternionSafeLookRotation(vector2), gameObject, characterBody.damage * waveProjectileDamageCoefficient, waveProjectileForce, Util.CheckRoll(characterBody.crit, characterBody.master), DamageColorIndex.Default, null, -1f);
+                    ProjectileManager.instance.FireProjectile(waveProjectilePrefab, footPosition, Util.QuaternionSafeLookRotation(quat), gameObject, characterBody.damage * waveProjectileDamageCoefficient, waveProjectileForce, Util.CheckRoll(characterBody.crit, characterBody.master), DamageColorIndex.Default, null, -1f);
                 }
             }
         }
@@ -246,9 +239,22 @@ namespace WellRoundedBalance.Enemies.Bosses
         public override void FixedUpdate()
         {
             base.FixedUpdate();
+            timer += Time.fixedDeltaTime;
+            tellTimer += Time.fixedDeltaTime;
             if (isAuthority)
             {
-                if (fixedAge > duration)
+                if (tellTimer >= durationBetweenWaves - 0.3f)
+                {
+                    for (int i = 0; i < 5; i++)
+                        Util.PlaySound(soundString2, gameObject);
+                    tellTimer = 0;
+                }
+                if (timer >= durationBetweenWaves)
+                {
+                    FireWave();
+                    timer = 0;
+                }
+                if (fixedAge > baseDuration)
                 {
                     outer.SetNextStateToMain();
                 }
