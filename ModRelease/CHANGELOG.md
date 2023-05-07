@@ -1,3 +1,14 @@
+# 1.3.3 Patch Notes
+- Added VanillaVoid.
+- Added pre-made configs for HIFUTweaks.
+- Buffed Beetle Queen.
+- Buffed Grovetender.
+- Buffed Scavenger Max Bag Count 1 => **Infinite**.
+- Nerfed Eclipse 1 aim on Clay Templar, Stone Golem and Xi Construct a bit.
+- Swapped Eclipse 1 and Eclipse 5.
+- Fixed Beetle Queen not applying multiple buff stacks.
+- Fixed Geep being too tanky.
+
 # 1.3.2 Patch Notes
 - Buffed Oddly-shaped Opal Base Armor Gain 2 => **2.5**.
 - Buffed Oddly-shaped Opal Armor Gain Per Stack 2 => **2.5**.

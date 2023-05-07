@@ -3,7 +3,6 @@ using BepInEx.Configuration;
 using BepInEx.Logging;
 using System;
 using System.Reflection;
-
 using WellRoundedBalance.Items;
 using WellRoundedBalance.Equipment;
 using WellRoundedBalance.Interactables;
@@ -12,11 +11,8 @@ using WellRoundedBalance.Projectiles;
 using System.Runtime.CompilerServices;
 using WellRoundedBalance.Elites;
 using R2API.ContentManagement;
-
 using WellRoundedBalance.Misc;
-
 using WellRoundedBalance.Mechanics;
-
 using WellRoundedBalance.Items.NoTier;
 using WellRoundedBalance.Difficulties;
 using WellRoundedBalance.Artifacts.Vanilla;
@@ -24,8 +20,6 @@ using WellRoundedBalance.Artifacts.New;
 using WellRoundedBalance.Gamemodes;
 using WellRoundedBalance.Items.ConsistentCategories;
 using MonoMod.RuntimeDetour;
-
-using WellRoundedBalance.Mechanics.Monsters;
 using WellRoundedBalance.Achievements;
 using HarmonyLib;
 using WellRoundedBalance.Survivors;
@@ -58,7 +52,7 @@ namespace WellRoundedBalance
         public const string PluginGUID = PluginAuthor + "." + PluginName;
         public const string PluginAuthor = "BALLS";
         public const string PluginName = "WellRoundedBalance";
-        public const string PluginVersion = "1.3.2";
+        public const string PluginVersion = "1.3.3";
         public static ConfigFile WRBConfig;
         public static ConfigFile WRBItemConfig;
         public static ConfigFile WRBMechanicConfig;

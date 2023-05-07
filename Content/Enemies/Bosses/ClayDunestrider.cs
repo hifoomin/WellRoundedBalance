@@ -1,7 +1,4 @@
-﻿using Inferno;
-using Mono.Cecil.Cil;
-using MonoMod.Cil;
-using System;
+﻿using System;
 
 namespace WellRoundedBalance.Enemies.Bosses
 {

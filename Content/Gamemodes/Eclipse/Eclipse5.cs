@@ -16,16 +16,32 @@ namespace WellRoundedBalance.Gamemodes.Eclipse
         public override void Hooks()
         {
             IL.RoR2.HealthComponent.Heal += HealthComponent_Heal;
-            On.RoR2.CombatDirector.Awake += CombatDirector_Awake;
+            CharacterMaster.onStartGlobal += CharacterMaster_onStartGlobal;
         }
 
-        private void CombatDirector_Awake(On.RoR2.CombatDirector.orig_Awake orig, CombatDirector self)
+        private void CharacterMaster_onStartGlobal(CharacterMaster master)
         {
-            if (Run.instance.selectedDifficulty >= DifficultyIndex.Eclipse5)
+            if (!Run.instance)
             {
-                self.creditMultiplier += 0.03f * Run.instance.stageClearCount;
+                return;
             }
-            orig(self);
+            if (Run.instance.selectedDifficulty >= DifficultyIndex.Eclipse5 && master.teamIndex == TeamIndex.Monster)
+            {
+                var baseAI = master.GetComponent<BaseAI>();
+                if (baseAI != null)
+                {
+                    baseAI.fullVision = true;
+                    baseAI.aimVectorMaxSpeed = 250f;
+                    if (master.name != "GolemMaster(Clone)" || master.name != "MegaConstructMaster(Clone)" || master.name != "ClayBruiserMaster(Clone)")
+                    {
+                        baseAI.aimVectorDampTime = 0.031f;
+                    }
+                    else
+                    {
+                        baseAI.aimVectorDampTime = 0.12f;
+                    }
+                }
+            }
         }
 
         private void HealthComponent_Heal(ILContext il)

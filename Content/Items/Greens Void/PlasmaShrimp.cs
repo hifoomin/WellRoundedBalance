@@ -13,7 +13,7 @@ namespace WellRoundedBalance.Items.VoidGreens
         [ConfigField("TOTAL Damage", "Decimal.", 0.2f)]
         public static float totalDamage;
 
-        [ConfigField("Percent Shield", "Decimal.", 0.12f)]
+        [ConfigField("Percent Shield", "Decimal.", 0.16f)]
         public static float percentShield;
 
         [ConfigField("Proc Coefficient", 0f)]

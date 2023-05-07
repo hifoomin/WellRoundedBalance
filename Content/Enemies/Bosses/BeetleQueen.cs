@@ -15,7 +15,7 @@ namespace WellRoundedBalance.Enemies.Bosses
 
             inspire = ScriptableObject.CreateInstance<BuffDef>();
             inspire.isCooldown = false;
-            inspire.canStack = true;
+            inspire.canStack = false;
             inspire.isHidden = false;
             inspire.buffColor = new Color32(214, 201, 58, 255);
             inspire.iconSprite = Main.wellroundedbalance.LoadAsset<Sprite>("Assets/WellRoundedBalance/texBuffInspire.png");
@@ -51,7 +51,29 @@ namespace WellRoundedBalance.Enemies.Bosses
             On.EntityStates.BeetleQueenMonster.FireSpit.OnEnter += FireSpit_OnEnter;
             On.EntityStates.BeetleQueenMonster.SpawnWards.OnEnter += SpawnWards_OnEnter;
             RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
+            On.RoR2.BuffWard.BuffTeam += BuffWard_BuffTeam;
             Changes();
+        }
+
+        private void BuffWard_BuffTeam(On.RoR2.BuffWard.orig_BuffTeam orig, BuffWard self, IEnumerable<TeamComponent> recipients, float radiusSqr, Vector3 currentPosition)
+        {
+            if (self.buffDef && NetworkServer.active && self.buffDef == inspire)
+            {
+                foreach (TeamComponent teamComponent in recipients)
+                {
+                    var distance = teamComponent.transform.position - currentPosition;
+                    if (distance.sqrMagnitude <= radiusSqr)
+                    {
+                        var characterBody = teamComponent.GetComponent<CharacterBody>();
+                        if (characterBody && (!self.requireGrounded || !characterBody.characterMotor || characterBody.characterMotor.isGrounded))
+                        {
+                            characterBody.AddTimedBuff(self.buffDef, self.buffDuration, 2147483647);
+                        }
+                    }
+                }
+            }
+
+            orig(self, recipients, radiusSqr, currentPosition);
         }
 
         private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
@@ -81,12 +103,13 @@ namespace WellRoundedBalance.Enemies.Bosses
         {
             if (!Main.IsInfernoDef())
             {
-                EntityStates.BeetleQueenMonster.FireSpit.damageCoefficient = 0.35f;
+                EntityStates.BeetleQueenMonster.FireSpit.damageCoefficient = 0.4f;
                 EntityStates.BeetleQueenMonster.FireSpit.force = 1200f;
                 EntityStates.BeetleQueenMonster.FireSpit.yawSpread = 20f;
                 EntityStates.BeetleQueenMonster.FireSpit.minSpread = 15f;
                 EntityStates.BeetleQueenMonster.FireSpit.maxSpread = 30f;
                 EntityStates.BeetleQueenMonster.FireSpit.projectileHSpeed = 40f;
+                EntityStates.BeetleQueenMonster.FireSpit.projectileCount = 9;
             }
             orig(self);
         }
@@ -115,12 +138,12 @@ namespace WellRoundedBalance.Enemies.Bosses
             var spitDoT = Utils.Paths.GameObject.BeetleQueenAcid.Load<GameObject>();
             var projectileDotZone = spitDoT.GetComponent<ProjectileDotZone>();
             projectileDotZone.lifetime = 9f;
-            projectileDotZone.damageCoefficient = 2.8f;
+            projectileDotZone.damageCoefficient = 3f;
             spitDoT.transform.localScale = new Vector3(3.5f, 3.5f, 3.5f);
 
             var hitBox = spitDoT.transform.GetChild(0).GetChild(2);
             hitBox.localPosition = new Vector3(0f, 0f, -0.5f);
-            hitBox.localScale = new Vector3(4f, 1f, 4f);
+            hitBox.localScale = new Vector3(4f, 1.5f, 4f);
 
             var beetleWard = Utils.Paths.GameObject.BeetleWard.Load<GameObject>();
             var buffWard = beetleWard.GetComponent<BuffWard>();
