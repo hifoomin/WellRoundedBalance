@@ -7,7 +7,7 @@
 
         public override string PickupText => "Deal extra damage to bosses" + (championDamageBonus > 0 ? " and champions." : ".");
 
-        public override string DescText => "Deal an additional <style=cIsDamage>20%</style> damage <style=cStack>(+20% per stack)</style> to bosses" + (championDamageBonus > 0 ? " and <style=cIsDamage>" + d(championDamageBonus) + "</style> damage <style=cStack>(+" + d(championDamageBonus) +" per stack)</style> to champions." : ".");
+        public override string DescText => "Deal an additional <style=cIsDamage>20%</style> damage <style=cStack>(+20% per stack)</style> to bosses" + (championDamageBonus > 0 ? " and <style=cIsDamage>" + d(championDamageBonus) + "</style> damage <style=cStack>(+" + d(championDamageBonus) + " per stack)</style> to champions." : ".");
 
         [ConfigField("Champion Damage Bonus", "Decimal.", 0.1f)]
         public static float championDamageBonus;
@@ -39,13 +39,12 @@
                             var stack = inventory.GetItemCount(RoR2Content.Items.BossDamageBonus);
                             if (victimBody.isChampion && !victimBody.isBoss) // not boss to prevent double dipping
                             {
-                                damageInfo.damage += 1f + championDamageBonus * stack;
+                                damageInfo.damage *= 1f + championDamageBonus * stack;
                             }
                         }
                     }
                 }
             }
-            
 
             orig(victim, damageInfo);
         }

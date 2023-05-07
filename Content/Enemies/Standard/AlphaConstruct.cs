@@ -4,11 +4,11 @@
     {
         public override string Name => ":: Enemies :: Alpha Construct";
 
-        [ConfigField("Should replace Blind Pests on Siphoned Forest?", "", false)]
-        public static float shouldReplace;
+        [ConfigField("Should replace Blind Pests on Siphoned Forest?", "", true)]
+        public static bool shouldReplaceBlindPestsOnSiphonedForest;
 
         [ConfigField("Should spawn on Commencement?", "", false)]
-        public static float shouldSpawn;
+        public static bool shouldSpawnOnCommencement;
 
         public override void Init()
         {

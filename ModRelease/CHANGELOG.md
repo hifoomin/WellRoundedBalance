@@ -2,9 +2,15 @@
 - Added VanillaVoid.
 - Added pre-made configs for HIFUTweaks.
 - Buffed Beetle Queen.
+- Buffed Geep.
+- Buffed Gip.
 - Buffed Grovetender.
+- Buffed Gup.
+- Buffed Plasma Shrimp Shield Percent 12% => **16%**.
 - Buffed Scavenger Max Bag Count 1 => **Infinite**.
+- Nerfed Beetle Queen.
 - Nerfed Eclipse 1 aim on Clay Templar, Stone Golem and Xi Construct a bit.
+- Nerfed Scavenger.
 - Swapped Eclipse 1 and Eclipse 5.
 - Fixed Beetle Queen not applying multiple buff stacks.
 - Fixed Geep being too tanky.

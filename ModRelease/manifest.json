@@ -1,6 +1,6 @@
 {
 	"name": "WellRoundedBalance",
-	"version_number": "1.3.0",
+	"version_number": "1.3.3",
 	"website_url": "https://github.com/hifoomin/WellRoundedBalance",
 	"description": "A complete balance overhaul for a much more fast-paced and challenging game with much less autoplay. Check out the mod page for more information. Not recommended to be used with other rebalance mods.",
 	"dependencies": [
@@ -31,6 +31,7 @@
 		"pseudopulse-BetterDrones-1.5.1",
 		"HIFU-LunarConstruct-1.0.0",
 		"Nuxlar-AugmentedVoidReaver-2.0.0",
-		"Nuxlar-FathomlessVoidling-0.9.1"
+		"Nuxlar-FathomlessVoidling-0.9.1",
+		"Zenithrium-VanillaVoid-1.4.11"
 	]
 }
