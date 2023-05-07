@@ -11,7 +11,7 @@
             projectileDamage.damageType = DamageType.Generic;
 
             var projectileCharacterController = prefab.GetComponent<ProjectileCharacterController>();
-            projectileCharacterController.velocity = 45f;
+            projectileCharacterController.velocity = 40f;
 
             var projectileOverlapAttack = prefab.GetComponent<ProjectileOverlapAttack>();
             projectileOverlapAttack.forceVector = new Vector3(0f, 0f, 0f);
@@ -26,8 +26,11 @@
             water.gameObject.SetActive(false);
 
             var hitbox = newGhost.transform.GetChild(1);
-            hitbox.gameObject.transform.localScale = new Vector3(30f, 2f, 1f);
-            hitbox.GetComponent<MeshRenderer>().enabled = false;
+            hitbox.gameObject.transform.localScale = new Vector3(30f, 1f, 1f);
+
+            var mr = hitbox.GetComponent<MeshRenderer>();
+            mr.material.SetTexture("_RemapTex", Main.wellroundedbalance.LoadAsset<Texture2D>("Assets/WellRoundedBalance/texRampInspire.png"));
+
             var projectileController = prefab.GetComponent<ProjectileController>();
             projectileController.flightSoundLoop = null;
             projectileController.ghostPrefab = newGhost;

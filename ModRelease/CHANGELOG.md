@@ -11,7 +11,7 @@
 - Buffed Polylute Proc Coefficient 0 => **0.1**.
 - Buffed Scavenger Max Bag Count 1 => **Infinite**.
 - Nerfed Beetle Queen.
-- Nerfed Eclipse 1 aim on Clay Templar, Stone Golem and Xi Construct a bit.
+- Nerfed Eclipse 1 aim on Clay Templar, Stone Golem and Xi Construct.
 - Nerfed Scavenger.
 - Swapped Eclipse 1 and Eclipse 5.
 - Fixed Beetle Queen not applying multiple buff stacks.

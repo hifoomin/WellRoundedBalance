@@ -134,8 +134,8 @@ namespace WellRoundedBalance.Enemies.Bosses
             ed.maxUserHealthFraction = Mathf.Infinity;
             ed.minTargetHealthFraction = Mathf.NegativeInfinity;
             ed.maxTargetHealthFraction = Mathf.Infinity;
-            ed.minDistance = 13f;
-            ed.maxDistance = 50f;
+            ed.minDistance = 17f;
+            ed.maxDistance = 80f;
             ed.selectionRequiresTargetLoS = false;
             ed.selectionRequiresOnGround = false;
             ed.selectionRequiresAimTarget = false;
@@ -192,7 +192,7 @@ namespace WellRoundedBalance.Enemies.Bosses
     public class Earthquake : BaseState
     {
         public static float baseDuration = 5f;
-        public float durationBetweenWaves = 1.5f;
+        public float durationBetweenWaves = 1.25f;
 
         public static string soundString = "Play_beetle_guard_impact";
         public static string soundString2 = "Play_beetle_queen_impact";
@@ -201,9 +201,9 @@ namespace WellRoundedBalance.Enemies.Bosses
 
         public static int waveProjectileCount = 12;
 
-        public static float waveProjectileDamageCoefficient = 0.25f;
+        public static float waveProjectileDamageCoefficient = 0.6f;
 
-        public static float waveProjectileForce = 1000f;
+        public static float waveProjectileForce = 500f;
 
         public float timer;
         public float tellTimer;
@@ -247,12 +247,12 @@ namespace WellRoundedBalance.Enemies.Bosses
                 {
                     for (int i = 0; i < 5; i++)
                         Util.PlaySound(soundString2, gameObject);
-                    tellTimer = 0;
+                    tellTimer -= durationBetweenWaves - 0.3f;
                 }
                 if (timer >= durationBetweenWaves)
                 {
                     FireWave();
-                    timer = 0;
+                    timer -= durationBetweenWaves;
                 }
                 if (fixedAge > baseDuration)
                 {
