@@ -8,9 +8,11 @@ namespace WellRoundedBalance.Items.Lunars
         public override string Name => ":: Items ::::: Lunars :: Shaped Glass";
         public override ItemDef InternalPickup => RoR2Content.Items.LunarDagger;
 
-        public override string PickupText => "Increase your damage by 75%... <color=#FF7F7F>BUT reduce your health by 50%.</color>";
-        public override string DescText => "Increase base damage by <style=cIsDamage>75%</style> <style=cStack>(+75% per stack)</style>. <style=cIsHealing>Reduce maximum health by 50%</style> <style=cStack>(+50% per stack)</style>.";
+        public override string PickupText => $"Increase your damage by {Damage * 100f}%... <color=#FF7F7F>BUT reduce your health by 50%.</color>";
+        public override string DescText => $"Increase base damage by <style=cIsDamage>{Damage * 100f}%</style> <style=cStack>(+75% per stack)</style>. <style=cIsHealing>Reduce maximum health by 50%</style> <style=cStack>(+50% per stack)</style>.";
 
+        [ConfigField("Damage Increase", "", 0.75f)]
+        public static float Damage;
         public override void Init()
         {
             base.Init();
@@ -29,7 +31,7 @@ namespace WellRoundedBalance.Items.Lunars
                 var stack = sender.inventory.GetItemCount(RoR2Content.Items.LunarDagger);
                 if (stack > 0)
                 {
-                    args.damageMultAdd += 0.75f * stack;
+                    args.damageMultAdd += Damage * stack;
                     args.baseCurseAdd += Mathf.Pow(1 / 0.5f, stack) - 1;
                 }
             }

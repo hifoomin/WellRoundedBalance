@@ -33,6 +33,8 @@ namespace WellRoundedBalance.Items.Yellows
             On.EntityStates.VagrantNovaItem.DetonateState.OnEnter += Changes;
             IL.EntityStates.VagrantNovaItem.ReadyState.FixedUpdate += ChangeThreshold;
             On.EntityStates.VagrantNovaItem.RechargeState.FixedUpdate += RechargeState_FixedUpdate;
+
+            Mechanics.Health.Fragile.AddFragileItem(InternalPickup, new Mechanics.Health.Fragile.FragileInfo { fraction = healthThreshold * 100f });
         }
 
         private void RechargeState_FixedUpdate(On.EntityStates.VagrantNovaItem.RechargeState.orig_FixedUpdate orig, RechargeState self)

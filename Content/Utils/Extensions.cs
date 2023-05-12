@@ -21,6 +21,12 @@ namespace WellRoundedBalance.Utils
             }
         }
 
+        public static bool IsAboveFraction(this HealthComponent healthComponent, float fraction) {
+            float newFraction = fraction * 0.01f;
+            float health = healthComponent.fullHealth * newFraction;
+            return healthComponent.combinedHealth > health;
+        }
+
         public static T GetRandom<T>(this List<T> list, Xoroshiro128Plus rng = null)
         {
             if (list.Count == 0)

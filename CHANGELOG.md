@@ -1,3 +1,11 @@
+# 1.3.2 Patch Nodes
+- Made Shaped Glass damage increase configurable.
+- Fixed Shadowfade having the wrong description.
+- Made Frog Max Pets configurable.
+
+# 1.3.1 Patch Notes
+- Actually included pre-made config for VanillaVoid
+
 # 1.3.0 Patch Notes - The *Compatibility Update May* Update
 - Added AugmentedVoidReaver.
 - Added FathomlessVoidling.
