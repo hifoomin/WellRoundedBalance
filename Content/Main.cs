@@ -3,7 +3,6 @@ using BepInEx.Configuration;
 using BepInEx.Logging;
 using System;
 using System.Reflection;
-
 using WellRoundedBalance.Items;
 using WellRoundedBalance.Equipment;
 using WellRoundedBalance.Interactables;
@@ -12,11 +11,8 @@ using WellRoundedBalance.Projectiles;
 using System.Runtime.CompilerServices;
 using WellRoundedBalance.Elites;
 using R2API.ContentManagement;
-
 using WellRoundedBalance.Misc;
-
 using WellRoundedBalance.Mechanics;
-
 using WellRoundedBalance.Items.NoTier;
 using WellRoundedBalance.Difficulties;
 using WellRoundedBalance.Artifacts.Vanilla;
@@ -24,8 +20,6 @@ using WellRoundedBalance.Artifacts.New;
 using WellRoundedBalance.Gamemodes;
 using WellRoundedBalance.Items.ConsistentCategories;
 using MonoMod.RuntimeDetour;
-
-using WellRoundedBalance.Mechanics.Monsters;
 using WellRoundedBalance.Achievements;
 using HarmonyLib;
 using WellRoundedBalance.Survivors;
@@ -58,7 +52,7 @@ namespace WellRoundedBalance
         public const string PluginGUID = PluginAuthor + "." + PluginName;
         public const string PluginAuthor = "BALLS";
         public const string PluginName = "WellRoundedBalance";
-        public const string PluginVersion = "1.3.0";
+        public const string PluginVersion = "1.3.3";
         public static ConfigFile WRBConfig;
         public static ConfigFile WRBItemConfig;
         public static ConfigFile WRBMechanicConfig;
@@ -88,6 +82,8 @@ namespace WellRoundedBalance
         public static bool WildbookMultitudesLoaded = false;
         public static DifficultyDef InfernoDef = null;
         public static Hook hook;
+
+        private bool mp = false;
 
         public void Awake()
         {
@@ -123,6 +119,12 @@ namespace WellRoundedBalance
                 WRBLogger.LogInfo("Config Autosync Enabled.");
             }
 
+            if (mp)
+            {
+                On.RoR2.Networking.NetworkManagerSystemSteam.OnClientConnect += (s, u, t) => { };
+                // nvm cant cause of backup config sharing violation on path
+            }
+
             InfernoLoaded = BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("HIFU.Inferno");
             RiskyArtifactsLoaded = BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("com.Moffein.RiskyArtifacts");
             PieceOfShitLoaded = BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("com.Wolfo.WolfoQualityOfLife");
@@ -137,6 +139,7 @@ namespace WellRoundedBalance
             Molotov.Create();
             DucleusLaser.Create();
             TitanFist.Create();
+            EarthQuakeWave.Create();
 
             On.RoR2.ItemCatalog.Init += ItemCatalog_Init;
 

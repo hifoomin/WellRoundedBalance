@@ -1,3 +1,4 @@
+<<<<<<< HEAD:CHANGELOG.md
 # 1.3.2 Patch Nodes
 - Made Shaped Glass damage increase configurable.
 - Fixed Shadowfade having the wrong description.
@@ -5,19 +6,47 @@
 
 # 1.3.1 Patch Notes
 - Actually included pre-made config for VanillaVoid
+=======
+# 1.3.3 Patch Notes
+- Added VanillaVoid.
+- Added pre-made configs for HIFUTweaks.
+- Buffed Beetle Queen.
+- Buffed Geep.
+- Buffed Gip.
+- Buffed Grovetender.
+- Buffed Gup.
+- Buffed Plasma Shrimp Shield Percent 12% => **20%**.
+- Buffed Plasma Shrimp Proc Coefficient 0 => **0.2**.
+- Buffed Polylute Proc Coefficient 0 => **0.1**.
+- Buffed Scavenger Max Bag Count 1 => **Infinite**.
+- Nerfed Beetle Queen.
+- Nerfed Eclipse 1 aim on Clay Templar, Stone Golem and Xi Construct.
+- Nerfed Scavenger.
+- Swapped Eclipse 1 and Eclipse 5.
+- Fixed Beetle Queen not applying multiple buff stacks.
+- Fixed Geep being too tanky.
+
+# 1.3.2 Patch Notes
+- Buffed Oddly-shaped Opal Base Armor Gain 2 => **2.5**.
+- Buffed Oddly-shaped Opal Armor Gain Per Stack 2 => **2.5**.
+- Fixed Multiplayer networking bug spam.
+
+# 1.3.1 Patch Notes
+- Fixed VanillaVoid pre-made config.
+>>>>>>> a8ef2a488cdd95c5f81009a9c1c0db6b66b61a42:ModRelease/CHANGELOG.md
 
 # 1.3.0 Patch Notes - The *Compatibility Update May* Update
 - Added AugmentedVoidReaver.
 - Added FathomlessVoidling.
 - Added pre-made config for VanillaVoid.
 - Buffed Legendary Chest Cost $300 => **$250**.
-- Buffed Opal Armor Gain Per Stack 0 => **2**.
+- Buffed Oddly-shaped Opal Armor Gain Per Stack 0 => **2**.
 - Buffed most Fodder, Miniboss and Boss enemies.
 - Nerfed Frog Max Pets 10 => **1**.
 - Nerfed Heretic base stats.
-- Nerfed Opal Armor Gain 3 => **2**.
-- Nerfed Opal Base Max Buff Count 4 => **3**.
-- Nerfed Opal Max Buff Count Per Stack 4 => **0**.
+- Nerfed Oddly-shaped Opal Armor Gain 3 => **2**.
+- Nerfed Oddly-shaped Opal Base Max Buff Count 4 => **3**.
+- Nerfed Oddly-shaped Opal Max Buff Count Per Stack 4 => **0**.
 - Nerfed Repulsion Armor Plate Minimum Damage 8 => **10**.
 - Nerfed Shaped Glass Damage Increase 100% => **75%**.
 - Reworked Strides of Heresy to **dash and heal, stacking in dash length and end-lag**.

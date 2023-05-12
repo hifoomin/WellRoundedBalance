@@ -1,4 +1,4 @@
-﻿using Inferno.Stat_AI;
+﻿using RoR2.Skills;
 using System;
 
 namespace WellRoundedBalance.Enemies.Minibosses
@@ -67,15 +67,33 @@ namespace WellRoundedBalance.Enemies.Minibosses
 
         private void Changes()
         {
-            var gup = Addressables.LoadAssetAsync<GameObject>("RoR2/DLC1/Gup/GupBody.prefab").WaitForCompletion();
+            var gup = Utils.Paths.GameObject.GupBody12.Load<GameObject>();
 
             var gupBody = gup.GetComponent<CharacterBody>();
             gupBody.baseMaxHealth = baseMaxHealth;
             gupBody.levelMaxHealth = baseMaxHealth * 0.3f;
+            gupBody.baseDamage = 10f;
+            gupBody.levelDamage = 2f;
 
             var modelTransform = gup.transform.GetChild(0).GetChild(0);
-            var spikes = Array.Find(modelTransform.GetComponents<HitBoxGroup>(), (HitBoxGroup element) => element.groupName == "Spikes").hitBoxes[0].gameObject;
-            spikes.transform.localScale = new Vector3(4f, 4f, 1.7f);
+            var spikes = Array.Find(modelTransform.GetComponents<HitBoxGroup>(), (HitBoxGroup element) => element.groupName == "Spikes");
+            var mainHitbox = spikes.hitBoxes[0].gameObject;
+            mainHitbox.transform.localScale = new Vector3(4f, 4f, 1.7f);
+            /*
+            var hitboxGroup = modelTransform.GetComponent<HitBoxGroup>();
+            hitboxGroup.hitBoxes[0] = spikes.hitBoxes[1];
+            Array.Resize(ref hitboxGroup.hitBoxes, 1);
+            var newHitbox = hitboxGroup.hitBoxes[0];
+            newHitbox.transform.localScale = new Vector3(1.8f, 1.8f, 1.5f);
+
+            var contactDamage = gup.AddComponent<ContactDamage>();
+            contactDamage.pushForcePerSecond = 500f;
+            contactDamage.damagePerSecondCoefficient = 0.7f;
+            contactDamage.hitBoxGroup = hitboxGroup;
+            */
+
+            var sd = Utils.Paths.SkillDef.GupSpikes.Load<SkillDef>();
+            sd.baseRechargeInterval = 1.5f;
         }
     }
 }

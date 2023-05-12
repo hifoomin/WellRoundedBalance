@@ -59,6 +59,7 @@ The mod integrates some smaller mods to give players the intended, better experi
 - PingOrdering
 - ShurikenFix
 - SnappierStalks
+- VanillaVoid
 
 This means you don't need to have these installed with Well Rounded Balance enabled.
 

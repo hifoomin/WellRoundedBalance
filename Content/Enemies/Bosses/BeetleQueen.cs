@@ -1,48 +1,16 @@
-﻿using RoR2.Skills;
-using UnityEngine.XR;
+﻿using EntityStates;
+using RoR2.Skills;
+using System;
 
 namespace WellRoundedBalance.Enemies.Bosses
 {
     internal class BeetleQueen : EnemyBase<BeetleQueen>
     {
-        public static GameObject buffWard;
-        public static BuffDef inspire;
         public override string Name => "::: Bosses :: Beetle Queen";
 
         public override void Init()
         {
             base.Init();
-
-            inspire = ScriptableObject.CreateInstance<BuffDef>();
-            inspire.isCooldown = false;
-            inspire.canStack = true;
-            inspire.isHidden = false;
-            inspire.buffColor = new Color32(214, 201, 58, 255);
-            inspire.iconSprite = Main.wellroundedbalance.LoadAsset<Sprite>("Assets/WellRoundedBalance/texBuffInspire.png");
-            inspire.name = "Beetle Queen Inspire";
-
-            ContentAddition.AddBuffDef(inspire);
-
-            buffWard = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.WarbannerWard.Load<GameObject>(), "BeetleQueenInspire");
-            var mdl = buffWard.transform.GetChild(1);
-            mdl.gameObject.SetActive(false);
-
-            var inspireMat = Object.Instantiate(Utils.Paths.Material.matWarbannerSphereIndicator2.Load<Material>());
-            inspireMat.SetTexture("_RemapTex", Utils.Paths.Texture2D.texRampThermite2.Load<Texture2D>());
-
-            var meshRenderer = buffWard.transform.GetChild(0).GetChild(0).GetComponent<MeshRenderer>();
-            meshRenderer.material = inspireMat;
-
-            var ward = buffWard.GetComponent<BuffWard>();
-            ward.radius = 24f;
-            ward.interval = 4f;
-            ward.buffDuration = 4f;
-            ward.expires = true;
-            ward.expireDuration = 16f;
-            ward.radiusCoefficientCurve = new AnimationCurve(new Keyframe(0f, 0f), new Keyframe(1f, 2f));
-            ward.buffDef = inspire;
-
-            PrefabAPI.RegisterNetworkPrefab(buffWard);
         }
 
         public override void Hooks()
@@ -50,19 +18,27 @@ namespace WellRoundedBalance.Enemies.Bosses
             On.EntityStates.BeetleQueenMonster.SummonEggs.OnEnter += SummonEggs_OnEnter;
             On.EntityStates.BeetleQueenMonster.FireSpit.OnEnter += FireSpit_OnEnter;
             On.EntityStates.BeetleQueenMonster.SpawnWards.OnEnter += SpawnWards_OnEnter;
-            RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
+            On.RoR2.CharacterAI.BaseAI.Awake += BaseAI_Awake;
             Changes();
         }
 
-        private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
+        private void BaseAI_Awake(On.RoR2.CharacterAI.BaseAI.orig_Awake orig, BaseAI self)
         {
-            if (sender)
+            orig(self);
+            if (self.master && self.master.masterIndex == MasterCatalog.FindMasterIndex("BeetleQueenMaster"))
             {
-                args.cooldownMultAdd -= sender.GetBuffCount(inspire) * 0.03f;
-                args.baseAttackSpeedAdd += sender.GetBuffCount(inspire) * 0.03f;
-                args.moveSpeedMultAdd += sender.GetBuffCount(inspire) * 0.03f;
+                if (self.skillDrivers[0].customName != "SummonEarthquake")
+                {
+                    var driversList = self.skillDrivers.ToList();
+                    var lastNumber = driversList[driversList.Count - 1];
+                    driversList.RemoveAt(driversList.Count - 1);
+                    driversList.Insert(0, lastNumber);
+                    self.skillDrivers = driversList.ToArray();
+                }
             }
         }
+
+        public static CharacterMaster queen = Utils.Paths.GameObject.BeetleQueenMaster.Load<GameObject>().GetComponent<CharacterMaster>();
 
         private void SpawnWards_OnEnter(On.EntityStates.BeetleQueenMonster.SpawnWards.orig_OnEnter orig, EntityStates.BeetleQueenMonster.SpawnWards self)
         {
@@ -70,8 +46,6 @@ namespace WellRoundedBalance.Enemies.Bosses
             {
                 EntityStates.BeetleQueenMonster.SpawnWards.baseDuration = 3f;
                 EntityStates.BeetleQueenMonster.SpawnWards.orbTravelSpeed = 20f;
-                if (self.gameObject.GetComponent<Inspire>() == null)
-                    self.gameObject.AddComponent<Inspire>();
             }
 
             orig(self);
@@ -81,12 +55,13 @@ namespace WellRoundedBalance.Enemies.Bosses
         {
             if (!Main.IsInfernoDef())
             {
-                EntityStates.BeetleQueenMonster.FireSpit.damageCoefficient = 0.35f;
+                EntityStates.BeetleQueenMonster.FireSpit.damageCoefficient = 0.4f;
                 EntityStates.BeetleQueenMonster.FireSpit.force = 1200f;
                 EntityStates.BeetleQueenMonster.FireSpit.yawSpread = 20f;
                 EntityStates.BeetleQueenMonster.FireSpit.minSpread = 15f;
                 EntityStates.BeetleQueenMonster.FireSpit.maxSpread = 30f;
                 EntityStates.BeetleQueenMonster.FireSpit.projectileHSpeed = 40f;
+                EntityStates.BeetleQueenMonster.FireSpit.projectileCount = 10;
             }
             orig(self);
         }
@@ -105,6 +80,84 @@ namespace WellRoundedBalance.Enemies.Bosses
 
         private void Changes()
         {
+            ContentAddition.AddEntityState(typeof(Earthquake), out _);
+
+            var beetleQueen = Utils.Paths.GameObject.BeetleQueen2Body9.Load<GameObject>();
+
+            var esm = beetleQueen.AddComponent<EntityStateMachine>();
+            esm.customName = "Earthquake";
+            esm.initialStateType = new(typeof(EntityStates.BeetleQueenMonster.SpawnState));
+            esm.mainStateType = new(typeof(GenericCharacterMain));
+
+            var nsm = beetleQueen.GetComponent<NetworkStateMachine>();
+            Array.Resize(ref nsm.stateMachines, nsm.stateMachines.Length + 1);
+            nsm.stateMachines[nsm.stateMachines.Length - 1] = esm;
+
+            var utilitySD = ScriptableObject.CreateInstance<SkillDef>();
+            utilitySD.activationState = new SerializableEntityStateType(typeof(Earthquake));
+            utilitySD.activationStateMachineName = "Earthquake";
+            utilitySD.interruptPriority = InterruptPriority.Skill;
+            utilitySD.baseRechargeInterval = 10f;
+            utilitySD.baseMaxStock = 1;
+            utilitySD.rechargeStock = 1;
+            utilitySD.requiredStock = 1;
+            utilitySD.stockToConsume = 1;
+            utilitySD.resetCooldownTimerOnUse = false;
+            utilitySD.fullRestockOnAssign = true;
+            utilitySD.dontAllowPastMaxStocks = false;
+            utilitySD.beginSkillCooldownOnSkillEnd = false;
+            utilitySD.cancelSprintingOnActivation = true;
+            utilitySD.forceSprintDuringState = false;
+            utilitySD.beginSkillCooldownOnSkillEnd = true;
+            utilitySD.isCombatSkill = true;
+            utilitySD.mustKeyPress = false;
+            (utilitySD as ScriptableObject).name = "EarthquakeSkill";
+
+            ContentAddition.AddSkillDef(utilitySD);
+
+            var utilityFamily = ScriptableObject.CreateInstance<SkillFamily>();
+            Array.Resize(ref utilityFamily.variants, 1);
+            utilityFamily.variants[0].skillDef = utilitySD;
+            (utilityFamily as ScriptableObject).name = "UtilityFamily";
+
+            ContentAddition.AddSkillFamily(utilityFamily);
+
+            var utility = beetleQueen.AddComponent<GenericSkill>();
+            utility._skillFamily = utilityFamily;
+
+            var master = Utils.Paths.GameObject.BeetleQueenMaster.Load<GameObject>();
+            var ed = master.AddComponent<AISkillDriver>();
+            ed.customName = "SummonEarthquake";
+            ed.skillSlot = SkillSlot.Utility;
+            ed.requireSkillReady = true;
+            ed.minUserHealthFraction = Mathf.NegativeInfinity;
+            ed.maxUserHealthFraction = Mathf.Infinity;
+            ed.minTargetHealthFraction = Mathf.NegativeInfinity;
+            ed.maxTargetHealthFraction = Mathf.Infinity;
+            ed.minDistance = 17f;
+            ed.maxDistance = 80f;
+            ed.selectionRequiresTargetLoS = false;
+            ed.selectionRequiresOnGround = false;
+            ed.selectionRequiresAimTarget = false;
+            ed.moveTargetType = AISkillDriver.TargetType.CurrentEnemy;
+            ed.activationRequiresAimTargetLoS = false;
+            ed.activationRequiresAimConfirmation = false;
+            ed.activationRequiresTargetLoS = false;
+            ed.movementType = AISkillDriver.MovementType.ChaseMoveTarget;
+            ed.moveInputScale = 1;
+            ed.aimType = AISkillDriver.AimType.AtMoveTarget;
+            ed.ignoreNodeGraph = false;
+            ed.shouldSprint = false;
+            ed.shouldFireEquipment = false;
+            ed.shouldTapButton = false;
+            ed.buttonPressType = AISkillDriver.ButtonPressType.Hold;
+            ed.driverUpdateTimerOverride = -1;
+            ed.resetCurrentEnemyOnNextDriverSelection = false;
+            ed.noRepeat = false;
+
+            var locator = beetleQueen.GetComponent<SkillLocator>();
+            locator.utility = utility;
+
             var summonBeetleGuards = Utils.Paths.SkillDef.BeetleQueen2BodySummonEggs.Load<SkillDef>();
             summonBeetleGuards.baseRechargeInterval = 60f;
 
@@ -115,16 +168,16 @@ namespace WellRoundedBalance.Enemies.Bosses
             var spitDoT = Utils.Paths.GameObject.BeetleQueenAcid.Load<GameObject>();
             var projectileDotZone = spitDoT.GetComponent<ProjectileDotZone>();
             projectileDotZone.lifetime = 9f;
-            projectileDotZone.damageCoefficient = 2.8f;
+            projectileDotZone.damageCoefficient = 3f;
             spitDoT.transform.localScale = new Vector3(3.5f, 3.5f, 3.5f);
 
             var hitBox = spitDoT.transform.GetChild(0).GetChild(2);
             hitBox.localPosition = new Vector3(0f, 0f, -0.5f);
-            hitBox.localScale = new Vector3(4f, 1f, 4f);
+            hitBox.localScale = new Vector3(4f, 1.5f, 4f);
 
             var beetleWard = Utils.Paths.GameObject.BeetleWard.Load<GameObject>();
             var buffWard = beetleWard.GetComponent<BuffWard>();
-            buffWard.radius = 7.5f;
+            buffWard.radius = 7f;
             buffWard.interval = 0.5f;
             buffWard.buffDuration = 3f;
             buffWard.expireDuration = 10f;
@@ -134,36 +187,83 @@ namespace WellRoundedBalance.Enemies.Bosses
         }
     }
 
-    public class Inspire : MonoBehaviour
-    {
-        public float timer;
-        public float delay = 4f;
-        public float cooldown = 0f;
-        public float maxDuration = 20f;
-        public GameObject ward;
-        public GameObject wardInstance;
+    // replace projectile if ai reoreder infally works ioajdocjnduie54ryguifdvbhncuijuero89isdfjvcu9ix
 
-        public void Start()
+    public class Earthquake : BaseState
+    {
+        public static float baseDuration = 5f;
+        public float durationBetweenWaves = 1.25f;
+
+        public static string soundString = "Play_beetle_guard_impact";
+        public static string soundString2 = "Play_beetle_queen_impact";
+
+        public static GameObject waveProjectilePrefab = Projectiles.EarthQuakeWave.prefab;
+
+        public static int waveProjectileCount = 12;
+
+        public static float waveProjectileDamageCoefficient = 0.6f;
+
+        public static float waveProjectileForce = 500f;
+
+        public float timer;
+        public float tellTimer;
+
+        public override void OnEnter()
         {
-            ward = BeetleQueen.buffWard;
+            base.OnEnter();
+            PlayCrossfade("Gesture", "SummonEggs", 0.5f);
+            var aimAnimator = GetAimAnimator();
+            if (aimAnimator)
+            {
+                aimAnimator.enabled = true;
+            }
         }
 
-        public void FixedUpdate()
+        private void FireWave()
         {
+            for (int i = 0; i < 5; i++)
+                Util.PlaySound(soundString2, gameObject);
+            var slices = 360f / waveProjectileCount;
+            var upVector = Vector3.ProjectOnPlane(inputBank.aimDirection, Vector3.up);
+            var footPosition = characterBody.footPosition;
+            for (int i = 0; i < waveProjectileCount; i++)
+            {
+                var quat = Quaternion.AngleAxis(slices * i, Vector3.up) * upVector;
+                if (isAuthority)
+                {
+                    ProjectileManager.instance.FireProjectile(waveProjectilePrefab, footPosition, Util.QuaternionSafeLookRotation(quat), gameObject, characterBody.damage * waveProjectileDamageCoefficient, waveProjectileForce, Util.CheckRoll(characterBody.crit, characterBody.master), DamageColorIndex.Default, null, -1f);
+                }
+            }
+        }
+
+        public override void FixedUpdate()
+        {
+            base.FixedUpdate();
             timer += Time.fixedDeltaTime;
-            delay -= Time.fixedDeltaTime;
-            cooldown -= Time.fixedDeltaTime;
-            if (delay <= 0 && cooldown <= 0)
+            tellTimer += Time.fixedDeltaTime;
+            if (isAuthority)
             {
-                wardInstance = Instantiate(ward, gameObject.transform.position, Quaternion.identity);
-                wardInstance.GetComponent<TeamFilter>().teamIndex = gameObject.GetComponent<TeamComponent>().teamIndex;
-                NetworkServer.Spawn(wardInstance);
-                cooldown = 50f;
+                if (tellTimer >= durationBetweenWaves - 0.3f)
+                {
+                    for (int i = 0; i < 5; i++)
+                        Util.PlaySound(soundString2, gameObject);
+                    tellTimer -= durationBetweenWaves - 0.3f;
+                }
+                if (timer >= durationBetweenWaves)
+                {
+                    FireWave();
+                    timer -= durationBetweenWaves;
+                }
+                if (fixedAge > baseDuration)
+                {
+                    outer.SetNextStateToMain();
+                }
             }
-            if (timer >= maxDuration)
-            {
-                NetworkServer.Destroy(wardInstance);
-            }
+        }
+
+        public override InterruptPriority GetMinimumInterruptPriority()
+        {
+            return InterruptPriority.PrioritySkill;
         }
     }
 }

@@ -1,11 +1,6 @@
 ﻿using EntityStates.BrotherMonster;
-using Inferno.Stat_AI;
-using R2API.Utils;
-using Rewired;
 using Rewired.ComponentControls.Effects;
-using System;
 using UnityEngine.SceneManagement;
-using static RoR2.MasterCatalog;
 
 namespace WellRoundedBalance.Enemies.FinalBosses
 {

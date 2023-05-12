@@ -1,6 +1,4 @@
-﻿using MonoMod.Cil;
-
-namespace WellRoundedBalance.Items.VoidGreens
+﻿namespace WellRoundedBalance.Items.VoidGreens
 {
     public class PlasmaShrimp : ItemBase<PlasmaShrimp>
     {
@@ -13,10 +11,10 @@ namespace WellRoundedBalance.Items.VoidGreens
         [ConfigField("TOTAL Damage", "Decimal.", 0.2f)]
         public static float totalDamage;
 
-        [ConfigField("Percent Shield", "Decimal.", 0.12f)]
+        [ConfigField("Percent Shield", "Decimal.", 0.2f)]
         public static float percentShield;
 
-        [ConfigField("Proc Coefficient", 0f)]
+        [ConfigField("Proc Coefficient", 0.2f)]
         public static float procCoefficient;
 
         public override void Init()

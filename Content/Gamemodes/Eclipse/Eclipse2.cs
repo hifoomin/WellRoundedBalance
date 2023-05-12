@@ -1,6 +1,4 @@
-﻿using Mono.Cecil.Cil;
-using MonoMod.Cil;
-using System;
+﻿using System;
 using Util = WellRoundedBalance.Gamemodes.Eclipse.PredictionUtils;
 
 namespace WellRoundedBalance.Gamemodes.Eclipse

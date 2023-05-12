@@ -29,7 +29,7 @@ namespace WellRoundedBalance.Items.Lunars
             stridesSD.activationState = new SerializableEntityStateType(typeof(StrideState));
             stridesSD.baseRechargeInterval = 6f;
 
-            LanguageAPI.Add(stridesSD.skillDescriptionToken, "Dash, <style=cIsHealing>healing</style> for <style=cIsHealing>5% of your maximum health</style>. Lasts <style=cIsUtility>1</style> <style=cStack>(+0.5 per stack)</style> seconds, then <style=cIsHealing>heals</style> for <style=cIsHealing>10% of your maximum health</style>.");
+            LanguageAPI.Add("SKILL_LUNAR_UTILITY_REPLACEMENT_DESCRIPTION_WRB", "Dash, <style=cIsHealing>healing</style> for <style=cIsHealing>5% of your maximum health</style>. Lasts <style=cIsUtility>1</style> <style=cStack>(+0.5 per stack)</style> seconds, then <style=cIsHealing>heals</style> for <style=cIsHealing>10% of your maximum health</style>.");
         }
     }
 

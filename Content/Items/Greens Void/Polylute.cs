@@ -53,7 +53,7 @@ namespace WellRoundedBalance.Items.VoidGreens
         [ConfigField("Strike Interval is Hyperbolic", "Decimal, Max value. Set to 0 to make it linear.", 0f)]
         public static float intervalIsHyperbolic;
 
-        [ConfigField("Proc Coefficient", 0f)]
+        [ConfigField("Proc Coefficient", 0.1f)]
         public static float procCoefficient;
 
         public override void Init()

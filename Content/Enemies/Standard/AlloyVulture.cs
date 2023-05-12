@@ -20,7 +20,7 @@
             var wind = Utils.Paths.GameObject.WindbladeProjectile.Load<GameObject>();
             var projectileSimple = wind.GetComponent<ProjectileSimple>();
             projectileSimple.lifetime = 15f;
-            projectileSimple.desiredForwardSpeed = 30f;
+            projectileSimple.desiredForwardSpeed = 35f;
             wind.transform.localScale = new Vector3(2f, 2f, 2f);
 
             var projectileController = wind.GetComponent<ProjectileController>();
