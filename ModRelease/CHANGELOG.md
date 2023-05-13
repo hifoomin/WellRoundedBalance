@@ -1,6 +1,5 @@
 # 1.3.5 Patch Notes
 - Buffed Shrine of The Woods Base Radius 13m => **20m**.
-- Buffed Shrine of The Woods Percent Healing Per Second 2% => **3%**.
 - Buffed Shrine of The Woods Radius Per Purchase 13m => **20m**.
 - Buffed Void Potential Void Red and Void Yellow chance.
 - Made Sawmerang increase bleed cap by **10**.

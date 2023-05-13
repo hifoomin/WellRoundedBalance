@@ -39,7 +39,6 @@ namespace WellRoundedBalance.Items.Whites
 
         public override void Hooks()
         {
-            On.RoR2.DotController.InflictDot_GameObject_GameObject_DotIndex_float_float_Nullable1 += DotController_InflictDot_GameObject_GameObject_DotIndex_float_float_Nullable1;
             On.RoR2.CharacterBody.RecalculateStats += CharacterBody_RecalculateStats;
             RecalculateEvent.RecalculateBleedCap += (object sender, RecalculateEventArgs args) =>
             {
@@ -60,31 +59,6 @@ namespace WellRoundedBalance.Items.Whites
                     }
                 }
             };
-        }
-
-        private void DotController_InflictDot_GameObject_GameObject_DotIndex_float_float_Nullable1(On.RoR2.DotController.orig_InflictDot_GameObject_GameObject_DotIndex_float_float_Nullable1 orig, GameObject victimObject, GameObject attackerObject, DotController.DotIndex dotIndex, float duration, float damageMultiplier, uint? maxStacksFromAttacker)
-        {
-            var attackerBody = attackerObject.GetComponent<CharacterBody>();
-            if (attackerBody)
-            {
-                var inventory = attackerBody.inventory;
-                if (inventory)
-                {
-                    var stack = inventory.GetItemCount(RoR2Content.Items.BleedOnHit);
-                    var spleen = inventory.GetItemCount(RoR2Content.Items.BleedOnHitAndExplode);
-                    if (dotIndex == DotController.DotIndex.Bleed)
-                    {
-                        var triBleedCap = baseBleedCapPerTarget + bleedCapPerTargetPerStack * (stack - 1);
-                        int spleenBleedCap = 0;
-                        if (spleen > 0)
-                        {
-                            spleenBleedCap = Shatterspleen.baseBleedCapPerTarget + Shatterspleen.bleedCapPerTargetPerStack * (spleen - 1);
-                        }
-                        maxStacksFromAttacker = (uint)triBleedCap + (uint)spleenBleedCap;
-                    }
-                }
-            }
-            orig(victimObject, attackerObject, dotIndex, duration, damageMultiplier, maxStacksFromAttacker);
         }
 
         private void CharacterBody_RecalculateStats(On.RoR2.CharacterBody.orig_RecalculateStats orig, CharacterBody self)

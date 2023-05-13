@@ -37,7 +37,7 @@ namespace WellRoundedBalance.Interactables
         [ConfigField("Shrine Of Wood Radius Per Upgrade", "", 20f)]
         public static float shrineOfWoodRadiusPerUpgrade;
 
-        [ConfigField("Shrine Of Wood Percent Healing Per Second", "Decimal.", 0.03f)]
+        [ConfigField("Shrine Of Wood Percent Healing Per Second", "Decimal.", 0.08f)]
         public static float shrineOfWoodPercentHealingPerSecond;
 
         public override void Init()
@@ -104,7 +104,7 @@ namespace WellRoundedBalance.Interactables
             behavior.radiusBonusPerPurchase = shrineOfWoodRadiusPerUpgrade;
 
             var shrineHealingWard = Utils.Paths.GameObject.ShrineHealingWard.Load<GameObject>().GetComponent<HealingWard>();
-            shrineHealingWard.healFraction = shrineOfWoodPercentHealingPerSecond;
+            shrineHealingWard.healFraction = shrineOfWoodPercentHealingPerSecond * 0.25f;
 
             var goldShrine = Utils.Paths.GameObject.ShrineGoldshoresAccess.Load<GameObject>();
             var goldShrinePurchaseInteraction = goldShrine.GetComponent<PurchaseInteraction>();

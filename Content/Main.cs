@@ -393,7 +393,26 @@ namespace WellRoundedBalance
             }
 
             InfernoCompat();
+            On.RoR2.DotController.InflictDot_GameObject_GameObject_DotIndex_float_float_Nullable1 += DotController_InflictDot_GameObject_GameObject_DotIndex_float_float_Nullable1;
             Debug.Log("Lotussy");
+        }
+
+        private void DotController_InflictDot_GameObject_GameObject_DotIndex_float_float_Nullable1(On.RoR2.DotController.orig_InflictDot_GameObject_GameObject_DotIndex_float_float_Nullable1 orig, GameObject victimObject, GameObject attackerObject, DotController.DotIndex dotIndex, float duration, float damageMultiplier, uint? maxStacksFromAttacker)
+        {
+            var attackerBody = attackerObject.GetComponent<CharacterBody>();
+            if (attackerBody && attackerBody.master)
+            {
+                var bleedCap = attackerBody.master.GetComponent<BleedCap>();
+                var inventory = attackerBody.inventory;
+                if (bleedCap && inventory)
+                {
+                    if (dotIndex == DotController.DotIndex.Bleed)
+                    {
+                        maxStacksFromAttacker = (uint)bleedCap.bleedCap;
+                    }
+                }
+            }
+            orig(victimObject, attackerObject, dotIndex, duration, damageMultiplier, maxStacksFromAttacker);
         }
 
         private void PickupPickerController_OnDisplayBegin(On.RoR2.PickupPickerController.orig_OnDisplayBegin orig, PickupPickerController self, NetworkUIPromptController networkUIPromptController, LocalUser localUser, CameraRigController cameraRigController)
