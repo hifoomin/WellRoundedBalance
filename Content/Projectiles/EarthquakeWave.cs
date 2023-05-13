@@ -10,8 +10,8 @@
             var projectileDamage = prefab.GetComponent<ProjectileDamage>();
             projectileDamage.damageType = DamageType.Generic;
 
-            var characterController = prefab.GetComponent<CharacterController>();
-            characterController.slopeLimit = 70f;
+            // var characterController = prefab.GetComponent<CharacterController>();
+            // characterController.slopeLimit = 70f;
 
             var projectileCharacterController = prefab.GetComponent<ProjectileCharacterController>();
             projectileCharacterController.velocity = 35f;

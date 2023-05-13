@@ -63,7 +63,7 @@
         {
             var fastProj = Utils.Paths.GameObject.VagrantCannon.Load<GameObject>();
             var projectileSimple = fastProj.GetComponent<ProjectileSimple>();
-            projectileSimple.desiredForwardSpeed = 45f;
+            projectileSimple.desiredForwardSpeed = 40f;
 
             var projectileImpactExplosion = fastProj.GetComponent<ProjectileImpactExplosion>();
             projectileImpactExplosion.falloffModel = BlastAttack.FalloffModel.None;
@@ -71,7 +71,7 @@
 
             var slowProj = Utils.Paths.GameObject.VagrantTrackingBomb.Load<GameObject>();
             var projectileSimple2 = slowProj.GetComponent<ProjectileSimple>();
-            projectileSimple2.desiredForwardSpeed = 15f;
+            projectileSimple2.desiredForwardSpeed = 16f;
             var cb = slowProj.GetComponent<CharacterBody>();
             cb.baseMaxHealth = 90f;
             cb.levelMaxHealth = 27f;

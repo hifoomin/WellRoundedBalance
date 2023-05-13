@@ -181,9 +181,9 @@ namespace WellRoundedBalance.Enemies.Bosses
             var beetleWard = Utils.Paths.GameObject.BeetleWard.Load<GameObject>();
             var buffWard = beetleWard.GetComponent<BuffWard>();
             buffWard.radius = 7f;
-            buffWard.interval = 0.5f;
-            buffWard.buffDuration = 3f;
-            buffWard.expireDuration = 10f;
+            buffWard.interval = 1f;
+            buffWard.buffDuration = 2.75f;
+            buffWard.expireDuration = 8f;
 
             var egg = Utils.Paths.SkillDef.BeetleQueen2BodySpawnWards.Load<SkillDef>();
             egg.baseRechargeInterval = 12f;

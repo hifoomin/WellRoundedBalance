@@ -35,15 +35,15 @@ namespace WellRoundedBalance.Mechanics.Bosses
                     if (sender.bodyIndex == BodyCatalog.FindBodyIndex("BrotherBody(Clone)") || sender.bodyIndex == BodyCatalog.FindBodyIndex("BrotherHurtBody(Clone)"))
                     {
                         // Main.WRBLogger.LogError("Affecting Mithrix");
-                        args.moveSpeedMultAdd += increase * (maximumMovementSpeedGain * 1.3f);
-                        args.attackSpeedMultAdd += increase * (maximumAttackSpeedGain * 1.3f);
-                        args.cooldownMultAdd -= increase * (maximumCooldownReductionGain * 1.3f);
+                        args.moveSpeedMultAdd += increase * (maximumMovementSpeedGain * 1.25f);
+                        args.attackSpeedMultAdd += increase * (maximumAttackSpeedGain * 1.25f);
+                        args.cooldownMultAdd -= increase * (maximumCooldownReductionGain * 1.25f);
                     }
                     else
                     {
-                        args.moveSpeedMultAdd += increase * (maximumMovementSpeedGain * 1.75f);
-                        args.attackSpeedMultAdd += increase * (maximumAttackSpeedGain * 1.75f);
-                        args.cooldownMultAdd -= increase * (maximumCooldownReductionGain * 1.75f);
+                        args.moveSpeedMultAdd += increase * (maximumMovementSpeedGain * 1.33f);
+                        args.attackSpeedMultAdd += increase * (maximumAttackSpeedGain * 1.33f);
+                        args.cooldownMultAdd -= increase * (maximumCooldownReductionGain * 1.33f);
                     }
                 }
                 else

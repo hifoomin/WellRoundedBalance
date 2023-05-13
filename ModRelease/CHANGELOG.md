@@ -1,3 +1,15 @@
+# 1.3.6 Patch Notes
+- Added pre-made config for more HIFUTweaks.
+- Buffed Wandering Vagrant.
+- Buffed Bison Steak to increase base health by 1 (+1 per stack).
+- Nerfed Bison Steak Base Max Health Gain 45 => **40**.
+- Nerfed Bison Steak Max Health Gain Per Stack 45 => **40**.
+- Nerfed Eclipse 6.
+- Nerfed Wandering Vagrant.
+- Nerfed Beetle Queen.
+- Nerfed Blazing Elites.
+- Nerfed Grovetender
+
 # 1.3.5 Patch Notes
 - Buffed Shrine of The Woods Base Radius 13m => **20m**.
 - Buffed Shrine of The Woods Radius Per Purchase 13m => **20m**.
