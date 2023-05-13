@@ -6,11 +6,14 @@ namespace WellRoundedBalance.Enemies.Bosses
 {
     internal class BeetleQueen : EnemyBase<BeetleQueen>
     {
+        public static Material overlayMat;
         public override string Name => "::: Bosses :: Beetle Queen";
 
         public override void Init()
         {
             base.Init();
+            overlayMat = GameObject.Instantiate(Utils.Paths.Material.matHuntressFlashBright.Load<Material>());
+            overlayMat.SetColor("_TintColor", new Color32(191, 30, 3, 35));
         }
 
         public override void Hooks()
@@ -191,19 +194,19 @@ namespace WellRoundedBalance.Enemies.Bosses
 
     public class Earthquake : BaseState
     {
-        public static float baseDuration = 5f;
+        public static float baseDuration = 6f;
         public float durationBetweenWaves = 1.25f;
 
-        public static string soundString = "Play_beetle_guard_impact";
-        public static string soundString2 = "Play_beetle_queen_impact";
+        public static string tellString = "Play_beetle_guard_attack2_initial";
+        public static string impactString = "Play_Player_footstep";
 
         public static GameObject waveProjectilePrefab = Projectiles.EarthQuakeWave.prefab;
 
         public static int waveProjectileCount = 12;
 
-        public static float waveProjectileDamageCoefficient = 0.6f;
+        public static float waveProjectileDamageCoefficient = 0.4f;
 
-        public static float waveProjectileForce = 500f;
+        public static float waveProjectileForce = 600f;
 
         public float timer;
         public float tellTimer;
@@ -211,7 +214,17 @@ namespace WellRoundedBalance.Enemies.Bosses
         public override void OnEnter()
         {
             base.OnEnter();
-            PlayCrossfade("Gesture", "SummonEggs", 0.5f);
+            var modelTransform = GetModelTransform();
+            if (modelTransform)
+            {
+                var temporaryOverlay = modelTransform.gameObject.AddComponent<TemporaryOverlay>();
+                temporaryOverlay.duration = 6f;
+                temporaryOverlay.animateShaderAlpha = true;
+                temporaryOverlay.alphaCurve = AnimationCurve.EaseInOut(0f, 1f, 6f, 0f);
+                temporaryOverlay.destroyComponentOnEnd = true;
+                temporaryOverlay.originalMaterial = BeetleQueen.overlayMat;
+                temporaryOverlay.AddToCharacerModel(modelTransform.GetComponent<CharacterModel>());
+            }
             var aimAnimator = GetAimAnimator();
             if (aimAnimator)
             {
@@ -221,8 +234,7 @@ namespace WellRoundedBalance.Enemies.Bosses
 
         private void FireWave()
         {
-            for (int i = 0; i < 5; i++)
-                Util.PlaySound(soundString2, gameObject);
+            Util.PlaySound(impactString, gameObject);
             var slices = 360f / waveProjectileCount;
             var upVector = Vector3.ProjectOnPlane(inputBank.aimDirection, Vector3.up);
             var footPosition = characterBody.footPosition;
@@ -243,11 +255,10 @@ namespace WellRoundedBalance.Enemies.Bosses
             tellTimer += Time.fixedDeltaTime;
             if (isAuthority)
             {
-                if (tellTimer >= durationBetweenWaves - 0.3f)
+                if (tellTimer >= durationBetweenWaves - 0.25f)
                 {
-                    for (int i = 0; i < 5; i++)
-                        Util.PlaySound(soundString2, gameObject);
-                    tellTimer -= durationBetweenWaves - 0.3f;
+                    Util.PlaySound(tellString, gameObject);
+                    tellTimer -= durationBetweenWaves - 0.25f;
                 }
                 if (timer >= durationBetweenWaves)
                 {
@@ -259,6 +270,11 @@ namespace WellRoundedBalance.Enemies.Bosses
                     outer.SetNextStateToMain();
                 }
             }
+        }
+
+        public override void OnExit()
+        {
+            base.OnExit();
         }
 
         public override InterruptPriority GetMinimumInterruptPriority()

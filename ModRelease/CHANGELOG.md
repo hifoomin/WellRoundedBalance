@@ -1,7 +1,31 @@
+# 1.3.4 Patch Notes
+- Buffed Artifact Reliquary.
+- Buffed Tri-Tip Dagger Base Bleed Chance 9% => **10%**.
+- Buffed Tri-Tip Dagger Bleed Chance Per Stack 9% => **10%**.
+- Buffed Equipment Drone Max Spawns Per Stage 1 => **2**.
+- Buffed Planula Burn Interval 0.5s => **0.35s**.
+- Buffed Planula Standing Still Duration 1s => **0.5s**.
+- Buffed Oddly-shaped Opal Radius 13m => **20m**.
+- Buffed Void Potential Void Red and Void Yellow chance.
+- Berfed Fuel Array to activate at **35% max health**.
+- Nerfed Beetle Queen Shockwave.
+- Nerfed Eclipse 5 slightly.
+- Nerfed Equipment Drone Cooldown Reduction Coefficient 0.9 => **0.94**.
+- Nerfed Primordial Cube Cooldown 60s => **75s**.
+- Nerfed Tri-Tip Dagger Base Bleed Cap Per Target 8 => **4**.
+- Made Phase 4 Mithrix Start heal all players and grant a temporary speed buff.
+- Changed Void Seed weights to spawn more Void Cradles and Void Potentials.
+- Changed Defense Chest texture.
+- Fixed Artifact of Command locking Artifact Key pickup.
+- Fixed Delicate Watch buff icon persisting.
+- Fixed Bleed Cap not working properly.
+- Fixed Commando: Incorruptible being way too tedious.
+- Fixed The Long Road being way too tedious.
+
 # 1.3.3 Patch Notes
 - Added VanillaVoid.
 - Added pre-made configs for HIFUTweaks.
-- Buffed Beetle Queen.
+- Buffed Beetle Queen to use a ground shockwave attack.
 - Buffed Geep.
 - Buffed Gip.
 - Buffed Grovetender.

@@ -1,9 +1,4 @@
-﻿using Inferno.Stat_AI;
-using RoR2;
-using System.ComponentModel;
-using WolfoQualityOfLife;
-
-namespace WellRoundedBalance.Artifacts.Vanilla
+﻿namespace WellRoundedBalance.Artifacts.Vanilla
 {
     internal class Command : ArtifactEditBase<Command>
     {
@@ -34,7 +29,7 @@ namespace WellRoundedBalance.Artifacts.Vanilla
                     if (master)
                     {
                         var body = master.GetBody();
-                        if (body)
+                        if (body && itemIndex != RoR2Content.Items.ArtifactKey.itemIndex)
                         {
                             var ic = body.GetComponent<ItemCount>();
                             if (ic && (ic.items + 1) > body.level)
@@ -84,7 +79,7 @@ namespace WellRoundedBalance.Artifacts.Vanilla
                 if (index > 0)
                 {
                     var def = ItemCatalog.GetItemDef((ItemIndex)i);
-                    if (def.hidden == true || def.deprecatedTier == ItemTier.NoTier)
+                    if (def.hidden == true || def.deprecatedTier == ItemTier.NoTier || def == RoR2Content.Items.ArtifactKey)
                     {
                         continue;
                     }
@@ -93,34 +88,18 @@ namespace WellRoundedBalance.Artifacts.Vanilla
             }
         }
 
-        private bool GenericPickupController_BodyHasPickupPermission(On.RoR2.GenericPickupController.orig_BodyHasPickupPermission orig, CharacterBody body)
+        private void DisallowPickups(On.RoR2.GenericPickupController.orig_AttemptGrant orig, GenericPickupController self, CharacterBody body)
         {
             if (RunArtifactManager.instance.IsArtifactEnabled(RoR2Content.Artifacts.commandArtifactDef))
             {
-                var player = body.isPlayerControlled;
-                var inventory = body.inventory;
-
-                if (player && inventory)
-                {
-                    var ic = body.GetComponent<ItemCount>();
-                    if (ic && (ic.items + 1) > body.level)
-                    {
-                        return false;
-                    }
-                }
-            }
-            
-            return orig(body);
-        }
-
-        private void DisallowPickups(On.RoR2.GenericPickupController.orig_AttemptGrant orig, GenericPickupController self, CharacterBody body) {
-            if (RunArtifactManager.instance.IsArtifactEnabled(RoR2Content.Artifacts.commandArtifactDef)) {
                 ItemDef item = ItemCatalog.GetItemDef(self.pickupIndex.itemIndex);
 
-                if (item) {
+                if (item && item != RoR2Content.Items.ArtifactKey)
+                {
                     ItemCount ic = body.GetComponent<ItemCount>();
 
-                    if (ic && (ic.items + 1) > body.level) {
+                    if (ic && (ic.items + 1) > body.level)
+                    {
                         return;
                     }
                 }

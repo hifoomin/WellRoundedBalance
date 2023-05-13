@@ -23,6 +23,7 @@ using MonoMod.RuntimeDetour;
 using WellRoundedBalance.Achievements;
 using HarmonyLib;
 using WellRoundedBalance.Survivors;
+using WellRoundedBalance.Allies;
 
 // using WellRoundedBalance.Enemies.FamilyEvents;
 
@@ -52,7 +53,7 @@ namespace WellRoundedBalance
         public const string PluginGUID = PluginAuthor + "." + PluginName;
         public const string PluginAuthor = "BALLS";
         public const string PluginName = "WellRoundedBalance";
-        public const string PluginVersion = "1.3.3";
+        public const string PluginVersion = "1.3.4";
         public static ConfigFile WRBConfig;
         public static ConfigFile WRBItemConfig;
         public static ConfigFile WRBMechanicConfig;
@@ -64,6 +65,7 @@ namespace WellRoundedBalance
         public static ConfigFile WRBArtifactConfig;
         public static ConfigFile WRBDifficultyConfig;
         public static ConfigFile WRBSurvivorConfig;
+        public static ConfigFile WRBAllyConfig;
         public static ConfigFile WRBAchievementConfig;
         public static ConfigFile WRBMiscConfig;
         public static ConfigFile WRBBackupConfig; // DO NOT USE THIS !! JJJJJ
@@ -102,6 +104,7 @@ namespace WellRoundedBalance
             WRBArtifactConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Artifacts.cfg", true);
             WRBDifficultyConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Difficulties.cfg", true);
             WRBSurvivorConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Survivors.cfg", true);
+            WRBAllyConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Allies.cfg", true);
             WRBAchievementConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Achievements.cfg", true);
             WRBMiscConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Misc.cfg", true);
 
@@ -229,6 +232,21 @@ namespace WellRoundedBalance
             {
                 EnemyBase based = (EnemyBase)Activator.CreateInstance(type);
                 if (ValidateEnemy(based))
+                {
+                    try { based.Init(); } catch (Exception ex) { WRBLogger.LogError($"Failed to initialize {type.Name}: {ex}"); }
+                }
+            }
+
+            IEnumerable<Type> ally = from type in Assembly.GetExecutingAssembly().GetTypes()
+                                     where !type.IsAbstract && type.IsSubclassOf(typeof(AllyBase))
+                                     select type;
+
+            WRBLogger.LogInfo("==+----------------==ALLIES==----------------+==");
+
+            foreach (Type type in ally)
+            {
+                AllyBase based = (AllyBase)Activator.CreateInstance(type);
+                if (ValidateAlly(based))
                 {
                     try { based.Init(); } catch (Exception ex) { WRBLogger.LogError($"Failed to initialize {type.Name}: {ex}"); }
                 }
@@ -375,6 +393,7 @@ namespace WellRoundedBalance
             }
 
             InfernoCompat();
+            Debug.Log("Lotussy");
         }
 
         private void PickupPickerController_OnDisplayBegin(On.RoR2.PickupPickerController.orig_OnDisplayBegin orig, PickupPickerController self, NetworkUIPromptController networkUIPromptController, LocalUser localUser, CameraRigController cameraRigController)
@@ -451,6 +470,17 @@ namespace WellRoundedBalance
             if (enb.isEnabled)
             {
                 bool enabledfr = WRBEnemyConfig.Bind(enb.Name, "Enable Changes?", true, "Vanilla is false").Value;
+                if (enabledfr) return true;
+                else ConfigManager.ConfigChanged = true;
+            }
+            return false;
+        }
+
+        public bool ValidateAlly(AllyBase ab)
+        {
+            if (ab.isEnabled)
+            {
+                bool enabledfr = WRBAllyConfig.Bind(ab.Name, "Enable Changes?", true, "Vanilla is false").Value;
                 if (enabledfr) return true;
                 else ConfigManager.ConfigChanged = true;
             }

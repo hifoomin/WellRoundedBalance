@@ -1,4 +1,5 @@
 ﻿using WellRoundedBalance.Items.Yellows;
+using WellRoundedBalance.Misc;
 
 namespace WellRoundedBalance.Items.Whites
 {
@@ -16,16 +17,16 @@ namespace WellRoundedBalance.Items.Whites
             (bleedCapPerTargetPerStack > 0 ? " <style=cStack>(+" + bleedCapPerTargetPerStack + " per stack)</style>" : "") +
             " times for <style=cIsDamage>240%</style> base damage.", d);
 
-        [ConfigField("Bleed Chance", 0.09f)]
+        [ConfigField("Base Bleed Chance", 0.1f)]
         public static float bleedChance;
 
-        [ConfigField("Bleed Chance per Stack", 0.09f)]
+        [ConfigField("Bleed Chance per Stack", 0.1f)]
         public static float bleedChanceStack;
 
         [ConfigField("Damage is Hyperbolic", "Decimal, Max value. Set to 0 to make it linear.", 0f)]
         public static float bleedChanceIsHyperbolic;
 
-        [ConfigField("Base Bleed Cap Per Target", "", 8)]
+        [ConfigField("Base Bleed Cap Per Target", "", 4)]
         public static int baseBleedCapPerTarget;
 
         [ConfigField("Bleed Cap Per Target Per Stack", "", 4)]
@@ -40,6 +41,25 @@ namespace WellRoundedBalance.Items.Whites
         {
             On.RoR2.DotController.InflictDot_GameObject_GameObject_DotIndex_float_float_Nullable1 += DotController_InflictDot_GameObject_GameObject_DotIndex_float_float_Nullable1;
             On.RoR2.CharacterBody.RecalculateStats += CharacterBody_RecalculateStats;
+            RecalculateEvent.RecalculateBleedCap += (object sender, RecalculateEventArgs args) =>
+            {
+                if (args.BleedCap)
+                {
+                    var body = args.BleedCap.body;
+                    if (body)
+                    {
+                        var inventory = args.BleedCap.body.inventory;
+                        if (inventory)
+                        {
+                            var stack = inventory.GetItemCount(RoR2Content.Items.BleedOnHit);
+                            if (stack > 0)
+                            {
+                                args.BleedCap.bleedCapAdd += baseBleedCapPerTarget + bleedCapPerTargetPerStack * (stack - 1);
+                            }
+                        }
+                    }
+                }
+            };
         }
 
         private void DotController_InflictDot_GameObject_GameObject_DotIndex_float_float_Nullable1(On.RoR2.DotController.orig_InflictDot_GameObject_GameObject_DotIndex_float_float_Nullable1 orig, GameObject victimObject, GameObject attackerObject, DotController.DotIndex dotIndex, float duration, float damageMultiplier, uint? maxStacksFromAttacker)

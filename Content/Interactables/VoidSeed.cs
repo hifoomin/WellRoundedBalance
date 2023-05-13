@@ -14,8 +14,16 @@
 
         public override void Hooks()
         {
+            Changes();
+        }
+
+        private void Changes()
+        {
             var voidSeed = Utils.Paths.InteractableSpawnCard.iscVoidCamp.Load<InteractableSpawnCard>();
             voidSeed.maxSpawnsPerStage = maxSpawnsPerStage;
+
+            var interactables = Utils.Paths.DirectorCardCategorySelection.dccsVoidCampInteractables.Load<DirectorCardCategorySelection>();
+            interactables.categories[0].cards[1].selectionWeight = 2;
         }
     }
 }

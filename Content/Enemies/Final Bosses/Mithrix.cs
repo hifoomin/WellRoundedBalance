@@ -1,4 +1,5 @@
 ﻿using EntityStates.BrotherMonster;
+using Inferno.Stat_AI;
 using Rewired.ComponentControls.Effects;
 using UnityEngine.SceneManagement;
 
@@ -84,10 +85,20 @@ namespace WellRoundedBalance.Enemies.FinalBosses
         [ConfigField("Enable Moving Escape Lines?", "", true)]
         public static bool enableMovingEscapeLines;
 
+        [ConfigField("Enable Phase 4 Player Speed Buff?", "", true)]
+        public static bool phase4SpeedBuff;
+
+        [ConfigField("Heal all players on Phase 4 Start?", "", true)]
+        public static bool phase4Heal;
+
         public static GameObject ramp1;
         public static GameObject ramp2;
         public static GameObject ramp3;
         public static GameObject rocks;
+
+        public static BuffDef speedBuff;
+
+        public static SpawnCard mithrixGlass = LegacyResourcesAPI.Load<SpawnCard>("SpawnCards/CharacterSpawnCards/cscBrotherGlass");
 
         public static CharacterBody stationaryBody = Utils.Paths.GameObject.EngiTurretBody.Load<GameObject>().GetComponent<CharacterBody>();
         public static CharacterBody walkerBody = Utils.Paths.GameObject.EngiWalkerTurretBody.Load<GameObject>().GetComponent<CharacterBody>();
@@ -99,6 +110,13 @@ namespace WellRoundedBalance.Enemies.FinalBosses
         public override void Init()
         {
             base.Init();
+            speedBuff = ScriptableObject.CreateInstance<BuffDef>();
+            speedBuff.isHidden = true;
+            speedBuff.isCooldown = false;
+            speedBuff.isDebuff = false;
+            speedBuff.canStack = false;
+
+            ContentAddition.AddBuffDef(speedBuff);
         }
 
         public override void Hooks()
@@ -130,7 +148,16 @@ namespace WellRoundedBalance.Enemies.FinalBosses
             On.EntityStates.BrotherMonster.UltChannelState.OnEnter += UltChannelState_OnEnter;
             On.EntityStates.BrotherHaunt.FireRandomProjectiles.OnEnter += FireRandomProjectiles_OnEnter;
             On.RoR2.MasterSummon.Perform += MasterSummon_Perform;
+            RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
             Changes();
+        }
+
+        private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
+        {
+            if (sender && sender.HasBuff(speedBuff))
+            {
+                args.moveSpeedMultAdd += 0.2f;
+            }
         }
 
         private void FistSlam_OnExit(On.EntityStates.BrotherMonster.FistSlam.orig_OnExit orig, FistSlam self)
@@ -159,9 +186,18 @@ namespace WellRoundedBalance.Enemies.FinalBosses
 
         private void BrotherEncounterPhaseBaseState_OnExit(On.EntityStates.Missions.BrotherEncounter.BrotherEncounterPhaseBaseState.orig_OnExit orig, EntityStates.Missions.BrotherEncounter.BrotherEncounterPhaseBaseState self)
         {
-            if (self is EntityStates.Missions.BrotherEncounter.Phase4 && npc)
+            if (self is EntityStates.Missions.BrotherEncounter.Phase4)
             {
-                disableAllyNPC = false;
+                if (npc)
+                    disableAllyNPC = false;
+                if (phase4SpeedBuff)
+                {
+                    var players = CharacterBody.readOnlyInstancesList.Where(x => x.isPlayerControlled).ToList();
+                    foreach (CharacterBody body in players)
+                    {
+                        body.RemoveBuff(speedBuff);
+                    }
+                }
             }
             orig(self);
         }
@@ -195,7 +231,7 @@ namespace WellRoundedBalance.Enemies.FinalBosses
                 timer += Time.fixedDeltaTime;
                 if (timer >= interval)
                 {
-                    for (int i = 0; i < CharacterBody.readOnlyInstancesList.Count; i++)
+                    for (int i = 0; i < CharacterBody.readOnlyInstancesList.ToList().Count; i++)
                     {
                         var body = CharacterBody.readOnlyInstancesList[i];
                         if (body.teamComponent.teamIndex == TeamIndex.Player && !body.isPlayerControlled && body != stationaryBody && body != walkerBody)
@@ -270,7 +306,7 @@ namespace WellRoundedBalance.Enemies.FinalBosses
         {
             if (stealRework)
             {
-                SpellChannelExitState.lendInterval = 0f;
+                SpellChannelExitState.lendInterval = -1;
                 SpellChannelExitState.duration = 2.5f;
             }
             orig(self);
@@ -280,7 +316,7 @@ namespace WellRoundedBalance.Enemies.FinalBosses
         {
             if (stealRework)
             {
-                SpellChannelState.stealInterval = 0f;
+                SpellChannelState.stealInterval = 0;
                 SpellChannelState.delayBeforeBeginningSteal = 0f;
                 SpellChannelState.maxDuration = 1f;
             }
@@ -398,28 +434,35 @@ namespace WellRoundedBalance.Enemies.FinalBosses
                 ramp3.SetActive(false);
                 rocks.SetActive(false);
             }
-            orig(self);
-            if (clones)
+            for (int i = 0; i < CharacterBody.readOnlyInstancesList.Count; i++)
             {
-                var players = CharacterBody.readOnlyInstancesList.Where(x => x.isPlayerControlled);
-                foreach (CharacterBody body in players)
+                var body = CharacterBody.readOnlyInstancesList[i];
+                if (body.isPlayerControlled)
                 {
-                    var directorSpawnRequest = new DirectorSpawnRequest(LegacyResourcesAPI.Load<SpawnCard>("SpawnCards/CharacterSpawnCards/cscBrotherGlass"), new DirectorPlacementRule
+                    if (phase4Heal)
+                        body.healthComponent?.HealFraction(1f, default);
+                    if (phase4SpeedBuff)
+                        body.AddBuff(speedBuff);
+                    if (clones)
                     {
-                        placementMode = DirectorPlacementRule.PlacementMode.Approximate,
-                        minDistance = 25f,
-                        maxDistance = 45f,
-                        spawnOnTarget = body.transform,
-                    }, RoR2Application.rng)
-                    {
-                        summonerBodyObject = self.gameObject,
-                        teamIndexOverride = TeamIndex.Monster,
-                        ignoreTeamMemberLimit = true
-                    };
+                        var directorSpawnRequest = new DirectorSpawnRequest(mithrixGlass, new DirectorPlacementRule
+                        {
+                            placementMode = DirectorPlacementRule.PlacementMode.Approximate,
+                            minDistance = 30f,
+                            maxDistance = 45f,
+                            spawnOnTarget = body.transform,
+                        }, RoR2Application.rng)
+                        {
+                            summonerBodyObject = self.gameObject,
+                            teamIndexOverride = TeamIndex.Monster,
+                            ignoreTeamMemberLimit = true
+                        };
 
-                    DirectorCore.instance.TrySpawnObject(directorSpawnRequest);
+                        DirectorCore.instance.TrySpawnObject(directorSpawnRequest);
+                    }
                 }
             }
+            orig(self);
         }
 
         private void Phase3_OnEnter(On.EntityStates.Missions.BrotherEncounter.Phase3.orig_OnEnter orig, EntityStates.Missions.BrotherEncounter.Phase3 self)

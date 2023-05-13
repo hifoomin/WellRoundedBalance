@@ -230,6 +230,19 @@ namespace WellRoundedBalance.Items.ConsistentCategories
             largeHealingChestDropTable.requiredItemTags = new ItemTag[] { ItemAPI.FindItemTagByName("Defense") };
             LanguageAPI.Add("CATEGORYCHEST2_HEALING_NAME", "Large Chest - Defense");
             LanguageAPI.Add("CATEGORYCHEST2_HEALING_CONTEXT", "Open Large Chest - Defense");
+
+            var defenseChest = Utils.Paths.GameObject.CategoryChestHealing.Load<GameObject>();
+
+            var newMat = Object.Instantiate(Utils.Paths.Material.matCategoryChestHealing.Load<Material>());
+            newMat.SetTexture("_MainTex", Main.wellroundedbalance.LoadAsset<Texture2D>("Assets/WellRoundedBalance/texDefenseChest.png"));
+
+            var smr = defenseChest.transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<SkinnedMeshRenderer>();
+            smr.material = newMat;
+
+            var defenseChest2 = Utils.Paths.GameObject.CategoryChest2HealingVariant.Load<GameObject>();
+
+            var smr2 = defenseChest2.transform.GetChild(0).GetChild(0).GetChild(1).GetComponent<SkinnedMeshRenderer>();
+            smr2.material = newMat;
         }
 
         public static void BetterAIBlacklist()

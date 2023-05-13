@@ -1,6 +1,8 @@
-﻿namespace WellRoundedBalance.Misc
+﻿using System;
+
+namespace WellRoundedBalance.Misc
 {
-    public class DestroyStuckObject : MonoBehaviour // FUCK im too stupid to make this work
+    public class DestroyStuckObject : MonoBehaviour
     {
         public float noMovementThreshold = 0.1f;
         public const int noMovementFrames = 3;
@@ -44,6 +46,51 @@
                     }
                 }
             }
+        }
+    }
+
+    public static class RecalculateEvent
+    {
+        public static EventHandler<RecalculateEventArgs> RecalculateBleedCap;
+    }
+
+    public class RecalculateEventArgs
+    {
+        public BleedCap BleedCap;
+
+        public RecalculateEventArgs(BleedCap bleedCap)
+        {
+            BleedCap = bleedCap;
+        }
+    }
+
+    public class BleedCap : MonoBehaviour
+    {
+        public CharacterBody body;
+        public int bleedCap = 0;
+        public int bleedCapAdd;
+
+        private void Start()
+        {
+            body = GetComponent<CharacterBody>();
+            RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
+        }
+
+        private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
+        {
+            if (sender && sender.GetComponent<BleedCap>())
+            {
+                bleedCapAdd = 0;
+
+                RecalculateEvent.RecalculateBleedCap?.Invoke(this, new(sender.masterObject.GetComponent<BleedCap>()));
+
+                bleedCap = bleedCapAdd;
+            }
+        }
+
+        private void OnDestroy()
+        {
+            RecalculateStatsAPI.GetStatCoefficients -= RecalculateStatsAPI_GetStatCoefficients;
         }
     }
 }

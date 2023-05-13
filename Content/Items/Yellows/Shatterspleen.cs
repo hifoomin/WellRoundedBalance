@@ -1,4 +1,5 @@
-﻿using MonoMod.Cil;
+﻿using Inferno.Stat_AI;
+using WellRoundedBalance.Misc;
 
 namespace WellRoundedBalance.Items.Yellows
 {
@@ -29,7 +30,52 @@ namespace WellRoundedBalance.Items.Yellows
 
         public override void Hooks()
         {
+            CharacterBody.onBodyStartGlobal += CharacterBody_onBodyStartGlobal;
             IL.RoR2.GlobalEventManager.OnCharacterDeath += Changes;
+            On.RoR2.DotController.InflictDot_GameObject_GameObject_DotIndex_float_float_Nullable1 += DotController_InflictDot_GameObject_GameObject_DotIndex_float_float_Nullable1;
+            RecalculateEvent.RecalculateBleedCap += (object sender, RecalculateEventArgs args) =>
+            {
+                if (args.BleedCap)
+                {
+                    var body = args.BleedCap.body;
+                    if (body)
+                    {
+                        var inventory = args.BleedCap.body.inventory;
+                        if (inventory)
+                        {
+                            var stack = inventory.GetItemCount(RoR2Content.Items.BleedOnHitAndExplode);
+                            if (stack > 0)
+                            {
+                                args.BleedCap.bleedCapAdd += baseBleedCapPerTarget + bleedCapPerTargetPerStack * (stack - 1);
+                            }
+                        }
+                    }
+                }
+            };
+        }
+
+        private void CharacterBody_onBodyStartGlobal(CharacterBody body)
+        {
+            if (body.isPlayerControlled && body.GetComponent<BleedCap>() == null && body.inventory)
+                body.gameObject.AddComponent<BleedCap>();
+        }
+
+        private void DotController_InflictDot_GameObject_GameObject_DotIndex_float_float_Nullable1(On.RoR2.DotController.orig_InflictDot_GameObject_GameObject_DotIndex_float_float_Nullable1 orig, GameObject victimObject, GameObject attackerObject, DotController.DotIndex dotIndex, float duration, float damageMultiplier, uint? maxStacksFromAttacker)
+        {
+            var attackerBody = attackerObject.GetComponent<CharacterBody>();
+            if (attackerBody && attackerBody.master)
+            {
+                var bleedCap = attackerBody.master.GetComponent<BleedCap>();
+                var inventory = attackerBody.inventory;
+                if (bleedCap && inventory)
+                {
+                    if (dotIndex == DotController.DotIndex.Bleed)
+                    {
+                        maxStacksFromAttacker = (uint)bleedCap.bleedCap;
+                    }
+                }
+            }
+            orig(victimObject, attackerObject, dotIndex, duration, damageMultiplier, maxStacksFromAttacker);
         }
 
         public static void Changes(ILContext il)
