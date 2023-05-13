@@ -31,7 +31,7 @@ namespace WellRoundedBalance.Items.Whites
         [ConfigField("Armor Gain is Hyperbolic", "Decimal, Max value. Set to 0 to make it linear.", 0f)]
         public static float armorGainIsHyperbolic;
 
-        [ConfigField("Radius", 13f)]
+        [ConfigField("Radius", 20f)]
         public static float radius;
 
         public override void Init()
@@ -106,7 +106,7 @@ namespace WellRoundedBalance.Items.Whites
     {
         public float checkInterval = 0.1f;
         public float timer;
-        public float radiusSquared = 169f;
+        public float radiusSquared = OddlyShapedOpal.radius * OddlyShapedOpal.radius;
         public float distance = OddlyShapedOpal.radius;
         public TeamIndex ownerIndex;
         public GameObject radiusIndicator;

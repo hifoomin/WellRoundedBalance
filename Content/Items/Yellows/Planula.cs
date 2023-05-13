@@ -12,7 +12,7 @@ namespace WellRoundedBalance.Items.Yellows
 
         public override string PickupText => "Summon the unmatched power of the sun after standing still for 1 second.";
 
-        public override string DescText => "After standing still for <style=cIsDamage>1</style> second, summon <style=cIsDamage>the unmatched power of the sun</style> that <style=cIsDamage>ignites</style> enemies every <style=cIsDamage>0.5s</style> for <style=cIsDamage>5s</style> <style=cStack>(+3s per stack)</style>.";
+        public override string DescText => "After standing still for <style=cIsDamage>0.5</style> seconds, summon <style=cIsDamage>the unmatched power of the sun</style> that <style=cIsDamage>ignites</style> enemies every <style=cIsDamage>0.35s</style> for <style=cIsDamage>5s</style> <style=cStack>(+3s per stack)</style>.";
 
         public override void Init()
         {
@@ -72,7 +72,7 @@ namespace WellRoundedBalance.Items.Yellows
     {
         public float timer = 0;
         public float burnDistanceBase = 100f;
-        public float burnInterval = 0.5f;
+        public float burnInterval = 0.35f;
         public float burnDuration = 5f;
 
         private GameObject sunInstance;
@@ -96,7 +96,7 @@ namespace WellRoundedBalance.Items.Yellows
             {
                 return;
             }
-            var what = stack > 0 && body.notMovingStopwatch >= 1f;
+            var what = stack > 0 && body.notMovingStopwatch >= 0.5f;
 
             if (what)
             {

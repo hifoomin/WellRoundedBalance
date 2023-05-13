@@ -1,6 +1,7 @@
 ﻿using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using System;
+using static R2API.DamageAPI;
 
 namespace WellRoundedBalance.Items.Whites
 {
@@ -48,6 +49,37 @@ namespace WellRoundedBalance.Items.Whites
             Stage.onStageStartGlobal += _ => db.Clear();
             IL.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
             On.RoR2.GlobalEventManager.OnCharacterDeath += GlobalEventManager_OnCharacterDeath;
+            // IL.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage1;
+        }
+
+        private void HealthComponent_TakeDamage1(ILContext il)
+        {
+            // untested but uhh yeah I just did it for JavAngle lol
+            ILCursor c = new(il);
+
+            if (c.TryGotoNext(MoveType.Before,
+                x => x.MatchLdsfld("RoR2.RoR2Content/Items", "Crowbar"),
+                        x => x.MatchCallOrCallvirt<Inventory>("GetItemCount"),
+                        x => x.MatchStloc(out _), // out _ means you don't care what it matches, and since HealthComponent.TakeDamage only has one crowbar thing, it's good enough, but I like to match a bit more to see what I'm doing
+                        x => x.MatchLdloc(out _),
+                        x => x.MatchLdcI4(out _)))
+            {
+                c.Index += 6; // goes after the the int with value of 0 (the one that checks for crowbar amount > 0), we need after because of EmitDelegate
+                c.Emit(OpCodes.Ldarg_1); // inserts the second method argument (which is damageInfo, 0 is HealthComponent itself)
+                c.EmitDelegate<Func<int, DamageInfo, int>>((orig, self) =>
+                {
+                    // we get the DamageInfo from the Ldarg_1, otherwise it would've just been int, int for the Func
+                    // orig here is the LdcI4, and self is the damageInfo
+                    // do custom logic here, like 
+                    // if (HasModdedDamageType(myModdedDamageType, self)) return int.MaxValue; // we're setting the crowbar damage increase to only work if you have 2147483647 of them AND ONLY if the modded damage type is yours.
+                    // else return orig;
+                    return orig;
+                });
+            }
+            else
+            {
+                // log that the hook failed
+            }
         }
 
         public void HealthComponent_TakeDamage(ILContext il)

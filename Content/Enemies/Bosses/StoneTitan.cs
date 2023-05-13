@@ -1,16 +1,18 @@
 ﻿using EntityStates;
 using RoR2.Skills;
-using RoR2.ConVar;
 
 namespace WellRoundedBalance.Enemies.Bosses
 {
     internal class StoneTitan : EnemyBase<StoneTitan>
     {
+        public static Material overlayMat;
         public override string Name => "::: Bosses :: Stone Titan";
 
         public override void Init()
         {
             base.Init();
+            overlayMat = GameObject.Instantiate(Utils.Paths.Material.matHuntressFlashBright.Load<Material>());
+            overlayMat.SetColor("_TintColor", new Color32(191, 4, 3, 42));
         }
 
         public override void Hooks()
@@ -164,6 +166,18 @@ namespace WellRoundedBalance.Enemies.Bosses
             lr = laserInstance.GetComponent<LineRenderer>();
 
             chargeID = AkSoundEngine.PostEvent(Events.Play_titanboss_R_laser_preshoot, gameObject);
+
+            var modelTransform = GetModelTransform();
+            if (modelTransform)
+            {
+                var temporaryOverlay = modelTransform.gameObject.AddComponent<TemporaryOverlay>();
+                temporaryOverlay.duration = 6f;
+                temporaryOverlay.animateShaderAlpha = true;
+                temporaryOverlay.alphaCurve = AnimationCurve.EaseInOut(0f, 1f, 4.8f, 0f);
+                temporaryOverlay.destroyComponentOnEnd = true;
+                temporaryOverlay.originalMaterial = StoneTitan.overlayMat;
+                temporaryOverlay.AddToCharacerModel(modelTransform.GetComponent<CharacterModel>());
+            }
         }
 
         public override void OnExit()

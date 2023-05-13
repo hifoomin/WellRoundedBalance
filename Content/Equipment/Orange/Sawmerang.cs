@@ -1,5 +1,4 @@
-﻿using WellRoundedBalance.Items;
-using WellRoundedBalance.Misc;
+﻿using WellRoundedBalance.Misc;
 
 namespace WellRoundedBalance.Equipment.Orange
 {
@@ -10,7 +9,7 @@ namespace WellRoundedBalance.Equipment.Orange
 
         public override string PickupText => "Throw a fan of buzzing saws that come back to you.";
 
-        public override string DescText => "Throw <style=cIsDamage>three large saw blades</style> that slice through enemies for <style=cIsDamage>3x" + d(frontSawDamage) + "</style> damage. Also deals an additional <style=cIsDamage>3x" + d(returningSawDamage) + " damage per second</style> while <style=cIsDamage>bleeding</style> enemies. Can <style=cIsDamage>strike</style> enemies again on the way back.";
+        public override string DescText => (baseBleedCapPerTarget > 0 ? "Increase maximum <style=cIsDamage>bleed</style> count by <style=cIsDamage>" + baseBleedCapPerTarget + ". " : "") + "Throw <style=cIsDamage>three large saw blades</style> that slice through enemies for <style=cIsDamage>3x" + d(frontSawDamage) + "</style> damage. Also deals an additional <style=cIsDamage>3x" + d(returningSawDamage) + " damage per second</style> while <style=cIsDamage>bleeding</style> enemies. Can <style=cIsDamage>strike</style> enemies again on the way back.";
 
         [ConfigField("Cooldown", "", 45f)]
         public static float cooldown;
@@ -33,6 +32,9 @@ namespace WellRoundedBalance.Equipment.Orange
         [ConfigField("Speed", "", 60f)]
         public static float speed;
 
+        [ConfigField("Base Bleed Cap Per Target", "", 10)]
+        public static int baseBleedCapPerTarget;
+
         public override void Init()
         {
             base.Init();
@@ -44,6 +46,26 @@ namespace WellRoundedBalance.Equipment.Orange
 
             var Saw = Addressables.LoadAssetAsync<EquipmentDef>("RoR2/Base/Saw/Saw.asset").WaitForCompletion();
             Saw.cooldown = cooldown;
+            RecalculateEvent.RecalculateBleedCap += (object sender, RecalculateEventArgs args) =>
+            {
+                if (args.BleedCap)
+                {
+                    var body = args.BleedCap.body;
+                    if (body)
+                    {
+                        var inventory = args.BleedCap.body.inventory;
+                        if (inventory)
+                        {
+                            var hasSawcon = inventory.GetEquipment(inventory.activeEquipmentSlot).equipmentDef == RoR2Content.Equipment.Saw;
+                            Main.WRBLogger.LogError("has Sawcon is " + hasSawcon);
+                            if (hasSawcon)
+                            {
+                                args.BleedCap.bleedCapAdd += baseBleedCapPerTarget;
+                            }
+                        }
+                    }
+                }
+            };
         }
 
         private void Changes()

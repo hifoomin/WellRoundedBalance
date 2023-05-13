@@ -11,7 +11,7 @@
                                            (pullStrength > 0 ? " outside of" : " into") +
                                           " its center</style>. Lasts " + duration + " seconds.";
 
-        [ConfigField("Cooldown", "", 60f)]
+        [ConfigField("Cooldown", "", 75f)]
         public static float cooldown;
 
         [ConfigField("Duration", "", 10f)]

@@ -1,16 +1,39 @@
-<<<<<<< HEAD:CHANGELOG.md
-# 1.3.2 Patch Nodes
-- Made Shaped Glass damage increase configurable.
-- Fixed Shadowfade having the wrong description.
-- Made Frog Max Pets configurable.
+# 1.3.5 Patch Notes
+- Buffed Shrine of The Woods Base Radius 13m => **20m**.
+- Buffed Shrine of The Woods Radius Per Purchase 13m => **20m**.
+- Buffed Void Potential Void Red and Void Yellow chance.
+- Made Sawmerang increase bleed cap by **10**.
+- Fixed Delicate Watch.
+- Fixed the readme.
 
-# 1.3.1 Patch Notes
-- Actually included pre-made config for VanillaVoid
-=======
+# 1.3.4 Patch Notes
+- Buffed Artifact Reliquary.
+- Buffed Equipment Drone Max Spawns Per Stage 1 => **2**.
+- Buffed Oddly-shaped Opal Radius 13m => **20m**.
+- Buffed Planula Burn Interval 0.5s => **0.35s**.
+- Buffed Planula Standing Still Duration 1s => **0.5s**.
+- Buffed Tri-Tip Dagger Base Bleed Chance 9% => **10%**.
+- Buffed Tri-Tip Dagger Bleed Chance Per Stack 9% => **10%**.
+- Berfed Fuel Array to activate at **35% max health**.
+- Nerfed Beetle Queen Shockwave.
+- Nerfed Eclipse 5 slightly.
+- Nerfed Equipment Drone Cooldown Reduction Coefficient 0.9 => **0.94**.
+- Nerfed Primordial Cube Cooldown 60s => **75s**.
+- Nerfed Tri-Tip Dagger Base Bleed Cap Per Target 8 => **4**.
+- Made Phase 4 Mithrix Start heal all players and grant a temporary speed buff.
+- Changed Defense Chest texture.
+- Changed Void Seed weights to spawn more Void Cradles and Void Potentials.
+- Fixed Artifact of Command locking Artifact Key pickup.
+- Fixed Bleed Cap not working properly.
+- Fixed Commando: Incorruptible being way too tedious.
+- Fixed Delicate Watch buff icon persisting.
+- Fixed The Long Road being way too tedious.
+- Fixed minor item descriptions.
+
 # 1.3.3 Patch Notes
 - Added VanillaVoid.
 - Added pre-made configs for HIFUTweaks.
-- Buffed Beetle Queen.
+- Buffed Beetle Queen to use a ground shockwave attack.
 - Buffed Geep.
 - Buffed Gip.
 - Buffed Grovetender.

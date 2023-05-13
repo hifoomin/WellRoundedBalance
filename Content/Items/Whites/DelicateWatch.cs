@@ -1,5 +1,4 @@
-﻿using Mono.Cecil.Cil;
-using MonoMod.Cil;
+﻿using System;
 
 namespace WellRoundedBalance.Items.Whites
 {
@@ -10,10 +9,10 @@ namespace WellRoundedBalance.Items.Whites
         public override string Name => ":: Items : Whites :: Delicate Watch";
         public override ItemDef InternalPickup => DLC1Content.Items.FragileDamageBonus;
 
-        public override string PickupText => "Deal bonus damage out of danger.";
+        public override string PickupText => rework ? "Deal bonus damage out of danger." : "Deal bonus damage. Breaks at low health.";
 
         public override string DescText =>
-            StackDesc(damageIncrease, damageIncreaseStack, init => $"<style=cIsDamage>Increase base damage</style> by <style=cIsDamage>{d(init)}</style>{{Stack}} while out of danger.", d);
+            rework ? StackDesc(damageIncrease, damageIncreaseStack, init => $"<style=cIsDamage>Increase base damage</style> by <style=cIsDamage>{d(init)}</style>{{Stack}} while out of danger.", d) : "Increase damage by <style=cIsDamage>" + d(damageIncrease) + "</style> <style=cStack>(+" + d(damageIncrease) + " per stack)</style>. Taking damage to below <style=cIsHealth>" + d(threshold) + " health</style> <style=cIsUtility>breaks</style> this item.";
 
         [ConfigField("Damage Increase", "Decimal.", 0.15f)]
         public static float damageIncrease;
@@ -23,6 +22,12 @@ namespace WellRoundedBalance.Items.Whites
 
         [ConfigField("Damage Increase is Hyperbolic", "Decimal, Max value. Set to 0 to make it linear.", 0f)]
         public static float damageIncreaseIsHyperbolic;
+
+        [ConfigField("Enable rework?", "Reverts to vanilla item and stacking behavior if false.", true)]
+        public static bool rework;
+
+        [ConfigField("Health Threshold", "Only applies if the rework is disabled.", 0.25f)]
+        public static float threshold;
 
         public override void Init()
         {
@@ -41,10 +46,72 @@ namespace WellRoundedBalance.Items.Whites
 
         public override void Hooks()
         {
-            IL.RoR2.HealthComponent.TakeDamage += HealthCompoment_TakeDamage;
-            IL.RoR2.HealthComponent.UpdateLastHitTime += HealthComponent_UpdateLastHitTime;
-            CharacterBody.onBodyInventoryChangedGlobal += CharacterBody_onBodyInventoryChangedGlobal;
-            RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
+            if (rework)
+            {
+                IL.RoR2.HealthComponent.TakeDamage += HealthCompoment_TakeDamage;
+                IL.RoR2.HealthComponent.UpdateLastHitTime += HealthComponent_UpdateLastHitTime;
+                CharacterBody.onBodyInventoryChangedGlobal += CharacterBody_onBodyInventoryChangedGlobal;
+                RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
+            }
+            else
+            {
+                IL.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
+                IL.RoR2.HealthComponent.UpdateLastHitTime += HealthComponent_UpdateLastHitTime1;
+            }
+        }
+
+        private void HealthComponent_UpdateLastHitTime1(ILContext il)
+        {
+            ILCursor c = new(il);
+
+            if (c.TryGotoNext(MoveType.Before,
+                x => x.MatchLdfld<HealthComponent.ItemCounts>("fragileDamageBonus"),
+                x => x.MatchLdcI4(0),
+                x => x.MatchBle(out _),
+                x => x.MatchLdarg(0),
+                x => x.MatchCallOrCallvirt<HealthComponent>("get_isHealthLow")
+            ))
+            {
+                c.Index += 5;
+                c.Emit(OpCodes.Ldarg_0);
+                c.EmitDelegate<Func<bool, HealthComponent, bool>>((Check, self) =>
+                {
+                    if ((self.health + self.shield) / self.fullCombinedHealth < threshold)
+                    {
+                        Check = true;
+                    }
+                    else
+                    {
+                        Check = false;
+                    }
+                    return Check;
+                });
+            }
+            else
+            {
+                Main.WRBLogger.LogError("Failed to apply Delicate Watch Threshold 1 hook");
+            }
+        }
+
+        private void HealthComponent_TakeDamage(ILContext il)
+        {
+            ILCursor c = new(il);
+
+            if (c.TryGotoNext(MoveType.Before,
+                    x => x.MatchBle(out _),
+                    x => x.MatchLdloc(out _),
+                    x => x.MatchLdcR4(1),
+                    x => x.MatchLdloc(out _),
+                    x => x.MatchConvR4(),
+                    x => x.MatchLdcR4(0.2f)))
+            {
+                c.Index += 5;
+                c.Next.Operand = damageIncrease;
+            }
+            else
+            {
+                Main.WRBLogger.LogError("Failed to apply Delicate Watch Damage 1 hook");
+            }
         }
 
         private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
@@ -74,7 +141,7 @@ namespace WellRoundedBalance.Items.Whites
                 c.Emit(OpCodes.Pop);
                 c.Emit(OpCodes.Ldc_I4_0);
             }
-            else Logger.LogError("Failed to apply Delicate Watch Threshold hook");
+            else Logger.LogError("Failed to apply Delicate Watch Threshold 2 hook");
         }
 
         public static void HealthCompoment_TakeDamage(ILContext il)
@@ -86,7 +153,7 @@ namespace WellRoundedBalance.Items.Whites
                 c.Emit(OpCodes.Pop);
                 c.Emit(OpCodes.Ldc_I4_0);
             }
-            else Logger.LogError("Failed to apply Delicate Watch Damage hook");
+            else Logger.LogError("Failed to apply Delicate Watch Damage 2 hook");
         }
     }
 
@@ -99,6 +166,12 @@ namespace WellRoundedBalance.Items.Whites
                 if (body.HasBuff(DelicateWatch.watchDamage) && !body.outOfDanger) body.RemoveBuff(DelicateWatch.watchDamage);
                 if (!body.HasBuff(DelicateWatch.watchDamage) && body.outOfDanger) body.AddBuff(DelicateWatch.watchDamage);
             }
+        }
+
+        public void OnDestroy()
+        {
+            if (body.HasBuff(DelicateWatch.watchDamage))
+                body.RemoveBuff(DelicateWatch.watchDamage);
         }
     }
 }

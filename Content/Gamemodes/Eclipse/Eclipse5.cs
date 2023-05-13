@@ -34,7 +34,7 @@ namespace WellRoundedBalance.Gamemodes.Eclipse
                     baseAI.aimVectorMaxSpeed = 250f;
                     if (master.name != "GolemMaster(Clone)" || master.name != "MegaConstructMaster(Clone)" || master.name != "ClayBruiserMaster(Clone)")
                     {
-                        baseAI.aimVectorDampTime = 0.031f;
+                        baseAI.aimVectorDampTime = 0.033f;
                     }
                 }
             }

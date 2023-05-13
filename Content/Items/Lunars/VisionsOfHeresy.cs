@@ -38,7 +38,7 @@ namespace WellRoundedBalance.Items.Lunars
 
         private void Changes()
         {
-            Vector3 configsize = new Vector3(4f, 4f, 4f);
+            Vector3 configsize = new(4f, 4f, 4f);
 
             var thej = LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/LunarNeedleProjectile");
             var p1 = thej.GetComponent<ProjectileImpactExplosion>();
@@ -52,7 +52,6 @@ namespace WellRoundedBalance.Items.Lunars
             olbart.baseRechargeInterval = 1.7f;
             olbart.baseMaxStock = 5;
             olbart.rechargeStock = 5;
-            olbart.fullRestockOnAssign = true;
 
             var a = LegacyResourcesAPI.Load<GameObject>("prefabs/effects/impacteffects/LunarNeedleDamageEffect");
             a.transform.localScale = configsize;
