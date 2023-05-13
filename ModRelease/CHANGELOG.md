@@ -1,12 +1,20 @@
+# 1.3.5 Patch Notes
+- Buffed Shrine of The Woods Base Radius 13m => **20m**.
+- Buffed Shrine of The Woods Percent Healing Per Second 2% => **3%**.
+- Buffed Shrine of The Woods Radius Per Purchase 13m => **20m**.
+- Buffed Void Potential Void Red and Void Yellow chance.
+- Made Sawmerang increase bleed cap by **10**.
+- Fixed Delicate Watch.
+- Fixed the readme.
+
 # 1.3.4 Patch Notes
 - Buffed Artifact Reliquary.
-- Buffed Tri-Tip Dagger Base Bleed Chance 9% => **10%**.
-- Buffed Tri-Tip Dagger Bleed Chance Per Stack 9% => **10%**.
 - Buffed Equipment Drone Max Spawns Per Stage 1 => **2**.
+- Buffed Oddly-shaped Opal Radius 13m => **20m**.
 - Buffed Planula Burn Interval 0.5s => **0.35s**.
 - Buffed Planula Standing Still Duration 1s => **0.5s**.
-- Buffed Oddly-shaped Opal Radius 13m => **20m**.
-- Buffed Void Potential Void Red and Void Yellow chance.
+- Buffed Tri-Tip Dagger Base Bleed Chance 9% => **10%**.
+- Buffed Tri-Tip Dagger Bleed Chance Per Stack 9% => **10%**.
 - Berfed Fuel Array to activate at **35% max health**.
 - Nerfed Beetle Queen Shockwave.
 - Nerfed Eclipse 5 slightly.
@@ -14,13 +22,14 @@
 - Nerfed Primordial Cube Cooldown 60s => **75s**.
 - Nerfed Tri-Tip Dagger Base Bleed Cap Per Target 8 => **4**.
 - Made Phase 4 Mithrix Start heal all players and grant a temporary speed buff.
-- Changed Void Seed weights to spawn more Void Cradles and Void Potentials.
 - Changed Defense Chest texture.
+- Changed Void Seed weights to spawn more Void Cradles and Void Potentials.
 - Fixed Artifact of Command locking Artifact Key pickup.
-- Fixed Delicate Watch buff icon persisting.
 - Fixed Bleed Cap not working properly.
 - Fixed Commando: Incorruptible being way too tedious.
+- Fixed Delicate Watch buff icon persisting.
 - Fixed The Long Road being way too tedious.
+- Fixed minor item descriptions.
 
 # 1.3.3 Patch Notes
 - Added VanillaVoid.

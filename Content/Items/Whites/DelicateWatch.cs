@@ -31,18 +31,15 @@ namespace WellRoundedBalance.Items.Whites
 
         public override void Init()
         {
-            if (rework)
-            {
-                watchDamage = ScriptableObject.CreateInstance<BuffDef>();
-                watchDamage.isHidden = false;
-                watchDamage.canStack = false;
-                watchDamage.isDebuff = false;
-                watchDamage.buffColor = new Color32(208, 165, 136, 255);
-                watchDamage.iconSprite = Main.wellroundedbalance.LoadAsset<Sprite>("texBuffDelicateWatchIcon.png");
-                watchDamage.name = "Delicate Watch Damage Boost";
+            watchDamage = ScriptableObject.CreateInstance<BuffDef>();
+            watchDamage.isHidden = false;
+            watchDamage.canStack = false;
+            watchDamage.isDebuff = false;
+            watchDamage.buffColor = new Color32(208, 165, 136, 255);
+            watchDamage.iconSprite = Main.wellroundedbalance.LoadAsset<Sprite>("texBuffDelicateWatchIcon.png");
+            watchDamage.name = "Delicate Watch Damage Boost";
 
-                ContentAddition.AddBuffDef(watchDamage);
-            }
+            ContentAddition.AddBuffDef(watchDamage);
 
             base.Init();
         }
