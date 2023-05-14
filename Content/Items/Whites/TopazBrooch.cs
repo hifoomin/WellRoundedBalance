@@ -49,7 +49,7 @@ namespace WellRoundedBalance.Items.Whites
                 {
                     var inventory = attackerBody.inventory;
                     if (inventory && NetworkServer.active && attackerBody.healthComponent)
-                        attackerBody.healthComponent.AddBarrier(attackerBody.healthComponent.combinedHealthFraction * StackAmount(percentBarrierGain, percentBarrierGainStack, inventory.GetItemCount(RoR2Content.Items.BarrierOnKill), percentBarrierGainIsHyperbolic));
+                        attackerBody.healthComponent.AddBarrier(attackerBody.healthComponent.combinedHealth * StackAmount(percentBarrierGain, percentBarrierGainStack, inventory.GetItemCount(RoR2Content.Items.BarrierOnKill), percentBarrierGainIsHyperbolic));
                 }
             }
         }
