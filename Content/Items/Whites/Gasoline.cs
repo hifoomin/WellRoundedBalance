@@ -71,9 +71,8 @@ namespace WellRoundedBalance.Items.Whites
             if (c.TryGotoNext(x => x.MatchLdarg(stack)) && c.TryGotoNext(x => x.MatchStloc(out _)))
             {
                 c.Emit(OpCodes.Pop);
-                c.Emit(OpCodes.Ldarg, body);
                 c.Emit(OpCodes.Ldarg, stack);
-                c.EmitDelegate<Func<CharacterBody, int, float>>((self, stack) => self.radius + StackAmount(baseRange, rangePerStack, stack, rangeIsHyperbolic));
+                c.EmitDelegate<Func<int, float>>((stack) => StackAmount(baseRange, rangePerStack, stack, rangeIsHyperbolic));
             }
             else Logger.LogError("Failed to apply Gasoline Radius hook");
             if (c.TryGotoNext(x => x.MatchLdfld<DamageReport>(nameof(DamageReport.attackerBody)), x => x.MatchCallOrCallvirt<CharacterBody>("get_" + nameof(CharacterBody.damage))) && c.TryGotoNext(x => x.MatchLdloc(out _)))
