@@ -53,7 +53,7 @@ namespace WellRoundedBalance
         public const string PluginGUID = PluginAuthor + "." + PluginName;
         public const string PluginAuthor = "BALLS";
         public const string PluginName = "WellRoundedBalance";
-        public const string PluginVersion = "1.3.5";
+        public const string PluginVersion = "1.3.6";
         public static ConfigFile WRBConfig;
         public static ConfigFile WRBItemConfig;
         public static ConfigFile WRBMechanicConfig;

@@ -56,8 +56,8 @@ namespace WellRoundedBalance.Equipment.Orange
                         var inventory = args.BleedCap.body.inventory;
                         if (inventory)
                         {
-                            var hasSawcon = inventory.GetEquipment(inventory.activeEquipmentSlot).equipmentDef == RoR2Content.Equipment.Saw;
-                            Main.WRBLogger.LogError("has Sawcon is " + hasSawcon);
+                            var hasSawcon = Extensions.HasEquipment(inventory, RoR2Content.Equipment.Saw);
+                            // Main.WRBLogger.LogError("has Sawcon is " + hasSawcon);
                             if (hasSawcon)
                             {
                                 args.BleedCap.bleedCapAdd += baseBleedCapPerTarget;

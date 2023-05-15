@@ -1,21 +1,29 @@
 # 1.3.6 Patch Notes
 - Added pre-made config for more HIFUTweaks.
-- Buffed Wandering Vagrant.
-- Buffed Bison Steak to increase base health by 1 (+1 per stack).
+- Buffed Bison Steak to increase **base health** by **1 (+1 per stack)**.
+- Buffed Topaz Brooch Base Percent Barrier Gain 2% => **3%**.
+- Buffed Topaz Brooch Percent Barrier Gain Per Stack 2% => **3%**.
+- Nerfed Beetle Queen.
 - Nerfed Bison Steak Base Max Health Gain 45 => **40**.
 - Nerfed Bison Steak Max Health Gain Per Stack 45 => **40**.
-- Nerfed Eclipse 6.
-- Nerfed Wandering Vagrant.
-- Nerfed Beetle Queen.
 - Nerfed Blazing Elites.
-- Nerfed Grovetender
+- Nerfed Eclipse 6.
+- Nerfed Grovetender.
+- Nerfed Topaz Brooch Percent Flat Barrier Gain 10 => **3**.
+- Nerfed Wandering Vagrant.
+- Made Artifact of Chaos enable all monsters to infight.
+- Made the Primordial Teleporter interactable at all times.
+- Made the Primordial Teleporter spawn every stage when looping.
+- Changed Defense Chest texture.
+- Fixed Bleed Cap not working properly.
+- Fixed Distant Roost still spawning Shrine of The Woods. (I hate ref I hate ref I hate ref)
+- Fixed Topaz Brooch giving differing barrier amounts.
 
 # 1.3.5 Patch Notes
 - Buffed Shrine of The Woods Base Radius 13m => **20m**.
 - Buffed Shrine of The Woods Radius Per Purchase 13m => **20m**.
 - Buffed Void Potential Void Red and Void Yellow chance.
 - Made Sawmerang increase bleed cap by **10**.
-- Fixed Bleed Cap not working properly.
 - Fixed Delicate Watch.
 - Fixed the readme.
 
@@ -41,6 +49,7 @@
 - Fixed Delicate Watch buff icon persisting.
 - Fixed The Long Road being way too tedious.
 - Fixed minor item descriptions.
+- - Does every update need a caption? ~HIFU
 
 # 1.3.3 Patch Notes
 - Added VanillaVoid.
@@ -60,14 +69,17 @@
 - Swapped Eclipse 1 and Eclipse 5.
 - Fixed Beetle Queen not applying multiple buff stacks.
 - Fixed Geep being too tanky.
+- - More enemy tweaks and adjustments. ~HIFU
 
 # 1.3.2 Patch Notes
 - Buffed Oddly-shaped Opal Base Armor Gain 2 => **2.5**.
 - Buffed Oddly-shaped Opal Armor Gain Per Stack 2 => **2.5**.
 - Fixed Multiplayer networking bug spam.
+- - psuedopulse ! ! <img src="https://cdn.discordapp.com/emojis/1101199692974538753.webp?size=24&quality=lossless" width="24"/>
 
 # 1.3.1 Patch Notes
 - Fixed VanillaVoid pre-made config.
+- - psuedopulse ! ! <img src="https://cdn.discordapp.com/emojis/1101199692974538753.webp?size=24&quality=lossless" width="24"/>
 
 # 1.3.0 Patch Notes - The *Compatibility Update May* Update
 - Added AugmentedVoidReaver.

@@ -58,7 +58,7 @@ namespace WellRoundedBalance.Enemies.Bosses
         {
             if (!Main.IsInfernoDef())
             {
-                EntityStates.BeetleQueenMonster.FireSpit.damageCoefficient = 0.4f;
+                EntityStates.BeetleQueenMonster.FireSpit.damageCoefficient = 0.3f;
                 EntityStates.BeetleQueenMonster.FireSpit.force = 1200f;
                 EntityStates.BeetleQueenMonster.FireSpit.yawSpread = 20f;
                 EntityStates.BeetleQueenMonster.FireSpit.minSpread = 15f;
@@ -204,7 +204,7 @@ namespace WellRoundedBalance.Enemies.Bosses
 
         public static int waveProjectileCount = 12;
 
-        public static float waveProjectileDamageCoefficient = 0.4f;
+        public static float waveProjectileDamageCoefficient = 0.35f;
 
         public static float waveProjectileForce = 600f;
 

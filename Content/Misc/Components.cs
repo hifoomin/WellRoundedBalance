@@ -87,10 +87,5 @@ namespace WellRoundedBalance.Misc
                 bleedCap = bleedCapAdd;
             }
         }
-
-        private void OnDestroy()
-        {
-            RecalculateStatsAPI.GetStatCoefficients -= RecalculateStatsAPI_GetStatCoefficients;
-        }
     }
 }

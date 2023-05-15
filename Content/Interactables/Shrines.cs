@@ -22,22 +22,22 @@ namespace WellRoundedBalance.Interactables
         [ConfigField("Altar Of Gold Cost", "", 100)]
         public static int altarOfGoldCost;
 
-        [ConfigField("Shrine Of Wood Max Spawns Per Stage", "", 2)]
+        [ConfigField("Shrine of The Woods Max Spawns Per Stage", "", 2)]
         public static int shrineOfWoodMaxSpawnsPerStage;
 
-        [ConfigField("Shrine Of Wood Cost", "", 15)]
+        [ConfigField("Shrine of The Woods Cost", "", 15)]
         public static int shrineOfWoodInitialCost;
 
-        [ConfigField("Remove Shrine of Wood from Distant Roost?", "", true)]
+        [ConfigField("Remove Shrine of The Woods from Distant Roost?", "", true)]
         public static bool removeShrineWood;
 
-        [ConfigField("Shrine Of Wood Base Radius", "", 20f)]
+        [ConfigField("Shrine of The Woods Base Radius", "", 20f)]
         public static float shrineOfWoodBaseRadius;
 
-        [ConfigField("Shrine Of Wood Radius Per Upgrade", "", 20f)]
+        [ConfigField("Shrine of Woods Radius Per Upgrade", "", 20f)]
         public static float shrineOfWoodRadiusPerUpgrade;
 
-        [ConfigField("Shrine Of Wood Percent Healing Per Second", "Decimal.", 0.08f)]
+        [ConfigField("Shrine of Woods Percent Healing Per Second", "Decimal.", 0.08f)]
         public static float shrineOfWoodPercentHealingPerSecond;
 
         public override void Init()
@@ -184,18 +184,16 @@ namespace WellRoundedBalance.Interactables
             };
 
             var roost1 = Utils.Paths.DirectorCardCategorySelection.dccsBlackBeachInteractables.Load<DirectorCardCategorySelection>();
-            var shrines1 = roost1.categories[2].cards;
-            Array.Resize(ref shrines1, 3);
-            shrines1[0] = shrineBloodDC;
-            shrines1[1] = shrineBossDC;
-            shrines1[2] = shrineChanceDC;
+            Array.Resize(ref roost1.categories[2].cards, 3);
+            roost1.categories[2].cards[0] = shrineBloodDC;
+            roost1.categories[2].cards[1] = shrineBossDC;
+            roost1.categories[2].cards[2] = shrineChanceDC;
 
             var roost2 = Utils.Paths.DirectorCardCategorySelection.dccsBlackBeachInteractablesDLC1.Load<DirectorCardCategorySelection>();
-            var shrines2 = roost2.categories[2].cards;
-            Array.Resize(ref shrines2, 3);
-            shrines2[0] = shrineBloodDC;
-            shrines2[1] = shrineBossDC;
-            shrines2[2] = shrineChanceDC;
+            Array.Resize(ref roost2.categories[2].cards, 3);
+            roost2.categories[2].cards[0] = shrineBloodDC;
+            roost2.categories[2].cards[1] = shrineBossDC;
+            roost2.categories[2].cards[2] = shrineChanceDC;
         }
     }
 }
