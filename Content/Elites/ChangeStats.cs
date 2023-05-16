@@ -13,7 +13,7 @@ namespace WellRoundedBalance.Elites
         [ConfigField("Tier 1 Cost Multiplier", "", 6f)]
         public static float tier1CostMultiplier;
 
-        [ConfigField("Tier 1 Honor Cost Multiplier", "", 3.5)]
+        [ConfigField("Tier 1 Honor Cost Multiplier", "", 3.5f)]
         public static float tier1HonorCostMultiplier;
 
         [ConfigField("Tier 2 Cost Multiplier", "", 32f)]
