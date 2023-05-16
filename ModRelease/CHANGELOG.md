@@ -1,3 +1,12 @@
+# 1.3.7 Patch Notes
+- Reworked Blazing Elite.
+- Reworked Overloading Elite.
+- Reworked Mending Elite.
+- Changed Tier 1 Elite Cost Multiplier 8x => **6x**.
+- Changed Tier 2 Honor Elite Cost Multiplier 4.66x => **3.5x**.
+- Changed Tier 2 Elite Cost Multiplier 48x => **32x**.
+- Fixed Primordial Teleporter spawning on Commencement and in Hidden Realms lmao.
+
 # 1.3.6 Patch Notes
 - Added pre-made config for more HIFUTweaks.
 - Buffed Bison Steak to increase **base health** by **1 (+1 per stack)**.
@@ -18,6 +27,7 @@
 - Fixed Bleed Cap not working properly.
 - Fixed Distant Roost still spawning Shrine of The Woods. (I hate ref I hate ref I hate ref)
 - Fixed Topaz Brooch giving differing barrier amounts.
+- - <img src="https://cdn.discordapp.com/emojis/1066512153760252025.webp?size=24&quality=lossless" width="24"/> ~HIFU
 
 # 1.3.5 Patch Notes
 - Buffed Shrine of The Woods Base Radius 13m => **20m**.
@@ -26,6 +36,7 @@
 - Made Sawmerang increase bleed cap by **10**.
 - Fixed Delicate Watch.
 - Fixed the readme.
+- - rtkdtrihagtfe. ~HIFU
 
 # 1.3.4 Patch Notes
 - Buffed Artifact Reliquary.

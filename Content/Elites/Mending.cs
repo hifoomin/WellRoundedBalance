@@ -1,4 +1,5 @@
 using WellRoundedBalance.Gamemodes.Eclipse;
+using static WellRoundedBalance.Elites.Mending;
 
 namespace WellRoundedBalance.Elites
 {
@@ -12,76 +13,99 @@ namespace WellRoundedBalance.Elites
         [ConfigField("Heal Coefficient Per Second", "", 3f)]
         public static float healFraction;
 
-        [ConfigField("Heal Nova Radius", "", 10f)]
+        [ConfigField("Heal Nova Radius", "", 30f)]
         public static float healNovaRadius;
 
-        [ConfigField("On Hit Healing Target Regen Boost", "", 5f)]
+        [ConfigField("On Hit Healing Target Regen Boost", "", 7f)]
         public static float onHitHealingTargetRegenBoost;
 
-        [ConfigField("On Hit Healing Target Regen Boost Eclipse 3+", "Only applies if you have Eclipse Changes enabled.", 7f)]
+        [ConfigField("On Hit Healing Target Regen Boost Eclipse 3+", "Only applies if you have Eclipse Changes enabled.", 9f)]
         public static float onHitHealingTargetRegenBoostE3;
 
         public static BuffDef regenBoost;
 
-        private static GameObject healNovaPrefab;
+        private static GameObject healVFX;
 
         public override void Init()
         {
             base.Init();
-
-            var medkitIcon = Utils.Paths.Texture2D.texBuffMedkitHealIcon.Load<Texture2D>();
-
             regenBoost = ScriptableObject.CreateInstance<BuffDef>();
             regenBoost.isHidden = false;
             regenBoost.canStack = false;
             regenBoost.isDebuff = false;
-            regenBoost.iconSprite = Sprite.Create(medkitIcon, new Rect(0f, 0f, medkitIcon.width, medkitIcon.height), new Vector2(0f, 0f));
+            regenBoost.iconSprite = Main.wellroundedbalance.LoadAsset<Sprite>("Assets/WellRoundedBalance/texMendingRegen.png");
+            regenBoost.buffColor = new Color32(161, 231, 79, 255);
 
             ContentAddition.AddBuffDef(regenBoost);
 
-            healNovaPrefab = Utils.Paths.GameObject.RailgunnerMineAltDetonated.Load<GameObject>().InstantiateClone("HealNova");
-            healNovaPrefab.RemoveComponent<SlowDownProjectiles>();
+            healVFX = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.IgniteExplosionVFX.Load<GameObject>(), "MendingHealingAura", false);
 
-            Transform areaIndicator = healNovaPrefab.transform.Find("AreaIndicator");
-            Transform softGlow = areaIndicator.Find("SoftGlow");
-            Transform sphere = areaIndicator.Find("Sphere");
-            Transform light = areaIndicator.Find("Point Light");
-            Transform core = areaIndicator.Find("Core");
+            var igniteParticleSystem = healVFX.GetComponent<ParticleSystem>().main.startColor;
+            igniteParticleSystem.color = new Color32(52, 224, 75, 255);
 
-            core.gameObject.SetActive(false);
-            softGlow.gameObject.SetActive(false);
+            var trans = healVFX.transform;
 
-            Light plight = light.GetComponent<Light>();
-            plight.color = Color.green;
+            var omniParticleSystemRenderer = trans.GetChild(0).GetComponent<ParticleSystemRenderer>();
 
-            MeshRenderer renderer = sphere.GetComponent<MeshRenderer>();
-            Material[] mats = renderer.sharedMaterials;
-            mats[0] = Utils.Paths.Material.matAffixEarthSphereIndicator.Load<Material>();
-            mats[1] = Utils.Paths.Material.matAffixEarthSphereIndicator.Load<Material>();
-            renderer.SetSharedMaterials(mats, 2);
+            var newMat = GameObject.Instantiate(Utils.Paths.Material.matOmniHitspark3Gasoline.Load<Material>());
+            newMat.SetTexture("_RemapTex", Utils.Paths.Texture2D.texRampAntler.Load<Texture2D>());
 
-            healNovaPrefab.RemoveComponent<BuffWard>();
+            omniParticleSystemRenderer.material = newMat;
 
-            SphereZone zone = healNovaPrefab.AddComponent<SphereZone>();
-            zone.rangeIndicator = areaIndicator;
-            zone.radius = healNovaRadius;
+            var pointLight = trans.GetChild(1).GetComponent<Light>();
+            pointLight.color = new Color32(18, 206, 15, 255);
 
-            if (!healNovaPrefab.GetComponent<ProjectileDamage>())
-            {
-                healNovaPrefab.AddComponent<ProjectileDamage>();
-            }
+            var flamesParticleSystem = trans.GetChild(2).GetComponent<ParticleSystem>().colorOverLifetime;
 
-            healNovaPrefab.AddComponent<HealNovaController>();
+            Gradient greenGradient = new();
+            greenGradient.SetKeys(
+                new GradientColorKey[] { new GradientColorKey(new Color32(170, 255, 158, 255), 0f), new GradientColorKey(new Color32(36, 233, 0, 255), 0.424f), new GradientColorKey(Color.black, 1f) },
+                new GradientAlphaKey[] { new GradientAlphaKey(1f, 0f), new GradientAlphaKey(0f, 1f) });
 
-            ContentAddition.AddProjectile(healNovaPrefab);
+            flamesParticleSystem.color = greenGradient;
+
+            ContentAddition.AddEffect(healVFX);
         }
 
         public override void Hooks()
         {
-            On.RoR2.AffixEarthBehavior.FixedUpdate += Disable;
+            IL.RoR2.AffixEarthBehavior.FixedUpdate += AffixEarthBehavior_FixedUpdate;
             On.RoR2.AffixEarthBehavior.Start += Overwrite;
-            On.RoR2.GlobalEventManager.OnHitEnemy += Imbue;
+            GlobalEventManager.onServerDamageDealt += GlobalEventManager_onServerDamageDealt;
             RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
+        }
+
+        private void AffixEarthBehavior_FixedUpdate(ILContext il)
+        {
+            ILCursor c = new(il);
+            c.Emit(OpCodes.Ret);
+        }
+
+        private void GlobalEventManager_onServerDamageDealt(DamageReport report)
+        {
+            var info = report.damageInfo;
+            if (!NetworkServer.active)
+            {
+                return;
+            }
+
+            if (!info.attacker)
+            {
+                return;
+            }
+
+            var healOnHitController = info.attacker.GetComponent<HealOnHitController>();
+            if (!healOnHitController)
+            {
+                return;
+            }
+            if (Util.CheckRoll(100f * info.procCoefficient))
+            {
+                if (Util.HasEffectiveAuthority(info.attacker))
+                {
+                    healOnHitController.Proc();
+                }
+            }
         }
 
         private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
@@ -94,69 +118,35 @@ namespace WellRoundedBalance.Elites
             }
         }
 
-        private static void Imbue(On.RoR2.GlobalEventManager.orig_OnHitEnemy orig, GlobalEventManager self, DamageInfo info, GameObject victim)
-        {
-            orig(self, info, victim);
-            if (NetworkServer.active && info.attacker)
-            {
-                MendingController controller = info.attacker.GetComponent<MendingController>();
-                if (!controller)
-                {
-                    return;
-                }
-
-                if (Util.CheckRoll(100f * info.procCoefficient))
-                {
-                    if (Util.HasEffectiveAuthority(info.attacker))
-                    {
-                        FireProjectileInfo pinfo = new()
-                        {
-                            position = info.position,
-                            projectilePrefab = healNovaPrefab,
-                            owner = info.attacker,
-                            damage = info.attacker.GetComponent<CharacterBody>().damage * 0.33f
-                        };
-                        ProjectileManager.instance.FireProjectile(pinfo);
-                    }
-                }
-
-                if (controller.target)
-                {
-                    controller.target.body.AddTimedBuff(regenBoost, 2f);
-                }
-            }
-        }
-
-        private static void Disable(On.RoR2.AffixEarthBehavior.orig_FixedUpdate orig, AffixEarthBehavior self)
-        {
-            return;
-        }
-
         private static void Overwrite(On.RoR2.AffixEarthBehavior.orig_Start orig, AffixEarthBehavior self)
         {
-            self.body.gameObject.AddComponent<MendingController>();
+            if (self.gameObject.GetComponent<HealTetherController>() == null)
+                self.body.gameObject.AddComponent<HealTetherController>();
+            if (self.gameObject.GetComponent<HealOnHitController>() == null)
+                self.body.gameObject.AddComponent<HealOnHitController>();
             return;
         }
 
-        private class MendingController : MonoBehaviour
+        public class HealTetherController : MonoBehaviour
         {
             private TetherVfxOrigin vfxOrigin;
-            private float healRate => healFraction;
             public HealthComponent target;
             private float stopwatch = 0f;
             private float delay = 1f;
             private TeamIndex team;
             private CharacterBody body;
+            public static List<HealTetherController> healTetherControllers = new();
 
-            private void Start()
+            public void Start()
             {
                 vfxOrigin = base.gameObject.AddComponent<TetherVfxOrigin>();
                 vfxOrigin.tetherPrefab = Utils.Paths.GameObject.AffixEarthTetherVFX.Load<GameObject>();
                 team = GetComponent<TeamComponent>().teamIndex;
                 body = GetComponent<CharacterBody>();
+                healTetherControllers.Add(this);
             }
 
-            private void FixedUpdate()
+            public void FixedUpdate()
             {
                 stopwatch += Time.fixedDeltaTime;
                 if (stopwatch >= delay)
@@ -188,7 +178,7 @@ namespace WellRoundedBalance.Elites
                 }
             }
 
-            private HealthComponent FetchTarget()
+            public HealthComponent FetchTarget()
             {
                 SphereSearch search = new()
                 {
@@ -202,7 +192,7 @@ namespace WellRoundedBalance.Elites
                 return search.GetHurtBoxes().FirstOrDefault(x => CheckIsValid(x.healthComponent))?.healthComponent ?? null;
             }
 
-            private bool CheckIsValid(HealthComponent com)
+            public bool CheckIsValid(HealthComponent com)
             {
                 if (com.body == body)
                 {
@@ -216,8 +206,7 @@ namespace WellRoundedBalance.Elites
                 {
                     return false;
                 }
-                MendingController[] controllers = GameObject.FindObjectsOfType<MendingController>();
-                foreach (MendingController controller in controllers)
+                foreach (HealTetherController controller in healTetherControllers)
                 {
                     if (controller != this && controller.target == com)
                     {
@@ -226,70 +215,83 @@ namespace WellRoundedBalance.Elites
                 }
                 return true;
             }
+
+            public void OnDestroy()
+            {
+                healTetherControllers.Remove(this);
+            }
         }
 
-        private class HealNovaController : MonoBehaviour
+        public class HealOnHitController : MonoBehaviour
         {
-            private float radius;
-            private float maxRadius;
-            private float radiusPerSecond => maxRadius / 1.5f;
-            private float stopwatch = 0f;
-            private float lifespan = 2f;
-            private SphereZone zone;
-            private float damage;
-            private float healStopwatch;
-            private float delay = 1f / 3f;
-            private TeamIndex index;
-            private GameObject owner;
-            private float heal;
+            public float radius = 0f;
+            public CharacterBody healerBody;
+            public HealthComponent healerHc;
+            public static List<HealOnHitController> healOnHitControllers = new();
+            public static readonly SphereSearch healSphereSearch = new();
+            public static readonly List<HurtBox> healHurtBoxBuffer = new();
 
-            private void Start()
+            public void Start()
             {
-                zone = GetComponent<SphereZone>();
-                maxRadius = healNovaRadius;
-                index = GetComponent<TeamFilter>().teamIndex;
-                owner = GetComponent<ProjectileController>().owner;
-                heal = GetComponent<ProjectileDamage>().damage;
+                healOnHitControllers.Add(this);
+                healerBody = GetComponent<CharacterBody>();
+                healerHc = healerBody?.healthComponent;
+                if (healerBody)
+                    radius = healNovaRadius + healerBody.radius;
             }
 
-            private void FixedUpdate()
+            public void Proc()
             {
-                stopwatch += Time.fixedDeltaTime;
-
-                if (stopwatch <= lifespan && radius < maxRadius)
-                {
-                    radius += radiusPerSecond * Time.fixedDeltaTime;
-                    zone.radius = radius;
-                }
-                else if (stopwatch >= lifespan)
-                {
-                    radius -= radiusPerSecond * Time.fixedDeltaTime;
-                    zone.radius = radius;
-                    if (radius <= 0)
-                    {
-                        Destroy(base.gameObject);
-                    }
-                }
-
-                if (!NetworkServer.active)
+                if (!healerBody)
                 {
                     return;
                 }
 
-                healStopwatch += Time.fixedDeltaTime;
-                if (healStopwatch >= delay)
+                if (!healerHc)
                 {
-                    healStopwatch = 0f;
-                    List<TeamComponent> healed = new();
+                    return;
+                }
 
-                    foreach (TeamComponent com in TeamComponent.GetTeamMembers(index))
+                if (!healerHc.alive)
+                {
+                    return;
+                }
+
+                Vector3 corePosition = healerBody.corePosition;
+                healSphereSearch.origin = corePosition;
+                healSphereSearch.mask = LayerIndex.entityPrecise.mask;
+                healSphereSearch.radius = radius;
+                healSphereSearch.RefreshCandidates();
+                healSphereSearch.FilterCandidatesByDistinctHurtBoxEntities();
+                healSphereSearch.OrderCandidatesByDistance();
+                healSphereSearch.GetHurtBoxes(healHurtBoxBuffer);
+                healSphereSearch.ClearCandidates();
+
+                for (int i = 0; i < healHurtBoxBuffer.Count; i++)
+                {
+                    var hurtBox = healHurtBoxBuffer[i];
+                    if (hurtBox.healthComponent)
                     {
-                        if (!healed.Contains(com) && com.body && zone.IsInBounds(com.body.corePosition) && !com.body.HasBuff(DLC1Content.Buffs.EliteEarth))
+                        var body = hurtBox.healthComponent.body;
+                        if (body && body.teamComponent.teamIndex == healerBody.teamComponent.teamIndex)
                         {
-                            com.body.healthComponent.Heal(heal, new());
+                            body.AddTimedBuff(regenBoost, 3f);
                         }
                     }
                 }
+
+                healHurtBoxBuffer.Clear();
+
+                EffectManager.SpawnEffect(healVFX, new EffectData
+                {
+                    origin = corePosition,
+                    scale = radius
+                }, true);
+            }
+
+            public void OnDestroy()
+            {
+                healOnHitControllers.Remove(this);
             }
         }
     }

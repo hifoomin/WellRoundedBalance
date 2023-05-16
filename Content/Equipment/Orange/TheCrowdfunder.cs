@@ -80,7 +80,7 @@ namespace WellRoundedBalance.Equipment.Orange
         private void Changess()
         {
             var crunderTracer = Utils.Paths.GameObject.TracerGoldGat.Load<GameObject>();
-            crunderTracer.transform.localScale = new Vector3(2f, 2f, 2f);
+            crunderTracer.transform.localScale = new Vector3(3f, 3f, 3f);
         }
     }
 }

@@ -35,7 +35,10 @@ namespace WellRoundedBalance.Mechanics.VoidFields
 
         private void SceneDirector_onPrePopulateSceneServer(SceneDirector sd)
         {
-            if (Run.instance && Run.instance.loopClearCount > 0)
+            bool isValid = false;
+            if (Stage.instance && Stage.instance.sceneDef)
+                isValid = !Stage.instance.sceneDef.isFinalStage && Stage.instance.sceneDef.sceneType == SceneType.Stage;
+            if (Run.instance && Run.instance.loopClearCount > 0 && isValid)
             {
                 sd.teleporterSpawnCard = tp;
             }
