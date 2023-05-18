@@ -2,9 +2,9 @@
 
 namespace WellRoundedBalance.Mechanics.Movement
 {
-    public class GetNotMoving : MechanicBase<GetNotMoving>
+    public class NotMovingInterval : MechanicBase<NotMovingInterval>
     {
-        public override string Name => ":: Mechanics ::: Movement";
+        public override string Name => ":: Mechanics ::: Not Moving Interval";
 
         [ConfigField("Not Moving Interval", "Affects all other mods using it!", 0.5f)]
         public static float notMovingInterval;

@@ -1,6 +1,3 @@
-Join our Discord server! Whether you want to make suggestions, report bugs, or simply find a group of people to chill with, we welcome you to join us.
-https://cutt.ly/ballscord
-
 # Introducing Well-Rounded Balance (WRB)
 Are you tired of repetitive runs or RoR2's unbalanced gameplay? WRB is a mod that rebalances almost the entire game, in a similar fashion to CU0-CU4, but with vast improvements. For a full list of changes, check out the WRB Google Doc.
 
@@ -26,7 +23,12 @@ https://docs.google.com/document/d/1uP1Bp4tBOMoKyhyjuvXk5IHuuV373sa77NsX-l_vUUA/
 Scaling is now linear but more aggressive, meaning it will be faster in the early game and cool off slightly during loops. This is intended to encourage players to play efficiently and make the game more engaging. The difficulty now actually scales with time, and the director spawns more enemies at a much faster pace. Gold scaling has also been heavily reworked, so you can't just kill a few enemies and buy out the whole stage. Pre-spawned enemies now give gold as well.
 
 ## Major Item Reworks
-There are too many to list here, so please check the google doc for more information.
+There are too many to list here, so please check the Google Doc for more information. Here are some examples:
+| Icon | Name | Description |
+|---|---|---|
+| <img src="https://static.wikia.nocookie.net/riskofrain2_gamepedia_en/images/c/c4/Hunter%27s_Harpoon.png/revision/latest?cb=20220302043224" width="24"/> | Hunter's Harpoon | Killing an enemy increases movement speed by 16%, up to 3 (+2 per stack) times for 5 seconds. |
+| <img src="https://static.wikia.nocookie.net/riskofrain2_gamepedia_en/images/f/ff/Pocket_I.C.B.M..png/revision/latest?cb=20220302043224" width="24"/> | Pocket I.C.B.M. | All missile items and equipment fire an additional missile. Gain a 10% (+10% per stack) chance to fire a missile that deals 150% TOTAL damage. |
+| <img src="https://static.wikia.nocookie.net/riskofrain2_gamepedia_en/images/9/91/Symbiotic_Scorpion.png/revision/latest?cb=20220302052918" width="24"/> | Symbiotic Scorpion | Inflict venom on hit, dealing 750% (+200% per stack) base damage over 5s and stealing 20 (+10 per stack) armor for 5s. |
 
 ## Bazaar Reworks
 There are now four lunar pods where the items were previously, along with a table containing two random Heresy items that no longer appear in the normal lunar pool. The slab (lunar reroller) has been removed, as it no longer serves a purpose.
@@ -42,7 +44,16 @@ Elites now only have increased health (4x for T1 and 6x for T2) and much more pr
 - Category chests no longer have increased prices, and interactables as a whole have been made more limited to prevent getting "roosted".
 
 ## Mechanic Reworks
-There are too many to list here, so please check the google doc for more information.
+There are too many to list here, so please check the Google Doc for more information. Here are some examples:
+| Name | Description |
+|---|---|
+| Boss Enrage | Bosses now gain up to +30% movement speed, +25% attack speed and cooldown reduction linearly the lower their health is. |
+| Forced Boss Variety | The same Teleporter Boss can't appear twice in a row. |
+| Commencement Speed Boost | At the beginning of Commencement, every player gains an 85% movement speed boost for 45s, just enough to get to the ship barrier. |
+| Faster Holdout Zones | All Holdout Zones are 60% faster. |
+| Optional Pillars | Commencement Pillars are now completely optional, you can complete them for a reward or go straight to Mithrix without hassle. |
+| Pillar Rewards | Commencement Pillars now reward a Lunar Potential that contains a random Green item, a random Pearl and a random Lunar item to pick from. |
+| Primordial Teleporter | The Primordial Teleporter will now spawn every stage upon looping, allowing you to take on Final Bosses at any point of the run during loops. |
 
 ## Smaller Features
 The mod integrates some smaller mods to give players the intended, better experience, such as:
@@ -64,7 +75,8 @@ The mod integrates some smaller mods to give players the intended, better experi
 This means you don't need to have these installed with Well Rounded Balance enabled.
 
 ## Contact/Feedback
-Join The BALLS Group discord server and send any suggestions or bug reports in their respective channels.
+Join our Discord server! Whether you want to make suggestions, report bugs, or simply find a group of people to chill with, we welcome you to join us.
+https://cutt.ly/ballscord
 
 ## Credits
 The dev team consists of:

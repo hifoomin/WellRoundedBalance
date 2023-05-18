@@ -10,7 +10,7 @@ namespace WellRoundedBalance.Elites
     {
         public static BuffDef slow;
         public static GameObject iceExplosionPrefab;
-        public override string Name => ":: Elites :::: Glacial";
+        public override string Name => ":: Elites : Glacial";
         public static GameObject IcePillarPrefab;
 
         public override void Init()

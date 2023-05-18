@@ -1,11 +1,18 @@
 # 1.3.7 Patch Notes
+- Nerfed Interstellar Desk Plant Lifetime 10s => **5s**.
 - Reworked Blazing Elite.
 - Reworked Overloading Elite.
 - Reworked Mending Elite.
+- Reworked Voidtouched Elite.
 - Changed Tier 1 Elite Cost Multiplier 8x => **6x**.
 - Changed Tier 2 Honor Elite Cost Multiplier 4.66x => **3.5x**.
 - Changed Tier 2 Elite Cost Multiplier 48x => **32x**.
+- Fixed Beetles standing still.
 - Fixed Primordial Teleporter spawning on Commencement and in Hidden Realms lmao.
+- Fixed monsters attacking Clay Dunestrider and Grandparent when damaged by their skills.
+- Fixed minor item descriptions.
+- Small optimizations.
+- - Just another small update. ~HIFU
 
 # 1.3.6 Patch Notes
 - Added pre-made config for more HIFUTweaks.

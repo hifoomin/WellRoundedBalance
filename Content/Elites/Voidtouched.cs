@@ -1,8 +1,6 @@
-﻿using Inferno.Stat_AI;
-using Mono.Cecil.Cil;
-using MonoMod.Cil;
-using System.Reflection;
+﻿using Unity.Collections.LowLevel.Unsafe;
 using WellRoundedBalance.Buffs;
+using WellRoundedBalance.Equipment.Orange;
 using WellRoundedBalance.Gamemodes.Eclipse;
 
 namespace WellRoundedBalance.Elites
@@ -11,21 +9,21 @@ namespace WellRoundedBalance.Elites
     {
         public static BuffDef useless;
         public static BuffDef hiddenCooldown;
-        public static GameObject spike; // cache this once so dont have to reload each time (i forgor if addressables already does this but just in case)
+        public static GameObject missile;
 
-        public override string Name => ":: Elites :::::: Voidtouched";
+        public override string Name => ":: Elites :: Voidtouched";
 
-        [ConfigField("Spike Count", "", 5)]
-        public static int spikeCount;
+        [ConfigField("Missile Count", "", 5)]
+        public static int missileCount;
 
-        [ConfigField("Spike Count Eclipse 3+", "Only applies if you have Eclipse Changes enabled.", 8)]
-        public static int spikeCountE3;
+        [ConfigField("Missile Count Eclipse 3+", "Only applies if you have Eclipse Changes enabled.", 8)]
+        public static int missileCountE3;
 
-        [ConfigField("Spike Cooldown", "", 2f)]
-        public static float spikeCooldown;
+        [ConfigField("Missile Cooldown", "", 2f)]
+        public static float missileCooldown;
 
-        [ConfigField("Spike Damage", "Decimal.", 2f)]
-        public static float spikeDamage;
+        [ConfigField("Missile Damage", "Decimal.", 1f)]
+        public static float missileDamage;
 
         [ConfigField("Permanent Damage Percent", "Eclipse 8 is 40", 40f)]
         public static float permanentDamagePercent;
@@ -43,39 +41,32 @@ namespace WellRoundedBalance.Elites
             ContentAddition.AddBuffDef(useless);
             ContentAddition.AddBuffDef(hiddenCooldown);
 
-            spike = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.ImpVoidspikeProjectile.Load<GameObject>(), "Voidtouched Spike");
+            missile = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.MissileProjectile.Load<GameObject>(), "Voidtouched Missile");
 
-            var projectileController = spike.GetComponent<ProjectileController>();
+            var projectileController = missile.GetComponent<ProjectileController>();
 
-            var spikeGhost = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.ImpVoidspikeProjectileGhost.Load<GameObject>(), "Voidtouched Spike Ghost", false);
-            spikeGhost.transform.localScale = new Vector3(3f, 3f, 3f);
+            var newGhost = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.MissileVoidBigGhost.Load<GameObject>(), "Voidtouched Missile Ghost", false);
+            newGhost.transform.localScale = new Vector3(1.25f, 1.25f, 1.25f);
 
-            projectileController.ghostPrefab = spikeGhost;
+            projectileController.ghostPrefab = newGhost;
 
-            var projectileImpactExplosion = spike.GetComponent<ProjectileImpactExplosion>();
-            projectileImpactExplosion.blastRadius = 7.5f;
+            var missileController = missile.GetComponent<MissileController>();
+            missileController.maxVelocity = 20;
+            missileController.acceleration = 1.5f;
+            missileController.delayTimer = 0.5f;
+            missileController.giveupTimer = 10f;
+            missileController.deathTimer = 20f;
+            missileController.turbulence = 0f;
 
-            spike.transform.localScale = new Vector3(3f, 3f, 3f);
-
-            var proximityTrigger = spike.transform.GetChild(0).GetChild(5);
-            var sphereCollider = proximityTrigger.GetComponent<SphereCollider>();
-            sphereCollider.radius = 6f;
-
-            GameObject impactEffect = spike.transform.GetChild(0).gameObject;
-
-            var projectileStickOnImpact = spike.GetComponent<ProjectileStickOnImpact>();
-            // remove projectileimpactexplosion setexplosionradius event
-            // add projectileimpactexplosion setexplosionradius event to make spike have a 7.5m explosion radius
-
-            On.RoR2.Projectile.ProjectileExplosion.SetExplosionRadius += (orig, self, radius) =>
+            foreach (Component component in missile.GetComponents<Component>())
             {
-                if (self.gameObject.name.Contains("Voidtouched Spike"))
+                if (component.name == "AkEvent")
                 {
-                    return;
+                    Object.Destroy(component);
                 }
+            }
 
-                orig(self, radius);
-            };
+            PrefabAPI.RegisterNetworkPrefab(missile);
 
             base.Init();
         }
@@ -116,30 +107,25 @@ namespace WellRoundedBalance.Elites
                 return;
             }
 
-            Vector3 originalPosition = body.corePosition;
-            Vector3 aimDirection = body.inputBank.aimDirection;
+            var startPos = body.corePosition + Vector3.up * 5f;
 
-            for (int i = 0; i < (Eclipse3.CheckEclipse() ? spikeCountE3 : spikeCount); i++)
+            for (int i = 0; i < (Eclipse3.CheckEclipse() ? missileCount : missileCountE3); i++)
             {
-                Vector3 position = originalPosition + (aimDirection * (i * 15));
-                position.y = 30;
                 if (Util.HasEffectiveAuthority(body.gameObject))
                 {
                     FireProjectileInfo info = new()
                     {
-                        damage = body.damage * spikeDamage,
+                        damage = body.damage * missileDamage,
                         damageTypeOverride = DamageType.Nullify,
                         crit = false,
-                        position = position,
-                        rotation = Quaternion.LookRotation(Vector3.down),
-                        projectilePrefab = spike,
+                        position = startPos,
+                        projectilePrefab = missile,
                         owner = body.gameObject,
-                        speedOverride = 40
                     };
                     ProjectileManager.instance.FireProjectile(info);
                 }
             }
-            body.AddTimedBuff(hiddenCooldown, spikeCooldown);
+            body.AddTimedBuff(hiddenCooldown, missileCooldown);
         }
 
         private void AffixVoidBehavior_FixedUpdate(ILContext il)

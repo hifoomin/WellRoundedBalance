@@ -1,4 +1,6 @@
-﻿namespace WellRoundedBalance.Enemies.Standard
+﻿using RoR2.Skills;
+
+namespace WellRoundedBalance.Enemies.Standard
 {
     internal class Beetle : EnemyBase<Beetle>
     {
@@ -20,6 +22,7 @@
                 CharacterMaster.onStartGlobal += CharacterMaster_onStartGlobal;
                 CharacterBody.onBodyStartGlobal += CharacterBody_onBodyStartGlobal;
             }
+            Changes();
         }
 
         private void CharacterBody_onBodyStartGlobal(CharacterBody body)
@@ -75,6 +78,14 @@
             }
 
             orig(self);
+        }
+
+        private void Changes()
+        {
+            var uselessPieceOfShit = Utils.Paths.SkillDef.BeetleBodySleep.Load<SkillDef>();
+            uselessPieceOfShit.baseMaxStock = 0;
+            uselessPieceOfShit.stockToConsume = 69;
+            uselessPieceOfShit.requiredStock = 69;
         }
     }
 }

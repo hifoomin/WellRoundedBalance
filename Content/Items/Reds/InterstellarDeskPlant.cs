@@ -10,16 +10,19 @@ namespace WellRoundedBalance.Items.Reds
 
         public override string PickupText => "Plant a healing fruit on kill.";
 
-        public override string DescText => "On kill, plant a <style=cIsHealing>healing</style> fruit seed that grows into a plant after <style=cIsUtility>5</style> seconds. \n\nThe plant <style=cIsHealing>heals</style> for <style=cIsHealing>" + d(percentHealing) + "</style> of <style=cIsHealing>maximum health</style> every second to all allies within <style=cIsHealing>" + baseRange + "m</style> <style=cStack>(+" + rangePerStack + "m per stack)</style>. Lasts <style=cIsUtility>10</style> seconds.";
+        public override string DescText => "On kill, plant a <style=cIsHealing>healing</style> fruit seed that grows into a plant after <style=cIsUtility>5</style> seconds. \n\nThe plant <style=cIsHealing>heals</style> for <style=cIsHealing>" + d(percentHealing) + "</style> of <style=cIsHealing>maximum health</style> every second to all allies within <style=cIsHealing>" + baseRange + "m</style> <style=cStack>(+" + rangePerStack + "m per stack)</style>. Lasts <style=cIsUtility>" + lifetime + "</style> seconds.";
 
-        [ConfigField("Percent Healingg", "Decimal.", 0.05f)]
+        [ConfigField("Percent Healing", "Decimal.", 0.05f)]
         public static float percentHealing;
 
-        [ConfigField("Base Rangee", 10f)]
+        [ConfigField("Base Range", 10f)]
         public static float baseRange;
 
         [ConfigField("Range Per Stack", 3f)]
         public static float rangePerStack;
+
+        [ConfigField("Lifetime", 5f)]
+        public static float lifetime;
 
         public override void Init()
         {
@@ -51,6 +54,7 @@ namespace WellRoundedBalance.Items.Reds
         {
             self.healingRadius = baseRange;
             self.radiusIncreasePerStack = rangePerStack;
+            DeskPlantController.mainDuration = lifetime;
             orig(self);
         }
     }

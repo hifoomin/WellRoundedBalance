@@ -4,7 +4,7 @@ namespace WellRoundedBalance.Elites
 {
     public class Malachite : EliteBase<Malachite>
     {
-        public override string Name => "Elites :::: Malachite";
+        public override string Name => ":: Elites ::: Malachite";
 
         [ConfigField("Turret Count", "", 2)]
         public static int TurretCount;

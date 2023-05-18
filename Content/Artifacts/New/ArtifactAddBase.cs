@@ -20,15 +20,18 @@ namespace WellRoundedBalance.Artifacts.New
         //For use only after the run has started.
         public bool ArtifactEnabled => RunArtifactManager.instance.IsArtifactEnabled(ArtifactDef);
 
-        public override ConfigFile Config => Main.WRBArtifactConfig;
+        public override ConfigFile Config => Main.WRBArtifactAddConfig;
 
         public static event Action onTokenRegister;
+
+        public static List<string> artifactAddList = new();
 
         public override void Init()
         {
             base.Init();
             CreateArtifact();
             onTokenRegister += SetToken;
+            artifactAddList.Add(Name);
         }
 
         [SystemInitializer(typeof(ArtifactCatalog))]

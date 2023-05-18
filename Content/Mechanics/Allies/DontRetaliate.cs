@@ -16,7 +16,7 @@
 
         private void CharacterMaster_onStartGlobal(CharacterMaster master)
         {
-            if (master.teamIndex == TeamIndex.Player && !RunArtifactManager.instance.IsArtifactEnabled(RoR2Content.Artifacts.friendlyFireArtifactDef))
+            if (!RunArtifactManager.instance.IsArtifactEnabled(RoR2Content.Artifacts.friendlyFireArtifactDef))
             {
                 var baseAI = master.GetComponent<BaseAI>();
                 if (baseAI)

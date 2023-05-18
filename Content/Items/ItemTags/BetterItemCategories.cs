@@ -255,7 +255,7 @@ namespace WellRoundedBalance.Items.ConsistentCategories
                     tags.Add(ItemTag.AIBlacklist);
                     itemDef.tags = tags.ToArray();
                     if (Main.enableLogging.Value)
-                        Main.WRBLogger.LogError("Added AI Blacklist to " + Language.GetString(itemDef.nameToken));
+                        Main.WRBLogger.LogDebug("Added AI Blacklist to " + Language.GetString(itemDef.nameToken));
                 }
             }
         }

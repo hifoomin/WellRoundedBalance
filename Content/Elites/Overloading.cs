@@ -10,7 +10,7 @@ namespace WellRoundedBalance.Elites
     internal class Overloading : EliteBase<Overloading>
     {
         public static BuffDef overloadingSpeedBuff;
-        public override string Name => ":: Elites ::: Overloading";
+        public override string Name => ":: Elites : Overloading";
 
         [ConfigField("Passive Movement Speed Gain", "Decimal.", 0.5f)]
         public static float passiveMovementSpeedGain;
@@ -130,6 +130,19 @@ namespace WellRoundedBalance.Elites
 
             RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
             IL.RoR2.CharacterBody.RecalculateStats += CharacterBody_RecalculateStats;
+            On.RoR2.CharacterBody.AddTimedBuff_BuffIndex_float += CharacterBody_AddTimedBuff_BuffIndex_float;
+        }
+
+        private void CharacterBody_AddTimedBuff_BuffIndex_float(On.RoR2.CharacterBody.orig_AddTimedBuff_BuffIndex_float orig, CharacterBody self, BuffIndex buffIndex, float duration)
+        {
+            if (buffIndex == overloadingSpeedBuff.buffIndex && self.HasBuff(RoR2Content.Buffs.AffixBlue))
+            {
+                return;
+            }
+            else
+            {
+                orig(self, buffIndex, duration);
+            }
         }
 
         private void GlobalEventManager_OnHitAll(ILContext il)
@@ -215,8 +228,12 @@ namespace WellRoundedBalance.Elites
                 }
                 if (stopwatch >= GetDelay())
                 {
-                    StartCoroutine(Teleport());
                     stopwatch = 0f;
+                    if (cb.isPlayerControlled)
+                    {
+                        return;
+                    }
+                    StartCoroutine(Teleport());
                 }
             }
 
@@ -259,11 +276,6 @@ namespace WellRoundedBalance.Elites
             public void HandleTeleport(Vector3 nextPosition)
             {
                 nextPosition += new Vector3(0, 1, 0);
-
-                if (cb.isPlayerControlled)
-                {
-                    return;
-                }
 
                 if (wardInstance != null)
                 {
@@ -328,7 +340,7 @@ namespace WellRoundedBalance.Elites
 
                 NodeGraph.Node[] nodes = SceneInfo.instance.groundNodes.nodes;
                 Vector3[] validPositions;
-                validPositions = PickValidPositions(15, 35, nodes);
+                validPositions = PickValidPositions(10, 30, nodes);
                 return validPositions.GetRandom();
             }
         }
