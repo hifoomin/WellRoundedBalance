@@ -1,13 +1,21 @@
 # 1.3.7 Patch Notes
+- Added module toggle config.
+- Buffed Topaz Brooch Flat Barrier Gain 3 => **6**.
+- Buffed Warbanner Attack Speed and Movement Speed Per Stack 15% => **20%**.
 - Nerfed Interstellar Desk Plant Lifetime 10s => **5s**.
+- Nerfed Topaz Brooch Base Percent Barrier Gain 3% => **2.5%**.
+- Nerfed Topaz Brooch Percent Barrier Gain Per Stack 3% => **2.5%**.
+- Nerfed Warbanner Base Attack Speed and Movement Speed 30% => **20%**.
 - Reworked Blazing Elite.
-- Reworked Overloading Elite.
+- Reworked Glacial Elite.
 - Reworked Mending Elite.
+- Reworked Overloading Elite.
 - Reworked Voidtouched Elite.
-- Changed Tier 1 Elite Cost Multiplier 8x => **6x**.
+- Changed Combat Director Credit Multiplier 1.25 => **1.35**.
+- Changed Tier 1 Elite Cost Multiplier 8x => **5.5x**.
+- Changed Tier 2 Elite Cost Multiplier 48x => **26x**.
 - Changed Tier 2 Honor Elite Cost Multiplier 4.66x => **3.5x**.
-- Changed Tier 2 Elite Cost Multiplier 48x => **32x**.
-- Fixed Beetles standing still.
+- Fixed Beetles standing still somewhat.
 - Fixed Primordial Teleporter spawning on Commencement and in Hidden Realms lmao.
 - Fixed monsters attacking Clay Dunestrider and Grandparent when damaged by their skills.
 - Fixed minor item descriptions.
@@ -25,7 +33,7 @@
 - Nerfed Blazing Elites.
 - Nerfed Eclipse 6.
 - Nerfed Grovetender.
-- Nerfed Topaz Brooch Percent Flat Barrier Gain 10 => **3**.
+- Nerfed Topaz Brooch Flat Barrier Gain 10 => **3**.
 - Nerfed Wandering Vagrant.
 - Made Artifact of Chaos enable all monsters to infight.
 - Made the Primordial Teleporter interactable at all times.

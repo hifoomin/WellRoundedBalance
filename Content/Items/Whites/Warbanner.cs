@@ -16,7 +16,7 @@ namespace WellRoundedBalance.Items.Whites
             StackDesc(baseRadius, radiusPerStack, init => $" within <style=cIsUtility>{m(init)}</style>{{Stack}}", m) + "." +
             StackDesc(attackSpeedAndMovementSpeed, attackSpeedAndMovementSpeedStack, init => $" Raise {(enableMovementSpeed ? " <style=cIsUtility>movement speed</style>" : "")}{(enableAttackSpeed ? (enableMovementSpeed ? " and" : "") + " <style=cIsDamage>attack speed</style>" : "")} by <style=cIsDamage>{d(init)}</style>{{Stack}}.", d);
 
-        [ConfigField("Base Radius", 20f)]
+        [ConfigField("Base Radius", 22f)]
         public static float baseRadius;
 
         [ConfigField("Radius Per Stack", 0f)]
@@ -25,10 +25,10 @@ namespace WellRoundedBalance.Items.Whites
         [ConfigField("Radius is Hyperbolic", "Decimal, Max value. Set to 0 to make it linear.", 0f)]
         public static float radiusIsHyperbolic;
 
-        [ConfigField("Attack Speed and Movement Speed", "Decimal.", 0.3f)]
+        [ConfigField("Base Attack Speed and Movement Speed", "Decimal.", 0.2f)]
         public static float attackSpeedAndMovementSpeed;
 
-        [ConfigField("Attack Speed and Movement Speed Per Stack", "Decimal.", 0.15f)]
+        [ConfigField("Attack Speed and Movement Speed Per Stack", "Decimal.", 0.2f)]
         public static float attackSpeedAndMovementSpeedStack;
 
         [ConfigField("Attack Speed and Movement Speed is Hyperbolic", "Decimal, Max value. Set to 0 to make it linear.", 0f)]

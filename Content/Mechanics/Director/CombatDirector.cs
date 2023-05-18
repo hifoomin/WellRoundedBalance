@@ -7,7 +7,7 @@
         [ConfigField("Minimum Reroll Spawn Interval Multiplier", "", 1.8f)]
         public static float minimumRerollSpawnIntervalMultiplier;
 
-        [ConfigField("Credit Multiplier", "", 1.25f)]
+        [ConfigField("Credit Multiplier", "", 1.35f)]
         public static float creditMultiplier;
 
         [ConfigField("Elite Bias Multiplier", "", 0.9f)]

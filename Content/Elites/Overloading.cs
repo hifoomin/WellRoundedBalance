@@ -21,13 +21,13 @@ namespace WellRoundedBalance.Elites
         [ConfigField("Ally Buff Movement Speed Gain Eclipse 3+", "Decimal. Only applies if you have Eclipse Changes enabled.", 0.75f)]
         public static float allyBuffMovementSpeedGainE3;
 
-        [ConfigField("Aggressive Teleport Cooldown", "Do not set it to the same value as Defensive Teleport Cooldown", 6f)]
-        public static float aggressiveTeleportCooldown;
+        [ConfigField("Teleport Cooldown", "", 6f)]
+        public static float teleportCooldown;
 
-        [ConfigField("Maximum Speed Aura Radius", "", 40f)]
+        [ConfigField("Maximum Speed Aura Radius", "", 45f)]
         public static float maxSpeedAuraRadius;
 
-        [ConfigField("Minimum Speed Aura Radius", "", 16f)]
+        [ConfigField("Minimum Speed Aura Radius", "", 20f)]
         public static float minSpeedAuraRadius;
 
         private static GameObject SpeedAura;
@@ -270,7 +270,7 @@ namespace WellRoundedBalance.Elites
 
             public float GetDelay()
             {
-                return aggressiveTeleportCooldown;
+                return teleportCooldown;
             }
 
             public void HandleTeleport(Vector3 nextPosition)

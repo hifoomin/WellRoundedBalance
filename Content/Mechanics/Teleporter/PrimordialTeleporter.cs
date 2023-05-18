@@ -1,5 +1,7 @@
 ﻿using Rewired.Utils.Classes.Data;
 using System;
+using System.Linq;
+using UnityEngine.Networking.NetworkSystem;
 using UnityEngine.SceneManagement;
 
 namespace WellRoundedBalance.Mechanics.VoidFields
@@ -13,6 +15,8 @@ namespace WellRoundedBalance.Mechanics.VoidFields
 
         [ConfigField("Enable spawning every stage when looping?", "", true)]
         public static bool everyStageWhenLoop;
+
+        public static readonly string[] blacklistedStages = { "PromoRailGunner", "PromoVoidSurvivor", "ai_test", "arena", "artifactworld", "bazaar", "crystalworld", "eclipseworld", "goldshores", "infinitetowerworld", "intro", "itancientloft", "itdampcave", "itfrozenwall", "itgolemplains", "itgoolake", "itmoon", "itskymeadow", "limbo", "loadingbasic", "lobby", "logbook", "moon", "moon2", "mysteryspace", "outro", "satellitescene", "splash", "testscene", "title", "voidoutro", "voidstage", "voidraid", "forgottenhaven" };
 
         public override void Init()
         {
@@ -35,10 +39,13 @@ namespace WellRoundedBalance.Mechanics.VoidFields
 
         private void SceneDirector_onPrePopulateSceneServer(SceneDirector sd)
         {
+            /*
             bool isValid = false;
             if (Stage.instance && Stage.instance.sceneDef)
                 isValid = !Stage.instance.sceneDef.isFinalStage && Stage.instance.sceneDef.sceneType == SceneType.Stage;
-            if (Run.instance && Run.instance.loopClearCount > 0 && isValid)
+            */
+            // doesn't fucking work wtf
+            if (Run.instance && Run.instance.loopClearCount > 0 && !blacklistedStages.Contains(SceneManager.GetActiveScene().name))
             {
                 sd.teleporterSpawnCard = tp;
             }

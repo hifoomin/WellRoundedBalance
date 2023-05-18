@@ -1,8 +1,7 @@
-﻿using Mono.Cecil.Cil;
-using MonoMod.Cil;
-using System;
+﻿using System;
 using RoR2.Navigation;
 using WellRoundedBalance.Buffs;
+using System.Collections;
 
 namespace WellRoundedBalance.Elites
 {
@@ -12,6 +11,7 @@ namespace WellRoundedBalance.Elites
         public static GameObject iceExplosionPrefab;
         public override string Name => ":: Elites : Glacial";
         public static GameObject IcePillarPrefab;
+        public static GameObject IcePillarWalkerPrefab;
 
         public override void Init()
         {
@@ -29,12 +29,43 @@ namespace WellRoundedBalance.Elites
 
             ContentAddition.AddBuffDef(slow);
 
-            IcePillarPrefab = Utils.Paths.GameObject.MageIcewallPillarProjectile.Load<GameObject>().InstantiateClone("GlacialPillar");
-            IcePillarPrefab.RemoveComponent<ProjectileDamage>();
-            IcePillarPrefab.RemoveComponent<ProjectileImpactExplosion>();
-            IcePillarPrefab.RemoveComponent<ProjectileController>();
+            IcePillarPrefab = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.MageIcewallPillarProjectile.Load<GameObject>(), "Glacial Elite Pillar");
+
+            var projectileImpactExplosion = IcePillarPrefab.GetComponent<ProjectileImpactExplosion>();
+            projectileImpactExplosion.blastRadius = 0f;
+            projectileImpactExplosion.blastDamageCoefficient = 0f;
+            projectileImpactExplosion.blastProcCoefficient = 0f;
+            projectileImpactExplosion.lifetime = 8f; // 8f - 0.05f * 8 for max without overlap
+            projectileImpactExplosion.destroyOnEnemy = false;
+
+            var newImpact = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.OmniImpactVFXFrozen.Load<GameObject>(), "Glacial Elite Pillar Broken VFX");
+            newImpact.transform.localScale = new Vector3(3f, 3f, 3f);
+
+            projectileImpactExplosion.impactEffect = newImpact;
+
             IcePillarPrefab.layer = LayerIndex.world.intVal;
-            IcePillarPrefab.transform.localScale *= 2;
+            IcePillarPrefab.transform.localScale = new Vector3(2f, 3f, 2f);
+
+            var newGhost = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.MageIcePillarGhost.Load<GameObject>(), "Glacial Elite Pillar Ghost");
+            newGhost.transform.localScale = new Vector3(2f, 2f, 2f);
+            var mesh = newGhost.transform.GetChild(1);
+            mesh.localPosition = new Vector3(0f, 0f, -2.5f);
+            mesh.transform.localScale = new Vector3(2f, 2f, 3f);
+            var projectileController = IcePillarPrefab.GetComponent<ProjectileController>();
+            projectileController.ghostPrefab = newGhost;
+
+            IcePillarWalkerPrefab = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.MageIcewallWalkerProjectile.Load<GameObject>(), "Glacial Elite Pillar Walker");
+            var projectileMageFirewallWalkerController = IcePillarWalkerPrefab.GetComponent<ProjectileMageFirewallWalkerController>();
+            projectileMageFirewallWalkerController.firePillarPrefab = IcePillarPrefab;
+
+            var projectileCharacterController = IcePillarWalkerPrefab.GetComponent<ProjectileCharacterController>();
+            projectileCharacterController.lifetime = 0.5f;
+            projectileCharacterController.velocity = 0.01f;
+
+            ContentAddition.AddEffect(newGhost);
+            ContentAddition.AddEffect(newImpact);
+            PrefabAPI.RegisterNetworkPrefab(IcePillarPrefab);
+            PrefabAPI.RegisterNetworkPrefab(IcePillarWalkerPrefab);
 
             base.Init();
         }
@@ -45,6 +76,7 @@ namespace WellRoundedBalance.Elites
             On.RoR2.GlobalEventManager.OnHitAll += GlobalEventManager_OnHitAll;
             RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
             IL.RoR2.CharacterModel.UpdateOverlays += CharacterModel_UpdateOverlays;
+            CharacterBody.onBodyInventoryChangedGlobal += CharacterBody_onBodyInventoryChangedGlobal;
         }
 
         private void GlobalEventManager_OnHitAll(On.RoR2.GlobalEventManager.orig_OnHitAll orig, GlobalEventManager self, DamageInfo damageInfo, GameObject hitObject)
@@ -91,27 +123,28 @@ namespace WellRoundedBalance.Elites
             }
         }
 
+        private void CharacterBody_onBodyInventoryChangedGlobal(CharacterBody characterBody)
+        {
+            var sfp = characterBody.GetComponent<GlacialController>();
+            if (characterBody.HasBuff(RoR2Content.Buffs.AffixWhite))
+            {
+                if (sfp == null)
+                {
+                    characterBody.gameObject.AddComponent<GlacialController>();
+                }
+            }
+            else if (sfp != null)
+            {
+                characterBody.gameObject.RemoveComponent<GlacialController>();
+            }
+        }
+
         private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
             if (sender.HasBuff(slow))
             {
                 args.moveSpeedReductionMultAdd += 0.8f;
             }
-
-            /*bool flag = sender.HasBuff(RoR2Content.Buffs.AffixWhite);
-            GlacialPillarController controller = sender.GetComponent<GlacialPillarController>();
-
-            if (flag != controller)
-            {
-                if (flag)
-                {
-                    sender.gameObject.AddComponent<GlacialPillarController>();
-                }
-                else
-                {
-                    sender.gameObject.RemoveComponent<GlacialPillarController>();
-                }
-            }*/
         }
 
         private void GlobalEventManager_OnHitEnemy(ILContext il)
@@ -194,47 +227,55 @@ namespace WellRoundedBalance.Elites
             }
         }
 
-        public class GlacialPillar : MonoBehaviour
+        public class GlacialController : MonoBehaviour
         {
-            public void Die(object s, EventArgs e)
-            {
-                Destroy(base.gameObject);
-            }
-        }
-
-        public class GlacialPillarController : MonoBehaviour
-        {
-            private int totalActive;
-            private int maxActive = 4;
-            internal EventHandler onDeath;
-            private float stopwatch = 0f;
-            private float delay = 5f;
+            public float timer;
+            public float interval = 6f;
 
             public void FixedUpdate()
             {
-                stopwatch += Time.fixedDeltaTime;
-                if (totalActive < maxActive && stopwatch >= delay)
+                timer += Time.fixedDeltaTime;
+                if (timer >= interval)
                 {
-                    stopwatch = 0f;
-
-                    Vector3 point = PickTeleportPosition();
-                    GameObject pillar = GameObject.Instantiate(IcePillarPrefab, point, Quaternion.Euler(90, 0, 0));
-                    onDeath += pillar.GetComponent<GlacialPillar>().Die;
-                    totalActive++;
+                    timer = 0f;
+                    var point = PickRandomPosition();
+                    StartCoroutine(SummonProjectiles(point));
                 }
             }
 
-            public void OnDestroy()
+            public IEnumerator SummonProjectiles(Vector3 point)
             {
-                onDeath?.Invoke(null, null);
+                for (int i = 0; i < 10; i++)
+                {
+                    var pillar = GameObject.Instantiate(IcePillarPrefab, point + new Vector3(i * 2f, 0, 0), Quaternion.Euler(270f, 0f, 0f));
+                    NetworkServer.Spawn(pillar);
+                    yield return new WaitForSeconds(0.05f);
+                }
+                yield return null;
             }
 
-            public void OnDisable()
+            public Vector3[] PickValidPositions(float min, float max, NodeGraph.Node[] nodes)
             {
-                onDeath?.Invoke(null, null);
+                List<Vector3> validPositions = new();
+
+                foreach (NodeGraph.Node node in nodes)
+                {
+                    float distance = Vector3.Distance(node.position, transform.position);
+                    if (distance > min && distance < max)
+                    {
+                        validPositions.Add(node.position);
+                    }
+                }
+
+                if (validPositions.Count <= 1)
+                {
+                    return new Vector3[] { transform.position };
+                }
+
+                return validPositions.ToArray();
             }
 
-            public Vector3 PickTeleportPosition()
+            public Vector3 PickRandomPosition()
             {
                 if (!SceneInfo.instance || !SceneInfo.instance.groundNodes)
                 {
@@ -242,22 +283,9 @@ namespace WellRoundedBalance.Elites
                 }
 
                 NodeGraph.Node[] nodes = SceneInfo.instance.groundNodes.nodes;
-                return PickValidPositions(3, 15, nodes).ToList().GetRandom();
-            }
-
-            public Vector3[] PickValidPositions(float min, float max, NodeGraph.Node[] nodes)
-            {
-                NodeGraph.Node[] validNodes = nodes.Where(x => Vector3.Distance(x.position, transform.position) > min && Vector3.Distance(x.position, transform.position) < max).ToArray();
-                if (validNodes.Length <= 1)
-                {
-                    return new Vector3[] { transform.position };
-                }
-                List<Vector3> guh = new();
-                foreach (NodeGraph.Node node in validNodes)
-                {
-                    guh.Add(node.position);
-                }
-                return guh.ToArray();
+                Vector3[] validPositions;
+                validPositions = PickValidPositions(5, 15, nodes);
+                return validPositions.GetRandom();
             }
         }
     }

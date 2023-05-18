@@ -105,6 +105,7 @@ namespace WellRoundedBalance.Elites
         public GameObject passiveProjectile = Projectiles.MolotovBig.singlePrefab;
 
         public float timer;
+        public float initialDelay = 4f;
         public int passiveProjectileCount = 2;
         public float passiveProjectileInterval = 12f;
         public float passiveProjectileAngle;
@@ -116,6 +117,7 @@ namespace WellRoundedBalance.Elites
         public float deathProjectileAngle;
         public float deathDelayBetweenProjectiles = 0.2f;
         public bool canFire = false;
+        public bool hasFired = false;
 
         public void Start()
         {
@@ -138,6 +140,12 @@ namespace WellRoundedBalance.Elites
                 }
             }
             timer += Time.fixedDeltaTime;
+            if (timer >= initialDelay && !hasFired)
+            {
+                timer = 0f;
+                StartCoroutine(FireProjectiles());
+                hasFired = true;
+            }
             if (timer >= passiveProjectileInterval)
             {
                 timer = 0f;

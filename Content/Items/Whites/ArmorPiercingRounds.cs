@@ -40,6 +40,8 @@
                             if (victimBody.isChampion && !victimBody.isBoss) // not boss to prevent double dipping
                             {
                                 damageInfo.damage *= 1f + championDamageBonus * stack;
+                                damageInfo.damageColorIndex = DamageColorIndex.WeakPoint;
+                                EffectManager.SimpleImpactEffect(HealthComponent.AssetReferences.bossDamageBonusImpactEffectPrefab, damageInfo.position, -damageInfo.force, true);
                             }
                         }
                     }
