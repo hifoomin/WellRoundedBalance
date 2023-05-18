@@ -46,7 +46,7 @@ namespace WellRoundedBalance.Elites
             var projectileController = missile.GetComponent<ProjectileController>();
 
             var newGhost = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.MissileVoidBigGhost.Load<GameObject>(), "Voidtouched Missile Ghost", false);
-            newGhost.transform.localScale = new Vector3(1.25f, 1.25f, 1.25f);
+            newGhost.transform.localScale = new Vector3(2.25f, 2.25f, 2.25f);
 
             projectileController.ghostPrefab = newGhost;
 
@@ -111,14 +111,15 @@ namespace WellRoundedBalance.Elites
 
             for (int i = 0; i < (Eclipse3.CheckEclipse() ? missileCount : missileCountE3); i++)
             {
+                var j = i % 2 == 0 ? i : -i;
+                var randomPos = Run.instance ? new Vector3(2f * j, j, 2f * j) + new Vector3(Run.instance.treasureRng.RangeFloat(-5f, 5f), Run.instance.treasureRng.RangeFloat(-2f, 2f), Run.instance.treasureRng.RangeFloat(-5f, 5f)) : Vector3.zero;
                 if (Util.HasEffectiveAuthority(body.gameObject))
                 {
                     FireProjectileInfo info = new()
                     {
                         damage = body.damage * missileDamage,
-                        damageTypeOverride = DamageType.Nullify,
                         crit = false,
-                        position = startPos,
+                        position = startPos + randomPos,
                         projectilePrefab = missile,
                         owner = body.gameObject,
                     };
