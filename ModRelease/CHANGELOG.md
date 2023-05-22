@@ -1,7 +1,54 @@
+# 1.3.8 Patch Notes
+- Buffed AtG Missile Mk.1 TOTAL Damage Per Stack 200% => **300%**.
+- Buffed Berzerker's Pauldron Buff Duration Per Stack 4s => **4.5s**.
+- Buffed Molten Peripherator TOTAL Damage Per Stack 110% => **180%**.
+- Buffed Chronobauble Attack Speed Debuff Per Stack 5% => **10%**.
+- Buffed Death Mark Damage Increase Per Debuff Per Stack 3% => **5%**.
+- Buffed Hunter's Harpoon Max Count Per Stack 2 = > **3**.
+- Buffed Planula Burn Duration Per Stack 3s => **5s**.
+- Buffed Queen's Gland Damage Per Stack 110% => **160%**.
+- Buffed Newly Hatched Zoea to give its summons a **30%** damage bonus.
+- Buffed Charged Peripherator TOTAL Damage Per Stack 200% => **350%**.
+- Buffed Kjaro's Band TOTAL Damage Per Stack 100% => **170%**.
+- Buffed Will-o'-the-Wisp Damage Per Stack 120% => **200%**.
+- Buffed War Horn Attack Speed Gain Per Stacek 15% => **25%**.
+- Buffed War Horn Regeneration Gain Per Stack 1.5 => **2**.
+- Buffed Shuriken Damage Per Stack 200% => **300%**.
+- Buffed Runald's Band Damage Per Stack 700% => **1000%**.
+- Buffed Rose Buckler Armor Increase Per Stack 15 => **20**.
+- Buffed Leeching Seed Healing Regardless of Source Per Stack 0.3 => **0.4**.
+- Buffed Voidsent Flame Proc Coefficient 0 => **0.25**.
+- Buffed Voidsent Flame Damage Per Stack 70% => **110%**.
+- Buffed Singularity Band Radius Per Stack 7.5m => **10m**.
+- Buffed Predatory Instincts Buff Cap Per Stack 2 => **3**.
+- Nerfed Predatory Instincts Attack Speed Gain Per Buff 16% => **12%**.
+- Nerfed Voidsent Flame Base Damage 140% => **110%**.
+- Nerfed Singularity Band Base Radius 15m => **10m**.
+- Nerfed Queen's Gland Base Damage 220% => **160%**.
+- Nerfed Molten Peripherator Base TOTAL Damage 220% => **180%**.
+- Nerfed Charged Peripherator Base TOTAL Damage 400% => **350%**.
+- Nerfed Leeching Seed Base Healing Regardless of Source 0.6 => **0.4**.
+- Nerfed Rose Buckler Base Armor Increase 25 => **20**.
+- Nerfed Runald's Band Base Damage 1300% => **1000%**.
+- Nerfed War Horn Base Regeneration Gain 3 => **2**.
+- Nerfed Shuriken Base Damage 400% => **300%**.
+- Nerfed Will-o'-the-Wisp Base Damage 240% => **200%**.
+- Nerfed War Horn Base Attack Speed Gain 30% => **25%**.
+- Nerfed Kjaro's Band Base TOTAL Damage 200% => **170%**.
+- Nerfed Death Mark Base Damage Increase Per Debuff 7% => **5%**.
+- Nerfed Chronobauble Base Attack Speed Debuff 15% => **10%**.
+- Nerfed Berzerker's Paudron Base Buff Duration 6s => **4.5s**.
+- Reworked Razorwire into Barbed Wire.
+- Made all printers limited in use (4 for White, 2 for Green, 1 for Red, 2 for Yellow)
+- Fixed Glacial Elites.
+- - Small green and yellow stacking rebalance with printer changes. ~HIFU
+
 # 1.3.7 Patch Notes
 - Added module toggle config.
+- Buffed Extraterrestrial Exhaust Rocket Damage Percent Stacking 45% => **70%**.
 - Buffed Topaz Brooch Flat Barrier Gain 3 => **6**.
 - Buffed Warbanner Attack Speed and Movement Speed Per Stack 15% => **20%**.
+- Nerfed Extraterrestrial Exhaust Rocket Damage Percent 90% => **70%**.
 - Nerfed Interstellar Desk Plant Lifetime 10s => **5s**.
 - Nerfed Topaz Brooch Base Percent Barrier Gain 3% => **2.5%**.
 - Nerfed Topaz Brooch Percent Barrier Gain Per Stack 3% => **2.5%**.
@@ -11,7 +58,7 @@
 - Reworked Mending Elite.
 - Reworked Overloading Elite.
 - Reworked Voidtouched Elite.
-- Changed Combat Director Credit Multiplier 1.25 => **1.35**.
+- Changed Combat Director Credit Multiplier 1.25x => **1.35x**.
 - Changed Tier 1 Elite Cost Multiplier 8x => **5.5x**.
 - Changed Tier 2 Elite Cost Multiplier 48x => **26x**.
 - Changed Tier 2 Honor Elite Cost Multiplier 4.66x => **3.5x**.

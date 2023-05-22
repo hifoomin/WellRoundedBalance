@@ -130,7 +130,7 @@ namespace WellRoundedBalance.Interactables
             for (int i = 0; i < 10; i++)
             {
                 DirectorCard next = orig(self, deck, max);
-                if (next.spawnCard && next.spawnCard == vradle && ShouldBlockCradles())
+                if (next != null && next.spawnCard && next.spawnCard == vradle && ShouldBlockCradles())
                 {
                     // Main.WRBLogger.LogError("No players have corruptible items, blocking vradle spawn");
                     continue;

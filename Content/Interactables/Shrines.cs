@@ -1,5 +1,4 @@
 ﻿using System;
-using UnityEngine.UIElements.UIR;
 
 namespace WellRoundedBalance.Interactables
 {
@@ -94,6 +93,7 @@ namespace WellRoundedBalance.Interactables
 
             var shrineWood = Utils.Paths.InteractableSpawnCard.iscShrineHealing.Load<InteractableSpawnCard>();
             shrineWood.maxSpawnsPerStage = shrineOfWoodMaxSpawnsPerStage;
+            shrineWood.directorCreditCost = 0;
 
             var shrineWoodGO = Utils.Paths.GameObject.ShrineHealing.Load<GameObject>();
             var purchaseInteraction4 = shrineWoodGO.GetComponent<PurchaseInteraction>();

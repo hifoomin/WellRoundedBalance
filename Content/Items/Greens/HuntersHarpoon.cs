@@ -33,10 +33,10 @@ namespace WellRoundedBalance.Items.Greens
         [ConfigField("Movement Speed is Hyperbolic", "Decimal, Max value. Set to 0 to make it linear.", 0f)]
         public static float movementSpeedIsHyperbolic;
 
-        [ConfigField("Max Count", "", 3)]
+        [ConfigField("Base Max Count", "", 3)]
         public static int maxCount;
 
-        [ConfigField("Max Count per Stack", "", 2)]
+        [ConfigField("Max Count Per Stack", "", 3)]
         public static int maxCountStack;
 
         [ConfigField("Max Count is Hyperbolic", "Decimal, Max value. Set to 0 to make it linear.", 0f)]

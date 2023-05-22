@@ -1,99 +1,66 @@
-﻿using Mono.Cecil.Cil;
-using MonoMod.Cil;
-using RoR2.Orbs;
+﻿using RoR2.Orbs;
 
 namespace WellRoundedBalance.Items.Greens
 {
     public class Razorwire : ItemBase<Razorwire>
     {
-        public static BuffDef razorwireCooldown;
-
+        public static GameObject indicator;
         public override string Name => ":: Items :: Greens :: Razorwire";
         public override ItemDef InternalPickup => RoR2Content.Items.Thorns;
 
-        public override string PickupText => "Retaliate upon taking damage.";
-        public override string DescText => "Getting hit causes a razor to <style=cIsDamage>retaliate</style>, dealing <style=cIsDamage>" + d(baseDamage) + "</style> <style=cStack>(+" + d(damagePerStack) + " per stack)</style> damage.";
+        public override string PickupText => "Passively damage nearby enemies with thorns.";
+        public override string DescText => "Passively deal <style=cIsDamage>" + d(baseDamage) + "</style> <style=cStack>(+" + d(damagePerStack) + " per stack)</style> damage per second to every enemy within <style=cIsDamage>" + radius + "m</style>.";
 
-        [ConfigField("Base Damage", "Decimal.", 4f)]
+        [ConfigField("Base Damage", "Decimal.", 2f)]
         public static float baseDamage;
 
         [ConfigField("Damage Per Stack", "Decimal.", 2f)]
         public static float damagePerStack;
 
-        [ConfigField("Proc Coefficient", 1f)]
+        [ConfigField("Proc Coefficient", 0f)]
         public static float procCoefficient;
+
+        [ConfigField("Radius", 13f)]
+        public static float radius;
+
+        public static GameObject razorwireVFX;
 
         public override void Init()
         {
-            razorwireCooldown = ScriptableObject.CreateInstance<BuffDef>();
-
-            razorwireCooldown.isHidden = true;
-            razorwireCooldown.isCooldown = false;
-            razorwireCooldown.isDebuff = false;
-            razorwireCooldown.canStack = false;
-            razorwireCooldown.name = "Razorwire Cooldown";
-
-            ContentAddition.AddBuffDef(razorwireCooldown);
-
             base.Init();
         }
 
         public override void Hooks()
         {
+            razorwireVFX = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.RazorwireOrbEffect.Load<GameObject>(), "Razorwire VFX", false);
+
+            var orbEffect = razorwireVFX.GetComponent<OrbEffect>();
+            orbEffect.duration = 0.2f;
+
+            ContentAddition.AddEffect(razorwireVFX);
+
+            indicator = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.NearbyDamageBonusIndicator.Load<GameObject>(), "Razorwire Visual", true);
+            var radiusTrans = indicator.transform.Find("Radius, Spherical");
+            radiusTrans.localScale = new Vector3(radius * 2f, radius * 2f, radius * 2f);
+
+            var razorMat = Object.Instantiate(Utils.Paths.Material.matNearbyDamageBonusRangeIndicator.Load<Material>());
+            var cloudTexture = Utils.Paths.Texture2D.texCloudWaterRipples.Load<Texture2D>();
+            razorMat.SetTexture("_MainTex", cloudTexture);
+            razorMat.SetTexture("_Cloud1Tex", cloudTexture);
+            razorMat.SetColor("_TintColor", new Color32(182, 183, 183, 128));
+
+            radiusTrans.GetComponent<MeshRenderer>().material = razorMat;
+
+            ContentAddition.AddEffect(razorwireVFX);
+            PrefabAPI.RegisterNetworkPrefab(indicator);
+
             IL.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
-            On.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage1;
+            CharacterBody.onBodyInventoryChangedGlobal += CharacterBody_onBodyInventoryChangedGlobal;
         }
 
-        private void HealthComponent_TakeDamage1(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo)
+        private void CharacterBody_onBodyInventoryChangedGlobal(CharacterBody characterBody)
         {
-            var victimBody = self.body;
-
-            if (victimBody)
-            {
-                var attacker = damageInfo.attacker;
-                if (attacker)
-                {
-                    if (attacker != self.gameObject)
-                    {
-                        var inventory = victimBody.inventory;
-                        if (inventory)
-                        {
-                            var stack = inventory.GetItemCount(RoR2Content.Items.Thorns);
-                            if (stack > 0 && !damageInfo.procChainMask.HasProc(ProcType.Thorns))
-                            {
-                                var attackerHurtBox = Util.FindBodyMainHurtBox(attacker);
-                                if (attackerHurtBox && !victimBody.HasBuff(razorwireCooldown))
-                                {
-                                    LightningOrb lightningOrb = new()
-                                    {
-                                        attacker = self.body.gameObject,
-                                        bouncedObjects = null,
-                                        bouncesRemaining = 0,
-                                        damageCoefficientPerBounce = 1f,
-                                        damageColorIndex = DamageColorIndex.Item,
-                                        damageValue = self.body.damage * baseDamage + damagePerStack * (stack - 1),
-                                        isCrit = victimBody.RollCrit(),
-                                        lightningType = LightningOrb.LightningType.RazorWire,
-                                        origin = damageInfo.position,
-                                        procChainMask = default,
-                                        procCoefficient = procCoefficient * globalProc,
-                                        range = 100000f,
-                                        teamIndex = victimBody.teamComponent.teamIndex,
-                                        target = attackerHurtBox,
-                                    };
-                                    lightningOrb.procChainMask.AddProc(ProcType.Thorns);
-
-                                    OrbManager.instance.AddOrb(lightningOrb);
-
-                                    victimBody.AddTimedBuff(razorwireCooldown, 1f, 1);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            orig(self, damageInfo);
+            if (NetworkServer.active) characterBody.AddItemBehavior<RazorwireController>(characterBody.inventory.GetItemCount(RoR2Content.Items.Thorns));
         }
 
         private void HealthComponent_TakeDamage(ILContext il)
@@ -112,6 +79,120 @@ namespace WellRoundedBalance.Items.Greens
             {
                 Logger.LogError("Failed to apply Razorwire Deletion hook");
             }
+        }
+    }
+
+    public class RazorwireController : CharacterBody.ItemBehavior
+    {
+        public float damageInterval = 0.2f;
+        public float damage;
+        public float timer;
+        public float radiusSquared = Razorwire.radius * Razorwire.radius;
+        public float distance = Razorwire.radius;
+        public TeamIndex ownerIndex;
+        public GameObject radiusIndicator;
+
+        private void Start()
+        {
+            ownerIndex = body.teamComponent.teamIndex;
+            enableRadiusIndicator = true;
+            var radiusTrans = radiusIndicator.transform.GetChild(1);
+            radiusTrans.localScale = new Vector3(Razorwire.radius * 2f, Razorwire.radius * 2f, Razorwire.radius * 2f);
+            if (stack > 0)
+            {
+                damage = (Razorwire.baseDamage + Razorwire.damagePerStack * (stack - 1)) * damageInterval;
+            }
+            else damage = 0;
+        }
+
+        private void FixedUpdate()
+        {
+            timer += Time.fixedDeltaTime;
+            if (timer < damageInterval)
+            {
+                return;
+            }
+
+            for (TeamIndex firstIndex = TeamIndex.Neutral; firstIndex < TeamIndex.Count; firstIndex++)
+            {
+                if (firstIndex == ownerIndex || firstIndex <= TeamIndex.Neutral)
+                {
+                    continue;
+                }
+
+                foreach (TeamComponent teamComponent in TeamComponent.GetTeamMembers(firstIndex))
+                {
+                    var enemyPosition = teamComponent.transform.position;
+                    var corePosition = body.corePosition;
+                    if ((enemyPosition - corePosition).sqrMagnitude <= radiusSquared)
+                    {
+                        Damage(teamComponent);
+                        EffectManager.SpawnEffect(Razorwire.razorwireVFX, new EffectData() { start = corePosition, origin = enemyPosition }, true);
+                    }
+                }
+            }
+
+            timer = 0f;
+        }
+
+        private void Damage(TeamComponent teamComponent)
+        {
+            var victimBody = teamComponent.body;
+            if (!victimBody)
+            {
+                return;
+            }
+
+            var victimHealthComponent = victimBody.healthComponent;
+            if (!victimHealthComponent)
+            {
+                return;
+            }
+
+            if (victimHealthComponent)
+            {
+                var info = new DamageInfo()
+                {
+                    attacker = gameObject,
+                    crit = false,
+                    damage = damage * body.damage,
+                    force = Vector3.zero,
+                    procCoefficient = Razorwire.procCoefficient * ItemBase.globalProc,
+                    damageType = DamageType.Generic,
+                    position = victimBody.corePosition,
+                    inflictor = gameObject
+                };
+                victimHealthComponent.TakeDamage(info);
+            }
+        }
+
+        private bool enableRadiusIndicator
+        {
+            get
+            {
+                return radiusIndicator;
+            }
+            set
+            {
+                if (enableRadiusIndicator != value)
+                {
+                    if (value)
+                    {
+                        radiusIndicator = Instantiate(Razorwire.indicator, body.corePosition, Quaternion.identity);
+                        radiusIndicator.GetComponent<NetworkedBodyAttachment>().AttachToGameObjectAndSpawn(gameObject, null);
+                    }
+                    else
+                    {
+                        Object.Destroy(radiusIndicator);
+                        radiusIndicator = null;
+                    }
+                }
+            }
+        }
+
+        private void OnDisable()
+        {
+            enableRadiusIndicator = false;
         }
     }
 }

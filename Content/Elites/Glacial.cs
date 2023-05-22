@@ -2,6 +2,8 @@
 using RoR2.Navigation;
 using WellRoundedBalance.Buffs;
 using System.Collections;
+using WellRoundedBalance.Gamemodes.Eclipse;
+using EntityStates;
 
 namespace WellRoundedBalance.Elites
 {
@@ -31,18 +33,60 @@ namespace WellRoundedBalance.Elites
 
             IcePillarPrefab = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.MageIcewallPillarProjectile.Load<GameObject>(), "Glacial Elite Pillar");
 
+            /*
             var projectileImpactExplosion = IcePillarPrefab.GetComponent<ProjectileImpactExplosion>();
             projectileImpactExplosion.blastRadius = 0f;
             projectileImpactExplosion.blastDamageCoefficient = 0f;
             projectileImpactExplosion.blastProcCoefficient = 0f;
             projectileImpactExplosion.lifetime = 8f; // 8f - 0.05f * 8 for max without overlap
-            projectileImpactExplosion.destroyOnEnemy = false;
+            projectileImpactExplosion.destroyOnEnemy = true;
+            */
 
+            IcePillarPrefab.GetComponent<ProjectileImpactExplosion>().enabled = false;
+
+            var projectileSimple = IcePillarPrefab.AddComponent<ProjectileSimple>();
+            projectileSimple.desiredForwardSpeed = 0f;
+            projectileSimple.lifetime = 7f;
+
+            var characterBody = IcePillarPrefab.AddComponent<CharacterBody>();
+            characterBody.baseMaxHealth = 90f;
+            characterBody.levelMaxHealth = 27f;
+            characterBody.baseMoveSpeed = 0;
+            characterBody.bodyFlags |= CharacterBody.BodyFlags.Masterless;
+            characterBody.baseNameToken = "WRB_ICEPILLAR_NAME";
+            characterBody.subtitleNameToken = "WRB_ICEPILLAR_SUB";
+
+            LanguageAPI.Add("WRB_ICEPILLAR_NAME", "Ice Pillar");
+            LanguageAPI.Add("WRB_ICEPILLAR_SUB", "How The Fuck");
+
+            var healthComponent = IcePillarPrefab.AddComponent<HealthComponent>();
+            healthComponent.dontShowHealthbar = false;
+
+            var hurtboxGroup = IcePillarPrefab.AddComponent<HurtBoxGroup>();
+
+            var hurtbox = IcePillarPrefab.AddComponent<HurtBox>();
+            hurtbox.healthComponent = healthComponent;
+            hurtbox.hurtBoxGroup = hurtboxGroup;
+            hurtbox.isBullseye = true;
+            hurtbox.isSniperTarget = true;
+
+            var esm = IcePillarPrefab.AddComponent<EntityStateMachine>();
+            esm.customName = "Body";
+            esm.initialStateType = new SerializableEntityStateType(typeof(Idle));
+            esm.mainStateType = new SerializableEntityStateType(typeof(GenericCharacterDeath));
+
+            var nsm = IcePillarPrefab.AddComponent<NetworkStateMachine>();
+            nsm.stateMachines = new EntityStateMachine[] { esm };
+
+            var characterDeathBehavior = IcePillarPrefab.AddComponent<CharacterDeathBehavior>();
+            characterDeathBehavior.deathState = new SerializableEntityStateType(typeof(GenericCharacterDeath));
+            characterDeathBehavior.deathStateMachine = esm;
+            /*
             var newImpact = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.OmniImpactVFXFrozen.Load<GameObject>(), "Glacial Elite Pillar Broken VFX");
             newImpact.transform.localScale = new Vector3(3f, 3f, 3f);
 
             projectileImpactExplosion.impactEffect = newImpact;
-
+            */
             IcePillarPrefab.layer = LayerIndex.world.intVal;
             IcePillarPrefab.transform.localScale = new Vector3(2f, 3f, 2f);
 
@@ -51,6 +95,9 @@ namespace WellRoundedBalance.Elites
             var mesh = newGhost.transform.GetChild(1);
             mesh.localPosition = new Vector3(0f, 0f, -2.5f);
             mesh.transform.localScale = new Vector3(2f, 2f, 3f);
+
+            // var effectComponent = newGhost.AddComponent<EffectComponent>();
+
             var projectileController = IcePillarPrefab.GetComponent<ProjectileController>();
             projectileController.ghostPrefab = newGhost;
 
@@ -62,8 +109,8 @@ namespace WellRoundedBalance.Elites
             projectileCharacterController.lifetime = 0.5f;
             projectileCharacterController.velocity = 0.01f;
 
-            ContentAddition.AddEffect(newGhost);
-            ContentAddition.AddEffect(newImpact);
+            // ContentAddition.AddEffect(newGhost);
+            // ContentAddition.AddEffect(newImpact);
             PrefabAPI.RegisterNetworkPrefab(IcePillarPrefab);
             PrefabAPI.RegisterNetworkPrefab(IcePillarWalkerPrefab);
 
@@ -230,7 +277,13 @@ namespace WellRoundedBalance.Elites
         public class GlacialController : MonoBehaviour
         {
             public float timer;
-            public float interval = 6f;
+            public float interval = 7f;
+            public int projectileCount = 10;
+
+            public void Start()
+            {
+                projectileCount = Eclipse3.CheckEclipse() ? 15 : 10;
+            }
 
             public void FixedUpdate()
             {
@@ -245,12 +298,26 @@ namespace WellRoundedBalance.Elites
 
             public IEnumerator SummonProjectiles(Vector3 point)
             {
-                for (int i = 0; i < 10; i++)
+                for (int i = 0; i < projectileCount; i++)
                 {
+                    var fpi = new FireProjectileInfo()
+                    {
+                        crit = false,
+                        damage = 0,
+                        force = 0,
+                        owner = gameObject,
+                        position = point + new Vector3(i * 2f, 0, 0),
+                        rotation = Quaternion.Euler(270f, 0f, 0f),
+                        projectilePrefab = IcePillarPrefab
+                    };
+                    ProjectileManager.instance.FireProjectile(fpi);
+                    /*
                     var pillar = GameObject.Instantiate(IcePillarPrefab, point + new Vector3(i * 2f, 0, 0), Quaternion.Euler(270f, 0f, 0f));
                     NetworkServer.Spawn(pillar);
+                    */
                     yield return new WaitForSeconds(0.05f);
                 }
+
                 yield return null;
             }
 

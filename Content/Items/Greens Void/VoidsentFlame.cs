@@ -15,10 +15,10 @@ namespace WellRoundedBalance.Items.VoidGreens
             StackDesc(baseRange, rangePerStack, init => $" <style=cIsDamage>detonate</style> them in a <style=cIsDamage>{m(init)}</style>{{Stack}} radius burst", m) +
             StackDesc(baseDamage, damagePerStack, init => $"for <style=cIsDamage>{d(init)}</style>{{Stack}} base damage", d) + ". <style=cIsVoid>Corrupts all Will-o'-the-wisps</style>.";
 
-        [ConfigField("Base Damage", "Decimal.", 1.4f)]
+        [ConfigField("Base Damage", "Decimal.", 1.1f)]
         public static float baseDamage;
 
-        [ConfigField("Damage Per Stack", "Decimal.", 0.7f)]
+        [ConfigField("Damage Per Stack", "Decimal.", 1.1f)]
         public static float damagePerStack;
 
         [ConfigField("First Hit", "If enabled, Health Threshold configs will be ignored.", true)]
@@ -30,7 +30,7 @@ namespace WellRoundedBalance.Items.VoidGreens
         [ConfigField("Range Per Stack", 0f)]
         public static float rangePerStack;
 
-        [ConfigField("Proc Coefficient", 0f)]
+        [ConfigField("Proc Coefficient", 0.25f)]
         public static float procCoefficient;
 
         public static Dictionary<CharacterBody, List<CharacterBody>> db = new();

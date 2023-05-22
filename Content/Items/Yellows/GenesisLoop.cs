@@ -1,6 +1,4 @@
 ﻿using EntityStates.VagrantNovaItem;
-using Mono.Cecil.Cil;
-using MonoMod.Cil;
 using System;
 
 namespace WellRoundedBalance.Items.Yellows
@@ -32,12 +30,15 @@ namespace WellRoundedBalance.Items.Yellows
         {
             On.EntityStates.VagrantNovaItem.DetonateState.OnEnter += Changes;
             IL.EntityStates.VagrantNovaItem.ReadyState.FixedUpdate += ChangeThreshold;
-            On.EntityStates.VagrantNovaItem.RechargeState.FixedUpdate += RechargeState_FixedUpdate;
+            On.EntityStates.VagrantNovaItem.BaseVagrantNovaItemState.OnEnter += BaseVagrantNovaItemState_OnEnter;
         }
 
-        private void RechargeState_FixedUpdate(On.EntityStates.VagrantNovaItem.RechargeState.orig_FixedUpdate orig, RechargeState self)
+        private void BaseVagrantNovaItemState_OnEnter(On.EntityStates.VagrantNovaItem.BaseVagrantNovaItemState.orig_OnEnter orig, BaseVagrantNovaItemState self)
         {
-            RechargeState.baseDuration = cooldown; // make it actually 30s instead of 15s
+            if (self is RechargeState)
+            {
+                RechargeState.baseDuration = cooldown; // make it actually 30s instead of 15s
+            }
             orig(self);
         }
 
@@ -51,18 +52,15 @@ namespace WellRoundedBalance.Items.Yellows
             {
                 c.Index += 1;
                 c.Emit(OpCodes.Ldarg_0);
-                c.EmitDelegate<Func<bool, ReadyState, bool>>((Check, self) =>
+                c.EmitDelegate<Func<bool, ReadyState, bool>>((check, self) =>
                 {
+                    check = false;
                     if ((self.attachedHealthComponent.health + self.attachedHealthComponent.shield) / self.attachedHealthComponent.fullCombinedHealth <= healthThreshold)
                     {
-                        Check = true;
-                        return Check;
+                        check = true;
                     }
-                    else
-                    {
-                        Check = false;
-                        return Check;
-                    }
+
+                    return check;
                 });
             }
             else

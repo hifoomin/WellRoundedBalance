@@ -14,16 +14,16 @@ namespace WellRoundedBalance.Items.Greens
 
         public override string DescText => "Activating your Equipment gives you <style=cIsDamage>+" + d(baseAttackSpeedGain) + " attack speed</style> <style=cStack>(+" + d(attackSpeedGainPerStack) + " per stack)</style> and <style=cIsHealing>+" + baseRegenerationGain + " hp/s</style> <style=cStack>(+" + regenerationGainPerStack + " hp/s per stack)</style> <style=cIsHealing>base health regeneration</style> for <style=cIsDamage>" + buffDuration + "s</style>.";
 
-        [ConfigField("Base Attack Speed Gain", 0.3f)]
+        [ConfigField("Base Attack Speed Gain", 0.25f)]
         public static float baseAttackSpeedGain;
 
-        [ConfigField("Attack Speed Gain Per Stack", 0.15f)]
+        [ConfigField("Attack Speed Gain Per Stack", 0.25f)]
         public static float attackSpeedGainPerStack;
 
-        [ConfigField("Base Regeneration Gain", 3f)]
+        [ConfigField("Base Regeneration Gain", 2f)]
         public static float baseRegenerationGain;
 
-        [ConfigField("Regeneration Gain Per Stack", 1.5f)]
+        [ConfigField("Regeneration Gain Per Stack", 2f)]
         public static float regenerationGainPerStack;
 
         [ConfigField("Buff Duration", 12f)]

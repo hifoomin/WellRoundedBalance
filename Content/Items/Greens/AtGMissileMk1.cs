@@ -14,7 +14,7 @@ namespace WellRoundedBalance.Items.Greens
         [ConfigField("Base TOTAL Damage", "Decimal.", 3f)]
         public static float baseTotalDamage;
 
-        [ConfigField("TOTAL Damage Per Stack", "Decimal.", 2f)]
+        [ConfigField("TOTAL Damage Per Stack", "Decimal.", 3f)]
         public static float totalDamagePerStack;
 
         [ConfigField("Improve targeting?", "Affects all missile items and equipment.", true)]

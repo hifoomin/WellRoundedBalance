@@ -37,7 +37,7 @@
                         if (inventory)
                         {
                             var stack = inventory.GetItemCount(RoR2Content.Items.BossDamageBonus);
-                            if (victimBody.isChampion && !victimBody.isBoss) // not boss to prevent double dipping
+                            if (victimBody.isChampion && !victimBody.isBoss && stack > 0) // not boss to prevent double dipping
                             {
                                 damageInfo.damage *= 1f + championDamageBonus * stack;
                                 damageInfo.damageColorIndex = DamageColorIndex.WeakPoint;

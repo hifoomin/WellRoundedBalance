@@ -23,10 +23,10 @@ namespace WellRoundedBalance.Items.VoidGreens
         [ConfigField("TOTAL Damage Per Stack", "Decimal.", 0f)]
         public static float totalDamagePerStack;
 
-        [ConfigField("Base Radius", "", 15f)]
+        [ConfigField("Base Radius", "", 10f)]
         public static float baseRadius;
 
-        [ConfigField("Radius Per Stack", "", 7.5f)]
+        [ConfigField("Radius Per Stack", "", 10f)]
         public static float radiusPerStack;
 
         public override void Init()

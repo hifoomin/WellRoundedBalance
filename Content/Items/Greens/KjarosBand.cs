@@ -12,10 +12,10 @@ namespace WellRoundedBalance.Items.Greens
 
         public override string DescText => "Hits that deal <style=cIsDamage>more than 400% damage</style> also blast enemies for <style=cIsDamage>" + d(baseTotalDamage) + "</style> <style=cStack>(+" + d(totalDamagePerStack) + " per stack)</style> TOTAL damage over time. Recharges every <style=cIsUtility>10</style> seconds.";
 
-        [ConfigField("Base TOTAL Damage", "Decimal.", 2f)]
+        [ConfigField("Base TOTAL Damage", "Decimal.", 1.7f)]
         public static float baseTotalDamage;
 
-        [ConfigField("TOTAL Damage Per Stack", "Decimal.", 1f)]
+        [ConfigField("TOTAL Damage Per Stack", "Decimal.", 1.7f)]
         public static float totalDamagePerStack;
 
         public override void Init()
