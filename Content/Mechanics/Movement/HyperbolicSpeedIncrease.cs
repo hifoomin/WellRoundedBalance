@@ -35,6 +35,10 @@ namespace WellRoundedBalance.Mechanics.Movement
                     return orig;
                 });
             }
+            else
+            {
+                Logger.LogError("Failed to apply Hyperbolic Speed Increase hook");
+            }
         }
     }
 }

@@ -62,6 +62,10 @@ namespace WellRoundedBalance.Elites
             var healthComponent = IcePillarPrefab.AddComponent<HealthComponent>();
             healthComponent.dontShowHealthbar = false;
 
+            var boxCollider = IcePillarPrefab.GetComponent<BoxCollider>();
+            boxCollider.size = new Vector3(1f, 1f, 10f);
+            boxCollider.center = new Vector3(0f, 5f, 0f);
+
             var hurtboxGroup = IcePillarPrefab.AddComponent<HurtBoxGroup>();
 
             var hurtbox = IcePillarPrefab.AddComponent<HurtBox>();
@@ -69,6 +73,7 @@ namespace WellRoundedBalance.Elites
             hurtbox.hurtBoxGroup = hurtboxGroup;
             hurtbox.isBullseye = true;
             hurtbox.isSniperTarget = true;
+            hurtbox.damageModifier = HurtBox.DamageModifier.SniperTarget;
 
             var esm = IcePillarPrefab.AddComponent<EntityStateMachine>();
             esm.customName = "Body";
@@ -81,6 +86,7 @@ namespace WellRoundedBalance.Elites
             var characterDeathBehavior = IcePillarPrefab.AddComponent<CharacterDeathBehavior>();
             characterDeathBehavior.deathState = new SerializableEntityStateType(typeof(GenericCharacterDeath));
             characterDeathBehavior.deathStateMachine = esm;
+
             /*
             var newImpact = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.OmniImpactVFXFrozen.Load<GameObject>(), "Glacial Elite Pillar Broken VFX");
             newImpact.transform.localScale = new Vector3(3f, 3f, 3f);

@@ -44,7 +44,7 @@
 - Reworked Defense Nucleus to **give 10 armor and fire a laser lasting 5s, dealing 70% (+70% per stack) damage per second for every second of your base equipment cooldown**.
 - Made all printers limited in use (3 for White, 2 for Green, 1 for Red, 2 for Yellow)
 - Fixed Glacial Elites.
-- - Small green and yellow stacking rebalance with printer changes. ~HIFU
+- - Small green and yellow stacking rebalance with printer and movement changes. ~HIFU
 
 # 1.3.7 Patch Notes
 - Added module toggle config.
