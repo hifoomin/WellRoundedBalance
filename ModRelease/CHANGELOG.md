@@ -1,4 +1,5 @@
 # 1.3.8 Patch Notes
+- Added Hyperbolic Speed Scaling.
 - Buffed AtG Missile Mk.1 TOTAL Damage Per Stack 200% => **300%**.
 - Buffed Berzerker's Pauldron Buff Duration Per Stack 4s => **4.5s**.
 - Buffed Blazing Elites.
@@ -41,7 +42,7 @@
 - Nerfed Will-o'-the-Wisp Base Damage 240% => **200%**.
 - Reworked Razorwire to **passively deal 180% (+180% per stack) damage to all enemies within 13m while out of danger**. (I don't have any rework ideas, this still sucks conceptually).
 - Reworked Defense Nucleus to **give 10 armor and fire a laser lasting 5s, dealing 70% (+70% per stack) damage per second for every second of your base equipment cooldown**.
-- Made all printers limited in use (4 for White, 2 for Green, 1 for Red, 2 for Yellow)
+- Made all printers limited in use (3 for White, 2 for Green, 1 for Red, 2 for Yellow)
 - Fixed Glacial Elites.
 - - Small green and yellow stacking rebalance with printer changes. ~HIFU
 
