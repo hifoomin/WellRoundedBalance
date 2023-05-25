@@ -8,8 +8,8 @@ namespace WellRoundedBalance.Items.Greens
         public override string Name => ":: Items :: Greens :: Razorwire";
         public override ItemDef InternalPickup => RoR2Content.Items.Thorns;
 
-        public override string PickupText => "Passively damage nearby enemies with thorns.";
-        public override string DescText => "Passively deal <style=cIsDamage>" + d(baseDamage) + "</style> <style=cStack>(+" + d(damagePerStack) + " per stack)</style> damage per second to every enemy within <style=cIsDamage>" + radius + "m</style>.";
+        public override string PickupText => "While out of danger, passively damage nearby enemies with thorns.";
+        public override string DescText => "Passively damage all enemies within <style=cIsDamage>" + radius + "m</style> for <style=cIsDamage>" + d(baseDamage) + "</style> <style=cStack>(+" + d(damagePerStack) + " per stack)</style> <style=cIsDamage>damage per second</style> while out of danger.";
 
         [ConfigField("Base Damage", "Decimal.", 2f)]
         public static float baseDamage;
@@ -35,7 +35,10 @@ namespace WellRoundedBalance.Items.Greens
             razorwireVFX = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.RazorwireOrbEffect.Load<GameObject>(), "Razorwire VFX", false);
 
             var orbEffect = razorwireVFX.GetComponent<OrbEffect>();
-            orbEffect.duration = 0.2f;
+            orbEffect.enabled = false;
+
+            var head = razorwireVFX.transform.GetChild(0);
+            head.gameObject.SetActive(true);
 
             ContentAddition.AddEffect(razorwireVFX);
 
@@ -47,7 +50,7 @@ namespace WellRoundedBalance.Items.Greens
             var cloudTexture = Utils.Paths.Texture2D.texCloudWaterRipples.Load<Texture2D>();
             razorMat.SetTexture("_MainTex", cloudTexture);
             razorMat.SetTexture("_Cloud1Tex", cloudTexture);
-            razorMat.SetColor("_TintColor", new Color32(182, 183, 183, 128));
+            razorMat.SetColor("_TintColor", new Color32(182, 183, 183, 150));
 
             radiusTrans.GetComponent<MeshRenderer>().material = razorMat;
 
@@ -108,7 +111,7 @@ namespace WellRoundedBalance.Items.Greens
         private void FixedUpdate()
         {
             timer += Time.fixedDeltaTime;
-            if (timer < damageInterval)
+            if (timer < damageInterval || !body.outOfDanger)
             {
                 return;
             }
@@ -127,7 +130,12 @@ namespace WellRoundedBalance.Items.Greens
                     if ((enemyPosition - corePosition).sqrMagnitude <= radiusSquared)
                     {
                         Damage(teamComponent);
-                        EffectManager.SpawnEffect(Razorwire.razorwireVFX, new EffectData() { start = corePosition, origin = enemyPosition }, true);
+                        /*
+                        if (Random.Range(0f, 1f) < 0.12f)
+                        {
+                            EffectManager.SpawnEffect(Razorwire.razorwireVFX, new EffectData() { start = corePosition, origin = enemyPosition }, true);
+                        }
+                        */
                     }
                 }
             }

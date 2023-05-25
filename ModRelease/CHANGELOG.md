@@ -1,44 +1,46 @@
 # 1.3.8 Patch Notes
 - Buffed AtG Missile Mk.1 TOTAL Damage Per Stack 200% => **300%**.
 - Buffed Berzerker's Pauldron Buff Duration Per Stack 4s => **4.5s**.
-- Buffed Molten Peripherator TOTAL Damage Per Stack 110% => **180%**.
+- Buffed Blazing Elites.
+- Buffed Charged Peripherator TOTAL Damage Per Stack 200% => **350%**.
 - Buffed Chronobauble Attack Speed Debuff Per Stack 5% => **10%**.
 - Buffed Death Mark Damage Increase Per Debuff Per Stack 3% => **5%**.
 - Buffed Hunter's Harpoon Max Count Per Stack 2 = > **3**.
-- Buffed Planula Burn Duration Per Stack 3s => **5s**.
-- Buffed Queen's Gland Damage Per Stack 110% => **160%**.
-- Buffed Newly Hatched Zoea to give its summons a **30%** damage bonus.
-- Buffed Charged Peripherator TOTAL Damage Per Stack 200% => **350%**.
 - Buffed Kjaro's Band TOTAL Damage Per Stack 100% => **170%**.
-- Buffed Will-o'-the-Wisp Damage Per Stack 120% => **200%**.
+- Buffed Leeching Seed Healing Regardless of Source Per Stack 0.3 => **0.4**.
+- Buffed Molten Peripherator TOTAL Damage Per Stack 110% => **180%**.
+- Buffed Newly Hatched Zoea to give its summons a **30%** damage bonus.
+- Buffed Planula Burn Duration Per Stack 3s => **5s**.
+- Buffed Predatory Instincts Buff Cap Per Stack 2 => **3**.
+- Buffed Queen's Gland Damage Per Stack 110% => **160%**.
+- Buffed Rose Buckler Armor Increase Per Stack 15 => **20**.
+- Buffed Runald's Band Damage Per Stack 700% => **1000%**.
+- Buffed Shuriken Damage Per Stack 200% => **300%**.
+- Buffed Singularity Band Radius Per Stack 7.5m => **10m**.
+- Buffed Voidsent Flame Damage Per Stack 70% => **110%**.
+- Buffed Voidsent Flame Proc Coefficient 0 => **0.25**.
 - Buffed War Horn Attack Speed Gain Per Stacek 15% => **25%**.
 - Buffed War Horn Regeneration Gain Per Stack 1.5 => **2**.
-- Buffed Shuriken Damage Per Stack 200% => **300%**.
-- Buffed Runald's Band Damage Per Stack 700% => **1000%**.
-- Buffed Rose Buckler Armor Increase Per Stack 15 => **20**.
-- Buffed Leeching Seed Healing Regardless of Source Per Stack 0.3 => **0.4**.
-- Buffed Voidsent Flame Proc Coefficient 0 => **0.25**.
-- Buffed Voidsent Flame Damage Per Stack 70% => **110%**.
-- Buffed Singularity Band Radius Per Stack 7.5m => **10m**.
-- Buffed Predatory Instincts Buff Cap Per Stack 2 => **3**.
-- Nerfed Predatory Instincts Attack Speed Gain Per Buff 16% => **12%**.
-- Nerfed Voidsent Flame Base Damage 140% => **110%**.
-- Nerfed Singularity Band Base Radius 15m => **10m**.
-- Nerfed Queen's Gland Base Damage 220% => **160%**.
-- Nerfed Molten Peripherator Base TOTAL Damage 220% => **180%**.
+- Buffed Will-o'-the-Wisp Damage Per Stack 120% => **200%**.
+- Nerfed Berzerker's Paudron Base Buff Duration 6s => **4.5s**.
 - Nerfed Charged Peripherator Base TOTAL Damage 400% => **350%**.
+- Nerfed Chronobauble Base Attack Speed Debuff 15% => **10%**.
+- Nerfed Death Mark Base Damage Increase Per Debuff 7% => **5%**.
+- Nerfed Kjaro's Band Base TOTAL Damage 200% => **170%**.
 - Nerfed Leeching Seed Base Healing Regardless of Source 0.6 => **0.4**.
+- Nerfed Molten Peripherator Base TOTAL Damage 220% => **180%**.
+- Nerfed Predatory Instincts Attack Speed Gain Per Buff 16% => **12%**.
+- Nerfed Queen's Gland Base Damage 220% => **160%**.
 - Nerfed Rose Buckler Base Armor Increase 25 => **20**.
 - Nerfed Runald's Band Base Damage 1300% => **1000%**.
-- Nerfed War Horn Base Regeneration Gain 3 => **2**.
 - Nerfed Shuriken Base Damage 400% => **300%**.
-- Nerfed Will-o'-the-Wisp Base Damage 240% => **200%**.
+- Nerfed Singularity Band Base Radius 15m => **10m**.
+- Nerfed Voidsent Flame Base Damage 140% => **110%**.
 - Nerfed War Horn Base Attack Speed Gain 30% => **25%**.
-- Nerfed Kjaro's Band Base TOTAL Damage 200% => **170%**.
-- Nerfed Death Mark Base Damage Increase Per Debuff 7% => **5%**.
-- Nerfed Chronobauble Base Attack Speed Debuff 15% => **10%**.
-- Nerfed Berzerker's Paudron Base Buff Duration 6s => **4.5s**.
-- Reworked Razorwire into Barbed Wire.
+- Nerfed War Horn Base Regeneration Gain 3 => **2**.
+- Nerfed Will-o'-the-Wisp Base Damage 240% => **200%**.
+- Reworked Razorwire to **passively deal 180% (+180% per stack) damage to all enemies within 13m while out of danger**. (I don't have any rework ideas, this still sucks conceptually).
+- Reworked Defense Nucleus to **give 10 armor and fire a laser lasting 5s, dealing 70% (+70% per stack) damage per second for every second of your base equipment cooldown**.
 - Made all printers limited in use (4 for White, 2 for Green, 1 for Red, 2 for Yellow)
 - Fixed Glacial Elites.
 - - Small green and yellow stacking rebalance with printer changes. ~HIFU
@@ -53,11 +55,11 @@
 - Nerfed Topaz Brooch Base Percent Barrier Gain 3% => **2.5%**.
 - Nerfed Topaz Brooch Percent Barrier Gain Per Stack 3% => **2.5%**.
 - Nerfed Warbanner Base Attack Speed and Movement Speed 30% => **20%**.
-- Reworked Blazing Elite.
-- Reworked Glacial Elite.
-- Reworked Mending Elite.
-- Reworked Overloading Elite.
-- Reworked Voidtouched Elite.
+- Reworked Blazing Elites.
+- Reworked Glacial Elites.
+- Reworked Mending Elites.
+- Reworked Overloading Elites.
+- Reworked Voidtouched Elites.
 - Changed Combat Director Credit Multiplier 1.25x => **1.35x**.
 - Changed Tier 1 Elite Cost Multiplier 8x => **5.5x**.
 - Changed Tier 2 Elite Cost Multiplier 48x => **26x**.
@@ -497,7 +499,7 @@
 - Fixed Oddly-shaped Opal improperly showing VFX.
 - Fixed Planula not stacking.
 - Fixed Pluripotent Larva not shuffling your inventory.
-- Fixed Wake of Vultures giving curse upon killing a Voidtouched elite.
+- Fixed Wake of Vultures giving curse upon killing Voidtouched Elites.
 - Fixed in-game version number.
 - Fixed item descriptions being overwritten by other mods.
 - Fixed WolfoQoL incompat.

@@ -10,7 +10,7 @@
         [ConfigField("Common Printer Director Credit Cost", "", 6)]
         public static int commonPrinterDirectorCreditCost;
 
-        [ConfigField("Common Printer Max Uses", "", 4)]
+        [ConfigField("Common Printer Max Uses", "", 3)]
         public static int maxCommonUses;
 
         [ConfigField("Uncommon Printer Max Spawns Per Stage", "", 2)]
@@ -78,24 +78,19 @@
 
         private void PurchaseInteraction_OnInteractionBegin(On.RoR2.PurchaseInteraction.orig_OnInteractionBegin orig, PurchaseInteraction self, Interactor activator)
         {
-            if (self.CanBeAffordedByInteractor(activator) && self.name.Contains("Duplicator"))
-            {
-                uses[self.gameObject]--;
-            }
+            if (self.CanBeAffordedByInteractor(activator) && self.name.Contains("Duplicator")) uses[self.gameObject]--;
             orig(self, activator);
         }
 
         private void PurchaseInteraction_Awake(On.RoR2.PurchaseInteraction.orig_Awake orig, PurchaseInteraction self)
         {
             orig(self);
-            if (NetworkServer.active)
-            {
-                var name = self.name;
-                if (name.Contains("DuplicatorWild")) InitUses(self.gameObject, maxBossUses);
-                else if (name.Contains("DuplicatorMilitary")) InitUses(self.gameObject, maxLegendaryUses);
-                else if (name.Contains("DuplicatorLarge")) InitUses(self.gameObject, maxUncommonUses);
-                else if (name.Contains("Duplicator")) InitUses(self.gameObject, maxCommonUses);
-            }
+            // Debug.LogErrorFormat("max boss, legendary, uncommon, common uses: {0} {1} {2} {3}", maxBossUses, maxLegendaryUses, maxUncommonUses, maxCommonUses);
+            if (!NetworkServer.active) return;
+            if (self.name.Contains("DuplicatorWild")) InitUses(self.gameObject, maxBossUses);
+            else if (self.name.Contains("DuplicatorMilitary")) InitUses(self.gameObject, maxLegendaryUses);
+            else if (self.name.Contains("DuplicatorLarge")) InitUses(self.gameObject, maxUncommonUses);
+            else if (self.name.Contains("Duplicator")) InitUses(self.gameObject, maxCommonUses);
         }
 
         private void Changes()
@@ -114,14 +109,11 @@
             yellowPrinter.maxSpawnsPerStage = bossPrinterMaxSpawnsPerStage;
         }
 
-        private void InitUses(GameObject interactor, int maxUseCount)
+        private void InitUses(GameObject self, int use)
         {
-            if (!NetworkServer.active)
-            {
-                return;
-            }
-            if (!uses.ContainsKey(interactor)) uses.Add(interactor, maxUseCount);
-            else uses[interactor] = maxUseCount;
+            if (!NetworkServer.active) return;
+            if (!uses.ContainsKey(self)) uses.Add(self, use);
+            else uses[self] = use;
         }
     }
 }

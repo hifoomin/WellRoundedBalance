@@ -107,7 +107,7 @@ namespace WellRoundedBalance.Elites
         public float timer;
         public float initialDelay = 4f;
         public int passiveProjectileCount = 2;
-        public float passiveProjectileInterval = 12f;
+        public float passiveProjectileInterval = 11f;
         public float passiveProjectileAngle;
         public float passiveDelayBetweenProjectiles = 0.5f;
 

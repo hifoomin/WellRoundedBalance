@@ -45,6 +45,7 @@ namespace WellRoundedBalance.Elites
             regenBoost.isDebuff = false;
             regenBoost.iconSprite = Main.wellroundedbalance.LoadAsset<Sprite>("Assets/WellRoundedBalance/texMendingRegen.png");
             regenBoost.buffColor = new Color32(161, 231, 79, 255);
+            regenBoost.name = "Mending Elite Regeneration Boost";
 
             selfRegen = ScriptableObject.CreateInstance<BuffDef>();
             selfRegen.isHidden = false;
@@ -52,6 +53,7 @@ namespace WellRoundedBalance.Elites
             selfRegen.isDebuff = false;
             selfRegen.iconSprite = Main.wellroundedbalance.LoadAsset<Sprite>("Assets/WellRoundedBalance/texMendingRegen.png");
             selfRegen.buffColor = new Color32(109, 231, 97, 255);
+            selfRegen.name = "Mending Elite Self Regeneration Boost";
 
             ContentAddition.AddBuffDef(regenBoost);
             ContentAddition.AddBuffDef(selfRegen);
