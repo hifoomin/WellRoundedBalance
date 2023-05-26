@@ -63,17 +63,32 @@ namespace WellRoundedBalance.Elites
             var healthComponent = IcePillarPrefab.AddComponent<HealthComponent>();
             healthComponent.dontShowHealthbar = false;
 
-            var boxCollider = IcePillarPrefab.GetComponent<BoxCollider>();
-            boxCollider.size = new Vector3(1f, 1f, 10f);
+            // IcePillarPrefab.RemoveComponent<BoxCollider>();
 
             var hurtboxGroup = IcePillarPrefab.AddComponent<HurtBoxGroup>();
 
-            var hurtbox = IcePillarPrefab.AddComponent<HurtBox>();
+            var hopooGames = new GameObject("HOPOO GAMES ! !")
+            {
+                layer = LayerIndex.entityPrecise.intVal
+            };
+
+            var boxCollider = hopooGames.AddComponent<BoxCollider>();
+            boxCollider.size = new Vector3(1f, 1f, 10f);
+            boxCollider.isTrigger = false;
+            boxCollider.contactOffset = 0.01f;
+            boxCollider.center = new Vector3(0f, 2.84217114f, 1.54090f);
+
+            var hurtbox = hopooGames.AddComponent<HurtBox>();
+
             hurtbox.healthComponent = healthComponent;
             hurtbox.hurtBoxGroup = hurtboxGroup;
             hurtbox.isBullseye = true;
             hurtbox.isSniperTarget = true;
             hurtbox.damageModifier = HurtBox.DamageModifier.Normal;
+
+            hopooGames.transform.parent = IcePillarPrefab.transform;
+            hurtboxGroup.mainHurtBox = hurtbox;
+            hurtboxGroup.hurtBoxes = new HurtBox[] { hurtbox };
 
             var esm = IcePillarPrefab.AddComponent<EntityStateMachine>();
             esm.customName = "Body";
@@ -93,7 +108,7 @@ namespace WellRoundedBalance.Elites
 
             projectileImpactExplosion.impactEffect = newImpact;
             */
-            IcePillarPrefab.layer = LayerIndex.world.intVal;
+            IcePillarPrefab.layer = LayerIndex.projectile.intVal;
             IcePillarPrefab.transform.localScale = new Vector3(2f, 3f, 2f);
 
             var newGhost = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.MageIcePillarGhost.Load<GameObject>(), "Glacial Elite Pillar Ghost");
@@ -107,8 +122,21 @@ namespace WellRoundedBalance.Elites
             var projectileController = IcePillarPrefab.GetComponent<ProjectileController>();
             projectileController.ghostPrefab = newGhost;
 
+            var rigidBody = IcePillarPrefab.GetComponent<Rigidbody>();
+            rigidBody.collisionDetectionMode = CollisionDetectionMode.Continuous;
+            rigidBody.useGravity = true;
+            rigidBody.freezeRotation = true;
+
+            /*
             var constantForce = IcePillarPrefab.AddComponent<ConstantForce>();
-            constantForce.force = new Vector3(0f, -5f, 0f);
+            constantForce.force = new Vector3(0f, -2500f, 0f);
+            */
+
+            var projectileStickOnImpact = IcePillarPrefab.AddComponent<ProjectileStickOnImpact>();
+            projectileStickOnImpact.ignoreCharacters = true;
+            projectileStickOnImpact.ignoreWorld = false;
+            projectileStickOnImpact.alignNormals = false;
+            projectileStickOnImpact.stickSoundString = "Play_item_proc_iceRingSpear";
 
             IcePillarWalkerPrefab = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.MageIcewallWalkerProjectile.Load<GameObject>(), "Glacial Elite Pillar Walker");
             var projectileMageFirewallWalkerController = IcePillarWalkerPrefab.GetComponent<ProjectileMageFirewallWalkerController>();
@@ -316,7 +344,7 @@ namespace WellRoundedBalance.Elites
                         damage = 0,
                         force = 0,
                         owner = gameObject,
-                        position = point + new Vector3(i * 2f, 0, 0),
+                        position = point + new Vector3(i * 2f, 7f + i / 5f, 0),
                         rotation = Quaternion.Euler(270f, 0f, 0f),
                         projectilePrefab = IcePillarPrefab
                     };
