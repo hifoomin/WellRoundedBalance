@@ -14,6 +14,7 @@ namespace WellRoundedBalance.Elites
         public override string Name => ":: Elites : Glacial";
         public static GameObject IcePillarPrefab;
         public static GameObject IcePillarWalkerPrefab;
+        public static GameObject DeathVFX = Utils.Paths.GameObject.OmniImpactVFXFrozen.Load<GameObject>();
 
         public override void Init()
         {
@@ -49,8 +50,8 @@ namespace WellRoundedBalance.Elites
             projectileSimple.lifetime = 7f;
 
             var characterBody = IcePillarPrefab.AddComponent<CharacterBody>();
-            characterBody.baseMaxHealth = 90f;
-            characterBody.levelMaxHealth = 27f;
+            characterBody.baseMaxHealth = 80f;
+            characterBody.levelMaxHealth = 24f;
             characterBody.baseMoveSpeed = 0;
             characterBody.bodyFlags |= CharacterBody.BodyFlags.Masterless;
             characterBody.baseNameToken = "WRB_ICEPILLAR_NAME";
@@ -64,7 +65,6 @@ namespace WellRoundedBalance.Elites
 
             var boxCollider = IcePillarPrefab.GetComponent<BoxCollider>();
             boxCollider.size = new Vector3(1f, 1f, 10f);
-            boxCollider.center = new Vector3(0f, 5f, 0f);
 
             var hurtboxGroup = IcePillarPrefab.AddComponent<HurtBoxGroup>();
 
@@ -73,18 +73,18 @@ namespace WellRoundedBalance.Elites
             hurtbox.hurtBoxGroup = hurtboxGroup;
             hurtbox.isBullseye = true;
             hurtbox.isSniperTarget = true;
-            hurtbox.damageModifier = HurtBox.DamageModifier.SniperTarget;
+            hurtbox.damageModifier = HurtBox.DamageModifier.Normal;
 
             var esm = IcePillarPrefab.AddComponent<EntityStateMachine>();
             esm.customName = "Body";
             esm.initialStateType = new SerializableEntityStateType(typeof(Idle));
-            esm.mainStateType = new SerializableEntityStateType(typeof(GenericCharacterDeath));
+            esm.mainStateType = new SerializableEntityStateType(typeof(PillarDeathState));
 
             var nsm = IcePillarPrefab.AddComponent<NetworkStateMachine>();
             nsm.stateMachines = new EntityStateMachine[] { esm };
 
             var characterDeathBehavior = IcePillarPrefab.AddComponent<CharacterDeathBehavior>();
-            characterDeathBehavior.deathState = new SerializableEntityStateType(typeof(GenericCharacterDeath));
+            characterDeathBehavior.deathState = new SerializableEntityStateType(typeof(PillarDeathState));
             characterDeathBehavior.deathStateMachine = esm;
 
             /*
@@ -107,6 +107,9 @@ namespace WellRoundedBalance.Elites
             var projectileController = IcePillarPrefab.GetComponent<ProjectileController>();
             projectileController.ghostPrefab = newGhost;
 
+            var constantForce = IcePillarPrefab.AddComponent<ConstantForce>();
+            constantForce.force = new Vector3(0f, -5f, 0f);
+
             IcePillarWalkerPrefab = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.MageIcewallWalkerProjectile.Load<GameObject>(), "Glacial Elite Pillar Walker");
             var projectileMageFirewallWalkerController = IcePillarWalkerPrefab.GetComponent<ProjectileMageFirewallWalkerController>();
             projectileMageFirewallWalkerController.firePillarPrefab = IcePillarPrefab;
@@ -125,6 +128,7 @@ namespace WellRoundedBalance.Elites
 
         public override void Hooks()
         {
+            ContentAddition.AddEntityState(typeof(PillarDeathState), out _);
             IL.RoR2.GlobalEventManager.OnHitEnemy += GlobalEventManager_OnHitEnemy;
             On.RoR2.GlobalEventManager.OnHitAll += GlobalEventManager_OnHitAll;
             RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
@@ -360,6 +364,26 @@ namespace WellRoundedBalance.Elites
                 validPositions = PickValidPositions(5, 15, nodes);
                 return validPositions.GetRandom();
             }
+        }
+    }
+
+    public class PillarDeathState : GenericCharacterDeath
+    {
+        public override void OnEnter()
+        {
+            base.OnEnter();
+            bodyPreservationDuration = 0f;
+        }
+
+        public override void FixedUpdate()
+        {
+            base.FixedUpdate();
+        }
+
+        public override void OnExit()
+        {
+            base.OnExit();
+            EffectManager.SpawnEffect(Glacial.DeathVFX, new EffectData { origin = transform.position, scale = 2f }, true);
         }
     }
 }
