@@ -1,8 +1,21 @@
+# 1.3.6 Patch Notes
+- Added pre-made config for more HIFUTweaks.
+- Buffed Wandering Vagrant.
+- Buffed Bison Steak to increase base health by 1 (+1 per stack).
+- Nerfed Bison Steak Base Max Health Gain 45 => **40**.
+- Nerfed Bison Steak Max Health Gain Per Stack 45 => **40**.
+- Nerfed Eclipse 6.
+- Nerfed Wandering Vagrant.
+- Nerfed Beetle Queen.
+- Nerfed Blazing Elites.
+- Nerfed Grovetender
+
 # 1.3.5 Patch Notes
 - Buffed Shrine of The Woods Base Radius 13m => **20m**.
 - Buffed Shrine of The Woods Radius Per Purchase 13m => **20m**.
 - Buffed Void Potential Void Red and Void Yellow chance.
 - Made Sawmerang increase bleed cap by **10**.
+- Fixed Bleed Cap not working properly.
 - Fixed Delicate Watch.
 - Fixed the readme.
 
@@ -24,7 +37,6 @@
 - Changed Defense Chest texture.
 - Changed Void Seed weights to spawn more Void Cradles and Void Potentials.
 - Fixed Artifact of Command locking Artifact Key pickup.
-- Fixed Bleed Cap not working properly.
 - Fixed Commando: Incorruptible being way too tedious.
 - Fixed Delicate Watch buff icon persisting.
 - Fixed The Long Road being way too tedious.

@@ -12,7 +12,7 @@
             var e3 = Eclipse3.instance.isEnabled ? "\n<mspace=0.5em>(3)</mspace> Elite Enemies are <style=cIsHealth>stronger in unique ways</style></style>" : "\n<mspace=0.5em>(3)</mspace> Ally Fall Damage: <style=cIsHealth>+100% and lethal</style></style>";
             var e4 = "\n<mspace=0.5em>(4)</mspace> Enemies: <style=cIsHealth>+40% Faster</style></style>";
             var e5 = Eclipse5.instance.isEnabled ? "\n<mspace=0.5em>(5)</mspace> Enemies have <style=cIsHealth>better aim</style></style>" : "\n<mspace=0.5em>(5)</mspace> Ally Healing: <style=cIsHealth>-50%</style></style>";
-            var e6 = Eclipse6.instance.isEnabled ? "\n<mspace=0.5em>(6)</mspace> Bosses: <style=cIsHealth>+75% More Aggressive</style></style>" : "\n<mspace=0.5em>(6)</mspace> Enemy Gold Drops: <style=cIsHealth>-20%</style></style>";
+            var e6 = Eclipse6.instance.isEnabled ? "\n<mspace=0.5em>(6)</mspace> Bosses: <style=cIsHealth>+33% More Aggressive</style></style>" : "\n<mspace=0.5em>(6)</mspace> Enemy Gold Drops: <style=cIsHealth>-20%</style></style>";
             var e7 = "\n<mspace=0.5em>(7)</mspace> Enemy Cooldowns: <style=cIsHealth>-50%</style></style>";
             var e8 = "\n<mspace=0.5em>(8)</mspace> Allies recieve <style=cIsHealth>permanent damage</style></style>";
             var e8prefix = "\"You only celebrate in the light... because I allow it.\" \n\n";

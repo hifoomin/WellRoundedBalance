@@ -63,9 +63,9 @@ namespace WellRoundedBalance.Items.Yellows
         private void DotController_InflictDot_GameObject_GameObject_DotIndex_float_float_Nullable1(On.RoR2.DotController.orig_InflictDot_GameObject_GameObject_DotIndex_float_float_Nullable1 orig, GameObject victimObject, GameObject attackerObject, DotController.DotIndex dotIndex, float duration, float damageMultiplier, uint? maxStacksFromAttacker)
         {
             var attackerBody = attackerObject.GetComponent<CharacterBody>();
-            if (attackerBody && attackerBody.master)
+            if (attackerBody)
             {
-                var bleedCap = attackerBody.master.GetComponent<BleedCap>();
+                var bleedCap = attackerBody.GetComponent<BleedCap>();
                 var inventory = attackerBody.inventory;
                 if (bleedCap && inventory)
                 {

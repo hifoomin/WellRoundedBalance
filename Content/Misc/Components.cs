@@ -78,11 +78,11 @@ namespace WellRoundedBalance.Misc
 
         private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
-            if (sender && sender.GetComponent<BleedCap>())
+            if (sender && sender == body && sender.GetComponent<BleedCap>())
             {
                 bleedCapAdd = 0;
 
-                RecalculateEvent.RecalculateBleedCap?.Invoke(this, new(sender.masterObject.GetComponent<BleedCap>()));
+                RecalculateEvent.RecalculateBleedCap?.Invoke(this, new(sender.GetComponent<BleedCap>()));
 
                 bleedCap = bleedCapAdd;
             }

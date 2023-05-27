@@ -14,6 +14,9 @@ namespace WellRoundedBalance.Gamemodes.Eclipse
 
         public override void Hooks()
         {
+            if (Mechanics.Bosses.Enrage.instance == null) {
+                return;
+            }
             IL.RoR2.DeathRewards.OnKilledServer += DeathRewards_OnKilledServer;
         }
 

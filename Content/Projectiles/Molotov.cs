@@ -57,7 +57,7 @@
             var projectileControllerPool = firePool.GetComponent<ProjectileController>();
             projectileControllerPool.startSound = "Play_fireballsOnHit_impact";
 
-            firePool.transform.localScale = new Vector3(2f, 2f, 2f);
+            firePool.transform.localScale = new Vector3(1.75f, 1.75f, 1.75f);
 
             projectileDotZonePool.damageCoefficient = 1f;
             projectileDotZonePool.overlapProcCoefficient = 0f;
@@ -72,7 +72,7 @@
             var hitboxGroup = firePool.GetComponent<HitBoxGroup>();
 
             var hitbox = firePool.transform.GetChild(0).GetChild(2);
-            hitbox.localScale = new Vector3(1.41f, 0.55f, 1.41f);
+            hitbox.localScale = new Vector3(1.23375f, 0.48125f, 1.23375f);
 
             var hitbox2 = Object.Instantiate(hitbox, firePool.transform.GetChild(0));
             hitbox2.localEulerAngles = new Vector3(0f, 45f, 0f);
