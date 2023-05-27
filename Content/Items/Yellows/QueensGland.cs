@@ -17,10 +17,10 @@ namespace WellRoundedBalance.Items.Yellows
         [ConfigField("Beetle Guard Count", 3)]
         public static int beetleGuardCount;
 
-        [ConfigField("Beetle Guard Base Damage", "Formula for final damage: (Beetle Guard Base Damage + Beetle Guard Damage Per Stack * (Queen's Gland - 1)) * 10", 22)]
+        [ConfigField("Base Damage", "Formula for final damage: (Beetle Guard Base Damage + Beetle Guard Damage Per Stack * (Queen's Gland - 1)) * 10", 16)]
         public static int beetleGuardBaseDamage;
 
-        [ConfigField("Beetle Guard Damage Per Stack", "Formula for final damage: (Beetle Guard Base Damage + Beetle Guard Damage Per Stack * (Queen's Gland - 1)) * 10", 11)]
+        [ConfigField("Damage Per Stack", "Formula for final damage: (Beetle Guard Base Damage + Beetle Guard Damage Per Stack * (Queen's Gland - 1)) * 10", 16)]
         public static int beetleGuardDamagePerStack;
 
         public override void Init()

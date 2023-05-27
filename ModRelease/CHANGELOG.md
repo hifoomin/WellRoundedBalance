@@ -1,23 +1,107 @@
+# 1.3.8 Patch Notes
+- Added Hyperbolic Speed Scaling.
+- Buffed AtG Missile Mk.1 TOTAL Damage Per Stack 200% => **300%**.
+- Buffed Berzerker's Pauldron Buff Duration Per Stack 4s => **4.5s**.
+- Buffed Blazing Elites.
+- Buffed Charged Peripherator TOTAL Damage Per Stack 200% => **350%**.
+- Buffed Chronobauble Attack Speed Debuff Per Stack 5% => **10%**.
+- Buffed Death Mark Damage Increase Per Debuff Per Stack 3% => **5%**.
+- Buffed Hunter's Harpoon Max Count Per Stack 2 = > **3**.
+- Buffed Kjaro's Band TOTAL Damage Per Stack 100% => **170%**.
+- Buffed Leeching Seed Healing Regardless of Source Per Stack 0.3 => **0.4**.
+- Buffed Molten Peripherator TOTAL Damage Per Stack 110% => **180%**.
+- Buffed Newly Hatched Zoea to give its summons a **30%** damage bonus.
+- Buffed Planula Burn Duration Per Stack 3s => **5s**.
+- Buffed Predatory Instincts Buff Cap Per Stack 2 => **3**.
+- Buffed Queen's Gland Damage Per Stack 110% => **160%**.
+- Buffed Rose Buckler Armor Increase Per Stack 15 => **20**.
+- Buffed Runald's Band Damage Per Stack 700% => **1000%**.
+- Buffed Shuriken Damage Per Stack 200% => **300%**.
+- Buffed Singularity Band Radius Per Stack 7.5m => **10m**.
+- Buffed Voidsent Flame Damage Per Stack 70% => **110%**.
+- Buffed Voidsent Flame Proc Coefficient 0 => **0.25**.
+- Buffed War Horn Attack Speed Gain Per Stacek 15% => **25%**.
+- Buffed War Horn Regeneration Gain Per Stack 1.5 => **2**.
+- Buffed Will-o'-the-Wisp Damage Per Stack 120% => **200%**.
+- Nerfed Berzerker's Paudron Base Buff Duration 6s => **4.5s**.
+- Nerfed Charged Peripherator Base TOTAL Damage 400% => **350%**.
+- Nerfed Chronobauble Base Attack Speed Debuff 15% => **10%**.
+- Nerfed Death Mark Base Damage Increase Per Debuff 7% => **5%**.
+- Nerfed Kjaro's Band Base TOTAL Damage 200% => **170%**.
+- Nerfed Leeching Seed Base Healing Regardless of Source 0.6 => **0.4**.
+- Nerfed Molten Peripherator Base TOTAL Damage 220% => **180%**.
+- Nerfed Predatory Instincts Attack Speed Gain Per Buff 16% => **12%**.
+- Nerfed Queen's Gland Base Damage 220% => **160%**.
+- Nerfed Rose Buckler Base Armor Increase 25 => **20**.
+- Nerfed Runald's Band Base Damage 1300% => **1000%**.
+- Nerfed Shuriken Base Damage 400% => **300%**.
+- Nerfed Singularity Band Base Radius 15m => **10m**.
+- Nerfed Voidsent Flame Base Damage 140% => **110%**.
+- Nerfed War Horn Base Attack Speed Gain 30% => **25%**.
+- Nerfed War Horn Base Regeneration Gain 3 => **2**.
+- Nerfed Will-o'-the-Wisp Base Damage 240% => **200%**.
+- Reworked Razorwire to **passively deal 180% (+180% per stack) damage to all enemies within 13m while out of danger**. (I don't have any rework ideas, this still sucks conceptually).
+- Reworked Defense Nucleus to **give 10 armor and fire a laser lasting 5s, dealing 70% (+70% per stack) damage per second for every second of your base equipment cooldown**.
+- Made all printers limited in use (3 for White, 2 for Green, 1 for Red, 2 for Yellow)
+- Fixed Glacial Elites.
+- - Small green and yellow stacking rebalance with printer and movement changes. ~HIFU
+
+# 1.3.7 Patch Notes
+- Added module toggle config.
+- Buffed Extraterrestrial Exhaust Rocket Damage Percent Stacking 45% => **70%**.
+- Buffed Topaz Brooch Flat Barrier Gain 3 => **6**.
+- Buffed Warbanner Attack Speed and Movement Speed Per Stack 15% => **20%**.
+- Nerfed Extraterrestrial Exhaust Rocket Damage Percent 90% => **70%**.
+- Nerfed Interstellar Desk Plant Lifetime 10s => **5s**.
+- Nerfed Topaz Brooch Base Percent Barrier Gain 3% => **2.5%**.
+- Nerfed Topaz Brooch Percent Barrier Gain Per Stack 3% => **2.5%**.
+- Nerfed Warbanner Base Attack Speed and Movement Speed 30% => **20%**.
+- Reworked Blazing Elites.
+- Reworked Glacial Elites.
+- Reworked Mending Elites.
+- Reworked Overloading Elites.
+- Reworked Voidtouched Elites.
+- Changed Combat Director Credit Multiplier 1.25x => **1.35x**.
+- Changed Tier 1 Elite Cost Multiplier 8x => **5.5x**.
+- Changed Tier 2 Elite Cost Multiplier 48x => **26x**.
+- Changed Tier 2 Honor Elite Cost Multiplier 4.66x => **3.5x**.
+- Fixed Beetles standing still somewhat.
+- Fixed Primordial Teleporter spawning on Commencement and in Hidden Realms lmao.
+- Fixed monsters attacking Clay Dunestrider and Grandparent when damaged by their skills.
+- Fixed minor item descriptions.
+- Small optimizations.
+- - Just another small update. ~HIFU
+
 # 1.3.6 Patch Notes
 - Added pre-made config for more HIFUTweaks.
-- Buffed Wandering Vagrant.
-- Buffed Bison Steak to increase base health by 1 (+1 per stack).
+- Buffed Bison Steak to increase **base health** by **1 (+1 per stack)**.
+- Buffed Topaz Brooch Base Percent Barrier Gain 2% => **3%**.
+- Buffed Topaz Brooch Percent Barrier Gain Per Stack 2% => **3%**.
+- Nerfed Beetle Queen.
 - Nerfed Bison Steak Base Max Health Gain 45 => **40**.
 - Nerfed Bison Steak Max Health Gain Per Stack 45 => **40**.
-- Nerfed Eclipse 6.
-- Nerfed Wandering Vagrant.
-- Nerfed Beetle Queen.
 - Nerfed Blazing Elites.
-- Nerfed Grovetender
+- Nerfed Eclipse 6.
+- Nerfed Grovetender.
+- Nerfed Topaz Brooch Flat Barrier Gain 10 => **3**.
+- Nerfed Wandering Vagrant.
+- Made Artifact of Chaos enable all monsters to infight.
+- Made the Primordial Teleporter interactable at all times.
+- Made the Primordial Teleporter spawn every stage when looping.
+- Changed Defense Chest texture.
+- Fixed Bleed Cap not working properly.
+- Fixed Distant Roost still spawning Shrine of The Woods. (I hate ref I hate ref I hate ref)
+- Fixed Topaz Brooch giving differing barrier amounts.
+- - <img src="https://cdn.discordapp.com/emojis/1066512153760252025.webp?size=24&quality=lossless" width="24"/> ~HIFU
 
 # 1.3.5 Patch Notes
 - Buffed Shrine of The Woods Base Radius 13m => **20m**.
 - Buffed Shrine of The Woods Radius Per Purchase 13m => **20m**.
 - Buffed Void Potential Void Red and Void Yellow chance.
 - Made Sawmerang increase bleed cap by **10**.
-- Fixed Bleed Cap not working properly.
 - Fixed Delicate Watch.
 - Fixed the readme.
+- - rtkdtrihagtfe. ~HIFU
 
 # 1.3.4 Patch Notes
 - Buffed Artifact Reliquary.
@@ -41,6 +125,7 @@
 - Fixed Delicate Watch buff icon persisting.
 - Fixed The Long Road being way too tedious.
 - Fixed minor item descriptions.
+- - Does every update need a caption? ~HIFU
 
 # 1.3.3 Patch Notes
 - Added VanillaVoid.
@@ -60,15 +145,21 @@
 - Swapped Eclipse 1 and Eclipse 5.
 - Fixed Beetle Queen not applying multiple buff stacks.
 - Fixed Geep being too tanky.
+- - More enemy tweaks and adjustments. ~HIFU
 
 # 1.3.2 Patch Notes
 - Buffed Oddly-shaped Opal Base Armor Gain 2 => **2.5**.
 - Buffed Oddly-shaped Opal Armor Gain Per Stack 2 => **2.5**.
 - Fixed Multiplayer networking bug spam.
+- - psuedopulse ! ! <img src="https://cdn.discordapp.com/emojis/1101199692974538753.webp?size=24&quality=lossless" width="24"/>
 
 # 1.3.1 Patch Notes
 - Fixed VanillaVoid pre-made config.
+<<<<<<< HEAD
 >>>>>>> a8ef2a488cdd95c5f81009a9c1c0db6b66b61a42:ModRelease/CHANGELOG.md
+=======
+- - psuedopulse ! ! <img src="https://cdn.discordapp.com/emojis/1101199692974538753.webp?size=24&quality=lossless" width="24"/>
+>>>>>>> 949dd6deff98cc028651ab54e393a01342248c09
 
 # 1.3.0 Patch Notes - The *Compatibility Update May* Update
 - Added AugmentedVoidReaver.
@@ -413,7 +504,7 @@
 - Fixed Oddly-shaped Opal improperly showing VFX.
 - Fixed Planula not stacking.
 - Fixed Pluripotent Larva not shuffling your inventory.
-- Fixed Wake of Vultures giving curse upon killing a Voidtouched elite.
+- Fixed Wake of Vultures giving curse upon killing Voidtouched Elites.
 - Fixed in-game version number.
 - Fixed item descriptions being overwritten by other mods.
 - Fixed WolfoQoL incompat.

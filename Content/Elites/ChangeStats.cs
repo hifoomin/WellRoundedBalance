@@ -10,13 +10,13 @@ namespace WellRoundedBalance.Elites
 
         public override string Name => ":: Elites : Stat & Drop Rate Changes";
 
-        [ConfigField("Tier 1 Cost Multiplier", "", 8f)]
+        [ConfigField("Tier 1 Cost Multiplier", "", 5.5f)]
         public static float tier1CostMultiplier;
 
-        [ConfigField("Tier 1 Honor Cost Multiplier", "", 4.66666f)]
+        [ConfigField("Tier 1 Honor Cost Multiplier", "", 3.5f)]
         public static float tier1HonorCostMultiplier;
 
-        [ConfigField("Tier 2 Cost Multiplier", "", 48f)]
+        [ConfigField("Tier 2 Cost Multiplier", "", 26f)]
         public static float tier2CostMultiplier;
 
         [ConfigField("Tier 2 Health Multiplier", "", 6f)]

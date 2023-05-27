@@ -1,9 +1,6 @@
-﻿using Inferno.Stat_AI;
-using Mono.Cecil.Cil;
-using MonoMod.Cil;
-using System.Reflection;
-using WellRoundedBalance.Buffs;
+﻿using WellRoundedBalance.Buffs;
 using WellRoundedBalance.Gamemodes.Eclipse;
+using System.Collections;
 
 namespace WellRoundedBalance.Elites
 {
@@ -11,21 +8,21 @@ namespace WellRoundedBalance.Elites
     {
         public static BuffDef useless;
         public static BuffDef hiddenCooldown;
-        public static GameObject spike; // cache this once so dont have to reload each time (i forgor if addressables already does this but just in case)
+        public static GameObject missile;
 
-        public override string Name => ":: Elites :::::: Voidtouched";
+        public override string Name => ":: Elites :: Voidtouched";
 
-        [ConfigField("Spike Count", "", 5)]
-        public static int spikeCount;
+        [ConfigField("Missile Count", "", 5)]
+        public static int missileCount;
 
-        [ConfigField("Spike Count Eclipse 3+", "Only applies if you have Eclipse Changes enabled.", 8)]
-        public static int spikeCountE3;
+        [ConfigField("Missile Count Eclipse 3+", "Only applies if you have Eclipse Changes enabled.", 7)]
+        public static int missileCountE3;
 
-        [ConfigField("Spike Cooldown", "", 2f)]
-        public static float spikeCooldown;
+        [ConfigField("Missile Cooldown", "", 5f)]
+        public static float missileCooldown;
 
-        [ConfigField("Spike Damage", "Decimal.", 2f)]
-        public static float spikeDamage;
+        [ConfigField("Missile Damage", "Decimal.", 0.75f)]
+        public static float missileDamage;
 
         [ConfigField("Permanent Damage Percent", "Eclipse 8 is 40", 40f)]
         public static float permanentDamagePercent;
@@ -37,45 +34,39 @@ namespace WellRoundedBalance.Elites
             useless.isHidden = true;
 
             hiddenCooldown = ScriptableObject.CreateInstance<BuffDef>();
-            hiddenCooldown.name = "Voidtouched Spike Cooldown";
+            hiddenCooldown.name = "Voidtouched Missile Cooldown";
             hiddenCooldown.isHidden = true;
 
             ContentAddition.AddBuffDef(useless);
             ContentAddition.AddBuffDef(hiddenCooldown);
 
-            spike = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.ImpVoidspikeProjectile.Load<GameObject>(), "Voidtouched Spike");
+            missile = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.MissileProjectile.Load<GameObject>(), "Voidtouched Missile");
 
-            var projectileController = spike.GetComponent<ProjectileController>();
+            var projectileController = missile.GetComponent<ProjectileController>();
 
-            var spikeGhost = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.ImpVoidspikeProjectileGhost.Load<GameObject>(), "Voidtouched Spike Ghost", false);
-            spikeGhost.transform.localScale = new Vector3(3f, 3f, 3f);
+            var newGhost = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.MissileVoidBigGhost.Load<GameObject>(), "Voidtouched Missile Ghost", false);
+            newGhost.transform.localScale = new Vector3(2.5f, 2.5f, 2.5f);
 
-            projectileController.ghostPrefab = spikeGhost;
+            projectileController.ghostPrefab = newGhost;
 
-            var projectileImpactExplosion = spike.GetComponent<ProjectileImpactExplosion>();
-            projectileImpactExplosion.blastRadius = 7.5f;
+            var missileController = missile.GetComponent<MissileController>();
+            missileController.maxVelocity = 30;
+            missileController.acceleration = 3f;
+            missileController.delayTimer = 0.5f;
+            missileController.giveupTimer = 10f;
+            missileController.deathTimer = 11f;
+            missileController.turbulence = 5.5f;
+            missileController.maxSeekDistance = 75f;
 
-            spike.transform.localScale = new Vector3(3f, 3f, 3f);
-
-            var proximityTrigger = spike.transform.GetChild(0).GetChild(5);
-            var sphereCollider = proximityTrigger.GetComponent<SphereCollider>();
-            sphereCollider.radius = 6f;
-
-            GameObject impactEffect = spike.transform.GetChild(0).gameObject;
-
-            var projectileStickOnImpact = spike.GetComponent<ProjectileStickOnImpact>();
-            // remove projectileimpactexplosion setexplosionradius event
-            // add projectileimpactexplosion setexplosionradius event to make spike have a 7.5m explosion radius
-
-            On.RoR2.Projectile.ProjectileExplosion.SetExplosionRadius += (orig, self, radius) =>
+            foreach (Component component in missile.GetComponents<Component>())
             {
-                if (self.gameObject.name.Contains("Voidtouched Spike"))
+                if (component.name == "AkEvent")
                 {
-                    return;
+                    Object.Destroy(component);
                 }
+            }
 
-                orig(self, radius);
-            };
+            PrefabAPI.RegisterNetworkPrefab(missile);
 
             base.Init();
         }
@@ -84,8 +75,24 @@ namespace WellRoundedBalance.Elites
         {
             IL.RoR2.GlobalEventManager.OnHitEnemy += GlobalEventManager_OnHitEnemy;
             IL.RoR2.AffixVoidBehavior.FixedUpdate += AffixVoidBehavior_FixedUpdate;
-            On.RoR2.CharacterBody.OnSkillActivated += OnSkillActivated;
             On.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
+            CharacterBody.onBodyInventoryChangedGlobal += CharacterBody_onBodyInventoryChangedGlobal;
+        }
+
+        private void CharacterBody_onBodyInventoryChangedGlobal(CharacterBody characterBody)
+        {
+            var sfp = characterBody.GetComponent<VoidtouchedController>();
+            if (characterBody.HasBuff(DLC1Content.Buffs.EliteVoid))
+            {
+                if (sfp == null)
+                {
+                    characterBody.gameObject.AddComponent<VoidtouchedController>();
+                }
+            }
+            else if (sfp != null)
+            {
+                characterBody.gameObject.RemoveComponent<VoidtouchedController>();
+            }
         }
 
         private void HealthComponent_TakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo)
@@ -106,40 +113,6 @@ namespace WellRoundedBalance.Elites
                     }
                 }
             }
-        }
-
-        private void OnSkillActivated(On.RoR2.CharacterBody.orig_OnSkillActivated orig, CharacterBody body, GenericSkill slot)
-        {
-            orig(body, slot);
-            if (!NetworkServer.active || body.HasBuff(hiddenCooldown) || !body.HasBuff(DLC1Content.Buffs.EliteVoid))
-            {
-                return;
-            }
-
-            Vector3 originalPosition = body.corePosition;
-            Vector3 aimDirection = body.inputBank.aimDirection;
-
-            for (int i = 0; i < (Eclipse3.CheckEclipse() ? spikeCountE3 : spikeCount); i++)
-            {
-                Vector3 position = originalPosition + (aimDirection * (i * 15));
-                position.y = 30;
-                if (Util.HasEffectiveAuthority(body.gameObject))
-                {
-                    FireProjectileInfo info = new()
-                    {
-                        damage = body.damage * spikeDamage,
-                        damageTypeOverride = DamageType.Nullify,
-                        crit = false,
-                        position = position,
-                        rotation = Quaternion.LookRotation(Vector3.down),
-                        projectilePrefab = spike,
-                        owner = body.gameObject,
-                        speedOverride = 40
-                    };
-                    ProjectileManager.instance.FireProjectile(info);
-                }
-            }
-            body.AddTimedBuff(hiddenCooldown, spikeCooldown);
         }
 
         private void AffixVoidBehavior_FixedUpdate(ILContext il)
@@ -173,6 +146,55 @@ namespace WellRoundedBalance.Elites
             {
                 Logger.LogError("Failed to apply Voidtouched Elite Needletick hook");
             }
+        }
+    }
+
+    public class VoidtouchedController : MonoBehaviour
+    {
+        public CharacterBody body;
+        public GameObject prefab;
+
+        public void Start()
+        {
+            body = GetComponent<CharacterBody>();
+            body.onSkillActivatedAuthority += Body_onSkillActivatedAuthority;
+        }
+
+        public void Body_onSkillActivatedAuthority(GenericSkill skill)
+        {
+            if (!NetworkServer.active || body.HasBuff(Voidtouched.hiddenCooldown) || !body.HasBuff(DLC1Content.Buffs.EliteVoid))
+            {
+                return;
+            }
+            StartCoroutine(FireMissiles());
+        }
+
+        public IEnumerator FireMissiles()
+        {
+            body.AddTimedBuff(Voidtouched.hiddenCooldown, Voidtouched.missileCooldown);
+
+            var startPos = body.corePosition + Vector3.up * 5f;
+
+            for (int i = 0; i < (Eclipse3.CheckEclipse() ? Voidtouched.missileCount : Voidtouched.missileCountE3); i++)
+            {
+                var j = i % 2 == 0 ? i : -i;
+                var randomPos = new Vector3(j, j, j);
+                if (Util.HasEffectiveAuthority(body.gameObject))
+                {
+                    FireProjectileInfo info = new()
+                    {
+                        damage = body.damage * Voidtouched.missileDamage,
+                        crit = false,
+                        position = startPos + randomPos,
+                        projectilePrefab = Voidtouched.missile,
+                        owner = body.gameObject,
+                    };
+                    ProjectileManager.instance.FireProjectile(info);
+                    yield return new WaitForSeconds(0.2f);
+                }
+            }
+
+            yield return null;
         }
     }
 }

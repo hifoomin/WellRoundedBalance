@@ -27,6 +27,9 @@ namespace WellRoundedBalance.Items.Reds
         [ConfigField("Proc Coefficient", 0.33f)]
         public static float procCoefficient;
 
+        [ConfigField("Enable Doubled Scrap Launcher?", true)]
+        public static bool scrapLauncher;
+
         public override void Init()
         {
             bigFuckingMissile = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.MissileProjectile.Load<GameObject>(), "Pocket ICBM Missile");
@@ -87,6 +90,33 @@ namespace WellRoundedBalance.Items.Reds
             IL.RoR2.MissileUtils.FireMissile_Vector3_CharacterBody_ProcChainMask_GameObject_float_bool_GameObject_DamageColorIndex_Vector3_float_bool += Changes;
             IL.RoR2.GlobalEventManager.OnHitEnemy += ChangeMissileCount;
             GlobalEventManager.onServerDamageDealt += GlobalEventManager_onServerDamageDealt;
+            if (scrapLauncher)
+            {
+                On.EntityStates.Toolbot.FireGrenadeLauncher.OnEnter += FireGrenadeLauncher_OnEnter;
+            }
+        }
+
+        private void FireGrenadeLauncher_OnEnter(On.EntityStates.Toolbot.FireGrenadeLauncher.orig_OnEnter orig, EntityStates.Toolbot.FireGrenadeLauncher self)
+        {
+            orig(self);
+            var body = self.characterBody;
+            if (body)
+            {
+                var inventory = body.inventory;
+                if (inventory)
+                {
+                    var stack = inventory.GetItemCount(DLC1Content.Items.MoreMissile);
+                    if (stack > 0)
+                    {
+                        var direction = Util.QuaternionSafeLookRotation(self.GetAimRay().direction);
+                        var muzzleNailgunPos = self.gameObject.transform.position - new Vector3(-2.78f, 0f, 1f);
+                        if (self.isAuthority)
+                        {
+                            ProjectileManager.instance.FireProjectile(self.projectilePrefab, muzzleNailgunPos, direction, self.gameObject, self.damageStat * self.damageCoefficient, self.force, self.RollCrit());
+                        }
+                    }
+                }
+            }
         }
 
         private void GlobalEventManager_onServerDamageDealt(DamageReport report)

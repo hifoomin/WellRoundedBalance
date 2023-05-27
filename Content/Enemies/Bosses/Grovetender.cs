@@ -25,6 +25,7 @@
         {
             EntityStates.GravekeeperBoss.FireHook.projectilePrefab = hookPrefab;
             EntityStates.GravekeeperBoss.FireHook.projectileForce = -800f;
+            EntityStates.GravekeeperBoss.FireHook.projectileDamageCoefficient = 0.66f;
             orig(self);
         }
 

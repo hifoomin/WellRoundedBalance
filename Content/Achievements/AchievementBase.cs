@@ -11,10 +11,13 @@ namespace WellRoundedBalance.Achievements
 
         public static event Action onTokenRegister;
 
+        public static List<string> achievementList = new();
+
         public override void Init()
         {
             base.Init();
             onTokenRegister += SetToken;
+            achievementList.Add(Name);
         }
 
         [SystemInitializer(typeof(UnlockableCatalog))]

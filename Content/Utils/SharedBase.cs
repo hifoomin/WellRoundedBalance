@@ -10,6 +10,7 @@ namespace WellRoundedBalance.Utils
         public virtual bool isEnabled { get; } = true;
         public static ManualLogSource Logger => Main.WRBLogger;
         public abstract ConfigFile Config { get; }
+
         public static List<string> initList = new();
 
         public abstract void Hooks();

@@ -36,10 +36,10 @@ namespace WellRoundedBalance.Items.Greens
         [ConfigField("Movement Debuff is Hyperbolic", "Decimal, Max value. Set to 0 to make it linear.", 0f)]
         public static float movementDebuffIsHyperbolic;
 
-        [ConfigField("Attack Speed Debuff", "Decimal.", 0.15f)]
+        [ConfigField("Base Attack Speed Debuff", "Decimal.", 0.1f)]
         public static float attackSpeedDebuff;
 
-        [ConfigField("Attack Speed Debuff per Stack", "Decimal.", 0.05f)]
+        [ConfigField("Attack Speed Debuff per Stack", "Decimal.", 0.1f)]
         public static float attackSpeedDebuffStack;
 
         [ConfigField("Attack Speed Debuff is Hyperbolic", "Decimal, Max value. Set to 0 to make it linear.", 1f)]

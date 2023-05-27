@@ -1,6 +1,4 @@
-﻿using Mono.Cecil.Cil;
-using MonoMod.Cil;
-using System;
+﻿using System;
 
 namespace WellRoundedBalance.Items.Whites
 {
@@ -67,13 +65,14 @@ namespace WellRoundedBalance.Items.Whites
             c.TryGotoNext(x => x.MatchLdarg(out body), x => x.MatchCallOrCallvirt<CharacterBody>("get_" + nameof(CharacterBody.radius)));
             c.TryGotoNext(x => x.MatchLdarg(out report), x => x.MatchLdfld<DamageReport>(nameof(DamageReport.attackerBody)));
             if (stack == -1 || body == -1 || report == -1) return;
+            int radius = -1;
             c.Index = 0;
-            if (c.TryGotoNext(x => x.MatchLdarg(stack)) && c.TryGotoNext(x => x.MatchStloc(out _)))
+            if (c.TryGotoNext(x => x.MatchCallOrCallvirt<CharacterBody>("get_" + nameof(CharacterBody.radius))) && c.TryGotoNext(x => x.MatchStloc(out radius)) && c.TryGotoNext(x => x.MatchLdloc(radius)) && c.TryGotoNext(x => x.MatchStloc(out _)))
             {
                 c.Emit(OpCodes.Pop);
-                c.Emit(OpCodes.Ldarg, body);
                 c.Emit(OpCodes.Ldarg, stack);
-                c.EmitDelegate<Func<CharacterBody, int, float>>((self, stack) => self.radius + StackAmount(baseRange, rangePerStack, stack, rangeIsHyperbolic));
+                c.Emit(OpCodes.Ldarg, body);
+                c.EmitDelegate<Func<int, CharacterBody, float>>((stack, body) => body.radius + StackAmount(baseRange, rangePerStack, stack, rangeIsHyperbolic));
             }
             else Logger.LogError("Failed to apply Gasoline Radius hook");
             if (c.TryGotoNext(x => x.MatchLdfld<DamageReport>(nameof(DamageReport.attackerBody)), x => x.MatchCallOrCallvirt<CharacterBody>("get_" + nameof(CharacterBody.damage))) && c.TryGotoNext(x => x.MatchLdloc(out _)))

@@ -11,10 +11,13 @@ namespace WellRoundedBalance.Difficulties
 
         public static event Action onTokenRegister;
 
+        public static List<string> difficultyList = new();
+
         public override void Init()
         {
             base.Init();
             SetToken();
+            difficultyList.Add(Name);
         }
 
         [SystemInitializer(typeof(DifficultyCatalog))]

@@ -1,6 +1,4 @@
-﻿using MonoMod.Cil;
-using Rewired.Data.Mapping;
-using System;
+﻿using System;
 
 namespace WellRoundedBalance.Items.Yellows
 {
@@ -13,10 +11,10 @@ namespace WellRoundedBalance.Items.Yellows
 
         public override string DescText => "<style=cIsDamage>10%</style> chance on hit to call down a lightning strike, dealing <style=cIsDamage>" + d(baseTotalDamage) + "</style> <style=cStack>(+" + d(totalDamagePerStack) + " per stack)</style> TOTAL damage.";
 
-        [ConfigField("Base TOTAL Damage", "Decimal. ", 4f)]
+        [ConfigField("Base TOTAL Damage", "Decimal. ", 3.5f)]
         public static float baseTotalDamage;
 
-        [ConfigField("TOTAL Damage Per Stack", "Decimal. ", 2f)]
+        [ConfigField("TOTAL Damage Per Stack", "Decimal. ", 3.5f)]
         public static float totalDamagePerStack;
 
         [ConfigField("Proc Coefficient", 1f)]

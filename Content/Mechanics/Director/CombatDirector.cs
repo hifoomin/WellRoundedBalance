@@ -7,7 +7,7 @@
         [ConfigField("Minimum Reroll Spawn Interval Multiplier", "", 1.8f)]
         public static float minimumRerollSpawnIntervalMultiplier;
 
-        [ConfigField("Credit Multiplier", "", 1.25f)]
+        [ConfigField("Credit Multiplier", "", 1.35f)]
         public static float creditMultiplier;
 
         [ConfigField("Elite Bias Multiplier", "", 0.9f)]
@@ -34,8 +34,6 @@
         private bool CombatDirector_Spawn(On.RoR2.CombatDirector.orig_Spawn orig, RoR2.CombatDirector self, SpawnCard spawnCard, EliteDef eliteDef, Transform spawnTarget, DirectorCore.MonsterSpawnDistance spawnDistance, bool preventOverhead, float valueMultiplier, DirectorPlacementRule.PlacementMode placementMode)
         {
             self.monsterCredit += (0.3f * Mathf.Sqrt(Run.instance.difficultyCoefficient)) + ((spawnCard.directorCreditCost - 50) / 50);
-            self.maximumNumberToSpawnBeforeSkipping = 3;
-            self.maxConsecutiveCheapSkips = 4;
             return orig(self, spawnCard, eliteDef, spawnTarget, spawnDistance, preventOverhead, valueMultiplier, placementMode);
         }
 
@@ -48,6 +46,8 @@
 
         private void CombatDirector_OnEnable(On.RoR2.CombatDirector.orig_OnEnable orig, RoR2.CombatDirector self)
         {
+            self.maximumNumberToSpawnBeforeSkipping = 3;
+            self.maxConsecutiveCheapSkips = 4;
             self.minRerollSpawnInterval /= minimumRerollSpawnIntervalMultiplier;
             self.maxRerollSpawnInterval /= minimumRerollSpawnIntervalMultiplier;
             self.creditMultiplier += (1f - creditMultiplier);

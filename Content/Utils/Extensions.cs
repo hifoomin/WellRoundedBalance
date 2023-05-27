@@ -60,5 +60,20 @@ namespace WellRoundedBalance.Utils
             if (vector.magnitude >= maxRange) return false; // < 120m + LoS check
             return !Physics.Raycast(victimPosition, vector, out RaycastHit raycastHit, vector.magnitude, LayerIndex.world.mask, QueryTriggerInteraction.Ignore);
         }
+
+        public static bool HasEquipment(Inventory inventory, EquipmentDef equipmentDef)
+        {
+            return inventory.GetEquipment(inventory.activeEquipmentSlot).equipmentDef == equipmentDef;
+        }
+
+        public static bool HasEquipment(CharacterBody characterBody, EquipmentDef equipmentDef)
+        {
+            var inventory = characterBody.inventory;
+            if (inventory)
+            {
+                return inventory.GetEquipment(inventory.activeEquipmentSlot).equipmentDef == equipmentDef;
+            }
+            return false;
+        }
     }
 }

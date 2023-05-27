@@ -1,31 +1,11 @@
 using BepInEx;
 using BepInEx.Configuration;
 using BepInEx.Logging;
-using System;
 using System.Reflection;
-using WellRoundedBalance.Items;
-using WellRoundedBalance.Equipment;
-using WellRoundedBalance.Interactables;
-using WellRoundedBalance.Enemies;
-using WellRoundedBalance.Projectiles;
 using System.Runtime.CompilerServices;
-using WellRoundedBalance.Elites;
 using R2API.ContentManagement;
-using WellRoundedBalance.Misc;
-using WellRoundedBalance.Mechanics;
-using WellRoundedBalance.Items.NoTier;
-using WellRoundedBalance.Difficulties;
-using WellRoundedBalance.Artifacts.Vanilla;
-using WellRoundedBalance.Artifacts.New;
-using WellRoundedBalance.Gamemodes;
-using WellRoundedBalance.Items.ConsistentCategories;
 using MonoMod.RuntimeDetour;
-using WellRoundedBalance.Achievements;
 using HarmonyLib;
-using WellRoundedBalance.Survivors;
-using WellRoundedBalance.Allies;
-
-// using WellRoundedBalance.Enemies.FamilyEvents;
 
 [assembly: HG.Reflection.SearchableAttribute.OptIn]
 
@@ -53,27 +33,43 @@ namespace WellRoundedBalance
         public const string PluginGUID = PluginAuthor + "." + PluginName;
         public const string PluginAuthor = "BALLS";
         public const string PluginName = "WellRoundedBalance";
-        public const string PluginVersion = "1.3.5";
+        public const string PluginVersion = "1.3.8";
+        public static ConfigFile WRBAchievementConfig;
+        public static ConfigFile WRBAllyConfig;
+        public static ConfigFile WRBArtifactAddConfig;
+        public static ConfigFile WRBArtifactEditConfig;
         public static ConfigFile WRBConfig;
+        public static ConfigFile WRBDifficultyConfig;
+        public static ConfigFile WRBEliteConfig;
+        public static ConfigFile WRBEnemyConfig;
+        public static ConfigFile WRBEquipmentConfig;
+        public static ConfigFile WRBGamemodeConfig;
+        public static ConfigFile WRBInteractableConfig;
         public static ConfigFile WRBItemConfig;
         public static ConfigFile WRBMechanicConfig;
-        public static ConfigFile WRBEquipmentConfig;
-        public static ConfigFile WRBInteractableConfig;
-        public static ConfigFile WRBEnemyConfig;
-        public static ConfigFile WRBEliteConfig;
-        public static ConfigFile WRBGamemodeConfig;
-        public static ConfigFile WRBArtifactConfig;
-        public static ConfigFile WRBDifficultyConfig;
+        public static ConfigFile WRBModuleConfig;
         public static ConfigFile WRBSurvivorConfig;
-        public static ConfigFile WRBAllyConfig;
-        public static ConfigFile WRBAchievementConfig;
         public static ConfigFile WRBMiscConfig;
-        public static ConfigFile WRBBackupConfig; // DO NOT USE THIS !! JJJJJ
+        public static ConfigFile WRBBackupConfig; // DO NOT USE THIS !! JJJJJ You like to kiss boys you're a boykisser
         public static ManualLogSource WRBLogger;
 
         public static ConfigEntry<bool> enableLogging { get; set; }
         public ConfigEntry<bool> enableAutoConfig { get; private set; }
         public ConfigEntry<string> latestVersion { get; private set; }
+
+        public static ConfigEntry<bool> enableAchievements { get; set; }
+        public static ConfigEntry<bool> enableAllies { get; set; }
+        public static ConfigEntry<bool> enableArtifactAdds { get; set; }
+        public static ConfigEntry<bool> enableArtifactEdits { get; set; }
+        public static ConfigEntry<bool> enableDifficulties { get; set; }
+        public static ConfigEntry<bool> enableElites { get; set; }
+        public static ConfigEntry<bool> enableEnemies { get; set; }
+        public static ConfigEntry<bool> enableEquipment { get; set; }
+        public static ConfigEntry<bool> enableGamemodes { get; set; }
+        public static ConfigEntry<bool> enableInteractables { get; set; }
+        public static ConfigEntry<bool> enableItems { get; set; }
+        public static ConfigEntry<bool> enableMechanics { get; set; }
+        public static ConfigEntry<bool> enableSurvivors { get; set; }
 
         public static AssetBundle wellroundedbalance;
 
@@ -86,6 +82,7 @@ namespace WellRoundedBalance
         public static Hook hook;
 
         private bool mp = false;
+        private bool hasZanySoupd = false;
 
         public void Awake()
         {
@@ -94,20 +91,37 @@ namespace WellRoundedBalance
 
             wellroundedbalance = AssetBundle.LoadFromFile(Assembly.GetExecutingAssembly().Location.Replace("WellRoundedBalance.dll", "wellroundedbalance"));
 
+            WRBAchievementConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Achievements.cfg", true);
+            WRBAllyConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Allies.cfg", true);
+            WRBArtifactAddConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.ArtifactsAdd.cfg", true);
+            WRBArtifactEditConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.ArtifactsEdit.cfg", true);
+            WRBDifficultyConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Difficulties.cfg", true);
+            WRBEliteConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Elites.cfg", true);
+            WRBEnemyConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Enemies.cfg", true);
+            WRBEquipmentConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Equipment.cfg", true);
+            WRBGamemodeConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Gamemodes.cfg", true);
+            WRBInteractableConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Interactables.cfg", true);
             WRBItemConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Items.cfg", true);
             WRBMechanicConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Mechanics.cfg", true);
-            WRBEquipmentConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Equipment.cfg", true);
-            WRBInteractableConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Interactables.cfg", true);
-            WRBEnemyConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Enemies.cfg", true);
-            WRBEliteConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Elites.cfg", true);
-            WRBGamemodeConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Gamemodes.cfg", true);
-            WRBArtifactConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Artifacts.cfg", true);
-            WRBDifficultyConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Difficulties.cfg", true);
+            WRBModuleConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Modules.cfg", true);
             WRBSurvivorConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Survivors.cfg", true);
-            WRBAllyConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Allies.cfg", true);
-            WRBAchievementConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Achievements.cfg", true);
-            WRBMiscConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Misc.cfg", true);
 
+            enableAchievements = WRBModuleConfig.Bind(":: Module Toggles ::", "Enable Achievement changes?", true, "Disabling this could cause achievements to get locked again, if the unlockable method changed or got more difficult.");
+            enableAllies = WRBModuleConfig.Bind(":: Module Toggles ::", "Enable Ally changes?", true);
+            enableArtifactAdds = WRBModuleConfig.Bind(":: Module Toggles ::", "Enable New Artifacts?", true);
+            enableArtifactEdits = WRBModuleConfig.Bind(":: Module Toggles ::", "Enable Artifact changes?", true);
+            enableDifficulties = WRBModuleConfig.Bind(":: Module Toggles ::", "Enable Difficulty changes?", true);
+            enableElites = WRBModuleConfig.Bind(":: Module Toggles ::", "Enable Elite changes?", true, "Disabling this will cause the Eclipse 3 modifier to not function, as it's impossible not to hardcode it, and I'm not hardcoding even more effects for vanilla elites which I dislike. The same goes for disabling individual elites - their particular \"stronger in unique ways\" modifier will not work on Eclipse 3 or above.");
+
+            enableEnemies = WRBModuleConfig.Bind(":: Module Toggles ::", "Enable Enemy changes?", true);
+            enableEquipment = WRBModuleConfig.Bind(":: Module Toggles ::", "Enable Equipment changes?", true);
+            enableGamemodes = WRBModuleConfig.Bind(":: Module Toggles ::", "Enable Gamemode changes?", true);
+            enableInteractables = WRBModuleConfig.Bind(":: Module Toggles ::", "Enable Interactable changes?", true);
+            enableItems = WRBModuleConfig.Bind(":: Module Toggles ::", "Enable Item changes?", true);
+            enableMechanics = WRBModuleConfig.Bind(":: Module Toggles ::", "Enable Mechanic changes?", true);
+            enableSurvivors = WRBModuleConfig.Bind(":: Module Toggles ::", "Enable Survivor changes?", true, "These are not HIFUTweaks changes, as they all have separate configs.");
+
+            WRBMiscConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Misc.cfg", true);
             WRBBackupConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Backup.cfg", true);
             WRBBackupConfig.Bind(": DO NOT MODIFY THIS FILES CONTENTS :", ": DO NOT MODIFY THIS FILES CONTENTS :", ": DO NOT MODIFY THIS FILES CONTENTS :", ": DO NOT MODIFY THIS FILES CONTENTS :");
 
@@ -134,230 +148,7 @@ namespace WellRoundedBalance
             ZetArtifactsLoaded = BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("com.TPDespair.ZetArtifacts");
             WildbookMultitudesLoaded = BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("dev.wildbook.multitudes");
 
-            FunnyLabel.Hooks();
-            // Useless.Create();
-            Buffs.Useless.Create();
-            VoidBall.Create();
-            BlazingProjectileVFX.Create();
-            Molotov.Create();
-            DucleusLaser.Create();
-            TitanFist.Create();
-            EarthQuakeWave.Create();
-
-            On.RoR2.ItemCatalog.Init += ItemCatalog_Init;
-
-            IEnumerable<Type> mechanic = from type in Assembly.GetExecutingAssembly().GetTypes()
-                                         where !type.IsAbstract && type.IsSubclassOf(typeof(MechanicBase))
-                                         select type;
-
-            WRBLogger.LogInfo("==+----------------==MECHANICS==----------------+==");
-
-            foreach (Type type in mechanic)
-            {
-                MechanicBase based = (MechanicBase)Activator.CreateInstance(type);
-                if (ValidateMechanic(based))
-                {
-                    try { based.Init(); } catch (Exception ex) { WRBLogger.LogError($"Failed to initialize {type.Name}: {ex}"); }
-                }
-            }
-
-            IEnumerable<Type> item = from type in Assembly.GetExecutingAssembly().GetTypes()
-                                     where !type.IsAbstract && type.IsSubclassOf(typeof(ItemBase))
-                                     select type;
-
-            WRBLogger.LogInfo("==+----------------==ITEMS==----------------+==");
-            // List<ItemBase> baseds = new();
-
-            foreach (Type type in item)
-            {
-                ItemBase based = (ItemBase)Activator.CreateInstance(type);
-                if (ValidateItem(based))
-                {
-                    try { based.Init(); } catch (Exception ex) { WRBLogger.LogError($"Failed to initialize {type.Name}: {ex}"); }
-                }
-
-                // done alphabetically
-                // baseds.Add((ItemBase)Activator.CreateInstance(type));
-            }
-
-            // nvm this breaks the entire game what
-            /*
-            foreach (ItemBase itemBased in baseds.OrderBy(x => (char)x.InternalPickupToken.ToLower()[0]))
-            {
-                // Debug.Log(itemBased.InternalPickupToken);
-                if (ValidateItem(itemBased))
-                {
-                    itemBased.Init();
-                }
-            }
-            */
-
-            IEnumerable<Type> equipment = from type in Assembly.GetExecutingAssembly().GetTypes()
-                                          where !type.IsAbstract && type.IsSubclassOf(typeof(EquipmentBase))
-                                          select type;
-
-            WRBLogger.LogInfo("==+----------------==EQUIPMENT==----------------+==");
-
-            foreach (Type type in equipment)
-            {
-                EquipmentBase based = (EquipmentBase)Activator.CreateInstance(type);
-                if (ValidateEquipment(based))
-                {
-                    try { based.Init(); } catch (Exception ex) { WRBLogger.LogError($"Failed to initialize {type.Name}: {ex}"); }
-                }
-            }
-
-            IEnumerable<Type> interactable = from type in Assembly.GetExecutingAssembly().GetTypes()
-                                             where !type.IsAbstract && type.IsSubclassOf(typeof(InteractableBase))
-                                             select type;
-
-            WRBLogger.LogInfo("==+----------------==INTERACTABLES==----------------+==");
-
-            foreach (Type type in interactable)
-            {
-                InteractableBase based = (InteractableBase)Activator.CreateInstance(type);
-                if (ValidateInteractable(based))
-                {
-                    try { based.Init(); } catch (Exception ex) { WRBLogger.LogError($"Failed to initialize {type.Name}: {ex}"); }
-                }
-            }
-
-            IEnumerable<Type> enemy = from type in Assembly.GetExecutingAssembly().GetTypes()
-                                      where !type.IsAbstract && type.IsSubclassOf(typeof(EnemyBase))
-                                      select type;
-
-            WRBLogger.LogInfo("==+----------------==ENEMIES==----------------+==");
-
-            foreach (Type type in enemy)
-            {
-                EnemyBase based = (EnemyBase)Activator.CreateInstance(type);
-                if (ValidateEnemy(based))
-                {
-                    try { based.Init(); } catch (Exception ex) { WRBLogger.LogError($"Failed to initialize {type.Name}: {ex}"); }
-                }
-            }
-
-            IEnumerable<Type> ally = from type in Assembly.GetExecutingAssembly().GetTypes()
-                                     where !type.IsAbstract && type.IsSubclassOf(typeof(AllyBase))
-                                     select type;
-
-            WRBLogger.LogInfo("==+----------------==ALLIES==----------------+==");
-
-            foreach (Type type in ally)
-            {
-                AllyBase based = (AllyBase)Activator.CreateInstance(type);
-                if (ValidateAlly(based))
-                {
-                    try { based.Init(); } catch (Exception ex) { WRBLogger.LogError($"Failed to initialize {type.Name}: {ex}"); }
-                }
-            }
-
-            IEnumerable<Type> elite = from type in Assembly.GetExecutingAssembly().GetTypes()
-                                      where !type.IsAbstract && type.IsSubclassOf(typeof(EliteBase))
-                                      select type;
-
-            WRBLogger.LogInfo("==+----------------==ELITES==----------------+==");
-
-            foreach (Type type in elite)
-            {
-                EliteBase based = (EliteBase)Activator.CreateInstance(type);
-                if (ValidateElite(based))
-                {
-                    try { based.Init(); } catch (Exception ex) { WRBLogger.LogError($"Failed to initialize {type.Name}: {ex}"); }
-                }
-            }
-
-            IEnumerable<Type> difficulty = from type in Assembly.GetExecutingAssembly().GetTypes()
-                                           where !type.IsAbstract && type.IsSubclassOf(typeof(DifficultyBase))
-                                           select type;
-
-            WRBLogger.LogInfo("==+----------------==DIFFICULTIES==----------------+==");
-
-            foreach (Type type in difficulty)
-            {
-                DifficultyBase based = (DifficultyBase)Activator.CreateInstance(type);
-                if (ValidateDifficulty(based))
-                {
-                    try { based.Init(); } catch (Exception ex) { WRBLogger.LogError($"Failed to initialize {type.Name}: {ex}"); }
-                }
-            }
-
-            IEnumerable<Type> gamemode = from type in Assembly.GetExecutingAssembly().GetTypes()
-                                         where !type.IsAbstract && type.IsSubclassOf(typeof(GamemodeBase))
-                                         select type;
-
-            WRBLogger.LogInfo("==+----------------==GAMEMODES==----------------+==");
-
-            foreach (Type type in gamemode)
-            {
-                GamemodeBase based = (GamemodeBase)Activator.CreateInstance(type);
-                if (ValidateGamemode(based))
-                {
-                    try { based.Init(); } catch (Exception ex) { WRBLogger.LogError($"Failed to initialize {type.Name}: {ex}"); }
-                }
-            }
-
-            IEnumerable<Type> survivor = from type in Assembly.GetExecutingAssembly().GetTypes()
-                                         where !type.IsAbstract && type.IsSubclassOf(typeof(SurvivorBase))
-                                         select type;
-
-            WRBLogger.LogInfo("==+----------------==SURVIVORS==----------------+==");
-
-            foreach (Type type in survivor)
-            {
-                SurvivorBase based = (SurvivorBase)Activator.CreateInstance(type);
-                if (ValidateSurvivor(based))
-                {
-                    try { based.Init(); } catch (Exception ex) { WRBLogger.LogError($"Failed to initialize {type.Name}: {ex}"); }
-                }
-            }
-
-            IEnumerable<Type> artifactEdit = from type in Assembly.GetExecutingAssembly().GetTypes()
-                                             where !type.IsAbstract && type.IsSubclassOf(typeof(ArtifactEditBase))
-                                             select type;
-
-            IEnumerable<Type> artifactAdd = from type in Assembly.GetExecutingAssembly().GetTypes()
-                                            where !type.IsAbstract && type.IsSubclassOf(typeof(ArtifactAddBase))
-                                            select type;
-
-            WRBLogger.LogInfo("==+----------------==ARTIFACTS==----------------+==");
-
-            foreach (Type type in artifactEdit)
-            {
-                ArtifactEditBase based = (ArtifactEditBase)Activator.CreateInstance(type);
-                if (ValidateArtifactEdit(based))
-                {
-                    try { based.Init(); } catch (Exception ex) { WRBLogger.LogError($"Failed to initialize {type.Name}: {ex}"); }
-                }
-            }
-
-            foreach (Type type in artifactAdd)
-            {
-                ArtifactAddBase based = (ArtifactAddBase)Activator.CreateInstance(type);
-                if (ValidateArtifactAdd(based))
-                {
-                    // based.Init();
-                    // disabled until icon is done
-                }
-            }
-
-            IEnumerable<Type> achievement = from type in Assembly.GetExecutingAssembly().GetTypes()
-                                            where !type.IsAbstract && type.IsSubclassOf(typeof(AchievementBase))
-                                            select type;
-
-            WRBLogger.LogInfo("==+----------------==ACHIEVEMENTS==----------------+==");
-
-            foreach (Type type in achievement)
-            {
-                AchievementBase based = (AchievementBase)Activator.CreateInstance(type);
-                if (ValidateAchievement(based))
-                {
-                    try { based.Init(); } catch (Exception ex) { WRBLogger.LogError($"Failed to initialize {type.Name}: {ex}"); }
-                }
-            }
-
-            // FamilyEvents.Init();
-            EmptyBottle.Init();
+            Initialize.Init();
 
             string balls = WRBMiscConfig.Bind("Annoying Pop Up", "Set to Fuck Off to disable", "", "Disables the mf config changed message").Value;
             bool shownConfigMessage = false;
@@ -372,18 +163,6 @@ namespace WellRoundedBalance
                 }
             };
 
-            if (enableLogging.Value)
-            {
-                SharedBase.initList.Sort();
-                for (int i = 0; i < SharedBase.initList.Count; i++)
-                {
-                    var index = SharedBase.initList[i];
-                    WRBLogger.LogDebug("Initialized abstract " + index);
-                }
-            }
-
-            WRBLogger.LogDebug("==+----------------==INFO==----------------+==");
-            WRBLogger.LogDebug("Initialized " + SharedBase.initList.Count + " abstract classes");
             On.RoR2.UI.MainMenu.BaseMainMenuScreen.OnEnter += BaseMainMenuScreen_OnEnter;
 
             if (PieceOfShitLoaded)
@@ -393,7 +172,6 @@ namespace WellRoundedBalance
             }
 
             InfernoCompat();
-            Debug.Log("Lotussy");
         }
 
         private void PickupPickerController_OnDisplayBegin(On.RoR2.PickupPickerController.orig_OnDisplayBegin orig, PickupPickerController self, NetworkUIPromptController networkUIPromptController, LocalUser localUser, CameraRigController cameraRigController)
@@ -405,163 +183,16 @@ namespace WellRoundedBalance
         private void BaseMainMenuScreen_OnEnter(On.RoR2.UI.MainMenu.BaseMainMenuScreen.orig_OnEnter orig, RoR2.UI.MainMenu.BaseMainMenuScreen self, RoR2.UI.MainMenu.MainMenuController mainMenuController)
         {
             orig(self, mainMenuController);
-            WRBLogger.LogDebug("==+----------------==ZANY==----------------+==");
-            for (int j = 0; j < 3; j++)
+            if (!hasZanySoupd)
             {
-                WRBLogger.LogMessage("Thanks for playing Well Rounded Balance <3");
+                WRBLogger.LogDebug("==+----------------==ZANY==----------------+==");
+                for (int j = 0; j < 3; j++)
+                {
+                    WRBLogger.LogMessage("Thanks for playing Well Rounded Balance <3");
+                }
+                WRBLogger.LogDebug("==+----------------==GOOFY==----------------+==");
+                hasZanySoupd = true;
             }
-            WRBLogger.LogDebug("==+----------------==GOOFY==----------------+==");
-        }
-
-        private void ItemCatalog_Init(On.RoR2.ItemCatalog.orig_Init orig)
-        {
-            WRBLogger.LogDebug("ItemAPI.AddItemTag(\"Defense\") returns " + ItemAPI.AddItemTag("Defense"));
-            BetterItemCategories.Init();
-            orig();
-            BetterItemCategories.BetterAIBlacklist();
-        }
-
-        public bool ValidateMechanic(MechanicBase gb)
-        {
-            if (gb.isEnabled)
-            {
-                bool enabledfr = WRBMechanicConfig.Bind(gb.Name, "Enable Changes?", true, "Vanilla is false").Value;
-                if (enabledfr) return true;
-                else ConfigManager.ConfigChanged = true;
-            }
-            return false;
-        }
-
-        public bool ValidateItem(ItemBase ib)
-        {
-            if (ib.isEnabled)
-            {
-                bool enabledfr = WRBItemConfig.Bind(ib.Name, "Enable Changes?", true, "Vanilla is false").Value;
-                if (enabledfr) return true;
-                else ConfigManager.ConfigChanged = true;
-            }
-            return false;
-        }
-
-        public bool ValidateEquipment(EquipmentBase eqb)
-        {
-            if (eqb.isEnabled)
-            {
-                bool enabledfr = WRBEquipmentConfig.Bind(eqb.Name, "Enable Changes?", true, "Vanilla is false").Value;
-                if (enabledfr) return true;
-                else ConfigManager.ConfigChanged = true;
-            }
-            return false;
-        }
-
-        public bool ValidateInteractable(InteractableBase ib)
-        {
-            if (ib.isEnabled)
-            {
-                bool enabledfr = WRBInteractableConfig.Bind(ib.Name, "Enable Changes?", true, "Vanilla is false").Value;
-                if (enabledfr) return true;
-                else ConfigManager.ConfigChanged = true;
-            }
-            return false;
-        }
-
-        public bool ValidateEnemy(EnemyBase enb)
-        {
-            if (enb.isEnabled)
-            {
-                bool enabledfr = WRBEnemyConfig.Bind(enb.Name, "Enable Changes?", true, "Vanilla is false").Value;
-                if (enabledfr) return true;
-                else ConfigManager.ConfigChanged = true;
-            }
-            return false;
-        }
-
-        public bool ValidateAlly(AllyBase ab)
-        {
-            if (ab.isEnabled)
-            {
-                bool enabledfr = WRBAllyConfig.Bind(ab.Name, "Enable Changes?", true, "Vanilla is false").Value;
-                if (enabledfr) return true;
-                else ConfigManager.ConfigChanged = true;
-            }
-            return false;
-        }
-
-        public bool ValidateElite(EliteBase elb)
-        {
-            if (elb.isEnabled)
-            {
-                bool enabledfr = WRBEliteConfig.Bind(elb.Name, "Enable Changes?", true, "Vanilla is false").Value;
-                if (enabledfr) return true;
-                else ConfigManager.ConfigChanged = true;
-            }
-            return false;
-        }
-
-        public bool ValidateGamemode(GamemodeBase gmb)
-        {
-            if (gmb.isEnabled)
-            {
-                bool enabledfr = WRBGamemodeConfig.Bind(gmb.Name, "Enable Changes?", true, "Vanilla is false").Value;
-                if (enabledfr) return true;
-                else ConfigManager.ConfigChanged = true;
-            }
-            return false;
-        }
-
-        public bool ValidateSurvivor(SurvivorBase sb)
-        {
-            if (sb.isEnabled)
-            {
-                bool enabledfr = WRBSurvivorConfig.Bind(sb.Name, "Enable Changes?", true, "Vanilla is false").Value;
-                if (enabledfr) return true;
-                else ConfigManager.ConfigChanged = true;
-            }
-            return false;
-        }
-
-        public bool ValidateArtifactEdit(ArtifactEditBase aeb)
-        {
-            if (aeb.isEnabled)
-            {
-                bool enabledfr = WRBArtifactConfig.Bind(aeb.Name, "Enable Changes?", true, "Vanilla is false").Value;
-                if (enabledfr) return true;
-                else ConfigManager.ConfigChanged = true;
-            }
-            return false;
-        }
-
-        public bool ValidateArtifactAdd(ArtifactAddBase aab)
-        {
-            if (aab.isEnabled)
-            {
-                bool enabledfr = WRBArtifactConfig.Bind(aab.Name, "Enable?", true, "Vanilla is false").Value;
-                if (enabledfr) return true;
-                else ConfigManager.ConfigChanged = true;
-            }
-            return false;
-        }
-
-        public bool ValidateDifficulty(DifficultyBase db)
-        {
-            if (db.isEnabled)
-            {
-                bool enabledfr = WRBDifficultyConfig.Bind(db.Name, "Enable Changes?", true, "Vanilla is false").Value;
-                if (enabledfr) return true;
-                else ConfigManager.ConfigChanged = true;
-            }
-            return false;
-        }
-
-        public bool ValidateAchievement(AchievementBase ab)
-        {
-            if (ab.isEnabled)
-            {
-                bool enabledfr = WRBAchievementConfig.Bind(ab.Name, "Enable Changes?", true, "Vanilla is false").Value;
-                if (enabledfr) return true;
-                else ConfigManager.ConfigChanged = true;
-            }
-            return false;
         }
 
         private void InfernoCompat()

@@ -8,7 +8,7 @@ namespace WellRoundedBalance.Elites
 {
     internal class Celestine : EliteBase<Celestine>
     {
-        public override string Name => "Elites :::: Celestine";
+        public override string Name => ":: Elites ::: Celestine";
         public static BuffDef CelestineBoost;
         public static Material CelestineOverlay;
         public static BuffDef Blindness;

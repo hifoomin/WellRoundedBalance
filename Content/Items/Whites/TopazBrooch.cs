@@ -16,16 +16,16 @@ namespace WellRoundedBalance.Items.Whites
             StackDesc(flatBarrierGain, flatBarrierGainStack, init => $"<style=cIsHealing>{init}</style>{{Stack}}", noop) +
             StackDesc(percentBarrierGain, percentBarrierGainStack, init => (flatBarrierGain > 0 || flatBarrierGainStack > 0 ? " plus an additional " : "") + $"<style=cIsHealing>{d(init)}</style>{{Stack}} of <style=cIsHealing>maximum health</style>", d) + ".";
 
-        [ConfigField("Percent Barrier Gain", "Decimal.", 0.02f)]
+        [ConfigField("Base Percent Barrier Gain", "Decimal.", 0.025f)]
         public static float percentBarrierGain;
 
-        [ConfigField("Percent Barrier Gain per Stack", "Decimal.", 0.02f)]
+        [ConfigField("Percent Barrier Gain per Stack", "Decimal.", 0.025f)]
         public static float percentBarrierGainStack;
 
         [ConfigField("Percent Barrier Gain is Hyperbolic", "Decimal, Max value. Set to 0 to make it linear.", 0f)]
         public static float percentBarrierGainIsHyperbolic;
 
-        [ConfigField("Flat Barrier Gain", 10f)]
+        [ConfigField("Flat Barrier Gain", 6f)]
         public static float flatBarrierGain;
 
         [ConfigField("Flat Barrier Gain per Stack", 0f)]
@@ -49,7 +49,7 @@ namespace WellRoundedBalance.Items.Whites
                 {
                     var inventory = attackerBody.inventory;
                     if (inventory && NetworkServer.active && attackerBody.healthComponent)
-                        attackerBody.healthComponent.AddBarrier(attackerBody.healthComponent.combinedHealthFraction * StackAmount(percentBarrierGain, percentBarrierGainStack, inventory.GetItemCount(RoR2Content.Items.BarrierOnKill), percentBarrierGainIsHyperbolic));
+                        attackerBody.healthComponent.AddBarrier(attackerBody.healthComponent.combinedHealth * StackAmount(percentBarrierGain, percentBarrierGainStack, inventory.GetItemCount(RoR2Content.Items.BarrierOnKill), percentBarrierGainIsHyperbolic));
                 }
             }
         }

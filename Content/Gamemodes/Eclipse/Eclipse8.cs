@@ -6,7 +6,6 @@ namespace WellRoundedBalance.Gamemodes.Eclipse
 {
     internal class Eclipse8 : GamemodeBase<Eclipse8>
     {
-        // look at Mechanic>Bosses>Enrage
         public override string Name => ":: Gamemode : Eclipse 8";
 
         public override void Init()

@@ -27,15 +27,15 @@
             infection.material.SetTexture("_EmTex", Main.wellroundedbalance.LoadAsset<Texture2D>("Assets/WellRoundedBalance/texRampWave.png"));
             infection.material.SetTexture("_MainTex", Main.wellroundedbalance.LoadAsset<Texture2D>("Assets/WellRoundedBalance/texRampWave.png"));
 
-            var ps = infection.gameObject.GetComponent<ParticleSystem>();
+            var particleSystem = infection.gameObject.GetComponent<ParticleSystem>();
 
-            var main = ps.main;
+            var main = particleSystem.main;
             main.maxParticles = 500;
-            var em = ps.emission;
-            em.rateOverTime = 80;
+            var emission = particleSystem.emission;
+            emission.rateOverTime = 80;
 
-            var sol = ps.sizeOverLifetime;
-            sol.size = new ParticleSystem.MinMaxCurve(1f, new AnimationCurve(new Keyframe(0f, 0.66f), new Keyframe(0.5f, 0.9f), new Keyframe(1f, 0.66f)));
+            var sizeOverLifetime = particleSystem.sizeOverLifetime;
+            sizeOverLifetime.size = new ParticleSystem.MinMaxCurve(1f, new AnimationCurve(new Keyframe(0f, 0.66f), new Keyframe(0.5f, 0.9f), new Keyframe(1f, 0.66f)));
 
             var water = @base.GetChild(3);
             water.gameObject.SetActive(false);
@@ -44,7 +44,7 @@
             hitboxReal.transform.localScale = new Vector3(30f, 1.33f, 1.1f);
 
             var hitboxFake = newGhost.transform.GetChild(1);
-            hitboxFake.gameObject.transform.localScale = new Vector3(30f, 1.33f, 1.1f);
+            hitboxFake.localScale = new Vector3(30f, 1.33f, 1.1f);
 
             var mr = hitboxFake.GetComponent<MeshRenderer>();
             mr.material.SetTexture("_RemapTex", Main.wellroundedbalance.LoadAsset<Texture2D>("Assets/WellRoundedBalance/texRampInspire.png"));

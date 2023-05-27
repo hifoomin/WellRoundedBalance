@@ -13,10 +13,10 @@ namespace WellRoundedBalance.Items.Greens
 
         public override string DescText => StackDesc(armor, armorStack, init => $"<style=cIsHealing>Increase armor</style> by <style=cIsHealing>{init}</style>{{Stack}} while <style=cIsUtility>sprinting</style>.", noop);
 
-        [ConfigField("Armor Increase", "", 25)]
+        [ConfigField("Base Armor Increase", "", 20)]
         public static int armor;
 
-        [ConfigField("Armor Increase per Stack", "", 15)]
+        [ConfigField("Armor Increase Per Stack", "", 20)]
         public static int armorStack;
 
         [ConfigField("Armor Increase is Hyperbolic", "Decimal, Max value. Set to 0 to make it linear.", 0f)]

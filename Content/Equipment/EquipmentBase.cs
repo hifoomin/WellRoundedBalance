@@ -12,10 +12,13 @@ namespace WellRoundedBalance.Equipment
 
         public static event Action onTokenRegister;
 
+        public static List<string> equipmentList = new();
+
         public override void Init()
         {
             base.Init();
             onTokenRegister += SetToken;
+            equipmentList.Add(Name);
         }
 
         [SystemInitializer(typeof(EquipmentCatalog))]

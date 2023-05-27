@@ -1,4 +1,7 @@
-﻿using RoR2.Navigation;
+﻿using HG;
+using RoR2.Navigation;
+using System.Collections;
+using UnityEngine;
 using WellRoundedBalance.Buffs;
 using WellRoundedBalance.Gamemodes.Eclipse;
 
@@ -7,7 +10,7 @@ namespace WellRoundedBalance.Elites
     internal class Overloading : EliteBase<Overloading>
     {
         public static BuffDef overloadingSpeedBuff;
-        public override string Name => ":: Elites ::: Overloading";
+        public override string Name => ":: Elites : Overloading";
 
         [ConfigField("Passive Movement Speed Gain", "Decimal.", 0.5f)]
         public static float passiveMovementSpeedGain;
@@ -18,21 +21,19 @@ namespace WellRoundedBalance.Elites
         [ConfigField("Ally Buff Movement Speed Gain Eclipse 3+", "Decimal. Only applies if you have Eclipse Changes enabled.", 0.75f)]
         public static float allyBuffMovementSpeedGainE3;
 
-        [ConfigField("Aggressive Teleport Cooldown", "Do not set it to the same value as Defensive Teleport Cooldown", 5f)]
-        public static float aggressiveTeleportCooldown;
+        [ConfigField("Teleport Cooldown", "", 6f)]
+        public static float teleportCooldown;
 
-        [ConfigField("Defensive Teleport Cooldown", "Do not set it to the same value as Aggressive Teleport Cooldown", 7f)]
-        public static float defensiveTeleportCooldown;
-
-        [ConfigField("Maximum Speed Aura Radius", "", 40f)]
+        [ConfigField("Maximum Speed Aura Radius", "", 45f)]
         public static float maxSpeedAuraRadius;
 
-        [ConfigField("Minimum Speed Aura Radius", "", 13f)]
+        [ConfigField("Minimum Speed Aura Radius", "", 20f)]
         public static float minSpeedAuraRadius;
 
         private static GameObject SpeedAura;
 
         public static GameObject tpEffect;
+        public static GameObject tpTracer;
 
         public override void Init()
         {
@@ -48,7 +49,8 @@ namespace WellRoundedBalance.Elites
 
             ContentAddition.AddBuffDef(overloadingSpeedBuff);
 
-            SpeedAura = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.RailgunnerMineAltDetonated.Load<GameObject>(), "AntihealZone");
+            SpeedAura = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.RailgunnerMineAltDetonated.Load<GameObject>(), "OverloadingSpeedAura");
+            SpeedAura.RemoveComponent<SlowDownProjectiles>();
             Transform areaIndicator = SpeedAura.transform.Find("AreaIndicator");
             Transform softGlow = areaIndicator.Find("SoftGlow");
             Transform sphere = areaIndicator.Find("Sphere");
@@ -70,11 +72,10 @@ namespace WellRoundedBalance.Elites
             buffWard.expires = false;
             buffWard.expireDuration = 10000;
             buffWard.invertTeamFilter = false;
+            buffWard.buffDuration = 6f;
 
-            SpeedAura.RemoveComponent<SlowDownProjectiles>();
             var teamFilter = SpeedAura.AddComponent<TeamFilter>();
-            teamFilter.teamIndex = TeamIndex.None;
-            teamFilter.defaultTeam = TeamIndex.Monster;
+            teamFilter.defaultTeam = TeamIndex.None;
 
             PrefabAPI.RegisterNetworkPrefab(SpeedAura);
 
@@ -100,6 +101,23 @@ namespace WellRoundedBalance.Elites
 
             particles.GetChild(4).gameObject.SetActive(false);
 
+            tpTracer = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.VoidSurvivorBeamTracer.Load<GameObject>(), "OverloadingTracer", false);
+            tpTracer.transform.GetChild(0).gameObject.SetActive(false);
+            tpTracer.transform.GetChild(1).gameObject.SetActive(false);
+
+            var lineRenderer = tpTracer.GetComponent<LineRenderer>();
+            lineRenderer.widthMultiplier = 0.33f;
+            lineRenderer.numCapVertices = 10;
+
+            var newMat = GameObject.Instantiate(Utils.Paths.Material.matVoidSurvivorBeamTrail.Load<Material>());
+            newMat.SetTexture("_RemapTex", Utils.Paths.Texture2D.texRampLunarWardDecal.Load<Texture2D>());
+
+            lineRenderer.material = newMat;
+
+            var animateShaderAlpha = tpTracer.GetComponent<AnimateShaderAlpha>();
+            animateShaderAlpha.timeMax = 0.4f;
+
+            ContentAddition.AddEffect(tpTracer);
             ContentAddition.AddEffect(tpEffect);
 
             base.Init();
@@ -112,6 +130,19 @@ namespace WellRoundedBalance.Elites
 
             RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
             IL.RoR2.CharacterBody.RecalculateStats += CharacterBody_RecalculateStats;
+            On.RoR2.CharacterBody.AddTimedBuff_BuffIndex_float += CharacterBody_AddTimedBuff_BuffIndex_float;
+        }
+
+        private void CharacterBody_AddTimedBuff_BuffIndex_float(On.RoR2.CharacterBody.orig_AddTimedBuff_BuffIndex_float orig, CharacterBody self, BuffIndex buffIndex, float duration)
+        {
+            if (buffIndex == overloadingSpeedBuff.buffIndex && self.HasBuff(RoR2Content.Buffs.AffixBlue))
+            {
+                return;
+            }
+            else
+            {
+                orig(self, buffIndex, duration);
+            }
         }
 
         private void GlobalEventManager_OnHitAll(ILContext il)
@@ -180,40 +211,53 @@ namespace WellRoundedBalance.Elites
             public HealthComponent hc;
             public CharacterBody cb;
             public GameObject wardInstance;
-            public BuffWard ward;
-            public TeamFilter teamFilter;
             public float stopwatch = 0f;
 
             public void Start()
             {
                 hc = GetComponent<HealthComponent>();
                 cb = hc.body;
-
-                if (NetworkServer.active)
-                {
-                    wardInstance = GameObject.Instantiate(SpeedAura, transform);
-                    teamFilter = wardInstance.GetComponent<TeamFilter>();
-
-                    ward = wardInstance.GetComponent<BuffWard>();
-                    ward.radius = Util.Remap(cb.baseMaxHealth, 0f, 2100f, minSpeedAuraRadius, maxSpeedAuraRadius);
-
-                    NetworkServer.Spawn(wardInstance);
-                }
             }
 
             public void FixedUpdate()
             {
                 stopwatch += Time.fixedDeltaTime;
-                if (ward.transform.localPosition != Vector3.zero) ward.transform.localPosition = Vector3.zero;
-                if (ward.transform.position != gameObject.transform.position) ward.transform.position = gameObject.transform.position;
-                if (ward.teamFilter.teamIndex != cb.teamComponent.teamIndex) teamFilter.teamIndex = cb.teamComponent.teamIndex;
-                if (ward.teamFilter != teamFilter) ward.teamFilter = teamFilter;
-                if (!hc.alive && NetworkServer.active) Destroy(this);
+                if (!hc.alive && NetworkServer.active)
+                {
+                    Destroy(this);
+                }
                 if (stopwatch >= GetDelay())
                 {
                     stopwatch = 0f;
-                    HandleTeleport(PickTeleportPosition());
+                    if (cb.isPlayerControlled)
+                    {
+                        return;
+                    }
+                    StartCoroutine(Teleport());
                 }
+            }
+
+            public IEnumerator Teleport()
+            {
+                var currentPosition = transform.position;
+
+                EffectManager.SpawnEffect(tpEffect, new EffectData
+                {
+                    scale = 0.66f,
+                    origin = currentPosition
+                }, true);
+
+                yield return new WaitForSeconds(0.33f);
+
+                HandleTeleport(PickTeleportPosition());
+
+                yield return new WaitForSeconds(0.33f);
+
+                EffectManager.SpawnEffect(tpEffect, new EffectData
+                {
+                    scale = 0.66f,
+                    origin = currentPosition
+                }, true);
             }
 
             public void OnDestroy()
@@ -226,29 +270,35 @@ namespace WellRoundedBalance.Elites
 
             public float GetDelay()
             {
-                return (hc.health / hc.fullCombinedHealth) > 0.5 ? aggressiveTeleportCooldown : defensiveTeleportCooldown;
+                return teleportCooldown;
             }
 
-            public void HandleTeleport(Vector3 pos)
+            public void HandleTeleport(Vector3 nextPosition)
             {
-                if (cb.isPlayerControlled)
+                nextPosition += new Vector3(0, 1, 0);
+
+                if (wardInstance != null)
                 {
-                    return;
+                    NetworkServer.Destroy(wardInstance);
                 }
-                Vector3 current = transform.position;
-                EffectManager.SpawnEffect(tpEffect, new EffectData
+
+                var currentPosition = transform.position;
+
+                wardInstance = Object.Instantiate(SpeedAura, nextPosition, Quaternion.identity);
+                wardInstance.GetComponent<BuffWard>().Networkradius = Util.Remap(cb.baseMaxHealth, 0f, 2100f, minSpeedAuraRadius, maxSpeedAuraRadius);
+                wardInstance.GetComponent<TeamFilter>().teamIndex = cb.teamComponent.teamIndex;
+                NetworkServer.Spawn(wardInstance);
+
+                EffectManager.SpawnEffect(tpTracer, new EffectData
                 {
-                    scale = 0.66f,
-                    origin = current
+                    start = currentPosition,
+                    origin = nextPosition
                 }, true);
-                EffectManager.SpawnEffect(tpEffect, new EffectData
-                {
-                    scale = 0.66f,
-                    origin = pos
-                }, true);
-                TeleportHelper.TeleportBody(cb, pos + new Vector3(0, 1, 0));
+
+                TeleportHelper.TeleportBody(cb, nextPosition);
             }
 
+            /*
             public Vector3[] PickValidPositions(float min, float max, NodeGraph.Node[] nodes)
             {
                 NodeGraph.Node[] validNodes = nodes.Where(x => Vector3.Distance(x.position, transform.position) > min && Vector3.Distance(x.position, transform.position) < max).ToArray();
@@ -257,6 +307,28 @@ namespace WellRoundedBalance.Elites
                     return new Vector3[] { transform.position };
                 }
                 return validNodes.Select(node => node.position).ToArray();
+            }
+            */
+
+            public Vector3[] PickValidPositions(float min, float max, NodeGraph.Node[] nodes)
+            {
+                List<Vector3> validPositions = new();
+
+                foreach (NodeGraph.Node node in nodes)
+                {
+                    float distance = Vector3.Distance(node.position, transform.position);
+                    if (distance > min && distance < max)
+                    {
+                        validPositions.Add(node.position);
+                    }
+                }
+
+                if (validPositions.Count <= 1)
+                {
+                    return new Vector3[] { transform.position };
+                }
+
+                return validPositions.ToArray();
             }
 
             public Vector3 PickTeleportPosition()
@@ -268,14 +340,7 @@ namespace WellRoundedBalance.Elites
 
                 NodeGraph.Node[] nodes = SceneInfo.instance.groundNodes.nodes;
                 Vector3[] validPositions;
-                if (GetDelay() == aggressiveTeleportCooldown)
-                {
-                    validPositions = PickValidPositions(0, 25, nodes);
-                }
-                else
-                {
-                    validPositions = PickValidPositions(25, 45, nodes);
-                }
+                validPositions = PickValidPositions(10, 30, nodes);
                 return validPositions.GetRandom();
             }
         }
