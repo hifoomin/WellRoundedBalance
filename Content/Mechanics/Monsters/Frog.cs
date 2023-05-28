@@ -3,6 +3,8 @@
     internal class Frog : MechanicBase<Frog>
     {
         public override string Name => ":: Mechanics ::::::::: Frog";
+        [ConfigField("Max Pets", 1)]
+        public static int FrogPets;
 
         [ConfigField("Max Pets", "", 1)]
         public static int maxPets;

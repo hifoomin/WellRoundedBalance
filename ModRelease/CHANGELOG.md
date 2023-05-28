@@ -156,7 +156,11 @@
 
 # 1.3.1 Patch Notes
 - Fixed VanillaVoid pre-made config.
+<<<<<<< HEAD
+>>>>>>> a8ef2a488cdd95c5f81009a9c1c0db6b66b61a42:ModRelease/CHANGELOG.md
+=======
 - - psuedopulse ! ! <img src="https://cdn.discordapp.com/emojis/1101199692974538753.webp?size=24&quality=lossless" width="24"/>
+>>>>>>> 949dd6deff98cc028651ab54e393a01342248c09
 
 # 1.3.0 Patch Notes - The *Compatibility Update May* Update
 - Added AugmentedVoidReaver.

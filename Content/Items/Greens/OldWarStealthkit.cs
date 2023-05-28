@@ -25,6 +25,8 @@ namespace WellRoundedBalance.Items.Greens
         public override void Hooks()
         {
             IL.RoR2.Items.PhasingBodyBehavior.FixedUpdate += ChangeThreshold;
+
+            Mechanics.Health.Fragile.AddFragileItem(InternalPickup, new Mechanics.Health.Fragile.FragileInfo { fraction = healthThreshold * 100f });
         }
 
         private void ChangeThreshold(ILContext il)
