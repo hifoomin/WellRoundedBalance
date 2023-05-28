@@ -32,12 +32,13 @@ namespace WellRoundedBalance.Elites
             slow.isHidden = false;
 
             ContentAddition.AddBuffDef(slow);
-
+            /*
+             look into commit if you wanna restore this but FUcking J J J J J J J J J  J J  J J J J J  J J J  J J J  J J   J J J J  J JJ JJJJJJ J J J   J JJJ J JJJJJJ J  J  J J J J J  J  JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ         J J JJJ J J J J J J  J J  J  J J J J J J  J J J J  J J J  J  J J  J J  J J J
             IcePillarPrefab = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.MageIcewallPillarProjectile.Load<GameObject>(), "Glacial Elite Pillar");
 
             IcePillarPrefab.RemoveComponent<ProjectileDamage>();
             IcePillarPrefab.RemoveComponent<ProjectileImpactExplosion>();
-            
+
             ProjectileSimple simple = IcePillarPrefab.AddComponent<ProjectileSimple>();
             simple.lifetime = 7;
 
@@ -78,11 +79,11 @@ namespace WellRoundedBalance.Elites
             ConstantForce cf = IcePillarPrefab.AddComponent<ConstantForce>();
             cf.force = new(0, -250f, 0);
 
-            /*ProjectileStickOnImpact psoi = IcePillarPrefab.AddComponent<ProjectileStickOnImpact>();
+            ProjectileStickOnImpact psoi = IcePillarPrefab.AddComponent<ProjectileStickOnImpact>();
             psoi.ignoreCharacters = true;
             psoi.ignoreWorld = false;
             psoi.alignNormals = false;
-            psoi.stickSoundString = "Play_item_proc_iceRingSpear";*/
+            psoi.stickSoundString = "Play_item_proc_iceRingSpear";
 
             GameObject modelBase = new("Model Base");
             GameObject model = new("mdlIcePillar");
@@ -101,7 +102,7 @@ namespace WellRoundedBalance.Elites
             col.size = new Vector3(1f, 1f, 1f);
             col.contactOffset = 0.01f;
             col.center = new Vector3(0f, 0f, 0f);
-            
+
             HurtBox box = modelBase.AddComponent<HurtBox>();
             box.isSniperTarget = true;
             box.isBullseye = true;
@@ -110,17 +111,16 @@ namespace WellRoundedBalance.Elites
             hbg.mainHurtBox = box;
             hbg.hurtBoxes = new HurtBox[] { box };
 
-            modelBase.RemoveComponent<Rigidbody>(); // for whatever reason unity does not recursively search up the tree when checking for rigidbodies and adds a duplicate here
-            /*
+            modelBase.RemoveComponent<Rigidbody>(); for whatever reason unity does not recursively search up the tree when checking for rigidbodies and adds a duplicate here
+
             var projectileImpactExplosion = IcePillarPrefab.GetComponent<ProjectileImpactExplosion>();
             projectileImpactExplosion.blastRadius = 0f;
             projectileImpactExplosion.blastDamageCoefficient = 0f;
             projectileImpactExplosion.blastProcCoefficient = 0f;
-            projectileImpactExplosion.lifetime = 8f; // 8f - 0.05f * 8 for max without overlap
+            projectileImpactExplosion.lifetime = 8f; 8f - 0.05f * 8 for max without overlap
             projectileImpactExplosion.destroyOnEnemy = true;
-            */
 
-            /*IcePillarPrefab.GetComponent<ProjectileImpactExplosion>().enabled = false;
+            IcePillarPrefab.GetComponent<ProjectileImpactExplosion>().enabled = false;
 
             var projectileSimple = IcePillarPrefab.AddComponent<ProjectileSimple>();
             projectileSimple.desiredForwardSpeed = 0f;
@@ -140,7 +140,7 @@ namespace WellRoundedBalance.Elites
             var healthComponent = IcePillarPrefab.AddComponent<HealthComponent>();
             healthComponent.dontShowHealthbar = false;
 
-            // IcePillarPrefab.RemoveComponent<BoxCollider>();
+            IcePillarPrefab.RemoveComponent<BoxCollider>();
 
             var hurtboxGroup = IcePillarPrefab.AddComponent<HurtBoxGroup>();
 
@@ -179,22 +179,21 @@ namespace WellRoundedBalance.Elites
             characterDeathBehavior.deathState = new SerializableEntityStateType(typeof(PillarDeathState));
             characterDeathBehavior.deathStateMachine = esm;
 
-            /*
             var newImpact = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.OmniImpactVFXFrozen.Load<GameObject>(), "Glacial Elite Pillar Broken VFX");
             newImpact.transform.localScale = new Vector3(3f, 3f, 3f);
 
             projectileImpactExplosion.impactEffect = newImpact;
-            */
-            // IcePillarPrefab.layer = LayerIndex.projectile.intVal;
-            // IcePillarPrefab.transform.localScale = new Vector3(2f, 3f, 2f);
 
-            /*var newGhost = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.MageIcePillarGhost.Load<GameObject>(), "Glacial Elite Pillar Ghost");
+            IcePillarPrefab.layer = LayerIndex.projectile.intVal;
+            IcePillarPrefab.transform.localScale = new Vector3(2f, 3f, 2f);
+
+            var newGhost = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.MageIcePillarGhost.Load<GameObject>(), "Glacial Elite Pillar Ghost");
             newGhost.transform.localScale = new Vector3(2f, 2f, 2f);
             var mesh = newGhost.transform.GetChild(1);
             mesh.localPosition = new Vector3(0f, 0f, -2.5f);
             mesh.transform.localScale = new Vector3(2f, 2f, 3f);
 
-            // var effectComponent = newGhost.AddComponent<EffectComponent>();
+            var effectComponent = newGhost.AddComponent<EffectComponent>();
 
             var projectileController = IcePillarPrefab.GetComponent<ProjectileController>();
             projectileController.ghostPrefab = newGhost;
@@ -202,18 +201,16 @@ namespace WellRoundedBalance.Elites
             var rigidBody = IcePillarPrefab.GetComponent<Rigidbody>();
             rigidBody.collisionDetectionMode = CollisionDetectionMode.Continuous;
             rigidBody.useGravity = true;
-            rigidBody.freezeRotation = true;*/
+            rigidBody.freezeRotation = true;
 
-            /*
             var constantForce = IcePillarPrefab.AddComponent<ConstantForce>();
             constantForce.force = new Vector3(0f, -2500f, 0f);
-            */
 
-            /*var projectileStickOnImpact = IcePillarPrefab.AddComponent<ProjectileStickOnImpact>();
+            var projectileStickOnImpact = IcePillarPrefab.AddComponent<ProjectileStickOnImpact>();
             projectileStickOnImpact.ignoreCharacters = true;
             projectileStickOnImpact.ignoreWorld = false;
             projectileStickOnImpact.alignNormals = false;
-            projectileStickOnImpact.stickSoundString = "Play_item_proc_iceRingSpear";*/
+            projectileStickOnImpact.stickSoundString = "Play_item_proc_iceRingSpear";
 
             IcePillarWalkerPrefab = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.MageIcewallWalkerProjectile.Load<GameObject>(), "Glacial Elite Pillar Walker");
             var projectileMageFirewallWalkerController = IcePillarWalkerPrefab.GetComponent<ProjectileMageFirewallWalkerController>();
@@ -223,24 +220,24 @@ namespace WellRoundedBalance.Elites
             projectileCharacterController.lifetime = 0.5f;
             projectileCharacterController.velocity = 0.01f;
 
-            // ContentAddition.AddEffect(newGhost);
-            // ContentAddition.AddEffect(newImpact);
+            ContentAddition.AddEffect(newGhost);
+            ContentAddition.AddEffect(newImpact);
             PrefabAPI.RegisterNetworkPrefab(IcePillarPrefab);
             PrefabAPI.RegisterNetworkPrefab(IcePillarWalkerPrefab);
             ContentAddition.AddBody(IcePillarPrefab);
             ContentAddition.AddProjectile(IcePillarPrefab);
-
+            */
             base.Init();
         }
 
         public override void Hooks()
         {
-            ContentAddition.AddEntityState(typeof(PillarDeathState), out _);
+            // ContentAddition.AddEntityState(typeof(PillarDeathState), out _);
             IL.RoR2.GlobalEventManager.OnHitEnemy += GlobalEventManager_OnHitEnemy;
             On.RoR2.GlobalEventManager.OnHitAll += GlobalEventManager_OnHitAll;
             RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
             IL.RoR2.CharacterModel.UpdateOverlays += CharacterModel_UpdateOverlays;
-            CharacterBody.onBodyInventoryChangedGlobal += CharacterBody_onBodyInventoryChangedGlobal;
+            // CharacterBody.onBodyInventoryChangedGlobal += CharacterBody_onBodyInventoryChangedGlobal;
         }
 
         private void GlobalEventManager_OnHitAll(On.RoR2.GlobalEventManager.orig_OnHitAll orig, GlobalEventManager self, DamageInfo damageInfo, GameObject hitObject)
@@ -393,6 +390,7 @@ namespace WellRoundedBalance.Elites
 
         public class GlacialController : MonoBehaviour
         {
+            /*
             public float timer;
             public float interval = 7f;
             public int projectileCount = 10;
@@ -430,10 +428,7 @@ namespace WellRoundedBalance.Elites
                         projectilePrefab = IcePillarPrefab
                     };
                     ProjectileManager.instance.FireProjectile(fpi);
-                    /*
-                    var pillar = GameObject.Instantiate(IcePillarPrefab, point + new Vector3(i * 2f, 0, 0), Quaternion.Euler(270f, 0f, 0f));
-                    NetworkServer.Spawn(pillar);
-                    */
+
                     yield return new WaitForSeconds(0.05f);
                 }
 
@@ -473,6 +468,7 @@ namespace WellRoundedBalance.Elites
                 validPositions = PickValidPositions(5, 15, nodes);
                 return validPositions.GetRandom();
             }
+            */
         }
     }
 
@@ -497,9 +493,11 @@ namespace WellRoundedBalance.Elites
         }
     }
 
-    public class PillarEntryState : BaseState {
+    public class PillarEntryState : BaseState
+    {
         private ProjectileController controller;
-        bool hasDone = false;
+        private bool hasDone = false;
+
         public override void OnEnter()
         {
             base.OnEnter();
@@ -514,7 +512,8 @@ namespace WellRoundedBalance.Elites
         {
             base.FixedUpdate();
 
-            if (!hasDone && controller && controller.ghost) {
+            if (!hasDone && controller && controller.ghost)
+            {
                 controller.ghost.transform.SetParent(base.modelLocator.modelBaseTransform);
                 hasDone = true;
             }
