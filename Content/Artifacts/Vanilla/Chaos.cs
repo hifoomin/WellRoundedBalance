@@ -18,7 +18,7 @@ namespace WellRoundedBalance.Artifacts.Vanilla
 
         private HurtBox BaseAI_FindEnemyHurtBox(On.RoR2.CharacterAI.BaseAI.orig_FindEnemyHurtBox orig, BaseAI self, float maxDistance, bool full360Vision, bool filterByLoS)
         {
-            if (RunArtifactManager.instance.IsArtifactEnabled(RoR2Content.Artifacts.friendlyFireArtifactDef))
+            if (self && RunArtifactManager.instance.IsArtifactEnabled(RoR2Content.Artifacts.friendlyFireArtifactDef))
             {
                 if (!self.body)
                     return null;

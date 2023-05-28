@@ -30,7 +30,7 @@ namespace WellRoundedBalance.Gamemodes.Eclipse
                 c.EmitDelegate<Func<float, HealthComponent, DamageInfo, float>>((orig, healthComponent, damageInfo) =>
                 {
                     var fallDamage = (damageInfo.damageType & DamageType.FallDamage) > DamageType.Generic;
-                    var isSelfDamage = damageInfo.attacker == null && healthComponent.body.gameObject && !fallDamage;
+                    var isSelfDamage = damageInfo.attacker == null && healthComponent.body.gameObject || fallDamage;
                     if (isSelfDamage)
                     {
                         return 0f;

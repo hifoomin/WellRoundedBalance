@@ -43,7 +43,8 @@
 - Reworked Razorwire to **passively deal 180% (+180% per stack) damage to all enemies within 13m while out of danger**. (I don't have any rework ideas, this still sucks conceptually).
 - Reworked Defense Nucleus to **give 10 armor and fire a laser lasting 5s, dealing 70% (+70% per stack) damage per second for every second of your base equipment cooldown**.
 - Made all printers limited in use (3 for White, 2 for Green, 1 for Red, 2 for Yellow)
-- Fixed Glacial Elites.
+- Made Eclipse 8 not take fall damage into account.
+- Took a Major L to Glacial Elites, spent a solid week trying to fix themm and couldn't, so their ice pillars are currently disabled.
 - - Small green and yellow stacking rebalance with printer and movement changes. ~HIFU
 
 # 1.3.7 Patch Notes

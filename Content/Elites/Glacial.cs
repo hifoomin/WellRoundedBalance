@@ -317,10 +317,12 @@ namespace WellRoundedBalance.Elites
             public float timer;
             public float interval = 7f;
             public int projectileCount = 10;
+            public CharacterBody body;
 
             public void Start()
             {
-                projectileCount = Eclipse3.CheckEclipse() ? 15 : 10;
+                body = GetComponent<CharacterBody>();
+                projectileCount = (int)Util.Remap(body.baseMaxHealth, 0f, 900f, Eclipse3.CheckEclipse() ? 8f : 6f, Eclipse3.CheckEclipse() ? 16f : 12f);
             }
 
             public void FixedUpdate()

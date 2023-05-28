@@ -26,15 +26,23 @@ Scaling is now linear but more aggressive, meaning it will be faster in the earl
 There are too many to list here, so please check the Google Doc for more information. Here are some examples:
 | Icon | Name | Description |
 |---|---|---|
-| <img src="https://static.wikia.nocookie.net/riskofrain2_gamepedia_en/images/c/c4/Hunter%27s_Harpoon.png/revision/latest?cb=20220302043224" width="24"/> | Hunter's Harpoon | Killing an enemy increases movement speed by 16%, up to 3 (+2 per stack) times for 5 seconds. |
-| <img src="https://static.wikia.nocookie.net/riskofrain2_gamepedia_en/images/f/ff/Pocket_I.C.B.M..png/revision/latest?cb=20220302043224" width="24"/> | Pocket I.C.B.M. | All missile items and equipment fire an additional missile. Gain a 10% (+10% per stack) chance to fire a missile that deals 150% TOTAL damage. |
-| <img src="https://static.wikia.nocookie.net/riskofrain2_gamepedia_en/images/9/91/Symbiotic_Scorpion.png/revision/latest?cb=20220302052918" width="24"/> | Symbiotic Scorpion | Inflict venom on hit, dealing 750% (+200% per stack) base damage over 5s and stealing 20 (+10 per stack) armor for 5s. |
+| <img src="https://static.wikia.nocookie.net/riskofrain2_gamepedia_en/images/c/c4/Hunter%27s_Harpoon.png/revision/latest?cb=20220302043224" width="48"/> | Hunter's Harpoon | Killing an enemy increases movement speed by 16%, up to 3 (+3 per stack) times for 5 seconds. |
+| <img src="" width="48"/> | Ignition Tank | Gain a 15% chance to ignite enemies on hit. Ignite effects deal +200% (+200% per stack) more damage over time. |
+| <img src="https://static.wikia.nocookie.net/riskofrain2_gamepedia_en/images/f/ff/Pocket_I.C.B.M..png/revision/latest?cb=20220302043224" width="48"/> | Pocket I.C.B.M. | All missile items and equipment fire an additional missile. Gain a 10% (+10% per stack) chance to fire a missile that deals 150% TOTAL damage. |
+| <img src="https://static.wikia.nocookie.net/riskofrain2_gamepedia_en/images/9/91/Symbiotic_Scorpion.png/revision/latest?cb=20220302052918" width="48"/> | Symbiotic Scorpion | Inflict venom on hit, dealing 750% (+200% per stack) base damage over 5s and stealing 20 (+10 per stack) armor for 5s. |
+| <img src="" width="48"/> | Defense Nucleus | Gain 15 armor. Upon using your equipment, unleash a devastating laser for 70% (+70% per stack)damage per second for every second of your equipment's base cooldown. |
+| <img src="" width="48"/> | Planula | After standing still for 0.5 seconds, summon the unmatched power of the sun that ignites enemies every 0.35s for 5s (+5s per stack). |
+| <img src="" width="48"/> | Focused Convergence | Increase teleporter event rewards by 2 (+2 per stack). Teleporter events are 200% (+200% per stack) harder. |
 
 ## Bazaar Reworks
 There are now four lunar pods where the items were previously, along with a table containing two random Heresy items that no longer appear in the normal lunar pool. The slab (lunar reroller) has been removed, as it no longer serves a purpose.
 
 ## Elite Reworks
-Elites now only have increased health (4x for T1 and 6x for T2) and much more pronounced, unique, and interesting effects. They no longer have increased damage. Check the WRB Google Doc for more information.
+Elites now only have increased health (4x for T1 and 6x for T2) and much more pronounced, unique, and interesting effects. They no longer have increased damage. Here are some examples:
+| Name | Description |
+|---|---|
+| Glacial | Slows on hit whenever it hits anything, including terrain in a small AoE with falloff. Every 7s, summon up to 12 destructible ice pillars, count depending on base maximum health, that block movement. Upon death, spawn a large glacial explosion that freezes (this one is the same as vanilla). |
+| Overloading | Passively has +50% increased movement speed. Passively teleports every 6s for 10-30m of distance. Upon teleporting, creates a sphere that grants all allies +50% movement speed for 6s with a radius of 20-45m depending on base maximum health.
 
 ## Interactable Reworks
 - Lunar pods now drop a lunar potential with a choice between 2 non-Heresy items when opened.
