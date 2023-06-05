@@ -1,7 +1,7 @@
 namespace WellRoundedBalance.Utils {
     public static class AddressableUtils {
         public static T Load<T>(this string path) {
-            return Addressables.LoadAssetAsync<T>("RoR2/Base/Titan/TitanRockController.prefab").WaitForCompletion();
+            return Addressables.LoadAssetAsync<T>(path).WaitForCompletion();
         }
 
         public static T LoadComponent<T>(this string path) where T : Component
