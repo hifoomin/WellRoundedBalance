@@ -54,6 +54,7 @@ namespace WellRoundedBalance.Items.Greens
             slow50.canStack = true;
             slow50.buffColor = new Color32(173, 156, 105, 255);
             slow50.iconSprite = Sprite.Create(slowIcon, new Rect(0f, 0f, slowIcon.width, slowIcon.height), new Vector2(0f, 0f));
+            slow50.isDebuff = true;
 
             slow50.name = "Chronobauble Slow";
 

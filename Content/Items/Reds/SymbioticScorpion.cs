@@ -46,7 +46,7 @@ namespace WellRoundedBalance.Items.Reds
 
             armorReduction = ScriptableObject.CreateInstance<BuffDef>();
             armorReduction.isHidden = true;
-            armorReduction.isDebuff = true;
+            // armorReduction.isDebuff = true; - this is what makes it doublecount
             armorReduction.canStack = false;
 
             armorGain = ScriptableObject.CreateInstance<BuffDef>();
