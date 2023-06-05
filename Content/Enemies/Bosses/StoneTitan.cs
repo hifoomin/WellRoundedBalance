@@ -83,13 +83,13 @@ namespace WellRoundedBalance.Enemies.Bosses
         [ConfigField("New Laser Attack Proc Coefficient", 0.6f)]
         public static float SD_proc;
 
-        private static BodyIndex titanIndex;        
+        private static BodyIndex titanIndex;
         private static BodyIndex aurellioniteIndex;
         private static MasterCatalog.MasterIndex titanMasterIndex;
         private static MasterCatalog.MasterIndex aurellioniteMasterIndex;
         private static int laserIndex;
 
-        
+
 
         public override void Init()
         {
@@ -141,7 +141,49 @@ namespace WellRoundedBalance.Enemies.Bosses
             On.EntityStates.TitanMonster.RechargeRocks.OnEnter += RechargeRocks_OnEnter;
             On.EntityStates.TitanMonster.FireFist.OnEnter += FireFist_OnEnter;
             On.EntityStates.TitanMonster.FireMegaLaser.OnEnter += FireMegaLaser_OnEnter;
+            CharacterMaster.onStartGlobal += CharacterMaster_onStartGlobal;
+            CharacterBody.onBodyStartGlobal += CharacterBody_onBodyStartGlobal;
+            On.RoR2.TitanRockController.Start += TitanRockController_Start;
             Changes();
+        }
+
+        private void CharacterMaster_onStartGlobal(CharacterMaster master)
+        {
+            MasterCatalog.MasterIndex idx = master.masterIndex;
+            if (idx == titanMasterIndex || idx == aurellioniteMasterIndex)
+            {
+                var ai = master.GetComponent<BaseAI>();
+                ai.aimVectorMaxSpeed = Check(idx, NEW_ai_aimVectorMaxSpeed, ai_aimVectorMaxSpeed);
+                ai.aimVectorDampTime = Check(idx, NEW_ai_aimVectorDampTime, ai_aimVectorDampTime);
+            }
+
+        }
+
+        private void CharacterBody_onBodyStartGlobal(CharacterBody body)
+        {
+            BodyIndex idx = body.bodyIndex;
+            if (idx == titanIndex || idx == aurellioniteIndex)
+            {
+                body.baseDamage = Check(idx, NEW_titanBody_baseDamage, titanBody_baseDamage);
+                body.levelDamage = Check(idx, NEW_titanBody_levelDamage, titanBody_levelDamage);
+                var laser = body.skillLocator.special.skillDef;
+                if (laser.skillIndex == laserIndex) laser.activationState = Check(idx, NEW_laserSD_activationState, laserSD_activationState);
+            }
+
+        }
+
+        private void TitanRockController_Start(On.RoR2.TitanRockController.orig_Start orig, TitanRockController self)
+        {
+            BodyIndex idx = self.Networkowner.GetComponent<CharacterBody>().bodyIndex;
+            if (idx == titanIndex || idx == aurellioniteIndex)
+            {
+                self.GetComponent<DestroyOnTimer>().duration = Check(idx, NEW_destroyOnTimer_duration, destroyOnTimer_duration);
+                self.startDelay = Check(idx, NEW_tit_startDelay, tit_startDelay);
+                self.fireInterval = Check(idx, NEW_tit_fireInterval, tit_fireInterval);
+                self.damageCoefficient = Check(idx, NEW_tit_damageCoefficient, tit_damageCoefficient);
+                self.damageForce = Check(idx, NEW_tit_damageForce, tit_damageForce);
+            }
+            orig(self);
         }
 
         private static T Check<T>(EntityState self, T NEW, T OLD) => Check(self.outer.commonComponents.characterBody.bodyIndex, NEW, OLD);
@@ -208,41 +250,6 @@ namespace WellRoundedBalance.Enemies.Bosses
         {
             ContentAddition.AddEntityState(typeof(LaserAttack), out _);
             NEW_laserSD_activationState = new SerializableEntityStateType(typeof(LaserAttack));
-
-            CharacterMaster.onStartGlobal += (master) =>
-            {
-                MasterCatalog.MasterIndex idx = master.masterIndex;
-                if (idx == titanMasterIndex || idx == aurellioniteMasterIndex)
-                {
-                    var ai = master.GetComponent<BaseAI>();
-                    ai.aimVectorMaxSpeed = Check(idx, NEW_ai_aimVectorMaxSpeed, ai_aimVectorMaxSpeed);
-                    ai.aimVectorDampTime = Check(idx, NEW_ai_aimVectorDampTime, ai_aimVectorDampTime);
-                }
-            };
-            CharacterBody.onBodyStartGlobal += (body) =>
-            {
-                BodyIndex idx = body.bodyIndex;
-                if (idx == titanIndex || idx == aurellioniteIndex)
-                {
-                    body.baseDamage = Check(idx, NEW_titanBody_baseDamage, titanBody_baseDamage);
-                    body.levelDamage = Check(idx, NEW_titanBody_levelDamage, titanBody_levelDamage);
-                    var laser = body.skillLocator.special.skillDef;
-                    if (laser.skillIndex == laserIndex) laser.activationState = Check(idx, NEW_laserSD_activationState, laserSD_activationState);
-                }
-            };
-            On.RoR2.TitanRockController.Start += (orig, self) =>
-            {
-                BodyIndex idx = self.Networkowner.GetComponent<CharacterBody>().bodyIndex;
-                if (idx == titanIndex || idx == aurellioniteIndex)
-                {
-                    self.GetComponent<DestroyOnTimer>().duration = Check(idx, NEW_destroyOnTimer_duration, destroyOnTimer_duration);
-                    self.startDelay = Check(idx, NEW_tit_startDelay, tit_startDelay);
-                    self.fireInterval = Check(idx, NEW_tit_fireInterval, tit_fireInterval);
-                    self.damageCoefficient = Check(idx, NEW_tit_damageCoefficient, tit_damageCoefficient);
-                    self.damageForce = Check(idx, NEW_tit_damageForce, tit_damageForce);
-                }
-                orig(self);
-            };
         }
     }
 
