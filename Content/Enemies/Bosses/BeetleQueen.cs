@@ -190,8 +190,6 @@ namespace WellRoundedBalance.Enemies.Bosses
         }
     }
 
-    // replace projectile if ai reoreder infally works ioajdocjnduie54ryguifdvbhncuijuero89isdfjvcu9ix
-
     public class Earthquake : BaseState
     {
         public static float baseDuration = 6f;

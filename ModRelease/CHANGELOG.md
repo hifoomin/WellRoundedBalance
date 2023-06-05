@@ -40,11 +40,13 @@
 - Nerfed War Horn Base Attack Speed Gain 30% => **25%**.
 - Nerfed War Horn Base Regeneration Gain 3 => **2**.
 - Nerfed Will-o'-the-Wisp Base Damage 240% => **200%**.
-- Reworked Razorwire to **passively deal 180% (+180% per stack) damage to all enemies within 13m while out of danger**. (I don't have any rework ideas, this still sucks conceptually).
 - Reworked Defense Nucleus to **give 10 armor and fire a laser lasting 5s, dealing 70% (+70% per stack) damage per second for every second of your base equipment cooldown**.
-- Made all printers limited in use (3 for White, 2 for Green, 1 for Red, 2 for Yellow)
-- Fixed Glacial Elites.
-- - Small green and yellow stacking rebalance with printer changes. ~HIFU
+- Reworked Razorwire to **passively deal 200% (+200% per stack) damage to all enemies within 13m while out of danger**. (I don't have any rework ideas, this still sucks conceptually).
+- Made all printers limited in use (3 for White, 2 for Green, 1 for Red, 2 for Yellow).
+- Made Eclipse 8 not take fall damage into account.
+- Took a Major L to Glacial Elites, spent a solid week trying to fix them and couldn't, so their ice pillars are currently disabled.
+- Fixed Oddly-shaped Opal ignoring max buff count.
+- - Small green and yellow stacking rebalance with printer and movement changes. ~HIFU
 
 # 1.3.7 Patch Notes
 - Added module toggle config.
@@ -155,7 +157,11 @@
 
 # 1.3.1 Patch Notes
 - Fixed VanillaVoid pre-made config.
+<<<<<<< HEAD
+>>>>>>> a8ef2a488cdd95c5f81009a9c1c0db6b66b61a42:ModRelease/CHANGELOG.md
+=======
 - - psuedopulse ! ! <img src="https://cdn.discordapp.com/emojis/1101199692974538753.webp?size=24&quality=lossless" width="24"/>
+>>>>>>> 949dd6deff98cc028651ab54e393a01342248c09
 
 # 1.3.0 Patch Notes - The *Compatibility Update May* Update
 - Added AugmentedVoidReaver.

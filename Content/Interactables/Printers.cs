@@ -72,7 +72,6 @@
             {
                 self.outer.GetComponent<ShopTerminalBehavior>().SetHasBeenPurchased(true);
                 self.outer.GetComponent<ShopTerminalBehavior>().SetNoPickup();
-                self.outer.GetComponent<PurchaseInteraction>().SetAvailable(false);
                 self.outer.GetComponent<PurchaseInteraction>().enabled = false;
             }
         }

@@ -51,6 +51,8 @@ namespace WellRoundedBalance.Items.Whites
             IL.RoR2.HealthComponent.ServerFixedUpdate += HealthComponent_ServerFixedUpdate;
             On.RoR2.Stage.Start += Stage_Start;
             On.RoR2.HealthComponent.UpdateLastHitTime += HealthComponent_UpdateLastHitTime1;
+
+            Mechanics.Health.Fragile.AddFragileItem(InternalPickup, new Mechanics.Health.Fragile.FragileInfo { fraction = healthThreshold * 100f });
         }
 
         private void HealthComponent_UpdateLastHitTime1(On.RoR2.HealthComponent.orig_UpdateLastHitTime orig, HealthComponent self, float damageValue, Vector3 damagePosition, bool damageIsSilent, GameObject attacker)

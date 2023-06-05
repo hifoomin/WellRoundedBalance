@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.ComponentModel;
+using System;
 using RoR2.Navigation;
 using WellRoundedBalance.Buffs;
 using System.Collections;
@@ -14,6 +15,7 @@ namespace WellRoundedBalance.Elites
         public override string Name => ":: Elites : Glacial";
         public static GameObject IcePillarPrefab;
         public static GameObject IcePillarWalkerPrefab;
+        public static GameObject DeathVFX = Utils.Paths.GameObject.OmniImpactVFXFrozen.Load<GameObject>();
 
         public override void Init()
         {
@@ -30,17 +32,93 @@ namespace WellRoundedBalance.Elites
             slow.isHidden = false;
 
             ContentAddition.AddBuffDef(slow);
-
+            /*
+             look into commit if you wanna restore this but FUcking J J J J J J J J J  J J  J J J J J  J J J  J J J  J J   J J J J  J JJ JJJJJJ J J J   J JJJ J JJJJJJ J  J  J J J J J  J  JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ         J J JJJ J J J J J J  J J  J  J J J J J J  J J J J  J J J  J  J J  J J  J J J
             IcePillarPrefab = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.MageIcewallPillarProjectile.Load<GameObject>(), "Glacial Elite Pillar");
 
-            /*
+            IcePillarPrefab.RemoveComponent<ProjectileDamage>();
+            IcePillarPrefab.RemoveComponent<ProjectileImpactExplosion>();
+
+            ProjectileSimple simple = IcePillarPrefab.AddComponent<ProjectileSimple>();
+            simple.lifetime = 7;
+
+            IcePillarPrefab.layer = LayerIndex.defaultLayer.intVal;
+
+            IcePillarPrefab.GetComponent<Rigidbody>().useGravity = false;
+            IcePillarPrefab.GetComponent<Rigidbody>().mass = 1;
+            IcePillarPrefab.GetComponent<Rigidbody>().freezeRotation = false;
+
+            GameObject proxDet = IcePillarPrefab.transform.GetChild(0).gameObject;
+            GameObject.Destroy(proxDet);
+
+            CharacterBody body = IcePillarPrefab.AddComponent<CharacterBody>();
+            body.baseNameToken = "WRB_GEP_NAME";
+            body.subtitleNameToken = "WRB_GEP_SUB";
+            body.bodyFlags = CharacterBody.BodyFlags.Masterless;
+            body.baseMaxHealth = 80f;
+            body.autoCalculateLevelStats = true;
+
+            LanguageAPI.Add("WRB_GEP_NAME", "Ice Pillar");
+            LanguageAPI.Add("WRB_GEP_SUB", "How The Fuck");
+
+            HealthComponent hc = IcePillarPrefab.AddComponent<HealthComponent>();
+            hc.body = body;
+
+            EntityStateMachine esm = IcePillarPrefab.AddComponent<EntityStateMachine>();
+            esm.customName = "Body";
+            esm.mainStateType = new(typeof(PillarEntryState));
+            esm.initialStateType = new(typeof(PillarEntryState));
+
+            NetworkStateMachine nsm = IcePillarPrefab.AddComponent<NetworkStateMachine>();
+            nsm.stateMachines = new EntityStateMachine[] { esm };
+
+            CharacterDeathBehavior cdb = IcePillarPrefab.AddComponent<CharacterDeathBehavior>();
+            cdb.deathStateMachine = esm;
+            cdb.deathState = new(typeof(PillarDeathState));
+
+            ConstantForce cf = IcePillarPrefab.AddComponent<ConstantForce>();
+            cf.force = new(0, -250f, 0);
+
+            ProjectileStickOnImpact psoi = IcePillarPrefab.AddComponent<ProjectileStickOnImpact>();
+            psoi.ignoreCharacters = true;
+            psoi.ignoreWorld = false;
+            psoi.alignNormals = false;
+            psoi.stickSoundString = "Play_item_proc_iceRingSpear";
+
+            GameObject modelBase = new("Model Base");
+            GameObject model = new("mdlIcePillar");
+            modelBase.transform.SetParent(IcePillarPrefab.transform);
+            model.transform.SetParent(modelBase.transform);
+
+            modelBase.layer = LayerIndex.entityPrecise.intVal;
+
+            ModelLocator locator = IcePillarPrefab.AddComponent<ModelLocator>();
+            locator.modelBaseTransform = modelBase.transform;
+            locator.modelTransform = model.transform;
+
+            HurtBoxGroup hbg = modelBase.AddComponent<HurtBoxGroup>();
+            ChildLocator cl = model.AddComponent<ChildLocator>();
+            BoxCollider col = modelBase.AddComponent<BoxCollider>();
+            col.size = new Vector3(1f, 1f, 1f);
+            col.contactOffset = 0.01f;
+            col.center = new Vector3(0f, 0f, 0f);
+
+            HurtBox box = modelBase.AddComponent<HurtBox>();
+            box.isSniperTarget = true;
+            box.isBullseye = true;
+            box.healthComponent = hc;
+
+            hbg.mainHurtBox = box;
+            hbg.hurtBoxes = new HurtBox[] { box };
+
+            modelBase.RemoveComponent<Rigidbody>(); for whatever reason unity does not recursively search up the tree when checking for rigidbodies and adds a duplicate here
+
             var projectileImpactExplosion = IcePillarPrefab.GetComponent<ProjectileImpactExplosion>();
             projectileImpactExplosion.blastRadius = 0f;
             projectileImpactExplosion.blastDamageCoefficient = 0f;
             projectileImpactExplosion.blastProcCoefficient = 0f;
-            projectileImpactExplosion.lifetime = 8f; // 8f - 0.05f * 8 for max without overlap
+            projectileImpactExplosion.lifetime = 8f; 8f - 0.05f * 8 for max without overlap
             projectileImpactExplosion.destroyOnEnemy = true;
-            */
 
             IcePillarPrefab.GetComponent<ProjectileImpactExplosion>().enabled = false;
 
@@ -49,8 +127,8 @@ namespace WellRoundedBalance.Elites
             projectileSimple.lifetime = 7f;
 
             var characterBody = IcePillarPrefab.AddComponent<CharacterBody>();
-            characterBody.baseMaxHealth = 90f;
-            characterBody.levelMaxHealth = 27f;
+            characterBody.baseMaxHealth = 80f;
+            characterBody.levelMaxHealth = 24f;
             characterBody.baseMoveSpeed = 0;
             characterBody.bodyFlags |= CharacterBody.BodyFlags.Masterless;
             characterBody.baseNameToken = "WRB_ICEPILLAR_NAME";
@@ -62,32 +140,51 @@ namespace WellRoundedBalance.Elites
             var healthComponent = IcePillarPrefab.AddComponent<HealthComponent>();
             healthComponent.dontShowHealthbar = false;
 
+            IcePillarPrefab.RemoveComponent<BoxCollider>();
+
             var hurtboxGroup = IcePillarPrefab.AddComponent<HurtBoxGroup>();
 
-            var hurtbox = IcePillarPrefab.AddComponent<HurtBox>();
+            var hopooGames = new GameObject("HOPOO GAMES ! !")
+            {
+                layer = LayerIndex.entityPrecise.intVal
+            };
+
+            var boxCollider = hopooGames.AddComponent<BoxCollider>();
+            boxCollider.size = new Vector3(1f, 1f, 10f);
+            boxCollider.isTrigger = false;
+            boxCollider.contactOffset = 0.01f;
+            boxCollider.center = new Vector3(0f, 2.84217114f, 1.54090f);
+
+            var hurtbox = hopooGames.AddComponent<HurtBox>();
+
             hurtbox.healthComponent = healthComponent;
             hurtbox.hurtBoxGroup = hurtboxGroup;
             hurtbox.isBullseye = true;
             hurtbox.isSniperTarget = true;
+            hurtbox.damageModifier = HurtBox.DamageModifier.Normal;
+
+            hopooGames.transform.parent = IcePillarPrefab.transform;
+            hurtboxGroup.mainHurtBox = hurtbox;
+            hurtboxGroup.hurtBoxes = new HurtBox[] { hurtbox };
 
             var esm = IcePillarPrefab.AddComponent<EntityStateMachine>();
             esm.customName = "Body";
             esm.initialStateType = new SerializableEntityStateType(typeof(Idle));
-            esm.mainStateType = new SerializableEntityStateType(typeof(GenericCharacterDeath));
+            esm.mainStateType = new SerializableEntityStateType(typeof(PillarDeathState));
 
             var nsm = IcePillarPrefab.AddComponent<NetworkStateMachine>();
             nsm.stateMachines = new EntityStateMachine[] { esm };
 
             var characterDeathBehavior = IcePillarPrefab.AddComponent<CharacterDeathBehavior>();
-            characterDeathBehavior.deathState = new SerializableEntityStateType(typeof(GenericCharacterDeath));
+            characterDeathBehavior.deathState = new SerializableEntityStateType(typeof(PillarDeathState));
             characterDeathBehavior.deathStateMachine = esm;
-            /*
+
             var newImpact = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.OmniImpactVFXFrozen.Load<GameObject>(), "Glacial Elite Pillar Broken VFX");
             newImpact.transform.localScale = new Vector3(3f, 3f, 3f);
 
             projectileImpactExplosion.impactEffect = newImpact;
-            */
-            IcePillarPrefab.layer = LayerIndex.world.intVal;
+
+            IcePillarPrefab.layer = LayerIndex.projectile.intVal;
             IcePillarPrefab.transform.localScale = new Vector3(2f, 3f, 2f);
 
             var newGhost = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.MageIcePillarGhost.Load<GameObject>(), "Glacial Elite Pillar Ghost");
@@ -96,10 +193,24 @@ namespace WellRoundedBalance.Elites
             mesh.localPosition = new Vector3(0f, 0f, -2.5f);
             mesh.transform.localScale = new Vector3(2f, 2f, 3f);
 
-            // var effectComponent = newGhost.AddComponent<EffectComponent>();
+            var effectComponent = newGhost.AddComponent<EffectComponent>();
 
             var projectileController = IcePillarPrefab.GetComponent<ProjectileController>();
             projectileController.ghostPrefab = newGhost;
+
+            var rigidBody = IcePillarPrefab.GetComponent<Rigidbody>();
+            rigidBody.collisionDetectionMode = CollisionDetectionMode.Continuous;
+            rigidBody.useGravity = true;
+            rigidBody.freezeRotation = true;
+
+            var constantForce = IcePillarPrefab.AddComponent<ConstantForce>();
+            constantForce.force = new Vector3(0f, -2500f, 0f);
+
+            var projectileStickOnImpact = IcePillarPrefab.AddComponent<ProjectileStickOnImpact>();
+            projectileStickOnImpact.ignoreCharacters = true;
+            projectileStickOnImpact.ignoreWorld = false;
+            projectileStickOnImpact.alignNormals = false;
+            projectileStickOnImpact.stickSoundString = "Play_item_proc_iceRingSpear";
 
             IcePillarWalkerPrefab = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.MageIcewallWalkerProjectile.Load<GameObject>(), "Glacial Elite Pillar Walker");
             var projectileMageFirewallWalkerController = IcePillarWalkerPrefab.GetComponent<ProjectileMageFirewallWalkerController>();
@@ -109,21 +220,24 @@ namespace WellRoundedBalance.Elites
             projectileCharacterController.lifetime = 0.5f;
             projectileCharacterController.velocity = 0.01f;
 
-            // ContentAddition.AddEffect(newGhost);
-            // ContentAddition.AddEffect(newImpact);
+            ContentAddition.AddEffect(newGhost);
+            ContentAddition.AddEffect(newImpact);
             PrefabAPI.RegisterNetworkPrefab(IcePillarPrefab);
             PrefabAPI.RegisterNetworkPrefab(IcePillarWalkerPrefab);
-
+            ContentAddition.AddBody(IcePillarPrefab);
+            ContentAddition.AddProjectile(IcePillarPrefab);
+            */
             base.Init();
         }
 
         public override void Hooks()
         {
+            // ContentAddition.AddEntityState(typeof(PillarDeathState), out _);
             IL.RoR2.GlobalEventManager.OnHitEnemy += GlobalEventManager_OnHitEnemy;
             On.RoR2.GlobalEventManager.OnHitAll += GlobalEventManager_OnHitAll;
             RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
             IL.RoR2.CharacterModel.UpdateOverlays += CharacterModel_UpdateOverlays;
-            CharacterBody.onBodyInventoryChangedGlobal += CharacterBody_onBodyInventoryChangedGlobal;
+            // CharacterBody.onBodyInventoryChangedGlobal += CharacterBody_onBodyInventoryChangedGlobal;
         }
 
         private void GlobalEventManager_OnHitAll(On.RoR2.GlobalEventManager.orig_OnHitAll orig, GlobalEventManager self, DamageInfo damageInfo, GameObject hitObject)
@@ -276,13 +390,16 @@ namespace WellRoundedBalance.Elites
 
         public class GlacialController : MonoBehaviour
         {
+            /*
             public float timer;
             public float interval = 7f;
             public int projectileCount = 10;
+            public CharacterBody body;
 
             public void Start()
             {
-                projectileCount = Eclipse3.CheckEclipse() ? 15 : 10;
+                body = GetComponent<CharacterBody>();
+                projectileCount = (int)Util.Remap(body.baseMaxHealth, 0f, 900f, Eclipse3.CheckEclipse() ? 8f : 6f, Eclipse3.CheckEclipse() ? 16f : 12f);
             }
 
             public void FixedUpdate()
@@ -306,15 +423,12 @@ namespace WellRoundedBalance.Elites
                         damage = 0,
                         force = 0,
                         owner = gameObject,
-                        position = point + new Vector3(i * 2f, 0, 0),
+                        position = point + new Vector3(i * 2f, 7f + i / 5f, 0),
                         rotation = Quaternion.Euler(270f, 0f, 0f),
                         projectilePrefab = IcePillarPrefab
                     };
                     ProjectileManager.instance.FireProjectile(fpi);
-                    /*
-                    var pillar = GameObject.Instantiate(IcePillarPrefab, point + new Vector3(i * 2f, 0, 0), Quaternion.Euler(270f, 0f, 0f));
-                    NetworkServer.Spawn(pillar);
-                    */
+
                     yield return new WaitForSeconds(0.05f);
                 }
 
@@ -353,6 +467,55 @@ namespace WellRoundedBalance.Elites
                 Vector3[] validPositions;
                 validPositions = PickValidPositions(5, 15, nodes);
                 return validPositions.GetRandom();
+            }
+            */
+        }
+    }
+
+    public class PillarDeathState : GenericCharacterDeath
+    {
+        public override void OnEnter()
+        {
+            base.OnEnter();
+            bodyPreservationDuration = 0f;
+        }
+
+        public override void FixedUpdate()
+        {
+            base.FixedUpdate();
+        }
+
+        public override void OnExit()
+        {
+            base.OnExit();
+            EffectManager.SpawnEffect(Glacial.DeathVFX, new EffectData { origin = transform.position, scale = 2f }, true);
+            Destroy(modelLocator.modelBaseTransform);
+        }
+    }
+
+    public class PillarEntryState : BaseState
+    {
+        private ProjectileController controller;
+        private bool hasDone = false;
+
+        public override void OnEnter()
+        {
+            base.OnEnter();
+            controller = GetComponent<ProjectileController>();
+            modelLocator.modelBaseTransform.gameObject.RemoveComponent<Rigidbody>();
+            modelLocator.modelBaseTransform.localPosition = Vector3.zero;
+            modelLocator.modelBaseTransform.rotation = Quaternion.identity;
+            modelLocator.modelBaseTransform.localScale = new(1, 1, 0.5f);
+        }
+
+        public override void FixedUpdate()
+        {
+            base.FixedUpdate();
+
+            if (!hasDone && controller && controller.ghost)
+            {
+                controller.ghost.transform.SetParent(base.modelLocator.modelBaseTransform);
+                hasDone = true;
             }
         }
     }

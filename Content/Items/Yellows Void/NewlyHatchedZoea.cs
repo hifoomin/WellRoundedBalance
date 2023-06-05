@@ -7,7 +7,8 @@
 
         public override string PickupText => "Periodically recruit allies from the <style=cIsVoid>Void</style>. <style=cIsVoid>Corrupts all boss items</style>.";
 
-        public override string DescText => "Every <style=cIsUtility>60</style><style=cStack> (-50% per stack)</style> seconds, gain a random <style=cIsVoid>Void</style> ally. Can have up to <style=cIsUtility>1</style><style=cStack> (+1 per stack)</style> allies at a time. <style=cIsVoid>Corrupts all boss items</style>.";
+        public override string DescText => "Every <style=cIsUtility>60</style><style=cStack> (-50% per stack)</style> seconds, gain a random <style=cIsVoid>Void</style> ally" +
+                                           (voidAllyDamageBonus > 0 ? " with <style=cIsDamage>+" + voidAllyDamageBonus * 10 + "% damage</style>" : "") + ". Can have up to <style=cIsUtility>1</style><style=cStack> (+1 per stack)</style> allies at a time. <style=cIsVoid>Corrupts all boss items</style>.";
 
         [ConfigField("Void Ally Damage Bonus", "1 = 10%", 3)]
         public static int voidAllyDamageBonus;

@@ -82,6 +82,7 @@ namespace WellRoundedBalance
         public static Hook hook;
 
         private bool mp = false;
+        private bool hasZanySoupd = false;
 
         public void Awake()
         {
@@ -182,12 +183,16 @@ namespace WellRoundedBalance
         private void BaseMainMenuScreen_OnEnter(On.RoR2.UI.MainMenu.BaseMainMenuScreen.orig_OnEnter orig, RoR2.UI.MainMenu.BaseMainMenuScreen self, RoR2.UI.MainMenu.MainMenuController mainMenuController)
         {
             orig(self, mainMenuController);
-            WRBLogger.LogDebug("==+----------------==ZANY==----------------+==");
-            for (int j = 0; j < 3; j++)
+            if (!hasZanySoupd)
             {
-                WRBLogger.LogMessage("Thanks for playing Well Rounded Balance <3");
+                WRBLogger.LogDebug("==+----------------==ZANY==----------------+==");
+                for (int j = 0; j < 3; j++)
+                {
+                    WRBLogger.LogMessage("Thanks for playing Well Rounded Balance <3");
+                }
+                WRBLogger.LogDebug("==+----------------==GOOFY==----------------+==");
+                hasZanySoupd = true;
             }
-            WRBLogger.LogDebug("==+----------------==GOOFY==----------------+==");
         }
 
         private void InfernoCompat()

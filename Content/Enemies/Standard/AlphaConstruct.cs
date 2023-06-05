@@ -4,12 +4,6 @@
     {
         public override string Name => ":: Enemies :: Alpha Construct";
 
-        [ConfigField("Should replace Blind Pests on Siphoned Forest?", "", true)]
-        public static bool shouldReplaceBlindPestsOnSiphonedForest;
-
-        [ConfigField("Should spawn on Commencement?", "", false)]
-        public static bool shouldSpawnOnCommencement;
-
         public override void Init()
         {
             base.Init();
@@ -18,7 +12,6 @@
         public override void Hooks()
         {
             On.EntityStates.MinorConstruct.Weapon.FireConstructBeam.OnEnter += FireConstructBeam_OnEnter;
-            Changes();
         }
 
         private void FireConstructBeam_OnEnter(On.EntityStates.MinorConstruct.Weapon.FireConstructBeam.orig_OnEnter orig, EntityStates.MinorConstruct.Weapon.FireConstructBeam self)
@@ -26,10 +19,6 @@
             if (!Main.IsInfernoDef())
                 self.baseDuration = 0.3f;
             orig(self);
-        }
-
-        private void Changes()
-        {
         }
     }
 }

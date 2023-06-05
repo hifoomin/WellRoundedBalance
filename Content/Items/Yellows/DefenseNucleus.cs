@@ -10,7 +10,7 @@ namespace WellRoundedBalance.Items.Yellows
 
         public override string PickupText => "Reduce damage taken. Upon using your equipment, fire a devastating laser.";
 
-        public override string DescText => "Gain <style=cIsHealing>" + armorGain + " armor</style>. Upon using your <style=cIsDamage>equipment</style>, unleash a devastating laser for <style=cIsDamage>" + d(baseDamagePerSecond) + "</style> <style=cStack>(+" + d(damagePerSecondPerStack) + " per stack)</style> damage per second for every <style=cIsUtility>second</style> of your <style=cIsUtility>equipment cooldown</style>.";
+        public override string DescText => "Gain <style=cIsHealing>" + armorGain + " armor</style>. Upon using your <style=cIsDamage>equipment</style>, unleash a devastating laser for <style=cIsDamage>" + d(baseDamagePerSecond) + "</style> <style=cStack>(+" + d(damagePerSecondPerStack) + " per stack)</style> damage per second for every <style=cIsUtility>second</style> of your <style=cIsUtility>equipment's base cooldown</style>.";
 
         [ConfigField("Armor Gain", "", 10f)]
         public static float armorGain;

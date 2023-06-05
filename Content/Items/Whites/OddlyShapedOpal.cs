@@ -111,6 +111,7 @@ namespace WellRoundedBalance.Items.Whites
         public TeamIndex ownerIndex;
         public GameObject radiusIndicator;
         public int maxBuffs;
+        public int buffCount = 0;
 
         private void Start()
         {
@@ -119,7 +120,9 @@ namespace WellRoundedBalance.Items.Whites
             var radiusTrans = radiusIndicator.transform.GetChild(1);
             radiusTrans.localScale = new Vector3(OddlyShapedOpal.radius * 2f, OddlyShapedOpal.radius * 2f, OddlyShapedOpal.radius * 2f);
             if (stack > 0)
+            {
                 maxBuffs = OddlyShapedOpal.maxBuffCount + OddlyShapedOpal.maxBuffCountStack * (stack - 1);
+            }
             else maxBuffs = 0;
         }
 
@@ -131,8 +134,9 @@ namespace WellRoundedBalance.Items.Whites
                 return;
             }
 
-            var count = 0;
-            for (TeamIndex firstIndex = TeamIndex.Neutral; firstIndex < TeamIndex.Count && count < maxBuffs; firstIndex++)
+            buffCount = 0;
+
+            for (TeamIndex firstIndex = TeamIndex.Neutral; firstIndex < TeamIndex.Count && buffCount < maxBuffs; firstIndex++)
             {
                 if (firstIndex == ownerIndex || firstIndex <= TeamIndex.Neutral)
                 {
@@ -141,13 +145,13 @@ namespace WellRoundedBalance.Items.Whites
 
                 foreach (TeamComponent teamComponent in TeamComponent.GetTeamMembers(firstIndex))
                 {
-                    if ((teamComponent.transform.position - body.corePosition).sqrMagnitude <= radiusSquared)
+                    if ((teamComponent.transform.position - body.corePosition).sqrMagnitude <= radiusSquared && buffCount < maxBuffs)
                     {
-                        count++;
+                        buffCount++;
                     }
                 }
             }
-            UpdateBuff(count);
+            UpdateBuff(buffCount);
             timer = 0f;
         }
 

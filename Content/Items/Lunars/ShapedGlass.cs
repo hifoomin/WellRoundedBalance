@@ -32,7 +32,7 @@ namespace WellRoundedBalance.Items.Lunars
                 var stack = sender.inventory.GetItemCount(RoR2Content.Items.LunarDagger);
                 if (stack > 0)
                 {
-                    args.damageMultAdd += 0.75f * stack;
+                    args.damageMultAdd += damage * stack;
                     args.baseCurseAdd += Mathf.Pow(1 / 0.5f, stack) - 1;
                 }
             }

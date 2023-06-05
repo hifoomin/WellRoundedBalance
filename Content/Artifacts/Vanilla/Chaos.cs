@@ -32,7 +32,6 @@ namespace WellRoundedBalance.Artifacts.Vanilla
                 self.enemySearch.searchDirection = self.bodyInputBank.aimDirection;
                 self.enemySearch.maxAngleFilter = full360Vision ? 180f : 90f;
                 self.enemySearch.filterByLoS = filterByLoS;
-                self.enemySearch.FilterOutGameObject(self.gameObject);
                 self.enemySearch.RefreshCandidates();
                 return self.enemySearch.GetResults().FirstOrDefault();
             }
