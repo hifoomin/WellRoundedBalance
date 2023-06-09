@@ -14,7 +14,7 @@ namespace WellRoundedBalance.Items.Whites
 
         public override string DescText =>
             StackDesc(armorGain, armorGainStack, init => $"<style=cIsHealing>Increase armor</style> by <style=cIsHealing>{init}</style>{{Stack}} for every enemy within <style=cIsHealing>" + radius + "m</style> up to <style=cIsHealing>" + maxBuffCount + "</style>" +
-            (maxBuffCountStack > 0 ? " <style=cStack>(+" + maxBuffCount + " per stack)</style>" : "") + " times.", noop);
+            (maxBuffCountStack > 0 ? " <style=cStack>(+" + maxBuffCount + " per stack)</style>" : "") + " times.");
 
         [ConfigField("Armor Gain", 2.5f)]
         public static float armorGain;
