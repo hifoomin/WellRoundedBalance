@@ -1,7 +1,4 @@
-﻿using Mono.Cecil.Cil;
-using MonoMod.Cil;
-
-namespace WellRoundedBalance.Items.Greens
+﻿namespace WellRoundedBalance.Items.Greens
 {
     public class HuntersHarpoon : ItemBase<HuntersHarpoon>
     {

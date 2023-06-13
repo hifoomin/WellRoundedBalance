@@ -25,7 +25,11 @@ namespace WellRoundedBalance.Enemies.Bosses
 
         private void FireMegaLaser_OnEnter(On.EntityStates.TitanMonster.FireMegaLaser.orig_OnEnter orig, EntityStates.TitanMonster.FireMegaLaser self)
         {
-            EntityStates.TitanMonster.FireMegaLaser.damageCoefficient = 1.6f;
+            if (self is not EntityStates.TitanMonster.FireGoldMegaLaser)
+            {
+                EntityStates.TitanMonster.FireMegaLaser.damageCoefficient = 1.6f;
+            }
+
             orig(self);
         }
 

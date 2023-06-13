@@ -75,7 +75,7 @@ namespace WellRoundedBalance.Interactables
         {
             self.maxItemsToScrapAtATime = maxScrapCountPerUse;
             var counter = self.gameObject.GetComponent<ScrapperUseCounter>();
-            counter.useCount = maxUses * Run.instance.livingPlayerCount;
+            counter.useCount = maxUses * Run.instance.participatingPlayerCount;
             orig(self);
         }
 

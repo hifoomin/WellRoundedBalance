@@ -1,5 +1,5 @@
-﻿using Mono.Cecil.Cil;
-using MonoMod.Cil;
+﻿using System;
+using System.Collections;
 
 namespace WellRoundedBalance.Items.Greens
 {
@@ -8,20 +8,62 @@ namespace WellRoundedBalance.Items.Greens
         public override string Name => ":: Items :: Greens :: Harvesters Scythe";
         public override ItemDef InternalPickup => RoR2Content.Items.HealOnCrit;
 
-        public override string PickupText => "'Backstabs' heal a percentage of missing health.";
+        public override string PickupText => "Activating your Secondary skill also swings a scythe. Recharges over time.";
 
-        public override string DescText => "<style=cIsDamage>Backstabs</style> <style=cIsHealing>heal</style> for <style=cIsHealing>" + d(baseMissingHealthHealingPercent) + "</style> <style=cStack>(+" + d(missingHealthHealingPercentPerStack) + " per stack)</style> of your <style=cIsHealing>missing health</style>.";
+        public override string DescText => "Activating your <style=cIsUtility>Secondary skill</style> also swings a <style=cIsDamage>scythe</style> that deals <style=cIsDamage>" + d(baseDamage) + "</style>" +
+                                           (damagePerStack > 0 ? " <style=cStack>(+" + d(damagePerStack) + " per stack)</style>" : "") +
+                                           " base damage. Hitting enemies with the <style=cIsDamage>scythe</style> grants <style=cIsDamage>+" + baseCritGain + "%</style>" +
+                                           (critGainPerStack > 0 ? " <style=cStack>(+" + critGainPerStack + "% per stack)</style>" : "") + " <style=cIsDamage>crit chance</style> for <style=cIsDamage>" + baseBuffDuration + "s</style>" +
+                                           (buffDurationPerStack > 0 ? " <style=cStack>(+" + buffDurationPerStack + "s per stack)</style>" : "") + ". The <style=cIsDamage>scythe</style> renews over <style=cIsDamage>" + cooldown + "</style> seconds.";
 
-        private static ProcType Backstab = (ProcType)38921;
+        [ConfigField("Base Damage", 2f)]
+        public static float baseDamage;
 
-        [ConfigField("Base Missing Health Healing Percent", "Decimal. Formula for healing: (Maximum Health - Current Health) * (Base Missing Health Healing Percent + (Missing Health Healing Percent Per Stack * (Harvesters Scythe - 1)))", 0.018f)]
-        public static float baseMissingHealthHealingPercent;
+        [ConfigField("Damage Per Stack", 0f)]
+        public static float damagePerStack;
 
-        [ConfigField("Missing Health Healing Percent Per Stack", "Decimal. Formula for healing: (Maximum Health - Current Health) * (Base Missing Health Healing Percent + (Missing Health Healing Percent Per Stack * (Harvesters Scythe - 1)))", 0.009f)]
-        public static float missingHealthHealingPercentPerStack;
+        [ConfigField("Cooldown", 3f)]
+        public static float cooldown;
+
+        [ConfigField("Base Crit Gain", 30f)]
+        public static float baseCritGain;
+
+        [ConfigField("Crit Gain Per Stack", 30f)]
+        public static float critGainPerStack;
+
+        [ConfigField("Base Buff Duration", 4f)]
+        public static float baseBuffDuration;
+
+        [ConfigField("Buff Duration Per Stack", 0f)]
+        public static float buffDurationPerStack;
+
+        public static BuffDef scytheCooldown;
+        public static BuffDef scytheCrit;
 
         public override void Init()
         {
+            scytheCooldown = ScriptableObject.CreateInstance<BuffDef>();
+            scytheCooldown.isCooldown = true;
+            scytheCooldown.isDebuff = false;
+            scytheCooldown.isHidden = false;
+            scytheCooldown.canStack = false;
+            scytheCooldown.buffColor = new Color(0.4151f, 0.4014f, 0.4014f, 1f); // wolfo consistency :kirn:
+            scytheCooldown.iconSprite = Utils.Paths.BuffDef.bdPrimarySkillShurikenBuff.Load<BuffDef>().iconSprite;
+            scytheCooldown.name = "Harvesters Scythe Cooldown";
+
+            ContentAddition.AddBuffDef(scytheCooldown);
+
+            scytheCrit = ScriptableObject.CreateInstance<BuffDef>();
+            scytheCrit.isCooldown = false;
+            scytheCrit.isDebuff = false;
+            scytheCrit.isHidden = false;
+            scytheCrit.canStack = false;
+            scytheCrit.buffColor = new Color32(50, 200, 50, 255);
+            scytheCrit.iconSprite = Utils.Paths.BuffDef.bdFullCrit.Load<BuffDef>().iconSprite;
+            scytheCrit.name = "Harvesters Scythe Crit";
+
+            ContentAddition.AddBuffDef(scytheCrit);
+
             base.Init();
         }
 
@@ -29,7 +71,29 @@ namespace WellRoundedBalance.Items.Greens
         {
             IL.RoR2.GlobalEventManager.OnCrit += GlobalEventManager_OnCrit;
             IL.RoR2.CharacterBody.RecalculateStats += CharacterBody_RecalculateStats;
-            On.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
+            CharacterBody.onBodyInventoryChangedGlobal += CharacterBody_onBodyInventoryChangedGlobal;
+            RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
+        }
+
+        private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
+        {
+            if (sender && sender.inventory)
+            {
+                var stack = sender.inventory.GetItemCount(RoR2Content.Items.HealOnCrit);
+                if (stack > 0)
+                {
+                    args.critAdd += baseCritGain + critGainPerStack * (stack - 1);
+                }
+            }
+        }
+
+        private void CharacterBody_onBodyInventoryChangedGlobal(CharacterBody body)
+        {
+            if (NetworkServer.active)
+            {
+                var stack = body.inventory.GetItemCount(RoR2Content.Items.HealOnCrit);
+                body.AddItemBehavior<HarvestersScytheController>(stack);
+            }
         }
 
         private void CharacterBody_RecalculateStats(ILContext il)
@@ -67,47 +131,99 @@ namespace WellRoundedBalance.Items.Greens
                 Logger.LogError("Failed to apply Harvester's Scythe Deletion 1 hook");
             }
         }
+    }
 
-        private void HealthComponent_TakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo info)
+    public class HarvestersScytheController : CharacterBody.ItemBehavior
+    {
+        public SkillLocator skillLocator;
+        public float damage = 2f;
+        public float cooldown = 2f;
+        public float buffDur = 0;
+        public float critGain = 0;
+        public BoxCollider boxCollider;
+        public OverlapAttack overlapAttack;
+        public ModelLocator modelLocator;
+        public Transform modelTransform;
+        public HitBoxGroup hitBoxGroup;
+        public HitBox hitBox;
+
+        public void Start()
         {
-            orig(self, info);
+            modelLocator = GetComponent<ModelLocator>();
+            modelTransform = modelLocator?.modelTransform;
+            if (modelTransform && hitBox == null && hitBoxGroup == null && boxCollider == null)
+            {
+                /*
+                boxCollider = modelTransform.gameObject.AddComponent<BoxCollider>();
+                boxCollider.
+                */
+                // the fucking
+                // make the boxcollider real and give it a size similar to bandit's m2
+                // idk if the code for overlapattack works, idk how to check if it hit something
+                hitBox = modelTransform.gameObject.AddComponent<HitBox>();
+                hitBoxGroup = modelTransform.gameObject.AddComponent<HitBoxGroup>();
+                hitBoxGroup.groupName = "WRBScythe";
+                hitBoxGroup.hitBoxes = new HitBox[] { hitBox };
+            }
+            damage = HarvestersScythe.baseDamage + HarvestersScythe.damagePerStack * (stack - 1);
+            cooldown = HarvestersScythe.cooldown;
+            critGain = HarvestersScythe.baseCritGain + HarvestersScythe.critGainPerStack * (stack - 1);
+            buffDur = HarvestersScythe.baseBuffDuration + HarvestersScythe.buffDurationPerStack * (stack - 1);
+            skillLocator = GetComponent<SkillLocator>();
+            body.onSkillActivatedAuthority += Body_onSkillActivatedAuthority;
+        }
 
-            if (!info.attacker || info.procChainMask.HasProc(Backstab))
+        private void Body_onSkillActivatedAuthority(GenericSkill skill)
+        {
+            var body = skill.GetComponent<CharacterBody>();
+            if (!body)
             {
                 return;
             }
-
-            CharacterBody attacker = info.attacker.GetComponent<CharacterBody>();
-
-            if (!attacker || info.damageType.HasFlag(DamageType.DoT))
+            if (skill != skillLocator.secondary)
             {
                 return;
             }
-
-            var inventory = attacker.inventory;
-            if (!inventory)
+            if (body.HasBuff(HarvestersScythe.scytheCooldown))
             {
                 return;
             }
+            StartCoroutine(FireProjectile());
+            body.AddTimedBuff(HarvestersScythe.scytheCooldown, cooldown);
+        }
 
-            var stack = inventory.GetItemCount(RoR2Content.Items.HealOnCrit);
-
-            var vector = (attacker.corePosition - info.position) * -1;
-
-            if (BackstabManager.IsBackstab(vector, self.body) && stack > 0)
+        public IEnumerator FireProjectile()
+        {
+            overlapAttack = new()
             {
-                info.damageColorIndex = DamageColorIndex.WeakPoint;
-                info.procChainMask.AddProc(Backstab);
+                attacker = gameObject,
+                inflictor = gameObject,
+                teamIndex = TeamComponent.GetObjectTeam(gameObject),
+                damage = body.damage * damage,
+                forceVector = Vector3.zero,
+                pushAwayForce = 0,
+                attackerFiltering = AttackerFiltering.NeverHitSelf
+            };
+            if (modelLocator)
+            {
+                overlapAttack.hitBoxGroup = Array.Find(modelTransform.GetComponents<HitBoxGroup>(), (HitBoxGroup x) => x.groupName == "WRBScythe");
+            }
 
-                var healthComponent = attacker.healthComponent;
+            Util.PlaySound("Play_bandit_M2_shot", gameObject);
 
-                var healing = (healthComponent.fullHealth - healthComponent.health) * (baseMissingHealthHealingPercent + missingHealthHealingPercentPerStack * (stack - 1));
-
-                if (NetworkServer.active)
+            if (Util.HasEffectiveAuthority(gameObject))
+            {
+                if (overlapAttack.Fire(null))
                 {
-                    healthComponent.Heal(healing, info.procChainMask, true);
+                    body.AddTimedBuff(HarvestersScythe.scytheCrit, buffDur);
                 }
             }
+            yield return null;
+        }
+
+        public void OnDestroy()
+        {
+            body.onSkillActivatedAuthority -= Body_onSkillActivatedAuthority;
         }
     }
 }

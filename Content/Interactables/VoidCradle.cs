@@ -13,6 +13,9 @@ namespace WellRoundedBalance.Interactables
         public GameObject optionPanel;
         public static InteractableSpawnCard vradle;
 
+        [ConfigField("Curse Gain", "Decimal.", 0.1f)]
+        public static float curseGain;
+
         public override void Init()
         {
             base.Init();
@@ -210,7 +213,7 @@ namespace WellRoundedBalance.Interactables
                 body.inventory.GiveItem(GetCorruption(def), c);
                 CharacterMasterNotificationQueue.PushItemTransformNotification(body.master, def, GetCorruption(def), CharacterMasterNotificationQueue.TransformationType.ContagiousVoid);
                 interaction.SetAvailable(false);
-                float amount = body.healthComponent.fullCombinedHealth * 0.1f;
+                float amount = body.healthComponent.fullCombinedHealth * curseGain;
                 float curse = Mathf.RoundToInt(amount / body.healthComponent.fullCombinedHealth * 100f);
                 controller.networkUIPromptController.SetParticipantMaster(null);
 

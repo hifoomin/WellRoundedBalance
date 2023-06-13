@@ -48,12 +48,15 @@ namespace WellRoundedBalance.Interactables
         {
             var shrineBlood = Utils.Paths.InteractableSpawnCard.iscShrineBlood.Load<InteractableSpawnCard>();
             shrineBlood.maxSpawnsPerStage = shrineOfBloodMaxSpawnsPerStage;
+            shrineBlood.directorCreditCost = 0;
 
             var shrineBlood2 = Utils.Paths.InteractableSpawnCard.iscShrineBloodSandy.Load<InteractableSpawnCard>();
             shrineBlood2.maxSpawnsPerStage = shrineOfBloodMaxSpawnsPerStage;
+            shrineBlood2.directorCreditCost = 0;
 
             var shrineBlood3 = Utils.Paths.InteractableSpawnCard.iscShrineBloodSnowy.Load<InteractableSpawnCard>();
             shrineBlood3.maxSpawnsPerStage = shrineOfBloodMaxSpawnsPerStage;
+            shrineBlood3.directorCreditCost = 0;
 
             var shrineCombat = Utils.Paths.InteractableSpawnCard.iscShrineCombat.Load<InteractableSpawnCard>();
             shrineCombat.maxSpawnsPerStage = shrineOfCombatMaxSpawnsPerStage;

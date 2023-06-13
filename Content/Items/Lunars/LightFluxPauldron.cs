@@ -125,7 +125,7 @@ namespace WellRoundedBalance.Items.Lunars
             if (c.TryGotoNext(MoveType.Before,
                     x => x.MatchStloc(89),
                     x => x.MatchBr(out _),
-                    x => x.MatchLdloc(out _),
+                    x => x.MatchLdloc(87),
                     x => x.MatchLdcR4(0.5f)))
             {
                 c.Index += 3;
@@ -135,6 +135,8 @@ namespace WellRoundedBalance.Items.Lunars
             {
                 Logger.LogError("Failed to apply Light Flux Pauldron Cooldown hook");
             }
+
+            // this broke??? what the fuck
 
             c.Index = 0;
 

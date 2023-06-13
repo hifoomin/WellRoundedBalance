@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using R2API.ContentManagement;
 using MonoMod.RuntimeDetour;
 using HarmonyLib;
+using WellRoundedBalance.Items.ConsistentCategories;
 
 [assembly: HG.Reflection.SearchableAttribute.OptIn]
 
@@ -33,7 +34,7 @@ namespace WellRoundedBalance
         public const string PluginGUID = PluginAuthor + "." + PluginName;
         public const string PluginAuthor = "BALLS";
         public const string PluginName = "WellRoundedBalance";
-        public const string PluginVersion = "1.3.8";
+        public const string PluginVersion = "1.3.8.1";
         public static ConfigFile WRBAchievementConfig;
         public static ConfigFile WRBAllyConfig;
         public static ConfigFile WRBArtifactAddConfig;
@@ -105,6 +106,8 @@ namespace WellRoundedBalance
             WRBMechanicConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Mechanics.cfg", true);
             WRBModuleConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Modules.cfg", true);
             WRBSurvivorConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Survivors.cfg", true);
+
+            BetterItemCategories.enable = WRBItemConfig.Bind(":: Items : Changes :: Better Item Categories", "Enable item category changes?", true);
 
             enableAchievements = WRBModuleConfig.Bind(":: Module Toggles ::", "Enable Achievement changes?", true, "Disabling this could cause achievements to get locked again, if the unlockable method changed or got more difficult.");
             enableAllies = WRBModuleConfig.Bind(":: Module Toggles ::", "Enable Ally changes?", true);
