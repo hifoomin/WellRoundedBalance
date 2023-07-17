@@ -23,13 +23,16 @@ namespace WellRoundedBalance.Utils
             initList.Add(Name);
         }
 
-        public string noop(float f) => f.ToString();
-
         public string d(float f) => (f * 100f).ToString() + "%";
 
         public string m(float f) => f + "m";
 
         public string s(float f, string suffix) => f + (suffix.StartsWith("{Stack}") ? "" : " ") + suffix + (Mathf.Abs(f) > 1 ? "s" : string.Empty);
+
+        public static string StackDesc(float init, float stack, Func<float, string> initFn)
+        {
+            return StackDesc(init, stack, initFn, f => f.ToString());
+        }
 
         public static string StackDesc(float init, float stack, Func<float, string> initFn, Func<float, string> stackFn)
         {

@@ -8,7 +8,7 @@
         public override string PickupText => "Gain bonus max health.";
 
         public override string DescText =>
-            StackDesc(maximumHealthGain, maximumHealthGainStack, init => $"Increases <style=cIsHealing>maximum health</style> by <style=cIsHealing>{init}</style>{{Stack}}" + (levelHealthGain > 0 ? " and <style=cIsHealing>health per level</style> by <style=cIsHealing>" + levelHealthGain + "</style> <style=cStack>(+" + levelHealthGain + " per stack)</style>." : "."), noop);
+            StackDesc(maximumHealthGain, maximumHealthGainStack, init => $"Increases <style=cIsHealing>maximum health</style> by <style=cIsHealing>{init}</style>{{Stack}}" + (levelHealthGain > 0 ? " and <style=cIsHealing>health per level</style> by <style=cIsHealing>" + levelHealthGain + "</style> <style=cStack>(+" + levelHealthGain + " per stack)</style>." : "."));
 
         [ConfigField("Maximum Health Gain", 40f)]
         public static float maximumHealthGain;

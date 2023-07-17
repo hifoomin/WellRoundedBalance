@@ -12,8 +12,8 @@ namespace WellRoundedBalance.Items.Whites
         public override string PickupText => "Receive flat damage reduction from all attacks.";
 
         public override string DescText =>
-            StackDesc(flatDamageReduction, flatDamageReductionStack, init => $"Reduce all <style=cIsDamage>incoming damage</style> by <style=cIsDamage>{init}</style>{{Stack}}. ", noop) + "Cannot be reduced below " +
-            StackDesc(minimumDamage, minimumDamageStack, init => $"<style=cIsDamage>{init}</style>{{Stack}}", noop) +
+            StackDesc(flatDamageReduction, flatDamageReductionStack, init => $"Reduce all <style=cIsDamage>incoming damage</style> by <style=cIsDamage>{init}</style>{{Stack}}. ") + "Cannot be reduced below " +
+            StackDesc(minimumDamage, minimumDamageStack, init => $"<style=cIsDamage>{init}</style>{{Stack}}") +
             StackDesc(minimumPercentDamage, minimumPercentDamageStack, init => (minimumDamage > 0 || minimumDamageStack > 0 ? "or " : "") + $"<style=cIsDamage>{d(init)}</style>{{Stack}} of <style=cIsHealing>maximum health</style>", d) + ".";
 
         [ConfigField("Flat Damage Reduction", 5f)]
