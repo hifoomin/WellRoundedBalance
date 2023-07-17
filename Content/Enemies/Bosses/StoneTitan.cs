@@ -10,76 +10,113 @@ namespace WellRoundedBalance.Enemies.Bosses
 
         [ConfigField("Apply to Stone Titan", true)]
         public static bool stoneTitan;
+
         [ConfigField("Apply to Aurellionite", true)]
         public static bool aurellionite;
 
         [ConfigField("Laser Damage", "1 = 100%, vanilla: 1", 1.6f)]
         public static float NEW_FireMegaLaser_damageCoefficient;
+
         private static float FireMegaLaser_damageCoefficient;
+
         [ConfigField("Fist Entry Duration", "in seconds, vanilla: 2", 1.8f)]
         public static float NEW_FireFist_entryDuration;
+
         private static float FireFist_entryDuration;
+
         [ConfigField("Fist Fire Duration", "in seconds, vanilla: 1.2", 1f)]
         public static float NEW_FireFist_fireDuration;
+
         private static float FireFist_fireDuration;
+
         [ConfigField("Laser Damage", "1 = 100%, vanilla: 1", 1.6f)]
         public static float NEW_FireFist_fistDamageCoefficient;
+
         private static float FireFist_fistDamageCoefficient;
+
         [ConfigField("Rock Recharge Duration", "in seconds, vanilla: 9", 3f)]
         public static float NEW_RechargeRocks_baseDuration;
+
         private static float RechargeRocks_baseDuration;
+
         [ConfigField("Rock Duration", "in seconds, vanilla: 25", 20f)]
         public static float NEW_destroyOnTimer_duration;
+
         private static float destroyOnTimer_duration;
+
         [ConfigField("Rock Spinup Time", "in seconds, vanilla: 6", 2f)]
         public static float NEW_tit_startDelay;
+
         private static float tit_startDelay;
+
         [ConfigField("Rock Fire Interval", "in seconds, vanilla: 1.5", 0.33f)]
         public static float NEW_tit_fireInterval;
+
         private static float tit_fireInterval;
+
         [ConfigField("Rock Damage", "1 = 100%, vanilla: 0.3", 0.48f)]
         public static float NEW_tit_damageCoefficient;
+
         private static float tit_damageCoefficient;
+
         [ConfigField("Rock Damage Force", "unity mass, vanilla: 1600", 2000f)]
         public static float NEW_tit_damageForce;
+
         private static float tit_damageForce;
+
         [ConfigField("Base Damage", "vanilla: 40", 25f)]
         public static float NEW_titanBody_baseDamage;
+
         private static float titanBody_baseDamage;
+
         [ConfigField("Damage per Level", "vanilla: 8", 5f)]
         public static float NEW_titanBody_levelDamage;
+
         private static float titanBody_levelDamage;
+
         [ConfigField("Enable new Laser Attack", true)]
         public static bool enableLaserSD;
+
         public static SerializableEntityStateType NEW_laserSD_activationState;
         private static SerializableEntityStateType laserSD_activationState;
+
         [ConfigField("Aim Speed", "vanilla: 180", 720f)]
         public static float NEW_ai_aimVectorMaxSpeed;
+
         private static float ai_aimVectorMaxSpeed;
+
         [ConfigField("Aim Damp Time", "in seconds, vanilla: 0.1", 0.03f)]
         public static float NEW_ai_aimVectorDampTime;
+
         private static float ai_aimVectorDampTime;
 
         [ConfigField("Fist Ring Amount", "ring of fists, set to 0 to disable", 2)]
         public static int fistring_v;
+
         [ConfigField("Fist Ring Fists per Ring", "horizontally", 4)]
         public static int fistring_h;
+
         [ConfigField("Fist Ring Range", "total range for fist ring in radius (16 root 2 by default)", 22.6274f)]
         public static float fistring_range;
+
         [ConfigField("Fist Ring Delay", "in seconds, extra delay per ring", 0.256f)]
         public static float fistring_vs;
+
         [ConfigField("Fist Ring Delay per Lane", "in seconds, extra delay within a ring", 0.025f)]
         public static float fistring_hs;
 
-
         [ConfigField("New Laser Attack Amount", 12)]
         public static int SD_amount;
+
         [ConfigField("New Laser Attack Interval", "in seconds", 0.4f)]
         public static float SD_interval;
+
         [ConfigField("New Laser Attack Force", 400f)]
         public static float SD_force;
+
         [ConfigField("New Laser Attack Range", 2000f)]
         public static float SD_range;
+
         [ConfigField("New Laser Attack Proc Coefficient", 0.6f)]
         public static float SD_proc;
 
@@ -88,8 +125,6 @@ namespace WellRoundedBalance.Enemies.Bosses
         private static MasterCatalog.MasterIndex titanMasterIndex;
         private static MasterCatalog.MasterIndex aurellioniteMasterIndex;
         private static int laserIndex;
-
-
 
         public override void Init()
         {
@@ -134,7 +169,6 @@ namespace WellRoundedBalance.Enemies.Bosses
             ai_aimVectorDampTime = ai.aimVectorDampTime;
         }
 
-
         public override void Hooks()
         {
             RoR2Application.onLoad += PostInit;
@@ -156,7 +190,6 @@ namespace WellRoundedBalance.Enemies.Bosses
                 ai.aimVectorMaxSpeed = Check(idx, NEW_ai_aimVectorMaxSpeed, ai_aimVectorMaxSpeed);
                 ai.aimVectorDampTime = Check(idx, NEW_ai_aimVectorDampTime, ai_aimVectorDampTime);
             }
-
         }
 
         private void CharacterBody_onBodyStartGlobal(CharacterBody body)
@@ -169,7 +202,6 @@ namespace WellRoundedBalance.Enemies.Bosses
                 var laser = body.skillLocator.special.skillDef;
                 if (laser.skillIndex == laserIndex) laser.activationState = Check(idx, NEW_laserSD_activationState, laserSD_activationState);
             }
-
         }
 
         private void TitanRockController_Start(On.RoR2.TitanRockController.orig_Start orig, TitanRockController self)
@@ -187,12 +219,14 @@ namespace WellRoundedBalance.Enemies.Bosses
         }
 
         private static T Check<T>(EntityState self, T NEW, T OLD) => Check(self.outer.commonComponents.characterBody.bodyIndex, NEW, OLD);
+
         private static T Check<T>(BodyIndex i, T NEW, T OLD)
         {
             if (i == titanIndex) return stoneTitan ? NEW : OLD;
             if (i == aurellioniteIndex) return aurellionite ? NEW : OLD;
             return NEW;
         }
+
         private static T Check<T>(MasterCatalog.MasterIndex i, T NEW, T OLD)
         {
             if (i == titanMasterIndex) return stoneTitan ? NEW : OLD;

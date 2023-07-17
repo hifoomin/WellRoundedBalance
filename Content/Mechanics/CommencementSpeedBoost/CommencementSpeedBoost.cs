@@ -10,7 +10,7 @@ namespace WellRoundedBalance.Mechanics.CommencementSpeedBoost
         [ConfigField("Movement Speed Gain", "Decimal.", 0.85f)]
         public static float movementSpeedGain;
 
-        [ConfigField("Buff Duration", "", 45f)]
+        [ConfigField("Buff Duration", "", 60f)]
         public static float buffDuration;
 
         public override void Init()

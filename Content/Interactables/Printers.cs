@@ -13,6 +13,9 @@
         [ConfigField("Common Printer Max Uses", "", 3)]
         public static int maxCommonUses;
 
+        [ConfigField("Additional Common Printer Max Uses Per Player", "Only affects multiplayer. Rounded down.", 1f)]
+        public static float commonPlayer;
+
         [ConfigField("Uncommon Printer Max Spawns Per Stage", "", 2)]
         public static int uncommonPrinterMaxSpawnsPerStage;
 
@@ -21,6 +24,9 @@
 
         [ConfigField("Uncommon Printer Max Uses", "", 2)]
         public static int maxUncommonUses;
+
+        [ConfigField("Additional Uncommon Printer Max Uses Per Player", "Only affects multiplayer. Rounded down.", 1f)]
+        public static float uncommonPlayer;
 
         [ConfigField("Legendary Printer Max Spawns Per Stage", "", 1)]
         public static int legendaryPrinterMaxSpawnsPerStage;
@@ -48,6 +54,18 @@
 
         public override void Hooks()
         {
+            var cPrinter = Utils.Paths.GameObject.Duplicator.Load<GameObject>();
+            cPrinter.AddComponent<PrinterHologram>();
+
+            var uPrinter = Utils.Paths.GameObject.DuplicatorLarge.Load<GameObject>();
+            uPrinter.AddComponent<PrinterHologram>();
+
+            var lPrinter = Utils.Paths.GameObject.DuplicatorMilitary.Load<GameObject>();
+            lPrinter.AddComponent<PrinterHologram>();
+
+            var yPrinter = Utils.Paths.GameObject.DuplicatorWild.Load<GameObject>();
+            yPrinter.AddComponent<PrinterHologram>();
+
             uses = new();
 
             Stage.onServerStageComplete += stage => uses.Clear();
@@ -78,19 +96,50 @@
 
         private void PurchaseInteraction_OnInteractionBegin(On.RoR2.PurchaseInteraction.orig_OnInteractionBegin orig, PurchaseInteraction self, Interactor activator)
         {
-            if (self.CanBeAffordedByInteractor(activator) && self.name.Contains("Duplicator")) uses[self.gameObject]--;
+            if (self.CanBeAffordedByInteractor(activator) && self.name.Contains("Duplicator"))
+            {
+                uses[self.gameObject]--;
+                var counter = self.gameObject.GetComponent<PrinterUseCounter>();
+                if (counter)
+                {
+                    counter.useCount--;
+                }
+            }
             orig(self, activator);
         }
 
         private void PurchaseInteraction_Awake(On.RoR2.PurchaseInteraction.orig_Awake orig, PurchaseInteraction self)
         {
             orig(self);
-            // Debug.LogErrorFormat("max boss, legendary, uncommon, common uses: {0} {1} {2} {3}", maxBossUses, maxLegendaryUses, maxUncommonUses, maxCommonUses);
+            var maxCommons = Mathf.FloorToInt(maxCommonUses + (Run.instance.participatingPlayerCount - 1) * commonPlayer);
+            var maxUncommons = Mathf.FloorToInt(maxUncommonUses + (Run.instance.participatingPlayerCount - 1) * uncommonPlayer);
             if (!NetworkServer.active) return;
-            if (self.name.Contains("DuplicatorWild")) InitUses(self.gameObject, maxBossUses);
-            else if (self.name.Contains("DuplicatorMilitary")) InitUses(self.gameObject, maxLegendaryUses);
-            else if (self.name.Contains("DuplicatorLarge")) InitUses(self.gameObject, maxUncommonUses);
-            else if (self.name.Contains("Duplicator")) InitUses(self.gameObject, maxCommonUses);
+            switch (self.name)
+            {
+                case "Duplicator":
+                    InitUses(self.gameObject, maxCommons);
+                    var cCounter = self.gameObject.GetComponent<PrinterUseCounter>();
+                    cCounter.useCount = maxCommons;
+                    break;
+
+                case "DuplicatorLarge":
+                    InitUses(self.gameObject, maxUncommons);
+                    var uCounter = self.gameObject.GetComponent<PrinterUseCounter>();
+                    uCounter.useCount = maxCommons;
+                    break;
+
+                case "DuplicatorMilitary":
+                    InitUses(self.gameObject, maxLegendaryUses);
+                    var lCounter = self.gameObject.GetComponent<PrinterUseCounter>();
+                    lCounter.useCount = maxLegendaryUses;
+                    break;
+
+                case "DuplicatorWild":
+                    InitUses(self.gameObject, maxBossUses);
+                    var yCounter = self.gameObject.GetComponent<PrinterUseCounter>();
+                    yCounter.useCount = maxBossUses;
+                    break;
+            }
         }
 
         private void Changes()
@@ -114,6 +163,69 @@
             if (!NetworkServer.active) return;
             if (!uses.ContainsKey(self)) uses.Add(self, use);
             else uses[self] = use;
+        }
+    }
+
+    public class PrinterUseCounter : MonoBehaviour
+    {
+        public int useCount;
+        public float timer;
+        public float explosionInterval = 0.4f;
+        public float deleteInterval = 0.5f;
+
+        private void FixedUpdate()
+        {
+            if (useCount <= 0)
+            {
+                timer += Time.fixedDeltaTime;
+                if (timer >= explosionInterval)
+                {
+                    EffectManager.SpawnEffect(Utils.Paths.GameObject.ExplosionVFX.Load<GameObject>(), new EffectData
+                    {
+                        origin = transform.position,
+                        scale = 4.5f
+                    }, true);
+                }
+                if (timer >= deleteInterval)
+                {
+                    gameObject.SetActive(false);
+                }
+            }
+        }
+    }
+
+    public class PrinterHologram : MonoBehaviour, IHologramContentProvider
+    {
+        public PrinterUseCounter counter;
+
+        private void Start()
+        {
+            counter = gameObject.GetComponent<PrinterUseCounter>();
+        }
+
+        public GameObject GetHologramContentPrefab()
+        {
+            return PlainHologram.hologramContentPrefab;
+        }
+
+        public bool ShouldDisplayHologram(GameObject viewer)
+        {
+            var distance = Vector3.Distance(viewer.transform.position, gameObject.transform.position);
+            if (distance <= 15f)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public void UpdateHologramContent(GameObject self)
+        {
+            var hologram = self.GetComponent<PlainHologram.PlainHologramContent>();
+            if (hologram)
+            {
+                hologram.text = counter.useCount + (counter.useCount == 1 ? " use left" : " uses left");
+                hologram.color = Color.white;
+            }
         }
     }
 }

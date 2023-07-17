@@ -1,3 +1,18 @@
+# 1.3.9 Patch Notes
+- Added pre-made config for BetterDrones.
+- Buffed Hyperbolic Speed Scaling Max 20m/s => **30m/s**.
+- Buffed Commencement Speed Boost Duration 45s => **60s**.
+- Buffed Death Mark Base Damage Increase Per Debuff 5% => **6%**.
+- Buffed Death Mark Damage Increase Per Debuff Per Stack 5% => **6%**.
+- Nerfed Spare Drone Parts Attack Speed Gain 50% => **40%**.
+- Nerfed Spare Drone Parts Cooldown Reduction 50% => **40%**.
+- Reworked Harvester's Scythe to swing a scythe on secondary skill use for 300% (+300% per stack) base damage, and if it hits, gain a 30% crit chance bonus for 4s.
+- Reworked Artifact of Command to drop potentials.
+- Increased Ally Cap 20 => 100.
+- Made Printer Common and Uncommon Max Uses scale with player count.
+- Disabled Clockwork Mechanism.
+- Fixed Printer.
+
 # 1.3.8 Patch Notes
 - Added Hyperbolic Speed Scaling.
 - Buffed AtG Missile Mk.1 TOTAL Damage Per Stack 200% => **300%**.

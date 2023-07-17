@@ -7,7 +7,7 @@ namespace WellRoundedBalance.Achievements.NonSpecific
     {
         public override string Token => "moveSpeed";
 
-        public override string Description => "Reach +" + d((float)Math.Round(Mechanics.Movement.HyperbolicSpeedIncrease.maxValue / 7f, 2)) + " movespeed (includes sprinting).";
+        public override string Description => "Reach +" + d(Mathf.Min(3f, (float)Math.Round(Mechanics.Movement.HyperbolicSpeedScaling.maxValue / 7f), 2)) + " movespeed (includes sprinting).";
 
         public override string Name => ":: Achievements : Non Specific :: Going Fast Recommended";
 
@@ -27,7 +27,7 @@ namespace WellRoundedBalance.Achievements.NonSpecific
                 c.Emit(OpCodes.Ldarg_0);
                 c.EmitDelegate<Func<float, MoveSpeedAchievement, float>>((orig, self) =>
                 {
-                    return Mathf.Min(4f, Mechanics.Movement.HyperbolicSpeedIncrease.maxValue / self.localUser.cachedBody.baseMoveSpeed);
+                    return Mathf.Min(4f, Mechanics.Movement.HyperbolicSpeedScaling.maxValue / self.localUser.cachedBody.baseMoveSpeed);
                 });
             }
             else

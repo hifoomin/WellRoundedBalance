@@ -2,11 +2,11 @@
 
 namespace WellRoundedBalance.Mechanics.Movement
 {
-    public class HyperbolicSpeedIncrease : MechanicBase<HyperbolicSpeedIncrease>
+    public class HyperbolicSpeedScaling : MechanicBase<HyperbolicSpeedScaling>
     {
-        public override string Name => ":: Mechanics ::: Hyperbolic Speed Increase";
+        public override string Name => ":: Mechanics ::: Hyperbolic Speed Scaling";
 
-        [ConfigField("Max Value", "This is the value that all speed increases will approach, but never reach. It is not the percentage value, but a total value in meters per second.", 20f)]
+        [ConfigField("Max Value", "This is the value that all speed increases will approach, but never reach. It is not the percentage value, but a total value in meters per second. Most survivors walk at 7m/s and sprint at 10.15m/s.", 30f)]
         public static float maxValue;
 
         public override void Init()
