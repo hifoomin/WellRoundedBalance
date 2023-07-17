@@ -34,6 +34,9 @@ namespace WellRoundedBalance.Equipment.Lunar
         [ConfigField("Duration", "", 30)]
         public static int duration;
 
+        [ConfigField("Cylinderify", "Make the hitbox a cylinder that go up to the sky rather than just the sphere.", true)]
+        public static bool cylinder;
+
         public override void Init()
         {
             base.Init();
@@ -43,6 +46,23 @@ namespace WellRoundedBalance.Equipment.Lunar
         {
             IL.RoR2.MeteorStormController.DetonateMeteor += MeteorStormController_DetonateMeteor;
             On.RoR2.MeteorStormController.DetonateMeteor += MeteorStormController_DetonateMeteor1;
+            IL.RoR2.BlastAttack.CollectHits += BlastAttack_CollectHits;
+        }
+
+        private void BlastAttack_CollectHits(ILContext il)
+        {
+            ILCursor c = new(il);
+
+            if (c.TryGotoNext(x => x.MatchCallOrCallvirt<Physics>(nameof(Physics.OverlapSphere))))
+            {
+                c.Remove();
+                c.Emit(OpCodes.Ldarg_0);
+                c.EmitDelegate<Func<Vector3, float, int, BlastAttack, Collider[]>>((position, radius, mask, self) =>
+                {
+                    if (cylinder && self.inflictor.GetComponent<MeteorStormController>() != null) return Physics.OverlapCapsule(position, position + new Vector3(0, 2000, 0), radius, mask);
+                    else return Physics.OverlapSphere(position, radius, mask);
+                });
+            }
         }
 
         private void MeteorStormController_DetonateMeteor1(On.RoR2.MeteorStormController.orig_DetonateMeteor orig, MeteorStormController self, object meteor)
