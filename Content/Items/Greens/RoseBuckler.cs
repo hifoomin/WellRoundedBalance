@@ -11,7 +11,7 @@ namespace WellRoundedBalance.Items.Greens
 
         public override string PickupText => "Reduce incoming damage while sprinting.";
 
-        public override string DescText => StackDesc(armor, armorStack, init => $"<style=cIsHealing>Increase armor</style> by <style=cIsHealing>{init}</style>{{Stack}} while <style=cIsUtility>sprinting</style>.", noop);
+        public override string DescText => StackDesc(armor, armorStack, init => $"<style=cIsHealing>Increase armor</style> by <style=cIsHealing>{init}</style>{{Stack}} while <style=cIsUtility>sprinting</style>.");
 
         [ConfigField("Base Armor Increase", "", 20)]
         public static int armor;

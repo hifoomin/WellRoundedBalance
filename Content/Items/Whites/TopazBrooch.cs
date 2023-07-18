@@ -13,7 +13,7 @@ namespace WellRoundedBalance.Items.Whites
         public override string PickupText => "Gain a temporary barrier on kill.";
 
         public override string DescText => "Gain a <style=cIsHealing>temporary barrier</style> on kill for " +
-            StackDesc(flatBarrierGain, flatBarrierGainStack, init => $"<style=cIsHealing>{init}</style>{{Stack}}", noop) +
+            StackDesc(flatBarrierGain, flatBarrierGainStack, init => $"<style=cIsHealing>{init}</style>{{Stack}}") +
             StackDesc(percentBarrierGain, percentBarrierGainStack, init => (flatBarrierGain > 0 || flatBarrierGainStack > 0 ? " plus an additional " : "") + $"<style=cIsHealing>{d(init)}</style>{{Stack}} of <style=cIsHealing>maximum health</style>", d) + ".";
 
         [ConfigField("Base Percent Barrier Gain", "Decimal.", 0.025f)]

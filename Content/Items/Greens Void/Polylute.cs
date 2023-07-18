@@ -15,7 +15,7 @@ namespace WellRoundedBalance.Items.VoidGreens
         public override string DescText =>
             StackDesc(chance, chanceStack, init => $"<style=cIsDamage>{d(init)}</style>{{Stack}} chance to fire <style=cIsDamage>lightning</style>", d) +
             StackDesc(damage, damageStack, init => $" for <style=cIsDamage>{d(init)}</style>{{Stack}} {(damageIsTotal ? "TOTAL" : "base")} damage", d) +
-            StackDesc(strikeCount, strikeCountPerStack, init => $" up to <style=cIsDamage>{init}</style>{{Stack}} times", noop) + ". <style=cIsVoid>Corrupts all Ukuleles</style>.";
+            StackDesc(strikeCount, strikeCountPerStack, init => $" up to <style=cIsDamage>{init}</style>{{Stack}} times") + ". <style=cIsVoid>Corrupts all Ukuleles</style>.";
 
         [ConfigField("Damage Coefficient", "Decimal.", 0.4f)]
         public static float damage;
