@@ -31,8 +31,10 @@ namespace WellRoundedBalance.Elites
         [ConfigField("All Tier Honor Damage Multiplier", "", 1f)]
         public static float allTierHonorDamageMultiplier;
 
-        [ConfigField("Aspect Chance", "Decimal.", 0.006f)]
+        [ConfigField("Aspect Chance", "Decimal.", 0.004f)]
         public static float aspectChance;
+
+        public List<EquipmentIndex> aspects = new();
 
         public override void Init()
         {
@@ -42,6 +44,31 @@ namespace WellRoundedBalance.Elites
         public override void Hooks()
         {
             On.RoR2.CombatDirector.Init += CombatDirector_Init;
+            RoR2.CharacterBody.onBodyInventoryChangedGlobal += CharacterBody_onBodyInventoryChangedGlobal;
+        }
+
+        private void CharacterBody_onBodyInventoryChangedGlobal(CharacterBody body)
+        {
+            bool anyoneHasAspect = false;
+            EquipmentIndex firstAspect = EquipmentIndex.None;
+            foreach (CharacterMaster master in CharacterMaster.readOnlyInstancesList)
+            {
+                if (master.inventory && master.teamIndex == TeamIndex.Player)
+                {
+                    if (master.playerCharacterMasterController)
+                    {
+                        anyoneHasAspect = aspects.Contains(master.inventory.currentEquipmentIndex);
+                        if (anyoneHasAspect)
+                        {
+                            firstAspect = master.inventory.currentEquipmentIndex;
+                        }
+                    }
+                    if (master.inventory.currentEquipmentIndex == EquipmentIndex.None && anyoneHasAspect)
+                    {
+                        master.inventory.SetEquipmentIndex(firstAspect);
+                    }
+                }
+            }
         }
 
         private void CombatDirector_Init(On.RoR2.CombatDirector.orig_Init orig)
@@ -95,6 +122,7 @@ namespace WellRoundedBalance.Elites
                 if (index.eliteEquipmentDef)
                 {
                     index.eliteEquipmentDef.dropOnDeathChance = aspectChance;
+                    aspects.Add(index.eliteEquipmentDef.equipmentIndex);
                 }
             }
         }

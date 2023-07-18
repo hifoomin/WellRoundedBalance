@@ -1,4 +1,6 @@
-﻿namespace WellRoundedBalance.Interactables
+﻿using System;
+
+namespace WellRoundedBalance.Interactables
 {
     internal class Chests : InteractableBase<Chests>
     {

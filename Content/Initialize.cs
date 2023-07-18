@@ -1,7 +1,15 @@
 ﻿using BepInEx.Configuration;
+using Mono.Cecil.Cil;
+using Newtonsoft.Json.Utilities;
+using R2API.MiscHelpers;
+using RoR2;
 using System;
 using System.Diagnostics;
 using System.Reflection;
+using System.Threading;
+using System.Threading.Tasks;
+using Unity.Collections;
+using Unity.Jobs;
 using WellRoundedBalance.Achievements;
 using WellRoundedBalance.Allies;
 using WellRoundedBalance.Artifacts.New;
@@ -9,6 +17,7 @@ using WellRoundedBalance.Artifacts.Vanilla;
 using WellRoundedBalance.Difficulties;
 using WellRoundedBalance.Elites;
 using WellRoundedBalance.Enemies;
+using WellRoundedBalance.Enemies.All;
 using WellRoundedBalance.Equipment;
 using WellRoundedBalance.Gamemodes;
 using WellRoundedBalance.Interactables;
@@ -24,6 +33,37 @@ namespace WellRoundedBalance
 {
     public static class Initialize
     {
+        /*
+        public static JobHandle handle;
+        public static NativeArray<AchievementBase> result;
+
+        public struct AchievementJob : IJobParallelFor
+        {
+            [ReadOnly]
+            public NativeArray<AchievementBase> result = new(1, Allocator.TempJob);
+
+            public void Execute()
+            {
+                Type type = result[0];
+
+                AchievementBase based = (AchievementBase)Activator.CreateInstance(type);
+                if (Validate(based))
+                {
+                    try
+                    {
+                        based.Init();
+                    }
+                    catch (Exception ex)
+                    {
+                        Main.WRBLogger.LogError($"Failed to initialize {type.Name}: {ex}");
+                    }
+                }
+            }
+        }
+        */
+
+        // bruh what the fuck is this shit I hate jobs I hate unity what the
+
         public static void Init()
         {
             var stopwatch = Stopwatch.StartNew();
@@ -41,6 +81,20 @@ namespace WellRoundedBalance
 
             On.RoR2.ItemCatalog.Init += ItemCatalog_Init;
 
+            object achievementLock = new();
+            object allyLock = new();
+            object artifactAddLock = new();
+            object artifactEditLock = new();
+            object difficultyLock = new();
+            object eliteLock = new();
+            object enemyLock = new();
+            object equipmentLock = new();
+            object gamemodeLock = new();
+            object interactableLock = new();
+            object itemLock = new();
+            object mechanicLock = new();
+            object survivorLock = new();
+
             if (Main.enableAchievements.Value)
             {
                 IEnumerable<Type> achievement = Assembly.GetExecutingAssembly().GetTypes()
@@ -56,6 +110,23 @@ namespace WellRoundedBalance
                         try { based.Init(); } catch (Exception ex) { Main.WRBLogger.LogError($"Failed to initialize {type.Name}: {ex}"); }
                     }
                 }
+
+                /*
+                result = new NativeArray<AchievementBase>(1, Allocator.TempJob);
+
+                AchievementJob achievementJob = new()
+                {
+                    result = result
+                };
+
+                handle = achievementJob.Schedule();
+
+                // Sometime later in the frame, wait for the job to complete before accessing the results. bruh can I not do it outside a monobehaviour or something
+                handle.Complete();
+
+                result.Dispose();
+                */
+                // bruh
             }
 
             if (Main.enableAllies.Value)
@@ -229,6 +300,7 @@ namespace WellRoundedBalance
                         try { based.Init(); } catch (Exception ex) { Main.WRBLogger.LogError($"Failed to initialize {type.Name}: {ex}"); }
                     }
                 }
+
                 if (Items.Whites.PowerElixir.instance != null)
                     EmptyBottle.Init();
             }
@@ -250,23 +322,12 @@ namespace WellRoundedBalance
                 }
             }
 
-            IEnumerable<Type> survivor = Assembly.GetExecutingAssembly().GetTypes()
-                                                .Where(type => !type.IsAbstract && type.IsSubclassOf(typeof(SurvivorBase)));
-
             if (Main.enableSurvivors.Value)
             {
+                IEnumerable<Type> survivor = Assembly.GetExecutingAssembly().GetTypes()
+                                                    .Where(type => !type.IsAbstract && type.IsSubclassOf(typeof(SurvivorBase)));
+
                 Main.WRBLogger.LogInfo("==+----------------==SURVIVORS==----------------+==");
-                /*
-                Parallel.ForEach(survivor, type =>
-                {
-                    SurvivorBase based = (SurvivorBase)Activator.CreateInstance(type);
-                    if (Validate(based))
-                    {
-                        try { based.Init(); } catch (Exception ex) { Main.WRBLogger.LogError($"Failed to initialize {type.Name}: {ex}"); }
-                    }
-                });
-                */
-                // not thread safe
 
                 foreach (Type type in survivor)
                 {
@@ -279,83 +340,6 @@ namespace WellRoundedBalance
             }
 
             // FamilyEvents.Init();
-
-            if (Main.enableLogging.Value)
-            {
-                AchievementBase.achievementList.Sort();
-                AllyBase.allyList.Sort();
-                ArtifactAddBase.artifactAddList.Sort();
-                ArtifactEditBase.artifactEditList.Sort();
-                DifficultyBase.difficultyList.Sort();
-                EliteBase.eliteList.Sort();
-                EnemyBase.enemyList.Sort();
-                EquipmentBase.equipmentList.Sort();
-                InteractableBase.interactableList.Sort();
-                ItemBase.itemList.Sort();
-                MechanicBase.mechanicList.Sort();
-                SurvivorBase.survivorList.Sort();
-                SharedBase.initList.Sort();
-                for (int i = 0; i < AchievementBase.achievementList.Count; i++)
-                {
-                    var index = AchievementBase.achievementList[i];
-                    Main.WRBLogger.LogDebug("Initialized " + index);
-                }
-                for (int i = 0; i < AllyBase.allyList.Count; i++)
-                {
-                    var index = AllyBase.allyList[i];
-                    Main.WRBLogger.LogDebug("Initialized " + index);
-                }
-                for (int i = 0; i < ArtifactAddBase.artifactAddList.Count; i++)
-                {
-                    var index = ArtifactAddBase.artifactAddList[i];
-                    Main.WRBLogger.LogDebug("Initialized " + index);
-                }
-                for (int i = 0; i < ArtifactEditBase.artifactEditList.Count; i++)
-                {
-                    var index = ArtifactEditBase.artifactEditList[i];
-                    Main.WRBLogger.LogDebug("Initialized " + index);
-                }
-                for (int i = 0; i < DifficultyBase.difficultyList.Count; i++)
-                {
-                    var index = DifficultyBase.difficultyList[i];
-                    Main.WRBLogger.LogDebug("Initialized " + index);
-                }
-                for (int i = 0; i < EliteBase.eliteList.Count; i++)
-                {
-                    var index = EliteBase.eliteList[i];
-                    Main.WRBLogger.LogDebug("Initialized " + index);
-                }
-                for (int i = 0; i < EnemyBase.enemyList.Count; i++)
-                {
-                    var index = EnemyBase.enemyList[i];
-                    Main.WRBLogger.LogDebug("Initialized " + index);
-                }
-                for (int i = 0; i < EquipmentBase.equipmentList.Count; i++)
-                {
-                    var index = EquipmentBase.equipmentList[i];
-                    Main.WRBLogger.LogDebug("Initialized " + index);
-                }
-                for (int i = 0; i < InteractableBase.interactableList.Count; i++)
-                {
-                    var index = InteractableBase.interactableList[i];
-                    Main.WRBLogger.LogDebug("Initialized " + index);
-                }
-                for (int i = 0; i < ItemBase.itemList.Count; i++)
-                {
-                    var index = ItemBase.itemList[i];
-                    Main.WRBLogger.LogDebug("Initialized " + index);
-                }
-                for (int i = 0; i < MechanicBase.mechanicList.Count; i++)
-                {
-                    var index = MechanicBase.mechanicList[i];
-                    Main.WRBLogger.LogDebug("Initialized " + index);
-                }
-                for (int i = 0; i < SurvivorBase.survivorList.Count; i++)
-                {
-                    var index = SurvivorBase.survivorList[i];
-                    Main.WRBLogger.LogDebug("Initialized " + index);
-                }
-            }
 
             Main.WRBLogger.LogDebug("==+----------------==INFO==----------------+==");
             Main.WRBLogger.LogDebug("Initialized " + SharedBase.initList.Count + " abstract classes");

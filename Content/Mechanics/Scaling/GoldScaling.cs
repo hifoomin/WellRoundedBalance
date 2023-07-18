@@ -27,6 +27,9 @@ namespace WellRoundedBalance.Mechanics.Scaling
         [ConfigField("Stage and Loop Multiplier", "", 400f)]
         public static float stageAndLoopMultiplier;
 
+        [ConfigField("Enable New Multiplayer Gold Scaling?", "Gold Cost goes from Base Cost * Difficulty Coefficient ^ 1.25 to Base Cost * Difficulty Coefficient ^ (1 + (0.25 / Square Root(Player Count)))", true)]
+        public static bool enableNew;
+
         public override void Init()
         {
             base.Init();
@@ -34,16 +37,36 @@ namespace WellRoundedBalance.Mechanics.Scaling
 
         public override void Hooks()
         {
-            ChangeBehavior();
+            On.RoR2.DeathRewards.OnKilledServer += DeathRewards_OnKilledServer;
+
+            if (enableNew)
+                IL.RoR2.Run.GetDifficultyScaledCost_int_float += Run_GetDifficultyScaledCost_int_float1;
         }
 
-        public static void ChangeBehavior()
+        private void DeathRewards_OnKilledServer(On.RoR2.DeathRewards.orig_OnKilledServer orig, DeathRewards self, DamageReport damageReport)
         {
-            On.RoR2.DeathRewards.OnKilledServer += (orig, self, damageReport) =>
+            self.goldReward = Convert.ToUInt32(Mathf.Min(self.goldReward * baseMultiplier, baseMultiplier * ((self.goldReward / (stageDivisor + Run.instance.stageClearCount)) + Mathf.Sqrt(squareRootMultiplier * (stageAndLoopMultiplier + (Run.instance.stageClearCount * stageMultiplier + Run.instance.loopClearCount * loopMultiplier))))));
+            orig(self, damageReport);
+        }
+
+        private void Run_GetDifficultyScaledCost_int_float1(ILContext il)
+        {
+            ILCursor c = new(il);
+
+            if (c.TryGotoNext(MoveType.Before,
+                x => x.MatchLdcR4(1.25f)))
             {
-                self.goldReward = Convert.ToUInt32(Mathf.Min(self.goldReward * baseMultiplier, baseMultiplier * ((self.goldReward / (stageDivisor + Run.instance.stageClearCount)) + Mathf.Sqrt(squareRootMultiplier * (stageAndLoopMultiplier + (Run.instance.stageClearCount * stageMultiplier + Run.instance.loopClearCount * loopMultiplier))))));
-                orig(self, damageReport);
-            };
+                c.EmitDelegate<Func<float, float>>((orig) =>
+                {
+                    var players = Run.instance.participatingPlayerCount;
+                    var newScaling = 1f + (0.25f / Mathf.Sqrt(players));
+                    return players <= 1 ? orig : newScaling;
+                });
+            }
+            else
+            {
+                Logger.LogError("Failed to apply Multiplayer Gold Scaling hook");
+            }
         }
     }
 }

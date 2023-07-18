@@ -68,8 +68,9 @@ namespace WellRoundedBalance.Items.Lunars
                             if (self.body.characterMotor) mass = self.body.characterMotor.mass;
                             else if (self.body.rigidbody) mass = self.body.rigidbody.mass;
                             else mass = 1f;
-                            var force = 6f * damageInfo.procCoefficient * stack;
-                            damageInfo.force += Vector3.Normalize(attackerBody.corePosition - self.body.corePosition) * force * Mathf.Pow(mass, 1.1f);
+
+                            var force = 5f * damageInfo.procCoefficient * stack * Mathf.Sqrt(damageInfo.damage) * (mass / 3f);
+                            damageInfo.force += Vector3.Normalize(attackerBody.corePosition - self.body.corePosition) * force;
                         }
                     }
                 }

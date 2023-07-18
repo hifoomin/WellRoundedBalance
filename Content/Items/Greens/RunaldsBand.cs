@@ -15,10 +15,10 @@ namespace WellRoundedBalance.Items.Greens
         [ConfigField("TOTAL Damage", "Decimal.", 0.5f)]
         public static float totalDamage;
 
-        [ConfigField("Base Damage", "Decimal.", 13f)]
+        [ConfigField("Base Damage", "Decimal.", 10f)]
         public static float baseDamage;
 
-        [ConfigField("Damage Per Stack", "Decimal.", 7f)]
+        [ConfigField("Damage Per Stack", "Decimal.", 10f)]
         public static float damagePerStack;
 
         public override void Init()

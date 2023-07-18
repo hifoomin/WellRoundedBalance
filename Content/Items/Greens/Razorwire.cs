@@ -11,10 +11,10 @@ namespace WellRoundedBalance.Items.Greens
         public override string PickupText => "While out of danger, passively damage nearby enemies with thorns.";
         public override string DescText => "Passively damage all enemies within <style=cIsDamage>" + radius + "m</style> for <style=cIsDamage>" + d(baseDamage) + "</style> <style=cStack>(+" + d(damagePerStack) + " per stack)</style> <style=cIsDamage>damage per second</style> while out of danger.";
 
-        [ConfigField("Base Damage", "Decimal.", 2f)]
+        [ConfigField("Base Damage", "Decimal.", 2.5f)]
         public static float baseDamage;
 
-        [ConfigField("Damage Per Stack", "Decimal.", 2f)]
+        [ConfigField("Damage Per Stack", "Decimal.", 2.5f)]
         public static float damagePerStack;
 
         [ConfigField("Proc Coefficient", 0f)]
@@ -54,7 +54,6 @@ namespace WellRoundedBalance.Items.Greens
 
             radiusTrans.GetComponent<MeshRenderer>().material = razorMat;
 
-            ContentAddition.AddEffect(razorwireVFX);
             PrefabAPI.RegisterNetworkPrefab(indicator);
 
             IL.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
@@ -113,8 +112,11 @@ namespace WellRoundedBalance.Items.Greens
             timer += Time.fixedDeltaTime;
             if (timer < damageInterval || !body.outOfDanger)
             {
+                enableRadiusIndicator = false;
                 return;
             }
+
+            enableRadiusIndicator = true;
 
             for (TeamIndex firstIndex = TeamIndex.Neutral; firstIndex < TeamIndex.Count; firstIndex++)
             {

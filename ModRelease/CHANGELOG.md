@@ -1,17 +1,32 @@
 # 1.3.9 Patch Notes
 - Added pre-made config for BetterDrones.
-- Buffed Hyperbolic Speed Scaling Max 20m/s => **30m/s**.
+- Buffed Armor-Piercing Rounds Champion Damage Bonus 10% => **15%**.
+- Buffed Hyperbolic Speed Scaling Max 20m/s => **40m/s**.
 - Buffed Commencement Speed Boost Duration 45s => **60s**.
 - Buffed Death Mark Base Damage Increase Per Debuff 5% => **6%**.
+- Buffed Razorwire Base Damage 200% => **250%**.
+- Buffed Razorwire Damage Per Stack 200% => **250%**.
 - Buffed Death Mark Damage Increase Per Debuff Per Stack 5% => **6%**.
+- Buffed Leeching Seed Base Healing Regardless of Source 0.4 => **0.5**.
+- Buffed Leeching Seed Healing Regardless of Source Per Stack 0.4 => **0.5**.
+- Buffed Printer White Limit 3 => **5**.
+- Buffed Scrapper Max Use Count 2 => **3**.
+- Nerfed Armor-Piercing Rounds Boss Damage Bonus 20% => **15%**.
+- Nerfed Leeching Seed to have a 0.15s cooldown between healing regardless of source.
 - Nerfed Spare Drone Parts Attack Speed Gain 50% => **40%**.
 - Nerfed Spare Drone Parts Cooldown Reduction 50% => **40%**.
+- Nerfed Stone Flux Pauldron pull on bosses.
+- Nerfed Elite Aspect Drop Chance 0.06% => **0.04%**.
 - Reworked Harvester's Scythe to swing a scythe on secondary skill use for 300% (+300% per stack) base damage, and if it hits, gain a 30% crit chance bonus for 4s.
 - Reworked Artifact of Command to drop potentials.
 - Increased Ally Cap 20 => 100.
+- Made All Aspects apply on all allies without an equipment.
+- Made Gold Price Scaling decrease slightly per player in Multiplayer.
 - Made Printer Common and Uncommon Max Uses scale with player count.
+- Made Stone Flux Pauldron pull scale with damage.
 - Disabled Clockwork Mechanism.
-- Fixed Printer.
+- Removed Overloading Worm from Stage 4 and 5.
+- Fixed Printer Networking.
 
 # 1.3.8 Patch Notes
 - Added Hyperbolic Speed Scaling.

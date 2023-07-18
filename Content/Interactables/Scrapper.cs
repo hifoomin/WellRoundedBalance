@@ -10,7 +10,7 @@ namespace WellRoundedBalance.Interactables
         [ConfigField("Max Spawns Per Stage", "", 1)]
         public static int maxSpawnsPerStage;
 
-        [ConfigField("Max Uses", "", 2)]
+        [ConfigField("Max Uses", "", 3)]
         public static int maxUses;
 
         [ConfigField("Max Scrap Count Per Use", "", 1)]
@@ -44,11 +44,22 @@ namespace WellRoundedBalance.Interactables
             var hologram2 = scrapperGO.AddComponent<ScrapperHologram>();
 
             uses = new();
+            SceneDirector.onPostPopulateSceneServer += SceneDirector_onPostPopulateSceneServer;
             Stage.onServerStageComplete += Stage_onServerStageComplete;
             On.EntityStates.Scrapper.ScrapperBaseState.OnEnter += ScrapperBaseState_OnEnter;
             On.EntityStates.Scrapper.Scrapping.OnEnter += Scrapping_OnEnter;
             On.RoR2.ScrapperController.Start += ScrapperController_Start;
             On.RoR2.ClassicStageInfo.Start += ClassicStageInfo_Start;
+        }
+
+        private void SceneDirector_onPostPopulateSceneServer(SceneDirector sd)
+        {
+            ScrapperController[] scrappers = GameObject.FindObjectsOfType<ScrapperController>();
+            foreach (ScrapperController controller in scrappers)
+            {
+                var counter = controller.gameObject.GetComponent<ScrapperUseCounter>();
+                counter.useCount = maxUses * Run.instance.participatingPlayerCount;
+            }
         }
 
         private void ClassicStageInfo_Start(On.RoR2.ClassicStageInfo.orig_Start orig, ClassicStageInfo self)
@@ -74,8 +85,7 @@ namespace WellRoundedBalance.Interactables
         private void ScrapperController_Start(On.RoR2.ScrapperController.orig_Start orig, ScrapperController self)
         {
             self.maxItemsToScrapAtATime = maxScrapCountPerUse;
-            var counter = self.gameObject.GetComponent<ScrapperUseCounter>();
-            counter.useCount = maxUses * Run.instance.participatingPlayerCount;
+
             orig(self);
         }
 

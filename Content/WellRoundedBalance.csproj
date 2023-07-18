@@ -48,12 +48,12 @@
       <NoWarn>NU1701</NoWarn>
     </PackageReference>
 	<PackageReference Include="R2API.Language" Version="1.0.0" />
-	<PackageReference Include="R2API.RecalculateStats" Version="1.1.0" />
+	<PackageReference Include="R2API.RecalculateStats" Version="1.2.0" />
 	<PackageReference Include="R2API.Director" Version="1.0.0" />
 	<PackageReference Include="R2API.Prefab" Version="1.0.1" />
 	<PackageReference Include="R2API.Items" Version="1.0.1" />
 	<PackageReference Include="R2API.ContentManagement" Version="1.0.1" />
-	<PackageReference Include="R2API.Core" Version="5.0.4" />
+	<PackageReference Include="R2API.Core" Version="5.0.6" />
 	<PackageReference Include="R2API.DamageType" Version="1.0.2" />
 	<PackageReference Include="R2API.Elites" Version="1.0.1" />
 	<PackageReference Include="R2API.Dot" Version="1.0.0" />

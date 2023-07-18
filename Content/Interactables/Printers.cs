@@ -1,4 +1,6 @@
-﻿namespace WellRoundedBalance.Interactables
+﻿using RoR2.Hologram;
+
+namespace WellRoundedBalance.Interactables
 {
     public class AllPrinters : InteractableBase<AllPrinters>
     {
@@ -10,7 +12,7 @@
         [ConfigField("Common Printer Director Credit Cost", "", 6)]
         public static int commonPrinterDirectorCreditCost;
 
-        [ConfigField("Common Printer Max Uses", "", 3)]
+        [ConfigField("Common Printer Max Uses", "", 5)]
         public static int maxCommonUses;
 
         [ConfigField("Additional Common Printer Max Uses Per Player", "Only affects multiplayer. Rounded down.", 1f)]
@@ -55,15 +57,19 @@
         public override void Hooks()
         {
             var cPrinter = Utils.Paths.GameObject.Duplicator.Load<GameObject>();
+            cPrinter.AddComponent<PrinterUseCounter>();
             cPrinter.AddComponent<PrinterHologram>();
 
             var uPrinter = Utils.Paths.GameObject.DuplicatorLarge.Load<GameObject>();
+            uPrinter.AddComponent<PrinterUseCounter>();
             uPrinter.AddComponent<PrinterHologram>();
 
             var lPrinter = Utils.Paths.GameObject.DuplicatorMilitary.Load<GameObject>();
+            lPrinter.AddComponent<PrinterUseCounter>();
             lPrinter.AddComponent<PrinterHologram>();
 
             var yPrinter = Utils.Paths.GameObject.DuplicatorWild.Load<GameObject>();
+            yPrinter.AddComponent<PrinterUseCounter>();
             yPrinter.AddComponent<PrinterHologram>();
 
             uses = new();
@@ -105,39 +111,39 @@
                     counter.useCount--;
                 }
             }
+
             orig(self, activator);
         }
 
         private void PurchaseInteraction_Awake(On.RoR2.PurchaseInteraction.orig_Awake orig, PurchaseInteraction self)
         {
             orig(self);
+            // Main.WRBLogger.LogError("participating player count is " + Run.instance.participatingPlayerCount);
             var maxCommons = Mathf.FloorToInt(maxCommonUses + (Run.instance.participatingPlayerCount - 1) * commonPlayer);
             var maxUncommons = Mathf.FloorToInt(maxUncommonUses + (Run.instance.participatingPlayerCount - 1) * uncommonPlayer);
             if (!NetworkServer.active) return;
+            var counter = self.gameObject.GetComponent<PrinterUseCounter>();
+            if (counter == null) return;
             switch (self.name)
             {
-                case "Duplicator":
+                case "Duplicator(Clone)": // or duplicator idk, tried to fix it but still key missing guh
                     InitUses(self.gameObject, maxCommons);
-                    var cCounter = self.gameObject.GetComponent<PrinterUseCounter>();
-                    cCounter.useCount = maxCommons;
+                    counter.useCount = maxCommons;
                     break;
 
-                case "DuplicatorLarge":
+                case "DuplicatorLarge(Clone)":
                     InitUses(self.gameObject, maxUncommons);
-                    var uCounter = self.gameObject.GetComponent<PrinterUseCounter>();
-                    uCounter.useCount = maxCommons;
+                    counter.useCount = maxCommons;
                     break;
 
-                case "DuplicatorMilitary":
+                case "DuplicatorMilitary(Clone)":
                     InitUses(self.gameObject, maxLegendaryUses);
-                    var lCounter = self.gameObject.GetComponent<PrinterUseCounter>();
-                    lCounter.useCount = maxLegendaryUses;
+                    counter.useCount = maxLegendaryUses;
                     break;
 
-                case "DuplicatorWild":
+                case "DuplicatorWild(Clone)":
                     InitUses(self.gameObject, maxBossUses);
-                    var yCounter = self.gameObject.GetComponent<PrinterUseCounter>();
-                    yCounter.useCount = maxBossUses;
+                    counter.useCount = maxBossUses;
                     break;
             }
         }
