@@ -7,7 +7,7 @@
         public static BuffDef oddlyShapedOpalUseless;
         public static BuffDef chronobaubleUseless;
 
-        public static void Create()
+        public static void Init()
         {
             uselessBuff = ScriptableObject.CreateInstance<BuffDef>();
             uselessBuff.isHidden = true;

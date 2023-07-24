@@ -68,16 +68,17 @@ namespace WellRoundedBalance
         {
             var stopwatch = Stopwatch.StartNew();
 
-            FunnyLabel.Hooks();
+            FunnyLabel.Init();
             // Useless.Create();
-            Buffs.Useless.Create();
-            VoidBall.Create();
-            BlazingProjectileVFX.Create();
-            Molotov.Create();
-            MolotovBig.Create();
-            DucleusLaser.Create();
-            TitanFist.Create();
-            EarthQuakeWave.Create();
+            Buffs.Useless.Init();
+            VoidBall.Init();
+            BlazingProjectileVFX.Init();
+            Molotov.Init();
+            MolotovBig.Init();
+            DucleusLaser.Init();
+            TitanFist.Init();
+            EarthQuakeWave.Init();
+            GupSpike.Init();
 
             On.RoR2.ItemCatalog.Init += ItemCatalog_Init;
 

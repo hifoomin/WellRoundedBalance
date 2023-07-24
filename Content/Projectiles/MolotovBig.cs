@@ -4,7 +4,7 @@
     {
         public static GameObject singlePrefab;
 
-        public static void Create()
+        public static void Init()
         {
             var ghostPrefab = BlazingProjectileVFX.prefab;
 

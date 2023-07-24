@@ -18,7 +18,25 @@ namespace WellRoundedBalance.Enemies.Standard
         public override void Hooks()
         {
             CharacterBody.onBodyStartGlobal += CharacterBody_onBodyStartGlobal;
+            CharacterMaster.onStartGlobal += CharacterMaster_onStartGlobal;
             Changes();
+        }
+
+        private void CharacterMaster_onStartGlobal(CharacterMaster master)
+        {
+            if (Main.IsInfernoDef())
+            {
+                return;
+            }
+            switch (master.name)
+            {
+                case "GipMaster(Clone)":
+                    AISkillDriver spike = (from x in master.GetComponents<AISkillDriver>()
+                                           where x.customName == "Spike"
+                                           select x).First();
+                    spike.maxDistance = 40f;
+                    break;
+            }
         }
 
         private void CharacterBody_onBodyStartGlobal(CharacterBody body)

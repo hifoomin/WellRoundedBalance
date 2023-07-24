@@ -4,7 +4,7 @@
     {
         public static GameObject prefab;
 
-        public static void Create()
+        public static void Init()
         {
             prefab = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.LaserMajorConstruct.Load<GameObject>(), "DefenseNucleusLaser", false);
             prefab.AddComponent<EffectComponent>();

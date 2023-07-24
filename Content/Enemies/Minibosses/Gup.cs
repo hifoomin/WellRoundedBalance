@@ -43,6 +43,24 @@ namespace WellRoundedBalance.Enemies.Minibosses
             {
                 self.pushAwayForce = 3500f;
                 self.damageCoefficient = 3.5f;
+                int spikeCount = self.outer.gameObject.name switch
+                {
+                    "GupBody(Clone)" => 12,
+                    "GeepBody(Clone)" => 8,
+                    "GipBody(Clone)" => 5,
+                    _ => 0
+                };
+                if (self.isAuthority)
+                {
+                    var slices = 360f / spikeCount;
+                    var projectedNormal = Vector3.ProjectOnPlane(UnityEngine.Random.onUnitSphere, Vector3.up).normalized;
+                    var corePosition = self.characterBody.corePosition;
+                    for (int i = 0; i < spikeCount; i++)
+                    {
+                        var vector = Quaternion.AngleAxis(slices * i, Vector3.up) * projectedNormal;
+                        ProjectileManager.instance.FireProjectile(Projectiles.GupSpike.prefab, corePosition, Util.QuaternionSafeLookRotation(vector), self.gameObject, self.characterBody.damage * 1.6f, -2000f, Util.CheckRoll(self.characterBody.crit, self.characterBody.master), DamageColorIndex.Default, null, -1f);
+                    }
+                }
             }
 
             orig(self);
@@ -60,7 +78,7 @@ namespace WellRoundedBalance.Enemies.Minibosses
                     AISkillDriver spike = (from x in master.GetComponents<AISkillDriver>()
                                            where x.customName == "Spike"
                                            select x).First();
-                    spike.maxDistance = 9.5f;
+                    spike.maxDistance = 40f;
                     break;
             }
         }

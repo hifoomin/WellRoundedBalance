@@ -11,12 +11,17 @@
 - Buffed Leeching Seed Healing Regardless of Source Per Stack 0.4 => **0.5**.
 - Buffed Printer White Limit 3 => **5**.
 - Buffed Scrapper Max Use Count 2 => **3**.
+- Buffed Wandering Vagrant.
+- Buffed Gup.
+- Buffed Geep.
+- Buffed Gip.
 - Nerfed Armor-Piercing Rounds Boss Damage Bonus 20% => **15%**.
 - Nerfed Leeching Seed to have a 0.15s cooldown between healing regardless of source.
 - Nerfed Spare Drone Parts Attack Speed Gain 50% => **40%**.
 - Nerfed Spare Drone Parts Cooldown Reduction 50% => **40%**.
 - Nerfed Stone Flux Pauldron pull on bosses.
 - Nerfed Elite Aspect Drop Chance 0.06% => **0.04%**.
+- Nerfed Wandering Vagrant.
 - Reworked Harvester's Scythe to swing a scythe on secondary skill use for 300% (+300% per stack) base damage, and if it hits, gain a 30% crit chance bonus for 4s.
 - Reworked Artifact of Command to drop potentials.
 - Increased Ally Cap 20 => 100.

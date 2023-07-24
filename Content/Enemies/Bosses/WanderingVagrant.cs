@@ -1,4 +1,6 @@
-﻿namespace WellRoundedBalance.Enemies.Bosses
+﻿using RoR2.Skills;
+
+namespace WellRoundedBalance.Enemies.Bosses
 {
     internal class WanderingVagrant : EnemyBase<WanderingVagrant>
     {
@@ -63,21 +65,30 @@
         {
             var fastProj = Utils.Paths.GameObject.VagrantCannon.Load<GameObject>();
             var projectileSimple = fastProj.GetComponent<ProjectileSimple>();
-            projectileSimple.desiredForwardSpeed = 37.5f;
+            projectileSimple.desiredForwardSpeed = 30f;
 
             var projectileImpactExplosion = fastProj.GetComponent<ProjectileImpactExplosion>();
             projectileImpactExplosion.falloffModel = BlastAttack.FalloffModel.None;
-            projectileImpactExplosion.blastRadius = 7f;
+            projectileImpactExplosion.blastRadius = 6f;
 
             var slowProj = Utils.Paths.GameObject.VagrantTrackingBomb.Load<GameObject>();
             var projectileSimple2 = slowProj.GetComponent<ProjectileSimple>();
-            projectileSimple2.desiredForwardSpeed = 14f;
+            projectileSimple2.desiredForwardSpeed = 15f;
             var cb = slowProj.GetComponent<CharacterBody>();
             cb.baseMaxHealth = 90f;
             cb.levelMaxHealth = 27f;
 
             var projectileImpactExplosion2 = slowProj.GetComponent<ProjectileImpactExplosion>();
             projectileImpactExplosion2.falloffModel = BlastAttack.FalloffModel.None;
+
+            var vagrantExplosion = Utils.Paths.SkillDef.VagrantBodyChargeMegaNova.Load<SkillDef>();
+            vagrantExplosion.baseRechargeInterval = 25f;
+
+            var vagrantBarrage = Utils.Paths.SkillDef.VagrantBodyJellyBarrage.Load<SkillDef>();
+            vagrantBarrage.baseRechargeInterval = 11f;
+
+            var vagrantBomb = Utils.Paths.SkillDef.VagrantBodyTrackingBomb.Load<SkillDef>();
+            vagrantBomb.baseRechargeInterval = 11f;
         }
     }
 }

@@ -4,7 +4,7 @@ namespace WellRoundedBalance.Misc
 {
     public static class FunnyLabel
     {
-        public static void Hooks()
+        public static void Init()
         {
             On.RoR2.UI.SteamBuildIdLabel.Start += (orig, self) =>
             {

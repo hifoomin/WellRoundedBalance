@@ -4,7 +4,7 @@
     {
         public static GameObject prefab;
 
-        public static void Create()
+        public static void Init()
         {
             prefab = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.FireballGhost.Load<GameObject>(), "BlazingProjectileGhost", false);
             prefab.transform.localScale = new Vector3(2f, 2f, 2f);

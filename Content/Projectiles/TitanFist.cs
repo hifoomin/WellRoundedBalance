@@ -7,7 +7,7 @@ namespace WellRoundedBalance.Projectiles
     {
         public static GameObject prefab;
 
-        public static void Create()
+        public static void Init()
         {
             prefab = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.TitanPreFistProjectile.Load<GameObject>(), "TitanicKnurlFistProjectile");
             var projectileImpactExplosion = prefab.GetComponent<ProjectileImpactExplosion>();

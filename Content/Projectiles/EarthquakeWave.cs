@@ -4,7 +4,7 @@
     {
         public static GameObject prefab;
 
-        public static void Create()
+        public static void Init()
         {
             prefab = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.BrotherSunderWave.Load<GameObject>(), "EarthquakeWave", false);
             var projectileDamage = prefab.GetComponent<ProjectileDamage>();
