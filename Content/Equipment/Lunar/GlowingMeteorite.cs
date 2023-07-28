@@ -1,5 +1,6 @@
 ﻿using MonoMod.Cil;
 using System;
+using UnityEngine.Rendering.PostProcessing;
 
 namespace WellRoundedBalance.Equipment.Lunar
 {
@@ -25,17 +26,20 @@ namespace WellRoundedBalance.Equipment.Lunar
         [ConfigField("Knockback Strength", "", 6000f)]
         public static float knockbackStrength;
 
-        [ConfigField("Minimum Wave Interval", "", 0.5f)]
+        [ConfigField("Minimum Wave Interval", "", 1f)]
         public static float minimumWaveInterval;
 
-        [ConfigField("Maximum Wave Interval", "", 1f)]
+        [ConfigField("Maximum Wave Interval", "", 1.5f)]
         public static float maximumWaveInterval;
 
         [ConfigField("Duration", "", 30)]
         public static int duration;
 
-        [ConfigField("Cylinderify", "Make the hitbox a cylinder that go up to the sky rather than just the sphere.", true)]
+        [ConfigField("Cylinderify", "Make the hitbox a Cylinder?", true)]
         public static bool cylinder;
+
+        [ConfigField("Cylinder Height", "Cylinder Height in Unity units", 10f)]
+        public static float inches;
 
         public override void Init()
         {
@@ -47,6 +51,27 @@ namespace WellRoundedBalance.Equipment.Lunar
             IL.RoR2.MeteorStormController.DetonateMeteor += MeteorStormController_DetonateMeteor;
             On.RoR2.MeteorStormController.DetonateMeteor += MeteorStormController_DetonateMeteor1;
             IL.RoR2.BlastAttack.CollectHits += BlastAttack_CollectHits;
+            IL.RoR2.MeteorStormController.FixedUpdate += MeteorStormController_FixedUpdate;
+            Changes();
+        }
+
+        private void MeteorStormController_FixedUpdate(ILContext il)
+        {
+            ILCursor c = new(il);
+
+            if (c.TryGotoNext(MoveType.Before,
+                x => x.MatchLdfld<MeteorStormController>("blastRadius")))
+            {
+                c.Index++;
+                c.EmitDelegate<Func<float, float>>((useless) =>
+                {
+                    return radius;
+                });
+            }
+            else
+            {
+                Logger.LogError("Failed to apply Meteorite VFX Scale hook");
+            }
         }
 
         private void BlastAttack_CollectHits(ILContext il)
@@ -59,9 +84,25 @@ namespace WellRoundedBalance.Equipment.Lunar
                 c.Emit(OpCodes.Ldarg_0);
                 c.EmitDelegate<Func<Vector3, float, int, BlastAttack, Collider[]>>((position, radius, mask, self) =>
                 {
-                    if (cylinder && self.inflictor.GetComponent<MeteorStormController>() != null) return Physics.OverlapCapsule(position, position + new Vector3(0, 2000, 0), radius, mask);
-                    else return Physics.OverlapSphere(position, radius, mask);
+                    // Main.WRBLogger.LogError("cylinder: " + cylinder);
+                    // Main.WRBLogger.LogError("inflictor: " + self.inflictor);
+                    // Main.WRBLogger.LogError("meteor storm controller: " + self.inflictor.GetComponent<MeteorStormController>());
+                    var inflictor = self.inflictor;
+                    if (inflictor)
+                    {
+                        var meteorStormController = self.inflictor.GetComponent<MeteorStormController>();
+                        if (cylinder && meteorStormController)
+                        {
+                            return Physics.OverlapCapsule(position, position + new Vector3(0f, inches, 0f), radius, mask);
+                        }
+                    }
+
+                    return Physics.OverlapSphere(position, radius, mask);
                 });
+            }
+            else
+            {
+                Logger.LogError("Failed to apply Meteorite Hitbox hook");
             }
         }
 
@@ -94,6 +135,33 @@ namespace WellRoundedBalance.Equipment.Lunar
             {
                 Logger.LogError("Failed to apply Glowing Meteorite Falloff hook");
             }
+        }
+
+        private void Changes()
+        {
+            var meteorStorm = Utils.Paths.GameObject.MeteorStorm.Load<GameObject>();
+            var ppIn = meteorStorm.transform.GetChild(0).GetComponent<PostProcessVolume>().sharedProfile;
+            var ppOut = meteorStorm.transform.GetChild(1).GetComponent<PostProcessVolume>().sharedProfile;
+
+            var cgIn = ppIn.GetSetting<ColorGrading>();
+            cgIn.contrast.value = 30f;
+            cgIn.postExposure.value = 0.25f;
+            cgIn.colorFilter.value = new Color32(255, 171, 204, 255);
+            cgIn.gain.value.z = 0.7f;
+            cgIn.tint.value = -15f;
+            cgIn.colorFilter.overrideState = true;
+            cgIn.colorFilter.value = new Color32(154, 160, 255, 255);
+            cgIn.mixerRedOutRedIn.value = 140f;
+
+            var cgOut = ppOut.GetSetting<ColorGrading>();
+            cgOut.contrast.value = 30f;
+            cgOut.postExposure.value = 0.25f;
+            cgOut.colorFilter.value = new Color32(255, 171, 204, 255);
+            cgOut.gain.value.z = 0.7f;
+            cgOut.tint.value = -15f;
+            cgOut.colorFilter.overrideState = true;
+            cgOut.colorFilter.value = new Color32(154, 160, 255, 255);
+            cgOut.mixerRedOutRedIn.value = 140f;
         }
     }
 }

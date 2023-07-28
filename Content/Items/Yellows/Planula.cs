@@ -21,7 +21,8 @@ namespace WellRoundedBalance.Items.Yellows
             var postProcessVolume = postProcessingObject.GetComponent<PostProcessVolume>();
             postProcessVolume.weight = 1f;
 
-            var profile = postProcessVolume.sharedProfile;
+            var profile = Object.Instantiate(postProcessVolume.sharedProfile);
+            profile.name = "THEFUCKINGSUNPENIS";
             var bloom = profile.GetSetting<Bloom>();
             bloom.SetAllOverridesTo(true);
             bloom.intensity.value = 0.3f;
