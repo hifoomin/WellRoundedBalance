@@ -21,6 +21,8 @@ namespace WellRoundedBalance.Interactables
 
         public static Dictionary<GameObject, int> uses;
 
+        public static InteractableSpawnCard scrapper = Utils.Paths.InteractableSpawnCard.iscScrapper.Load<InteractableSpawnCard>();
+
         public override void Init()
         {
             base.Init();
@@ -65,7 +67,6 @@ namespace WellRoundedBalance.Interactables
         private void ClassicStageInfo_Start(On.RoR2.ClassicStageInfo.orig_Start orig, ClassicStageInfo self)
         {
             orig(self);
-            var scrapper = Utils.Paths.InteractableSpawnCard.iscScrapper.Load<InteractableSpawnCard>();
             var categories = self.interactableCategories.categories;
             for (int i = 0; i < categories.Length; i++)
             {
@@ -128,8 +129,8 @@ namespace WellRoundedBalance.Interactables
     {
         public int useCount;
         public float timer;
-        public float explosionInterval = 0.4f;
-        public float deleteInterval = 0.5f;
+        public float explosionInterval = 0.7f;
+        public float deleteInterval = 0.8f;
 
         private void FixedUpdate()
         {

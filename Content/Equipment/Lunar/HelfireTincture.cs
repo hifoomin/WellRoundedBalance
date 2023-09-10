@@ -46,6 +46,9 @@ namespace WellRoundedBalance.Equipment.Lunar
         {
             IL.RoR2.EquipmentSlot.FireBurnNearby += ChangeDuration;
             Changes();
+
+            var HelfireTincture = Utils.Paths.EquipmentDef.BurnNearby.Load<EquipmentDef>();
+            HelfireTincture.cooldown = cooldown;
         }
 
         private void ChangeDuration(ILContext il)

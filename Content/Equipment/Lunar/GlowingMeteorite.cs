@@ -53,6 +53,9 @@ namespace WellRoundedBalance.Equipment.Lunar
             IL.RoR2.BlastAttack.CollectHits += BlastAttack_CollectHits;
             IL.RoR2.MeteorStormController.FixedUpdate += MeteorStormController_FixedUpdate;
             Changes();
+
+            var GlowingMeteorite = Utils.Paths.EquipmentDef.Meteor.Load<EquipmentDef>();
+            GlowingMeteorite.cooldown = cooldown;
         }
 
         private void MeteorStormController_FixedUpdate(ILContext il)

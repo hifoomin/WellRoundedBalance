@@ -15,6 +15,7 @@ namespace WellRoundedBalance.Enemies.Bosses
         {
             IL.EntityStates.ClayBoss.Recover.FireTethers += Recover_FireTethers;
             IL.RoR2.TarTetherController.DoDamageTick += TarTetherController_DoDamageTick;
+            RoR2.CharacterMaster.onStartGlobal += CharacterMaster_onStartGlobal;
         }
 
         private void TarTetherController_DoDamageTick(ILContext il)
@@ -75,6 +76,28 @@ namespace WellRoundedBalance.Enemies.Bosses
             else
             {
                 Logger.LogError("Failed to apply Clay Dunestrider Suck hook");
+            }
+        }
+
+        private void CharacterMaster_onStartGlobal(CharacterMaster master)
+        {
+            if (Main.IsInfernoDef())
+            {
+                return;
+            }
+            switch (master.name)
+            {
+                case "ClayBossMaster(Clone)":
+                    AISkillDriver Suck1 = (from x in master.GetComponents<AISkillDriver>()
+                                           where x.customName == "SukFriends"
+                                           select x).First();
+                    Suck1.noRepeat = true;
+
+                    AISkillDriver Suck2 = (from x in master.GetComponents<AISkillDriver>()
+                                           where x.customName == "SukEnemies"
+                                           select x).First();
+                    Suck2.noRepeat = true;
+                    break;
             }
         }
     }

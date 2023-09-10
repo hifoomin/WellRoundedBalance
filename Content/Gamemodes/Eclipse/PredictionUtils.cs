@@ -86,7 +86,7 @@
 
             if (speed <= 0f)
             {
-                Debug.LogError("AccurateEnemies: Could not get speed of ProjectileSimple.");
+                Main.WRBLogger.LogError("Could not get speed of ProjectileSimple");
                 return aimRay;
             }
 
@@ -107,7 +107,7 @@
 
             if (speed <= 0f)
             {
-                Debug.LogError("AccurateEnemies: Could not get speed of ProjectileCharacterController.");
+                Main.WRBLogger.LogError("Could not get speed of ProjectileCharacterController");
                 return aimRay;
             }
 

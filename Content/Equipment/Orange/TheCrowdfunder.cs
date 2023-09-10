@@ -1,6 +1,7 @@
 ﻿using MonoMod.Cil;
 using System;
 using WellRoundedBalance.Items;
+using WellRoundedBalance.Items.Lunars;
 
 namespace WellRoundedBalance.Equipment.Orange
 {
@@ -69,11 +70,30 @@ namespace WellRoundedBalance.Equipment.Orange
 
         private void Changes(On.EntityStates.GoldGat.GoldGatFire.orig_OnEnter orig, EntityStates.GoldGat.GoldGatFire self)
         {
-            EntityStates.GoldGat.GoldGatFire.windUpDuration = windUpDuration;
             EntityStates.GoldGat.GoldGatFire.minFireFrequency = minimumFireRate;
             EntityStates.GoldGat.GoldGatFire.maxFireFrequency = maximumFireRate;
             EntityStates.GoldGat.GoldGatFire.procCoefficient = procCoefficient;
             EntityStates.GoldGat.GoldGatFire.damageCoefficient = damage;
+
+            var body = self.body;
+            if (body)
+            {
+                var inventory = body.inventory;
+                if (inventory)
+                {
+                    var fuelCells = inventory.GetItemCount(RoR2Content.Items.EquipmentMagazine);
+                    var hasGesture = inventory.GetItemCount(RoR2Content.Items.AutoCastEquipment) > 0;
+                    // fuel cell hardcoded for now
+                    var reduction = 1f - ((0.15f * fuelCells) + (hasGesture ? GestureOfTheDrowned.baseEquipmentCooldownReduction : 0));
+
+                    EntityStates.GoldGat.GoldGatFire.windUpDuration = windUpDuration * reduction;
+                }
+                else
+                    EntityStates.GoldGat.GoldGatFire.windUpDuration = windUpDuration;
+            }
+            else
+                EntityStates.GoldGat.GoldGatFire.windUpDuration = windUpDuration;
+
             orig(self);
         }
 

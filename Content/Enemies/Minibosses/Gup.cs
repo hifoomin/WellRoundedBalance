@@ -1,5 +1,6 @@
 ﻿using RoR2.Skills;
 using System;
+using UnityEngine;
 
 namespace WellRoundedBalance.Enemies.Minibosses
 {
@@ -20,7 +21,37 @@ namespace WellRoundedBalance.Enemies.Minibosses
             CharacterMaster.onStartGlobal += CharacterMaster_onStartGlobal;
             CharacterBody.onBodyStartGlobal += CharacterBody_onBodyStartGlobal;
             On.EntityStates.Gup.GupSpikesState.OnEnter += GupSpikesState_OnEnter;
+            On.EntityStates.Gup.GupSpikesState.FixedUpdate += GupSpikesState_FixedUpdate;
             Changes();
+        }
+
+        private void GupSpikesState_FixedUpdate(On.EntityStates.Gup.GupSpikesState.orig_FixedUpdate orig, EntityStates.Gup.GupSpikesState self)
+        {
+            orig(self);
+            GupSpikesController controller = null;
+            if (controller == null) controller = self.GetComponent<GupSpikesController>();
+            if (!Main.IsInfernoDef() && !controller.hasFired)
+            {
+                int spikeCount = self.outer.gameObject.name switch
+                {
+                    "GupBody(Clone)" => 12,
+                    "GeepBody(Clone)" => 8,
+                    "GipBody(Clone)" => 5,
+                    _ => 0
+                };
+                if (self.isAuthority && self.animator?.GetFloat(self.initialHitboxActiveParameter) > 0.5f)
+                {
+                    var slices = 360f / spikeCount;
+                    var projectedNormal = Vector3.ProjectOnPlane(UnityEngine.Random.onUnitSphere, Vector3.up).normalized;
+                    var corePosition = self.characterBody.corePosition;
+                    for (int i = 0; i < spikeCount; i++)
+                    {
+                        var vector = Quaternion.AngleAxis(slices * i, Vector3.up) * projectedNormal;
+                        ProjectileManager.instance.FireProjectile(Projectiles.GupSpike.prefab, corePosition, Util.QuaternionSafeLookRotation(vector), self.gameObject, self.characterBody.damage * 2f, -2000f, Util.CheckRoll(self.characterBody.crit, self.characterBody.master), DamageColorIndex.Default, null, -1f);
+                    }
+                    controller.hasFired = true;
+                }
+            }
         }
 
         private void CharacterBody_onBodyStartGlobal(CharacterBody body)
@@ -33,34 +64,22 @@ namespace WellRoundedBalance.Enemies.Minibosses
             {
                 case "GupBody(Clone)":
                     body.baseMoveSpeed = 19f;
+                    if (body.GetComponent<GupSpikesController>() == null)
+                    {
+                        body.gameObject.AddComponent<GupSpikesController>();
+                    }
                     break;
             }
         }
 
         private void GupSpikesState_OnEnter(On.EntityStates.Gup.GupSpikesState.orig_OnEnter orig, EntityStates.Gup.GupSpikesState self)
         {
-            if (!Main.IsInfernoDef())
+            self.pushAwayForce = 3500f;
+            self.damageCoefficient = 3.5f;
+            var controller = self.GetComponent<GupSpikesController>();
+            if (controller)
             {
-                self.pushAwayForce = 3500f;
-                self.damageCoefficient = 3.5f;
-                int spikeCount = self.outer.gameObject.name switch
-                {
-                    "GupBody(Clone)" => 12,
-                    "GeepBody(Clone)" => 8,
-                    "GipBody(Clone)" => 5,
-                    _ => 0
-                };
-                if (self.isAuthority)
-                {
-                    var slices = 360f / spikeCount;
-                    var projectedNormal = Vector3.ProjectOnPlane(UnityEngine.Random.onUnitSphere, Vector3.up).normalized;
-                    var corePosition = self.characterBody.corePosition;
-                    for (int i = 0; i < spikeCount; i++)
-                    {
-                        var vector = Quaternion.AngleAxis(slices * i, Vector3.up) * projectedNormal;
-                        ProjectileManager.instance.FireProjectile(Projectiles.GupSpike.prefab, corePosition, Util.QuaternionSafeLookRotation(vector), self.gameObject, self.characterBody.damage * 1.6f, -2000f, Util.CheckRoll(self.characterBody.crit, self.characterBody.master), DamageColorIndex.Default, null, -1f);
-                    }
-                }
+                controller.hasFired = false;
             }
 
             orig(self);
@@ -78,7 +97,7 @@ namespace WellRoundedBalance.Enemies.Minibosses
                     AISkillDriver spike = (from x in master.GetComponents<AISkillDriver>()
                                            where x.customName == "Spike"
                                            select x).First();
-                    spike.maxDistance = 40f;
+                    spike.maxDistance = 45f;
                     break;
             }
         }
@@ -113,5 +132,10 @@ namespace WellRoundedBalance.Enemies.Minibosses
             var sd = Utils.Paths.SkillDef.GupSpikes.Load<SkillDef>();
             sd.baseRechargeInterval = 1.5f;
         }
+    }
+
+    public class GupSpikesController : MonoBehaviour
+    {
+        public bool hasFired;
     }
 }

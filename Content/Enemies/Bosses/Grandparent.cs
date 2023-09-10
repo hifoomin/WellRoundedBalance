@@ -12,6 +12,7 @@
         public override void Hooks()
         {
             On.RoR2.GrandParentSunController.Start += GrandParentSunController_Start;
+            RoR2.CharacterMaster.onStartGlobal += CharacterMaster_onStartGlobal;
             Changes();
         }
 
@@ -19,6 +20,23 @@
         {
             self.bullseyeSearch.teamMaskFilter.RemoveTeam(self.teamFilter.teamIndex);
             orig(self);
+        }
+
+        private void CharacterMaster_onStartGlobal(CharacterMaster master)
+        {
+            if (Main.IsInfernoDef())
+            {
+                return;
+            }
+            switch (master.name)
+            {
+                case "GrandparentMaster(Clone)":
+                    AISkillDriver Sun = (from x in master.GetComponents<AISkillDriver>()
+                                         where x.customName == "ChannelSun"
+                                         select x).First();
+                    Sun.noRepeat = true;
+                    break;
+            }
         }
 
         private void Changes()

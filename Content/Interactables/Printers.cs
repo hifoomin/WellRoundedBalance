@@ -176,8 +176,8 @@ namespace WellRoundedBalance.Interactables
     {
         public int useCount;
         public float timer;
-        public float explosionInterval = 0.4f;
-        public float deleteInterval = 0.5f;
+        public float explosionInterval = 0.7f;
+        public float deleteInterval = 0.8f;
 
         private void FixedUpdate()
         {

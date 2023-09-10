@@ -1,5 +1,6 @@
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
+using System;
 using UnityEngine.UIElements;
 
 namespace WellRoundedBalance.Items.Reds
@@ -26,6 +27,33 @@ namespace WellRoundedBalance.Items.Reds
             IL.RoR2.GlobalEventManager.OnCharacterDeath += DisableVanilla;
             GlobalEventManager.onCharacterDeathGlobal += Killed;
             On.RoR2.HealthComponent.TakeDamage += ReduceDamage;
+            On.RoR2.Inventory.RemoveItem_ItemIndex_int += Inventory_RemoveItem_ItemIndex_int;
+        }
+
+        private void Inventory_RemoveItem_ItemIndex_int(On.RoR2.Inventory.orig_RemoveItem_ItemIndex_int orig, Inventory self, ItemIndex itemIndex, int count)
+        {
+            orig(self, itemIndex, count);
+            if (itemIndex == RoR2Content.Items.HeadHunter.itemIndex)
+            {
+                var master = self.GetComponent<CharacterMaster>();
+                if (master)
+                {
+                    var body = master.GetBody();
+                    if (body)
+                    {
+                        for (int i = 0; i < body.activeBuffsList.Length; i++)
+                        {
+                            var buff = body.activeBuffsList[i];
+                            if (BuffCatalog.eliteBuffIndices.Contains(buff))
+                            {
+                                var indexToRemove = Array.IndexOf(body.activeBuffsList, buff);
+                                if (indexToRemove != -1)
+                                    HG.ArrayUtils.ArrayRemoveAtAndResize(ref body.activeBuffsList, indexToRemove, 1);
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         private void ReduceDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damage)

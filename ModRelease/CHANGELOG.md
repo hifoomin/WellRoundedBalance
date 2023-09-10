@@ -1,41 +1,56 @@
-# 1.3.9 Patch Notes
+# 1.4.0 Patch Notes
+- Added Hypercrit2.
+- Added pre-made config for Hypercrit2.
 - Added pre-made config for BetterDrones.
+- Buffed Ally Cap 20 => **100**.
 - Buffed Armor-Piercing Rounds Champion Damage Bonus 10% => **15%**.
-- Buffed Hyperbolic Speed Scaling Max 20m/s => **40m/s**.
 - Buffed Commencement Speed Boost Duration 45s => **60s**.
 - Buffed Death Mark Base Damage Increase Per Debuff 5% => **6%**.
-- Buffed Razorwire Base Damage 200% => **250%**.
-- Buffed Razorwire Damage Per Stack 200% => **250%**.
 - Buffed Death Mark Damage Increase Per Debuff Per Stack 5% => **6%**.
+- Buffed Geep.
+- Buffed Gip.
+- Buffed Gup.
+- Buffed Hyperbolic Speed Scaling Max 20m/s => **40m/s**.
 - Buffed Leeching Seed Base Healing Regardless of Source 0.4 => **0.5**.
 - Buffed Leeching Seed Healing Regardless of Source Per Stack 0.4 => **0.5**.
 - Buffed Printer White Limit 3 => **5**.
+- Buffed Razorwire Base Damage 200% => **250%**.
+- Buffed Razorwire Damage Per Stack 200% => **250%**.
+- Buffed Red Whip to reduce Out of Combat timer by **0.5s** on the first stack.
 - Buffed Scrapper Max Use Count 2 => **3**.
+- Buffed Shipping Request Form Green Chance 33% => **38%**.
+- Buffed The Crowdfunder (NO FUCKING WAY) Windup to scale with **Equipment Cooldown Reduction**.
 - Buffed Wandering Vagrant.
-- Buffed Gup.
-- Buffed Geep.
-- Buffed Gip.
-- Berfed Glowing Meteorite Minimum Wave Interval 0.5s => **1s**.
 - Berfed Glowing Meteorite Maximum Wave Interval 1s => **1.5s**.
+- Berfed Glowing Meteorite Minimum Wave Interval 0.5s => **1s**.
+- Berfed Gold Scaling to be **slower early game** and **faster late game**.
 - Nerfed Armor-Piercing Rounds Boss Damage Bonus 20% => **15%**.
-- Nerfed Leeching Seed to have a 0.15s cooldown between healing regardless of source.
+- Nerfed Clay Dunestrider.
+- Nerfed Elite Aspect Drop Chance 0.06% => **0.04%**.
+- Nerfed Grandparent.
+- Nerfed Leeching Seed to have a **0.15s cooldown** between healing regardless of source.
+- Nerfed Power Elixir Percent Healing 25% => **20%**.
+- Nerfed Shipping Request Form White Chance 65% => **60%**.
 - Nerfed Spare Drone Parts Attack Speed Gain 50% => **40%**.
 - Nerfed Spare Drone Parts Cooldown Reduction 50% => **40%**.
 - Nerfed Spinel Tonic Post Processing.
 - Nerfed Stone Flux Pauldron pull on bosses.
-- Nerfed Elite Aspect Drop Chance 0.06% => **0.04%**.
 - Nerfed Wandering Vagrant.
-- Reworked Harvester's Scythe to swing a scythe on secondary skill use for 300% (+300% per stack) base damage, and if it hits, gain a 30% crit chance bonus for 4s.
-- Reworked Artifact of Command to drop potentials.
-- Increased Ally Cap 20 => 100.
-- Made Glowing Meteorite a Cylinder.
+- Reworked Harvester's Scythe to **swing a scythe** on secondary skill use for **200% base damage**, and if it hits, gain **25% (+25% per stack) crit chance** for **3s**, with a cooldown of **3s**.
+- Reworked Artifact of Command to **drop potentials**.
+- Made Glowing Meteorite Blast a Cylinder.
 - Made All Aspects apply on all allies without an equipment.
 - Made Gold Price Scaling decrease slightly per player in Multiplayer.
 - Made Printer Common and Uncommon Max Uses scale with player count.
 - Made Stone Flux Pauldron pull scale with damage.
 - Disabled Clockwork Mechanism.
 - Removed Overloading Worm from Stage 4 and 5.
+- Fixed Glowing Meteorite not having changed cooldown.
+- Fixed Helfire Tincture not having changed cooldown.
 - Fixed Printer Networking.
+- Fixed Printers and Scrappers deleting themselves before giving items sometimes.
+- Fixed Spinel Tonic not having changed cooldown.
+- - Long time no patch ¯\_(ツ)_/¯ sorry for that, been having good times at least. ~HIFU
 
 # 1.3.8 Patch Notes
 - Added Hyperbolic Speed Scaling.
@@ -85,7 +100,7 @@
 - Made Eclipse 8 not take fall damage into account.
 - Took a Major L to Glacial Elites, spent a solid week trying to fix them and couldn't, so their ice pillars are currently disabled.
 - Fixed Oddly-shaped Opal ignoring max buff count.
-- - Small green and yellow stacking rebalance with printer and movement changes. ~HIFU
+- - Small green and yellow stacking rebalance with printer and movement changes. ~YIFFU
 
 # 1.3.7 Patch Notes
 - Added module toggle config.

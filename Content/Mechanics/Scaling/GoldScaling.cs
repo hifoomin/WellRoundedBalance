@@ -6,25 +6,28 @@ namespace WellRoundedBalance.Mechanics.Scaling
     {
         public override string Name => ":: Mechanics : Gold Scaling";
 
-        [ConfigField("Gold Scaling", "Formula for gold reward: Minimum value between Vanilla Gold Reward * Base Multiplier and Base Multiplier * ((Vanilla Gold Reward / (Stage Divisor + Stages Cleared)) + Square Root(Square Root Multiplier * (Stage And Loop Multiplier + (Stage Clear Count * Stage Multiplier + Loop Clear Count * Loop Multiplier))))", 0.75f)]
+        [ConfigField("Gold Scaling", "Formula for gold reward: Minimum value between Vanilla Gold Reward * Base Multiplier and Base Multiplier * ((Vanilla Gold Reward / (Stage Divisor + (Stage Clear Count * Stage Clear Count Multiplier))) + Square Root(Square Root Multiplier * (Stage And Loop Multiplier + (Stage Clear Count * Stage Multiplier + Loop Clear Count * Loop Multiplier))))", 0.75f)]
         public static float duhDoesNothing;
 
         [ConfigField("Base Multiplier", "", 0.75f)]
         public static float baseMultiplier;
 
-        [ConfigField("Loop Multiplier", "", 100f)]
+        [ConfigField("Loop Multiplier", "", -700f)]
         public static float loopMultiplier;
 
-        [ConfigField("Stage Divisor", "", 2f)]
+        [ConfigField("Stage Divisor", "", 3f)]
         public static float stageDivisor;
 
-        [ConfigField("Stage Multiplier", "", 50f)]
+        [ConfigField("Stage Clear Count Multiplier", "", 0.25f)]
+        public static float stageClearCountMultiplier;
+
+        [ConfigField("Stage Multiplier", "", 150f)]
         public static float stageMultiplier;
 
-        [ConfigField("Square Root Multiplier", "", 8f)]
+        [ConfigField("Square Root Multiplier", "", 6f)]
         public static float squareRootMultiplier;
 
-        [ConfigField("Stage and Loop Multiplier", "", 400f)]
+        [ConfigField("Stage and Loop Multiplier", "", 275f)]
         public static float stageAndLoopMultiplier;
 
         [ConfigField("Enable New Multiplayer Gold Scaling?", "Gold Cost goes from Base Cost * Difficulty Coefficient ^ 1.25 to Base Cost * Difficulty Coefficient ^ (1 + (0.25 / Square Root(Player Count)))", true)]
@@ -45,7 +48,7 @@ namespace WellRoundedBalance.Mechanics.Scaling
 
         private void DeathRewards_OnKilledServer(On.RoR2.DeathRewards.orig_OnKilledServer orig, DeathRewards self, DamageReport damageReport)
         {
-            self.goldReward = Convert.ToUInt32(Mathf.Min(self.goldReward * baseMultiplier, baseMultiplier * ((self.goldReward / (stageDivisor + Run.instance.stageClearCount)) + Mathf.Sqrt(squareRootMultiplier * (stageAndLoopMultiplier + (Run.instance.stageClearCount * stageMultiplier + Run.instance.loopClearCount * loopMultiplier))))));
+            self.goldReward = Convert.ToUInt32(Mathf.Min(self.goldReward * baseMultiplier, baseMultiplier * ((self.goldReward / (stageDivisor + (Run.instance.stageClearCount * stageClearCountMultiplier))) + Mathf.Sqrt(squareRootMultiplier * (stageAndLoopMultiplier + (Run.instance.stageClearCount * stageMultiplier + Run.instance.loopClearCount * loopMultiplier))))));
             orig(self, damageReport);
         }
 

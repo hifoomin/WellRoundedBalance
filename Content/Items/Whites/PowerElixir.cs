@@ -19,7 +19,7 @@ namespace WellRoundedBalance.Items.Whites
         [ConfigField("Health Threshold", "Decimal.", 0.5f)]
         public static float healthThreshold;
 
-        [ConfigField("Percent Healing", "Decimal.", 0.25f)]
+        [ConfigField("Percent Healing", "Decimal.", 0.2f)]
         public static float percentHealing;
 
         [ConfigField("Healing Time", 4f)]

@@ -1,6 +1,7 @@
 ﻿using static RoR2.CombatDirector;
 using System;
 using BepInEx.Configuration;
+using JetBrains.Annotations;
 
 namespace WellRoundedBalance.Elites
 {
@@ -34,6 +35,9 @@ namespace WellRoundedBalance.Elites
         [ConfigField("Aspect Chance", "Decimal.", 0.004f)]
         public static float aspectChance;
 
+        [ConfigField("Enable Aspect Inheritance?", "Makes all allies without an equipment gain the most recent aspect.", true)]
+        public static bool aspectInheritance;
+
         public List<EquipmentIndex> aspects = new();
 
         public override void Init()
@@ -44,29 +48,40 @@ namespace WellRoundedBalance.Elites
         public override void Hooks()
         {
             On.RoR2.CombatDirector.Init += CombatDirector_Init;
-            RoR2.CharacterBody.onBodyInventoryChangedGlobal += CharacterBody_onBodyInventoryChangedGlobal;
+            if (aspectInheritance)
+                CharacterBody.onBodyInventoryChangedGlobal += CharacterBody_onBodyInventoryChangedGlobal;
         }
 
         private void CharacterBody_onBodyInventoryChangedGlobal(CharacterBody body)
         {
             bool anyoneHasAspect = false;
             EquipmentIndex firstAspect = EquipmentIndex.None;
-            foreach (CharacterMaster master in CharacterMaster.readOnlyInstancesList)
+
+            for (int i = 0; i < CharacterMaster.readOnlyInstancesList.Count; i++)
             {
-                if (master.inventory && master.teamIndex == TeamIndex.Player)
+                var master = CharacterMaster.readOnlyInstancesList[i];
+                if (master.teamIndex != TeamIndex.Player) continue;
+
+                var inventory = master.inventory;
+                if (!inventory) continue;
+
+                var equipment = inventory.currentEquipmentIndex;
+
+                if (master.playerCharacterMasterController)
                 {
-                    if (master.playerCharacterMasterController)
+                    anyoneHasAspect = aspects.Contains(equipment);
+                    if (anyoneHasAspect)
                     {
-                        anyoneHasAspect = aspects.Contains(master.inventory.currentEquipmentIndex);
-                        if (anyoneHasAspect)
-                        {
-                            firstAspect = master.inventory.currentEquipmentIndex;
-                        }
+                        firstAspect = equipment;
                     }
-                    if (master.inventory.currentEquipmentIndex == EquipmentIndex.None && anyoneHasAspect)
-                    {
-                        master.inventory.SetEquipmentIndex(firstAspect);
-                    }
+                }
+                if (anyoneHasAspect && equipment == EquipmentIndex.None)
+                {
+                    inventory.SetEquipmentIndex(firstAspect);
+                }
+                if (!anyoneHasAspect && equipment == firstAspect)
+                {
+                    inventory.SetEquipmentIndex(EquipmentIndex.None);
                 }
             }
         }

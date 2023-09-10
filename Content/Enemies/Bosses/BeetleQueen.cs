@@ -48,7 +48,7 @@ namespace WellRoundedBalance.Enemies.Bosses
             if (!Main.IsInfernoDef())
             {
                 EntityStates.BeetleQueenMonster.SpawnWards.baseDuration = 3f;
-                EntityStates.BeetleQueenMonster.SpawnWards.orbTravelSpeed = 20f;
+                EntityStates.BeetleQueenMonster.SpawnWards.orbTravelSpeed = 15f;
             }
 
             orig(self);
@@ -202,7 +202,7 @@ namespace WellRoundedBalance.Enemies.Bosses
 
         public static int waveProjectileCount = 12;
 
-        public static float waveProjectileDamageCoefficient = 0.35f;
+        public static float waveProjectileDamageCoefficient = 0.3f;
 
         public static float waveProjectileForce = 600f;
 

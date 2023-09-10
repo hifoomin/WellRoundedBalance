@@ -18,7 +18,25 @@ namespace WellRoundedBalance.Enemies.Bosses
             On.EntityStates.VagrantMonster.ChargeMegaNova.OnEnter += ChargeMegaNova_OnEnter;
             On.EntityStates.VagrantMonster.Weapon.JellyBarrage.OnEnter += JellyBarrage_OnEnter;
             On.RoR2.Projectile.ProjectileImpactExplosion.FixedUpdate += ProjectileImpactExplosion_FixedUpdate;
+            RoR2.CharacterMaster.onStartGlobal += CharacterMaster_onStartGlobal;
             Changes();
+        }
+
+        private void CharacterMaster_onStartGlobal(CharacterMaster master)
+        {
+            if (Main.IsInfernoDef())
+            {
+                return;
+            }
+            switch (master.name)
+            {
+                case "VagrantMaster(Clone)":
+                    AISkillDriver Nova = (from x in master.GetComponents<AISkillDriver>()
+                                          where x.customName == "FireNova"
+                                          select x).First();
+                    Nova.noRepeat = true;
+                    break;
+            }
         }
 
         private void ProjectileImpactExplosion_FixedUpdate(On.RoR2.Projectile.ProjectileImpactExplosion.orig_FixedUpdate orig, ProjectileImpactExplosion self)

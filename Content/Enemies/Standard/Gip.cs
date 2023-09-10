@@ -1,5 +1,6 @@
 ﻿using RoR2.Skills;
 using System;
+using WellRoundedBalance.Enemies.Minibosses;
 
 namespace WellRoundedBalance.Enemies.Standard
 {
@@ -34,7 +35,7 @@ namespace WellRoundedBalance.Enemies.Standard
                     AISkillDriver spike = (from x in master.GetComponents<AISkillDriver>()
                                            where x.customName == "Spike"
                                            select x).First();
-                    spike.maxDistance = 40f;
+                    spike.maxDistance = 45f;
                     break;
             }
         }
@@ -49,6 +50,10 @@ namespace WellRoundedBalance.Enemies.Standard
             {
                 case "GipBody(Clone)":
                     body.baseMoveSpeed = 29f;
+                    if (body.GetComponent<GupSpikesController>() == null)
+                    {
+                        body.gameObject.AddComponent<GupSpikesController>();
+                    }
                     break;
             }
         }

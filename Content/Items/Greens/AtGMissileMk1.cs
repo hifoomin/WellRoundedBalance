@@ -1,5 +1,4 @@
-﻿using MonoMod.Cil;
-using System;
+﻿using System;
 
 namespace WellRoundedBalance.Items.Greens
 {

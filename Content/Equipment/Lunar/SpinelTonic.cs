@@ -56,6 +56,9 @@ namespace WellRoundedBalance.Equipment.Lunar
             IL.RoR2.EquipmentSlot.FireTonic += ChangeAff;
             On.RoR2.EquipmentSlot.Start += ChangeDur;
             Changess();
+
+            var Tonic = Utils.Paths.EquipmentDef.Tonic.Load<EquipmentDef>();
+            Tonic.cooldown = cooldown;
         }
 
         private void ChangeDur(On.RoR2.EquipmentSlot.orig_Start orig, EquipmentSlot self)

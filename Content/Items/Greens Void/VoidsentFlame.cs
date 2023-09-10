@@ -9,11 +9,11 @@ namespace WellRoundedBalance.Items.VoidGreens
         public override string Name => ":: Items :::::: Voids :: Voidsent Flame";
         public override ItemDef InternalPickup => DLC1Content.Items.ExplodeOnDeathVoid;
 
-        public override string PickupText => (firstHit ? "First hit on" : "Full Health") + " enemies also detonate on hit. <style=cIsVoid>Corrupts all Will-o'-the-wisps</style>.";
+        public override string PickupText => (firstHit ? "First hit on" : "Full Health") + " enemies also detonate on hit. <style=cIsVoid>Corrupts all Wills-o'-the-wisp</style>.";
 
         public override string DescText => (firstHit ? "On first hit" : "Upon hitting an enemy at <style=cIsDamage>100% health</style>") + "," +
             StackDesc(baseRange, rangePerStack, init => $" <style=cIsDamage>detonate</style> them in a <style=cIsDamage>{m(init)}</style>{{Stack}} radius burst", m) +
-            StackDesc(baseDamage, damagePerStack, init => $"for <style=cIsDamage>{d(init)}</style>{{Stack}} base damage", d) + ". <style=cIsVoid>Corrupts all Will-o'-the-wisps</style>.";
+            StackDesc(baseDamage, damagePerStack, init => $"for <style=cIsDamage>{d(init)}</style>{{Stack}} base damage", d) + ". <style=cIsVoid>Corrupts all Wills-o'-the-wisp</style>.";
 
         [ConfigField("Base Damage", "Decimal.", 1.1f)]
         public static float baseDamage;

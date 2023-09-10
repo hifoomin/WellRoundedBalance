@@ -109,7 +109,7 @@ namespace WellRoundedBalance.Interactables
         public override PickupIndex GenerateDropPreReplacement(Xoroshiro128Plus rng)
         {
             GenerateWeightedSelection();
-            Debug.Log(GenerateDropFromWeightedSelection(rng, weighted));
+            // Debug.Log(GenerateDropFromWeightedSelection(rng, weighted));
             return GenerateDropFromWeightedSelection(rng, weighted);
         }
     }

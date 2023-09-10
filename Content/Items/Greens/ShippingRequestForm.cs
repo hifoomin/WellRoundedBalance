@@ -9,10 +9,10 @@
 
         public override string DescText => "A <style=cIsUtility>delivery</style> containing 2 items (" + d(whiteItemWeight / (whiteItemWeight + greenItemWeight + redItemWeight)) + "/<style=cIsHealing>" + d(greenItemWeight / (whiteItemWeight + greenItemWeight + redItemWeight)) + "</style>/<style=cIsHealth>" + d(redItemWeight / (whiteItemWeight + greenItemWeight + redItemWeight)) + "</style>) will appear in a random location <style=cIsUtility>on each stage</style>. <style=cStack>(Increases rarity chances of the items per stack).</style>";
 
-        [ConfigField("White Item Weight", "Decimal.", 0.65f)]
+        [ConfigField("White Item Weight", "Decimal.", 0.6f)]
         public static float whiteItemWeight;
 
-        [ConfigField("Green Item Weight", "Decimal.", 0.33f)]
+        [ConfigField("Green Item Weight", "Decimal.", 0.38f)]
         public static float greenItemWeight;
 
         [ConfigField("Red Item Weight", "Decimal.", 0.02f)]

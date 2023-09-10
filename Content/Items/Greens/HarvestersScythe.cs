@@ -10,10 +10,10 @@ namespace WellRoundedBalance.Items.Greens
 
         public override string PickupText => "Activating your Secondary skill also swings a scythe. Recharges over time.";
 
-        public override string DescText => "Activating your <style=cIsUtility>Secondary skill</style> also swings a <style=cIsDamage>scythe</style> that deals <style=cIsDamage>" + d(baseDamage) + "</style>" +
+        public override string DescText => "Activating your <style=cIsUtility>Secondary skill</style> also swings a <style=cIsDamage>scythe</style> for <style=cIsDamage>" + d(baseDamage) + "</style>" +
                                            (damagePerStack > 0 ? " <style=cStack>(+" + d(damagePerStack) + " per stack)</style>" : "") +
-                                           " base damage. Hitting enemies with the <style=cIsDamage>scythe</style> grants <style=cIsDamage>+" + baseCritGain + "%</style>" +
-                                           (critGainPerStack > 0 ? " <style=cStack>(+" + critGainPerStack + "% per stack)</style>" : "") + " <style=cIsDamage>crit chance</style> for <style=cIsDamage>" + baseBuffDuration + "s</style>" +
+                                           " damage, increasing <style=cIsDamage>crit chance</style> by <style=cIsDamage>+" + baseCritGain + "%</style>" +
+                                           (critGainPerStack > 0 ? " <style=cStack>(+" + critGainPerStack + "% per stack)</style>" : "") + " for <style=cIsDamage>" + baseBuffDuration + "s</style>" +
                                            (buffDurationPerStack > 0 ? " <style=cStack>(+" + buffDurationPerStack + "s per stack)</style>" : "") + ". The <style=cIsDamage>scythe</style> renews over <style=cIsDamage>" + cooldown + "</style> seconds.";
 
         [ConfigField("Base Damage", 2f)]
@@ -25,13 +25,13 @@ namespace WellRoundedBalance.Items.Greens
         [ConfigField("Cooldown", 3f)]
         public static float cooldown;
 
-        [ConfigField("Base Crit Gain", 30f)]
+        [ConfigField("Base Crit Gain", 25f)]
         public static float baseCritGain;
 
-        [ConfigField("Crit Gain Per Stack", 30f)]
+        [ConfigField("Crit Gain Per Stack", 25f)]
         public static float critGainPerStack;
 
-        [ConfigField("Base Buff Duration", 4f)]
+        [ConfigField("Base Buff Duration", 3f)]
         public static float baseBuffDuration;
 
         [ConfigField("Buff Duration Per Stack", 0f)]
@@ -39,6 +39,10 @@ namespace WellRoundedBalance.Items.Greens
 
         public static BuffDef scytheCooldown;
         public static BuffDef scytheCrit;
+
+        public static NetworkSoundEventDef scytheSound = Addressables.LoadAssetAsync<NetworkSoundEventDef>("RoR2/Base/Bandit2/nseBandit2ShivHit.asset").WaitForCompletion();
+
+        public static GameObject effect;
 
         public override void Init()
         {
@@ -48,21 +52,41 @@ namespace WellRoundedBalance.Items.Greens
             scytheCooldown.isHidden = false;
             scytheCooldown.canStack = false;
             scytheCooldown.buffColor = new Color(0.4151f, 0.4014f, 0.4014f, 1f); // wolfo consistency :kirn:
-            scytheCooldown.iconSprite = Utils.Paths.BuffDef.bdPrimarySkillShurikenBuff.Load<BuffDef>().iconSprite;
+            scytheCooldown.iconSprite = Main.wellroundedbalance.LoadAsset<Sprite>("Assets/WellRoundedBalance/texBuffScythe.png");
             scytheCooldown.name = "Harvesters Scythe Cooldown";
 
             ContentAddition.AddBuffDef(scytheCooldown);
 
             scytheCrit = ScriptableObject.CreateInstance<BuffDef>();
-            scytheCrit.isCooldown = false;
+            scytheCrit.isCooldown = true;
             scytheCrit.isDebuff = false;
             scytheCrit.isHidden = false;
             scytheCrit.canStack = false;
-            scytheCrit.buffColor = new Color32(50, 200, 50, 255);
-            scytheCrit.iconSprite = Utils.Paths.BuffDef.bdFullCrit.Load<BuffDef>().iconSprite;
+            scytheCrit.buffColor = new Color32(50, 182, 50, 255);
+            scytheCrit.iconSprite = Main.wellroundedbalance.LoadAsset<Sprite>("Assets/WellRoundedBalance/texBuffScytheActive.png");
             scytheCrit.name = "Harvesters Scythe Crit";
 
             ContentAddition.AddBuffDef(scytheCrit);
+
+            effect = PrefabAPI.InstantiateClone(Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Merc/MercSwordFinisherSlash.prefab").WaitForCompletion(), "Harvesters Scythe Effect", false);
+            effect.AddComponent<EffectComponent>();
+            effect.transform.localRotation = Util.QuaternionSafeLookRotation(new Vector3(90f, 180f, 0f));
+            var swingTrail = effect.transform.GetChild(1);
+            var swingTrailPS = swingTrail.GetComponent<ParticleSystem>();
+            var main = swingTrailPS.main;
+            main.startLifetime = 0.4f;
+
+            var swingTrailMat = swingTrail.GetComponent<ParticleSystemRenderer>();
+
+            var newMat = GameObject.Instantiate(Utils.Paths.Material.matMercSwipe2.Load<Material>());
+            newMat.SetColor("_TintColor", new Color32(28, 58, 32, 255));
+
+            swingTrailMat.material = newMat;
+
+            var swingDistortion = effect.transform.GetChild(2).GetComponent<ParticleSystem>().main;
+            swingDistortion.startLifetime = 0.4f;
+
+            ContentAddition.AddEffect(effect);
 
             base.Init();
         }
@@ -80,7 +104,7 @@ namespace WellRoundedBalance.Items.Greens
             if (sender && sender.inventory)
             {
                 var stack = sender.inventory.GetItemCount(RoR2Content.Items.HealOnCrit);
-                if (stack > 0)
+                if (sender.HasBuff(scytheCrit))
                 {
                     args.critAdd += baseCritGain + critGainPerStack * (stack - 1);
                 }
@@ -140,10 +164,13 @@ namespace WellRoundedBalance.Items.Greens
         public float cooldown = 2f;
         public float buffDur = 0;
         public float critGain = 0;
-        public BoxCollider boxCollider;
+
+        // public BoxCollider boxCollider;
         public OverlapAttack overlapAttack;
+
         public ModelLocator modelLocator;
         public Transform modelTransform;
+        public GameObject scytheObject;
         public HitBoxGroup hitBoxGroup;
         public HitBox hitBox;
 
@@ -151,17 +178,20 @@ namespace WellRoundedBalance.Items.Greens
         {
             modelLocator = GetComponent<ModelLocator>();
             modelTransform = modelLocator?.modelTransform;
-            if (modelTransform && hitBox == null && hitBoxGroup == null && boxCollider == null)
+            if (modelTransform && scytheObject == null)
             {
-                /*
-                boxCollider = modelTransform.gameObject.AddComponent<BoxCollider>();
-                boxCollider.
-                */
-                // the fucking
-                // make the boxcollider real and give it a size similar to bandit's m2
-                // idk if the code for overlapattack works, idk how to check if it hit something
-                hitBox = modelTransform.gameObject.AddComponent<HitBox>();
-                hitBoxGroup = modelTransform.gameObject.AddComponent<HitBoxGroup>();
+                scytheObject = new("WRB Scythe mf")
+                {
+                    layer = LayerIndex.entityPrecise.intVal
+                };
+
+                scytheObject.transform.SetParent(modelTransform);
+
+                // boxCollider = scytheObject.transform.gameObject.AddComponent<BoxCollider>();
+                // boxCollider.size = Vector3.zero;
+
+                hitBox = scytheObject.AddComponent<HitBox>();
+                hitBoxGroup = scytheObject.AddComponent<HitBoxGroup>();
                 hitBoxGroup.groupName = "WRBScythe";
                 hitBoxGroup.hitBoxes = new HitBox[] { hitBox };
             }
@@ -189,11 +219,13 @@ namespace WellRoundedBalance.Items.Greens
                 return;
             }
             StartCoroutine(FireProjectile());
-            body.AddTimedBuff(HarvestersScythe.scytheCooldown, cooldown);
+            body.AddTimedBuffAuthority(HarvestersScythe.scytheCooldown.buffIndex, cooldown);
         }
 
         public IEnumerator FireProjectile()
         {
+            // yield return new WaitForSeconds(0.1f);
+
             overlapAttack = new()
             {
                 attacker = gameObject,
@@ -202,22 +234,33 @@ namespace WellRoundedBalance.Items.Greens
                 damage = body.damage * damage,
                 forceVector = Vector3.zero,
                 pushAwayForce = 0,
-                attackerFiltering = AttackerFiltering.NeverHitSelf
+                attackerFiltering = AttackerFiltering.NeverHitSelf,
+                impactSound = HarvestersScythe.scytheSound.index,
+                procCoefficient = 0f,
+                isCrit = body.RollCrit()
             };
-            if (modelLocator)
+
+            if (scytheObject && body.inputBank)
             {
-                overlapAttack.hitBoxGroup = Array.Find(modelTransform.GetComponents<HitBoxGroup>(), (HitBoxGroup x) => x.groupName == "WRBScythe");
+                scytheObject.transform.localScale = new Vector3(10f / modelTransform.localScale.x, 10f / modelTransform.localScale.y, 10f / modelTransform.localScale.z);
+                scytheObject.transform.localRotation = Quaternion.identity;
+                scytheObject.transform.localPosition = new Vector3(0f, 0f, 13f);
+                scytheObject.transform.position = body.corePosition;
+                scytheObject.transform.eulerAngles = new Vector3(body.inputBank.GetAimRay().direction.x, 0f, body.inputBank.GetAimRay().direction.z);
+                overlapAttack.hitBoxGroup = scytheObject.GetComponent<HitBoxGroup>();
             }
 
-            Util.PlaySound("Play_bandit_M2_shot", gameObject);
+            Util.PlaySound("Play_bandit2_m2_slash", gameObject);
+            EffectManager.SpawnEffect(HarvestersScythe.effect, new EffectData { scale = 20f, origin = body.corePosition, rotation = Util.QuaternionSafeLookRotation(new Vector3(90f, 180f, 0f)) }, true);
 
             if (Util.HasEffectiveAuthority(gameObject))
             {
-                if (overlapAttack.Fire(null))
+                if (overlapAttack.Fire())
                 {
-                    body.AddTimedBuff(HarvestersScythe.scytheCrit, buffDur);
+                    body.AddTimedBuffAuthority(HarvestersScythe.scytheCrit.buffIndex, buffDur);
                 }
             }
+
             yield return null;
         }
 
