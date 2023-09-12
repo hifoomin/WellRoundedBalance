@@ -36,8 +36,9 @@
 - Nerfed Spinel Tonic Post Processing.
 - Nerfed Stone Flux Pauldron pull on bosses.
 - Nerfed Wandering Vagrant.
-- Reworked Harvester's Scythe to **swing a scythe** on secondary skill use for **200% base damage**, and if it hits, gain **25% (+25% per stack) crit chance** for **3s**, with a cooldown of **3s**.
 - Reworked Artifact of Command to **drop potentials**.
+- Reworked Energy Drink to **increase the sprinting speed multiplier**, making it slightly increase other sources of speed while sprinting.
+- Reworked Harvester's Scythe to **swing a scythe** on secondary skill use for **200% base damage**, and if it hits, gain **30% (+30% per stack) crit chance** for **3s**, with a cooldown of **3s**.
 - Made Glowing Meteorite Blast a Cylinder.
 - Made All Aspects apply on all allies without an equipment.
 - Made Gold Price Scaling decrease slightly per player in Multiplayer.

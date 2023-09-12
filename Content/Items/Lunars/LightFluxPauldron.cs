@@ -136,8 +136,6 @@ namespace WellRoundedBalance.Items.Lunars
                 Logger.LogError("Failed to apply Light Flux Pauldron Cooldown hook");
             }
 
-            // this broke??? what the fuck
-
             c.Index = 0;
 
             if (c.TryGotoNext(MoveType.Before,

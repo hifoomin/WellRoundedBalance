@@ -25,10 +25,10 @@ namespace WellRoundedBalance.Items.Greens
         [ConfigField("Cooldown", 3f)]
         public static float cooldown;
 
-        [ConfigField("Base Crit Gain", 25f)]
+        [ConfigField("Base Crit Gain", 30f)]
         public static float baseCritGain;
 
-        [ConfigField("Crit Gain Per Stack", 25f)]
+        [ConfigField("Crit Gain Per Stack", 30f)]
         public static float critGainPerStack;
 
         [ConfigField("Base Buff Duration", 3f)]
@@ -214,12 +214,16 @@ namespace WellRoundedBalance.Items.Greens
             {
                 return;
             }
-            if (body.HasBuff(HarvestersScythe.scytheCooldown))
+
+            var hasCooldownCleaner = AboutEqual(HarvestersScythe.cooldown, buffDur) ? body.HasBuff(HarvestersScythe.scytheCooldown) || body.HasBuff(HarvestersScythe.scytheCrit) : body.HasBuff(HarvestersScythe.scytheCooldown);
+
+            if (hasCooldownCleaner)
             {
                 return;
             }
+
             StartCoroutine(FireProjectile());
-            body.AddTimedBuffAuthority(HarvestersScythe.scytheCooldown.buffIndex, cooldown);
+            // body.AddTimedBuffAuthority(HarvestersScythe.scytheCooldown.buffIndex, cooldown);
         }
 
         public IEnumerator FireProjectile()
@@ -242,23 +246,37 @@ namespace WellRoundedBalance.Items.Greens
 
             if (scytheObject && body.inputBank)
             {
-                scytheObject.transform.localScale = new Vector3(10f / modelTransform.localScale.x, 10f / modelTransform.localScale.y, 10f / modelTransform.localScale.z);
-                scytheObject.transform.localRotation = Quaternion.identity;
-                scytheObject.transform.localPosition = new Vector3(0f, 0f, 13f);
+                scytheObject.transform.localScale = new Vector3(10f / modelTransform.localScale.x, 11f / modelTransform.localScale.y, 10f / modelTransform.localScale.z);
+                scytheObject.transform.localRotation = Quaternion.identity; // make the rotation based on aimray direction instead of model rotation pls
+                scytheObject.transform.localPosition = new Vector3(0f, 0f, 13f); // make it offset so you cant hit things behind you too pls
                 scytheObject.transform.position = body.corePosition;
-                scytheObject.transform.eulerAngles = new Vector3(body.inputBank.GetAimRay().direction.x, 0f, body.inputBank.GetAimRay().direction.z);
+                scytheObject.transform.eulerAngles = new Vector3(body.inputBank.GetAimRay().direction.x, 0f, body.inputBank.GetAimRay().direction.z);  // make the rotation based on aimray direction instead of model rotation pls
                 overlapAttack.hitBoxGroup = scytheObject.GetComponent<HitBoxGroup>();
             }
 
             Util.PlaySound("Play_bandit2_m2_slash", gameObject);
-            EffectManager.SpawnEffect(HarvestersScythe.effect, new EffectData { scale = 20f, origin = body.corePosition, rotation = Util.QuaternionSafeLookRotation(new Vector3(90f, 180f, 0f)) }, true);
+            EffectManager.SpawnEffect(HarvestersScythe.effect, new EffectData { scale = 20f, origin = body.corePosition, rotation = Util.QuaternionSafeLookRotation(body.inputBank.GetAimRay().direction) }, true);
+            // make the effect rotate with the aimray direction too pls
+            // Main.WRBLogger.LogError("cooldown and buff dur about equal? " + AboutEqual(HarvestersScythe.cooldown, buffDur) + " cooldown: " + HarvestersScythe.cooldown + " buff dur: " + buffDur);
+
+            var hasCooldownCleaner = AboutEqual(HarvestersScythe.cooldown, buffDur);
 
             if (Util.HasEffectiveAuthority(gameObject))
             {
                 if (overlapAttack.Fire())
                 {
-                    body.AddTimedBuffAuthority(HarvestersScythe.scytheCrit.buffIndex, buffDur);
+                    if (hasCooldownCleaner)
+                    {
+                        body.AddTimedBuffAuthority(HarvestersScythe.scytheCrit.buffIndex, buffDur);
+                    }
+                    else
+                    {
+                        body.AddTimedBuffAuthority(HarvestersScythe.scytheCooldown.buffIndex, HarvestersScythe.cooldown);
+                        body.AddTimedBuffAuthority(HarvestersScythe.scytheCrit.buffIndex, HarvestersScythe.cooldown);
+                    }
                 }
+                else
+                    body.AddTimedBuffAuthority(HarvestersScythe.scytheCooldown.buffIndex, HarvestersScythe.cooldown);
             }
 
             yield return null;
@@ -267,6 +285,13 @@ namespace WellRoundedBalance.Items.Greens
         public void OnDestroy()
         {
             body.onSkillActivatedAuthority -= Body_onSkillActivatedAuthority;
+        }
+
+        public bool AboutEqual(float a, float b)
+        {
+            if (Mathf.Abs(a - b) < 0.001f)
+                return true;
+            return false;
         }
     }
 }

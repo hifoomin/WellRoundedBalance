@@ -50,10 +50,11 @@
             c.Index = 0;
 
             if (c.TryGotoNext(MoveType.Before,
-                    x => x.MatchLdloc(87),
+                    x => x.MatchLdloc(out _),
                     x => x.MatchLdcR4(0.5f),
                     x => x.MatchMul(),
-                    x => x.MatchStloc(87)))
+                    x => x.MatchStloc(out _),
+                    x => x.MatchLdloc(90)))
             {
                 c.Index += 1;
                 c.Next.Operand = 1f - attackSpeedCdr;

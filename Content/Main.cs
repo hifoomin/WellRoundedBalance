@@ -34,7 +34,7 @@ namespace WellRoundedBalance
         public const string PluginGUID = PluginAuthor + "." + PluginName;
         public const string PluginAuthor = "BALLS";
         public const string PluginName = "WellRoundedBalance";
-        public const string PluginVersion = "1.3.8.5";
+        public const string PluginVersion = "1.3.8.6";
         public static ConfigFile WRBAchievementConfig;
         public static ConfigFile WRBAllyConfig;
         public static ConfigFile WRBArtifactAddConfig;
