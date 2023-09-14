@@ -51,7 +51,7 @@
 - Fixed Printer Networking.
 - Fixed Printers and Scrappers deleting themselves before giving items sometimes.
 - Fixed Spinel Tonic not having changed cooldown.
-- - Long time no patch ¯\_(ツ)_/¯ sorry for that, been having good times at least. ~HIFU
+- - Long time no patch ¯\_(ツ)_/¯ sorry for that, final finals coming up yknow gotta actually study for once, plus I was on holidays and lazy and burnt out. ~HIFU
 
 # 1.3.8 Patch Notes
 - Added Hyperbolic Speed Scaling.
