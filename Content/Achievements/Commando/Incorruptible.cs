@@ -2,7 +2,7 @@
 
 namespace WellRoundedBalance.Achievements.Commando
 {
-    internal class Incorruptible : AchievementBase
+    internal class Incorruptible : AchievementBase<Incorruptible>
     {
         public override string Token => "commandoNonLunarEndurance";
 

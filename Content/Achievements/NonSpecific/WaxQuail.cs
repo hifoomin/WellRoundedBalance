@@ -3,7 +3,7 @@ using System;
 
 namespace WellRoundedBalance.Achievements.NonSpecific
 {
-    internal class WaxQuail : AchievementBase
+    internal class WaxQuail : AchievementBase<WaxQuail>
     {
         public override string Token => "moveSpeed";
 

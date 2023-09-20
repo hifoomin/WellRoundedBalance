@@ -4,7 +4,7 @@ using System;
 
 namespace WellRoundedBalance.Achievements.NonSpecific
 {
-    internal class BundleOfFireworks : AchievementBase
+    internal class BundleOfFireworks : AchievementBase<BundleOfFireworks>
     {
         public override string Token => "repeatedlyDuplicateItems";
 

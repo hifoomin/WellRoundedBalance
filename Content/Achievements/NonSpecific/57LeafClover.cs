@@ -3,7 +3,7 @@ using System;
 
 namespace WellRoundedBalance.Achievements.NonSpecific
 {
-    internal class _57LeafClover : AchievementBase
+    internal class _57LeafClover : AchievementBase<_57LeafClover>
     {
         public override string Token => "complete20Stages";
 

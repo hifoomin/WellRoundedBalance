@@ -8,7 +8,7 @@ namespace WellRoundedBalance.Items.Greens
         public override ItemDef InternalPickup => RoR2Content.Items.SprintOutOfCombat;
 
         public override string PickupText => "Move faster out of combat.";
-        public override string DescText => (oocReduction > 0 ? "Leaving combat takes <style=cIsUtility>" + oocReduction + "</style>" : "") + "s</style> less. Leaving combat boosts your <style=cIsUtility>movement speed</style> by <style=cIsUtility>" + d(movementSpeedGain) + "</style> <style=cStack>(+" + d(movementSpeedGain) + " per stack)</style>.";
+        public override string DescText => (oocReduction > 0 ? "Leaving combat takes <style=cIsUtility>" + oocReduction + "s</style> less. " : "") + "Leaving combat boosts your <style=cIsUtility>movement speed</style> by <style=cIsUtility>" + d(movementSpeedGain) + "</style> <style=cStack>(+" + d(movementSpeedGain) + " per stack)</style>.";
 
         [ConfigField("Movement Speed Gain", "Decimal.", 0.35f)]
         public static float movementSpeedGain;

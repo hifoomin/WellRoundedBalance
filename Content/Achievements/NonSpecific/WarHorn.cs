@@ -2,7 +2,7 @@
 
 namespace WellRoundedBalance.Achievements.NonSpecific
 {
-    internal class WarHorn : AchievementBase
+    internal class WarHorn : AchievementBase<WarHorn>
     {
         public override string Token => "multiCombatShrine";
 

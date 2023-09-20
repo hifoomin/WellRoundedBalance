@@ -45,7 +45,13 @@ namespace WellRoundedBalance.Mechanics.VoidFields
                 isValid = !Stage.instance.sceneDef.isFinalStage && Stage.instance.sceneDef.sceneType == SceneType.Stage;
             */
             // doesn't fucking work wtf
+            /*
             if (Run.instance && Run.instance.loopClearCount > 0 && !blacklistedStages.Contains(SceneManager.GetActiveScene().name))
+            {
+                sd.teleporterSpawnCard = tp;
+            }
+            */
+            if (Run.instance & Run.instance.loopClearCount > 0 & sd.teleporterSpawnCard)
             {
                 sd.teleporterSpawnCard = tp;
             }

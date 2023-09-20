@@ -2,7 +2,7 @@
 
 namespace WellRoundedBalance.Achievements.Railgunner
 {
-    internal class Annihilator : AchievementBase
+    internal class Annihilator : AchievementBase<Annihilator>
     {
         public override string Token => "railgunnerDealMassiveDamage";
 
