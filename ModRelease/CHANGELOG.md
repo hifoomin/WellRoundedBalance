@@ -1,24 +1,33 @@
 # 1.4.0 Patch Notes
+- Added EphemeralCoins.
 - Added Hypercrit2.
-- Added pre-made config for Hypercrit2.
+- Added NoAllyAttackBlock.
 - Added pre-made config for BetterDrones.
+- Added pre-made config for EphemeralCoins.
+- Added pre-made config for Hypercrit2.
 - Buffed Ally Cap 20 => **100**.
 - Buffed Armor-Piercing Rounds Champion Damage Bonus 10% => **15%**.
 - Buffed Commencement Speed Boost Duration 45s => **60s**.
+- Buffed Crystalline Lotus Slow Duration 15s => **30s** (same as default).
+- Buffed Crystalline Lotus Slow Percent 50% => **92.5%** (same as default).
 - Buffed Death Mark Base Damage Increase Per Debuff 5% => **6%**.
 - Buffed Death Mark Damage Increase Per Debuff Per Stack 5% => **6%**.
 - Buffed Geep.
 - Buffed Gip.
+- Buffed Green to Red cauldron to also accept **2 Red Scrap**.
 - Buffed Gup.
 - Buffed Hyperbolic Speed Scaling Max 20m/s => **40m/s**.
 - Buffed Leeching Seed Base Healing Regardless of Source 0.4 => **0.5**.
 - Buffed Leeching Seed Healing Regardless of Source Per Stack 0.4 => **0.5**.
 - Buffed Printer White Limit 3 => **5**.
+- Buffed Uncommon Printer Director Credit Cost 7 => **5**.
 - Buffed Razorwire Base Damage 200% => **250%**.
 - Buffed Razorwire Damage Per Stack 200% => **250%**.
 - Buffed Red Whip to reduce Out of Combat timer by **0.5s** on the first stack.
 - Buffed Scrapper Max Use Count 2 => **3**.
 - Buffed Shipping Request Form Green Chance 33% => **38%**.
+- Buffed Supercritical Coolant Base Damage 30% => **50%**.
+- Buffed Supercritical Coolant Base Damage Per Stack 30% => **50%**.
 - Buffed The Crowdfunder (NO FUCKING WAY) Windup to scale with **Equipment Cooldown Reduction**.
 - Buffed Wandering Vagrant.
 - Berfed Glowing Meteorite Maximum Wave Interval 1s => **1.5s**.
@@ -41,9 +50,15 @@
 - Reworked Harvester's Scythe to **swing a scythe** on secondary skill use for **200% base damage**, and if it hits, gain **30% (+30% per stack) crit chance** for **3s**, with a cooldown of **3s**.
 - Made Glowing Meteorite Blast a Cylinder.
 - Made All Aspects apply on all allies without an equipment.
+- Made Artificer cost **6** Lunar Coins.
+- Made Beetle Queen Shockwave easier to see.
 - Made Gold Price Scaling decrease slightly per player in Multiplayer.
+- Made Horde of Many rarer.
 - Made Printer Common and Uncommon Max Uses scale with player count.
+- Made Regenerating Scrap not subtract uses from Uncommon Printers.
+- Made Uncommon Printers glow when a player has Regenerating Scrap.
 - Made Stone Flux Pauldron pull scale with damage.
+- Updated PingOrdering.
 - Disabled Clockwork Mechanism.
 - Removed Overloading Worm from Stage 4 and 5.
 - Fixed Glowing Meteorite not having changed cooldown.
@@ -51,7 +66,7 @@
 - Fixed Printer Networking.
 - Fixed Printers and Scrappers deleting themselves before giving items sometimes.
 - Fixed Spinel Tonic not having changed cooldown.
-- - Long time no patch ¯\_(ツ)_/¯ sorry for that, been having good times at least. ~HIFU
+- - Long time no patch ¯\_(ツ)_/¯ sorry for that, final finals coming up yknow gotta actually study for once, plus I was on holidays and lazy and burnt out. ~HIFU
 
 # 1.3.8 Patch Notes
 - Added Hyperbolic Speed Scaling.

@@ -1,3 +1,5 @@
+using UnityEngine.Networking.NetworkSystem;
+
 /*
 namespace WellRoundedBalance.Mechanics.Monsters
 {
@@ -8,14 +10,70 @@ namespace WellRoundedBalance.Mechanics.Monsters
         public override void Hooks()
         {
             On.RoR2.GlobalEventManager.OnCharacterDeath += ProcAssistKills;
-            On.RoR2.CharacterBody.Start += (orig, self) =>
+            // GlobalEventManager.onCharacterDeathGlobal += GlobalEventManager_onCharacterDeathGlobal;
+            CharacterBody.onBodyStartGlobal += CharacterBody_onBodyStartGlobal;
+        }
+
+        private void CharacterBody_onBodyStartGlobal(CharacterBody body)
+        {
+            if (body.GetComponent<AssistController>())
+                return;
+
+            if (body.isPlayerControlled)
             {
-                orig(self);
-                if (NetworkServer.active && !self.isPlayerControlled)
+                return;
+            }
+
+            body.gameObject.AddComponent<AssistController>();
+        }
+
+        private void GlobalEventManager_onCharacterDeathGlobal(DamageReport report)
+        {
+            var victimBody = report.victim;
+            if (!victimBody)
+                return;
+
+            var assistController = victimBody.GetComponent<AssistController>();
+            if (!assistController)
+                return;
+
+            if (assistController.attackers.Count >= 2)
+            {
+                foreach (AssistController.Attacker attackerObject in assistController.attackers)
                 {
-                    self.gameObject.AddComponent<AssistController>();
+                    var attacker = attackerObject.attacker;
+                    if (attacker)
+                    {
+                        report.attacker = attacker;
+
+                        var attackerBody = attacker.GetComponent<CharacterBody>();
+                        if (attackerBody)
+                        {
+                            report.attackerBody = attackerBody;
+                            report.attackerBodyIndex = attackerBody.bodyIndex;
+                            report.attackerTeamIndex = attackerBody.teamComponent.teamIndex;
+
+                            var master = attackerBody.master;
+                            if (master)
+                            {
+                                report.attackerMaster = master;
+
+                                var minionOwnership = master.minionOwnership;
+
+                                if (minionOwnership)
+                                {
+                                    var ownerMaster = minionOwnership.ownerMaster;
+                                    if (ownerMaster)
+                                    {
+                                        report.attackerOwnerMaster = ownerMaster;
+                                        report.attackerOwnerBodyIndex = ownerMaster.GetBody().bodyIndex;
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
-            };
+            }
         }
 
         private void ProcAssistKills(On.RoR2.GlobalEventManager.orig_OnCharacterDeath orig, GlobalEventManager self, DamageReport report)
@@ -61,7 +119,7 @@ namespace WellRoundedBalance.Mechanics.Monsters
 
         public class AssistController : MonoBehaviour, IOnTakeDamageServerReceiver
         {
-            public HealthComponent hc => GetComponent<HealthComponent>();
+            public HealthComponent hc;
             public List<Attacker> attackers;
 
             public class Attacker
@@ -72,6 +130,7 @@ namespace WellRoundedBalance.Mechanics.Monsters
 
             private void Start()
             {
+                hc = GetComponent<HealthComponent>();
                 List<IOnTakeDamageServerReceiver> receivers = hc.onTakeDamageReceivers.ToList();
                 receivers.Add(this);
                 hc.onTakeDamageReceivers = receivers.ToArray();
@@ -98,6 +157,6 @@ namespace WellRoundedBalance.Mechanics.Monsters
         }
     }
 }
-*/
 
 // FIX THIS GUH idk how you would tho
+*/

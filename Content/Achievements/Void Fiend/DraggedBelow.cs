@@ -2,7 +2,7 @@
 
 namespace WellRoundedBalance.Achievements.VoidFiend
 {
-    internal class DraggedBelow : AchievementBase
+    internal class DraggedBelow : AchievementBase<DraggedBelow>
     {
         public override string Token => "completeVoidEnding";
 

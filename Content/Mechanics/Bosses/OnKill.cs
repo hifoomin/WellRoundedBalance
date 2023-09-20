@@ -5,7 +5,7 @@ namespace WellRoundedBalance.Mechanics.Bosses
 {
     public class OnKill : MechanicBase<OnKill>
     {
-        public override string Name => ":: Mechanics ::::: Boss On Kill";
+        public override string Name => ":: Mechanics ::::: Boss On Kill Thresholds";
         private List<BodyIndex> acceptableBodies;
 
         public override void Init()

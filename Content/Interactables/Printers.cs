@@ -1,4 +1,5 @@
 ﻿using RoR2.Hologram;
+using static Rewired.Utils.Classes.Utility.ObjectInstanceTracker;
 
 namespace WellRoundedBalance.Interactables
 {
@@ -18,10 +19,13 @@ namespace WellRoundedBalance.Interactables
         [ConfigField("Additional Common Printer Max Uses Per Player", "Only affects multiplayer. Rounded down.", 1f)]
         public static float commonPlayer;
 
+        [ConfigField("Common Printer Weight Multiplier", "", 0.6f)]
+        public static float commonWeightMultiplier;
+
         [ConfigField("Uncommon Printer Max Spawns Per Stage", "", 2)]
         public static int uncommonPrinterMaxSpawnsPerStage;
 
-        [ConfigField("Uncommon Printer Director Credit Cost", "", 7)]
+        [ConfigField("Uncommon Printer Director Credit Cost", "", 5)]
         public static int uncommonPrinterDirectorCreditCost;
 
         [ConfigField("Uncommon Printer Max Uses", "", 2)]
@@ -46,6 +50,7 @@ namespace WellRoundedBalance.Interactables
         public static bool bossPrinterLoopOnly;
 
         public static InteractableSpawnCard yellowPrinter = Addressables.LoadAssetAsync<InteractableSpawnCard>("RoR2/Base/DuplicatorWild/iscDuplicatorWild.asset").WaitForCompletion();
+        public static InteractableSpawnCard whitePrinter = null;
 
         public static Dictionary<GameObject, int> uses;
 
@@ -56,6 +61,8 @@ namespace WellRoundedBalance.Interactables
 
         public override void Hooks()
         {
+            whitePrinter = Utils.Paths.InteractableSpawnCard.iscDuplicator.Load<InteractableSpawnCard>();
+
             var cPrinter = Utils.Paths.GameObject.Duplicator.Load<GameObject>();
             cPrinter.AddComponent<PrinterUseCounter>();
             cPrinter.AddComponent<PrinterHologram>();
@@ -85,8 +92,27 @@ namespace WellRoundedBalance.Interactables
             On.RoR2.PurchaseInteraction.Awake += PurchaseInteraction_Awake;
             On.RoR2.PurchaseInteraction.OnInteractionBegin += PurchaseInteraction_OnInteractionBegin;
             On.EntityStates.Duplicator.Duplicating.DropDroplet += Duplicating_DropDroplet;
-
+            On.RoR2.ClassicStageInfo.Start += ClassicStageInfo_Start;
             Changes();
+        }
+
+        private void ClassicStageInfo_Start(On.RoR2.ClassicStageInfo.orig_Start orig, ClassicStageInfo self)
+        {
+            orig(self);
+            var categories = self.interactableCategories.categories;
+            for (int i = 0; i < categories.Length; i++)
+            {
+                var categoryIndex = categories[i];
+                for (int j = 0; j < categoryIndex.cards.Length; j++)
+                {
+                    var cardIndex = categoryIndex.cards[j];
+                    if (cardIndex.spawnCard == whitePrinter)
+                    {
+                        cardIndex.selectionWeight = Mathf.RoundToInt(cardIndex.selectionWeight * commonWeightMultiplier);
+                        break;
+                    }
+                }
+            }
         }
 
         private void Duplicating_DropDroplet(On.EntityStates.Duplicator.Duplicating.orig_DropDroplet orig, EntityStates.Duplicator.Duplicating self)
@@ -102,7 +128,7 @@ namespace WellRoundedBalance.Interactables
 
         private void PurchaseInteraction_OnInteractionBegin(On.RoR2.PurchaseInteraction.orig_OnInteractionBegin orig, PurchaseInteraction self, Interactor activator)
         {
-            if (self.CanBeAffordedByInteractor(activator) && self.name.Contains("Duplicator"))
+            if (self.CanBeAffordedByInteractor(activator) && self.name.Contains("Duplicator") && ShouldSubtractUsesCount(activator))
             {
                 uses[self.gameObject]--;
                 var counter = self.gameObject.GetComponent<PrinterUseCounter>();
@@ -113,6 +139,23 @@ namespace WellRoundedBalance.Interactables
             }
 
             orig(self, activator);
+        }
+
+        private bool ShouldSubtractUsesCount(Interactor interactor)
+        {
+            var body = interactor.GetComponent<CharacterBody>();
+            if (body)
+            {
+                var inventory = body.inventory;
+                if (inventory)
+                {
+                    if (inventory.GetItemCount(DLC1Content.Items.RegeneratingScrap) > 0)
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
         }
 
         private void PurchaseInteraction_Awake(On.RoR2.PurchaseInteraction.orig_Awake orig, PurchaseInteraction self)
@@ -126,7 +169,7 @@ namespace WellRoundedBalance.Interactables
             if (counter == null) return;
             switch (self.name)
             {
-                case "Duplicator(Clone)": // or duplicator idk, tried to fix it but still key missing guh
+                case "Duplicator(Clone)":
                     InitUses(self.gameObject, maxCommons);
                     counter.useCount = maxCommons;
                     break;
