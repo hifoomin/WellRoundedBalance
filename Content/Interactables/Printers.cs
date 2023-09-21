@@ -19,9 +19,6 @@ namespace WellRoundedBalance.Interactables
         [ConfigField("Additional Common Printer Max Uses Per Player", "Only affects multiplayer. Rounded down.", 1f)]
         public static float commonPlayer;
 
-        [ConfigField("Common Printer Weight Multiplier", "", 0.6f)]
-        public static float commonWeightMultiplier;
-
         [ConfigField("Uncommon Printer Max Spawns Per Stage", "", 2)]
         public static int uncommonPrinterMaxSpawnsPerStage;
 
@@ -92,29 +89,8 @@ namespace WellRoundedBalance.Interactables
             On.RoR2.PurchaseInteraction.Awake += PurchaseInteraction_Awake;
             On.RoR2.PurchaseInteraction.OnInteractionBegin += PurchaseInteraction_OnInteractionBegin;
             On.EntityStates.Duplicator.Duplicating.DropDroplet += Duplicating_DropDroplet;
-            On.RoR2.ClassicStageInfo.Start += ClassicStageInfo_Start;
             Changes();
         }
-
-        private void ClassicStageInfo_Start(On.RoR2.ClassicStageInfo.orig_Start orig, ClassicStageInfo self)
-        {
-            orig(self);
-            var categories = self.interactableCategories.categories;
-            for (int i = 0; i < categories.Length; i++)
-            {
-                var categoryIndex = categories[i];
-                for (int j = 0; j < categoryIndex.cards.Length; j++)
-                {
-                    var cardIndex = categoryIndex.cards[j];
-                    if (cardIndex.spawnCard == whitePrinter)
-                    {
-                        cardIndex.selectionWeight = Mathf.RoundToInt(cardIndex.selectionWeight * commonWeightMultiplier);
-                        break;
-                    }
-                }
-            }
-        }
-
         private void Duplicating_DropDroplet(On.EntityStates.Duplicator.Duplicating.orig_DropDroplet orig, EntityStates.Duplicator.Duplicating self)
         {
             orig(self);

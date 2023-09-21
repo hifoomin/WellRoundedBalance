@@ -70,7 +70,7 @@ namespace WellRoundedBalance.Items.Greens
 
             effect = PrefabAPI.InstantiateClone(Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Merc/MercSwordFinisherSlash.prefab").WaitForCompletion(), "Harvesters Scythe Effect", false);
             effect.AddComponent<EffectComponent>();
-            //effect.transform.localRotation = Util.QuaternionSafeLookRotation(new Vector3(90f, 180f, 0f));
+            // effect.transform.eulerAngles = new Vector3(90f, 180f, 0f);
             var swingTrail = effect.transform.GetChild(1);
             var swingTrailPS = swingTrail.GetComponent<ParticleSystem>();
             var main = swingTrailPS.main;
@@ -185,12 +185,7 @@ namespace WellRoundedBalance.Items.Greens
                     layer = LayerIndex.defaultLayer.intVal
                 };
 
-                scytheObject.transform.localScale = new Vector3(20f, 5f, 20f);
-
-                // scytheObject.transform.SetParent(modelTransform);
-
-                // boxCollider = scytheObject.transform.gameObject.AddComponent<BoxCollider>();
-                // boxCollider.size = Vector3.zero;
+                scytheObject.transform.localScale = new Vector3(20f, 10f, 20f);
 
                 hitBox = scytheObject.AddComponent<HitBox>();
                 hitBoxGroup = scytheObject.AddComponent<HitBoxGroup>();
@@ -225,13 +220,10 @@ namespace WellRoundedBalance.Items.Greens
             }
 
             StartCoroutine(FireProjectile());
-            // body.AddTimedBuffAuthority(HarvestersScythe.scytheCooldown.buffIndex, cooldown);
         }
 
         public IEnumerator FireProjectile()
         {
-            // yield return new WaitForSeconds(0.1f);
-
             overlapAttack = new()
             {
                 attacker = gameObject,
@@ -248,19 +240,18 @@ namespace WellRoundedBalance.Items.Greens
 
             if (scytheObject && body.inputBank)
             {
-                //scytheObject.transform.localScale = new Vector3(10f / modelTransform.localScale.x, 11f / modelTransform.localScale.y, 10f / modelTransform.localScale.z);
-                scytheObject.transform.forward = body.inputBank.aimDirection; // make the rotation based on aimray direction instead of model rotation pls
-                // scytheObject.transform.position += body.inputBank.GetAimRay().direction * 1.35f;
-                // scytheObject.transform.eulerAngles = new Vector3(body.inputBank.GetAimRay().direction.x, 0f, body.inputBank.GetAimRay().direction.z);  // make the rotation based on aimray direction instead of model rotation pls
+                scytheObject.transform.forward = body.inputBank.aimDirection;
+                scytheObject.transform.position = modelTransform.position;
                 overlapAttack.hitBoxGroup = scytheObject.GetComponent<HitBoxGroup>();
             }
 
             Util.PlaySound("Play_bandit2_m2_slash", gameObject);
-            EffectData data = new EffectData { scale = 20f, origin = body.corePosition };
-            data.SetChildLocatorTransformReference(scytheObject, -1);
+            EffectData data = new() { scale = 20f, origin = body.corePosition, rotation = Util.QuaternionSafeLookRotation(body.inputBank.aimDirection) };
+            Main.WRBLogger.LogError("effectdata rotation is " + data.rotation);
+            Main.WRBLogger.LogError("input bank aimray direction is " + body.inputBank.aimDirection);
+            // data.SetChildLocatorTransformReference(scytheObject, -1);
             EffectManager.SpawnEffect(HarvestersScythe.effect, data, true);
-            // make the effect rotate with the aimray direction too pls
-            // Main.WRBLogger.LogError("cooldown and buff dur about equal? " + AboutEqual(HarvestersScythe.cooldown, buffDur) + " cooldown: " + HarvestersScythe.cooldown + " buff dur: " + buffDur);
+            // effect always plays backwards??????????????????
 
             var hasCooldownCleaner = AboutEqual(HarvestersScythe.cooldown, buffDur);
 
