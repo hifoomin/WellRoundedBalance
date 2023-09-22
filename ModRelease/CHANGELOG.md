@@ -19,7 +19,6 @@
 - Buffed Leeching Seed Base Healing Regardless of Source 0.4 => **0.5**.
 - Buffed Leeching Seed Healing Regardless of Source Per Stack 0.4 => **0.5**.
 - Buffed Printer White Limit 3 => **5**.
-- Buffed Uncommon Printer Director Credit Cost 7 => **5**.
 - Buffed Razorwire Base Damage 200% => **250%**.
 - Buffed Razorwire Damage Per Stack 200% => **250%**.
 - Buffed Red Whip to reduce Out of Combat timer by **0.5s** on the first stack.
@@ -28,6 +27,7 @@
 - Buffed Supercritical Coolant Base Damage 30% => **50%**.
 - Buffed Supercritical Coolant Base Damage Per Stack 30% => **50%**.
 - Buffed The Crowdfunder (NO FUCKING WAY) Windup to scale with **Equipment Cooldown Reduction**.
+- Buffed Uncommon Printer Director Credit Cost 7 => **5**.
 - Buffed Wandering Vagrant.
 - Berfed Glowing Meteorite Maximum Wave Interval 1s => **1.5s**.
 - Berfed Glowing Meteorite Minimum Wave Interval 0.5s => **1s**.
@@ -47,16 +47,16 @@
 - Reworked Artifact of Command to **drop potentials**.
 - Reworked Energy Drink to **increase the sprinting speed multiplier**, making it slightly increase other sources of speed while sprinting.
 - Reworked Harvester's Scythe to **swing a scythe** on secondary skill use for **200% base damage**, and if it hits, gain **30% (+30% per stack) crit chance** for **3s**, with a cooldown of **3s**.
-- Made Glowing Meteorite Blast a Cylinder.
 - Made All Aspects apply on all allies without an equipment.
 - Made Artificer cost **6** Lunar Coins.
 - Made Beetle Queen Shockwave easier to see.
+- Made Glowing Meteorite Blast a Cylinder.
 - Made Gold Price Scaling decrease slightly per player in Multiplayer.
 - Made Horde of Many rarer.
 - Made Printer Common and Uncommon Max Uses scale with player count.
 - Made Regenerating Scrap not subtract uses from Uncommon Printers.
-- Made Uncommon Printers glow when a player has Regenerating Scrap.
 - Made Stone Flux Pauldron pull scale with damage.
+- Made Uncommon Printers glow when a player has Regenerating Scrap.
 - Updated PingOrdering.
 - Disabled Clockwork Mechanism.
 - Removed Overloading Worm from Stage 4 and 5.
