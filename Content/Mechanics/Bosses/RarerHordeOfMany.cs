@@ -26,12 +26,12 @@ namespace WellRoundedBalance.Mechanics.Bosses
             if (spawnCard)
             {
                 latestCosts.Add(spawnCard.directorCreditCost);
-                Logger.LogError("added " + spawnCard.directorCreditCost + " to latest costs");
+                // Logger.LogError("added " + spawnCard.directorCreditCost + " to latest costs");
 
                 if (latestCosts.Count > 6)
                 {
                     latestCosts.RemoveAt(0);
-                    Logger.LogError("   >removing oldest cost<   ");
+                    // Logger.LogError("   >removing oldest cost<   ");
                 }
                 // max capacity of 6
             }

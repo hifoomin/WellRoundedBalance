@@ -61,9 +61,12 @@ namespace WellRoundedBalance.Items.Greens
                 foreach (GameObject gameObject in printers)
                 {
                     var glow = gameObject.transform.Find("Glow");
-                    glow.transform.localPosition = Vector3.zero;
-                    glow.transform.position = glow.transform.parent.position;
-                    glow.gameObject.SetActive(true);
+                    if (glow)
+                    {
+                        glow.transform.localPosition = Vector3.zero;
+                        glow.transform.position = glow.transform.parent.position;
+                        glow.gameObject.SetActive(true);
+                    }
                 }
             }
             else
@@ -71,9 +74,12 @@ namespace WellRoundedBalance.Items.Greens
                 foreach (GameObject gameObject in printers)
                 {
                     var glow = gameObject.transform.Find("Glow");
-                    glow.transform.localPosition = Vector3.zero;
-                    glow.transform.position = glow.transform.parent.position;
-                    glow.gameObject.SetActive(false);
+                    if (glow)
+                    {
+                        glow.transform.localPosition = Vector3.zero;
+                        glow.transform.position = glow.transform.parent.position;
+                        glow.gameObject.SetActive(false);
+                    }
                 }
             }
         }
