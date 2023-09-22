@@ -1,7 +1,6 @@
 # 1.4.0 Patch Notes
 - Added EphemeralCoins.
 - Added Hypercrit2.
-- Added NoAllyAttackBlock.
 - Added pre-made config for BetterDrones.
 - Added pre-made config for EphemeralCoins.
 - Added pre-made config for Hypercrit2.
