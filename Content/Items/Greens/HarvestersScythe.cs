@@ -68,23 +68,33 @@ namespace WellRoundedBalance.Items.Greens
 
             ContentAddition.AddBuffDef(scytheCrit);
 
-            effect = PrefabAPI.InstantiateClone(Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Merc/MercSwordFinisherSlash.prefab").WaitForCompletion(), "Harvesters Scythe Effect", false);
-            effect.AddComponent<EffectComponent>();
-            // effect.transform.eulerAngles = new Vector3(90f, 180f, 0f);
-            var swingTrail = effect.transform.GetChild(1);
+            effect = PrefabAPI.InstantiateClone(Addressables.LoadAssetAsync<GameObject>("RoR2/DLC1/Assassin2/AssassinSlash.prefab").WaitForCompletion(), "Harvesters Scythe Effect", false);
+
+            var scaleParticleSystemDuration = effect.GetComponent<ScaleParticleSystemDuration>();
+            // scaleParticleSystemDuration.initialDuration = 0.2f;
+
+            var effectComponent = effect.GetComponent<EffectComponent>();
+            effectComponent.applyScale = true;
+
+            var swingTrail = effect.transform.GetChild(0);
             var swingTrailPS = swingTrail.GetComponent<ParticleSystem>();
             var main = swingTrailPS.main;
-            main.startLifetime = 0.4f;
+            // main.startLifetime = 0.2f;
+            var rotationOverLifetime = swingTrailPS.rotationOverLifetime;
+            rotationOverLifetime.zMultiplier = 1.1f;
 
             var swingTrailMat = swingTrail.GetComponent<ParticleSystemRenderer>();
 
             var newMat = GameObject.Instantiate(Utils.Paths.Material.matMercSwipe2.Load<Material>());
-            newMat.SetColor("_TintColor", new Color32(28, 58, 32, 255));
+            newMat.SetColor("_TintColor", new Color32(26, 58, 27, 255));
 
             swingTrailMat.material = newMat;
 
-            var swingDistortion = effect.transform.GetChild(2).GetComponent<ParticleSystem>().main;
-            swingDistortion.startLifetime = 0.4f;
+            var swingDistortion = effect.transform.GetChild(1).GetComponent<ParticleSystem>();
+            var main2 = swingDistortion.main;
+            // main2.startLifetime = 0.2f;
+            var rotationOverLifetime2 = swingDistortion.rotationOverLifetime;
+            rotationOverLifetime2.zMultiplier = 1.13f;
 
             ContentAddition.AddEffect(effect);
 
@@ -243,34 +253,31 @@ namespace WellRoundedBalance.Items.Greens
                 scytheObject.transform.forward = body.inputBank.aimDirection;
                 scytheObject.transform.position = modelTransform.position;
                 overlapAttack.hitBoxGroup = scytheObject.GetComponent<HitBoxGroup>();
-            }
 
-            Util.PlaySound("Play_bandit2_m2_slash", gameObject);
-            EffectData data = new() { scale = 20f, origin = body.corePosition, rotation = Util.QuaternionSafeLookRotation(body.inputBank.aimDirection) };
-            Main.WRBLogger.LogError("effectdata rotation is " + data.rotation);
-            Main.WRBLogger.LogError("input bank aimray direction is " + body.inputBank.aimDirection);
-            // data.SetChildLocatorTransformReference(scytheObject, -1);
-            EffectManager.SpawnEffect(HarvestersScythe.effect, data, true);
-            // effect always plays backwards??????????????????
+                Util.PlaySound("Play_bandit2_m2_slash", gameObject);
 
-            var hasCooldownCleaner = AboutEqual(HarvestersScythe.cooldown, buffDur);
+                EffectData data = new() { scale = 1.66f, origin = body.corePosition, rotation = Util.QuaternionSafeLookRotation(new Vector3(body.inputBank.aimDirection.x, 0f, body.inputBank.aimDirection.z)) };
+                EffectManager.SpawnEffect(HarvestersScythe.effect, data, true);
 
-            if (Util.HasEffectiveAuthority(gameObject))
-            {
-                if (overlapAttack.Fire())
+                var hasCooldownCleaner = AboutEqual(HarvestersScythe.cooldown, buffDur);
+
+                if (Util.HasEffectiveAuthority(gameObject))
                 {
-                    if (hasCooldownCleaner)
+                    if (overlapAttack.Fire())
                     {
-                        body.AddTimedBuffAuthority(HarvestersScythe.scytheCrit.buffIndex, buffDur);
+                        if (hasCooldownCleaner)
+                        {
+                            body.AddTimedBuffAuthority(HarvestersScythe.scytheCrit.buffIndex, buffDur);
+                        }
+                        else
+                        {
+                            body.AddTimedBuffAuthority(HarvestersScythe.scytheCooldown.buffIndex, HarvestersScythe.cooldown);
+                            body.AddTimedBuffAuthority(HarvestersScythe.scytheCrit.buffIndex, HarvestersScythe.cooldown);
+                        }
                     }
                     else
-                    {
                         body.AddTimedBuffAuthority(HarvestersScythe.scytheCooldown.buffIndex, HarvestersScythe.cooldown);
-                        body.AddTimedBuffAuthority(HarvestersScythe.scytheCrit.buffIndex, HarvestersScythe.cooldown);
-                    }
                 }
-                else
-                    body.AddTimedBuffAuthority(HarvestersScythe.scytheCooldown.buffIndex, HarvestersScythe.cooldown);
             }
 
             yield return null;
