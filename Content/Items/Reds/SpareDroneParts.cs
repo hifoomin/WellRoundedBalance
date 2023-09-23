@@ -15,7 +15,7 @@
         [ConfigField("Chaingun Damage", "Decimal.", 0.3f)]
         public static float chaingunDamage;
 
-        [ConfigField("Attack Speed and Cooldown Reduction Gain", "Decimal.", 0.4f)]
+        [ConfigField("Attack Speed and Cooldown Reduction Gain", "Decimal.", 0.3f)]
         public static float attackSpeedCdr;
 
         public override void Init()

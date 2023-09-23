@@ -1,3 +1,8 @@
+# 1.4.1 Patch Notes
+- Fixed exponential bleed damage (BetterUI vs Hypercrit2 config vs Hypercrit2 codebase rap battle).
+- Nerfed Spare Drone Parts Attack Speed Gain 40% => **30%**.
+- Nerfed Spare Drone Parts Cooldown Reduction 40% => **30%**.
+
 # 1.4.0 Patch Notes
 - Added EphemeralCoins.
 - Added Hypercrit2.
