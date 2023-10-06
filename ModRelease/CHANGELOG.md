@@ -1,7 +1,22 @@
+# 1.4.2 Patch Notes
+- Buffed Ephemeral Coin Drop Chance 0.8% => **1%**.
+- Buffed Ephemeral Coin Drop Min Chance 0.1% => **0.25%**.
+- Berfed Beetle Queen.
+- Nerfed Fireworks Fireworks 8 => **6**.
+- Nerfed Fireworks Fireworks Per Stack 8 => **6**.
+- Nerfed Grovetender.
+- Nerfed Stone Titan.
+- Made Beetle Queen Shockwave easier to see.
+- Made Tougher Times AI Blacklisted.
+- Fixed Gold Price Scaling in Multiplayer (hopefully idk I can't multiplayer test).
+- Fixed Harvester's Scythe Networking.
+- Fixed Harvester's Scythe having the wrong Item Tags.
+- Fixed Scrapper networking.
+
 # 1.4.1 Patch Notes
-- Fixed exponential bleed damage (BetterUI vs Hypercrit2 config vs Hypercrit2 codebase rap battle).
 - Nerfed Spare Drone Parts Attack Speed Gain 40% => **30%**.
 - Nerfed Spare Drone Parts Cooldown Reduction 40% => **30%**.
+- Fixed exponential bleed damage (BetterUI vs Hypercrit2 config vs Hypercrit2 codebase rap battle).
 
 # 1.4.0 Patch Notes
 - Added EphemeralCoins.
@@ -41,6 +56,7 @@
 - Nerfed Clay Dunestrider.
 - Nerfed Elite Aspect Drop Chance 0.06% => **0.04%**.
 - Nerfed Grandparent.
+- Nerfed Grovetender.
 - Nerfed Leeching Seed to have a **0.15s cooldown** between healing regardless of source.
 - Nerfed Power Elixir Percent Healing 25% => **20%**.
 - Nerfed Shipping Request Form White Chance 65% => **60%**.
@@ -236,6 +252,7 @@
 =======
 - - psuedopulse ! ! <img src="https://cdn.discordapp.com/emojis/1101199692974538753.webp?size=24&quality=lossless" width="24"/>
 >>>>>>> 949dd6deff98cc028651ab54e393a01342248c09
+- I'm keeping it this way cause it's funny. ~HIFU
 
 # 1.3.0 Patch Notes - The *Compatibility Update May* Update
 - Added AugmentedVoidReaver.

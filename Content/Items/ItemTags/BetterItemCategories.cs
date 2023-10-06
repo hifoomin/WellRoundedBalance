@@ -1,5 +1,6 @@
 ﻿using BepInEx.Configuration;
 using System.Reflection;
+using WellRoundedBalance.Items.Greens;
 
 namespace WellRoundedBalance.Items.ConsistentCategories
 {
@@ -188,18 +189,26 @@ namespace WellRoundedBalance.Items.ConsistentCategories
             dios.tags = new ItemTag[] { ItemTag.AIBlacklist };
             ItemAPI.ApplyTagToItem("Defense", dios);
 
+            if (HarvestersScythe.instance.isEnabled)
+            {
+                var scythe = Utils.Paths.ItemDef.HealOnCrit.Load<ItemDef>();
+                scythe.tags = new ItemTag[] { ItemTag.Damage };
+            }
+
+            var tougherTimes = Utils.Paths.ItemDef.Bear.Load<ItemDef>();
+            tougherTimes.tags = new ItemTag[] { ItemTag.AIBlacklist, ItemTag.BrotherBlacklist };
+            ItemAPI.ApplyTagToItem("Defense", tougherTimes);
+
             // removals and defense additions
 
             ReplaceWithDefense("ArmorPlate"); // Repulsion Armor Plate
             ReplaceWithDefense("BarrierOnKill"); // Topaz Brooch
             ReplaceWithDefense("BarrierOnOverHeal"); // Aegis
-            ReplaceWithDefense("Bear"); // Tougher Times
             ReplaceWithDefense("BeetleGland"); // Queen's Gland
             ReplaceWithDefense("CaptainDefenseMatrix"); // Defensive Microbots
             ReplaceWithDefense("FlatHealth"); // Bison Steak
             ReplaceWithDefense("GhostOnKill"); // Happiest Mask
             ReplaceWithDefense("HeadHunter"); // Wake of Vultures
-            ReplaceWithDefense("HealOnCrit"); // Harvester's Scythe
             ReplaceWithDefense("HealWhileSafe"); // Cautious Slug
             ReplaceWithDefense("IncreaseHealing"); // Rejuvenation Rack
             ReplaceWithDefense("Infusion");

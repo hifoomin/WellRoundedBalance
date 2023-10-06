@@ -46,16 +46,18 @@ namespace WellRoundedBalance.Interactables
             var hologram2 = scrapperGO.AddComponent<ScrapperHologram>();
 
             uses = new();
-            SceneDirector.onPostPopulateSceneServer += SceneDirector_onPostPopulateSceneServer;
+
             Stage.onServerStageComplete += Stage_onServerStageComplete;
             On.EntityStates.Scrapper.ScrapperBaseState.OnEnter += ScrapperBaseState_OnEnter;
             On.EntityStates.Scrapper.Scrapping.OnEnter += Scrapping_OnEnter;
             On.RoR2.ScrapperController.Start += ScrapperController_Start;
             On.RoR2.ClassicStageInfo.Start += ClassicStageInfo_Start;
+            On.RoR2.SceneDirector.Start += SceneDirector_Start;
         }
 
-        private void SceneDirector_onPostPopulateSceneServer(SceneDirector sd)
+        private void SceneDirector_Start(On.RoR2.SceneDirector.orig_Start orig, SceneDirector self)
         {
+            orig(self);
             ScrapperController[] scrappers = GameObject.FindObjectsOfType<ScrapperController>();
             foreach (ScrapperController controller in scrappers)
             {

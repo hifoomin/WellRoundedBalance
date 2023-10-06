@@ -207,10 +207,10 @@ namespace WellRoundedBalance.Items.Greens
             critGain = HarvestersScythe.baseCritGain + HarvestersScythe.critGainPerStack * (stack - 1);
             buffDur = HarvestersScythe.baseBuffDuration + HarvestersScythe.buffDurationPerStack * (stack - 1);
             skillLocator = GetComponent<SkillLocator>();
-            body.onSkillActivatedAuthority += Body_onSkillActivatedAuthority;
+            body.onSkillActivatedServer += Body_onSkillActivatedServer;
         }
 
-        private void Body_onSkillActivatedAuthority(GenericSkill skill)
+        private void Body_onSkillActivatedServer(GenericSkill skill)
         {
             var body = skill.GetComponent<CharacterBody>();
             if (!body)
@@ -261,23 +261,20 @@ namespace WellRoundedBalance.Items.Greens
 
                 var hasCooldownCleaner = AboutEqual(HarvestersScythe.cooldown, buffDur);
 
-                if (Util.HasEffectiveAuthority(gameObject))
+                if (overlapAttack.Fire())
                 {
-                    if (overlapAttack.Fire())
+                    if (hasCooldownCleaner)
                     {
-                        if (hasCooldownCleaner)
-                        {
-                            body.AddTimedBuffAuthority(HarvestersScythe.scytheCrit.buffIndex, buffDur);
-                        }
-                        else
-                        {
-                            body.AddTimedBuffAuthority(HarvestersScythe.scytheCooldown.buffIndex, HarvestersScythe.cooldown);
-                            body.AddTimedBuffAuthority(HarvestersScythe.scytheCrit.buffIndex, HarvestersScythe.cooldown);
-                        }
+                        body.AddTimedBuffAuthority(HarvestersScythe.scytheCrit.buffIndex, buffDur);
                     }
                     else
+                    {
                         body.AddTimedBuffAuthority(HarvestersScythe.scytheCooldown.buffIndex, HarvestersScythe.cooldown);
+                        body.AddTimedBuffAuthority(HarvestersScythe.scytheCrit.buffIndex, HarvestersScythe.cooldown);
+                    }
                 }
+                else
+                    body.AddTimedBuffAuthority(HarvestersScythe.scytheCooldown.buffIndex, HarvestersScythe.cooldown);
             }
 
             yield return null;
@@ -285,12 +282,12 @@ namespace WellRoundedBalance.Items.Greens
 
         public void OnDestroy()
         {
-            body.onSkillActivatedAuthority -= Body_onSkillActivatedAuthority;
+            body.onSkillActivatedServer -= Body_onSkillActivatedServer;
         }
 
         public bool AboutEqual(float a, float b)
         {
-            if (Mathf.Abs(a - b) < 0.001f)
+            if (Mathf.Abs(a - b) < 0.05f)
                 return true;
             return false;
         }

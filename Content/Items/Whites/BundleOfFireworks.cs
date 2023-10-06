@@ -15,10 +15,10 @@ namespace WellRoundedBalance.Items.Whites
         public override string DescText =>
             StackDesc(fireworks, fireworksStack, init => $"Activating an interactable <style=cIsDamage>launches {s(init, "{Stack} firework")}</style> that deal <style=cIsDamage>{d(blastDamageCoefficient)}</style> base damage.");
 
-        [ConfigField("Fireworks", 8f)]
+        [ConfigField("Fireworks", 6f)]
         public static float fireworks;
 
-        [ConfigField("Fireworks Per Stack", 8f)]
+        [ConfigField("Fireworks Per Stack", 6f)]
         public static float fireworksStack;
 
         [ConfigField("Fireworks is Hyperbolic", "Decimal, Max value. Set to 0 to make it linear.", 0f)]

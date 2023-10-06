@@ -1,4 +1,7 @@
-﻿using System;
+﻿using RoR2.Artifacts;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace WellRoundedBalance.Interactables
 {
@@ -18,6 +21,9 @@ namespace WellRoundedBalance.Interactables
         [ConfigField("Large Category Chest Cost", "", 50)]
         public static int largeCategoryChestCost;
 
+        [ConfigField("Timed Security Chest Orange Command Essence", "Should the Timed Security Chest drop an Orange Command Essence?", true)]
+        public static bool command;
+
         public override void Init()
         {
             base.Init();
@@ -25,10 +31,33 @@ namespace WellRoundedBalance.Interactables
 
         public override void Hooks()
         {
+            On.RoR2.Run.GetDifficultyScaledCost_int_float += Run_GetDifficultyScaledCost_int_float;
+            On.RoR2.ChestBehavior.Open += ChestBehavior_Open;
+            On.RoR2.ChestBehavior.ItemDrop += ChestBehavior_ItemDrop;
+            // fucking piece of shit why
+            Changes();
+        }
+
+        private void ChestBehavior_ItemDrop(On.RoR2.ChestBehavior.orig_ItemDrop orig, ChestBehavior self)
+        {
+            orig(self);
+            ToggleCommand(false);
+        }
+
+        private void ChestBehavior_Open(On.RoR2.ChestBehavior.orig_Open orig, ChestBehavior self)
+        {
+            orig(self);
+            if (IsTimedSecurityChest(self.gameObject))
+            {
+                ToggleCommand(true);
+            }
+        }
+
+        private void Changes()
+        {
             var legendaryChest = Utils.Paths.GameObject.GoldChest.Load<GameObject>();
             var legendaryChesturchaseInteraction = legendaryChest.GetComponent<PurchaseInteraction>();
             legendaryChesturchaseInteraction.cost = legendaryChestCost;
-            On.RoR2.Run.GetDifficultyScaledCost_int_float += Run_GetDifficultyScaledCost_int_float;
 
             var stealthedChest = Utils.Paths.InteractableSpawnCard.iscChest1Stealthed.Load<InteractableSpawnCard>();
             stealthedChest.maxSpawnsPerStage = 2;
@@ -63,6 +92,30 @@ namespace WellRoundedBalance.Interactables
                 baseCost = legendaryChestCost;
             }
             return orig(self, baseCost, difficultyCoefficient);
+        }
+
+        private bool IsTimedSecurityChest(GameObject go)
+        {
+            return go.name == "TimedChest(Clone)";
+        }
+
+        private void ToggleCommand(bool isEnabled)
+        {
+            var artifactOfCommand = ArtifactCatalog.FindArtifactDef("Command");
+            if (RunArtifactManager.instance.IsArtifactEnabled(artifactOfCommand) == isEnabled)
+            {
+                return;
+            }
+            if (isEnabled)
+            {
+                RunArtifactManager.instance.SetArtifactEnabledServer(artifactOfCommand, true);
+                return;
+            }
+            Task.Run(delegate () // the guh
+            {
+                Thread.Sleep(1500);
+                RunArtifactManager.instance.SetArtifactEnabledServer(artifactOfCommand, false);
+            });
         }
     }
 }

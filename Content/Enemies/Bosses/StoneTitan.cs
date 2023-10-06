@@ -153,6 +153,13 @@ namespace WellRoundedBalance.Enemies.Bosses
             var destroyOnTimer = rockController.GetComponent<DestroyOnTimer>();
             destroyOnTimer_duration = destroyOnTimer.duration;
 
+            var titanRockProjectile = Utils.Paths.GameObject.TitanRockProjectile.Load<GameObject>();
+            var projectileSimple = titanRockProjectile.GetComponent<ProjectileSimple>();
+            projectileSimple.lifetime = 7f;
+            projectileSimple.desiredForwardSpeed = 30f;
+            projectileSimple.enableVelocityOverLifetime = true;
+            projectileSimple.velocityOverLifetime = new AnimationCurve(new Keyframe(0f, 30f), new Keyframe(1f, 50f));
+
             var tit = rockController.GetComponent<TitanRockController>();
             tit_startDelay = tit.startDelay;
             tit_fireInterval = tit.fireInterval;

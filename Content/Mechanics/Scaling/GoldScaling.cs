@@ -59,6 +59,7 @@ namespace WellRoundedBalance.Mechanics.Scaling
             if (c.TryGotoNext(MoveType.Before,
                 x => x.MatchLdcR4(1.25f)))
             {
+                c.Index++;
                 c.EmitDelegate<Func<float, float>>((orig) =>
                 {
                     var players = Run.instance.participatingPlayerCount;

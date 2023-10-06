@@ -23,19 +23,12 @@
             var newGhost = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.BrotherSunderWaveGhost.Load<GameObject>(), "EarthquakeWaveGhost", false);
             var @base = newGhost.transform.GetChild(0);
             var infection = @base.GetChild(0).GetComponent<ParticleSystemRenderer>();
+
+            infection.gameObject.SetActive(false);
+
             infection.gameObject.transform.localPosition = new Vector3(0.5f, -0.456f, 0.5f);
             infection.material.SetTexture("_EmTex", Main.wellroundedbalance.LoadAsset<Texture2D>("Assets/WellRoundedBalance/texRampWave.png"));
             infection.material.SetTexture("_MainTex", Main.wellroundedbalance.LoadAsset<Texture2D>("Assets/WellRoundedBalance/texRampWave.png"));
-
-            var particleSystem = infection.gameObject.GetComponent<ParticleSystem>();
-
-            var main = particleSystem.main;
-            main.maxParticles = 500;
-            var emission = particleSystem.emission;
-            emission.rateOverTime = 80;
-
-            var sizeOverLifetime = particleSystem.sizeOverLifetime;
-            sizeOverLifetime.size = new ParticleSystem.MinMaxCurve(1f, new AnimationCurve(new Keyframe(0f, 0.66f), new Keyframe(0.5f, 0.9f), new Keyframe(1f, 0.66f)));
 
             var water = @base.GetChild(3);
             water.gameObject.SetActive(false);
