@@ -45,6 +45,7 @@ namespace WellRoundedBalance.Items.Reds
 
         public static GameObject projectile;
         public static GameObject hitBox;
+        public static BuffDef cooldownBuff;
 
         public override void Init()
         {
