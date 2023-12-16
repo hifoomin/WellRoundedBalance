@@ -6,8 +6,8 @@ namespace WellRoundedBalance.Enemies.Bosses.Vagrant {
     public class OrbSpread : BaseState {
         public static float BaseDuration = 2f;
         public static int BaseOrbs = 3;
-        public static float BaseDamageCoefficient = 3f;
-        public static float BaseOrbSpread = 90f;
+        public static float BaseDamageCoefficient = 1f;
+        public static float BaseOrbSpread = 4.5f;
 
         public override void OnEnter()
         {
@@ -15,8 +15,7 @@ namespace WellRoundedBalance.Enemies.Bosses.Vagrant {
 
             for (int i = 0; i < BaseOrbs; i++) {
                 Ray aimRay = GetAimRay();
-                float bonusYaw = Mathf.Floor((i - (BaseOrbs - 1) / 2f) / (BaseOrbs - 1)) * BaseOrbSpread;
-                Vector3 forward = Util.ApplySpread(aimRay.direction, 0f, 0f, 1f, 1f, bonusYaw);
+                Vector3 forward = Util.ApplySpread(aimRay.direction, -BaseOrbSpread, BaseOrbSpread, 1f, 1f);
 
                 FireProjectileInfo info = new();
                 info.damage = base.damageStat * BaseDamageCoefficient;
@@ -37,6 +36,7 @@ namespace WellRoundedBalance.Enemies.Bosses.Vagrant {
         public override void FixedUpdate()
         {
             base.FixedUpdate();
+            base.characterBody.SetAimTimer(0.6f);
             if (base.fixedAge >= BaseDuration / base.attackSpeedStat) {
                 outer.SetNextStateToMain();
             }
