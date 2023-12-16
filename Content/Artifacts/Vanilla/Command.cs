@@ -362,7 +362,7 @@ namespace WellRoundedBalance.Artifacts.Vanilla
                     list = Run.instance.availableVoidBossDropList;
                     break;
             }
-            WeightedSelection<PickupIndex> selection = new WeightedSelection<PickupIndex>(8);
+            WeightedSelection<PickupIndex> selection = new(8);
             for (int i = 0; i < list.Count; i++)
             {
                 if (list[i] != pickupIndex)

@@ -1,3 +1,10 @@
+# 1.4.3 Patch Notes
+- Added pre-made config for MysticsItems.
+- Added pre-made config for Sandswept.
+- Buffed Harvester's Scythe Base Buff Duration 3s => **5s**.
+- Fixed 
+- Fixed Simulacrum not working past wave 5.
+
 # 1.4.2 Patch Notes
 - Buffed Ephemeral Coin Drop Chance 0.8% => **1%**.
 - Buffed Ephemeral Coin Drop Min Chance 0.1% => **0.25%**.
