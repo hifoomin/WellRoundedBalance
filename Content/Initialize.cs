@@ -67,6 +67,7 @@ namespace WellRoundedBalance
         public static void Init()
         {
             var stopwatch = Stopwatch.StartNew();
+            // Main.WRBLogger.LogError("init called");
 
             FunnyLabel.Init();
             // Useless.Create();
@@ -82,6 +83,7 @@ namespace WellRoundedBalance
 
             On.RoR2.ItemCatalog.Init += ItemCatalog_Init;
 
+            /*
             object achievementLock = new();
             object allyLock = new();
             object artifactAddLock = new();
@@ -95,6 +97,7 @@ namespace WellRoundedBalance
             object itemLock = new();
             object mechanicLock = new();
             object survivorLock = new();
+            */
 
             if (Main.enableAchievements.Value)
             {
@@ -105,10 +108,12 @@ namespace WellRoundedBalance
 
                 foreach (Type type in achievement)
                 {
+                    
                     AchievementBase based = (AchievementBase)Activator.CreateInstance(type);
                     if (Validate(based))
                     {
-                        try { based.Init(); } catch (Exception ex) { Main.WRBLogger.LogError($"Failed to initialize {type.Name}: {ex}"); }
+                        // try { based.Init(); } catch (Exception ex) { Main.WRBLogger.LogError($"Failed to initialize {type.Name}: {ex}"); }
+                        based.Init();
                     }
                 }
 
@@ -142,7 +147,8 @@ namespace WellRoundedBalance
                     AllyBase based = (AllyBase)Activator.CreateInstance(type);
                     if (Validate(based))
                     {
-                        try { based.Init(); } catch (Exception ex) { Main.WRBLogger.LogError($"Failed to initialize {type.Name}: {ex}"); }
+                        // try { based.Init(); } catch (Exception ex) { Main.WRBLogger.LogError($"Failed to initialize {type.Name}: {ex}"); }
+                        based.Init();
                     }
                 }
             }
@@ -179,7 +185,8 @@ namespace WellRoundedBalance
                     ArtifactEditBase based = (ArtifactEditBase)Activator.CreateInstance(type);
                     if (Validate(based))
                     {
-                        try { based.Init(); } catch (Exception ex) { Main.WRBLogger.LogError($"Failed to initialize {type.Name}: {ex}"); }
+                        // try { based.Init(); } catch (Exception ex) { Main.WRBLogger.LogError($"Failed to initialize {type.Name}: {ex}"); }
+                        based.Init();
                     }
                 }
             }
@@ -196,7 +203,8 @@ namespace WellRoundedBalance
                     DifficultyBase based = (DifficultyBase)Activator.CreateInstance(type);
                     if (Validate(based))
                     {
-                        try { based.Init(); } catch (Exception ex) { Main.WRBLogger.LogError($"Failed to initialize {type.Name}: {ex}"); }
+                        // try { based.Init(); } catch (Exception ex) { Main.WRBLogger.LogError($"Failed to initialize {type.Name}: {ex}"); }
+                        based.Init();
                     }
                 }
             }
@@ -213,7 +221,8 @@ namespace WellRoundedBalance
                     EliteBase based = (EliteBase)Activator.CreateInstance(type);
                     if (Validate(based))
                     {
-                        try { based.Init(); } catch (Exception ex) { Main.WRBLogger.LogError($"Failed to initialize {type.Name}: {ex}"); }
+                        // try { based.Init(); } catch (Exception ex) { Main.WRBLogger.LogError($"Failed to initialize {type.Name}: {ex}"); }
+                        based.Init();
                     }
                 }
             }
@@ -230,7 +239,8 @@ namespace WellRoundedBalance
                     EnemyBase based = (EnemyBase)Activator.CreateInstance(type);
                     if (Validate(based))
                     {
-                        try { based.Init(); } catch (Exception ex) { Main.WRBLogger.LogError($"Failed to initialize {type.Name}: {ex}"); }
+                        // try { based.Init(); } catch (Exception ex) { Main.WRBLogger.LogError($"Failed to initialize {type.Name}: {ex}"); }
+                        based.Init();
                     }
                 }
             }
@@ -247,7 +257,8 @@ namespace WellRoundedBalance
                     EquipmentBase based = (EquipmentBase)Activator.CreateInstance(type);
                     if (Validate(based))
                     {
-                        try { based.Init(); } catch (Exception ex) { Main.WRBLogger.LogError($"Failed to initialize {type.Name}: {ex}"); }
+                        // try { based.Init(); } catch (Exception ex) { Main.WRBLogger.LogError($"Failed to initialize {type.Name}: {ex}"); }
+                        based.Init();
                     }
                 }
             }
@@ -264,7 +275,8 @@ namespace WellRoundedBalance
                     GamemodeBase based = (GamemodeBase)Activator.CreateInstance(type);
                     if (Validate(based))
                     {
-                        try { based.Init(); } catch (Exception ex) { Main.WRBLogger.LogError($"Failed to initialize {type.Name}: {ex}"); }
+                        // try { based.Init(); } catch (Exception ex) { Main.WRBLogger.LogError($"Failed to initialize {type.Name}: {ex}"); }
+                        based.Init();
                     }
                 }
             }
@@ -281,7 +293,8 @@ namespace WellRoundedBalance
                     InteractableBase based = (InteractableBase)Activator.CreateInstance(type);
                     if (Validate(based))
                     {
-                        try { based.Init(); } catch (Exception ex) { Main.WRBLogger.LogError($"Failed to initialize {type.Name}: {ex}"); }
+                        // try { based.Init(); } catch (Exception ex) { Main.WRBLogger.LogError($"Failed to initialize {type.Name}: {ex}"); }
+                        based.Init();
                     }
                 }
             }
@@ -298,7 +311,8 @@ namespace WellRoundedBalance
                     ItemBase based = (ItemBase)Activator.CreateInstance(type);
                     if (Validate(based))
                     {
-                        try { based.Init(); } catch (Exception ex) { Main.WRBLogger.LogError($"Failed to initialize {type.Name}: {ex}"); }
+                        // try { based.Init(); } catch (Exception ex) { Main.WRBLogger.LogError($"Failed to initialize {type.Name}: {ex}"); }
+                        based.Init();
                     }
                 }
 
@@ -318,7 +332,8 @@ namespace WellRoundedBalance
                     MechanicBase based = (MechanicBase)Activator.CreateInstance(type);
                     if (Validate(based))
                     {
-                        try { based.Init(); } catch (Exception ex) { Main.WRBLogger.LogError($"Failed to initialize {type.Name}: {ex}"); }
+                        // try { based.Init(); } catch (Exception ex) { Main.WRBLogger.LogError($"Failed to initialize {type.Name}: {ex}"); }
+                        based.Init();
                     }
                 }
             }
@@ -335,7 +350,8 @@ namespace WellRoundedBalance
                     SurvivorBase based = (SurvivorBase)Activator.CreateInstance(type);
                     if (Validate(based))
                     {
-                        try { based.Init(); } catch (Exception ex) { Main.WRBLogger.LogError($"Failed to initialize {type.Name}: {ex}"); }
+                        // try { based.Init(); } catch (Exception ex) { Main.WRBLogger.LogError($"Failed to initialize {type.Name}: {ex}"); }
+                        based.Init();
                     }
                 }
             }
@@ -360,6 +376,7 @@ namespace WellRoundedBalance
         {
             if (obj.isEnabled)
             {
+                // Main.WRBLogger.LogError("validating T: " + obj);
                 bool enabledfr = GetConfigForType<T>().Bind(obj.Name, "Enable Changes?", true, "Vanilla is false").Value;
                 if (enabledfr) return true;
                 else ConfigManager.ConfigChanged = true;
