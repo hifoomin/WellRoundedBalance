@@ -188,7 +188,7 @@ namespace WellRoundedBalance
             orig(self, mainMenuController);
             if (!hasZanySoupd)
             {
-                WRBLogger.LogDebug("==+----------------==ZANY==----------------+==");
+                WRBLogger.LogDebug("==+-----------------==ZANY==----------------+==");
                 for (int j = 0; j < 3; j++)
                 {
                     WRBLogger.LogMessage("Thanks for playing Well Rounded Balance <3");
