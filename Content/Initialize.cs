@@ -25,6 +25,7 @@ using WellRoundedBalance.Items;
 using WellRoundedBalance.Items.ConsistentCategories;
 using WellRoundedBalance.Items.NoTier;
 using WellRoundedBalance.Mechanics;
+using WellRoundedBalance.Mechanics.Health;
 using WellRoundedBalance.Misc;
 using WellRoundedBalance.Projectiles;
 using WellRoundedBalance.Survivors;
@@ -357,6 +358,7 @@ namespace WellRoundedBalance
             }
 
             // FamilyEvents.Init();
+            Jank.Init();
 
             Main.WRBLogger.LogDebug("==+----------------==INFO==----------------+==");
             Main.WRBLogger.LogDebug("Initialized " + SharedBase.initList.Count + " abstract classes");
