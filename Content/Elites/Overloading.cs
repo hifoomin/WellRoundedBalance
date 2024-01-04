@@ -35,6 +35,8 @@ namespace WellRoundedBalance.Elites
         public static GameObject tpEffect;
         public static GameObject tpTracer;
 
+        public static BuffDef overloadingSelfBuff;
+
         public override void Init()
         {
             var speedBuff = Utils.Paths.Texture2D.texBuffKillMoveSpeed.Load<Texture2D>();
@@ -45,9 +47,17 @@ namespace WellRoundedBalance.Elites
             overloadingSpeedBuff.canStack = false;
             overloadingSpeedBuff.buffColor = new Color32(66, 98, 219, 255);
             overloadingSpeedBuff.iconSprite = Sprite.Create(speedBuff, new Rect(0f, 0f, (float)speedBuff.width, (float)speedBuff.height), new Vector2(0f, 0f));
-            overloadingSpeedBuff.name = "Overloading Speed Buff";
+            overloadingSpeedBuff.name = "Overloading Ally Speed Buff";
 
             ContentAddition.AddBuffDef(overloadingSpeedBuff);
+
+            overloadingSelfBuff = ScriptableObject.CreateInstance<BuffDef>();
+            overloadingSelfBuff.isHidden = true;
+            overloadingSelfBuff.isDebuff = false;
+            overloadingSelfBuff.canStack = false;
+            overloadingSelfBuff.name = "Overloading Self Speed Buff";
+
+            ContentAddition.AddBuffDef(overloadingSelfBuff);
 
             SpeedAura = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.RailgunnerMineAltDetonated.Load<GameObject>(), "OverloadingSpeedAura");
             SpeedAura.RemoveComponent<SlowDownProjectiles>();
@@ -126,11 +136,31 @@ namespace WellRoundedBalance.Elites
         public override void Hooks()
         {
             IL.RoR2.GlobalEventManager.OnHitAll += GlobalEventManager_OnHitAll;
-            On.RoR2.CharacterBody.RecalculateStats += CharacterBody_RecalculateStats1;
+            CharacterBody.onBodyInventoryChangedGlobal += CharacterBody_onBodyInventoryChangedGlobal;
 
             RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
             IL.RoR2.CharacterBody.RecalculateStats += CharacterBody_RecalculateStats;
             On.RoR2.CharacterBody.AddTimedBuff_BuffIndex_float += CharacterBody_AddTimedBuff_BuffIndex_float;
+        }
+
+        private void CharacterBody_onBodyInventoryChangedGlobal(CharacterBody characterBody)
+        {
+            var sfp = characterBody.GetComponent<OverloadingController>();
+            if (characterBody.HasBuff(RoR2Content.Buffs.AffixBlue))
+            {
+                if (sfp == null)
+                {
+                    if (!characterBody.HasBuff(overloadingSelfBuff))
+                        characterBody.AddBuff(overloadingSelfBuff);
+                    characterBody.gameObject.AddComponent<OverloadingController>();
+                }
+            }
+            else if (sfp != null)
+            {
+                if (characterBody.HasBuff(overloadingSelfBuff))
+                    characterBody.RemoveBuff(overloadingSelfBuff);
+                characterBody.gameObject.RemoveComponent<OverloadingController>();
+            }
         }
 
         private void CharacterBody_AddTimedBuff_BuffIndex_float(On.RoR2.CharacterBody.orig_AddTimedBuff_BuffIndex_float orig, CharacterBody self, BuffIndex buffIndex, float duration)
@@ -161,26 +191,6 @@ namespace WellRoundedBalance.Elites
             }
         }
 
-        private void CharacterBody_RecalculateStats1(On.RoR2.CharacterBody.orig_RecalculateStats orig, CharacterBody self)
-        {
-            orig(self);
-            if (NetworkServer.active && self.HasBuff(RoR2Content.Buffs.AffixBlue))
-            {
-                self.moveSpeed *= 1f + passiveMovementSpeedGain;
-                if (!self.GetComponent<OverloadingController>())
-                {
-                    self.gameObject.AddComponent<OverloadingController>();
-                }
-            }
-            if (!self.HasBuff(RoR2Content.Buffs.AffixBlue))
-            {
-                if (self.GetComponent<OverloadingController>())
-                {
-                    self.gameObject.RemoveComponent<OverloadingController>();
-                }
-            }
-        }
-
         private void CharacterBody_RecalculateStats(ILContext il)
         {
             ILCursor c = new(il);
@@ -200,9 +210,14 @@ namespace WellRoundedBalance.Elites
         private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
             bool e3 = Run.instance.selectedDifficulty >= DifficultyIndex.Eclipse3 && Eclipse3.instance.isEnabled;
-            if (sender && sender.HasBuff(overloadingSpeedBuff) && !sender.HasBuff(RoR2Content.Buffs.AffixBlue))
+            if (sender)
             {
-                args.moveSpeedMultAdd += e3 ? allyBuffMovementSpeedGainE3 : allyBuffMovementSpeedGain;
+                if (sender.HasBuff(overloadingSpeedBuff) && !sender.HasBuff(RoR2Content.Buffs.AffixBlue))
+                    args.moveSpeedMultAdd += e3 ? allyBuffMovementSpeedGainE3 : allyBuffMovementSpeedGain;
+                if (sender.HasBuff(overloadingSelfBuff))
+                {
+                    args.moveSpeedMultAdd += passiveMovementSpeedGain;
+                }
             }
         }
 
