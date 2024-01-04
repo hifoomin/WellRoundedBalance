@@ -192,7 +192,7 @@ namespace WellRoundedBalance.Enemies.Bosses
 
     public class Earthquake : BaseState
     {
-        public static float baseDuration = 6f;
+        public static float baseDuration = 4f;
         public float durationBetweenWaves = 1.25f;
 
         public static string tellString = "Play_beetle_guard_attack2_initial";

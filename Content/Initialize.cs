@@ -109,7 +109,6 @@ namespace WellRoundedBalance
 
                 foreach (Type type in achievement)
                 {
-                    
                     AchievementBase based = (AchievementBase)Activator.CreateInstance(type);
                     if (Validate(based))
                     {
@@ -359,6 +358,7 @@ namespace WellRoundedBalance
 
             // FamilyEvents.Init();
             Jank.Init();
+            BleedCapInit.Init();
 
             Main.WRBLogger.LogDebug("==+----------------==INFO==----------------+==");
             Main.WRBLogger.LogDebug("Initialized " + SharedBase.initList.Count + " abstract classes");

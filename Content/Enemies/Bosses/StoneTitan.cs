@@ -14,7 +14,7 @@ namespace WellRoundedBalance.Enemies.Bosses
         [ConfigField("Apply to Aurellionite", true)]
         public static bool aurellionite;
 
-        [ConfigField("Laser Damage", "1 = 100%, vanilla: 1", 1.6f)]
+        [ConfigField("Laser Damage", "1 = 100%, vanilla: 1", 0.7f)]
         public static float NEW_FireMegaLaser_damageCoefficient;
 
         private static float FireMegaLaser_damageCoefficient;
@@ -158,7 +158,7 @@ namespace WellRoundedBalance.Enemies.Bosses
             projectileSimple.lifetime = 7f;
             projectileSimple.desiredForwardSpeed = 30f;
             projectileSimple.enableVelocityOverLifetime = true;
-            projectileSimple.velocityOverLifetime = new AnimationCurve(new Keyframe(0f, 30f), new Keyframe(1f, 50f));
+            projectileSimple.velocityOverLifetime = new AnimationCurve(new Keyframe(0f, 0.6f), new Keyframe(1f, 1f));
 
             var tit = rockController.GetComponent<TitanRockController>();
             tit_startDelay = tit.startDelay;

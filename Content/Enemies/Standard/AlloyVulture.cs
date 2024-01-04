@@ -28,6 +28,9 @@
 
             var projectileSingleTargetImpact = wind.GetComponent<ProjectileSingleTargetImpact>();
             projectileSingleTargetImpact.destroyOnWorld = false;
+
+            var boxCollider = wind.GetComponent<BoxCollider>();
+            boxCollider.material = Utils.Paths.PhysicMaterial.physmatSuperBouncy.Load<PhysicMaterial>();
         }
 
         private void FireWindblade_OnEnter(On.EntityStates.Vulture.Weapon.FireWindblade.orig_OnEnter orig, EntityStates.Vulture.Weapon.FireWindblade self)

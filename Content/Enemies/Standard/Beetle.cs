@@ -34,7 +34,7 @@ namespace WellRoundedBalance.Enemies.Standard
             switch (body.name)
             {
                 case "BeetleBody(Clone)":
-                    body.baseMoveSpeed = 9f;
+                    body.baseMoveSpeed = 9.5f;
                     break;
             }
         }
@@ -51,7 +51,7 @@ namespace WellRoundedBalance.Enemies.Standard
                     AISkillDriver BeetleHeadbutt = (from x in master.GetComponents<AISkillDriver>()
                                                     where x.customName == "HeadbuttOffNodegraph"
                                                     select x).First();
-                    BeetleHeadbutt.maxDistance = 9f;
+                    BeetleHeadbutt.maxDistance = 10f;
                     BeetleHeadbutt.selectionRequiresOnGround = true;
                     BeetleHeadbutt.activationRequiresAimTargetLoS = true;
                     break;
