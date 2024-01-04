@@ -32,7 +32,7 @@ namespace WellRoundedBalance.Elites
             if (spawnLunarCoin)
                 CharacterBody.onBodyInventoryChangedGlobal += CharacterBody_onBodyInventoryChangedGlobal;
 
-            Changes();
+            Changes(); ;
         }
 
         [SystemInitializer(typeof(EliteCatalog))]
