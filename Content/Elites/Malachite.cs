@@ -99,7 +99,7 @@ namespace WellRoundedBalance.Elites
             {
                 body = GetComponent<CharacterBody>();
                 startTime = Run.instance.GetRunStopwatch();
-                bool e3 = Run.instance.selectedDifficulty >= DifficultyIndex.Eclipse3 && Eclipse3.instance.isEnabled;
+                bool e3 = Run.instance && Run.instance.selectedDifficulty >= DifficultyIndex.Eclipse3 && Eclipse3.instance.isEnabled;
                 turretCount = e3 ? turretCountE3 : TurretCount;
 
                 for (int i = 0; i < turretCount; i++)

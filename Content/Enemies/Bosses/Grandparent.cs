@@ -43,7 +43,7 @@
         {
             var sun = Utils.Paths.GameObject.GrandParentSun.Load<GameObject>();
             var sunController = sun.GetComponent<GrandParentSunController>();
-            sunController.burnDuration = 0.75f;
+            sunController.burnDuration = 0.4f;
         }
     }
 }

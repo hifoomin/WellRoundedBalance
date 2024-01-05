@@ -153,7 +153,7 @@ namespace WellRoundedBalance.Elites
 
         private static GameObject GetWard() // this sucks lmfao, please replace with PrefabAPI stuff
         {
-            bool e3 = Run.instance.selectedDifficulty >= DifficultyIndex.Eclipse3 && Eclipse3.instance.isEnabled;
+            bool e3 = Run.instance && Run.instance.selectedDifficulty >= DifficultyIndex.Eclipse3 && Eclipse3.instance.isEnabled;
             BlindnessWard = new("Blindness Ward") { layer = LayerIndex.defaultLayer.intVal };
             TeamFilter filter = BlindnessWard.AddComponent<TeamFilter>();
             BlindnessWard.AddComponent<MeshRenderer>().material = Utils.Paths.Material.matHauntedAura.Load<Material>();

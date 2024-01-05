@@ -181,7 +181,7 @@ namespace WellRoundedBalance.Elites
         {
             if (sender.HasBuff(regenBoost))
             {
-                bool e3 = Run.instance.selectedDifficulty >= DifficultyIndex.Eclipse3 && Eclipse3.instance.isEnabled;
+                bool e3 = Run.instance && Run.instance.selectedDifficulty >= DifficultyIndex.Eclipse3 && Eclipse3.instance.isEnabled;
                 var regenStack = e3 ? onHitHealingTargetRegenBoost : onHitHealingTargetRegenBoostE3;
                 args.baseRegenAdd += regenStack + 0.2f * regenStack * (sender.level - 1);
             }
@@ -340,11 +340,14 @@ namespace WellRoundedBalance.Elites
 
                 healHurtBoxBuffer.Clear();
 
-                EffectManager.SpawnEffect(healVFX, new EffectData
+                if (!healerBody.isPlayerControlled)
                 {
-                    origin = corePosition,
-                    scale = radius
-                }, true);
+                    EffectManager.SpawnEffect(healVFX, new EffectData
+                    {
+                        origin = corePosition,
+                        scale = radius
+                    }, true);
+                }
             }
 
             public void OnDestroy()

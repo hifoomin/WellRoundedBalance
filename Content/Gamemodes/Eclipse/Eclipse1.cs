@@ -19,7 +19,7 @@ namespace WellRoundedBalance.Gamemodes.Eclipse
 
         private void CombatDirector_Awake(On.RoR2.CombatDirector.orig_Awake orig, CombatDirector self)
         {
-            if (Run.instance.selectedDifficulty >= DifficultyIndex.Eclipse1)
+            if (Run.instance && Run.instance.selectedDifficulty >= DifficultyIndex.Eclipse1)
             {
                 self.creditMultiplier += 0.03f * Run.instance.stageClearCount;
             }

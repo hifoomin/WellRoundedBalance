@@ -20,7 +20,7 @@
             EntityStates.Wisp1Monster.FireEmbers.minSpread = 0f;
             EntityStates.Wisp1Monster.FireEmbers.maxSpread = 0f;
             EntityStates.Wisp1Monster.FireEmbers.bulletCount = 1;
-            EntityStates.Wisp1Monster.FireEmbers.baseDuration = 2.75f;
+            EntityStates.Wisp1Monster.FireEmbers.baseDuration = 2.5f;
             EntityStates.Wisp1Monster.FireEmbers.damageCoefficient = 2f;
             orig(self);
         }
