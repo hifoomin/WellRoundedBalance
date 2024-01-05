@@ -4,7 +4,7 @@
     {
         public override string Name => ":: Mechanics :::: Combat Director";
 
-        [ConfigField("Minimum Reroll Spawn Interval Multiplier", "", 1.8f)]
+        [ConfigField("Minimum Reroll Spawn Interval Multiplier", "", 1.5f)]
         public static float minimumRerollSpawnIntervalMultiplier;
 
         [ConfigField("Credit Multiplier", "", 1.35f)]

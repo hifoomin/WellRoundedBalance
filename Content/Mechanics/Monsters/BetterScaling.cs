@@ -25,7 +25,7 @@
 
         private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
-            if (sender.teamComponent.teamIndex != TeamIndex.Player)
+            if (Run.instance && sender.teamComponent.teamIndex != TeamIndex.Player)
             {
                 args.armorAdd += armorCap - armorCap / Mathf.Pow(baseValue, Run.instance.stageClearCount);
                 args.healthMultAdd *= healthMultiplier; // no inferno check intentionally

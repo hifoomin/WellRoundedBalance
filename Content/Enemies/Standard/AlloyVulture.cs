@@ -19,15 +19,18 @@
         {
             var wind = Utils.Paths.GameObject.WindbladeProjectile.Load<GameObject>();
             var projectileSimple = wind.GetComponent<ProjectileSimple>();
-            projectileSimple.lifetime = 15f;
-            projectileSimple.desiredForwardSpeed = 35f;
-            wind.transform.localScale = new Vector3(2f, 2f, 2f);
+            projectileSimple.lifetime = 10f;
+            projectileSimple.desiredForwardSpeed = 50f;
+            wind.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
 
             var projectileController = wind.GetComponent<ProjectileController>();
-            projectileController.ghostPrefab.transform.localScale = new Vector3(2f, 2f, 2f);
+            projectileController.ghostPrefab.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
 
             var projectileSingleTargetImpact = wind.GetComponent<ProjectileSingleTargetImpact>();
             projectileSingleTargetImpact.destroyOnWorld = false;
+
+            var boxCollider = wind.GetComponent<BoxCollider>();
+            boxCollider.material = Utils.Paths.PhysicMaterial.physmatSuperBouncy.Load<PhysicMaterial>();
         }
 
         private void FireWindblade_OnEnter(On.EntityStates.Vulture.Weapon.FireWindblade.orig_OnEnter orig, EntityStates.Vulture.Weapon.FireWindblade self)

@@ -31,7 +31,7 @@ namespace WellRoundedBalance.Items.Greens
         [ConfigField("Crit Gain Per Stack", 30f)]
         public static float critGainPerStack;
 
-        [ConfigField("Base Buff Duration", 3f)]
+        [ConfigField("Base Buff Duration", 5f)]
         public static float baseBuffDuration;
 
         [ConfigField("Buff Duration Per Stack", 0f)]

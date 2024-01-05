@@ -32,7 +32,7 @@ namespace WellRoundedBalance.Elites
         [ConfigField("All Tier Honor Damage Multiplier", "", 1f)]
         public static float allTierHonorDamageMultiplier;
 
-        [ConfigField("Aspect Chance", "Decimal.", 0.004f)]
+        [ConfigField("Aspect Chance", "Decimal.", 0.001f)]
         public static float aspectChance;
 
         [ConfigField("Enable Aspect Inheritance?", "Makes all allies without an equipment gain the most recent aspect.", true)]

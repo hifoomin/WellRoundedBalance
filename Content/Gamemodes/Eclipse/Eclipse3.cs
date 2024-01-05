@@ -39,7 +39,7 @@ namespace WellRoundedBalance.Gamemodes.Eclipse
 
         internal static bool CheckEclipse()
         {
-            return instance.isEnabled && Run.instance.selectedDifficulty >= DifficultyIndex.Eclipse3;
+            return instance.isEnabled && Run.instance && Run.instance.selectedDifficulty >= DifficultyIndex.Eclipse3;
         }
     }
 }

@@ -13,7 +13,7 @@ namespace WellRoundedBalance.Enemies.FinalBosses
         [ConfigField("Phase 4 Base Move Speed", "Disabled if playing Inferno.", 10f)]
         public static float phase4BaseMoveSpeed;
 
-        [ConfigField("Phase 4 Base Max Health", "Disabled if playing Inferno.", 700f)]
+        [ConfigField("Phase 4 Base Max Health", "Disabled if playing Inferno.", 450f)]
         public static float phase4BaseMaxHealth;
 
         [ConfigField("Phase 4 Sprinting Speed Multiplier", "Disabled if playing Inferno.", 1.45f)]

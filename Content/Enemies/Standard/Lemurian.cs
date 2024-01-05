@@ -20,7 +20,7 @@
         private void FireFireball_OnEnter(On.EntityStates.LemurianMonster.FireFireball.orig_OnEnter orig, EntityStates.LemurianMonster.FireFireball self)
         {
             if (!Main.IsInfernoDef())
-                EntityStates.LemurianMonster.FireFireball.damageCoefficient = 1.3f;
+                EntityStates.LemurianMonster.FireFireball.damageCoefficient = 1.5f;
             orig(self);
         }
 
@@ -51,7 +51,7 @@
                 EntityStates.LemurianMonster.Bite.radius = 3f;
                 EntityStates.LemurianMonster.Bite.baseDuration = 0.8f;
                 EntityStates.LemurianMonster.Bite.forceMagnitude = 400f;
-                EntityStates.LemurianMonster.Bite.damageCoefficient = 2.1f;
+                EntityStates.LemurianMonster.Bite.damageCoefficient = 2.2f;
             }
 
             orig(self);
@@ -62,7 +62,7 @@
             var fireball = Utils.Paths.GameObject.Fireball.Load<GameObject>();
             var projectileSimple = fireball.GetComponent<ProjectileSimple>();
             projectileSimple.lifetime = 7f;
-            projectileSimple.desiredForwardSpeed = 65f;
+            projectileSimple.desiredForwardSpeed = 75f;
         }
     }
 }

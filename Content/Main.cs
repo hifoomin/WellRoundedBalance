@@ -34,7 +34,7 @@ namespace WellRoundedBalance
         public const string PluginGUID = PluginAuthor + "." + PluginName;
         public const string PluginAuthor = "BALLS";
         public const string PluginName = "WellRoundedBalance";
-        public const string PluginVersion = "1.4.2";
+        public const string PluginVersion = "1.4.4";
         public static ConfigFile WRBAchievementConfig;
         public static ConfigFile WRBAllyConfig;
         public static ConfigFile WRBArtifactAddConfig;
@@ -188,7 +188,7 @@ namespace WellRoundedBalance
             orig(self, mainMenuController);
             if (!hasZanySoupd)
             {
-                WRBLogger.LogDebug("==+----------------==ZANY==----------------+==");
+                WRBLogger.LogDebug("==+-----------------==ZANY==----------------+==");
                 for (int j = 0; j < 3; j++)
                 {
                     WRBLogger.LogMessage("Thanks for playing Well Rounded Balance <3");

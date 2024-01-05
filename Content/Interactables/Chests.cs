@@ -32,8 +32,8 @@ namespace WellRoundedBalance.Interactables
         public override void Hooks()
         {
             On.RoR2.Run.GetDifficultyScaledCost_int_float += Run_GetDifficultyScaledCost_int_float;
-            On.RoR2.ChestBehavior.Open += ChestBehavior_Open;
-            On.RoR2.ChestBehavior.ItemDrop += ChestBehavior_ItemDrop;
+            // On.RoR2.ChestBehavior.Open += ChestBehavior_Open;
+            // On.RoR2.ChestBehavior.ItemDrop += ChestBehavior_ItemDrop;
             // fucking piece of shit why
             Changes();
         }

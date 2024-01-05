@@ -1,22 +1,19 @@
-﻿using MonoMod.Cil;
-
-namespace WellRoundedBalance.Items.Reds
+﻿namespace WellRoundedBalance.Items.Reds
 {
     public class Aegis : ItemBase<Aegis>
     {
         public override string Name => ":: Items ::: Reds :: Aegis";
         public override ItemDef InternalPickup => RoR2Content.Items.BarrierOnOverHeal;
 
-        public override string PickupText => "Healing past full grants you a temporary barrier.";
+        public override string PickupText => "Activaitng an interactable grants temporary barrier. Barrier doesn't decay while outside danger.";
 
-        public override string DescText => (armorGainWithBarrier > 0 ? "<style=cIsHealing>Increase armor</style> by <style=cIsHealing>" + armorGainWithBarrier + "</style> while you have <style=cIsHealing>barrier</style>. " : "") +
-                                           "Healing past full grants you a <style=cIsHealing>temporary barrier</style> for <style=cIsHealing>" + d(overhealPercent) + " <style=cStack>(+" + d(overhealPercent) + " per stack)</style></style> of the amount you <style=cIsHealing>healed</style>.";
+        public override string DescText => "Activating an interactable grants a <style=cIsHealing>temporary barrier</style> for <style=cIsHealing>" + d(baseBarrierPercent) + "</style> <style=cStack>(+" + d(barrierPercentPerStack) + ")</style> of <style=cIsHealing>maximum health</style> While outside of danger, <style=cIsUtility>barrier will not decay</style>.";
 
-        [ConfigField("Overheal Percent", "Decimal.", 0.75f)]
-        public static float overhealPercent;
+        [ConfigField("Base Barrier Percent", "Decimal.", 0.1f)]
+        public static float baseBarrierPercent;
 
-        [ConfigField("Armor Gain With Barrier", 30f)]
-        public static float armorGainWithBarrier;
+        [ConfigField("Barrier Percent Per Stack", "Decimal.", 0.1f)]
+        public static float barrierPercentPerStack;
 
         public override void Init()
         {
@@ -25,9 +22,42 @@ namespace WellRoundedBalance.Items.Reds
 
         public override void Hooks()
         {
-            RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
             IL.RoR2.HealthComponent.Heal += HealthComponent_Heal;
-            HealthComponent.onCharacterHealServer += HealthComponent_onCharacterHealServer;
+            GlobalEventManager.OnInteractionsGlobal += GlobalEventManager_OnInteractionsGlobal;
+        }
+
+        private void GlobalEventManager_OnInteractionsGlobal(Interactor interactor, IInteractable interactable, GameObject interactableObject)
+        {
+            if (!interactableObject)
+            {
+                return;
+            }
+            if (!interactor)
+            {
+                return;
+            }
+
+            var body = interactor.GetComponent<CharacterBody>();
+            if (!body)
+            {
+                return;
+            }
+
+            var inventory = body.inventory;
+            if (!inventory)
+            {
+                return;
+            }
+
+            var stack = body.inventory.GetItemCount(RoR2Content.Items.BarrierOnOverHeal);
+            if (stack <= 0)
+            {
+                return;
+            }
+
+            var hc = body.healthComponent;
+
+            hc.AddBarrier(hc.fullCombinedHealth * (baseBarrierPercent + barrierPercentPerStack * (stack - 1)));
         }
 
         private void HealthComponent_Heal(ILContext il)
@@ -40,41 +70,11 @@ namespace WellRoundedBalance.Items.Reds
                     x => x.MatchLdcR4(0.5f)))
             {
                 c.Index += 2;
-                c.Next.Operand = overhealPercent;
+                c.Next.Operand = 0f;
             }
             else
             {
                 Logger.LogError("Failed to apply Aegis Overheal hook");
-            }
-        }
-
-        private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
-        {
-            var inventory = sender.inventory;
-            if (inventory)
-            {
-                var stack = inventory.GetItemCount(RoR2Content.Items.BarrierOnOverHeal);
-                if (stack > 0 && sender.healthComponent.barrier > 0f)
-                {
-                    args.armorAdd += armorGainWithBarrier;
-                }
-            }
-        }
-
-        private void HealthComponent_onCharacterHealServer(HealthComponent healthComponent, float amount, ProcChainMask procChainMask)
-        {
-            var body = healthComponent.body;
-            if (body)
-            {
-                var inventory = body.inventory;
-                if (inventory)
-                {
-                    var stack = inventory.GetItemCount(RoR2Content.Items.BarrierOnOverHeal);
-                    if (stack > 0 && healthComponent.barrier > 0f)
-                    {
-                        body.statsDirty = true;
-                    }
-                }
             }
         }
     }
