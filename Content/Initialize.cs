@@ -68,6 +68,8 @@ namespace WellRoundedBalance
         {
             var stopwatch = Stopwatch.StartNew();
 
+            Type[] types = typeof(Initialize).Assembly.GetTypes();
+
             FunnyLabel.Init();
             // Useless.Create();
             Buffs.Useless.Init();
@@ -98,7 +100,7 @@ namespace WellRoundedBalance
 
             if (Main.enableAchievements.Value)
             {
-                IEnumerable<Type> achievement = Assembly.GetExecutingAssembly().GetTypes()
+                IEnumerable<Type> achievement = types
                                                 .Where(type => !type.IsAbstract && type.IsSubclassOf(typeof(AchievementBase)));
 
                 Main.WRBLogger.LogInfo("==+----------------==ACHIEVEMENTS==----------------+==");
@@ -132,7 +134,7 @@ namespace WellRoundedBalance
 
             if (Main.enableAllies.Value)
             {
-                IEnumerable<Type> ally = Assembly.GetExecutingAssembly().GetTypes()
+                IEnumerable<Type> ally = types
                                                 .Where(type => !type.IsAbstract && type.IsSubclassOf(typeof(AllyBase)));
 
                 Main.WRBLogger.LogInfo("==+----------------==ALLIES==----------------+==");
@@ -169,7 +171,7 @@ namespace WellRoundedBalance
 
             if (Main.enableArtifactEdits.Value)
             {
-                IEnumerable<Type> artifactEdit = Assembly.GetExecutingAssembly().GetTypes()
+                IEnumerable<Type> artifactEdit = types
                                                 .Where(type => !type.IsAbstract && type.IsSubclassOf(typeof(ArtifactEditBase)));
 
                 Main.WRBLogger.LogInfo("==+----------------==ARTIFACT EDITS==----------------+==");
@@ -186,7 +188,7 @@ namespace WellRoundedBalance
 
             if (Main.enableDifficulties.Value)
             {
-                IEnumerable<Type> difficulty = Assembly.GetExecutingAssembly().GetTypes()
+                IEnumerable<Type> difficulty = types
                                                 .Where(type => !type.IsAbstract && type.IsSubclassOf(typeof(DifficultyBase)));
 
                 Main.WRBLogger.LogInfo("==+----------------==DIFFICULTIES==----------------+==");
@@ -203,7 +205,7 @@ namespace WellRoundedBalance
 
             if (Main.enableElites.Value)
             {
-                IEnumerable<Type> elite = Assembly.GetExecutingAssembly().GetTypes()
+                IEnumerable<Type> elite = types
                                                 .Where(type => !type.IsAbstract && type.IsSubclassOf(typeof(EliteBase)));
 
                 Main.WRBLogger.LogInfo("==+----------------==ELITES==----------------+==");
@@ -220,7 +222,7 @@ namespace WellRoundedBalance
 
             if (Main.enableEnemies.Value)
             {
-                IEnumerable<Type> enemy = Assembly.GetExecutingAssembly().GetTypes()
+                IEnumerable<Type> enemy = types
                                                 .Where(type => !type.IsAbstract && type.IsSubclassOf(typeof(EnemyBase)));
 
                 Main.WRBLogger.LogInfo("==+----------------==ENEMIES==----------------+==");
@@ -237,7 +239,7 @@ namespace WellRoundedBalance
 
             if (Main.enableEquipment.Value)
             {
-                IEnumerable<Type> equipment = Assembly.GetExecutingAssembly().GetTypes()
+                IEnumerable<Type> equipment = types
                                                 .Where(type => !type.IsAbstract && type.IsSubclassOf(typeof(EquipmentBase)));
 
                 Main.WRBLogger.LogInfo("==+----------------==EQUIPMENT==----------------+==");
@@ -254,7 +256,7 @@ namespace WellRoundedBalance
 
             if (Main.enableGamemodes.Value)
             {
-                IEnumerable<Type> gamemode = Assembly.GetExecutingAssembly().GetTypes()
+                IEnumerable<Type> gamemode = types
                                                 .Where(type => !type.IsAbstract && type.IsSubclassOf(typeof(GamemodeBase)));
 
                 Main.WRBLogger.LogInfo("==+----------------==GAMEMODES==----------------+==");
@@ -271,7 +273,7 @@ namespace WellRoundedBalance
 
             if (Main.enableInteractables.Value)
             {
-                IEnumerable<Type> interactable = Assembly.GetExecutingAssembly().GetTypes()
+                IEnumerable<Type> interactable = types
                                                 .Where(type => !type.IsAbstract && type.IsSubclassOf(typeof(InteractableBase)));
 
                 Main.WRBLogger.LogInfo("==+----------------==INTERACTABLES==----------------+==");
@@ -288,7 +290,7 @@ namespace WellRoundedBalance
 
             if (Main.enableItems.Value)
             {
-                IEnumerable<Type> item = Assembly.GetExecutingAssembly().GetTypes()
+                IEnumerable<Type> item = types
                                                 .Where(type => !type.IsAbstract && type.IsSubclassOf(typeof(ItemBase)));
 
                 Main.WRBLogger.LogInfo("==+----------------==ITEMS==----------------+==");
@@ -308,7 +310,7 @@ namespace WellRoundedBalance
 
             if (Main.enableMechanics.Value)
             {
-                IEnumerable<Type> mechanic = Assembly.GetExecutingAssembly().GetTypes()
+                IEnumerable<Type> mechanic = types
                                                 .Where(type => !type.IsAbstract && type.IsSubclassOf(typeof(MechanicBase)));
 
                 Main.WRBLogger.LogInfo("==+----------------==MECHANICS==----------------+==");
@@ -325,7 +327,7 @@ namespace WellRoundedBalance
 
             if (Main.enableSurvivors.Value)
             {
-                IEnumerable<Type> survivor = Assembly.GetExecutingAssembly().GetTypes()
+                IEnumerable<Type> survivor = types
                                                     .Where(type => !type.IsAbstract && type.IsSubclassOf(typeof(SurvivorBase)));
 
                 Main.WRBLogger.LogInfo("==+----------------==SURVIVORS==----------------+==");
