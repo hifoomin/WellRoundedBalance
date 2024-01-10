@@ -39,14 +39,18 @@ namespace WellRoundedBalance.Mechanics.Bosses
                     {
                         args.moveSpeedMultAdd += increase * maximumMovementSpeedGain;
                         args.attackSpeedMultAdd += increase * maximumAttackSpeedGain;
-                        args.cooldownMultAdd -= increase * maximumCooldownReductionGain;
+                        args.primaryCooldownMultAdd -= increase * maximumCooldownReductionGain;
+                        args.secondaryCooldownMultAdd -= increase * maximumCooldownReductionGain;
+                        args.utilityCooldownMultAdd -= increase * maximumCooldownReductionGain;
                     }
                 }
                 else
                 {
                     args.moveSpeedMultAdd += increase * maximumMovementSpeedGain;
                     args.attackSpeedMultAdd += increase * maximumAttackSpeedGain;
-                    args.cooldownMultAdd -= increase * maximumCooldownReductionGain;
+                    args.primaryCooldownMultAdd -= increase * maximumCooldownReductionGain;
+                    args.secondaryCooldownMultAdd -= increase * maximumCooldownReductionGain;
+                    args.utilityCooldownMultAdd -= increase * maximumCooldownReductionGain;
                 }
             }
         }
