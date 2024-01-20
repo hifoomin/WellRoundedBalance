@@ -26,11 +26,55 @@ namespace WellRoundedBalance.Mechanics.Director
         public override void Hooks()
         {
             RoR2.SceneDirector.onPrePopulateMonstersSceneServer += SceneDirector_onPrePopulateMonstersSceneServer;
+            // On.RoR2.CombatDirector.SpendAllCreditsOnMapSpawns += CombatDirector_SpendAllCreditsOnMapSpawns;
         }
 
+        /*
+        private void CombatDirector_SpendAllCreditsOnMapSpawns(On.RoR2.CombatDirector.orig_SpendAllCreditsOnMapSpawns orig, RoR2.CombatDirector self, Transform mapSpawnTarget)
+        {
+            if (self.customName == "gex")
+            {
+                int num = 0;
+                int num2 = 10;
+                while (self.monsterCredit > 0f)
+                {
+                    self.PrepareNewMonsterWave(this.finalMonsterCardsSelection.Evaluate(self.rng.nextNormalizedFloat));
+                    // ok so "just" make a new selection that excludes bosses ..
+                    bool flag;
+                    if (mapSpawnTarget)
+                    {
+                        flag = self.AttemptSpawnOnTarget(mapSpawnTarget, DirectorPlacementRule.PlacementMode.Approximate);
+                    }
+                    else
+                    {
+                        flag = self.AttemptSpawnOnTarget(null, SceneInfo.instance.approximateMapBoundMesh ? DirectorPlacementRule.PlacementMode.RandomNormalized : DirectorPlacementRule.PlacementMode.Random);
+                    }
+                    if (flag)
+                    {
+                        num = 0;
+                    }
+                    else
+                    {
+                        num++;
+                        if (num >= num2)
+                        {
+                            break;
+                        }
+                    }
+                }
+            }
+            else
+            orig(self, mapSpawnTarget);
+        }
+        */
         private void SceneDirector_onPrePopulateMonstersSceneServer(RoR2.SceneDirector sd)
         {
             var stageInLoop = Run.instance.stageClearCount % Run.stagesPerLoop;
+            var combatDirector = sd.GetComponent<RoR2.CombatDirector>();
+            if (combatDirector)
+            {
+                combatDirector.customName = "gex";
+            }
             switch (stageInLoop)
             {
                 case 0:
