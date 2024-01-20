@@ -88,6 +88,7 @@ namespace WellRoundedBalance.Enemies.Bosses {
                     AISkillDriver last = drivers[drivers.Count - 1];
                     drivers.RemoveAt(drivers.Count - 1);
                     drivers.Insert(0, last);
+                    self.skillDrivers = drivers.ToArray();
                 }
             };
         }

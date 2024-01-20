@@ -1,200 +1,197 @@
-﻿using WellRoundedBalance.Buffs;
-using WellRoundedBalance.Gamemodes.Eclipse;
-using System.Collections;
+/*using System;
 
-namespace WellRoundedBalance.Elites
-{
-    internal class Voidtouched : EliteBase<Voidtouched>
-    {
-        public static BuffDef useless;
-        public static BuffDef hiddenCooldown;
-        public static GameObject missile;
-
+namespace WellRoundedBalance.Elites {
+    public class Voidtouched : EliteBase<Voidtouched> {
         public override string Name => ":: Elites :: Voidtouched";
+        
+        public static GameObject MortarSmallPrefab;
+        public static GameObject MortarDeathPrefab;
+        public static GameObject MortarGhost;
+        public static GameObject LaserPrefab;
 
-        [ConfigField("Missile Count", "", 5)]
-        public static int missileCount;
+        [ConfigField("Minimum Mortar Count (Skill)", 3)]
+        public static int MinMortarCountSkill;
+        [ConfigField("Maximum Mortar Count (Skill)", 9)]
+        public static int MaxMortarCountSkill;
+        [ConfigField("Minimum Mortar Count (Death)", 6)]
+        public static int MinMortarCountDeath;
+        [ConfigField("Maximum Mortar Count (Death)", 12)]
+        public static int MaxMortarCountDeath;
 
-        [ConfigField("Missile Count Eclipse 3+", "Only applies if you have Eclipse Changes enabled.", 7)]
-        public static int missileCountE3;
-
-        [ConfigField("Missile Cooldown", "", 5f)]
-        public static float missileCooldown;
-
-        [ConfigField("Missile Damage", "Decimal.", 0.75f)]
-        public static float missileDamage;
-
-        [ConfigField("Permanent Damage Percent", "Eclipse 8 is 40", 40f)]
-        public static float permanentDamagePercent;
-
-        public override void Init()
-        {
-            useless = ScriptableObject.CreateInstance<BuffDef>();
-            useless.name = "Voidtouched Deletion";
-            useless.isHidden = true;
-
-            hiddenCooldown = ScriptableObject.CreateInstance<BuffDef>();
-            hiddenCooldown.name = "Voidtouched Missile Cooldown";
-            hiddenCooldown.isHidden = true;
-
-            ContentAddition.AddBuffDef(useless);
-            ContentAddition.AddBuffDef(hiddenCooldown);
-
-            missile = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.MissileProjectile.Load<GameObject>(), "Voidtouched Missile");
-
-            var projectileController = missile.GetComponent<ProjectileController>();
-
-            var newGhost = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.MissileVoidBigGhost.Load<GameObject>(), "Voidtouched Missile Ghost", false);
-            newGhost.transform.localScale = new Vector3(2.5f, 2.5f, 2.5f);
-
-            projectileController.ghostPrefab = newGhost;
-
-            var missileController = missile.GetComponent<MissileController>();
-            missileController.maxVelocity = 30;
-            missileController.acceleration = 3f;
-            missileController.delayTimer = 0.5f;
-            missileController.giveupTimer = 10f;
-            missileController.deathTimer = 11f;
-            missileController.turbulence = 5.5f;
-            missileController.maxSeekDistance = 75f;
-
-            foreach (Component component in missile.GetComponents<Component>())
-            {
-                if (component.name == "AkEvent")
-                {
-                    Object.Destroy(component);
-                }
-            }
-
-            PrefabAPI.RegisterNetworkPrefab(missile);
-
+        public override void Init() {
             base.Init();
+
+            LaserPrefab = PrefabAPI.InstantiateClone(new("Voidtouched Beam"), "Voidtouched Laser");
+
+            LaserPrefab.AddComponent<ProjectileController>();
+            LaserPrefab.AddComponent<ProjectileDamage>();
+            LaserPrefab.AddComponent<VoidtouchedLaserBehaviour>();
+
+            PrefabAPI.RegisterNetworkPrefab(LaserPrefab);
+
+            MortarGhost = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.ClayPotProjectileGhost.Load<GameObject>(), "Voidtouched Mortar Ghost", false);
+
+            Material mat1 = Utils.Paths.Material.matVoidBarnacleBulletOverlay.Load<Material>();
+            Material mat2 = Utils.Paths.Material.matVoidBarnacleBullet.Load<Material>();
+            Material mat3 = Utils.Paths.Material.matVoidSurvivorCorruptOverlay.Load<Material>();
+
+            ReplaceMaterials(MortarGhost, mat1, mat2, mat3);
+
+            Mesh spiky = Utils.Paths.GameObject.mdlArtifactSpikyBall.Load<GameObject>().GetComponentInChildren<MeshFilter>().mesh;
+
+            MortarGhost.GetComponentInChildren<MeshFilter>().mesh = spiky;
+
+            MortarSmallPrefab = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.ClayPotProjectile.Load<GameObject>(), "Voidtouched Mortar Small");
+
+            ProjectileSimple simple = MortarSmallPrefab.AddComponent<ProjectileSimple>();
+            simple.desiredForwardSpeed = 90f;
+            simple.lifetime = 10f;
+
+            ProjectileController controller = MortarSmallPrefab.GetComponent<ProjectileController>();
+            controller.allowPrediction = false;
+            controller.ghostPrefab = MortarGhost;
+
+            ProjectileImpactExplosion impact = MortarSmallPrefab.GetComponent<ProjectileImpactExplosion>();
+            impact.blastDamageCoefficient = 1f;
+            impact.blastRadius = 1f;
+            impact.lifetime = 10f;
+            impact.impactEffect = Utils.Paths.GameObject.VoidSurvivorMegaBlasterExplosionCorrupted.Load<GameObject>();
+
+            ProjectileDamage damage = MortarSmallPrefab.GetComponent<ProjectileDamage>();
+            damage.damageType = DamageType.Nullify;
+
+            MortarDeathPrefab = PrefabAPI.InstantiateClone(MortarSmallPrefab, "Voidtouched Mortar Death");
+            MortarDeathPrefab.transform.localScale *= 2f;
+
+            ProjectileImpactExplosion impactDeath = MortarDeathPrefab.GetComponent<ProjectileImpactExplosion>();
+            impactDeath.childrenCount = 1;
+            impactDeath.childrenProjectilePrefab = LaserPrefab;
+            impactDeath.childrenDamageCoefficient = 1f;
+            impactDeath.fireChildren = true;
+
+            ContentAddition.AddProjectile(MortarSmallPrefab);
+            ContentAddition.AddProjectile(MortarDeathPrefab);
+            ContentAddition.AddProjectile(LaserPrefab);
         }
 
-        public override void Hooks()
-        {
-            IL.RoR2.GlobalEventManager.OnHitEnemy += GlobalEventManager_OnHitEnemy;
-            IL.RoR2.AffixVoidBehavior.FixedUpdate += AffixVoidBehavior_FixedUpdate;
-            On.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
-            CharacterBody.onBodyInventoryChangedGlobal += CharacterBody_onBodyInventoryChangedGlobal;
+        public void ReplaceMaterials(GameObject obj, params Material[] mat) {
+            foreach (Renderer renderer in obj.GetComponentsInChildren<MeshRenderer>()) {
+                renderer.sharedMaterials = mat;
+            }
         }
 
-        private void CharacterBody_onBodyInventoryChangedGlobal(CharacterBody characterBody)
+        public override void Hooks() {
+            On.RoR2.GenericSkill.OnExecute += GenericSkill_OnExecute;
+            On.RoR2.GlobalEventManager.OnCharacterDeath += GlobalEventManager_OnCharacterDeath;
+        }
+
+        private void GlobalEventManager_OnCharacterDeath(On.RoR2.GlobalEventManager.orig_OnCharacterDeath orig, GlobalEventManager self, DamageReport damageReport)
         {
-            var sfp = characterBody.GetComponent<VoidtouchedController>();
-            if (characterBody.HasBuff(DLC1Content.Buffs.EliteVoid))
+            orig(self, damageReport);
+
+            CharacterBody body = damageReport.victimBody;
+
+            if (body && body.HasBuff(DLC1Content.Buffs.EliteVoid))
             {
-                if (sfp == null)
+                int count = Mathf.RoundToInt(Util.Remap(body.baseMaxHealth, 1f, 2500f, MinMortarCountDeath, MaxMortarCountDeath));
+
+                Debug.Log("max health: " + body.baseMaxHealth);
+                Debug.Log("firing " + count + " mortars");
+
+                for (int i = 0; i < count; i++)
                 {
-                    characterBody.gameObject.AddComponent<VoidtouchedController>();
-                }
-            }
-            else if (sfp != null)
-            {
-                characterBody.gameObject.RemoveComponent<VoidtouchedController>();
-            }
-        }
+                    FireProjectileInfo info = new();
+                    info.owner = body.gameObject;
+                    info.projectilePrefab = MortarDeathPrefab;
+                    info.position = body.corePosition;
+                    info.rotation = Util.QuaternionSafeLookRotation(Util.ApplySpread(Vector3.up, -10f, 10f, 1f, 1f, 0f, 0f));
+                    info.damage = body.damage;
+                    info.damageColorIndex = DamageColorIndex.Void;
 
-        private void HealthComponent_TakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo)
-        {
-            orig(self, damageInfo);
-            var body = self.body;
-            var attacker = damageInfo.attacker;
-            if (body && attacker)
-            {
-                var attackerBody = attacker.GetComponent<CharacterBody>();
-                if (attackerBody && attackerBody.HasBuff(DLC1Content.Buffs.EliteVoid))
-                {
-                    float takenDamagePercent = damageInfo.damage / self.fullCombinedHealth * 100f;
-                    int permanentDamage = Mathf.FloorToInt((takenDamagePercent * permanentDamagePercent / 100f) * damageInfo.procCoefficient);
-                    for (int l = 0; l < permanentDamage; l++)
-                    {
-                        body.AddBuff(RoR2Content.Buffs.PermanentCurse);
-                    }
-                }
-            }
-        }
-
-        private void AffixVoidBehavior_FixedUpdate(ILContext il)
-        {
-            ILCursor c = new(il);
-
-            if (c.TryGotoNext(MoveType.Before,
-                x => x.MatchLdsfld("RoR2.DLC1Content/Buffs", "BearVoidReady"),
-                x => x.MatchCallOrCallvirt<CharacterBody>("AddBuff")))
-            {
-                c.Remove();
-                c.Emit<Useless>(OpCodes.Ldsfld, nameof(Useless.voidtouchedSaferSpaces));
-            }
-            else
-            {
-                Logger.LogError("Failed to apply Voidtouched Elite Safer Spaces hook");
-            }
-        }
-
-        private void GlobalEventManager_OnHitEnemy(ILContext il)
-        {
-            ILCursor c = new(il);
-
-            if (c.TryGotoNext(MoveType.Before,
-                x => x.MatchLdsfld(typeof(DLC1Content.Buffs), "EliteVoid")))
-            {
-                c.Remove();
-                c.Emit<Useless>(OpCodes.Ldsfld, nameof(Useless.uselessBuff));
-            }
-            else
-            {
-                Logger.LogError("Failed to apply Voidtouched Elite Needletick hook");
-            }
-        }
-    }
-
-    public class VoidtouchedController : MonoBehaviour
-    {
-        public CharacterBody body;
-        public GameObject prefab;
-
-        public void Start()
-        {
-            body = GetComponent<CharacterBody>();
-            body.onSkillActivatedAuthority += Body_onSkillActivatedAuthority;
-        }
-
-        public void Body_onSkillActivatedAuthority(GenericSkill skill)
-        {
-            if (!NetworkServer.active || body.HasBuff(Voidtouched.hiddenCooldown) || !body.HasBuff(DLC1Content.Buffs.EliteVoid))
-            {
-                return;
-            }
-            StartCoroutine(FireMissiles());
-        }
-
-        public IEnumerator FireMissiles()
-        {
-            body.AddTimedBuff(Voidtouched.hiddenCooldown, Voidtouched.missileCooldown);
-
-            var startPos = body.corePosition + Vector3.up * 5f;
-
-            for (int i = 0; i < (Eclipse3.CheckEclipse() ? Voidtouched.missileCount : Voidtouched.missileCountE3); i++)
-            {
-                var j = i % 2 == 0 ? i : -i;
-                var randomPos = new Vector3(j, j, j);
-                if (Util.HasEffectiveAuthority(body.gameObject))
-                {
-                    FireProjectileInfo info = new()
-                    {
-                        damage = body.damage * Voidtouched.missileDamage,
-                        crit = false,
-                        position = startPos + randomPos,
-                        projectilePrefab = Voidtouched.missile,
-                        owner = body.gameObject,
-                    };
                     ProjectileManager.instance.FireProjectile(info);
-                    yield return new WaitForSeconds(0.2f);
                 }
             }
+        }
 
-            yield return null;
+        private void GenericSkill_OnExecute(On.RoR2.GenericSkill.orig_OnExecute orig, GenericSkill self)
+        {
+            orig(self);
+
+            CharacterBody body = self.characterBody;
+
+            if (body && body.HasBuff(DLC1Content.Buffs.EliteVoid))
+            {
+                int count = Mathf.RoundToInt(Util.Remap(self.skillDef.baseRechargeInterval, 2f, 14f, MinMortarCountSkill, MaxMortarCountSkill));
+
+                if (self.skillDef.baseRechargeInterval == 0f || self.skillDef.stockToConsume == 0) {
+                    count = Util.CheckRoll(35f) ? 1 : 0;
+                }
+
+                for (int i = 0; i < count; i++)
+                {
+                    FireProjectileInfo info = new();
+                    info.owner = body.gameObject;
+                    info.projectilePrefab = MortarSmallPrefab;
+                    info.position = body.corePosition;
+                    info.rotation = Util.QuaternionSafeLookRotation(Util.ApplySpread(body.inputBank.aimDirection, 0f, 3f, 1f, 3f, 0f, 0f));
+                    info.damage = body.damage;
+                    info.damageColorIndex = DamageColorIndex.Void;
+
+                    ProjectileManager.instance.FireProjectile(info);
+                }
+            }
+        }
+
+        public class VoidtouchedLaserBehaviour : MonoBehaviour {
+            public ProjectileController controller;
+            public ProjectileDamage damage;
+            public float stopwatch;
+            public float damageStopwatch;
+            public GameObject laserInstance;
+
+            public void Start() {
+                controller = GetComponent<ProjectileController>();
+                damage = GetComponent<ProjectileDamage>();
+
+                laserInstance = GameObject.Instantiate(Utils.Paths.GameObject.VoidRaidCrabSpinBeamVFX.Load<GameObject>(), transform.position - new Vector3(0, 5f, 0), Quaternion.identity);
+                laserInstance.transform.forward = Vector3.down;
+            }
+
+            public void FixedUpdate() {
+                stopwatch += Time.fixedDeltaTime;
+                damageStopwatch += Time.fixedDeltaTime;
+
+                if (stopwatch >= 3f) {
+                    Destroy(laserInstance);
+                    Destroy(gameObject);
+                    return;
+                }
+
+                if (damageStopwatch >= 0.2f) {
+                    damageStopwatch = 0f;
+
+                    BulletAttack bulletAttack = new();
+                    bulletAttack.owner = controller.owner;
+                    bulletAttack.weapon = gameObject;
+                    bulletAttack.origin = transform.position + new Vector3(0, 200f, 0);
+                    bulletAttack.aimVector = Vector3.down;
+                    bulletAttack.minSpread = 0f;
+                    bulletAttack.maxSpread = 0f;
+                    bulletAttack.damage = damage.damage * 0.2f;
+                    bulletAttack.force = 0f;
+                    bulletAttack.hitEffectPrefab = Utils.Paths.GameObject.VoidRaidCrabMultiBeamDotZoneImpact.Load<GameObject>();
+                    bulletAttack.isCrit = false;
+                    bulletAttack.procChainMask = default;
+                    bulletAttack.procCoefficient = 0f;
+                    bulletAttack.maxDistance = 200f;
+                    bulletAttack.damageType = DamageType.Generic;
+                    bulletAttack.falloffModel = BulletAttack.FalloffModel.None;
+                    bulletAttack.stopperMask = LayerIndex.world.mask;
+                    bulletAttack.radius = 2f;
+
+                    bulletAttack.Fire();
+                }
+            }
         }
     }
-}
+}*/
