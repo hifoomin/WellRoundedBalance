@@ -87,7 +87,7 @@ namespace WellRoundedBalance.Items.VoidWhites
                     damage = attackerBody.damage * damage,
                     damageType = DamageType.Generic,
                     inflictor = attacker,
-                    procCoefficient = procCoefficient * globalProc,
+                    procCoefficient = procCoefficient * Items.Greens._ProcCoefficients.globalProc,
                     damageColorIndex = DamageColorIndex.Void,
                     force = Vector3.zero,
                     position = victimBody.transform.position,

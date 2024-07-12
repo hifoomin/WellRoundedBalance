@@ -34,7 +34,7 @@
 
         private void FireMainBeamState_OnEnter(On.EntityStates.LaserTurbine.FireMainBeamState.orig_OnEnter orig, EntityStates.LaserTurbine.FireMainBeamState self)
         {
-            EntityStates.LaserTurbine.FireMainBeamState.mainBeamProcCoefficient = beamProcCoefficient * globalProc;
+            EntityStates.LaserTurbine.FireMainBeamState.mainBeamProcCoefficient = beamProcCoefficient * Items.Greens._ProcCoefficients.globalProc;
             EntityStates.LaserTurbine.FireMainBeamState.mainBeamRadius = beamRadius;
             orig(self);
         }
@@ -45,7 +45,7 @@
             var projectileImpactExplosion = bomb.GetComponent<ProjectileImpactExplosion>();
             projectileImpactExplosion.falloffModel = BlastAttack.FalloffModel.None;
             projectileImpactExplosion.blastRadius = explosionRadius;
-            projectileImpactExplosion.blastProcCoefficient = explosionProcCoefficient * globalProc;
+            projectileImpactExplosion.blastProcCoefficient = explosionProcCoefficient * Items.Greens._ProcCoefficients.globalProc;
 
             var explosion = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.LaserTurbineBombExplosion.Load<GameObject>(), "Resonance Disc Explosion", false);
             var transform = explosion.transform;

@@ -13,7 +13,7 @@
         [ConfigField("Instant Wave On Picking an item?", "", true)]
         public static bool instantWave;
 
-        [ConfigField("Wave Timer", "", 15)]
+        [ConfigField("Wave Timer", "", 25)]
         public static int waveTimer;
 
         [ConfigField("Enemy Spawn Grace Period", "", 0.6f)]
@@ -30,6 +30,13 @@
             On.RoR2.PickupPickerController.HandlePickupSelected += ProgressOnPickup;
             On.RoR2.InfiniteTowerWaveController.Initialize += InfiniteTowerWaveController_Initialize;
             On.EntityStates.InfiniteTowerSafeWard.Travelling.OnEnter += Travelling_OnEnter;
+            On.EntityStates.InfiniteTowerSafeWard.Unburrow.OnEnter += Unburrow_OnEnter;
+        }
+
+        private void Unburrow_OnEnter(On.EntityStates.InfiniteTowerSafeWard.Unburrow.orig_OnEnter orig, EntityStates.InfiniteTowerSafeWard.Unburrow self)
+        {
+            self.duration = waveTimer;
+            orig(self);
         }
 
         private void Travelling_OnEnter(On.EntityStates.InfiniteTowerSafeWard.Travelling.orig_OnEnter orig, EntityStates.InfiniteTowerSafeWard.Travelling self)

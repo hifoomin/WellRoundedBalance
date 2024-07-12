@@ -107,7 +107,7 @@ namespace WellRoundedBalance.Items.VoidGreens
         {
             var hopooGames = Utils.Paths.GameObject.ExplodeOnDeathVoidExplosion.Load<GameObject>();
             var delayBlast = hopooGames.GetComponent<DelayBlast>();
-            delayBlast.procCoefficient = procCoefficient * globalProc;
+            delayBlast.procCoefficient = procCoefficient * Items.Greens._ProcCoefficients.globalProc;
         }
     }
 }

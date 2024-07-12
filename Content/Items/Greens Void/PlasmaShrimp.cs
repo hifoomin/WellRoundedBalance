@@ -133,7 +133,7 @@ namespace WellRoundedBalance.Items.VoidGreens
                     x => x.MatchLdcR4(0.2f),
                     x => x.MatchStfld<RoR2.Orbs.GenericDamageOrb>("procCoefficient")))
             {
-                c.Next.Operand = procCoefficient * globalProc;
+                c.Next.Operand = procCoefficient * Items.Greens._ProcCoefficients.globalProc;
             }
             else
             {

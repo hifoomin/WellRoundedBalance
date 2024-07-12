@@ -26,7 +26,7 @@
         {
             var dagger = Utils.Paths.GameObject.DaggerProjectile.Load<GameObject>();
             var projectileController = dagger.GetComponent<ProjectileController>();
-            projectileController.procCoefficient = procCoefficient * globalProc;
+            projectileController.procCoefficient = procCoefficient * Items.Greens._ProcCoefficients.globalProc;
 
             var projectileDirectionalTargetFinder = dagger.GetComponent<ProjectileDirectionalTargetFinder>();
             projectileDirectionalTargetFinder.lookRange = 40f;

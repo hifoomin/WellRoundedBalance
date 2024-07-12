@@ -80,7 +80,7 @@ namespace WellRoundedBalance.Items.Greens
         public static void ChangeProc()
         {
             var w = LegacyResourcesAPI.Load<GameObject>("prefabs/networkedobjects/WilloWispDelay").GetComponent<DelayBlast>();
-            w.procCoefficient = procCoefficient * globalProc;
+            w.procCoefficient = procCoefficient * Items.Greens._ProcCoefficients.globalProc;
         }
     }
 }

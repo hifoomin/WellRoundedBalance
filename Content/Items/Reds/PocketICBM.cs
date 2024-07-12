@@ -44,7 +44,7 @@ namespace WellRoundedBalance.Items.Reds
             missileController.acceleration = 3f * 2.5f;
 
             var projectileController = bigFuckingMissile.GetComponent<ProjectileController>();
-            projectileController.procCoefficient = procCoefficient * globalProc;
+            projectileController.procCoefficient = procCoefficient * Items.Greens._ProcCoefficients.globalProc;
 
             bigFuckingMissileGhost = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.MissileGhost.Load<GameObject>(), "Pocket ICBM Missile Ghost", false);
             bigFuckingMissileGhost.transform.localScale = new Vector3(9f, 9f, 9f);

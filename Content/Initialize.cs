@@ -359,7 +359,6 @@ namespace WellRoundedBalance
             }
 
             // FamilyEvents.Init();
-            Jank.Init();
             BleedCapInit.Init();
 
             Main.WRBLogger.LogDebug("==+----------------==INFO==----------------+==");

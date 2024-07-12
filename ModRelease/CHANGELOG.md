@@ -1,11 +1,16 @@
-# 1.5.0 Patch Notes
-- Added pre-made config for Sandswept.
+# Future Patches
+- Reworked N'kuhana's Opinion to **fire a massive, piercing skull** on special use, damage scaling with stored healing.
+- Reworked Perfected elites to have a **much beefier projectile attack**, no longer Cripple on hit, drop a **Lunar Coin** on death and **spawn during loops**.
+
+# 1.4.3 Patch Notes
 - Buffed Alloy Vulture.
 - Buffed Beetle.
 - Buffed Greater Wisp.
 - Buffed Lemurian.
 - Buffed Lesser Wisp.
 - Buffed Harvester's Scythe Base Buff Duration 3s => **5s**.
+- Buffed Simulacrum Wave Timer.
+- Berfed Simulacrum Fog Damage to start out lower and ramp up faster over time.
 - Nerfed Beetle Queen.
 - Nerfed Combat Director Minimum Reroll Spawn Interval Multiplier 1.8 => **1.5**.
 - Nerfed Elite Aspect Drop Chance 0.4% => **0.1%**. (lmao I mixed up decimals for a loooong ass time)
@@ -13,13 +18,12 @@
 - Nerfed Mithrix Phase 4.
 - Nerfed Stone Titan.
 - Nerfed Xi Construct.
-- Reworked Aegis to give **10%** barrier on interact and **pause barrier decay** while out of danger.
-- Reworked N'kuhana's Opinion to **fire a massive, piercing skull** on special use, damage scaling with stored healing.
-- Reworked Perfected elites to have a **much beefier projectile attack**, no longer Cripple on hit, drop a **Lunar Coin** on death and **spawn during loops**.
+- Reworked Aegis to give **15%** barrier on interact and **pause barrier decay** while out of danger.
 - Made Bleed Cap work better.
 - Fixed Simulacrum not working past wave 5.
+- Fixed Simulacrum Crab moving at the wrong time (oops, Hopoo hardcoding).
 - Fixed Stone Titan bugs.
-- Optimized the mod a shit ton.
+- Optimized the mod a shit ton (should run better than vanilla at any point in the game).
 - Optimized loading times.
 
 # 1.4.2 Patch Notes

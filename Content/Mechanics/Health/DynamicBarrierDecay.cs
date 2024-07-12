@@ -1,4 +1,5 @@
-﻿using WellRoundedBalance.Items.Reds;
+﻿using System;
+using WellRoundedBalance.Items.Reds;
 
 namespace WellRoundedBalance.Mechanics.Health
 {
@@ -25,46 +26,9 @@ namespace WellRoundedBalance.Mechanics.Health
 
         private void CharacterBody_FixedUpdate(On.RoR2.CharacterBody.orig_FixedUpdate orig, CharacterBody self)
         {
-            float barrierDecayRate = 0f;
-
-            if (self.inventory)
-            {
-                var stack = self.inventory.GetItemCount(RoR2Content.Items.BarrierOnOverHeal);
-                if (stack > 0 && self.outOfDanger)
-                {
-                    barrierDecayRate = 0f;
-                }
-                else
-                {
-                    barrierDecayRate = self.healthComponent.barrier * currentBarrierCoefficient + self.healthComponent.fullCombinedHealth * fullCombinedHealthCoefficient;
-                }
-            }
+            var barrierDecayRate = self.healthComponent.barrier * currentBarrierCoefficient + self.healthComponent.fullCombinedHealth * fullCombinedHealthCoefficient;
 
             self.barrierDecayRate = barrierDecayRate;
-            orig(self);
-        }
-    }
-
-    public static class Jank
-    {
-        public static void Init()
-        {
-            if (DynamicBarrierDecay.instance.isEnabled == false && Aegis.instance.isEnabled)
-            {
-                On.RoR2.CharacterBody.FixedUpdate += CharacterBody_FixedUpdate;
-            }
-        }
-
-        private static void CharacterBody_FixedUpdate(On.RoR2.CharacterBody.orig_FixedUpdate orig, CharacterBody self)
-        {
-            if (self.inventory)
-            {
-                var stack = self.inventory.GetItemCount(RoR2Content.Items.BarrierOnOverHeal);
-                if (stack > 0 && self.outOfDanger)
-                {
-                    self.barrierDecayRate = 0f;
-                }
-            }
             orig(self);
         }
     }

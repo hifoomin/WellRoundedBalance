@@ -206,7 +206,7 @@ namespace WellRoundedBalance.Items.Reds
                         damage = damageCoefficient * attackerBody.damage,
                         damageColorIndex = DamageColorIndex.Poison,
                         force = Vector3.zero,
-                        procCoefficient = SymbioticScorpion.procCoefficient * ItemBase.globalProc,
+                        procCoefficient = SymbioticScorpion.procCoefficient * Items.Greens._ProcCoefficients.globalProc,
                         damageType = DamageType.Generic,
                         position = victimHealthComponent.body.corePosition,
                         dotIndex = DotIndex.None,
