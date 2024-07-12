@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine.SceneManagement;
 
 namespace WellRoundedBalance.Mechanics.Director
 {
@@ -25,8 +26,19 @@ namespace WellRoundedBalance.Mechanics.Director
 
         public override void Hooks()
         {
+            On.RoR2.ClassicStageInfo.Start += ClassicStageInfo_Start;
             RoR2.SceneDirector.onPrePopulateMonstersSceneServer += SceneDirector_onPrePopulateMonstersSceneServer;
             // On.RoR2.CombatDirector.SpendAllCreditsOnMapSpawns += CombatDirector_SpendAllCreditsOnMapSpawns;
+        }
+
+        private void ClassicStageInfo_Start(On.RoR2.ClassicStageInfo.orig_Start orig, ClassicStageInfo self)
+        {
+            var sceneName = SceneManager.GetActiveScene().name;
+            if (sceneName == "goldshores")
+            {
+                self.sceneDirectorMonsterCredits = 60;
+            }
+            orig(self);
         }
 
         /*
@@ -67,6 +79,7 @@ namespace WellRoundedBalance.Mechanics.Director
             orig(self, mapSpawnTarget);
         }
         */
+
         private void SceneDirector_onPrePopulateMonstersSceneServer(RoR2.SceneDirector sd)
         {
             var stageInLoop = Run.instance.stageClearCount % Run.stagesPerLoop;

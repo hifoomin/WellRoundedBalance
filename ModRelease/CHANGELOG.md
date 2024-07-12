@@ -9,17 +9,21 @@
 - Buffed Lemurian.
 - Buffed Lesser Wisp.
 - Buffed Harvester's Scythe Base Buff Duration 3s => **5s**.
+- Buffed Oddly-shaped Opal Armor Gain 2.5 => **3**.
+- Buffed Oddly-shaped Opal Armor Gain per Stack 2.5 => **3**.
 - Buffed Simulacrum Wave Timer.
 - Berfed Simulacrum Fog Damage to start out lower and ramp up faster over time.
 - Nerfed Beetle Queen.
 - Nerfed Combat Director Minimum Reroll Spawn Interval Multiplier 1.8 => **1.5**.
-- Nerfed Elite Aspect Drop Chance 0.4% => **0.1%**. (lmao I mixed up decimals for a loooong ass time)
+- Nerfed Elite Aspect Drop Chance 0.4% => **0.1%**. (lmao I mixed up decimals for a loooong ass time).
+- Nerfed Gilded Coast Scene Director Monster Credits 200 => **60**.
 - Nerfed Grandparent.
 - Nerfed Mithrix Phase 4.
 - Nerfed Stone Titan.
 - Nerfed Xi Construct.
 - Reworked Aegis to give **15%** barrier on interact and **pause barrier decay** while out of danger.
 - Made Bleed Cap work better.
+- Fixed Global Proc Coefficient config not showing up.
 - Fixed Simulacrum not working past wave 5.
 - Fixed Simulacrum Crab moving at the wrong time (oops, Hopoo hardcoding).
 - Fixed Stone Titan bugs.
