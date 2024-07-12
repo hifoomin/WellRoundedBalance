@@ -69,20 +69,24 @@ namespace WellRoundedBalance.Interactables
         private void ClassicStageInfo_Start(On.RoR2.ClassicStageInfo.orig_Start orig, ClassicStageInfo self)
         {
             orig(self);
-            var categories = self.interactableCategories.categories;
-            for (int i = 0; i < categories.Length; i++)
+            if (NetworkServer.active)
             {
-                var categoryIndex = categories[i];
-                for (int j = 0; j < categoryIndex.cards.Length; j++)
+                var categories = self.interactableCategories.categories;
+                for (int i = 0; i < categories.Length; i++)
                 {
-                    var cardIndex = categoryIndex.cards[j];
-                    if (cardIndex.spawnCard == scrapper)
+                    var categoryIndex = categories[i];
+                    for (int j = 0; j < categoryIndex.cards.Length; j++)
                     {
-                        cardIndex.selectionWeight = Mathf.RoundToInt(cardIndex.selectionWeight * weightMultiplier);
-                        break;
+                        var cardIndex = categoryIndex.cards[j];
+                        if (cardIndex.spawnCard == scrapper)
+                        {
+                            cardIndex.selectionWeight = Mathf.RoundToInt(cardIndex.selectionWeight * weightMultiplier);
+                            break;
+                        }
                     }
                 }
             }
+            
         }
 
         private void ScrapperController_Start(On.RoR2.ScrapperController.orig_Start orig, ScrapperController self)

@@ -1,9 +1,26 @@
-# 1.4.3 Patch Notes
-- Added pre-made config for MysticsItems.
+# 1.5.0 Patch Notes
 - Added pre-made config for Sandswept.
+- Buffed Alloy Vulture.
+- Buffed Beetle.
+- Buffed Greater Wisp.
+- Buffed Lemurian.
+- Buffed Lesser Wisp.
 - Buffed Harvester's Scythe Base Buff Duration 3s => **5s**.
-- Fixed 
+- Nerfed Beetle Queen.
+- Nerfed Combat Director Minimum Reroll Spawn Interval Multiplier 1.8 => **1.5**.
+- Nerfed Elite Aspect Drop Chance 0.4% => **0.1%**. (lmao I mixed up decimals for a loooong ass time)
+- Nerfed Grandparent.
+- Nerfed Mithrix Phase 4.
+- Nerfed Stone Titan.
+- Nerfed Xi Construct.
+- Reworked Aegis to give **10%** barrier on interact and **pause barrier decay** while out of danger.
+- Reworked N'kuhana's Opinion to **fire a massive, piercing skull** on special use, damage scaling with stored healing.
+- Reworked Perfected elites to have a **much beefier projectile attack**, no longer Cripple on hit, drop a **Lunar Coin** on death and **spawn during loops**.
+- Made Bleed Cap work better.
 - Fixed Simulacrum not working past wave 5.
+- Fixed Stone Titan bugs.
+- Optimized the mod a shit ton.
+- Optimized loading times.
 
 # 1.4.2 Patch Notes
 - Buffed Ephemeral Coin Drop Chance 0.8% => **1%**.
@@ -61,7 +78,7 @@
 - Berfed Gold Scaling to be **slower early game** and **faster late game**.
 - Nerfed Armor-Piercing Rounds Boss Damage Bonus 20% => **15%**.
 - Nerfed Clay Dunestrider.
-- Nerfed Elite Aspect Drop Chance 0.06% => **0.04%**.
+- Nerfed Elite Aspect Drop Chance 0.6% => **0.4%**.
 - Nerfed Grandparent.
 - Nerfed Grovetender.
 - Nerfed Leeching Seed to have a **0.15s cooldown** between healing regardless of source.
@@ -297,7 +314,7 @@
 - Buffed Mithrix Clone Base Damage 4 => **9**.
 - Buffed The Back-up cooldown 100s => **70s**.
 - Nerfed Blazing Elite Pool Lifetime 8s => **6s**.
-- Nerfed Elite Aspect Drop Chance 0.1% => **0.06%**.
+- Nerfed Elite Aspect Drop Chance 1% => **0.6%**.
 - Nerfed Escape Sequence Lines Damage 7.5 => **6.5**.
 - Nerfed Escape Sequence Lines Rotation Speed 25°/s => **13°/s**.
 - Nerfed Helfire Tincture Percent Health Damage To Enemies 15% => **13%**.
@@ -345,7 +362,7 @@
 - Buffed Charged Perforator Proc Coefficient 0 => **1**.
 - Buffed Corpsebloom Healing Cap Reduction Per Stack -50% => **-25%**.
 - Buffed Distant Roost => **now no longer spawns Shrine of the Woods**.
-- Buffed Elite Aspect Drop Chance 0.025% => **0.1%**.
+- Buffed Elite Aspect Drop Chance 0.25% => **1%**.
 - Buffed Escape Sequence Lines => **now move and rotate**.
 - Buffed Frost Relic Proc Coefficient 0 => **0.25**.
 - Buffed Harvester's Scythe Base Missing Health Healing Percent 1.5% => **1.8%**.

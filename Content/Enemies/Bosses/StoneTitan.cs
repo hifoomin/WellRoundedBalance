@@ -14,7 +14,7 @@ namespace WellRoundedBalance.Enemies.Bosses
         [ConfigField("Apply to Aurellionite", true)]
         public static bool aurellionite;
 
-        [ConfigField("Laser Damage", "1 = 100%, vanilla: 1", 0.7f)]
+        [ConfigField("Laser Damage", "1 = 100%, vanilla: 1", 0.6f)]
         public static float NEW_FireMegaLaser_damageCoefficient;
 
         private static float FireMegaLaser_damageCoefficient;
@@ -105,10 +105,10 @@ namespace WellRoundedBalance.Enemies.Bosses
         [ConfigField("Fist Ring Delay per Lane", "in seconds, extra delay within a ring", 0.025f)]
         public static float fistring_hs;
 
-        [ConfigField("New Laser Attack Amount", 12)]
+        [ConfigField("New Laser Attack Amount", 8)]
         public static int SD_amount;
 
-        [ConfigField("New Laser Attack Interval", "in seconds", 0.4f)]
+        [ConfigField("New Laser Attack Interval", "in seconds", 0.5f)]
         public static float SD_interval;
 
         [ConfigField("New Laser Attack Force", 400f)]
@@ -117,7 +117,7 @@ namespace WellRoundedBalance.Enemies.Bosses
         [ConfigField("New Laser Attack Range", 2000f)]
         public static float SD_range;
 
-        [ConfigField("New Laser Attack Proc Coefficient", 0.6f)]
+        [ConfigField("New Laser Attack Proc Coefficient", 0.5f)]
         public static float SD_proc;
 
         private static BodyIndex titanIndex;

@@ -119,6 +119,9 @@ Thanks to BORBO for the code/idea for:
 - Runald's Band
 - Planula
 
+Thanks to Heyimnoop for the code/idea for:
+- Oddly-shaped Opal
+
 And of course thanks to every mod developer that made the mods we integrated.
 
 <details>
