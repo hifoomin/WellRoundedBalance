@@ -84,7 +84,7 @@ namespace WellRoundedBalance.Equipment.Orange
                     var fuelCells = inventory.GetItemCount(RoR2Content.Items.EquipmentMagazine);
                     var hasGesture = inventory.GetItemCount(RoR2Content.Items.AutoCastEquipment) > 0;
                     // fuel cell hardcoded for now
-                    var reduction = 1f - ((0.15f * fuelCells) + (hasGesture ? GestureOfTheDrowned.baseEquipmentCooldownReduction : 0));
+                    var reduction = 1f - ((0.15f * fuelCells));
 
                     EntityStates.GoldGat.GoldGatFire.windUpDuration = windUpDuration * reduction;
                 }
