@@ -12,7 +12,9 @@
 - Buffed Lesser Wisp.
 - Buffed Oddly-shaped Opal Armor Gain 2.5 => **3**.
 - Buffed Oddly-shaped Opal Armor Gain per Stack 2.5 => **3**.
-- Buffed Simulacrum Wave Timer.
+- Buffed Simulacrum Wave Timer 15s => **25s**.
+- Buffed Simulacrum Scene Director Credits 200 => **350**.
+- Berfed Simulacrum Default Wave Weight 60 => **50**.
 - Berfed Simulacrum Fog Damage to start out lower and ramp up faster over time.
 - Nerfed Beetle Queen.
 - Nerfed Combat Director Minimum Reroll Spawn Interval Multiplier 1.8 => **1.5**.
@@ -24,6 +26,7 @@
 - Nerfed Stone Titan.
 - Nerfed Xi Construct.
 - Made Elite Components work more reliably.
+- Made only the host able to advance Simulacrum waves by picking an item.
 - Reworked Aegis to give **15%** barrier on interact and **pause barrier decay** while out of danger.
 - Reworked Perfected elites to have a **much beefier, more delayed, but faster projectile attack**, no longer Cripple on hit, have a chance of dropping a **Lunar Coin** on death and **spawn during loops**.
 - Made Bleed Cap work better with modded bleed items (should now have a base bleed cap stat).

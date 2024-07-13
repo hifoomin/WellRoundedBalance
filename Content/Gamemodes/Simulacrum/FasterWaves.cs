@@ -62,7 +62,7 @@
         private void ProgressOnPickup(On.RoR2.PickupPickerController.orig_HandlePickupSelected orig, PickupPickerController self, int choice)
         {
             orig(self, choice);
-            if (instantWave)
+            if (instantWave && NetworkServer.active)
             {
                 if (Run.instance is InfiniteTowerRun run && self.gameObject.name == "OptionPickup(Clone)")
                 {

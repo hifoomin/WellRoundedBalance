@@ -6,7 +6,7 @@ namespace WellRoundedBalance.Gamemodes.Simulacrum
     {
         public override string Name => ":: Gamemode :: Simulacrum Less Interactables";
 
-        [ConfigField("Scene Director Credits", "", 200)]
+        [ConfigField("Scene Director Credits", "", 350)]
         public static int sceneDirectorCredits;
 
         public override void Init()

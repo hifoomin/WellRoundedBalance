@@ -6,7 +6,7 @@ namespace WellRoundedBalance.Items.Greens
 {
     public class _ProcCoefficients : ItemBase<_ProcCoefficients>
     {
-        public override string Name => ":: Items Changes :: Proc Coefficients";
+        public override string Name => ":: Items : Changes :: Proc Coefficients";
         public override ItemDef InternalPickup => null;
 
         public override string PickupText => string.Empty;

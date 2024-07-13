@@ -6,7 +6,7 @@ namespace WellRoundedBalance.Gamemodes.Simulacrum
     {
         public override string Name => ":: Gamemode :: Simulacrum More Common Augments";
 
-        [ConfigField("Default Wave Weight", "", 60)]
+        [ConfigField("Default Wave Weight", "", 50)]
         public static int defaultWaveWeight;
 
         public override void Init()
