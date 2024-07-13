@@ -1,4 +1,4 @@
-/*using System;
+using System;
 
 namespace WellRoundedBalance.Elites {
     public class Voidtouched : EliteBase<Voidtouched> {
@@ -194,4 +194,4 @@ namespace WellRoundedBalance.Elites {
             }
         }
     }
-}*/
+}
