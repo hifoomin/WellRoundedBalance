@@ -2,7 +2,7 @@
 using WellRoundedBalance.Gamemodes.Eclipse;
 using System.Collections;
 
-namespace WellRoundedBalance.Elites
+namespace WellRoundedBalance.Elites.Special
 {
     internal class Voidtouched : EliteBase<Voidtouched>
     {
@@ -40,11 +40,11 @@ namespace WellRoundedBalance.Elites
             ContentAddition.AddBuffDef(useless);
             ContentAddition.AddBuffDef(hiddenCooldown);
 
-            missile = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.MissileProjectile.Load<GameObject>(), "Voidtouched Missile");
+            missile = Utils.Paths.GameObject.MissileProjectile.Load<GameObject>().InstantiateClone("Voidtouched Missile");
 
             var projectileController = missile.GetComponent<ProjectileController>();
 
-            var newGhost = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.MissileVoidBigGhost.Load<GameObject>(), "Voidtouched Missile Ghost", false);
+            var newGhost = Utils.Paths.GameObject.MissileVoidBigGhost.Load<GameObject>().InstantiateClone("Voidtouched Missile Ghost", false);
             newGhost.transform.localScale = new Vector3(2.5f, 2.5f, 2.5f);
 
             projectileController.ghostPrefab = newGhost;
@@ -66,7 +66,7 @@ namespace WellRoundedBalance.Elites
                 }
             }
 
-            PrefabAPI.RegisterNetworkPrefab(missile);
+            missile.RegisterNetworkPrefab();
 
             base.Init();
         }
@@ -106,7 +106,7 @@ namespace WellRoundedBalance.Elites
                 if (attackerBody && attackerBody.HasBuff(DLC1Content.Buffs.EliteVoid))
                 {
                     float takenDamagePercent = damageInfo.damage / self.fullCombinedHealth * 100f;
-                    int permanentDamage = Mathf.FloorToInt((takenDamagePercent * permanentDamagePercent / 100f) * damageInfo.procCoefficient);
+                    int permanentDamage = Mathf.FloorToInt(takenDamagePercent * permanentDamagePercent / 100f * damageInfo.procCoefficient);
                     for (int l = 0; l < permanentDamage; l++)
                     {
                         body.AddBuff(RoR2Content.Buffs.PermanentCurse);

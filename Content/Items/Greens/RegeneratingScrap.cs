@@ -60,12 +60,15 @@ namespace WellRoundedBalance.Items.Greens
             {
                 foreach (GameObject gameObject in printers)
                 {
-                    var glow = gameObject.transform.Find("Glow");
-                    if (glow)
+                    if (gameObject && gameObject.transform)
                     {
-                        glow.transform.localPosition = Vector3.zero;
-                        glow.transform.position = glow.transform.parent.position;
-                        glow.gameObject.SetActive(true);
+                        var glow = gameObject.transform.Find("Glow");
+                        if (glow)
+                        {
+                            glow.transform.localPosition = Vector3.zero;
+                            glow.transform.position = glow.transform.parent.position;
+                            glow.gameObject.SetActive(true);
+                        }
                     }
                 }
             }
@@ -73,12 +76,15 @@ namespace WellRoundedBalance.Items.Greens
             {
                 foreach (GameObject gameObject in printers)
                 {
-                    var glow = gameObject.transform.Find("Glow");
-                    if (glow)
+                    if (gameObject && gameObject.transform)
                     {
-                        glow.transform.localPosition = Vector3.zero;
-                        glow.transform.position = glow.transform.parent.position;
-                        glow.gameObject.SetActive(false);
+                        var glow = gameObject.transform.Find("Glow");
+                        if (glow)
+                        {
+                            glow.transform.localPosition = Vector3.zero;
+                            glow.transform.position = glow.transform.parent.position;
+                            glow.gameObject.SetActive(false);
+                        }
                     }
                 }
             }
@@ -132,7 +138,7 @@ namespace WellRoundedBalance.Items.Greens
         private void Changes()
         {
             var greenPrinter = Utils.Paths.GameObject.DuplicatorLarge.Load<GameObject>();
-            glow.transform.parent = greenPrinter.transform;
+            glow.transform.SetParent(greenPrinter.transform);
             glow.transform.position = Vector3.zero;
             glow.transform.localPosition = Vector3.zero;
             glow.SetActive(false);

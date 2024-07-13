@@ -4,7 +4,7 @@ using UnityEngine.Rendering.PostProcessing;
 using WellRoundedBalance.Buffs;
 using WellRoundedBalance.Gamemodes.Eclipse;
 
-namespace WellRoundedBalance.Elites
+namespace WellRoundedBalance.Elites.Tier2
 {
     internal class Celestine : EliteBase<Celestine>
     {

@@ -1,6 +1,6 @@
 using WellRoundedBalance.Gamemodes.Eclipse;
 
-namespace WellRoundedBalance.Elites
+namespace WellRoundedBalance.Elites.Tier2
 {
     public class Malachite : EliteBase<Malachite>
     {
@@ -42,7 +42,7 @@ namespace WellRoundedBalance.Elites
             Rigidbody rb = MalachiteTurret.AddComponent<Rigidbody>();
             rb.useGravity = false;
             rb.mass = 300;
-            GameObject turretMdl = GameObject.Instantiate(Utils.Paths.GameObject.mdlUrchinTurret.Load<GameObject>());
+            GameObject turretMdl = Object.Instantiate(Utils.Paths.GameObject.mdlUrchinTurret.Load<GameObject>());
             turretMdl.transform.SetParent(MalachiteTurret.transform);
             turretMdl.transform.localScale *= 0.4f;
             turretMdl.transform.rotation = Quaternion.Euler(-90, 0, 0);
@@ -56,9 +56,9 @@ namespace WellRoundedBalance.Elites
             {
                 mrenderer.material = Utils.Paths.Material.matEliteUrchinCrown.Load<Material>();
             }
-            PrefabAPI.RegisterNetworkPrefab(MalachiteTurret);
+            MalachiteTurret.RegisterNetworkPrefab();
 
-            MalachiteDebuffZone = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.RailgunnerMineAltDetonated.Load<GameObject>(), "AntihealZone");
+            MalachiteDebuffZone = Utils.Paths.GameObject.RailgunnerMineAltDetonated.Load<GameObject>().InstantiateClone("AntihealZone");
             Transform areaIndicator = MalachiteDebuffZone.transform.Find("AreaIndicator");
             Transform softGlow = areaIndicator.Find("SoftGlow");
             Transform sphere = areaIndicator.Find("Sphere");
@@ -111,7 +111,7 @@ namespace WellRoundedBalance.Elites
                     NetworkServer.Spawn(turret);
                 }
 
-                zoneInstance = GameObject.Instantiate(MalachiteDebuffZone, base.transform);
+                zoneInstance = Instantiate(MalachiteDebuffZone, transform);
                 NetworkServer.Spawn(zoneInstance);
             }
 
@@ -128,7 +128,7 @@ namespace WellRoundedBalance.Elites
                     Vector3 plane1 = Vector3.up;
                     Vector3 plane2 = Vector3.forward;
 
-                    Vector3 targetPosition = (body.footPosition + new Vector3(0, 2, 0)) + Quaternion.AngleAxis(360 / turretCount * i + elapsed / 10 * 360, plane1) * plane2 * (3);
+                    Vector3 targetPosition = body.footPosition + new Vector3(0, 2, 0) + Quaternion.AngleAxis(360 / turretCount * i + elapsed / 10 * 360, plane1) * plane2 * 3;
                     float vel = body.isSprinting ? body.moveSpeed * body.sprintingSpeedMultiplier * 1.35f : body.moveSpeed * 1.35f;
 
                     Vector3 currentPos = activeTurrets[i].rb.position;
@@ -187,13 +187,13 @@ namespace WellRoundedBalance.Elites
                     RefreshTarget();
                     if (target)
                     {
-                        Vector3 aim = (target.transform.position - base.transform.position).normalized;
+                        Vector3 aim = (target.transform.position - transform.position).normalized;
                         if (Util.HasEffectiveAuthority(gameObject))
                         {
                             FireProjectileInfo info = new()
                             {
                                 damage = owner.damage,
-                                position = base.transform.position,
+                                position = transform.position,
                                 rotation = Util.QuaternionSafeLookRotation(aim),
                                 owner = owner.gameObject,
                                 projectilePrefab = Utils.Paths.GameObject.UrchinSeekingProjectile.Load<GameObject>()
@@ -202,7 +202,7 @@ namespace WellRoundedBalance.Elites
                             ProjectileManager.instance.FireProjectile(info);
                         }
 
-                        AkSoundEngine.PostEvent(Events.Play_elite_antiHeal_turret_shot, base.gameObject);
+                        AkSoundEngine.PostEvent(Events.Play_elite_antiHeal_turret_shot, gameObject);
                     }
                 }
             }
@@ -221,7 +221,7 @@ namespace WellRoundedBalance.Elites
 
             internal void Suicide()
             {
-                if (gameObject) Destroy(base.gameObject);
+                if (gameObject) Destroy(gameObject);
             }
         }
 

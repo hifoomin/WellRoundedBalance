@@ -4,8 +4,9 @@ using System.Collections;
 using UnityEngine;
 using WellRoundedBalance.Buffs;
 using WellRoundedBalance.Gamemodes.Eclipse;
+using static WellRoundedBalance.Elites.Tier1.Glacial;
 
-namespace WellRoundedBalance.Elites
+namespace WellRoundedBalance.Elites.Tier1
 {
     internal class Overloading : EliteBase<Overloading>
     {
@@ -46,7 +47,7 @@ namespace WellRoundedBalance.Elites
             overloadingSpeedBuff.isDebuff = false;
             overloadingSpeedBuff.canStack = false;
             overloadingSpeedBuff.buffColor = new Color32(66, 98, 219, 255);
-            overloadingSpeedBuff.iconSprite = Sprite.Create(speedBuff, new Rect(0f, 0f, (float)speedBuff.width, (float)speedBuff.height), new Vector2(0f, 0f));
+            overloadingSpeedBuff.iconSprite = Sprite.Create(speedBuff, new Rect(0f, 0f, speedBuff.width, speedBuff.height), new Vector2(0f, 0f));
             overloadingSpeedBuff.name = "Overloading Ally Speed Buff";
 
             ContentAddition.AddBuffDef(overloadingSpeedBuff);
@@ -59,7 +60,7 @@ namespace WellRoundedBalance.Elites
 
             ContentAddition.AddBuffDef(overloadingSelfBuff);
 
-            SpeedAura = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.RailgunnerMineAltDetonated.Load<GameObject>(), "OverloadingSpeedAura");
+            SpeedAura = Utils.Paths.GameObject.RailgunnerMineAltDetonated.Load<GameObject>().InstantiateClone("OverloadingSpeedAura");
             SpeedAura.RemoveComponent<SlowDownProjectiles>();
             Transform areaIndicator = SpeedAura.transform.Find("AreaIndicator");
             Transform softGlow = areaIndicator.Find("SoftGlow");
@@ -87,9 +88,9 @@ namespace WellRoundedBalance.Elites
             var teamFilter = SpeedAura.AddComponent<TeamFilter>();
             teamFilter.defaultTeam = TeamIndex.None;
 
-            PrefabAPI.RegisterNetworkPrefab(SpeedAura);
+            SpeedAura.RegisterNetworkPrefab();
 
-            tpEffect = PrefabAPI.InstantiateClone(Addressables.LoadAssetAsync<GameObject>("RoR2/Junk/Parent/ParentTeleportEffect.prefab").WaitForCompletion(), "LunarConstructTeleport", false);
+            tpEffect = Addressables.LoadAssetAsync<GameObject>("RoR2/Junk/Parent/ParentTeleportEffect.prefab").WaitForCompletion().InstantiateClone("LunarConstructTeleport", false);
             var particles = tpEffect.transform.GetChild(0);
             var ringParticle = particles.GetChild(0).GetComponent<ParticleSystemRenderer>();
 
@@ -111,7 +112,7 @@ namespace WellRoundedBalance.Elites
 
             particles.GetChild(4).gameObject.SetActive(false);
 
-            tpTracer = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.VoidSurvivorBeamTracer.Load<GameObject>(), "OverloadingTracer", false);
+            tpTracer = Utils.Paths.GameObject.VoidSurvivorBeamTracer.Load<GameObject>().InstantiateClone("OverloadingTracer", false);
             tpTracer.transform.GetChild(0).gameObject.SetActive(false);
             tpTracer.transform.GetChild(1).gameObject.SetActive(false);
 
@@ -119,7 +120,7 @@ namespace WellRoundedBalance.Elites
             lineRenderer.widthMultiplier = 0.33f;
             lineRenderer.numCapVertices = 10;
 
-            var newMat = GameObject.Instantiate(Utils.Paths.Material.matVoidSurvivorBeamTrail.Load<Material>());
+            var newMat = Object.Instantiate(Utils.Paths.Material.matVoidSurvivorBeamTrail.Load<Material>());
             newMat.SetTexture("_RemapTex", Utils.Paths.Texture2D.texRampLunarWardDecal.Load<Texture2D>());
 
             lineRenderer.material = newMat;
@@ -136,11 +137,34 @@ namespace WellRoundedBalance.Elites
         public override void Hooks()
         {
             IL.RoR2.GlobalEventManager.OnHitAll += GlobalEventManager_OnHitAll;
-            CharacterBody.onBodyInventoryChangedGlobal += CharacterBody_onBodyInventoryChangedGlobal;
+            // CharacterBody.onBodyInventoryChangedGlobal += CharacterBody_onBodyInventoryChangedGlobal;
 
             RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
             IL.RoR2.CharacterBody.RecalculateStats += CharacterBody_RecalculateStats;
             On.RoR2.CharacterBody.AddTimedBuff_BuffIndex_float += CharacterBody_AddTimedBuff_BuffIndex_float;
+            On.RoR2.CharacterBody.AddBuff_BuffIndex += CharacterBody_AddBuff_BuffIndex;
+            On.RoR2.CharacterBody.RemoveBuff_BuffIndex += CharacterBody_RemoveBuff_BuffIndex;
+        }
+
+        private void CharacterBody_RemoveBuff_BuffIndex(On.RoR2.CharacterBody.orig_RemoveBuff_BuffIndex orig, CharacterBody self, BuffIndex buffType)
+        {
+            orig(self, buffType);
+            if (buffType == RoR2Content.Buffs.AffixBlue.buffIndex)
+            {
+                self.gameObject.RemoveComponent<OverloadingController>();
+            }
+        }
+
+        private void CharacterBody_AddBuff_BuffIndex(On.RoR2.CharacterBody.orig_AddBuff_BuffIndex orig, CharacterBody self, BuffIndex buffType)
+        {
+            orig(self, buffType);
+            if (buffType == RoR2Content.Buffs.AffixBlue.buffIndex)
+            {
+                if (self.GetComponent<OverloadingController>() == null)
+                {
+                    self.gameObject.AddComponent<OverloadingController>();
+                }
+            }
         }
 
         private void CharacterBody_onBodyInventoryChangedGlobal(CharacterBody characterBody)
@@ -299,7 +323,7 @@ namespace WellRoundedBalance.Elites
 
                 var currentPosition = transform.position;
 
-                wardInstance = Object.Instantiate(SpeedAura, nextPosition, Quaternion.identity);
+                wardInstance = Instantiate(SpeedAura, nextPosition, Quaternion.identity);
                 wardInstance.GetComponent<BuffWard>().Networkradius = Util.Remap(cb.baseMaxHealth, 0f, 2100f, minSpeedAuraRadius, maxSpeedAuraRadius);
                 wardInstance.GetComponent<TeamFilter>().teamIndex = cb.teamComponent.teamIndex;
                 NetworkServer.Spawn(wardInstance);

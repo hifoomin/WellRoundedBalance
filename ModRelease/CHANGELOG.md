@@ -1,14 +1,15 @@
 # Future Patches
 - Reworked N'kuhana's Opinion to **fire a massive, piercing skull** on special use, damage scaling with stored healing.
-- Reworked Perfected elites to have a **much beefier projectile attack**, no longer Cripple on hit, drop a **Lunar Coin** on death and **spawn during loops**.
+- Fixed Scrapper & Printer networking.
 
 # 1.4.3 Patch Notes
 - Buffed Alloy Vulture.
 - Buffed Beetle.
+- Buffed Blazing Elite Fire Pool Damage Per Second 150% => **175%**.
 - Buffed Greater Wisp.
+- Buffed Harvester's Scythe Base Buff Duration 3s => **5s**.
 - Buffed Lemurian.
 - Buffed Lesser Wisp.
-- Buffed Harvester's Scythe Base Buff Duration 3s => **5s**.
 - Buffed Oddly-shaped Opal Armor Gain 2.5 => **3**.
 - Buffed Oddly-shaped Opal Armor Gain per Stack 2.5 => **3**.
 - Buffed Simulacrum Wave Timer.
@@ -18,17 +19,23 @@
 - Nerfed Elite Aspect Drop Chance 0.4% => **0.1%**. (lmao I mixed up decimals for a loooong ass time).
 - Nerfed Gilded Coast Scene Director Monster Credits 200 => **60**.
 - Nerfed Grandparent.
+- Nerfed Ignition Tank Ignite Damage Increase 200% => **150%**.
 - Nerfed Mithrix Phase 4.
 - Nerfed Stone Titan.
 - Nerfed Xi Construct.
+- Made Elite Components work more reliably.
 - Reworked Aegis to give **15%** barrier on interact and **pause barrier decay** while out of danger.
-- Made Bleed Cap work better.
+- Reworked Perfected elites to have a **much beefier, more delayed, but faster projectile attack**, no longer Cripple on hit, have a chance of dropping a **Lunar Coin** on death and **spawn during loops**.
+- Made Bleed Cap work better with modded bleed items (should now have a base bleed cap stat).
 - Fixed Global Proc Coefficient config not showing up.
-- Fixed Simulacrum not working past wave 5.
+- Fixed Harvester's Scythe giving the wrong buff duration.
+- Fixed Regenerating Scrap throwing NREs and not working properly.
 - Fixed Simulacrum Crab moving at the wrong time (oops, Hopoo hardcoding).
+- Fixed Simulacrum not working past wave 5.
 - Fixed Stone Titan bugs.
-- Optimized the mod a shit ton (should run better than vanilla at any point in the game).
 - Optimized loading times.
+- Optimized the mod a shit ton (should run better than vanilla at any point in the game).
+- - This is a small update that addresses optimization, some bugs and rebalances some enemies. Been super busy with life, expecting the worst, and yet everything turned out really well. ~HIFU
 
 # 1.4.2 Patch Notes
 - Buffed Ephemeral Coin Drop Chance 0.8% => **1%**.

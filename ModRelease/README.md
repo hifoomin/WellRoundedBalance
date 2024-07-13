@@ -63,7 +63,7 @@ The mod integrates some smaller mods to give players the intended, better experi
 | CurseCatcher | Provides options to prevent Eclipse curse from being applied on self-inflicted damage. |
 | ExchangeChanges | A mod to simply change the time exchange interactions happen, letting you have faster printers, faster scrappers, and faster shrines of chance! |
 | FathomlessVoidling | Improved Voidling fight with some extras. Configurable |
-| FixKjaroRunald | Makes Kjaro and Runald scale with the ambient level. One could say, it buffs gay marriage. |
+| FixKjaroRunald | Makes Kjaro and Runald scale with the ambient level. One could say, it buffs gay marriage. Love is love. |
 | Fix Playercount | Fixes disconnected players counting towards run scaling. Server-Side and Vanilla-Compatible. |
 | GoldChestForAll | Makes Gold Chests drop one item PER player, instead of just one item. |
 | LunarConstruct | Spices up Commencement by adding a fodder enemy. Requires Survivors of The Void to function. |
@@ -79,6 +79,7 @@ This means you don't need to have these installed with Well Rounded Balance enab
 - More enemy changes & reworks, especially bosses
 - Guaranteed minibosses instead of bosses on stage entry
 - Changing around enemy spawn pools to be less monotone, more thematic and differentiated
+- Potentially adding back cut content (e.g. Old Xi Construct), with more interesting and rebalanced mechanics
 - Reworking a couple of other items, such as Spare Drone Parts, N'kuhana's Opinion, etc
 - Reworking lunars and the lunar system
 
