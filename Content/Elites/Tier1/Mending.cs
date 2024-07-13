@@ -1,7 +1,7 @@
 using System;
 using WellRoundedBalance.Gamemodes.Eclipse;
 
-namespace WellRoundedBalance.Elites
+namespace WellRoundedBalance.Elites.Tier1
 {
     internal class Mending : EliteBase<Mending>
     {
@@ -58,7 +58,7 @@ namespace WellRoundedBalance.Elites
             ContentAddition.AddBuffDef(regenBoost);
             ContentAddition.AddBuffDef(selfRegen);
 
-            healVFX = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.IgniteExplosionVFX.Load<GameObject>(), "MendingHealingAura", false);
+            healVFX = Utils.Paths.GameObject.IgniteExplosionVFX.Load<GameObject>().InstantiateClone("MendingHealingAura", false);
 
             var igniteParticleSystem = healVFX.GetComponent<ParticleSystem>().main.startColor;
             igniteParticleSystem.color = new Color32(52, 224, 75, 255);
@@ -67,7 +67,7 @@ namespace WellRoundedBalance.Elites
 
             var omniParticleSystemRenderer = trans.GetChild(0).GetComponent<ParticleSystemRenderer>();
 
-            var newMat = GameObject.Instantiate(Utils.Paths.Material.matOmniHitspark3Gasoline.Load<Material>());
+            var newMat = UnityEngine.Object.Instantiate(Utils.Paths.Material.matOmniHitspark3Gasoline.Load<Material>());
             newMat.SetTexture("_RemapTex", Utils.Paths.Texture2D.texRampAntler.Load<Texture2D>());
 
             omniParticleSystemRenderer.material = newMat;
@@ -222,7 +222,7 @@ namespace WellRoundedBalance.Elites
                 if (healerBody)
                     radius = healNovaRadius + healerBody.radius;
 
-                vfxOrigin = base.gameObject.AddComponent<TetherVfxOrigin>();
+                vfxOrigin = gameObject.AddComponent<TetherVfxOrigin>();
                 vfxOrigin.tetherPrefab = Utils.Paths.GameObject.AffixEarthTetherVFX.Load<GameObject>();
                 team = GetComponent<TeamComponent>().teamIndex;
                 mendingControllers.Add(this);
@@ -264,7 +264,7 @@ namespace WellRoundedBalance.Elites
             {
                 SphereSearch search = new()
                 {
-                    origin = base.transform.position,
+                    origin = transform.position,
                     radius = radius,
                     mask = LayerIndex.entityPrecise.mask
                 };

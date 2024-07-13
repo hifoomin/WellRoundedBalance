@@ -103,7 +103,7 @@ namespace WellRoundedBalance.Items.VoidGreens
             if (c.TryGotoNext(x => x.MatchStfld<VoidLightningOrb>(nameof(VoidLightningOrb.procCoefficient))))
             {
                 c.Emit(OpCodes.Pop);
-                c.EmitDelegate(() => procCoefficient * globalProc);
+                c.EmitDelegate(() => procCoefficient * Items.Greens._ProcCoefficients.globalProc);
             }
             else Logger.LogError("Failed to apply Polylute Proc Coefficient hook");
             c.Index = idx;

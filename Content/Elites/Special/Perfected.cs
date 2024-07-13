@@ -1,18 +1,26 @@
-﻿using WellRoundedBalance.Buffs;
+﻿using System;
+using WellRoundedBalance.Buffs;
+using WellRoundedBalance.Gamemodes.Eclipse;
 using WellRoundedBalance.Mechanics.Health;
 
-namespace WellRoundedBalance.Elites
+namespace WellRoundedBalance.Elites.Special
 {
     internal class Perfected : EliteBase<Perfected>
     {
         [ConfigField("Projectile Damage", "Decimal.", 1f)]
         public static float projectileDamage;
 
-        [ConfigField("Projectile Fire Interval", "", 0.5f)]
+        [ConfigField("Projectile Fire Interval", "", 9f)]
         public static float projectileFireInterval;
 
-        [ConfigField("Spawn Lunar Coin On Death", "", true)]
-        public static bool spawnLunarCoin;
+        [ConfigField("Projectile Fire Interval E3+", "Only applies if you have Eclipse Changes enabled.", 7.5f)]
+        public static float projectileFireIntervalE3;
+
+        [ConfigField("Delay Between Projectiles", "", 0.5f)]
+        public static float delayBetweenProjectiles;
+
+        [ConfigField("Death Lunar Coin Drop Chance", "", 20f)]
+        public static float lunarCoinDropChance;
 
         [ConfigField("Spawn On Loop", "", true)]
         public static bool spawnOnLoop;
@@ -29,10 +37,32 @@ namespace WellRoundedBalance.Elites
             IL.RoR2.CharacterBody.UpdateAffixLunar += CharacterBody_UpdateAffixLunar;
             IL.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
 
-            if (spawnLunarCoin)
-                CharacterBody.onBodyInventoryChangedGlobal += CharacterBody_onBodyInventoryChangedGlobal;
+            // CharacterBody.onBodyInventoryChangedGlobal += CharacterBody_onBodyInventoryChangedGlobal;
+            // in favor of the bottom
+            On.RoR2.CharacterBody.AddBuff_BuffIndex += CharacterBody_AddBuff_BuffIndex;
+            On.RoR2.CharacterBody.RemoveBuff_BuffIndex += CharacterBody_RemoveBuff_BuffIndex;
+            Changes();
+        }
 
-            Changes(); ;
+        private void CharacterBody_RemoveBuff_BuffIndex(On.RoR2.CharacterBody.orig_RemoveBuff_BuffIndex orig, CharacterBody self, BuffIndex buffType)
+        {
+            orig(self, buffType);
+            if (buffType == RoR2Content.Buffs.AffixLunar.buffIndex)
+            {
+                self.gameObject.RemoveComponent<PerfectedController>();
+            }
+        }
+
+        private void CharacterBody_AddBuff_BuffIndex(On.RoR2.CharacterBody.orig_AddBuff_BuffIndex orig, CharacterBody self, BuffIndex buffType)
+        {
+            orig(self, buffType);
+            if (buffType == RoR2Content.Buffs.AffixLunar.buffIndex)
+            {
+                if (self.GetComponent<PerfectedController>() == null)
+                {
+                    self.gameObject.AddComponent<PerfectedController>();
+                }
+            }
         }
 
         [SystemInitializer(typeof(EliteCatalog))]
@@ -41,7 +71,7 @@ namespace WellRoundedBalance.Elites
             if (spawnOnLoop)
             {
                 var perfectedEliteTierDef = EliteAPI.VanillaEliteTiers.Where(x => x.eliteTypes.Contains(RoR2Content.Elites.Lunar)).First();
-                perfectedEliteTierDef.isAvailable = (SpawnCard.EliteRules rules) => Run.instance.loopClearCount > 0 && (rules == SpawnCard.EliteRules.Default || rules == SpawnCard.EliteRules.Lunar);
+                perfectedEliteTierDef.isAvailable = (rules) => Run.instance.loopClearCount > 0 && (rules == SpawnCard.EliteRules.Default || rules == SpawnCard.EliteRules.Lunar);
             }
         }
 
@@ -95,11 +125,24 @@ namespace WellRoundedBalance.Elites
             if (c.TryGotoNext(MoveType.Before,
                 x => x.MatchLdcR4(0.1f)))
             {
-                c.Next.Operand = projectileFireInterval;
+                c.Next.Operand = delayBetweenProjectiles;
             }
             else
             {
                 Main.WRBLogger.LogError("Failed to apply Perfected Projectile Interval hook");
+            }
+
+            c.Index = 0;
+
+            if (c.TryGotoNext(MoveType.Before,
+                x => x.MatchLdcR4(10f)))
+            {
+                c.Index++;
+                c.EmitDelegate<Func<float, float>>((orig) =>
+                {
+                    orig = Eclipse3.CheckEclipse() ? projectileFireIntervalE3 : projectileFireInterval;
+                    return orig;
+                });
             }
         }
 
@@ -108,6 +151,8 @@ namespace WellRoundedBalance.Elites
             var projectile = Utils.Paths.GameObject.LunarMissileProjectile.Load<GameObject>();
 
             var projectileSimple = projectile.GetComponent<ProjectileSimple>();
+            projectileSimple.enableVelocityOverLifetime = true;
+            projectileSimple.velocityOverLifetime = new AnimationCurve(new Keyframe(0f, 0f), new Keyframe(0.1f, 0f), new Keyframe(0.1f + Mathf.Epsilon, 1f), new Keyframe(1f, 1f));
             projectileSimple.desiredForwardSpeed = 120f;
         }
     }
@@ -140,7 +185,8 @@ namespace WellRoundedBalance.Elites
 
         public void OnDestroy()
         {
-            PickupDropletController.CreatePickupDroplet(PickupCatalog.FindPickupIndex(RoR2Content.MiscPickups.LunarCoin.miscPickupIndex), body.corePosition, Vector3.up * 2f * body.radius);
+            if (Util.CheckRoll(Perfected.lunarCoinDropChance))
+                PickupDropletController.CreatePickupDroplet(PickupCatalog.FindPickupIndex(RoR2Content.MiscPickups.LunarCoin.miscPickupIndex), body.corePosition, Vector3.up * 2f * body.radius);
         }
     }
 }

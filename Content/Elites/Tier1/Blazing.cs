@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using WellRoundedBalance.Buffs;
+using WellRoundedBalance.Elites.Special;
 using WellRoundedBalance.Gamemodes.Eclipse;
 
-namespace WellRoundedBalance.Elites
+namespace WellRoundedBalance.Elites.Tier1
 {
     internal class Blazing : EliteBase<Blazing>
     {
@@ -14,7 +15,7 @@ namespace WellRoundedBalance.Elites
         [ConfigField("Death Pool Projectile Count E3+", "Only applies if you have Eclipse Changes enabled.", 6)]
         public static int deathPoolProjectileCountE3;
 
-        [ConfigField("Fire Pool Damage Per Second", "Decimal.", 1.5f)]
+        [ConfigField("Fire Pool Damage Per Second", "Decimal.", 1.75f)]
         public static float firePoolDamagePerSecond;
 
         public static BuffDef lessDamage;
@@ -35,8 +36,32 @@ namespace WellRoundedBalance.Elites
         {
             RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
             IL.RoR2.CharacterBody.UpdateFireTrail += CharacterBody_UpdateFireTrail1;
-            CharacterBody.onBodyInventoryChangedGlobal += CharacterBody_onBodyInventoryChangedGlobal;
-            RoR2.GlobalEventManager.onCharacterDeathGlobal += GlobalEventManager_onCharacterDeathGlobal;
+            // CharacterBody.onBodyInventoryChangedGlobal += CharacterBody_onBodyInventoryChangedGlobal;
+            GlobalEventManager.onCharacterDeathGlobal += GlobalEventManager_onCharacterDeathGlobal;
+
+            On.RoR2.CharacterBody.AddBuff_BuffIndex += CharacterBody_AddBuff_BuffIndex;
+            On.RoR2.CharacterBody.RemoveBuff_BuffIndex += CharacterBody_RemoveBuff_BuffIndex;
+        }
+
+        private void CharacterBody_RemoveBuff_BuffIndex(On.RoR2.CharacterBody.orig_RemoveBuff_BuffIndex orig, CharacterBody self, BuffIndex buffType)
+        {
+            orig(self, buffType);
+            if (buffType == RoR2Content.Buffs.AffixRed.buffIndex)
+            {
+                self.gameObject.RemoveComponent<BlazingController>();
+            }
+        }
+
+        private void CharacterBody_AddBuff_BuffIndex(On.RoR2.CharacterBody.orig_AddBuff_BuffIndex orig, CharacterBody self, BuffIndex buffType)
+        {
+            orig(self, buffType);
+            if (buffType == RoR2Content.Buffs.AffixRed.buffIndex)
+            {
+                if (self.GetComponent<BlazingController>() == null)
+                {
+                    self.gameObject.AddComponent<BlazingController>();
+                }
+            }
         }
 
         private void GlobalEventManager_onCharacterDeathGlobal(DamageReport report)

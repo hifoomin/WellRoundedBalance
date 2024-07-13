@@ -13,7 +13,7 @@
         [ConfigField("Instant Wave On Picking an item?", "", true)]
         public static bool instantWave;
 
-        [ConfigField("Wave Timer", "", 15)]
+        [ConfigField("Wave Timer", "", 25)]
         public static int waveTimer;
 
         [ConfigField("Enemy Spawn Grace Period", "", 0.6f)]
@@ -27,9 +27,28 @@
         public override void Hooks()
         {
             // GlobalEventManager.OnInteractionsGlobal += GlobalEventManager_OnInteractionsGlobal;
-            On.RoR2.PickupPickerController.HandlePickupSelected += ProgressOnPickup;
+            On.RoR2.PickupPickerController.SubmitChoice += PickupPickerController_SubmitChoice;
             On.RoR2.InfiniteTowerWaveController.Initialize += InfiniteTowerWaveController_Initialize;
             On.EntityStates.InfiniteTowerSafeWard.Travelling.OnEnter += Travelling_OnEnter;
+            On.EntityStates.InfiniteTowerSafeWard.Unburrow.OnEnter += Unburrow_OnEnter;
+        }
+
+        private void PickupPickerController_SubmitChoice(On.RoR2.PickupPickerController.orig_SubmitChoice orig, PickupPickerController self, int choiceIndex)
+        {
+            orig(self, choiceIndex);
+            if (instantWave && NetworkServer.active)
+            {
+                if (Run.instance is InfiniteTowerRun run && self.gameObject.name == "OptionPickup(Clone)")
+                {
+                    run.waveController.OnTimerExpire();
+                }
+            }
+        }
+
+        private void Unburrow_OnEnter(On.EntityStates.InfiniteTowerSafeWard.Unburrow.orig_OnEnter orig, EntityStates.InfiniteTowerSafeWard.Unburrow self)
+        {
+            self.duration = waveTimer;
+            orig(self);
         }
 
         private void Travelling_OnEnter(On.EntityStates.InfiniteTowerSafeWard.Travelling.orig_OnEnter orig, EntityStates.InfiniteTowerSafeWard.Travelling self)
@@ -50,18 +69,6 @@
             self.secondsBeforeSuddenDeath = 60f / fogSpeedMultiplier;
             self.secondsBeforeFailsafe = 60f / fogSpeedMultiplier;
             self.secondsAfterWave = waveTimer;
-        }
-
-        private void ProgressOnPickup(On.RoR2.PickupPickerController.orig_HandlePickupSelected orig, PickupPickerController self, int choice)
-        {
-            orig(self, choice);
-            if (instantWave)
-            {
-                if (Run.instance is InfiniteTowerRun run && self.gameObject.name == "OptionPickup(Clone)")
-                {
-                    run.waveController.OnTimerExpire();
-                }
-            }
         }
     }
 }

@@ -6,7 +6,7 @@ using System.Collections;
 using WellRoundedBalance.Gamemodes.Eclipse;
 using EntityStates;
 
-namespace WellRoundedBalance.Elites
+namespace WellRoundedBalance.Elites.Tier1
 {
     internal class Glacial : EliteBase<Glacial>
     {
@@ -26,7 +26,7 @@ namespace WellRoundedBalance.Elites
             slow = ScriptableObject.CreateInstance<BuffDef>();
             slow.name = "Glacial Elite Slow";
             slow.buffColor = new Color32(165, 222, 237, 255);
-            slow.iconSprite = Sprite.Create(slow80, new Rect(0f, 0f, (float)slow80.width, (float)slow80.height), new Vector2(0f, 0f));
+            slow.iconSprite = Sprite.Create(slow80, new Rect(0f, 0f, slow80.width, slow80.height), new Vector2(0f, 0f));
             slow.isDebuff = true;
             slow.canStack = false;
             slow.isHidden = false;
@@ -238,6 +238,29 @@ namespace WellRoundedBalance.Elites
             RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
             IL.RoR2.CharacterModel.UpdateOverlays += CharacterModel_UpdateOverlays;
             // CharacterBody.onBodyInventoryChangedGlobal += CharacterBody_onBodyInventoryChangedGlobal;
+            // On.RoR2.CharacterBody.AddBuff_BuffIndex += CharacterBody_AddBuff_BuffIndex;
+            // On.RoR2.CharacterBody.RemoveBuff_BuffIndex += CharacterBody_RemoveBuff_BuffIndex;
+        }
+
+        private void CharacterBody_RemoveBuff_BuffIndex(On.RoR2.CharacterBody.orig_RemoveBuff_BuffIndex orig, CharacterBody self, BuffIndex buffType)
+        {
+            orig(self, buffType);
+            if (buffType == RoR2Content.Buffs.AffixWhite.buffIndex)
+            {
+                self.gameObject.RemoveComponent<GlacialController>();
+            }
+        }
+
+        private void CharacterBody_AddBuff_BuffIndex(On.RoR2.CharacterBody.orig_AddBuff_BuffIndex orig, CharacterBody self, BuffIndex buffType)
+        {
+            orig(self, buffType);
+            if (buffType == RoR2Content.Buffs.AffixWhite.buffIndex)
+            {
+                if (self.GetComponent<GlacialController>() == null)
+                {
+                    self.gameObject.AddComponent<GlacialController>();
+                }
+            }
         }
 
         private void GlobalEventManager_OnHitAll(On.RoR2.GlobalEventManager.orig_OnHitAll orig, GlobalEventManager self, DamageInfo damageInfo, GameObject hitObject)
@@ -275,7 +298,7 @@ namespace WellRoundedBalance.Elites
                 c.Emit(OpCodes.Ldarg_0);
                 c.EmitDelegate<Func<bool, CharacterModel, bool>>((hasBuff, self) =>
                 {
-                    return hasBuff || (self.body.HasBuff(slow));
+                    return hasBuff || self.body.HasBuff(slow);
                 });
             }
             else
@@ -354,7 +377,7 @@ namespace WellRoundedBalance.Elites
                         healthComponentList.Add(healthComponent);
                         if (healthComponent.body.teamComponent && healthComponent.body.teamComponent.teamIndex != team)
                         {
-                            if (ignoreImmunity || (!healthComponent.body.HasBuff(RoR2Content.Buffs.Immune) && !healthComponent.body.HasBuff(RoR2Content.Buffs.HiddenInvincibility)))
+                            if (ignoreImmunity || !healthComponent.body.HasBuff(RoR2Content.Buffs.Immune) && !healthComponent.body.HasBuff(RoR2Content.Buffs.HiddenInvincibility))
                             {
                                 float effectiveness = 1f;
                                 if (falloff)
@@ -514,7 +537,7 @@ namespace WellRoundedBalance.Elites
 
             if (!hasDone && controller && controller.ghost)
             {
-                controller.ghost.transform.SetParent(base.modelLocator.modelBaseTransform);
+                controller.ghost.transform.SetParent(modelLocator.modelBaseTransform);
                 hasDone = true;
             }
         }

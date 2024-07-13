@@ -17,8 +17,7 @@ namespace WellRoundedBalance.Items
 
         public static List<string> itemList = new();
 
-        [ConfigField("Global Proc Chance", "This is a multiplier to all items that can proc something themselves, not necessarily items like Ignition Tank for example. There are special cases where this doesn't work - Sticky Bomb (as it has a Proc Coefficient of 0 by default), Shuriken (most people like it proccing even factoring Railgunner), Kjaro's Band, Runald's Band, Singularity Band, Visions of Heresy and Hooks of Heresy. This also does not include equipment.", 0.2f)]
-        public static float globalProc;
+        
 
         public static int GetItemLoc(ILCursor c, string item) // modify this on compat update
         {

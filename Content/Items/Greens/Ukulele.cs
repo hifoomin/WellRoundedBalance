@@ -89,7 +89,7 @@ namespace WellRoundedBalance.Items.Greens
                     x => x.MatchLdcR4(0.2f)))
             {
                 c.Index += 4;
-                c.Next.Operand = procCoefficient * globalProc;
+                c.Next.Operand = procCoefficient * Items.Greens._ProcCoefficients.globalProc;
             }
             else
             {

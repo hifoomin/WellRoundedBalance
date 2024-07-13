@@ -167,7 +167,7 @@ namespace WellRoundedBalance.Items.Greens
                     crit = false,
                     damage = damage * body.damage,
                     force = Vector3.zero,
-                    procCoefficient = Razorwire.procCoefficient * ItemBase.globalProc,
+                    procCoefficient = Razorwire.procCoefficient * Items.Greens._ProcCoefficients.globalProc,
                     damageType = DamageType.Generic,
                     position = victimBody.corePosition,
                     inflictor = gameObject

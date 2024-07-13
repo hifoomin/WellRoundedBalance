@@ -1,22 +1,10 @@
 # Introducing Well-Rounded Balance (WRB)
 Are you tired of repetitive runs or RoR2's unbalanced gameplay? WRB is a mod that rebalances almost the entire game, in a similar fashion to CU0-CU4, but with vast improvements. For a full list of changes, check out the WRB Google Doc.
 
-Please note that the following mods are likely to be incompatible with WRB:
-| Name | Description |
-|---|---|
-| RiskyMod | A full game rebalance that aims to bring the game closer to RoR1. | 
-| EliteReworks | Reduces Elite bulletsponge and makes their abilities more impactful. |
-| ZetAspects | Stackable elite aspects with new effects. Highly Configurable. |
-| FlatItemBuff | Rebalances/Buffs some items. |
-| Hex3Reworks | A mod that reworks and rebalances some of the vanilla aspects of Risk Of Rain 2. |
-| SacrificeTweaks | Disables Sacrifice droprate scaling and increases droprate when not using Swarms. |
-| VanillaRebalance | Aims at balancing vanilla Risk of Rain 2 without changing the effects of items/monsters/survivors. |
-
-You may be able to get them working by adjusting the config, but we will not provide special compatibility for them. The mod is currently balanced around vanilla, but we plan to add compatibility for item mods in the future.
-
-If any of these changes seem suspicious, you likely don't have the context of what the mod does in other aspects. This is just an overview; it's better to play it first, then judge. We don't care about your negative feedback without actually trying the mod. Especially the death threats and doxxing like one of the devs has gotten, lmao grow up.
-
-And of course, the mod is still in its early days, so it's bound to change. We also have a pretty expansive config that will feature more options as time goes on. There is a module config that lets you turn off any large part of the changes, so that you can don't have to spend years turning off every individual feature.
+## Mod Compatibility
+Please note that the following types of mods have to be tweaked to work best with WRB:
+- Rebalance Mods (e.g. RiskyMod, VanillaRebalance, ZetsItemTweaks)
+- Item Mods (e.g. AoE stacking and damage, Proc coefficients)
 
 ## List of Changes
 https://docs.google.com/document/d/1uP1Bp4tBOMoKyhyjuvXk5IHuuV373sa77NsX-l_vUUA/
@@ -75,7 +63,7 @@ The mod integrates some smaller mods to give players the intended, better experi
 | CurseCatcher | Provides options to prevent Eclipse curse from being applied on self-inflicted damage. |
 | ExchangeChanges | A mod to simply change the time exchange interactions happen, letting you have faster printers, faster scrappers, and faster shrines of chance! |
 | FathomlessVoidling | Improved Voidling fight with some extras. Configurable |
-| FixKjaroRunald | Makes Kjaro and Runald scale with the ambient level. One could say, it buffs gay marriage. |
+| FixKjaroRunald | Makes Kjaro and Runald scale with the ambient level. One could say, it buffs gay marriage. Love is love. |
 | Fix Playercount | Fixes disconnected players counting towards run scaling. Server-Side and Vanilla-Compatible. |
 | GoldChestForAll | Makes Gold Chests drop one item PER player, instead of just one item. |
 | LunarConstruct | Spices up Commencement by adding a fodder enemy. Requires Survivors of The Void to function. |
@@ -86,6 +74,14 @@ The mod integrates some smaller mods to give players the intended, better experi
 | VanillaVoid | Adds more void variants for vanilla items, and tweaks and expands upon some void content. |
 
 This means you don't need to have these installed with Well Rounded Balance enabled.
+
+## Future Plans
+- More enemy changes & reworks, especially bosses
+- Guaranteed minibosses instead of bosses on stage entry
+- Changing around enemy spawn pools to be less monotone, more thematic and differentiated
+- Potentially adding back cut content (e.g. Old Xi Construct), with more interesting and rebalanced mechanics
+- Reworking a couple of other items, such as Spare Drone Parts, N'kuhana's Opinion, etc
+- Reworking lunars and the lunar system
 
 ## Contact/Feedback
 Join our Discord server! Whether you want to make suggestions, report bugs, or simply find a group of people to chill with, we welcome you to join us.
@@ -119,23 +115,4 @@ Thanks to BORBO for the code/idea for:
 - Runald's Band
 - Planula
 
-Thanks to Heyimnoop for the code/idea for:
-- Oddly-shaped Opal
-
 And of course thanks to every mod developer that made the mods we integrated.
-
-<details>
-  <summary></summary>
-
-  <img src="https://cdn.discordapp.com/attachments/781570609729372253/1112438647036334100/SE.jpg" width="24"/>
-  <img src="https://cdn.discordapp.com/attachments/781570609729372253/1112438647036334100/SE.jpg" width="48"/>
-  <img src="https://cdn.discordapp.com/attachments/781570609729372253/1112438647036334100/SE.jpg" width="64"/>
-  <img src="https://cdn.discordapp.com/attachments/781570609729372253/1112438647036334100/SE.jpg" width="96"/>
-  <img src="https://cdn.discordapp.com/attachments/781570609729372253/1112438647036334100/SE.jpg" width="128"/>
-  <img src="https://cdn.discordapp.com/attachments/781570609729372253/1112438647036334100/SE.jpg" width="192"/>
-  <img src="https://cdn.discordapp.com/attachments/781570609729372253/1112438647036334100/SE.jpg" width="128"/>
-  <img src="https://cdn.discordapp.com/attachments/781570609729372253/1112438647036334100/SE.jpg" width="96"/>
-  <img src="https://cdn.discordapp.com/attachments/781570609729372253/1112438647036334100/SE.jpg" width="64"/>
-  <img src="https://cdn.discordapp.com/attachments/781570609729372253/1112438647036334100/SE.jpg" width="48"/>
-  <img src="https://cdn.discordapp.com/attachments/781570609729372253/1112438647036334100/SE.jpg" width="24"/>
-</details>

@@ -30,7 +30,7 @@
             var relic = Utils.Paths.GameObject.IcicleAura.Load<GameObject>();
             var icicleAuraController = relic.GetComponent<IcicleAuraController>();
             icicleAuraController.icicleDamageCoefficientPerTick = baseDamagePerTick;
-            icicleAuraController.icicleProcCoefficientPerTick = procCoefficient * globalProc;
+            icicleAuraController.icicleProcCoefficientPerTick = procCoefficient * Items.Greens._ProcCoefficients.globalProc;
         }
     }
 }

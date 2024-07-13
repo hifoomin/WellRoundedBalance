@@ -1,6 +1,6 @@
 {
 	"name": "WellRoundedBalance",
-	"version_number": "1.4.2",
+	"version_number": "1.4.3",
 	"website_url": "https://github.com/hifoomin/WellRoundedBalance",
 	"description": "A complete balance overhaul for a much more fast-paced and challenging game with much less autoplay. Check out the mod page for more information. Extremely configurable.",
 	"dependencies": [
@@ -29,7 +29,6 @@
 		"HIFU-HIFURailgunnerTweaks-1.0.4",
 		"HIFU-HIFUVoidFiendTweaks-1.0.0",
 		"pseudopulse-BetterDrones-1.5.1",
-		"HIFU-LunarConstruct-1.0.0",
 		"Zenithrium-VanillaVoid-1.4.11",
 		"prodzpod-Hypercrit2-1.2.6",
 		"VarnaScelestus-Ephemeral_Coins-2.3.3"

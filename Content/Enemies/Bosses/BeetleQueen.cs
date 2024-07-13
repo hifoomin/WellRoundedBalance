@@ -100,7 +100,7 @@ namespace WellRoundedBalance.Enemies.Bosses
             utilitySD.activationState = new SerializableEntityStateType(typeof(Earthquake));
             utilitySD.activationStateMachineName = "Earthquake";
             utilitySD.interruptPriority = InterruptPriority.Skill;
-            utilitySD.baseRechargeInterval = 10f;
+            utilitySD.baseRechargeInterval = 9f;
             utilitySD.baseMaxStock = 1;
             utilitySD.rechargeStock = 1;
             utilitySD.requiredStock = 1;
@@ -192,7 +192,7 @@ namespace WellRoundedBalance.Enemies.Bosses
 
     public class Earthquake : BaseState
     {
-        public static float baseDuration = 4f;
+        public static float baseDuration = 2f;
         public float durationBetweenWaves = 1.25f;
 
         public static string tellString = "Play_beetle_guard_attack2_initial";

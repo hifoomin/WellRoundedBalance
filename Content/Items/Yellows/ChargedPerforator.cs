@@ -53,7 +53,7 @@ namespace WellRoundedBalance.Items.Yellows
                 {
                     c.EmitDelegate<Func<RoR2.Orbs.SimpleLightningStrikeOrb, RoR2.Orbs.SimpleLightningStrikeOrb>>((orb) =>
                     {
-                        orb.procCoefficient = procCoefficient * globalProc;
+                        orb.procCoefficient = procCoefficient * Items.Greens._ProcCoefficients.globalProc;
                         return orb;
                     });
                 }

@@ -42,7 +42,7 @@ namespace WellRoundedBalance.Items.Yellows
                     x => x.MatchLdcR4(1f),
                     x => x.MatchStfld("RoR2.Orbs.DevilOrb", "procCoefficient")))
             {
-                c.Next.Operand = procCoefficient * globalProc;
+                c.Next.Operand = procCoefficient * Items.Greens._ProcCoefficients.globalProc;
             }
             else
             {

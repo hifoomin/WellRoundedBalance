@@ -3,13 +3,16 @@ using System;
 using BepInEx.Configuration;
 using JetBrains.Annotations;
 
-namespace WellRoundedBalance.Elites
+namespace WellRoundedBalance.Elites.All
 {
-    public class ChangeStats : EliteBase<ChangeStats>
+    public class StatChanges : EliteBase<StatChanges>
     {
         public static ConfigEntry<bool> enable { get; set; }
 
         public override string Name => ":: Elites : Stat & Drop Rate Changes";
+
+        [ConfigField("Tier 0 Cost Multiplier", "Applies to Perfected elites.", 18f)]
+        public static float tier0CostMultiplier;
 
         [ConfigField("Tier 1 Cost Multiplier", "", 5.5f)]
         public static float tier1CostMultiplier;
@@ -90,11 +93,17 @@ namespace WellRoundedBalance.Elites
         {
             // Main.WRBLogger.LogError("combat director init pre orig ran");
             orig();
+
             foreach (EliteTierDef eliteTierDef in eliteTiers)
             {
                 if (eliteTierDef != null && eliteTierDef.eliteTypes.Length > 0)
                 {
                     List<EliteDef> eliteDefList = eliteTierDef.eliteTypes.ToList();
+
+                    if (eliteDefList.Contains(RoR2Content.Elites.Lunar))
+                    {
+                        eliteTierDef.costMultiplier = tier0CostMultiplier;
+                    }
 
                     if (eliteDefList.Contains(RoR2Content.Elites.Fire))
                     {

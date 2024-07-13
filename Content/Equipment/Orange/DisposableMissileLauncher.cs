@@ -76,7 +76,7 @@ namespace WellRoundedBalance.Equipment.Orange
         {
             dmlMissilePrefab = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.MissileProjectile.Load<GameObject>(), "Disposable Missile");
             var missileProjectileController = dmlMissilePrefab.GetComponent<ProjectileController>();
-            missileProjectileController.procCoefficient = procCoefficient * ItemBase.globalProc;
+            missileProjectileController.procCoefficient = procCoefficient * Items.Greens._ProcCoefficients.globalProc;
             var ghost = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.MissileGhost.Load<GameObject>(), "Disposable Missile Ghost", false);
             ghost.transform.localScale = new Vector3(2f, 2f, 2f);
             ghost.transform.GetChild(1).gameObject.SetActive(false);

@@ -158,7 +158,7 @@ namespace WellRoundedBalance.Items.Yellows
                             maxDistance = 10000,
                             aimVector = body.inputBank.aimDirection,
                             procChainMask = new(),
-                            procCoefficient = procCoefficient / ticks * globalProc,
+                            procCoefficient = procCoefficient / ticks * Items.Greens._ProcCoefficients.globalProc,
                             hitEffectPrefab = hitEffectPrefab,
                             radius = 6f,
                             smartCollision = true,

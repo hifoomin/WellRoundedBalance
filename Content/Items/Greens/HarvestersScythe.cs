@@ -270,7 +270,7 @@ namespace WellRoundedBalance.Items.Greens
                     else
                     {
                         body.AddTimedBuffAuthority(HarvestersScythe.scytheCooldown.buffIndex, HarvestersScythe.cooldown);
-                        body.AddTimedBuffAuthority(HarvestersScythe.scytheCrit.buffIndex, HarvestersScythe.cooldown);
+                        body.AddTimedBuffAuthority(HarvestersScythe.scytheCrit.buffIndex, buffDur);
                     }
                 }
                 else

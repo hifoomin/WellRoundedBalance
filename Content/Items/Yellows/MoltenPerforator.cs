@@ -61,7 +61,7 @@ namespace WellRoundedBalance.Items.Yellows
         private void ChangeProcCoefficient()
         {
             var m = LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/firemeatball").GetComponent<ProjectileController>();
-            m.procCoefficient = procCoefficient * globalProc;
+            m.procCoefficient = procCoefficient * Items.Greens._ProcCoefficients.globalProc;
 
             LanguageAPI.Add("ITEM_fireballsOnHit_NAME".ToUpper(), "Molten Peripherator");
         }

@@ -66,7 +66,7 @@ namespace WellRoundedBalance.Items.Whites
             var projectileImpactExplosion = firework.GetComponent<ProjectileImpactExplosion>();
             projectileImpactExplosion.blastRadius = blastRadius; // vanilla 5f
             projectileImpactExplosion.blastDamageCoefficient = blastDamageCoefficient / 3f;
-            projectileImpactExplosion.blastProcCoefficient = blastProcCoefficient * globalProc;
+            projectileImpactExplosion.blastProcCoefficient = blastProcCoefficient * Items.Greens._ProcCoefficients.globalProc;
 
             var projectileController = firework.GetComponent<ProjectileController>();
             var ghostPrefab = projectileController.ghostPrefab;

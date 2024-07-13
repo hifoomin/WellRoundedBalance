@@ -93,7 +93,7 @@ namespace WellRoundedBalance.Items.Whites
             if (c.TryGotoNext(x => x.MatchStfld<BlastAttack>(nameof(BlastAttack.procCoefficient))))
             {
                 c.Emit(OpCodes.Pop);
-                c.Emit(OpCodes.Ldc_R4, explosionProcCoefficient * globalProc);
+                c.Emit(OpCodes.Ldc_R4, explosionProcCoefficient * Items.Greens._ProcCoefficients.globalProc);
             }
             else Logger.LogError("Failed to apply Gasoline Explosion Damage hook");
         }

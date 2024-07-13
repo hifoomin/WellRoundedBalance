@@ -16,8 +16,8 @@ namespace WellRoundedBalance.Items.Greens
         [ConfigField("Ignite Chance On Hit", 15f)]
         public static float igniteChanceOnHit;
 
-        [ConfigField("Ignite Damage Increase", "Decimal.", 2)]
-        public static int igniteDamageIncrease;
+        [ConfigField("Ignite Damage Increase", "Decimal.", 1.5f)]
+        public static float igniteDamageIncrease;
 
         public override void Init()
         {
@@ -27,7 +27,25 @@ namespace WellRoundedBalance.Items.Greens
         public override void Hooks()
         {
             GlobalEventManager.onServerDamageDealt += GlobalEventManager_onServerDamageDealt;
-            IL.RoR2.StrengthenBurnUtils.CheckDotForUpgrade += StrengthenBurnUtils_CheckDotForUpgrade;
+            // IL.RoR2.StrengthenBurnUtils.CheckDotForUpgrade += StrengthenBurnUtils_CheckDotForUpgrade;
+            On.RoR2.StrengthenBurnUtils.CheckDotForUpgrade += StrengthenBurnUtils_CheckDotForUpgrade1;
+        }
+
+        private void StrengthenBurnUtils_CheckDotForUpgrade1(On.RoR2.StrengthenBurnUtils.orig_CheckDotForUpgrade orig, Inventory inventory, ref InflictDotInfo dotInfo)
+        {
+            // sorry but WHY IS THERE AN INT AAAA
+            if (dotInfo.dotIndex == DotController.DotIndex.Burn || dotInfo.dotIndex == DotController.DotIndex.Helfire)
+            {
+                int itemCount = inventory.GetItemCount(DLC1Content.Items.StrengthenBurn);
+                if (itemCount > 0)
+                {
+                    dotInfo.preUpgradeDotIndex = new DotController.DotIndex?(dotInfo.dotIndex);
+                    dotInfo.dotIndex = DotController.DotIndex.StrongerBurn;
+                    float increase = 1f + igniteDamageIncrease * itemCount;
+                    dotInfo.damageMultiplier *= increase;
+                    dotInfo.totalDamage *= increase;
+                }
+            }
         }
 
         private void GlobalEventManager_onServerDamageDealt(DamageReport report)
