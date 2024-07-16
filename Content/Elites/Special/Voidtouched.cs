@@ -43,9 +43,13 @@ namespace WellRoundedBalance.Elites {
 
             MortarSmallPrefab = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.ClayPotProjectile.Load<GameObject>(), "Voidtouched Mortar Small");
 
-            ProjectileSimple simple = MortarSmallPrefab.AddComponent<ProjectileSimple>();
+            ProjectileSimple simple = MortarSmallPrefab.GetComponent<ProjectileSimple>();
             simple.desiredForwardSpeed = 90f;
-            simple.lifetime = 10f;
+            simple.lifetime = 25f;
+
+            MortarSmallPrefab.GetComponent<Rigidbody>().mass = 400f;
+            MortarSmallPrefab.GetComponent<SphereCollider>().material = Utils.Paths.PhysicMaterial.physmatVoidSurvivorCrabCannon.Load<PhysicMaterial>();
+            MortarSmallPrefab.RemoveComponent<ApplyTorqueOnStart>();
 
             ProjectileController controller = MortarSmallPrefab.GetComponent<ProjectileController>();
             controller.allowPrediction = false;
@@ -54,7 +58,7 @@ namespace WellRoundedBalance.Elites {
             ProjectileImpactExplosion impact = MortarSmallPrefab.GetComponent<ProjectileImpactExplosion>();
             impact.blastDamageCoefficient = 1f;
             impact.blastRadius = 1f;
-            impact.lifetime = 10f;
+            impact.lifetime = 25f;
             impact.impactEffect = Utils.Paths.GameObject.VoidSurvivorMegaBlasterExplosionCorrupted.Load<GameObject>();
 
             ProjectileDamage damage = MortarSmallPrefab.GetComponent<ProjectileDamage>();
@@ -104,7 +108,7 @@ namespace WellRoundedBalance.Elites {
                     info.owner = body.gameObject;
                     info.projectilePrefab = MortarDeathPrefab;
                     info.position = body.corePosition;
-                    info.rotation = Util.QuaternionSafeLookRotation(Util.ApplySpread(Vector3.up, -10f, 10f, 1f, 1f, 0f, 0f));
+                    info.rotation = Util.QuaternionSafeLookRotation(Util.ApplySpread(Vector3.up, -20f, 20f, 2f, 2f, 0f, 0f));
                     info.damage = body.damage;
                     info.damageColorIndex = DamageColorIndex.Void;
 
@@ -124,7 +128,7 @@ namespace WellRoundedBalance.Elites {
                 int count = Mathf.RoundToInt(Util.Remap(self.skillDef.baseRechargeInterval, 2f, 14f, MinMortarCountSkill, MaxMortarCountSkill));
 
                 if (self.skillDef.baseRechargeInterval == 0f || self.skillDef.stockToConsume == 0) {
-                    count = Util.CheckRoll(35f) ? 1 : 0;
+                    count = Util.CheckRoll(35f) ? count : 0;
                 }
 
                 for (int i = 0; i < count; i++)
