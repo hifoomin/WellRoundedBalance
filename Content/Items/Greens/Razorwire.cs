@@ -110,11 +110,20 @@ namespace WellRoundedBalance.Items.Greens
         private void FixedUpdate()
         {
             timer += Time.fixedDeltaTime;
-            if (timer < damageInterval || !body.outOfDanger)
+
+            if (timer < damageInterval)
             {
+                return;
+            }
+
+            if (!body.outOfDanger)
+            {
+                // Main.WRBLogger.LogError("disabling razorwire indicator");
                 enableRadiusIndicator = false;
                 return;
             }
+
+            // Main.WRBLogger.LogError("enabling razorwire indicator");
 
             enableRadiusIndicator = true;
 

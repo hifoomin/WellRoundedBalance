@@ -14,7 +14,7 @@ namespace WellRoundedBalance.Difficulties
         [ConfigField("Percent Regen Decrease", "Decimal.", 0.25f)]
         public static float percentRegenDecrease;
 
-        [ConfigField("Total Difficulty Scaling", "", 150f)]
+        [ConfigField("Total Difficulty Scaling", "", 125f)]
         public static float totalDifficultyScaling;
 
         public override void Init()

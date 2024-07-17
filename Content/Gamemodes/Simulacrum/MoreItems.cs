@@ -6,7 +6,7 @@ namespace WellRoundedBalance.Gamemodes.Simulacrum
     {
         public override string Name => ":: Gamemode :: Simulacrum More Enemy Items";
 
-        [ConfigField("Item Gain Period", "Monsters Gain an item every Nth wave", 3)]
+        [ConfigField("Item Gain Period", "Monsters Gain an item every Nth wave", 4)]
         public static int itemGainPeriod;
 
         public override void Init()
