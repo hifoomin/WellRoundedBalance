@@ -56,7 +56,7 @@ namespace WellRoundedBalance.Items.Greens
             countdown.isCooldown = true;
             countdown.isDebuff = false;
             countdown.isHidden = false;
-            countdown.canStack = true;
+            countdown.canStack = false;
             countdown.buffColor = new Color(0.4151f, 0.4014f, 0.4014f, 1f); // wolfo consistency :kirn:
             countdown.iconSprite = Utils.Paths.BuffDef.bdPrimarySkillShurikenBuff.Load<BuffDef>().iconSprite;
             countdown.name = "Shuriken Cooldown";

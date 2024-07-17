@@ -7,6 +7,7 @@ using R2API.ContentManagement;
 using MonoMod.RuntimeDetour;
 using HarmonyLib;
 using WellRoundedBalance.Items.ConsistentCategories;
+using Mono.Cecil;
 
 [assembly: HG.Reflection.SearchableAttribute.OptIn]
 
@@ -84,6 +85,8 @@ namespace WellRoundedBalance
 
         private bool mp = false;
         private bool hasZanySoupd = false;
+        //
+        public static AssemblyDefinition WRBAssembly; // used for IL stuff
 
         public void Awake()
         {
@@ -91,6 +94,8 @@ namespace WellRoundedBalance
             WRBConfig = Config;
 
             wellroundedbalance = AssetBundle.LoadFromFile(Assembly.GetExecutingAssembly().Location.Replace("WellRoundedBalance.dll", "wellroundedbalance"));
+
+            WRBAssembly = AssemblyDefinition.ReadAssembly(typeof(Main).Assembly.Location);
 
             WRBAchievementConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Achievements.cfg", true);
             WRBAllyConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Allies.cfg", true);
