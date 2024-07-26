@@ -10,10 +10,12 @@
 - Buffed Harvester's Scythe Base Buff Duration 3s => **5s**.
 - Buffed Lemurian.
 - Buffed Lesser Wisp.
-- Buffed Oddly-shaped Opal Armor Gain 2.5 => **3**.
-- Buffed Oddly-shaped Opal Armor Gain per Stack 2.5 => **3**.
-- Buffed Simulacrum Wave Timer 15s => **25s**.
+- Buffed Oddly-shaped Opal Armor Gain 2.5 => **3.5**.
+- Buffed Oddly-shaped Opal Armor Gain per Stack 2.5 => **3.5**.
+- Buffed Simulacrum Enemy Item Period 3 => **4**.
 - Buffed Simulacrum Scene Director Credits 200 => **350**.
+- Buffed Simulacrum Wave Timer 15s => **25s**.
+- Buffed Stone Flux Pauldron Armor Gain 10 => **15**.
 - Berfed Simulacrum Default Wave Weight 60 => **50**.
 - Berfed Simulacrum Fog Damage to start out lower and ramp up faster over time.
 - Nerfed Beetle Queen.
@@ -21,8 +23,11 @@
 - Nerfed Elite Aspect Drop Chance 0.4% => **0.1%**. (lmao I mixed up decimals for a loooong ass time).
 - Nerfed Gilded Coast Scene Director Monster Credits 200 => **60**.
 - Nerfed Grandparent.
+- Nerfed Hunter's Harpoon Movement Speed for Additional Stacks 16% => **15%**.
+- Nerfed Hunter's Harpoon Movement Speed for Initial Stack 16% => **15%**.
 - Nerfed Ignition Tank Ignite Damage Increase 200% => **150%**.
 - Nerfed Mithrix Phase 4.
+- Nerfed Monsoon Difficulty Scaling 150% => **125%**.
 - Nerfed Stone Titan.
 - Nerfed Xi Construct.
 - Made Elite Components work more reliably.
@@ -32,6 +37,7 @@
 - Made Bleed Cap work better with modded bleed items (should now have a base bleed cap stat).
 - Fixed Global Proc Coefficient config not showing up.
 - Fixed Harvester's Scythe giving the wrong buff duration.
+- Fixed Razorwire flickering.
 - Fixed Regenerating Scrap throwing NREs and not working properly.
 - Fixed Simulacrum Crab moving at the wrong time (oops, Hopoo hardcoding).
 - Fixed Simulacrum not working past wave 5.

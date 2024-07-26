@@ -9,7 +9,10 @@ namespace WellRoundedBalance.Items.Lunars
 
         public override string PickupText => "Pull enemies on hit... <color=#FF7F7F>BUT enemies pull you on hit.</color>\n";
 
-        public override string DescText => "Gain <style=cIsHealing>10 armor</style>. <style=cIsUtility>Pull</style> enemies on hit. Enemies <style=cIsUtility>pull</style> you on hit. <style=cStack>(Pull strength increases per stack)</style>.";
+        public override string DescText => "Gain <style=cIsHealing>" + armorGain + " armor</style>. <style=cIsUtility>Pull</style> enemies on hit. Enemies <style=cIsUtility>pull</style> you on hit. <style=cStack>(Pull strength increases per stack)</style>.";
+
+        [ConfigField("Armor Gain", "", 15f)]
+        public static float armorGain;
 
         public override void Init()
         {
@@ -30,7 +33,7 @@ namespace WellRoundedBalance.Items.Lunars
                 var stack = sender.inventory.GetItemCount(DLC1Content.Items.HalfSpeedDoubleHealth);
                 if (stack > 0)
                 {
-                    args.armorAdd += 10f;
+                    args.armorAdd += armorGain;
                 }
             }
         }

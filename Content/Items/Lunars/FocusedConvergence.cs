@@ -9,7 +9,7 @@ namespace WellRoundedBalance.Items.Lunars
         public override ItemDef InternalPickup => RoR2Content.Items.FocusConvergence;
 
         public override string PickupText => "Teleporter events grant additional rewards... <color=#FF7F7F>BUT increase their difficulty.</color>";
-        public override string DescText => "Increase <style=cIsUtility>teleporter event rewards</style> by <style=cIsUtility>" + mountainShrineCount + "</style> <style=cStack>(+" + mountainShrineCount + " per stack)</style>. Teleporter events are <style=cIsUtility>" + d(mountainShrineCount) + "</style> <style=cStack>(+" + d(mountainShrineCount) + " per stack)</style> harder.";
+        public override string DescText => "Increase <style=cIsUtility>teleporter event rewards</style> by <style=cIsUtility>" + d(mountainShrineCount) + "</style> <style=cStack>(+" + d(mountainShrineCount) + " per stack)</style>. Teleporter events are <style=cIsUtility>" + d(mountainShrineCount) + "</style> <style=cStack>(+" + d(mountainShrineCount) + " per stack)</style> harder.";
 
         [ConfigField("Mountain Shrine Count", 2)]
         public static int mountainShrineCount;

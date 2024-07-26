@@ -21,10 +21,10 @@
         [ConfigField("Duration is Hyperbolic", "Decimal, Max value. Set to 0 to make it linear.", 0f)]
         public static float durationIsHyperbolic;
 
-        [ConfigField("Movement Speed for Initial Stack", "Decimal.", 0.16f)]
+        [ConfigField("Movement Speed for Initial Stack", "Decimal.", 0.15f)]
         public static float movementSpeed;
 
-        [ConfigField("Movement Speed for Additional Stacks", "Decimal.", 0.16f)]
+        [ConfigField("Movement Speed for Additional Stacks", "Decimal.", 0.15f)]
         public static float movementSpeedStack;
 
         [ConfigField("Movement Speed is Hyperbolic", "Decimal, Max value. Set to 0 to make it linear.", 0f)]

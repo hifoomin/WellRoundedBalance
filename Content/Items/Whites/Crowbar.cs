@@ -14,7 +14,7 @@ namespace WellRoundedBalance.Items.Whites
 
         public override string DescText =>
             StackDesc(damageIncrease, damageIncreaseStack, init => $"Deal <style=cIsDamage>{d(init)}</style>{{Stack}} damage to enemies ", d) +
-            (firstHit ? "on the first hit" : StackDesc(healthThreshold, healthThresholdStack, init => $"above <style=cIsDamage>{d(init)}{{Stack}} health</style>", d)) + ".";
+            (firstHit ? "on your first hit" : StackDesc(healthThreshold, healthThresholdStack, init => $"above <style=cIsDamage>{d(init)}{{Stack}} health</style>", d)) + ".";
 
         [ConfigField("Damage Increase", "Decimal.", 0.4f)]
         public static float damageIncrease;
@@ -70,7 +70,7 @@ namespace WellRoundedBalance.Items.Whites
                 {
                     // we get the DamageInfo from the Ldarg_1, otherwise it would've just been int, int for the Func
                     // orig here is the LdcI4, and self is the damageInfo
-                    // do custom logic here, like 
+                    // do custom logic here, like
                     // if (HasModdedDamageType(myModdedDamageType, self)) return int.MaxValue; // we're setting the crowbar damage increase to only work if you have 2147483647 of them AND ONLY if the modded damage type is yours.
                     // else return orig;
                     return orig;
