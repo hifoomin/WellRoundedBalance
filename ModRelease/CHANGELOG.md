@@ -16,10 +16,12 @@
 - Buffed Simulacrum Scene Director Credits 200 => **350**.
 - Buffed Simulacrum Wave Timer 15s => **Infinite**.
 - Buffed Stone Flux Pauldron Armor Gain 10 => **15**.
+- Buffed Tougher Times Block Chance 9% => **10%**.
+- Buffed Tougher Times Block Chance per stack 9% => **10%**.
 - Berfed Simulacrum Default Wave Weight 60 => **50**.
 - Berfed Simulacrum Fog Damage to start out lower and ramp up faster over time.
 - Nerfed Beetle Queen.
-- Nerfed Combat Director Minimum Reroll Spawn Interval Multiplier 1.8 => **1.5**.
+- Nerfed Combat Director Minimum Reroll Spawn Interval Multiplier 1.8 => **1.65**.
 - Nerfed Elite Aspect Drop Chance 0.4% => **0.1%**. (lmao I mixed up decimals for a loooong ass time).
 - Nerfed Gilded Coast Scene Director Monster Credits 200 => **60**.
 - Nerfed Grandparent.
@@ -27,7 +29,7 @@
 - Nerfed Hunter's Harpoon Movement Speed for Initial Stack 16% => **15%**.
 - Nerfed Ignition Tank Ignite Damage Increase 200% => **150%**.
 - Nerfed Mithrix Phase 4.
-- Nerfed Monsoon Difficulty Scaling 150% => **125%**.
+- Nerfed Monsoon Difficulty Scaling 150% => **133%**.
 - Nerfed Stone Titan.
 - Nerfed Xi Construct.
 - Made Elite Components work more reliably.

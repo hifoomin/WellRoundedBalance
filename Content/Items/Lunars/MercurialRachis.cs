@@ -7,7 +7,7 @@
 
         public override string PickupText => "Randomly create a Ward of Power. ALL characters have bonus stats while in the Ward.";
 
-        public override string DescText => "Creates a Ward of Power in a random location nearby that buffs both enemies and allies within <style=cIsUtility>" + baseRadius + "m</style>" +
+        public override string DescText => "Creates a <style=cIsUtility>Ward of Power</style> in a random location nearby that <style=cIsUtility>buffs</style> both enemies and allies within <style=cIsUtility>" + baseRadius + "m</style>" +
             (radiusIncreasePerStack > 0 ? " <style=cStack>(+" + d(radiusIncreasePerStack) + " per stack)</style>" : "") +
             ", causing them to gain <style=cIsDamage>" + d(baseAttackSpeedAndMovementSpeedGain) +
             (attackSpeedAndMovementSpeedGainPerStack > 0 ? " <style=cStack>(+" + d(attackSpeedAndMovementSpeedGainPerStack) + " per stack)</style>" : "") +
