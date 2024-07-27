@@ -307,6 +307,7 @@ namespace WellRoundedBalance.Enemies.Bosses
         private LineRenderer lr;
         private Vector3 targetDir;
         private uint chargeID;
+        private float startDelay = 2f;
 
         // public static IntConVar lasers = new IntConVar("titan_laser_count", ConVarFlags.None, "12", "h");
         // public static FloatConVar durationPer = new FloatConVar("titan_laser_dur", ConVarFlags.None, "0.3", "h");
@@ -316,7 +317,9 @@ namespace WellRoundedBalance.Enemies.Bosses
         {
             base.OnEnter();
 
-            laserInstance = Object.Instantiate(effect, FindModelChild("MuzzleLaser"));
+            Transform muzzle = FindModelChild("MuzzleLaser");
+            laserInstance = Object.Instantiate(effect, muzzle.position, muzzle.rotation);
+            laserInstance.transform.parent = muzzle;
             lr = laserInstance.GetComponent<LineRenderer>();
 
             chargeID = AkSoundEngine.PostEvent(Events.Play_titanboss_R_laser_preshoot, gameObject);
@@ -347,22 +350,22 @@ namespace WellRoundedBalance.Enemies.Bosses
 
             stopwatch += Time.fixedDeltaTime;
 
-            Ray aimRay = GetAimRay();
-            float width = durationPerLaser - stopwatch < 0.1f ? 0.1f : durationPerLaser - stopwatch;
+            Ray aimRay = new Ray(base.inputBank.aimOrigin, targetDir);
+            float width = 1f - (stopwatch / (count > 0 ? delay : startDelay));
+            width = Mathf.Max(width, 0.2f);
 
             lr.startWidth = width;
             lr.endWidth = width;
+
             lr.SetPosition(0, laserInstance.transform.position);
             lr.SetPosition(1, aimRay.GetPoint(StoneTitan.SD_range / 2));
 
-            laserInstance.transform.forward = targetDir;
-
-            if (durationPerLaser - stopwatch > durationPerLaser / 2)
+            if (delay - stopwatch > delay / 2)
             {
-                targetDir = aimRay.direction; // grace period before firing so it's dodgeable
+                targetDir = base.inputBank.aimDirection; // grace period before firing so it's dodgeable
             }
 
-            if (stopwatch >= delay)
+            if (stopwatch >= (count > 0 ? delay : startDelay))
             {
                 count++;
                 stopwatch = 0f;
