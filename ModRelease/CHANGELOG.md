@@ -14,7 +14,7 @@
 - Buffed Oddly-shaped Opal Armor Gain per Stack 2.5 => **3.5**.
 - Buffed Simulacrum Enemy Item Period 3 => **4**.
 - Buffed Simulacrum Scene Director Credits 200 => **350**.
-- Buffed Simulacrum Wave Timer 15s => **25s**.
+- Buffed Simulacrum Wave Timer 15s => **Infinite**.
 - Buffed Stone Flux Pauldron Armor Gain 10 => **15**.
 - Berfed Simulacrum Default Wave Weight 60 => **50**.
 - Berfed Simulacrum Fog Damage to start out lower and ramp up faster over time.
