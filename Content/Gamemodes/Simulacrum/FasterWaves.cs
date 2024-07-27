@@ -13,8 +13,11 @@
         [ConfigField("Instant Wave On Picking an item?", "", true)]
         public static bool instantWave;
 
-        [ConfigField("Wave Timer", "", 25)]
+        [ConfigField("Wave Timer", "Set to over 1000 to disable.", 2147483647)]
         public static int waveTimer;
+
+        [ConfigField("Crab Move Timer", "", 15)]
+        public static int crabMoveTimer;
 
         [ConfigField("Enemy Spawn Grace Period", "", 0.6f)]
         public static float gracePeriod;
@@ -31,6 +34,16 @@
             On.RoR2.InfiniteTowerWaveController.Initialize += InfiniteTowerWaveController_Initialize;
             On.EntityStates.InfiniteTowerSafeWard.Travelling.OnEnter += Travelling_OnEnter;
             On.EntityStates.InfiniteTowerSafeWard.Unburrow.OnEnter += Unburrow_OnEnter;
+            On.RoR2.UI.InfiniteTowerTimeCounter.OnEnable += InfiniteTowerTimeCounter_OnEnable;
+        }
+
+        private void InfiniteTowerTimeCounter_OnEnable(On.RoR2.UI.InfiniteTowerTimeCounter.orig_OnEnable orig, RoR2.UI.InfiniteTowerTimeCounter self)
+        {
+            orig(self);
+            if (waveTimer > 1000)
+            {
+                self.waveController = null;
+            }
         }
 
         private void PickupPickerController_SubmitChoice(On.RoR2.PickupPickerController.orig_SubmitChoice orig, PickupPickerController self, int choiceIndex)
@@ -38,16 +51,19 @@
             orig(self, choiceIndex);
             if (instantWave && NetworkServer.active)
             {
-                if (Run.instance is InfiniteTowerRun run && self.gameObject.name == "OptionPickup(Clone)")
+                if (Run.instance is InfiniteTowerRun run)
                 {
-                    run.waveController.OnTimerExpire();
+                    if (self.gameObject.name == "OptionPickup(Clone)" || self.gameObject.name == "CommandCube(Clone)")
+                    {
+                        run.waveController.OnTimerExpire();
+                    }
                 }
             }
         }
 
         private void Unburrow_OnEnter(On.EntityStates.InfiniteTowerSafeWard.Unburrow.orig_OnEnter orig, EntityStates.InfiniteTowerSafeWard.Unburrow self)
         {
-            self.duration = waveTimer;
+            self.duration = crabMoveTimer;
             orig(self);
         }
 
