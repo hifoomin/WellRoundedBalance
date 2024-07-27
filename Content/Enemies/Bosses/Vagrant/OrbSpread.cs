@@ -1,11 +1,9 @@
 using System;
 
-// UNFINISHED AND UNUSED
-
 namespace WellRoundedBalance.Enemies.Bosses.Vagrant {
     public class OrbSpread : BaseState {
         public static float BaseDuration = 2f;
-        public static int BaseOrbs = 3;
+        public static int BaseOrbs = 6;
         public static float BaseDamageCoefficient = 1f;
         public static float BaseOrbSpread = 4.5f;
 
@@ -20,7 +18,7 @@ namespace WellRoundedBalance.Enemies.Bosses.Vagrant {
                 FireProjectileInfo info = new();
                 info.damage = base.damageStat * BaseDamageCoefficient;
                 info.crit = base.RollCrit();
-                info.position = base.transform.position;
+                info.position = base.transform.position + UnityEngine.Random.onUnitSphere * 10f;
                 info.owner = base.gameObject;
                 info.rotation = Util.QuaternionSafeLookRotation(forward);
                 info.projectilePrefab = Utils.Paths.GameObject.VagrantCannon.Load<GameObject>();

@@ -14,7 +14,7 @@ namespace WellRoundedBalance.Enemies.Bosses {
         public static bool NovaTweak;
         [ConfigField("Change Vagrant Stats and Scale", "Tweaks the Wandering Vagrant to be much smaller and much more agile, highly recommended to leave on", true)]
         public static bool VagrantChanges;
-        [ConfigField("Vagrant Chain Dash", "Gives Wandering Vagrant a chain melee ram attack", true)]
+        [ConfigField("Vagrant Chain Dash", "Gives Wandering Vagrant a chain dash which spews seeking orbs", true)]
         public static bool EnableChainDash;
 
         // lazy init bc i dont want to subscribe to mastercat init just for 1 index
@@ -40,6 +40,8 @@ namespace WellRoundedBalance.Enemies.Bosses {
 
         private MasterIndex _VagrantIndex = MasterIndex.none;
         private BodyIndex _VagrantBody = BodyIndex.None;
+
+        public static GameObject VagrantSeekerOrb;
 
         public override void Hooks()
         {
@@ -72,13 +74,15 @@ namespace WellRoundedBalance.Enemies.Bosses {
             driver.activationRequiresAimConfirmation = false;
             driver.activationRequiresAimTargetLoS = false;
             driver.activationRequiresTargetLoS = false;
-            driver.movementType = AISkillDriver.MovementType.ChaseMoveTarget;
+            driver.movementType = AISkillDriver.MovementType.StrafeMovetarget;
             driver.customName = "DashAtEnemy";
-            driver.maxDistance = 90f;
-            driver.minDistance = 20f;
+            driver.maxDistance = 140f;
+            driver.minDistance = 30f;
             driver.skillSlot = SkillSlot.Utility;
             driver.requireSkillReady = true;
             driver.noRepeat = true;
+            driver.aimType = AISkillDriver.AimType.MoveDirection;
+            driver.moveInputScale = 2f;
 
             On.RoR2.CharacterAI.BaseAI.Awake += (orig, self) => {
                 orig(self);
@@ -88,6 +92,7 @@ namespace WellRoundedBalance.Enemies.Bosses {
                     AISkillDriver last = drivers[drivers.Count - 1];
                     drivers.RemoveAt(drivers.Count - 1);
                     drivers.Insert(0, last);
+                    drivers.RemoveAll(x => x.skillSlot == SkillSlot.Special);
                     self.skillDrivers = drivers.ToArray();
                 }
             };
@@ -139,12 +144,12 @@ namespace WellRoundedBalance.Enemies.Bosses {
 
             if (VagrantChanges) {
                 // stats
-                body.baseMoveSpeed = 14f;
+                body.baseMoveSpeed = 16f;
                 body.bodyFlags |= CharacterBody.BodyFlags.IgnoreFallDamage;
 
                 // scale & rot
-                loc.modelBaseTransform.localScale = new(3f, 3f, 3f);
-                loc.modelBaseTransform.localRotation = Quaternion.Euler(90f, 0f, 0f);
+                loc.modelBaseTransform.localScale = new(4f, 4f, 4f);
+
             }
 
             if (EnableChainDash) {
@@ -187,6 +192,83 @@ namespace WellRoundedBalance.Enemies.Bosses {
                     hb.transform.position = Vector3.zero;
                 }
             };
+
+            VagrantSeekerOrb = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.VagrantCannon.Load<GameObject>(), "VagrantSeekerBolt");
+            GameObject VagrantSeekerGhost = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.VagrantCannonGhost.Load<GameObject>(), "VagrantSeekerBolt");
+            VagrantSeekerGhost.AddComponent<VagrantSeekerGhostController>();
+
+            VagrantSeekerOrb.AddComponent<ProjectileTargetComponent>();
+            var finder = VagrantSeekerOrb.AddComponent<ProjectileSphereTargetFinder>();
+            finder.allowTargetLoss = false;
+            finder.lookRange = 650f;
+            finder.testLoS = false;
+            finder.searchTimer = 0.1f;
+
+            VagrantSeekerOrb.GetComponent<ProjectileSimple>().updateAfterFiring = true;
+            VagrantSeekerOrb.GetComponent<ProjectileSimple>().enableVelocityOverLifetime = false;
+
+            VagrantSeekerOrb.GetComponent<ProjectileController>().ghostPrefab = VagrantSeekerGhost;
+            VagrantSeekerOrb.AddComponent<VagrantSeekerController>();
+
+            ContentAddition.AddProjectile(VagrantSeekerOrb);
+        }
+
+        private class VagrantSeekerController : MonoBehaviour {
+            public ProjectileSimple simple;
+            public ProjectileTargetComponent targetComp;
+            public float duration = 1.5f;
+            public float ramSpeed = 145f;
+            public float initialSpeed = 40f;
+            public float speedDecPerSec;
+            public bool begunRam = false;
+            public Vector3 forward;
+            public void Start() {
+                simple = GetComponent<ProjectileSimple>();
+                initialSpeed = 60f * UnityEngine.Random.Range(0.75f, 2f);
+                targetComp = GetComponent<ProjectileTargetComponent>();
+                simple.lifetime = 20;
+                simple.desiredForwardSpeed = initialSpeed;
+                speedDecPerSec = initialSpeed / (duration - 1f);
+                forward = base.transform.forward;
+            }
+
+            public void FixedUpdate() {
+                if (duration >= 0f) {
+                    initialSpeed -= speedDecPerSec * Time.fixedDeltaTime;
+                    simple.desiredForwardSpeed = Mathf.Max(initialSpeed, 0f);
+                    base.transform.forward = forward;
+                    duration -= Time.fixedDeltaTime;
+                }
+
+                if (duration <= 0f && !begunRam) {
+                    begunRam = true;
+                    
+                    if (targetComp.target) {
+                        Vector3 facing = (targetComp.target.position - base.transform.position).normalized;
+                        base.transform.forward = facing;
+                        simple.desiredForwardSpeed = ramSpeed;
+                    }
+                    else {
+                        simple.lifetime = 0f;
+                    }
+                }
+            }
+        }
+
+        private class VagrantSeekerGhostController : MonoBehaviour {
+            public static List<Color> colors = new() {
+                Color.red, Color.yellow, Color.green, Color.cyan
+            };
+            public void Start() {
+                Color32 color = colors.GetRandom();
+
+                foreach (Renderer renderer in GetComponentsInChildren<Renderer>()) {
+                    renderer.material.SetColor("_Color", color);
+                    renderer.material.SetInt("_FEON", 0);
+                    renderer.material.SetInt("_FlowmapOn", 0);
+                    renderer.material.SetShaderKeywords(new string[0]);
+                }
+            }
         }
 
         private void LowTierGod(On.EntityStates.VagrantMonster.FireMegaNova.orig_Detonate orig, EntityStates.VagrantMonster.FireMegaNova self)

@@ -5,10 +5,11 @@ namespace WellRoundedBalance.Enemies.Bosses.Vagrant {
     public class ChainDashes : BaseSkillState {
         public int TotalDashes;
         public int CurDashes = 1;
-        public float DashDelay = 0.9f;
+        public float DashDelay = 2f;
         public float DashDamage = 4f;
-        public float DashForce = 60f;
+        public float DashForce = 90f;
         public OverlapAttack attack;
+        private float stopwatch = 0f;
 
         public override void OnEnter()
         {
@@ -16,23 +17,17 @@ namespace WellRoundedBalance.Enemies.Bosses.Vagrant {
             base.characterBody.SetAimTimer(0.2f);
             DashDelay /= base.attackSpeedStat;
             TotalDashes = base.healthComponent.isHealthLow ? 5 : 3;
-
-            attack = new();
-            attack.attacker = base.gameObject;
-            attack.damage = base.damageStat * DashDamage;
-            attack.hitBoxGroup = FindHitBoxGroup("VagrantChainDash");
-            attack.isCrit = base.RollCrit();
-            attack.teamIndex = base.GetTeam();
-            attack.attackerFiltering = AttackerFiltering.NeverHitSelf;
         }
 
         public override void FixedUpdate()
         {
             base.fixedAge -= Time.fixedDeltaTime;
 
-            attack.Fire();
+            if (!base.isAuthority) {
+                return;
+            }
 
-            if (CurDashes > TotalDashes) {
+            if (CurDashes > TotalDashes && base.fixedAge <= 0f) {
                 outer.SetNextStateToMain();
             }
 
@@ -40,6 +35,7 @@ namespace WellRoundedBalance.Enemies.Bosses.Vagrant {
                 CurDashes++;
                 base.fixedAge = DashDelay;
                 base.characterBody.SetAimTimer(0.1f);
+                base.rigidbodyDirection.aimDirection = base.inputBank.aimDirection;
                 base.rigidbodyMotor.ApplyForceImpulse(new PhysForceInfo() {
                     force = base.inputBank.aimDirection * DashForce,
                     disableAirControlUntilCollision = false,
@@ -47,7 +43,20 @@ namespace WellRoundedBalance.Enemies.Bosses.Vagrant {
                     massIsOne = true
                 });
                 for (int i = 0; i < 5; i++) { AkSoundEngine.PostEvent(Events.Play_vagrant_attack1_shoot, base.gameObject); }
-                attack.ResetIgnoredHealthComponents();
+
+                int count = UnityEngine.Random.Range(7, 14);
+
+                for (int i = 0; i < count; i++) {
+                    FireProjectileInfo info = new();
+                    info.owner = base.gameObject;
+                    info.position = base.transform.position;
+                    info.crit = base.RollCrit();
+                    info.rotation = Quaternion.LookRotation(UnityEngine.Random.onUnitSphere);
+                    info.damage = base.damageStat * 1.5f;
+                    info.projectilePrefab = WanderingVagrant.VagrantSeekerOrb;
+
+                    ProjectileManager.instance.FireProjectile(info);
+                }
             }
         }
 
