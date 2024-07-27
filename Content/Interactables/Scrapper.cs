@@ -140,7 +140,7 @@ namespace WellRoundedBalance.Interactables
 
         private void FixedUpdate()
         {
-            if (useCount <= 0)
+            if (useCount <= 0 && NetworkServer.active)
             {
                 timer += Time.fixedDeltaTime;
                 if (timer >= explosionInterval)
@@ -153,7 +153,7 @@ namespace WellRoundedBalance.Interactables
                 }
                 if (timer >= deleteInterval)
                 {
-                    gameObject.SetActive(false);
+                    NetworkServer.Destroy(base.gameObject);
                 }
             }
         }
