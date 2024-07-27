@@ -129,7 +129,7 @@ namespace WellRoundedBalance.Enemies.Bosses {
             def.canceledFromSprinting = false;
             def.isCombatSkill = true;
             def.stockToConsume = 1;
-            def.baseRechargeInterval = 8f;
+            def.baseRechargeInterval = 12f;
             def.activationState = new(typeof(Vagrant.ChainDashes));
 
             ContentAddition.AddSkillDef(def);
@@ -146,6 +146,8 @@ namespace WellRoundedBalance.Enemies.Bosses {
                 // stats
                 body.baseMoveSpeed = 16f;
                 body.bodyFlags |= CharacterBody.BodyFlags.IgnoreFallDamage;
+
+                body.GetComponent<RigidbodyMotor>().canTakeImpactDamage = false;
 
                 // scale & rot
                 loc.modelBaseTransform.localScale = new(4f, 4f, 4f);
@@ -164,38 +166,18 @@ namespace WellRoundedBalance.Enemies.Bosses {
             if (ReplacePrimary) {
                 SkillDef skill = Utils.Paths.SkillDef.VagrantBodyJellyBarrage.Load<SkillDef>();
                 skill.beginSkillCooldownOnSkillEnd = true;
-                skill.baseRechargeInterval = 3.75f;
+                skill.baseRechargeInterval = 4.75f;
             }
 
-            On.RoR2.CharacterBody.Start += (orig, self) => {
-                orig(self);
-
-                if (self.bodyIndex == VagrantBody && EnableChainDash) {
-                    ModelLocator loc2 = self.modelLocator;
-
-                    // melee hitbox
-                    Transform mdl = loc2._modelTransform;
-
-                    HitBoxGroup group = mdl.gameObject.AddComponent<HitBoxGroup>();
-                    group.groupName = "VagrantChainDash";
-
-                    GameObject hb = new("ChainDashHitbox");
-                    hb.transform.SetParent(mdl);
-                    hb.transform.localScale = new(3, 3, 5);
-                    HitBox hitbox = hb.AddComponent<HitBox>();
-
-                    group.hitBoxes = new HitBox[] { hitbox };
-
-                    self.GetComponent<CapsuleCollider>().direction = 2;
-
-                    hb.transform.localPosition = Vector3.zero;
-                    hb.transform.position = Vector3.zero;
-                }
-            };
 
             VagrantSeekerOrb = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.VagrantCannon.Load<GameObject>(), "VagrantSeekerBolt");
             GameObject VagrantSeekerGhost = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.VagrantCannonGhost.Load<GameObject>(), "VagrantSeekerBolt");
             VagrantSeekerGhost.AddComponent<VagrantSeekerGhostController>();
+
+            LineRenderer renderer = VagrantSeekerGhost.AddComponent<LineRenderer>();
+            renderer.startWidth = 0.5f;
+            renderer.endWidth = 0.5f;
+            renderer.material = Utils.Paths.Material.matCaptainTracerTrail.Load<Material>();
 
             VagrantSeekerOrb.AddComponent<ProjectileTargetComponent>();
             var finder = VagrantSeekerOrb.AddComponent<ProjectileSphereTargetFinder>();
@@ -210,6 +192,9 @@ namespace WellRoundedBalance.Enemies.Bosses {
             VagrantSeekerOrb.GetComponent<ProjectileController>().ghostPrefab = VagrantSeekerGhost;
             VagrantSeekerOrb.AddComponent<VagrantSeekerController>();
 
+            VagrantSeekerOrb.GetComponent<ProjectileImpactExplosion>().blastRadius = 1.5f;
+            VagrantSeekerOrb.GetComponent<ProjectileImpactExplosion>().blastDamageCoefficient = 1f;
+
             ContentAddition.AddProjectile(VagrantSeekerOrb);
         }
 
@@ -217,7 +202,7 @@ namespace WellRoundedBalance.Enemies.Bosses {
             public ProjectileSimple simple;
             public ProjectileTargetComponent targetComp;
             public float duration = 1.5f;
-            public float ramSpeed = 145f;
+            public float ramSpeed = 165f;
             public float initialSpeed = 40f;
             public float speedDecPerSec;
             public bool begunRam = false;
@@ -230,6 +215,10 @@ namespace WellRoundedBalance.Enemies.Bosses {
                 simple.desiredForwardSpeed = initialSpeed;
                 speedDecPerSec = initialSpeed / (duration - 1f);
                 forward = base.transform.forward;
+
+                ProjectileController controller = GetComponent<ProjectileController>();
+                controller.ghost.GetComponent<VagrantSeekerGhostController>().component = targetComp;
+                controller.ghost.GetComponent<VagrantSeekerGhostController>().owner = this;
             }
 
             public void FixedUpdate() {
@@ -259,14 +248,45 @@ namespace WellRoundedBalance.Enemies.Bosses {
             public static List<Color> colors = new() {
                 Color.red, Color.yellow, Color.green, Color.cyan
             };
+
+            public ProjectileTargetComponent component;
+            public VagrantSeekerController owner;
+            public LineRenderer lr;
+            public Color32 color;
+
             public void Start() {
-                Color32 color = colors.GetRandom();
+                color = colors.GetRandom();
+
+                lr = GetComponent<LineRenderer>();
+                lr.startColor = color;
+                lr.endColor = color;
 
                 foreach (Renderer renderer in GetComponentsInChildren<Renderer>()) {
-                    renderer.material.SetColor("_Color", color);
-                    renderer.material.SetInt("_FEON", 0);
-                    renderer.material.SetInt("_FlowmapOn", 0);
-                    renderer.material.SetShaderKeywords(new string[0]);
+                    if (renderer != lr) {
+                        renderer.material.SetColor("_Color", color);
+                        renderer.material.SetInt("_FEON", 0);
+                        renderer.material.SetInt("_FlowmapOn", 0);
+                        renderer.material.SetShaderKeywords(new string[0]);
+                    }
+                }
+            }
+
+            public void Update() {
+                if (!component.target || owner.begunRam) {
+                    lr.widthMultiplier = 0f;
+                    return;
+                }
+
+                lr.SetPosition(0, base.transform.position);
+                Ray ray = new Ray(base.transform.position, (component.target.position - base.transform.position).normalized);
+                lr.SetPosition(1, ray.GetPoint(400));
+
+                lr.widthMultiplier = 1f - ((1.5f - owner.duration) / 1.5f);
+
+                if (lr.widthMultiplier <= 0.05f) {
+                    lr.widthMultiplier = 1.5f;
+                    lr.startColor = Color.white;
+                    lr.endColor = Color.white;
                 }
             }
         }

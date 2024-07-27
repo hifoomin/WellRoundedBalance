@@ -7,7 +7,7 @@ namespace WellRoundedBalance.Enemies.Bosses.Vagrant {
         public int CurDashes = 1;
         public float DashDelay = 2f;
         public float DashDamage = 4f;
-        public float DashForce = 90f;
+        public float DashForce = 50f;
         public OverlapAttack attack;
         private float stopwatch = 0f;
 
