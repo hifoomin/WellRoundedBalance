@@ -1,4 +1,6 @@
 using System;
+using RiskOfOptions.Components.AssetResolution;
+using WellRoundedBalance.Buffs;
 
 namespace WellRoundedBalance.Elites {
     public class Voidtouched : EliteBase<Voidtouched> {
@@ -57,7 +59,7 @@ namespace WellRoundedBalance.Elites {
 
             ProjectileImpactExplosion impact = MortarSmallPrefab.GetComponent<ProjectileImpactExplosion>();
             impact.blastDamageCoefficient = 1f;
-            impact.blastRadius = 1f;
+            impact.blastRadius = 0.5f;
             impact.lifetime = 25f;
             impact.impactEffect = Utils.Paths.GameObject.VoidSurvivorMegaBlasterExplosionCorrupted.Load<GameObject>();
 
@@ -66,12 +68,20 @@ namespace WellRoundedBalance.Elites {
 
             MortarDeathPrefab = PrefabAPI.InstantiateClone(MortarSmallPrefab, "Voidtouched Mortar Death");
             MortarDeathPrefab.transform.localScale *= 2f;
+            MortarDeathPrefab.layer = LayerIndex.debris.intVal;
 
             ProjectileImpactExplosion impactDeath = MortarDeathPrefab.GetComponent<ProjectileImpactExplosion>();
             impactDeath.childrenCount = 1;
             impactDeath.childrenProjectilePrefab = LaserPrefab;
             impactDeath.childrenDamageCoefficient = 1f;
             impactDeath.fireChildren = true;
+
+            impact.childrenCount = 3;
+            impact.childrenDamageCoefficient = 0.5f;
+            impact.childrenProjectilePrefab = Utils.Paths.GameObject.NullifierPreBombProjectile.Load<GameObject>();
+            impact.fireChildren = true;
+
+            MortarDeathPrefab.GetComponent<ProjectileSimple>().desiredForwardSpeed = 35f;
 
             ContentAddition.AddProjectile(MortarSmallPrefab);
             ContentAddition.AddProjectile(MortarDeathPrefab);
@@ -87,6 +97,23 @@ namespace WellRoundedBalance.Elites {
         public override void Hooks() {
             On.RoR2.GenericSkill.OnExecute += GenericSkill_OnExecute;
             On.RoR2.GlobalEventManager.OnCharacterDeath += GlobalEventManager_OnCharacterDeath;
+            IL.RoR2.GlobalEventManager.OnHitEnemy += GlobalEventManager_OnHitEnemy;
+        }
+
+        private void GlobalEventManager_OnHitEnemy(ILContext il)
+        {
+            ILCursor c = new(il);
+
+            if (c.TryGotoNext(MoveType.Before,
+                x => x.MatchLdsfld(typeof(DLC1Content.Buffs), "EliteVoid")))
+            {
+                c.Remove();
+                c.Emit<Useless>(OpCodes.Ldsfld, nameof(Useless.uselessBuff));
+            }
+            else
+            {
+                Logger.LogError("Failed to apply Voidtouched Elite Needletick hook");
+            }
         }
 
         private void GlobalEventManager_OnCharacterDeath(On.RoR2.GlobalEventManager.orig_OnCharacterDeath orig, GlobalEventManager self, DamageReport damageReport)
@@ -99,16 +126,16 @@ namespace WellRoundedBalance.Elites {
             {
                 int count = Mathf.RoundToInt(Util.Remap(body.baseMaxHealth, 1f, 2500f, MinMortarCountDeath, MaxMortarCountDeath));
 
-                Debug.Log("max health: " + body.baseMaxHealth);
-                Debug.Log("firing " + count + " mortars");
-
                 for (int i = 0; i < count; i++)
                 {
+                    float rad = 2 * Mathf.PI / count * i;
+                    Vector3 direction = new Vector3(Mathf.Cos(rad), 0, Mathf.Sin(rad)) + Vector3.up;
+
                     FireProjectileInfo info = new();
                     info.owner = body.gameObject;
                     info.projectilePrefab = MortarDeathPrefab;
                     info.position = body.corePosition;
-                    info.rotation = Util.QuaternionSafeLookRotation(Util.ApplySpread(Vector3.up, -20f, 20f, 2f, 2f, 0f, 0f));
+                    info.rotation = Util.QuaternionSafeLookRotation(direction);
                     info.damage = body.damage;
                     info.damageColorIndex = DamageColorIndex.Void;
 
@@ -137,9 +164,10 @@ namespace WellRoundedBalance.Elites {
                     info.owner = body.gameObject;
                     info.projectilePrefab = MortarSmallPrefab;
                     info.position = body.corePosition;
-                    info.rotation = Util.QuaternionSafeLookRotation(Util.ApplySpread(body.inputBank.aimDirection, 0f, 3f, 1f, 3f, 0f, 0f));
+                    info.rotation = Util.QuaternionSafeLookRotation(Util.ApplySpread(body.inputBank.aimDirection, -25f, 25f, 1f, 1f));
                     info.damage = body.damage;
                     info.damageColorIndex = DamageColorIndex.Void;
+                    info.speedOverride = 90f * UnityEngine.Random.Range(0.5f, 1.5f);
 
                     ProjectileManager.instance.FireProjectile(info);
                 }
@@ -152,22 +180,51 @@ namespace WellRoundedBalance.Elites {
             public float stopwatch;
             public float damageStopwatch;
             public GameObject laserInstance;
+            public float destructionStopwatch = 0f;
+            public float bulletScale = 2f;
+            public Vector3 scale = Vector3.zero;
+            public bool markedForDestruction = false;
+            public Vector3 scaleSubtrPerSec;
+            public float scale2SubtrPerSec;
+            public float y;
 
             public void Start() {
                 controller = GetComponent<ProjectileController>();
                 damage = GetComponent<ProjectileDamage>();
 
                 laserInstance = GameObject.Instantiate(Utils.Paths.GameObject.VoidRaidCrabSpinBeamVFX.Load<GameObject>(), transform.position - new Vector3(0, 5f, 0), Quaternion.identity);
-                laserInstance.transform.forward = Vector3.down;
+                laserInstance.transform.localRotation = Quaternion.Euler(-90f, 0f, 0f);
+                laserInstance.transform.localScale *= 0.2f;
+                scale = laserInstance.transform.localScale;
+                y = scale.z;
+                scale2SubtrPerSec = 2f;
+                scaleSubtrPerSec = scale;
+
+                foreach (Light light in laserInstance.GetComponentsInChildren<Light>()) {
+                    light.range *= 0.5f;
+                    light.intensity *= 0.5f;
+                }
             }
 
             public void FixedUpdate() {
                 stopwatch += Time.fixedDeltaTime;
                 damageStopwatch += Time.fixedDeltaTime;
 
-                if (stopwatch >= 3f) {
+                if (destructionStopwatch >= 0f) {
+                    destructionStopwatch -= Time.fixedDeltaTime;
+                    scale -= scaleSubtrPerSec * Time.fixedDeltaTime;
+                    bulletScale -= scale2SubtrPerSec * Time.fixedDeltaTime;
+                    laserInstance.transform.localScale = new(scale.x, scale.y, y);
+                }
+
+                if (destructionStopwatch <= 0f && markedForDestruction) {
                     Destroy(laserInstance);
-                    Destroy(gameObject);
+                    Destroy(this.gameObject);
+                }
+
+                if (stopwatch >= 3f && !markedForDestruction) {
+                    destructionStopwatch = 1f;
+                    markedForDestruction = true;
                     return;
                 }
 
@@ -181,7 +238,7 @@ namespace WellRoundedBalance.Elites {
                     bulletAttack.aimVector = Vector3.down;
                     bulletAttack.minSpread = 0f;
                     bulletAttack.maxSpread = 0f;
-                    bulletAttack.damage = damage.damage * 0.2f;
+                    bulletAttack.damage = damage.damage * 5f * 0.2f;
                     bulletAttack.force = 0f;
                     bulletAttack.hitEffectPrefab = Utils.Paths.GameObject.VoidRaidCrabMultiBeamDotZoneImpact.Load<GameObject>();
                     bulletAttack.isCrit = false;
@@ -191,7 +248,7 @@ namespace WellRoundedBalance.Elites {
                     bulletAttack.damageType = DamageType.Generic;
                     bulletAttack.falloffModel = BulletAttack.FalloffModel.None;
                     bulletAttack.stopperMask = LayerIndex.world.mask;
-                    bulletAttack.radius = 2f;
+                    bulletAttack.radius = bulletScale;
 
                     bulletAttack.Fire();
                 }
