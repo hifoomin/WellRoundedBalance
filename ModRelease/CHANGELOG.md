@@ -1,6 +1,11 @@
 # Future Patches
+- Added better VFX.
+- Reworked enemy spawn pools.
+- Reworked Lunar items.
+- Reworked some bosses.
 - Reworked N'kuhana's Opinion to **fire a massive, piercing skull** on special use, damage scaling with stored healing.
-- Fixed Scrapper & Printer networking.
+- Reworked Razorwire.
+- Nerfed Frost Relic Radius.
 
 # 1.4.3 Patch Notes
 - Buffed Alloy Vulture.
@@ -16,10 +21,12 @@
 - Buffed Simulacrum Scene Director Credits 200 => **350**.
 - Buffed Simulacrum Wave Timer 15s => **Infinite**.
 - Buffed Stone Flux Pauldron Armor Gain 10 => **15**.
+- Buffed Tougher Times Block Chance 9% => **10%**.
+- Buffed Tougher Times Block Chance per stack 9% => **10%**.
 - Berfed Simulacrum Default Wave Weight 60 => **50**.
 - Berfed Simulacrum Fog Damage to start out lower and ramp up faster over time.
 - Nerfed Beetle Queen.
-- Nerfed Combat Director Minimum Reroll Spawn Interval Multiplier 1.8 => **1.5**.
+- Nerfed Combat Director Minimum Reroll Spawn Interval Multiplier 1.8 => **1.65**.
 - Nerfed Elite Aspect Drop Chance 0.4% => **0.1%**. (lmao I mixed up decimals for a loooong ass time).
 - Nerfed Gilded Coast Scene Director Monster Credits 200 => **60**.
 - Nerfed Grandparent.
@@ -27,18 +34,21 @@
 - Nerfed Hunter's Harpoon Movement Speed for Initial Stack 16% => **15%**.
 - Nerfed Ignition Tank Ignite Damage Increase 200% => **150%**.
 - Nerfed Mithrix Phase 4.
-- Nerfed Monsoon Difficulty Scaling 150% => **125%**.
+- Nerfed Monsoon Difficulty Scaling 150% => **133%**.
 - Nerfed Stone Titan.
 - Nerfed Xi Construct.
 - Made Elite Components work more reliably.
 - Made only the host able to advance Simulacrum waves by picking an item.
 - Reworked Aegis to give **15%** barrier on interact and **pause barrier decay** while out of danger.
+- Reworked Gesture of The Drowned to increase **Equipment charges** but make **Equipment** break upon using all charges.
 - Reworked Perfected elites to have a **much beefier, more delayed, but faster projectile attack**, no longer Cripple on hit, have a chance of dropping a **Lunar Coin** on death and **spawn during loops**.
+- Reworked Voidtouched elites.
 - Made Bleed Cap work better with modded bleed items (should now have a base bleed cap stat).
 - Fixed Global Proc Coefficient config not showing up.
 - Fixed Harvester's Scythe giving the wrong buff duration.
 - Fixed Razorwire flickering.
 - Fixed Regenerating Scrap throwing NREs and not working properly.
+- Fixed Scrapper & Printer networking, hopefully.
 - Fixed Simulacrum Crab moving at the wrong time (oops, Hopoo hardcoding).
 - Fixed Simulacrum not working past wave 5.
 - Fixed Stone Titan bugs.

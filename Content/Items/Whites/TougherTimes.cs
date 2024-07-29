@@ -14,10 +14,10 @@ namespace WellRoundedBalance.Items.Whites
         public override string DescText =>
             StackDesc(blockChance, blockChanceStack, init => $"<style=cIsHealing>{d(init)}</style>{{Stack}} chance to <style=cIsHealing>block</style> incoming damage. <style=cIsUtility>Unaffected by luck</style>.", d);
 
-        [ConfigField("Block Chance", "Decimal.", 0.09f)]
+        [ConfigField("Block Chance", "Decimal.", 0.1f)]
         public static float blockChance;
 
-        [ConfigField("Block Chance per Stack", "Decimal.", 0.09f)]
+        [ConfigField("Block Chance per Stack", "Decimal.", 0.1f)]
         public static float blockChanceStack;
 
         [ConfigField("Damage is Hyperbolic", "Decimal, Max value. Set to 0 to make it linear.", 1f)]
