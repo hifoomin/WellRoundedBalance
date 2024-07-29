@@ -169,7 +169,6 @@ namespace WellRoundedBalance.Enemies.Bosses {
                 skill.baseRechargeInterval = 4.75f;
             }
 
-
             VagrantSeekerOrb = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.VagrantCannon.Load<GameObject>(), "VagrantSeekerBolt");
             GameObject VagrantSeekerGhost = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.VagrantCannonGhost.Load<GameObject>(), "VagrantSeekerBolt");
             VagrantSeekerGhost.AddComponent<VagrantSeekerGhostController>();
@@ -184,7 +183,6 @@ namespace WellRoundedBalance.Enemies.Bosses {
             finder.allowTargetLoss = false;
             finder.lookRange = 650f;
             finder.testLoS = false;
-            finder.searchTimer = 0.1f;
 
             VagrantSeekerOrb.GetComponent<ProjectileSimple>().updateAfterFiring = true;
             VagrantSeekerOrb.GetComponent<ProjectileSimple>().enableVelocityOverLifetime = false;
@@ -319,20 +317,6 @@ namespace WellRoundedBalance.Enemies.Bosses {
             }
 
             orig(self);
-        }
-
-        private class ForceLook : MonoBehaviour {
-            public InputBankTest input;
-            public CharacterDirection direction;
-
-            public void Start() {
-                input = GetComponent<InputBankTest>();
-                direction = GetComponent<CharacterDirection>();
-            }
-
-            public void FixedUpdate() {
-                base.transform.forward = input.aimDirection;
-            }
         }
     }
 }

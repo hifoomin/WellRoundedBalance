@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using RiskOfOptions.Components.AssetResolution;
 using WellRoundedBalance.Buffs;
 
@@ -144,6 +145,26 @@ namespace WellRoundedBalance.Elites {
             }
         }
 
+        public IEnumerator FireProjectiles(int count, CharacterBody body) {
+            for (int i = 0; i < count; i++)
+            {
+                FireProjectileInfo info = new();
+                info.owner = body.gameObject;
+                info.projectilePrefab = MortarSmallPrefab;
+                info.position = body.corePosition;
+                info.rotation = Util.QuaternionSafeLookRotation(Util.ApplySpread(body.inputBank.aimDirection, -25f, 25f, 1f, 1f));
+                info.damage = body.damage;
+                info.damageColorIndex = DamageColorIndex.Void;
+                info.speedOverride = 90f * UnityEngine.Random.Range(0.5f, 1.5f);
+
+                ProjectileManager.instance.FireProjectile(info);
+
+                yield return new WaitForEndOfFrame();
+            }
+
+            yield return null;
+        }
+
         private void GenericSkill_OnExecute(On.RoR2.GenericSkill.orig_OnExecute orig, GenericSkill self)
         {
             orig(self);
@@ -158,19 +179,7 @@ namespace WellRoundedBalance.Elites {
                     count = Util.CheckRoll(35f) ? count : 0;
                 }
 
-                for (int i = 0; i < count; i++)
-                {
-                    FireProjectileInfo info = new();
-                    info.owner = body.gameObject;
-                    info.projectilePrefab = MortarSmallPrefab;
-                    info.position = body.corePosition;
-                    info.rotation = Util.QuaternionSafeLookRotation(Util.ApplySpread(body.inputBank.aimDirection, -25f, 25f, 1f, 1f));
-                    info.damage = body.damage;
-                    info.damageColorIndex = DamageColorIndex.Void;
-                    info.speedOverride = 90f * UnityEngine.Random.Range(0.5f, 1.5f);
-
-                    ProjectileManager.instance.FireProjectile(info);
-                }
+                body.StartCoroutine(FireProjectiles(count, body));
             }
         }
 
@@ -187,12 +196,19 @@ namespace WellRoundedBalance.Elites {
             public Vector3 scaleSubtrPerSec;
             public float scale2SubtrPerSec;
             public float y;
+            public static GameObject impact;
+            public static GameObject laser;
 
             public void Start() {
                 controller = GetComponent<ProjectileController>();
                 damage = GetComponent<ProjectileDamage>();
 
-                laserInstance = GameObject.Instantiate(Utils.Paths.GameObject.VoidRaidCrabSpinBeamVFX.Load<GameObject>(), transform.position - new Vector3(0, 5f, 0), Quaternion.identity);
+                if (!impact || !laser) {
+                    impact = Utils.Paths.GameObject.VoidRaidCrabMultiBeamDotZoneImpact.Load<GameObject>();
+                    laser = Utils.Paths.GameObject.VoidRaidCrabSpinBeamVFX.Load<GameObject>();
+                }
+
+                laserInstance = GameObject.Instantiate(laser, transform.position - new Vector3(0, 5f, 0), Quaternion.identity);
                 laserInstance.transform.localRotation = Quaternion.Euler(-90f, 0f, 0f);
                 laserInstance.transform.localScale *= 0.2f;
                 scale = laserInstance.transform.localScale;
@@ -240,7 +256,7 @@ namespace WellRoundedBalance.Elites {
                     bulletAttack.maxSpread = 0f;
                     bulletAttack.damage = damage.damage * 5f * 0.2f;
                     bulletAttack.force = 0f;
-                    bulletAttack.hitEffectPrefab = Utils.Paths.GameObject.VoidRaidCrabMultiBeamDotZoneImpact.Load<GameObject>();
+                    bulletAttack.hitEffectPrefab = impact;
                     bulletAttack.isCrit = false;
                     bulletAttack.procChainMask = default;
                     bulletAttack.procCoefficient = 0f;

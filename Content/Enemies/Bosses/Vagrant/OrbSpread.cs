@@ -1,4 +1,5 @@
 using System;
+using IL.RoR2.Orbs;
 
 namespace WellRoundedBalance.Enemies.Bosses.Vagrant {
     public class OrbSpread : BaseState {
@@ -6,6 +7,11 @@ namespace WellRoundedBalance.Enemies.Bosses.Vagrant {
         public static int BaseOrbs = 6;
         public static float BaseDamageCoefficient = 2.5f;
         public static float BaseOrbSpread = 4.5f;
+        public static GameObject OrbPrefab;
+
+        static OrbSpread() {
+            OrbPrefab = Utils.Paths.GameObject.VagrantCannon.Load<GameObject>();
+        }
 
         public override void OnEnter()
         {
@@ -21,7 +27,7 @@ namespace WellRoundedBalance.Enemies.Bosses.Vagrant {
                 info.position = base.transform.position + UnityEngine.Random.onUnitSphere * 6f;
                 info.owner = base.gameObject;
                 info.rotation = Util.QuaternionSafeLookRotation(forward);
-                info.projectilePrefab = Utils.Paths.GameObject.VagrantCannon.Load<GameObject>();
+                info.projectilePrefab = OrbPrefab;
                 
                 if (base.isAuthority) {
                     ProjectileManager.instance.FireProjectile(info);
