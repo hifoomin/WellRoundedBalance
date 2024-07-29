@@ -152,6 +152,7 @@ namespace WellRoundedBalance.Elites.Tier1
             if (buffType == RoR2Content.Buffs.AffixBlue.buffIndex)
             {
                 self.gameObject.RemoveComponent<OverloadingController>();
+                
             }
         }
 
@@ -163,6 +164,7 @@ namespace WellRoundedBalance.Elites.Tier1
                 if (self.GetComponent<OverloadingController>() == null)
                 {
                     self.gameObject.AddComponent<OverloadingController>();
+                    
                 }
             }
         }
@@ -256,6 +258,7 @@ namespace WellRoundedBalance.Elites.Tier1
             {
                 hc = GetComponent<HealthComponent>();
                 cb = hc.body;
+                    cb.AddBuff(overloadingSelfBuff);
             }
 
             public void FixedUpdate()
