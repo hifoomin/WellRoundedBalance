@@ -1,10 +1,10 @@
 # Future Patches
-- Added better VFX.
-- Reworked enemy spawn pools.
-- Reworked Lunar items.
-- Reworked some bosses.
-- Reworked N'kuhana's Opinion to **fire a massive, piercing skull** on special use, damage scaling with stored healing.
+- Reworked Enemy spawn pools.
+- Reworked some Bosses.
 - Reworked Razorwire.
+- Reworked N'kuhana's Opinion to **fire a massive, piercing skull** on special use, damage scaling with stored healing.
+- Reworked Lunar items.
+- Reworked Voidtouched elites.
 - Nerfed Frost Relic Radius.
 
 # 1.4.3 Patch Notes
@@ -42,7 +42,6 @@
 - Reworked Aegis to give **15%** barrier on interact and **pause barrier decay** while out of danger.
 - Reworked Gesture of The Drowned to increase **Equipment charges** but make **Equipment** break upon using all charges.
 - Reworked Perfected elites to have a **much beefier, more delayed, but faster projectile attack**, no longer Cripple on hit, have a chance of dropping a **Lunar Coin** on death and **spawn during loops**.
-- Reworked Voidtouched elites.
 - Made Bleed Cap work better with modded bleed items (should now have a base bleed cap stat).
 - Fixed Global Proc Coefficient config not showing up.
 - Fixed Harvester's Scythe giving the wrong buff duration.
@@ -53,8 +52,8 @@
 - Fixed Simulacrum not working past wave 5.
 - Fixed Stone Titan bugs.
 - Optimized loading times.
-- Optimized the mod a shit ton (should run better than vanilla at any point in the game).
-- - This is a small update that addresses optimization, some bugs and rebalances some enemies. Been super busy with life, expecting the worst, and yet everything turned out really well. ~HIFU
+- Optimized the mod a shit ton
+- - This is a small update that addresses optimization, some bugs and rebalances some enemies. Been super busy with life, expecting the worst, and yet everything turned out well. ~HIFU
 
 # 1.4.2 Patch Notes
 - Buffed Ephemeral Coin Drop Chance 0.8% => **1%**.

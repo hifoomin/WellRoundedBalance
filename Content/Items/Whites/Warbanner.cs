@@ -79,7 +79,7 @@ namespace WellRoundedBalance.Items.Whites
                     {
                         var warbanner = UnityEngine.Object.Instantiate(WardOnLevelManager.wardPrefab, body.transform.position, Quaternion.identity);
                         warbanner.GetComponent<TeamFilter>().teamIndex = body.teamComponent.teamIndex;
-                        warbanner.GetComponent<BuffWard>().Networkradius = baseRadius + radiusPerStack * (stack - 1);
+                        warbanner.GetComponent<BuffWard>().Networkradius = StackAmount(baseRadius, radiusPerStack, stack, radiusIsHyperbolic);
                         NetworkServer.Spawn(warbanner);
                     }
                 }
