@@ -90,7 +90,29 @@ namespace WellRoundedBalance.Interactables
             On.RoR2.PurchaseInteraction.OnInteractionBegin += PurchaseInteraction_OnInteractionBegin;
             On.EntityStates.Duplicator.Duplicating.DropDroplet += Duplicating_DropDroplet;
             Changes();
+            GlobalEventManager.OnInteractionsGlobal += GlobalEventManager_OnInteractionsGlobal;
         }
+
+        private void GlobalEventManager_OnInteractionsGlobal(Interactor interactor, IInteractable interactable, GameObject interactableObject)
+        {
+            if (!interactableObject)
+            {
+                return;
+            }
+            if (interactableObject.TryGetComponent<PrinterUseCounter>(out var PrinterUseCounter))
+            {
+                if (PrinterUseCounter.useCount <= 0)
+                {
+                    EffectManager.SpawnEffect(Utils.Paths.GameObject.ExplosionVFX.Load<GameObject>(), new EffectData
+                    {
+                        origin = interactableObject.transform.position,
+                        scale = 3f
+                    }, true);
+                    NetworkServer.Destroy(interactableObject);
+                }
+            }
+        }
+
         private void Duplicating_DropDroplet(On.EntityStates.Duplicator.Duplicating.orig_DropDroplet orig, EntityStates.Duplicator.Duplicating self)
         {
             orig(self);
@@ -197,7 +219,7 @@ namespace WellRoundedBalance.Interactables
         public float timer;
         public float explosionInterval = 0.7f;
         public float deleteInterval = 0.8f;
-
+        /*
         private void FixedUpdate()
         {
             if (useCount <= 0 && NetworkServer.active)
@@ -217,6 +239,7 @@ namespace WellRoundedBalance.Interactables
                 }
             }
         }
+        */
     }
 
     public class PrinterHologram : MonoBehaviour, IHologramContentProvider

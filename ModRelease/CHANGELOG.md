@@ -23,6 +23,7 @@
 - Buffed Stone Flux Pauldron Armor Gain 10 => **15**.
 - Buffed Tougher Times Block Chance 9% => **10%**.
 - Buffed Tougher Times Block Chance per stack 9% => **10%**.
+- Buffed Shaped Glass Damage Increase 75% => **100%**.
 - Berfed Simulacrum Default Wave Weight 60 => **50**.
 - Berfed Simulacrum Fog Damage to start out lower and ramp up faster over time.
 - Nerfed Beetle Queen.
@@ -42,6 +43,7 @@
 - Reworked Aegis to give **15%** barrier on interact and **pause barrier decay** while out of danger.
 - Reworked Gesture of The Drowned to increase **Equipment charges** but make **Equipment** break upon using all charges.
 - Reworked Perfected elites to have a **much beefier, more delayed, but faster projectile attack**, no longer Cripple on hit, have a chance of dropping a **Lunar Coin** on death and **spawn during loops**.
+- Reworked Teleporters a bit - now charge as slow as vanilla and discharge if everyone is outside. Killing enemies increases the charge, scaling with enemy base max health, teleporter radius shrinks with charge percent. The teleporter also passively fires a projectile around itself.
 - Made Bleed Cap work better with modded bleed items (should now have a base bleed cap stat).
 - Fixed Global Proc Coefficient config not showing up.
 - Fixed Harvester's Scythe giving the wrong buff duration.

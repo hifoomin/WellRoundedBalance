@@ -1,5 +1,6 @@
 ﻿using EntityStates.Scrapper;
 using RoR2.Hologram;
+using UnityEngine;
 
 namespace WellRoundedBalance.Interactables
 {
@@ -53,6 +54,27 @@ namespace WellRoundedBalance.Interactables
             On.RoR2.ScrapperController.Start += ScrapperController_Start;
             On.RoR2.ClassicStageInfo.Start += ClassicStageInfo_Start;
             On.RoR2.SceneDirector.Start += SceneDirector_Start;
+            GlobalEventManager.OnInteractionsGlobal += GlobalEventManager_OnInteractionsGlobal;
+        }
+
+        private void GlobalEventManager_OnInteractionsGlobal(Interactor interactor, IInteractable interactable, GameObject interactableObject)
+        {
+            if (!interactableObject)
+            {
+                return;
+            }
+            if (interactableObject.TryGetComponent<ScrapperUseCounter>(out var scrapperUseCounter))
+            {
+                if (scrapperUseCounter.useCount <= 0)
+                {
+                    EffectManager.SpawnEffect(Utils.Paths.GameObject.ExplosionVFX.Load<GameObject>(), new EffectData
+                    {
+                        origin = interactableObject.transform.position,
+                        scale = 3f
+                    }, true);
+                    NetworkServer.Destroy(interactableObject);
+                }
+            }
         }
 
         private void SceneDirector_Start(On.RoR2.SceneDirector.orig_Start orig, SceneDirector self)
@@ -137,7 +159,7 @@ namespace WellRoundedBalance.Interactables
         public float timer;
         public float explosionInterval = 0.7f;
         public float deleteInterval = 0.8f;
-
+        /*
         private void FixedUpdate()
         {
             if (useCount <= 0 && NetworkServer.active)
@@ -157,6 +179,7 @@ namespace WellRoundedBalance.Interactables
                 }
             }
         }
+        */
     }
 
     public class ScrapperHologram : MonoBehaviour, IHologramContentProvider
