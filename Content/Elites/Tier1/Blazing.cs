@@ -151,6 +151,7 @@ namespace WellRoundedBalance.Elites.Tier1
             deathProjectileCount = Eclipse3.CheckEclipse() ? Blazing.deathPoolProjectileCountE3 : Blazing.deathPoolProjectileCount;
             deathProjectileAngle = 360f / deathProjectileCount;
             passiveProjectileAngle = 360f / passiveProjectileCount;
+            body.AddBuff(Blazing.lessDamage);
         }
 
         public void FixedUpdate()

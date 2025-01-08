@@ -4,8 +4,11 @@
     {
         public override string Name => ":: Mechanics :::::: Faster Holdout Zone";
 
-        [ConfigField("Charge Rate Multiplier", "", 1.6f)]
-        public static float chargeRateMultiplier;
+        [ConfigField("Holdout Zone Charge Rate Multiplier", "", 1.6f)]
+        public static float holdoutZoneChargeRateMultiplier;
+
+        [ConfigField("Teleporter Charge Rate Multiplier", "", 1f)]
+        public static float teleporterChargeRateMultiplier;
 
         public override void Init()
         {
@@ -20,12 +23,24 @@
         private void HoldoutZoneController_Awake(On.RoR2.HoldoutZoneController.orig_Awake orig, HoldoutZoneController self)
         {
             orig(self);
-            self.calcChargeRate += Self_calcChargeRate;
+            if (self.GetComponent<TeleporterInteraction>() == null)
+            {
+                self.calcChargeRate += HoldoutZone;
+            }
+            else
+            {
+                self.calcChargeRate += Teleporter;
+            }
         }
 
-        private void Self_calcChargeRate(ref float rate)
+        private void Teleporter(ref float rate)
         {
-            rate *= chargeRateMultiplier;
+            rate *= teleporterChargeRateMultiplier;
+        }
+
+        private void HoldoutZone(ref float rate)
+        {
+            rate *= teleporterChargeRateMultiplier;
         }
     }
 }

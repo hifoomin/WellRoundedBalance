@@ -1,4 +1,5 @@
-﻿using System;
+/*
+using System;
 using System.Collections;
 using RiskOfOptions.Components.AssetResolution;
 using WellRoundedBalance.Buffs;
@@ -6,7 +7,7 @@ using WellRoundedBalance.Buffs;
 namespace WellRoundedBalance.Elites {
     public class Voidtouched : EliteBase<Voidtouched> {
         public override string Name => ":: Elites :: Voidtouched";
-        
+
         public static GameObject MortarSmallPrefab;
         public static GameObject MortarDeathPrefab;
         public static GameObject MortarGhost;
@@ -98,10 +99,10 @@ namespace WellRoundedBalance.Elites {
         public override void Hooks() {
             On.RoR2.GenericSkill.OnExecute += GenericSkill_OnExecute;
             On.RoR2.GlobalEventManager.OnCharacterDeath += GlobalEventManager_OnCharacterDeath;
-            IL.RoR2.GlobalEventManager.ProcessHitEnemy += GlobalEventManager_ProcessHitEnemy;
+            IL.RoR2.GlobalEventManager.OnHitEnemy += GlobalEventManager_OnHitEnemy;
         }
 
-        private void GlobalEventManager_ProcessHitEnemy(ILContext il)
+        private void GlobalEventManager_OnHitEnemy(ILContext il)
         {
             ILCursor c = new(il);
 
@@ -272,3 +273,4 @@ namespace WellRoundedBalance.Elites {
         }
     }
 }
+*/

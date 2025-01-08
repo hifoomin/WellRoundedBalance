@@ -127,6 +127,7 @@
 
   <ItemGroup>
     <Folder Include="Enemies\States\" />
+    <Folder Include="Mechanics\Lunars\" />
     <Folder Include="SkillDefs\" />
   </ItemGroup>
 

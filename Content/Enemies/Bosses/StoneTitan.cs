@@ -1,5 +1,6 @@
 ﻿using EntityStates;
 using RoR2.Skills;
+using System.Collections;
 
 namespace WellRoundedBalance.Enemies.Bosses
 {
@@ -90,20 +91,14 @@ namespace WellRoundedBalance.Enemies.Bosses
 
         private static float ai_aimVectorDampTime;
 
-        [ConfigField("Fist Ring Amount", "ring of fists, set to 0 to disable", 2)]
+        [ConfigField("Fist Ring Amount", "ring of fists, set to 0 to disable", 3)]
         public static int fistring_v;
 
-        [ConfigField("Fist Ring Fists per Ring", "horizontally", 4)]
+        [ConfigField("Fist Ring Fists per Ring", "horizontally", 6)]
         public static int fistring_h;
 
-        [ConfigField("Fist Ring Range", "total range for fist ring in radius (16 root 2 by default)", 22.6274f)]
+        [ConfigField("Fist Ring Range", "total range for fist ring in radius (16 root 2 by default)", 18f)]
         public static float fistring_range;
-
-        [ConfigField("Fist Ring Delay", "in seconds, extra delay per ring", 0.256f)]
-        public static float fistring_vs;
-
-        [ConfigField("Fist Ring Delay per Lane", "in seconds, extra delay within a ring", 0.025f)]
-        public static float fistring_hs;
 
         [ConfigField("New Laser Attack Amount", 8)]
         public static int SD_amount;
@@ -249,6 +244,7 @@ namespace WellRoundedBalance.Enemies.Bosses
 
         private void FireFist_OnEnter(On.EntityStates.TitanMonster.FireFist.orig_OnEnter orig, EntityStates.TitanMonster.FireFist self)
         {
+            orig(self);
             if (!Main.IsInfernoDef())
             {
                 EntityStates.TitanMonster.FireFist.entryDuration = Check(self, NEW_FireFist_entryDuration, FireFist_entryDuration);
@@ -256,27 +252,33 @@ namespace WellRoundedBalance.Enemies.Bosses
                 EntityStates.TitanMonster.FireFist.fistDamageCoefficient = Check(self, NEW_FireFist_fistDamageCoefficient, FireFist_fistDamageCoefficient);
                 if (self.isAuthority && Check(self, true, false))
                 {
-                    for (int i = 1; i <= fistring_v; i++)
-                    {
-                        for (int j = 0; j < fistring_h; j++)
-                        {
-                            var fpi = new FireProjectileInfo
-                            {
-                                projectilePrefab = self.fistProjectilePrefab,
-                                position = self.characterBody.footPosition + (Quaternion.AngleAxis(360f * (j + 0.5f) / fistring_h + Vector3.Angle(Vector3.forward, Vector3.ProjectOnPlane(self.GetAimRay().direction, Vector3.up)), Vector3.up) * new Vector3(i * fistring_range, 0, 0)),
-                                rotation = Quaternion.identity,
-                                owner = self.gameObject,
-                                damage = self.damageStat,
-                                force = EntityStates.TitanMonster.FireFist.fistForce,
-                                crit = self.RollCrit(),
-                                fuseOverride = EntityStates.TitanMonster.FireFist.entryDuration - EntityStates.TitanMonster.FireFist.trackingDuration + (i * fistring_vs) + (j * fistring_hs)
-                            };
-                            ProjectileManager.instance.FireProjectile(fpi);
-                        }
-                    }
+                    self.outer.StartCoroutine(FireFists(self));
                 }
             }
-            orig(self);
+        }
+
+        public IEnumerator FireFists(EntityStates.TitanMonster.FireFist self)
+        {
+            for (int i = 1; i <= fistring_v; i++)
+            {
+                for (int j = 0; j < fistring_h; j++)
+                {
+                    var fpi = new FireProjectileInfo
+                    {
+                        projectilePrefab = self.fistProjectilePrefab,
+                        position = self.characterBody.footPosition + (Quaternion.AngleAxis(360f * (j + 0.5f) / fistring_h + Vector3.Angle(Vector3.forward, Vector3.ProjectOnPlane(self.GetAimRay().direction, Vector3.up)), Vector3.up) * new Vector3(i * fistring_range, 0, 0)),
+                        rotation = Quaternion.identity,
+                        owner = self.gameObject,
+                        damage = self.damageStat * Check(self, NEW_FireFist_fistDamageCoefficient, FireFist_fistDamageCoefficient),
+                        force = EntityStates.TitanMonster.FireFist.fistForce,
+                        crit = self.RollCrit(),
+                        fuseOverride = EntityStates.TitanMonster.FireFist.entryDuration
+                    };
+                    ProjectileManager.instance.FireProjectile(fpi);
+                    yield return new WaitForSeconds(0.025f);
+                }
+                yield return new WaitForSeconds(0.05f);
+            }
         }
 
         private void RechargeRocks_OnEnter(On.EntityStates.TitanMonster.RechargeRocks.orig_OnEnter orig, EntityStates.TitanMonster.RechargeRocks self)

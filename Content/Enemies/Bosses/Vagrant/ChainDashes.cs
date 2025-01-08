@@ -1,3 +1,4 @@
+/*
 using System;
 using System.Collections;
 
@@ -53,7 +54,7 @@ namespace WellRoundedBalance.Enemies.Bosses.Vagrant {
                     info.crit = base.RollCrit();
                     info.rotation = Quaternion.LookRotation(UnityEngine.Random.onUnitSphere);
                     info.damage = base.damageStat * 1.5f;
-                    info.projectilePrefab = WanderingVagrant.VagrantSeekerOrb;
+                    info.projectilePrefab = WanderingVagrant_New.VagrantSeekerOrb;
 
                     ProjectileManager.instance.FireProjectile(info);
                 }
@@ -66,3 +67,4 @@ namespace WellRoundedBalance.Enemies.Bosses.Vagrant {
         }
     }
 }
+*/
