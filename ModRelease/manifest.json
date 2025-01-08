@@ -1,6 +1,6 @@
 {
 	"name": "WellRoundedBalance",
-	"version_number": "1.4.3",
+	"version_number": "1.4.4",
 	"website_url": "https://github.com/hifoomin/WellRoundedBalance",
 	"description": "A complete balance overhaul for a much more fast-paced and challenging game with much less autoplay. Check out the mod page for more information. Extremely configurable.",
 	"dependencies": [
@@ -15,22 +15,7 @@
 		"RiskofThunder-R2API_Elites-1.0.1",
 		"RiskofThunder-R2API_Dot-1.0.0",
 		"RiskofThunder-HookGenPatcher-1.2.3",
-		"HIFU-HIFUCommandoTweaks-1.1.5",
-		"HIFU-HIFUHuntressTweaks-5.0.3",
-		"HIFU-HIFUBanditTweaks-1.1.2",
-		"HIFU-HIFUMultTweaks-1.0.2",
-		"HIFU-HIFUEngineerTweaks-1.1.1",
-		"HIFU-HIFUArtificerTweaks-1.0.7",
-		"HIFU-HIFUMercenaryTweaks-1.0.4",
-		"HIFU-HIFURexTweaks-1.2.4",
-		"HIFU-HIFULoaderTweaks-1.0.4",
-		"HIFU-HIFUAcridTweaks-1.0.5",
-		"HIFU-HIFUCaptainTweaks-1.1.0",
-		"HIFU-HIFURailgunnerTweaks-1.0.4",
-		"HIFU-HIFUVoidFiendTweaks-1.0.0",
 		"pseudopulse-BetterDrones-1.5.1",
-		"Zenithrium-VanillaVoid-1.4.11",
-		"prodzpod-Hypercrit2-1.2.6",
-		"VarnaScelestus-Ephemeral_Coins-2.3.3"
+		"Zenithrium-VanillaVoid-1.4.11"
 	]
 }

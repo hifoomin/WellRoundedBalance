@@ -1,11 +1,6 @@
-# Future Patches
-- Added better VFX.
-- Reworked enemy spawn pools.
-- Reworked Lunar items.
-- Reworked some bosses.
-- Reworked N'kuhana's Opinion to **fire a massive, piercing skull** on special use, damage scaling with stored healing.
-- Reworked Razorwire.
-- Nerfed Frost Relic Radius.
+# 1.4.4 Patch Notes
+- Works on SOTS.
+- Removed dependencies on mods that no longer work.
 
 # 1.4.3 Patch Notes
 - Buffed Alloy Vulture.
