@@ -58,11 +58,11 @@ namespace WellRoundedBalance.Items.Whites
 
         public override void Hooks()
         {
-            IL.RoR2.GlobalEventManager.OnHitEnemy += GlobalEventManager_OnHitEnemy;
+            IL.RoR2.GlobalEventManager.ProcessHitEnemy += GlobalEventManager_ProcessHitEnemy;
             Changes();
         }
 
-        public static void GlobalEventManager_OnHitEnemy(ILContext il)
+        public static void GlobalEventManager_ProcessHitEnemy(ILContext il)
         {
             ILCursor c = new(il);
             int info = -1;

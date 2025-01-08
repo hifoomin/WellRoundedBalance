@@ -192,5 +192,10 @@ namespace WellRoundedBalance.Interactables
                 hologram.color = Color.white;
             }
         }
+
+        public void UpdateHologramContent(GameObject hologramContentObject, Transform viewerBody)
+        {
+            return;
+        }
     }
 }

@@ -27,7 +27,7 @@ namespace WellRoundedBalance.Items.VoidGreens
         public override void Hooks()
         {
             IL.RoR2.CharacterBody.RecalculateStats += CharacterBody_RecalculateStats;
-            IL.RoR2.GlobalEventManager.OnHitEnemy += GlobalEventManager_OnHitEnemy;
+            IL.RoR2.GlobalEventManager.ProcessHitEnemy += GlobalEventManager_ProcessHitEnemy;
             GlobalEventManager.onServerDamageDealt += GlobalEventManager_onServerDamageDealt;
             On.RoR2.Inventory.GiveItem_ItemIndex_int += Inventory_GiveItem_ItemIndex_int;
             Changes();
@@ -113,7 +113,7 @@ namespace WellRoundedBalance.Items.VoidGreens
             }
         }
 
-        private void GlobalEventManager_OnHitEnemy(ILContext il)
+        private void GlobalEventManager_ProcessHitEnemy(ILContext il)
         {
             ILCursor c = new(il);
 

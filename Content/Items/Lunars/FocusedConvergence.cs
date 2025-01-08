@@ -1,5 +1,7 @@
 ﻿using MonoMod.Cil;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace WellRoundedBalance.Items.Lunars
 {
@@ -28,9 +30,9 @@ namespace WellRoundedBalance.Items.Lunars
             On.RoR2.Stage.Start += Stage_Start;
         }
 
-        private void Stage_Start(On.RoR2.Stage.orig_Start orig, Stage self)
+        private IEnumerator Stage_Start(On.RoR2.Stage.orig_Start orig, Stage self)
         {
-            orig(self);
+            yield return orig(self);
             var stack = Util.GetItemCountForTeam(TeamIndex.Player, RoR2Content.Items.FocusConvergence.itemIndex, false);
             if (NetworkServer.active && stack > 0)
             {
@@ -43,6 +45,8 @@ namespace WellRoundedBalance.Items.Lunars
                     }
                 }
             }
+
+            yield return null;
         }
 
         private void Inventory_RemoveItem_ItemIndex_int(On.RoR2.Inventory.orig_RemoveItem_ItemIndex_int orig, Inventory self, ItemIndex itemIndex, int count)

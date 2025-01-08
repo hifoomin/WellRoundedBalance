@@ -80,7 +80,7 @@ namespace WellRoundedBalance.Items.Reds
 
         public override void Hooks()
         {
-            IL.RoR2.HealthComponent.TakeDamage += ChangeChance;
+            IL.RoR2.HealthComponent.TakeDamageProcess += ChangeChance;
             GlobalEventManager.onServerDamageDealt += GlobalEventManager_onServerDamageDealt;
             RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
         }
@@ -212,7 +212,7 @@ namespace WellRoundedBalance.Items.Reds
                         dotIndex = DotIndex.None,
                         inflictor = gameObject
                     };
-                    victimHealthComponent.TakeDamage(info);
+                    victimHealthComponent.TakeDamageProcess(info);
                 }
                 timer = 0f;
             }

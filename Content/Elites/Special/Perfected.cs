@@ -35,7 +35,7 @@ namespace WellRoundedBalance.Elites.Special
         public override void Hooks()
         {
             IL.RoR2.CharacterBody.UpdateAffixLunar += CharacterBody_UpdateAffixLunar;
-            IL.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
+            IL.RoR2.HealthComponent.TakeDamageProcess += HealthComponent_TakeDamageProcess;
 
             // CharacterBody.onBodyInventoryChangedGlobal += CharacterBody_onBodyInventoryChangedGlobal;
             // in favor of the bottom
@@ -91,7 +91,7 @@ namespace WellRoundedBalance.Elites.Special
             }
         }
 
-        private void HealthComponent_TakeDamage(ILContext il)
+        private void HealthComponent_TakeDamageProcess(ILContext il)
         {
             ILCursor c = new(il);
             if (c.TryGotoNext(MoveType.Before,

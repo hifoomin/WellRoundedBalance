@@ -43,12 +43,12 @@ namespace WellRoundedBalance.Items.VoidGreens
         public override void Hooks()
         {
             Stage.onStageStartGlobal += _ => db.Clear();
-            IL.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
+            IL.RoR2.HealthComponent.TakeDamageProcess += HealthComponent_TakeDamageProcess;
             On.RoR2.GlobalEventManager.OnCharacterDeath += GlobalEventManager_OnCharacterDeath;
             Changes();
         }
 
-        private void HealthComponent_TakeDamage(ILContext il)
+        private void HealthComponent_TakeDamageProcess(ILContext il)
         {
             ILCursor c = new(il);
             int stack = GetItemLoc(c, nameof(DLC1Content.Items.ExplodeOnDeathVoid));

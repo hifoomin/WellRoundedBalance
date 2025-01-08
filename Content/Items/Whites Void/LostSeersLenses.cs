@@ -32,7 +32,7 @@ namespace WellRoundedBalance.Items.VoidWhites
 
         public override void Hooks()
         {
-            IL.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
+            IL.RoR2.HealthComponent.TakeDamageProcess += HealthComponent_TakeDamageProcess;
             GlobalEventManager.onServerDamageDealt += GlobalEventManager_onServerDamageDealt;
             Changes();
         }
@@ -93,11 +93,11 @@ namespace WellRoundedBalance.Items.VoidWhites
                     position = victimBody.transform.position,
                 };
                 pipeBomb.procChainMask.AddProc(mask);
-                victimHc.TakeDamage(pipeBomb);
+                victimHc.TakeDamageProcess(pipeBomb);
             }
         }
 
-        private void HealthComponent_TakeDamage(ILContext il)
+        private void HealthComponent_TakeDamageProcess(ILContext il)
         {
             ILCursor c = new(il);
 

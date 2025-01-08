@@ -28,11 +28,11 @@ namespace WellRoundedBalance.Items.Greens
 
         public override void Hooks()
         {
-            IL.RoR2.GlobalEventManager.OnHitEnemy += GlobalEventManager_OnHitEnemy;
+            IL.RoR2.GlobalEventManager.ProcessHitEnemy += GlobalEventManager_ProcessHitEnemy;
             GlobalEventManager.onServerDamageDealt += GlobalEventManager_onServerDamageDealt;
         }
 
-        private void GlobalEventManager_OnHitEnemy(ILContext il)
+        private void GlobalEventManager_ProcessHitEnemy(ILContext il)
         {
             ILCursor c = new(il);
 
@@ -133,7 +133,7 @@ namespace WellRoundedBalance.Items.Greens
                                 procCoefficient = 0f
                             };
 
-                            victimBody.healthComponent.TakeDamage(baseDamageProc);
+                            victimBody.healthComponent.TakeDamageProcess(baseDamageProc);
                         }
                     }
                 }

@@ -88,7 +88,7 @@ namespace WellRoundedBalance.Items.Reds
         public override void Hooks()
         {
             IL.RoR2.MissileUtils.FireMissile_Vector3_CharacterBody_ProcChainMask_GameObject_float_bool_GameObject_DamageColorIndex_Vector3_float_bool += Changes;
-            IL.RoR2.GlobalEventManager.OnHitEnemy += ChangeMissileCount;
+            IL.RoR2.GlobalEventManager.ProcessHitEnemy += ChangeMissileCount;
             GlobalEventManager.onServerDamageDealt += GlobalEventManager_onServerDamageDealt;
             if (scrapLauncher)
             {

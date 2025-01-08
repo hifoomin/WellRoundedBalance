@@ -1,4 +1,5 @@
-﻿using R2API.Utils;
+﻿using System.Collections;
+using R2API.Utils;
 
 namespace WellRoundedBalance.Mechanics.Interactables
 {
@@ -48,15 +49,17 @@ namespace WellRoundedBalance.Mechanics.Interactables
             }
         }
 
-        private void Stage_Start(On.RoR2.Stage.orig_Start orig, Stage self)
+        private IEnumerator Stage_Start(On.RoR2.Stage.orig_Start orig, Stage self)
         {
-            orig(self);
+            yield return orig(self);
             typeof(EntityStates.Duplicator.Duplicating).SetFieldValue("initialDelayDuration", 0.3f);
             typeof(EntityStates.Duplicator.Duplicating).SetFieldValue("timeBetweenStartAndDropDroplet", 0.3f);
 
             typeof(EntityStates.Scrapper.WaitToBeginScrapping).SetFieldValue("duration", 0.3f);
             typeof(EntityStates.Scrapper.ScrappingToIdle).SetFieldValue("duration", 0.3f);
             typeof(EntityStates.Scrapper.Scrapping).SetFieldValue("duration", 0.3f);
+
+            yield return null;
         }
 
         private TimerQueue.TimerHandle TimerQueue_CreateTimer(On.RoR2.TimerQueue.orig_CreateTimer orig, TimerQueue self, float time, System.Action action)

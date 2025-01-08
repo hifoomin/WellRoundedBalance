@@ -115,7 +115,7 @@ namespace WellRoundedBalance
                     if (Validate(based))
                     {
                         // try { based.Init(); } catch (Exception ex) { Main.WRBLogger.LogError($"Failed to initialize {type.Name}: {ex}"); }
-                        based.Init();
+                        //based.Init();
                     }
                 }
 
@@ -137,6 +137,7 @@ namespace WellRoundedBalance
                 // bruh
             }
 
+            //
             if (Main.enableAllies.Value)
             {
                 IEnumerable<Type> ally = types
@@ -193,6 +194,7 @@ namespace WellRoundedBalance
                 }
             }
 
+            //
             if (Main.enableDifficulties.Value)
             {
                 IEnumerable<Type> difficulty = types
@@ -264,7 +266,7 @@ namespace WellRoundedBalance
                     }
                 }
             }
-
+            
             if (Main.enableGamemodes.Value)
             {
                 IEnumerable<Type> gamemode = types
@@ -282,7 +284,8 @@ namespace WellRoundedBalance
                     }
                 }
             }
-
+            
+            //
             if (Main.enableInteractables.Value)
             {
                 IEnumerable<Type> interactable = types
@@ -301,6 +304,7 @@ namespace WellRoundedBalance
                 }
             }
 
+            //
             if (Main.enableItems.Value)
             {
                 IEnumerable<Type> item = types
@@ -322,6 +326,7 @@ namespace WellRoundedBalance
                     EmptyBottle.Init();
             }
 
+            //
             if (Main.enableMechanics.Value)
             {
                 IEnumerable<Type> mechanic = types
@@ -340,6 +345,7 @@ namespace WellRoundedBalance
                 }
             }
 
+            //
             if (Main.enableSurvivors.Value)
             {
                 IEnumerable<Type> survivor = types
@@ -370,8 +376,8 @@ namespace WellRoundedBalance
         private static void ItemCatalog_Init(On.RoR2.ItemCatalog.orig_Init orig)
         {
             Main.WRBLogger.LogDebug("ItemAPI.AddItemTag(\"Defense\") returns " + ItemAPI.AddItemTag("Defense"));
-            BetterItemCategories.Init();
             orig();
+            BetterItemCategories.Init();
             BetterItemCategories.BetterAIBlacklist();
         }
 

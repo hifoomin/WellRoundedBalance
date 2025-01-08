@@ -1,4 +1,4 @@
-﻿using Inferno.Stat_AI;
+﻿
 using MonoMod.Cil;
 using System;
 
@@ -27,7 +27,7 @@ namespace WellRoundedBalance.Items.Lunars
         public override void Hooks()
         {
             IL.RoR2.CharacterBody.RecalculateStats += Changes;
-            On.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
+            On.RoR2.HealthComponent.TakeDamageProcess += HealthComponent_TakeDamageProcess;
             RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
             On.RoR2.CharacterMotor.OnLanded += CharacterMotor_OnLanded;
             On.RoR2.CharacterMotor.OnLeaveStableGround += CharacterMotor_OnLeaveStableGround;
@@ -89,7 +89,7 @@ namespace WellRoundedBalance.Items.Lunars
             }
         }
 
-        private void HealthComponent_TakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo)
+        private void HealthComponent_TakeDamageProcess(On.RoR2.HealthComponent.orig_TakeDamageProcess orig, HealthComponent self, DamageInfo damageInfo)
         {
             var attacker = damageInfo.attacker;
             if (attacker)
@@ -122,25 +122,11 @@ namespace WellRoundedBalance.Items.Lunars
         {
             ILCursor c = new(il);
 
-            if (c.TryGotoNext(MoveType.Before,
-                    x => x.MatchStloc(89),
-                    x => x.MatchBr(out _),
-                    x => x.MatchLdloc(87),
-                    x => x.MatchLdcR4(0.5f)))
-            {
-                c.Index += 3;
-                c.Next.Operand = 1f;
-            }
-            else
-            {
-                Logger.LogError("Failed to apply Light Flux Pauldron Cooldown hook");
-            }
-
-            c.Index = 0;
+            c.FindLocal(LocalType.ItemCount, "HalfAttackSpeedHalfCooldowns", out int light, "DLC1Content");
 
             if (c.TryGotoNext(MoveType.Before,
-               x => x.MatchLdloc(83),
-               x => x.MatchLdloc(43)))
+               x => x.MatchLdloc(out _),
+               x => x.MatchLdloc(light)))
             {
                 c.Index += 2;
                 c.EmitDelegate<Func<int, int>>((useless) =>
@@ -151,6 +137,19 @@ namespace WellRoundedBalance.Items.Lunars
             else
             {
                 Logger.LogError("Failed to apply Light Flux Pauldron Attack Speed hook");
+            }
+
+            c.StepLocal(light);
+
+            if (c.TryGotoNext(MoveType.After,
+                    x => x.MatchLdcR4(0.5f),
+                    x => x.MatchMul()))
+            {
+                c.Prev.Operand = 1f;
+            }
+            else
+            {
+                Logger.LogError("Failed to apply Light Flux Pauldron Cooldown hook");
             }
         }
     }

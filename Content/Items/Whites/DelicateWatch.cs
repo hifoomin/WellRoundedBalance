@@ -48,14 +48,14 @@ namespace WellRoundedBalance.Items.Whites
         {
             if (rework)
             {
-                IL.RoR2.HealthComponent.TakeDamage += HealthCompoment_TakeDamage;
+                IL.RoR2.HealthComponent.TakeDamageProcess += HealthCompoment_TakeDamageProcess;
                 IL.RoR2.HealthComponent.UpdateLastHitTime += HealthComponent_UpdateLastHitTime;
                 CharacterBody.onBodyInventoryChangedGlobal += CharacterBody_onBodyInventoryChangedGlobal;
                 RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
             }
             else
             {
-                IL.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
+                IL.RoR2.HealthComponent.TakeDamageProcess += HealthComponent_TakeDamageProcess;
                 IL.RoR2.HealthComponent.UpdateLastHitTime += HealthComponent_UpdateLastHitTime1;
             }
         }
@@ -93,7 +93,7 @@ namespace WellRoundedBalance.Items.Whites
             }
         }
 
-        private void HealthComponent_TakeDamage(ILContext il)
+        private void HealthComponent_TakeDamageProcess(ILContext il)
         {
             ILCursor c = new(il);
 
@@ -144,7 +144,7 @@ namespace WellRoundedBalance.Items.Whites
             else Logger.LogError("Failed to apply Delicate Watch Threshold 2 hook");
         }
 
-        public static void HealthCompoment_TakeDamage(ILContext il)
+        public static void HealthCompoment_TakeDamageProcess(ILContext il)
         {
             ILCursor c = new(il);
             int idx = GetItemLoc(c, nameof(DLC1Content.Items.FragileDamageBonus));

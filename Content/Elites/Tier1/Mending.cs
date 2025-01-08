@@ -93,7 +93,7 @@ namespace WellRoundedBalance.Elites.Tier1
             On.RoR2.AffixEarthBehavior.Start += Overwrite;
             GlobalEventManager.onServerDamageDealt += GlobalEventManager_onServerDamageDealt;
             RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
-            On.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
+            On.RoR2.HealthComponent.TakeDamageProcess += HealthComponent_TakeDamageProcess;
             IL.RoR2.GlobalEventManager.OnCharacterDeath += GlobalEventManager_OnCharacterDeath;
             IL.RoR2.HealthComponent.ServerFixedUpdate += HealthComponent_ServerFixedUpdate;
         }
@@ -129,7 +129,7 @@ namespace WellRoundedBalance.Elites.Tier1
             }
         }
 
-        private void HealthComponent_TakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent victim, DamageInfo damageInfo)
+        private void HealthComponent_TakeDamageProcess(On.RoR2.HealthComponent.orig_TakeDamageProcess orig, HealthComponent victim, DamageInfo damageInfo)
         {
             var victimBody = victim.body;
             if (victimBody && victimBody.HasBuff(DLC1Content.Buffs.EliteEarth))

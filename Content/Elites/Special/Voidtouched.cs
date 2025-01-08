@@ -98,10 +98,10 @@ namespace WellRoundedBalance.Elites {
         public override void Hooks() {
             On.RoR2.GenericSkill.OnExecute += GenericSkill_OnExecute;
             On.RoR2.GlobalEventManager.OnCharacterDeath += GlobalEventManager_OnCharacterDeath;
-            IL.RoR2.GlobalEventManager.OnHitEnemy += GlobalEventManager_OnHitEnemy;
+            IL.RoR2.GlobalEventManager.ProcessHitEnemy += GlobalEventManager_ProcessHitEnemy;
         }
 
-        private void GlobalEventManager_OnHitEnemy(ILContext il)
+        private void GlobalEventManager_ProcessHitEnemy(ILContext il)
         {
             ILCursor c = new(il);
 

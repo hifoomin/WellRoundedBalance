@@ -29,7 +29,7 @@ namespace WellRoundedBalance.Equipment.Orange
         public override void Hooks()
         {
             IL.RoR2.EquipmentSlot.FireLifeStealOnHit += ChangeDuration;
-            IL.RoR2.GlobalEventManager.OnHitEnemy += ChangeHealing;
+            IL.RoR2.GlobalEventManager.ProcessHitEnemy += ChangeHealing;
 
             var Leech = Utils.Paths.EquipmentDef.LifestealOnHit.Load<EquipmentDef>();
             Leech.cooldown = cooldown;

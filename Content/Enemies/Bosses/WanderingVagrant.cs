@@ -48,12 +48,12 @@ namespace WellRoundedBalance.Enemies.Bosses {
             On.EntityStates.VagrantMonster.Weapon.JellyBarrage.OnEnter += ReplacePrimaryHook;
             On.EntityStates.VagrantMonster.ChargeMegaNova.OnEnter += GrantInvuln;
             On.EntityStates.VagrantMonster.FireMegaNova.Detonate += LowTierGod;
-            On.RoR2.HealthComponent.TakeDamage += LTGMK2;
+            On.RoR2.HealthComponent.TakeDamageProcess += LTGMK2;
 
             TweakVagrantPrefab();
         }
 
-        private void LTGMK2(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo)
+        private void LTGMK2(On.RoR2.HealthComponent.orig_TakeDamageProcess orig, HealthComponent self, DamageInfo damageInfo)
         {
             if (self.body.bodyIndex == VagrantBody && NovaTweak) {
                 if (damageInfo.damage >= self.combinedHealth + self.barrier && damageInfo.damageType != DamageType.BypassOneShotProtection) {

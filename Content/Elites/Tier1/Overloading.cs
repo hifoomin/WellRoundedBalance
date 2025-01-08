@@ -136,7 +136,7 @@ namespace WellRoundedBalance.Elites.Tier1
 
         public override void Hooks()
         {
-            IL.RoR2.GlobalEventManager.OnHitAll += GlobalEventManager_OnHitAll;
+            IL.RoR2.GlobalEventManager.OnHitAllProcess += GlobalEventManager_OnHitAllProcess;
             // CharacterBody.onBodyInventoryChangedGlobal += CharacterBody_onBodyInventoryChangedGlobal;
 
             RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
@@ -199,7 +199,7 @@ namespace WellRoundedBalance.Elites.Tier1
             }
         }
 
-        private void GlobalEventManager_OnHitAll(ILContext il)
+        private void GlobalEventManager_OnHitAllProcess(ILContext il)
         {
             ILCursor c = new(il);
 

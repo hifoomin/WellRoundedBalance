@@ -16,7 +16,7 @@ namespace WellRoundedBalance.Gamemodes.Eclipse
 
         public override void Hooks()
         {
-            IL.RoR2.HoldoutZoneController.FixedUpdate += HoldoutZoneController_FixedUpdate;
+            IL.RoR2.HoldoutZoneController.DoUpdate += HoldoutZoneController_FixedUpdate;
             IL.EntityStates.BeetleGuardMonster.FireSunder.FixedUpdate += FireSunder_FixedUpdate;
             IL.EntityStates.Bell.BellWeapon.ChargeTrioBomb.FixedUpdate += ChargeTrioBomb_FixedUpdate;
             IL.EntityStates.ClayBoss.ClayBossWeapon.FireBombardment.FireGrenade += FireBombardment_FireGrenade;

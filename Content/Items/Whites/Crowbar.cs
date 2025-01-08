@@ -47,12 +47,12 @@ namespace WellRoundedBalance.Items.Whites
         public override void Hooks()
         {
             Stage.onStageStartGlobal += _ => db.Clear();
-            IL.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
+            IL.RoR2.HealthComponent.TakeDamageProcess += HealthComponent_TakeDamageProcess;
             On.RoR2.GlobalEventManager.OnCharacterDeath += GlobalEventManager_OnCharacterDeath;
-            // IL.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage1;
+            // IL.RoR2.HealthComponent.TakeDamageProcess += HealthComponent_TakeDamageProcess1;
         }
 
-        private void HealthComponent_TakeDamage1(ILContext il)
+        private void HealthComponent_TakeDamageProcess1(ILContext il)
         {
             // untested but uhh yeah I just did it for JavAngle lol
             ILCursor c = new(il);
@@ -60,7 +60,7 @@ namespace WellRoundedBalance.Items.Whites
             if (c.TryGotoNext(MoveType.Before,
                 x => x.MatchLdsfld("RoR2.RoR2Content/Items", "Crowbar"),
                         x => x.MatchCallOrCallvirt<Inventory>("GetItemCount"),
-                        x => x.MatchStloc(out _), // out _ means you don't care what it matches, and since HealthComponent.TakeDamage only has one crowbar thing, it's good enough, but I like to match a bit more to see what I'm doing
+                        x => x.MatchStloc(out _), // out _ means you don't care what it matches, and since HealthComponent.TakeDamageProcess only has one crowbar thing, it's good enough, but I like to match a bit more to see what I'm doing
                         x => x.MatchLdloc(out _),
                         x => x.MatchLdcI4(out _)))
             {
@@ -82,7 +82,7 @@ namespace WellRoundedBalance.Items.Whites
             }
         }
 
-        public void HealthComponent_TakeDamage(ILContext il)
+        public void HealthComponent_TakeDamageProcess(ILContext il)
         {
             ILCursor c = new(il);
             int info = -1; int dmg = -1;

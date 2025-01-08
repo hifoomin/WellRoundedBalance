@@ -73,9 +73,9 @@ namespace WellRoundedBalance.Elites.Special
 
         public override void Hooks()
         {
-            IL.RoR2.GlobalEventManager.OnHitEnemy += GlobalEventManager_OnHitEnemy;
+            IL.RoR2.GlobalEventManager.ProcessHitEnemy += GlobalEventManager_ProcessHitEnemy;
             IL.RoR2.AffixVoidBehavior.FixedUpdate += AffixVoidBehavior_FixedUpdate;
-            On.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
+            On.RoR2.HealthComponent.TakeDamageProcess += HealthComponent_TakeDamageProcess;
             CharacterBody.onBodyInventoryChangedGlobal += CharacterBody_onBodyInventoryChangedGlobal;
         }
 
@@ -95,7 +95,7 @@ namespace WellRoundedBalance.Elites.Special
             }
         }
 
-        private void HealthComponent_TakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo)
+        private void HealthComponent_TakeDamageProcess(On.RoR2.HealthComponent.orig_TakeDamageProcess orig, HealthComponent self, DamageInfo damageInfo)
         {
             orig(self, damageInfo);
             var body = self.body;
@@ -132,7 +132,7 @@ namespace WellRoundedBalance.Elites.Special
             }
         }
 
-        private void GlobalEventManager_OnHitEnemy(ILContext il)
+        private void GlobalEventManager_ProcessHitEnemy(ILContext il)
         {
             ILCursor c = new(il);
 

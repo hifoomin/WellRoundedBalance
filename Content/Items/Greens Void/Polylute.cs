@@ -63,10 +63,10 @@ namespace WellRoundedBalance.Items.VoidGreens
 
         public override void Hooks()
         {
-            IL.RoR2.GlobalEventManager.OnHitEnemy += GlobalEventManager_OnHitEnemy;
+            IL.RoR2.GlobalEventManager.ProcessHitEnemy += GlobalEventManager_ProcessHitEnemy;
         }
 
-        private void GlobalEventManager_OnHitEnemy(ILContext il)
+        private void GlobalEventManager_ProcessHitEnemy(ILContext il)
         {
             ILCursor c = new(il);
 

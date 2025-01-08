@@ -23,7 +23,7 @@ namespace WellRoundedBalance.Items.VoidWhites
 
         public override void Hooks()
         {
-            IL.RoR2.HealthComponent.TakeDamage += ChangeCooldowns;
+            IL.RoR2.HealthComponent.TakeDamageProcess += ChangeCooldowns;
         }
 
         private void ChangeCooldowns(ILContext il)

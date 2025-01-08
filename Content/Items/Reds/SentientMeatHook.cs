@@ -30,16 +30,19 @@ namespace WellRoundedBalance.Items.Reds
 
         public override void Hooks()
         {
-            IL.RoR2.GlobalEventManager.OnHitEnemy += Changes;
+            IL.RoR2.GlobalEventManager.ProcessHitEnemy += Changes;
         }
 
         public static void Changes(ILContext il)
         {
             ILCursor c = new(il);
 
+            c.FindLocal(LocalType.ItemCount, "BounceNearby", out int bn);
+            c.StepLocal(bn);
+
             if (c.TryGotoNext(MoveType.Before,
                     x => x.MatchLdcI4(5),
-                    x => x.MatchLdloc(13),
+                    x => x.MatchLdloc(out _),
                     x => x.MatchLdcI4(5)))
             {
                 c.Next.Operand = baseMaxTargets - maxTargetsPerStack;
@@ -51,12 +54,10 @@ namespace WellRoundedBalance.Items.Reds
                 Logger.LogError("Failed to apply Sentient Meat Hook Max Targets hook");
             }
 
-            c.Index = 0;
-
             if (c.TryGotoNext(MoveType.Before,
                     x => x.MatchLdcR4(30f),
-                    x => x.MatchLdloc(66),
-                    x => x.MatchLdloc(62)))
+                    x => x.MatchLdloc(out _),
+                    x => x.MatchLdloc(out _)))
             {
                 c.Next.Operand = range;
             }
@@ -65,10 +66,8 @@ namespace WellRoundedBalance.Items.Reds
                 Logger.LogError("Failed to apply Sentient Meat Hook Range hook");
             }
 
-            c.Index = 0;
-
             if (c.TryGotoNext(MoveType.Before,
-                    x => x.MatchLdloc(71),
+                    x => x.MatchLdloc(out _),
                     x => x.MatchLdcR4(0.33f)))
             {
                 c.Index += 1;

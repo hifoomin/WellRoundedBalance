@@ -35,7 +35,7 @@ namespace WellRoundedBalance.Elites.Tier1
         public override void Hooks()
         {
             RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
-            IL.RoR2.CharacterBody.UpdateFireTrail += CharacterBody_UpdateFireTrail1;
+            IL.RoR2.CharacterBody.UpdateItemAvailability += CharacterBody_UpdateFireTrail1;
             // CharacterBody.onBodyInventoryChangedGlobal += CharacterBody_onBodyInventoryChangedGlobal;
             GlobalEventManager.onCharacterDeathGlobal += GlobalEventManager_onCharacterDeathGlobal;
 

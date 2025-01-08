@@ -1,4 +1,5 @@
-﻿using Mono.Cecil.Cil;
+﻿using System.Collections;
+using Mono.Cecil.Cil;
 using MonoMod.Cil;
 
 namespace WellRoundedBalance.Items.Whites
@@ -43,14 +44,14 @@ namespace WellRoundedBalance.Items.Whites
 
         public override void Hooks()
         {
-            IL.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
+            IL.RoR2.HealthComponent.TakeDamageProcess += HealthComponent_TakeDamageProcess;
             On.RoR2.Inventory.GiveItem_ItemIndex_int += Inventory_GiveItem_ItemIndex_int;
             On.RoR2.Stage.Start += Stage_Start;
         }
 
-        private void Stage_Start(On.RoR2.Stage.orig_Start orig, Stage self)
+        private IEnumerator Stage_Start(On.RoR2.Stage.orig_Start orig, Stage self)
         {
-            orig(self);
+            yield return orig(self);
             var masters = CharacterMaster.readOnlyInstancesList;
 
             var stack = Util.GetItemCountForTeam(TeamIndex.Player, DLC1Content.Items.GoldOnHurt.itemIndex, false);
@@ -73,6 +74,8 @@ namespace WellRoundedBalance.Items.Whites
                     }
                 }
             }
+
+            yield return null;
         }
 
         private void Inventory_GiveItem_ItemIndex_int(On.RoR2.Inventory.orig_GiveItem_ItemIndex_int orig, Inventory self, ItemIndex itemIndex, int count)
@@ -89,7 +92,7 @@ namespace WellRoundedBalance.Items.Whites
             }
         }
 
-        private void HealthComponent_TakeDamage(ILContext il)
+        private void HealthComponent_TakeDamageProcess(ILContext il)
         {
             ILCursor c = new(il);
 

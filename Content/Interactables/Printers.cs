@@ -80,9 +80,9 @@ namespace WellRoundedBalance.Interactables
 
             Stage.onServerStageComplete += stage => uses.Clear();
 
-            if (bossPrinterLoopOnly) On.RoR2.ClassicStageInfo.RebuildCards += (orig, self) =>
+            if (bossPrinterLoopOnly) On.RoR2.ClassicStageInfo.RebuildCards += (orig, self, dccs1, dccs2) =>
             {
-                orig(self);
+                orig(self, dccs1, dccs2);
                 if (Run.instance.loopClearCount <= 0) self.interactableCategories.RemoveCardsThatFailFilter(x => x.spawnCard != yellowPrinter);
             };
 
@@ -251,6 +251,11 @@ namespace WellRoundedBalance.Interactables
                 hologram.text = counter.useCount + (counter.useCount == 1 ? " use left" : " uses left");
                 hologram.color = Color.white;
             }
+        }
+
+        public void UpdateHologramContent(GameObject hologramContentObject, Transform viewerBody)
+        {
+            return;
         }
     }
 }

@@ -27,7 +27,7 @@ namespace WellRoundedBalance.Items.Yellows
 
         public override void Hooks()
         {
-            IL.RoR2.GlobalEventManager.OnHitEnemy += Changes;
+            IL.RoR2.GlobalEventManager.ProcessHitEnemy += Changes;
             Changes();
         }
 

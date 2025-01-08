@@ -21,11 +21,11 @@ namespace WellRoundedBalance.Items.Whites
 
         public override void Hooks()
         {
-            IL.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage1;
-            On.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
+            IL.RoR2.HealthComponent.TakeDamageProcess += HealthComponent_TakeDamageProcess1;
+            On.RoR2.HealthComponent.TakeDamageProcess += HealthComponent_TakeDamageProcess;
         }
 
-        private void HealthComponent_TakeDamage1(ILContext il)
+        private void HealthComponent_TakeDamageProcess1(ILContext il)
         {
             ILCursor c = new(il);
 
@@ -48,7 +48,7 @@ namespace WellRoundedBalance.Items.Whites
             }
         }
 
-        private void HealthComponent_TakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent victim, DamageInfo damageInfo)
+        private void HealthComponent_TakeDamageProcess(On.RoR2.HealthComponent.orig_TakeDamageProcess orig, HealthComponent victim, DamageInfo damageInfo)
         {
             var victimBody = victim.body;
             if (victimBody)

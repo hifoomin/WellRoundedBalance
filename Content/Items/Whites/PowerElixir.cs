@@ -1,6 +1,7 @@
 ﻿using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using System;
+using System.Collections;
 
 namespace WellRoundedBalance.Items.Whites
 {
@@ -55,7 +56,7 @@ namespace WellRoundedBalance.Items.Whites
             Mechanics.Health.Fragile.AddFragileItem(InternalPickup, new Mechanics.Health.Fragile.FragileInfo { fraction = healthThreshold * 100f });
         }
 
-        private void HealthComponent_UpdateLastHitTime1(On.RoR2.HealthComponent.orig_UpdateLastHitTime orig, HealthComponent self, float damageValue, Vector3 damagePosition, bool damageIsSilent, GameObject attacker)
+        private void HealthComponent_UpdateLastHitTime1(On.RoR2.HealthComponent.orig_UpdateLastHitTime orig, HealthComponent self, float damageValue, Vector3 damagePosition, bool damageIsSilent, GameObject attacker, bool d, bool d2)
         {
             if (self.itemCounts.healingPotion > 0 && !self.body.HasBuff(regen))
             {
@@ -76,12 +77,13 @@ namespace WellRoundedBalance.Items.Whites
                     EffectManager.SpawnEffect(LegacyResourcesAPI.Load<GameObject>("Prefabs/Effects/HealingPotionEffect"), effectData, true);
                 }
             }
-            orig(self, damageValue, damagePosition, damageIsSilent, attacker);
+            
+            orig(self, damageValue, damagePosition, damageIsSilent, attacker, d, d2);
         }
 
-        private void Stage_Start(On.RoR2.Stage.orig_Start orig, Stage self)
+        private IEnumerator Stage_Start(On.RoR2.Stage.orig_Start orig, Stage self)
         {
-            orig(self);
+            yield return orig(self);
             if (CharacterMaster.instancesList != null && refillEveryStage)
             {
                 foreach (CharacterMaster cm in CharacterMaster.instancesList)
@@ -98,6 +100,8 @@ namespace WellRoundedBalance.Items.Whites
                     }
                 }
             }
+
+            yield return null;
         }
 
         private void HealthComponent_ServerFixedUpdate(ILContext il)

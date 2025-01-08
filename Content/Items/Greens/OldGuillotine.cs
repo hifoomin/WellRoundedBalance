@@ -25,10 +25,10 @@ namespace WellRoundedBalance.Items.Greens
         {
             IL.RoR2.CharacterBody.OnInventoryChanged += ChangeThreshold;
             Changes();
-            IL.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
+            IL.RoR2.HealthComponent.TakeDamageProcess += HealthComponent_TakeDamageProcess;
         }
 
-        private void HealthComponent_TakeDamage(ILContext il)
+        private void HealthComponent_TakeDamageProcess(ILContext il)
         {
             ILCursor c = new(il);
 

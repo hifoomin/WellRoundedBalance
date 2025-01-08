@@ -1,4 +1,4 @@
-﻿using Inferno.Stat_AI;
+﻿
 using WellRoundedBalance.Misc;
 
 namespace WellRoundedBalance.Items.Yellows

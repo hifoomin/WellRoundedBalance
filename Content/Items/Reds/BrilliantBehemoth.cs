@@ -21,10 +21,10 @@ namespace WellRoundedBalance.Items.Reds
 
         public override void Hooks()
         {
-            IL.RoR2.GlobalEventManager.OnHitAll += GlobalEventManager_OnHitAll;
+            IL.RoR2.GlobalEventManager.OnHitAllProcess += GlobalEventManager_OnHitAllProcess;
         }
 
-        private void GlobalEventManager_OnHitAll(ILContext il)
+        private void GlobalEventManager_OnHitAllProcess(ILContext il)
         {
             ILCursor c = new(il);
 

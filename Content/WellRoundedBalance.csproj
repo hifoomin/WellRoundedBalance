@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <LangVersion>preview</LangVersion>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
@@ -42,11 +42,9 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="BepInEx.Core" Version="5.4.19" />
-    <PackageReference Include="RiskOfRain2.GameLibs" Version="1.2.4-r.0" />
-    <PackageReference Include="UnityEngine.Modules" Version="2019.4.26" />
-    <PackageReference Include="MMHOOK.RoR2" Version="2022.4.19">
-      <NoWarn>NU1701</NoWarn>
-    </PackageReference>
+    <PackageReference Include="UnityEngine.Modules" Version="2021.3.33" IncludeAssets="compile" />
+	<PackageReference Include="RiskOfRain2.GameLibs" Version="1.3.6-r.0" />
+	<PackageReference Include="MMHOOK.RoR2" Version="*-*" NoWarn="NU1701" />
 	<PackageReference Include="R2API.Language" Version="1.0.0" />
 	<PackageReference Include="R2API.RecalculateStats" Version="1.2.0" />
 	<PackageReference Include="R2API.Director" Version="1.0.0" />
@@ -63,10 +61,6 @@
     <Reference Include="Facepunch.Steamworks">
       <HintPath>libs\Facepunch.Steamworks.dll</HintPath>
       <Private>false</Private>
-    </Reference>
-    <Reference Include="Inferno">
-      <HintPath>./libs/Inferno.dll</HintPath>
-      <Private>true</Private>
     </Reference>
     <Reference Include="KdTreeLib">
       <HintPath>libs\KdTreeLib.dll</HintPath>
@@ -111,9 +105,6 @@
       <HintPath>./libs/Risky_Artifacts.dll</HintPath>
       <Private>true</Private>
     </Reference>
-    <Reference Include="RoR2">
-      <HintPath>..\..\..\..\..\..\.nuget\packages\riskofrain2.gamelibs\1.2.3.1-r.0\lib\netstandard2.0\RoR2.dll</HintPath>
-    </Reference>
     <Reference Include="SimpleJSON">
       <HintPath>libs\SimpleJSON.dll</HintPath>
       <Private>false</Private>
@@ -124,9 +115,6 @@
     </Reference>
     <Reference Include="WolfoQualityOfLife">
       <HintPath>libs/WolfoQualityOfLife-nstrip.dll</HintPath>
-    </Reference>
-    <Reference Include="Wwise">
-      <HintPath>libs\Wwise.dll</HintPath>
     </Reference>
     <Reference Include="ZetArtifacts">
       <HintPath>libs\ZetArtifacts.dll</HintPath>

@@ -33,8 +33,10 @@
         {
             ILCursor c = new(il);
 
+            c.FindLocal(LocalType.ItemCount, "DroneWeaponsBoost", out int dwb, "DLC1Content");
+
             if (c.TryGotoNext(MoveType.Before,
-                x => x.MatchLdloc(46),
+                x => x.MatchLdloc(dwb),
                 x => x.MatchConvR4(),
                 x => x.MatchLdcR4(0.5f),
                 x => x.MatchMul()))
@@ -47,16 +49,12 @@
                 Logger.LogError("Failed to apply Spare Drone Parts Attack Speed hook");
             }
 
-            c.Index = 0;
+            c.StepLocal(dwb);
 
             if (c.TryGotoNext(MoveType.Before,
-                    x => x.MatchLdloc(out _),
                     x => x.MatchLdcR4(0.5f),
-                    x => x.MatchMul(),
-                    x => x.MatchStloc(out _),
-                    x => x.MatchLdloc(90)))
+                    x => x.MatchMul()))
             {
-                c.Index += 1;
                 c.Next.Operand = 1f - attackSpeedCdr;
             }
             else

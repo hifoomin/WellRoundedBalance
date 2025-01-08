@@ -1,3 +1,4 @@
+using System.Collections;
 using R2API.Utils;
 using WellRoundedBalance.Items.Reds;
 
@@ -33,9 +34,9 @@ namespace WellRoundedBalance.Mechanics.Bosses
             }
         }
 
-        private void PopulateAcceptableBodies(On.RoR2.BodyCatalog.orig_Init orig)
+        private IEnumerator PopulateAcceptableBodies(On.RoR2.BodyCatalog.orig_Init orig)
         {
-            orig();
+            yield return orig();
 
             BodyIndex mithrix = BodyCatalog.FindBodyIndex(Utils.Paths.GameObject.BrotherBody.Load<GameObject>());
             BodyIndex mithrix2 = BodyCatalog.FindBodyIndex(Utils.Paths.GameObject.BrotherHauntBody.Load<GameObject>());
@@ -62,6 +63,8 @@ namespace WellRoundedBalance.Mechanics.Bosses
                 twisted3,
                 twisted4
             };
+
+            yield return null;
         }
 
         private class OnKillThresholdManager : MonoBehaviour, IOnTakeDamageServerReceiver

@@ -94,7 +94,7 @@ namespace WellRoundedBalance.Elites.Tier2
 
             On.RoR2.CharacterBody.GetVisibilityLevel_CharacterBody += HandleAIBlindness;
             On.RoR2.CharacterBody.FixedUpdate += HandlePlayerBlindness;
-            IL.RoR2.GlobalEventManager.OnHitEnemy += GlobalEventManager_OnHitEnemy;
+            IL.RoR2.GlobalEventManager.ProcessHitEnemy += GlobalEventManager_ProcessHitEnemy;
 
             CelestineOverlay = Utils.Paths.Material.matMoonbatteryGlassOverlay.Load<Material>();
         }
@@ -126,7 +126,7 @@ namespace WellRoundedBalance.Elites.Tier2
             }
         }
 
-        private void GlobalEventManager_OnHitEnemy(ILContext il)
+        private void GlobalEventManager_ProcessHitEnemy(ILContext il)
         {
             ILCursor c = new(il);
 

@@ -74,7 +74,7 @@ namespace WellRoundedBalance.Interactables
             {
                 ILCursor c = new(il);
                 bool found = c.TryGotoNext(MoveType.Before,
-                    x => x.MatchLdcI4(15)
+                    x => x.MatchLdcI4(16)
                 );
 
                 if (found)

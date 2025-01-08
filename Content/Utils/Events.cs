@@ -1230,7 +1230,7 @@ namespace WellRoundedBalance.Utils {
       public static uint Play_UI_rustedLockbox_open = 588893005;
       public static uint Play_UI_shrineActivate = 4023227809;
       public static uint Play_UI_skill_unlock = 3277128633;
-      public static uint Play_UI_takeDamage = 2252286985;
+      public static uint Play_UI_TakeDamageProcess = 2252286985;
       public static uint Play_UI_teleport_off_map = 1531471387;
       public static uint Play_ui_teleporter_activate = 1462303513;
       public static uint Play_UI_teleporter_event_complete = 1598866792;

@@ -17,7 +17,7 @@
         public override void Hooks()
         {
             On.RoR2.HealthComponent.TakeDamageForce_DamageInfo_bool_bool += HealthComponent_TakeDamageForce_DamageInfo_bool_bool;
-            // On.RoR2.HealthComponent.TakeDamageForce_Vector3_bool_bool += HealthComponent_TakeDamageForce_Vector3_bool_bool;
+            // On.RoR2.HealthComponent.TakeDamageProcessForce_Vector3_bool_bool += HealthComponent_TakeDamageProcessForce_Vector3_bool_bool;
         }
 
         private void HealthComponent_TakeDamageForce_Vector3_bool_bool(On.RoR2.HealthComponent.orig_TakeDamageForce_Vector3_bool_bool orig, HealthComponent self, Vector3 force, bool alwaysApply, bool disableAirControlUntilCollision)

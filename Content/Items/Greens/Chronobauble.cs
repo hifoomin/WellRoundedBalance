@@ -65,7 +65,7 @@ namespace WellRoundedBalance.Items.Greens
 
         public override void Hooks()
         {
-            IL.RoR2.GlobalEventManager.OnHitEnemy += GlobalEventManager_OnHitEnemy;
+            IL.RoR2.GlobalEventManager.ProcessHitEnemy += GlobalEventManager_ProcessHitEnemy;
             RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
         }
 
@@ -83,7 +83,7 @@ namespace WellRoundedBalance.Items.Greens
             }
         }
 
-        private void GlobalEventManager_OnHitEnemy(ILContext il)
+        private void GlobalEventManager_ProcessHitEnemy(ILContext il)
         {
             ILCursor c = new(il);
             int stack = GetItemLoc(c, nameof(RoR2Content.Items.SlowOnHit));

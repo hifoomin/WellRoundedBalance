@@ -34,7 +34,7 @@ namespace WellRoundedBalance.Items.Lunars
             On.RoR2.CharacterBody.OnInventoryChanged += InvChanged;
             On.RoR2.Inventory.GetEquipmentSlotMaxCharges += AddCharges;
             On.RoR2.Inventory.UpdateEquipment += Destroy;
-            IL.RoR2.EquipmentSlot.FixedUpdate += EnforceDelay;
+            IL.RoR2.EquipmentSlot.MyFixedUpdate += EnforceDelay;
             On.RoR2.EquipmentSlot.Execute += TriggerDelay;
             On.RoR2.Inventory.SetEquipmentIndex += FullStockCharges;
             On.RoR2.Inventory.SetEquipmentInternal += SetEquipment;

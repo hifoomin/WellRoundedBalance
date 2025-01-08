@@ -9,8 +9,6 @@ namespace WellRoundedBalance.Difficulties
         public abstract DifficultyIndex InternalDiff { get; }
         public abstract string DescText { get; }
 
-        public static event Action onTokenRegister;
-
         public static List<string> difficultyList = new();
 
         public override void Init()
@@ -19,10 +17,6 @@ namespace WellRoundedBalance.Difficulties
             SetToken();
             difficultyList.Add(Name);
         }
-
-        [SystemInitializer(typeof(DifficultyCatalog))]
-        public static void OnDifficultyInitialized()
-        { if (onTokenRegister != null) onTokenRegister(); }
 
         public void SetToken()
         {

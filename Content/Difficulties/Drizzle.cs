@@ -36,12 +36,14 @@ namespace WellRoundedBalance.Difficulties
         {
             ILCursor c = new(il);
 
-            if (c.TryGotoNext(MoveType.Before,
-                x => x.MatchLdloc(72),
+            c.FindLocal(LocalType.ItemCount, "DrizzlePlayerHelper", out int dph);
+            c.StepLocal(dph);
+            
+            if (c.TryGotoNext(MoveType.After,
+                x => x.MatchLdloc(out _),
                 x => x.MatchLdcR4(0.5f)))
             {
-                c.Index += 1;
-                c.Next.Operand = percentRegenIncrease;
+                c.Prev.Operand = percentRegenIncrease;
             }
             else
             {

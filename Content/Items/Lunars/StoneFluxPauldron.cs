@@ -22,7 +22,7 @@ namespace WellRoundedBalance.Items.Lunars
         public override void Hooks()
         {
             IL.RoR2.CharacterBody.RecalculateStats += Changes;
-            On.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
+            On.RoR2.HealthComponent.TakeDamageProcess += HealthComponent_TakeDamageProcess;
             RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
         }
 
@@ -38,7 +38,7 @@ namespace WellRoundedBalance.Items.Lunars
             }
         }
 
-        private void HealthComponent_TakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo)
+        private void HealthComponent_TakeDamageProcess(On.RoR2.HealthComponent.orig_TakeDamageProcess orig, HealthComponent self, DamageInfo damageInfo)
         {
             var attacker = damageInfo.attacker;
             if (attacker)
@@ -85,9 +85,11 @@ namespace WellRoundedBalance.Items.Lunars
         {
             ILCursor c = new(il);
 
+            c.FindLocal(LocalType.ItemCount, "HalfSpeedDoubleHealth", out int stone, "DLC1Content");
+
             if (c.TryGotoNext(MoveType.Before,
-                    x => x.MatchLdloc(76),
-                    x => x.MatchLdloc(44),
+                    x => x.MatchLdloc(out _),
+                    x => x.MatchLdloc(stone),
                     x => x.MatchConvR4(),
                     x => x.MatchLdcR4(1f)))
             {
@@ -99,11 +101,9 @@ namespace WellRoundedBalance.Items.Lunars
                 Logger.LogError("Failed to apply Stone Flux Pauldron Speed hook");
             }
 
-            c.Index = 0;
-
             if (c.TryGotoNext(MoveType.Before,
-               x => x.MatchLdloc(63),
-               x => x.MatchLdloc(44),
+               x => x.MatchLdloc(out _),
+               x => x.MatchLdloc(stone),
                x => x.MatchConvR4(),
                x => x.MatchLdcR4(1f)))
             {

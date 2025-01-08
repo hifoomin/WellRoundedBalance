@@ -56,7 +56,7 @@ namespace WellRoundedBalance.Items.Greens
 
             PrefabAPI.RegisterNetworkPrefab(indicator);
 
-            IL.RoR2.HealthComponent.TakeDamage += HealthComponent_TakeDamage;
+            IL.RoR2.HealthComponent.TakeDamageProcess += HealthComponent_TakeDamageProcess;
             CharacterBody.onBodyInventoryChangedGlobal += CharacterBody_onBodyInventoryChangedGlobal;
         }
 
@@ -65,7 +65,7 @@ namespace WellRoundedBalance.Items.Greens
             if (NetworkServer.active) characterBody.AddItemBehavior<RazorwireController>(characterBody.inventory.GetItemCount(RoR2Content.Items.Thorns));
         }
 
-        private void HealthComponent_TakeDamage(ILContext il)
+        private void HealthComponent_TakeDamageProcess(ILContext il)
         {
             ILCursor c = new(il);
 
@@ -181,7 +181,7 @@ namespace WellRoundedBalance.Items.Greens
                     position = victimBody.corePosition,
                     inflictor = gameObject
                 };
-                victimHealthComponent.TakeDamage(info);
+                victimHealthComponent.TakeDamageProcess(info);
             }
         }
 

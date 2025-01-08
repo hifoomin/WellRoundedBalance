@@ -26,7 +26,7 @@ namespace WellRoundedBalance.Items.Reds
         {
             IL.RoR2.GlobalEventManager.OnCharacterDeath += DisableVanilla;
             GlobalEventManager.onCharacterDeathGlobal += Killed;
-            On.RoR2.HealthComponent.TakeDamage += ReduceDamage;
+            On.RoR2.HealthComponent.TakeDamageProcess += ReduceDamage;
             On.RoR2.Inventory.RemoveItem_ItemIndex_int += Inventory_RemoveItem_ItemIndex_int;
         }
 
@@ -56,7 +56,7 @@ namespace WellRoundedBalance.Items.Reds
             }
         }
 
-        private void ReduceDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damage)
+        private void ReduceDamage(On.RoR2.HealthComponent.orig_TakeDamageProcess orig, HealthComponent self, DamageInfo damage)
         {
             if (NetworkServer.active)
             {

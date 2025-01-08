@@ -25,7 +25,7 @@ namespace WellRoundedBalance.Items.Lunars
 
         public override void Hooks()
         {
-            IL.RoR2.CharacterBody.FixedUpdate += CharacterBody_FixedUpdate;
+            IL.RoR2.CharacterBody.UpdateOutOfCombatAndDanger += CharacterBody_FixedUpdate;
         }
 
         private void CharacterBody_FixedUpdate(ILContext il)

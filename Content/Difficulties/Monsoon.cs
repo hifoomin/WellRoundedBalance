@@ -32,16 +32,18 @@ namespace WellRoundedBalance.Difficulties
         {
             ILCursor c = new(il);
 
-            if (c.TryGotoNext(MoveType.Before,
-                x => x.MatchLdloc(72),
+            c.FindLocal(LocalType.ItemCount, "MonsoonPlayerHelper", out int dph);
+            c.StepLocal(dph);
+            
+            if (c.TryGotoNext(MoveType.After,
+                x => x.MatchLdloc(out _),
                 x => x.MatchLdcR4(0.4f)))
             {
-                c.Index += 1;
-                c.Next.Operand = percentRegenDecrease;
+                c.Prev.Operand = percentRegenDecrease;
             }
             else
             {
-                Logger.LogError("Failed to apply Drizzle Regen hook");
+                Logger.LogError("Failed to apply Monsoon Regen hook");
             }
         }
 

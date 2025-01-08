@@ -256,7 +256,7 @@ namespace WellRoundedBalance.Items.ConsistentCategories
 
         public static void BetterAIBlacklist()
         {
-            foreach (ItemDef itemDef in ItemCatalog.itemDefs)
+            foreach (ItemDef itemDef in ItemCatalog.allItemDefs)
             {
                 if ((itemDef.tags.Contains(ItemTag.OnKillEffect) || itemDef.tags.Contains(ItemTag.InteractableRelated) || itemDef.tags.Contains(ItemTag.SprintRelated) || itemDef.tags.Contains(ItemTag.EquipmentRelated) || itemDef.tags.Contains(ItemTag.HoldoutZoneRelated) || itemDef.tags.Contains(ItemTag.OnStageBeginEffect)) && !itemDef.tags.Contains(ItemTag.AIBlacklist))
                 {

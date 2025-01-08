@@ -22,9 +22,9 @@ namespace WellRoundedBalance.Items.Greens
         public override void Hooks()
         {
             glow = Main.wellroundedbalance.LoadAsset<GameObject>("Assets/WellRoundedBalance/Glow.prefab");
-            Changes();
+            // Changes();
             GlobalEventManager.OnInteractionsGlobal += GlobalEventManager_OnInteractionsGlobal;
-            On.RoR2.Stage.Start += Stage_Start;
+            // On.RoR2.Stage.Start += Stage_Start;
         }
 
         private void Stage_Start(On.RoR2.Stage.orig_Start orig, Stage self)
@@ -138,6 +138,8 @@ namespace WellRoundedBalance.Items.Greens
         private void Changes()
         {
             var greenPrinter = Utils.Paths.GameObject.DuplicatorLarge.Load<GameObject>();
+            Debug.Log(greenPrinter);
+            Debug.Log(glow);
             glow.transform.SetParent(greenPrinter.transform);
             glow.transform.position = Vector3.zero;
             glow.transform.localPosition = Vector3.zero;

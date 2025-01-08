@@ -233,8 +233,8 @@ namespace WellRoundedBalance.Elites.Tier1
         public override void Hooks()
         {
             // ContentAddition.AddEntityState(typeof(PillarDeathState), out _);
-            IL.RoR2.GlobalEventManager.OnHitEnemy += GlobalEventManager_OnHitEnemy;
-            On.RoR2.GlobalEventManager.OnHitAll += GlobalEventManager_OnHitAll;
+            IL.RoR2.GlobalEventManager.ProcessHitEnemy += GlobalEventManager_ProcessHitEnemy;
+            On.RoR2.GlobalEventManager.OnHitAllProcess += GlobalEventManager_OnHitAllProcess;
             RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
             IL.RoR2.CharacterModel.UpdateOverlays += CharacterModel_UpdateOverlays;
             // CharacterBody.onBodyInventoryChangedGlobal += CharacterBody_onBodyInventoryChangedGlobal;
@@ -263,7 +263,7 @@ namespace WellRoundedBalance.Elites.Tier1
             }
         }
 
-        private void GlobalEventManager_OnHitAll(On.RoR2.GlobalEventManager.orig_OnHitAll orig, GlobalEventManager self, DamageInfo damageInfo, GameObject hitObject)
+        private void GlobalEventManager_OnHitAllProcess(On.RoR2.GlobalEventManager.orig_OnHitAllProcess orig, GlobalEventManager self, DamageInfo damageInfo, GameObject hitObject)
         {
             var attacker = damageInfo.attacker;
             if (attacker)
@@ -331,7 +331,7 @@ namespace WellRoundedBalance.Elites.Tier1
             }
         }
 
-        private void GlobalEventManager_OnHitEnemy(ILContext il)
+        private void GlobalEventManager_ProcessHitEnemy(ILContext il)
         {
             ILCursor c = new(il);
 

@@ -29,8 +29,8 @@ namespace WellRoundedBalance.Items.Greens
 
         public override void Hooks()
         {
-            IL.RoR2.GlobalEventManager.OnHitEnemy += ChangeDebuffsReq;
-            IL.RoR2.HealthComponent.TakeDamage += Changes;
+            IL.RoR2.GlobalEventManager.ProcessHitEnemy += ChangeDebuffsReq;
+            IL.RoR2.HealthComponent.TakeDamageProcess += Changes;
         }
 
         private void Changes(ILContext il)
@@ -38,11 +38,12 @@ namespace WellRoundedBalance.Items.Greens
             ILCursor c = new(il);
             if (c.TryGotoNext(
                     x => x.MatchBrfalse(out _),
-                    x => x.MatchLdloc(6),
+                    x => x.MatchLdloc(7),
                     x => x.MatchLdcR4(1.5f),
                     x => x.MatchMul(),
-                    x => x.MatchStloc(6),
-                    x => x.MatchLdarg(1),
+                    x => x.MatchStloc(7),
+                    x => x.MatchLdloc(0),
+                    x => x.MatchLdfld(out _),
                     x => x.MatchLdcI4(7),
                     x => x.MatchStfld<DamageInfo>("damageColorIndex")
                 ))
@@ -94,8 +95,18 @@ namespace WellRoundedBalance.Items.Greens
         private void ChangeDebuffsReq(ILContext il)
         {
             ILCursor c = new(il);
+
+            c.FindLocal(LocalType.ItemCount, "DeathMark", out int dm);
+
+            /*
+            // if (num9 >= 4)
+	        IL_132e: ldloc.s 18
+	        IL_1330: ldc.i4.4
+	        IL_1331: blt.s IL_1347
+            */
+
             if (c.TryGotoNext(
-                    x => x.MatchLdloc(16),
+                    x => x.MatchLdloc(18),
                     x => x.MatchLdcI4(4),
                     x => x.MatchBlt(out ILLabel IL_1180)))
             {

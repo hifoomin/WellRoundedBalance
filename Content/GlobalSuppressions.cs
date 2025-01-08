@@ -86,7 +86,7 @@ using System.Diagnostics.CodeAnalysis;
 [assembly: SuppressMessage("Style", "IDE0090:Use 'new(...)'", Justification = "<Pending>", Scope = "member", Target = "~M:WellRoundedBalance.Items.Whites.StunGrenade.ChangeBehavior(MonoMod.Cil.ILContext)")]
 [assembly: SuppressMessage("Style", "IDE0090:Use 'new(...)'", Justification = "<Pending>", Scope = "member", Target = "~M:WellRoundedBalance.Items.Whites.StunGrenade.ChangeChance(MonoMod.Cil.ILContext)")]
 [assembly: SuppressMessage("Style", "IDE0090:Use 'new(...)'", Justification = "<Pending>", Scope = "member", Target = "~M:WellRoundedBalance.Items.Whites.TopazBrooch.ChangeBarrier(MonoMod.Cil.ILContext)")]
-[assembly: SuppressMessage("Style", "IDE0090:Use 'new(...)'", Justification = "<Pending>", Scope = "member", Target = "~M:WellRoundedBalance.Items.Whites.TougherTimes.HealthCompoment_TakeDamage(MonoMod.Cil.ILContext)")]
+[assembly: SuppressMessage("Style", "IDE0090:Use 'new(...)'", Justification = "<Pending>", Scope = "member", Target = "~M:WellRoundedBalance.Items.Whites.TougherTimes.HealthCompoment_TakeDamageProcess(MonoMod.Cil.ILContext)")]
 [assembly: SuppressMessage("Style", "IDE0090:Use 'new(...)'", Justification = "<Pending>", Scope = "member", Target = "~M:WellRoundedBalance.Items.Whites.TriTipDagger.ChangeChance(MonoMod.Cil.ILContext)")]
 [assembly: SuppressMessage("Style", "IDE0090:Use 'new(...)'", Justification = "<Pending>", Scope = "member", Target = "~M:WellRoundedBalance.Items.Whites.TriTipDagger.ChangeDamage(MonoMod.Cil.ILContext)")]
 [assembly: SuppressMessage("Style", "IDE0090:Use 'new(...)'", Justification = "<Pending>", Scope = "member", Target = "~M:WellRoundedBalance.Items.Whites.TriTipDagger.ChangeDuration(MonoMod.Cil.ILContext)")]

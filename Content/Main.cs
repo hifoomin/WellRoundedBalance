@@ -35,7 +35,7 @@ namespace WellRoundedBalance
         public const string PluginGUID = PluginAuthor + "." + PluginName;
         public const string PluginAuthor = "BALLS";
         public const string PluginName = "WellRoundedBalance";
-        public const string PluginVersion = "1.4.3";
+        public const string PluginVersion = "1.4.4";
         public static ConfigFile WRBAchievementConfig;
         public static ConfigFile WRBAllyConfig;
         public static ConfigFile WRBArtifactAddConfig;
@@ -146,7 +146,7 @@ namespace WellRoundedBalance
 
             if (mp)
             {
-                On.RoR2.Networking.NetworkManagerSystemSteam.OnClientConnect += (s, u, t) => { };
+                // On.RoR2.Networking.NetworkManagerSystemSteam.OnClientConnect += (s, u, t) => { };
                 // nvm cant cause of backup config sharing violation on path
             }
 
@@ -178,8 +178,10 @@ namespace WellRoundedBalance
                 WRBLogger.LogDebug("Wolfo QoL detected");
                 On.RoR2.PickupPickerController.OnDisplayBegin += PickupPickerController_OnDisplayBegin;
             }
+        }
 
-            InfernoCompat();
+        public static bool IsInfernoDef() {
+            return false;
         }
 
         private void PickupPickerController_OnDisplayBegin(On.RoR2.PickupPickerController.orig_OnDisplayBegin orig, PickupPickerController self, NetworkUIPromptController networkUIPromptController, LocalUser localUser, CameraRigController cameraRigController)
@@ -203,18 +205,8 @@ namespace WellRoundedBalance
             }
         }
 
-        private void InfernoCompat()
-        {
-            if (InfernoLoaded)
-            {
-                InfernoDef = GetInfernoDef();
-            }
-        }
-
         public static float GetProjectileSimpleModifiers(float speed)
         {
-            if (InfernoLoaded) speed *= GetInfernoProjectileSpeedMult();
-            if (RiskyArtifactsLoaded) speed *= GetRiskyArtifactsWarfareProjectileSpeedMult();
             return speed;
         }
 
@@ -224,36 +216,6 @@ namespace WellRoundedBalance
             if (RunArtifactManager.instance && RunArtifactManager.instance.IsArtifactEnabled(Risky_Artifacts.Artifacts.Warfare.artifact))
             {
                 return Risky_Artifacts.Artifacts.Warfare.projSpeed;
-            }
-            return 1f;
-        }
-
-        [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)]
-        public static DifficultyDef GetInfernoDef()
-        {
-            return Inferno.Main.InfernoDiffDef;
-        }
-
-        [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)]
-        public static bool IsInfernoDef()
-        {
-            if (InfernoLoaded && Run.instance)
-            {
-                if (DifficultyCatalog.GetDifficultyDef(Run.instance.selectedDifficulty) == InfernoDef)
-                {
-                    // WRBLogger.LogError("Difficulty is inferno");
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)]
-        public static float GetInfernoProjectileSpeedMult()
-        {
-            if (Run.instance && DifficultyCatalog.GetDifficultyDef(Run.instance.selectedDifficulty) == InfernoDef)
-            {
-                return Inferno.Main.ProjectileSpeed.Value;
             }
             return 1f;
         }

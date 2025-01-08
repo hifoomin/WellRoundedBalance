@@ -30,10 +30,10 @@ namespace WellRoundedBalance.Items.Whites
 
         public override void Hooks()
         {
-            IL.RoR2.HealthComponent.TakeDamage += HealthCompoment_TakeDamage;
+            IL.RoR2.HealthComponent.TakeDamageProcess += HealthCompoment_TakeDamageProcess;
         }
 
-        public static void HealthCompoment_TakeDamage(ILContext il)
+        public static void HealthCompoment_TakeDamageProcess(ILContext il)
         {
             ILCursor c = new(il);
             int dmg = -1;
