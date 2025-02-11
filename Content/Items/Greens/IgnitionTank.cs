@@ -13,10 +13,10 @@ namespace WellRoundedBalance.Items.Greens
         public override string DescText => (igniteChanceOnHit > 0 ? "Gain <style=cIsDamage>" + igniteChanceOnHit + "%</style> chance to <style=cIsDamage>ignite</style> enemies on hit. " : "") +
                                            "Ignite effects deal <style=cIsDamage>+" + d(igniteDamageIncrease) + "</style> <style=cStack>(+" + d(igniteDamageIncrease) + " per stack)</style> more damage over time.";
 
-        [ConfigField("Ignite Chance On Hit", 15f)]
+        [ConfigField("Ignite Chance On Hit", 10f)]
         public static float igniteChanceOnHit;
 
-        [ConfigField("Ignite Damage Increase", "Decimal.", 1.5f)]
+        [ConfigField("Ignite Damage Increase", "Decimal.", 1f)]
         public static float igniteDamageIncrease;
 
         public override void Init()

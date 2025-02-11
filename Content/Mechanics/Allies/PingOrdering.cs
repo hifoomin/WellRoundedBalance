@@ -1,4 +1,4 @@
-﻿using EntityStates.AI;
+﻿/*using EntityStates.AI;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using RoR2.Navigation;
@@ -280,4 +280,4 @@ namespace WellRoundedBalance.Mechanics.Allies
             }
         }
     }
-}
+}*/

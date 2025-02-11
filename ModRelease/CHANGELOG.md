@@ -1,3 +1,9 @@
+# 1.4.5
+- Removed Greater Wisp from stage 1
+- Reverted unfinished Wandering Vagrant changes
+- Removed the weird ping ordering system that was unintuitive and caused confusion (betterdrones, which wrb deps on, already provides simple ping ordering anyway)
+- Nerfed Ignition Tank Ignite Chance 15% => **10%**
+- Nerfed Ignition Tank Ignite Damage 150% => **100%**
 # 1.4.4 Patch Notes
 - Works on SOTS.
 - Removed dependencies on mods that no longer work.
