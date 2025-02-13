@@ -8,6 +8,7 @@ using MonoMod.RuntimeDetour;
 using HarmonyLib;
 using WellRoundedBalance.Items.ConsistentCategories;
 using Mono.Cecil;
+using System;
 
 [assembly: HG.Reflection.SearchableAttribute.OptIn]
 
@@ -35,7 +36,7 @@ namespace WellRoundedBalance
         public const string PluginGUID = PluginAuthor + "." + PluginName;
         public const string PluginAuthor = "BALLS";
         public const string PluginName = "WellRoundedBalance";
-        public const string PluginVersion = "1.4.4";
+        public const string PluginVersion = "1.4.6";
         public static ConfigFile WRBAchievementConfig;
         public static ConfigFile WRBAllyConfig;
         public static ConfigFile WRBArtifactAddConfig;
@@ -179,6 +180,23 @@ namespace WellRoundedBalance
                 WRBLogger.LogDebug("Wolfo QoL detected");
                 On.RoR2.PickupPickerController.OnDisplayBegin += PickupPickerController_OnDisplayBegin;
             }
+
+            IL.RoR2.CharacterMaster.OnBodyDamaged += BandaidFix;
+        }
+
+        private void BandaidFix(ILContext il)
+        {
+            ILCursor c = new(il);
+            c.TryGotoNext(MoveType.After, x => x.MatchStloc(0));
+            c.Emit(OpCodes.Ldloc, 0);
+            c.EmitDelegate<Func<BaseAI[], BaseAI[]>>((b) => {
+                if (b == null) {
+                    return new BaseAI[0];
+                }
+
+                return b;
+            });
+            c.Emit(OpCodes.Stloc, 0);
         }
 
         public static bool IsInfernoDef() {

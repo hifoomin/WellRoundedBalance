@@ -235,7 +235,10 @@ namespace WellRoundedBalance.Elites {
 
                 if (destructionStopwatch <= 0f && markedForDestruction) {
                     Destroy(laserInstance);
-                    Destroy(this.gameObject);
+                    if (NetworkServer.active) {
+                        NetworkServer.Destroy(this.gameObject);
+                    }
+                    return;
                 }
 
                 if (stopwatch >= 3f && !markedForDestruction) {
@@ -245,6 +248,9 @@ namespace WellRoundedBalance.Elites {
                 }
 
                 if (damageStopwatch >= 0.2f) {
+                    if (!NetworkServer.active) {
+                        return;
+                    }
                     damageStopwatch = 0f;
 
                     BulletAttack bulletAttack = new();
