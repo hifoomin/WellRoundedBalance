@@ -32,14 +32,14 @@
             var abyssal1 = Utils.Paths.DirectorCardCategorySelection.dccsDampCaveMonsters.Load<DirectorCardCategorySelection>();
             abyssal1.categories[0].cards[3].minimumStageCompletions = 5;
 
-            var abyssal2 = Utils.Paths.DirectorCardCategorySelection.dccsDampCaveMonstersDLC1.Load<DirectorCardCategorySelection>();
-            abyssal2.categories[0].cards[3].minimumStageCompletions = 5;
+            // var abyssal2 = Utils.Paths.DirectorCardCategorySelection.dccsDampCaveMonstersDLC1.Load<DirectorCardCategorySelection>();
+            // abyssal2.categories[0].cards[3].minimumStageCompletions = 5;
 
             var meadow1 = Utils.Paths.DirectorCardCategorySelection.dccsSkyMeadowMonsters.Load<DirectorCardCategorySelection>();
             meadow1.categories[0].cards[2].minimumStageCompletions = 6;
 
-            var meadow2 = Utils.Paths.DirectorCardCategorySelection.dccsSkyMeadowMonstersDLC1.Load<DirectorCardCategorySelection>();
-            meadow2.categories[0].cards[1].minimumStageCompletions = 6;
+            // var meadow2 = Utils.Paths.DirectorCardCategorySelection.dccsSkyMeadowMonstersDLC1.Load<DirectorCardCategorySelection>();
+            // meadow2.categories[0].cards[1].minimumStageCompletions = 6;
         }
     }
 }

@@ -94,6 +94,7 @@ namespace WellRoundedBalance.Enemies.FinalBosses
         public static GameObject ramp2;
         public static GameObject ramp3;
         public static GameObject rocks;
+        public static GameObject ramps;
 
         public static BuffDef speedBuff;
 
@@ -426,13 +427,6 @@ namespace WellRoundedBalance.Enemies.FinalBosses
 
         private void Phase4_OnEnter(On.EntityStates.Missions.BrotherEncounter.Phase4.orig_OnEnter orig, EntityStates.Missions.BrotherEncounter.Phase4 self)
         {
-            if (disableRamps)
-            {
-                ramp1.SetActive(false);
-                ramp2.SetActive(false);
-                ramp3.SetActive(false);
-                rocks.SetActive(false);
-            }
             for (int i = 0; i < CharacterBody.readOnlyInstancesList.Count; i++)
             {
                 var body = CharacterBody.readOnlyInstancesList[i];
@@ -466,25 +460,11 @@ namespace WellRoundedBalance.Enemies.FinalBosses
 
         private void Phase3_OnEnter(On.EntityStates.Missions.BrotherEncounter.Phase3.orig_OnEnter orig, EntityStates.Missions.BrotherEncounter.Phase3 self)
         {
-            if (disableRamps)
-            {
-                ramp1.SetActive(false);
-                ramp2.SetActive(false);
-                ramp3.SetActive(false);
-                rocks.SetActive(false);
-            }
             orig(self);
         }
 
         private void Phase2_OnEnter(On.EntityStates.Missions.BrotherEncounter.Phase2.orig_OnEnter orig, EntityStates.Missions.BrotherEncounter.Phase2 self)
         {
-            if (disableRamps)
-            {
-                ramp1.SetActive(false);
-                ramp2.SetActive(false);
-                ramp3.SetActive(false);
-                rocks.SetActive(false);
-            }
             orig(self);
             if (disablePhase2)
             {
@@ -495,13 +475,6 @@ namespace WellRoundedBalance.Enemies.FinalBosses
 
         private void Phase1_OnEnter(On.EntityStates.Missions.BrotherEncounter.Phase1.orig_OnEnter orig, EntityStates.Missions.BrotherEncounter.Phase1 self)
         {
-            if (disableRamps)
-            {
-                ramp1.SetActive(false);
-                ramp2.SetActive(false);
-                ramp3.SetActive(false);
-                rocks.SetActive(false);
-            }
             orig(self);
         }
 
@@ -510,10 +483,9 @@ namespace WellRoundedBalance.Enemies.FinalBosses
             if (SceneManager.GetActiveScene().name == "moon2")
             {
                 var Arena = GameObject.Find("HOLDER: Final Arena").transform;
-                ramp1 = Arena.GetChild(0).gameObject;
-                ramp2 = Arena.GetChild(1).gameObject;
-                ramp3 = Arena.GetChild(2).gameObject;
-                rocks = Arena.GetChild(6).gameObject;
+                if (disableRamps) {
+                    Arena.transform.Find("Columns_Inner").gameObject.SetActive(false);
+                }
             }
             orig(self);
         }

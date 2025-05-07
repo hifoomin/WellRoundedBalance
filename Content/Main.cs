@@ -36,7 +36,7 @@ namespace WellRoundedBalance
         public const string PluginGUID = PluginAuthor + "." + PluginName;
         public const string PluginAuthor = "BALLS";
         public const string PluginName = "WellRoundedBalance";
-        public const string PluginVersion = "1.4.6";
+        public const string PluginVersion = "1.4.9";
         public static ConfigFile WRBAchievementConfig;
         public static ConfigFile WRBAllyConfig;
         public static ConfigFile WRBArtifactAddConfig;
@@ -181,7 +181,7 @@ namespace WellRoundedBalance
                 On.RoR2.PickupPickerController.OnDisplayBegin += PickupPickerController_OnDisplayBegin;
             }
 
-            IL.RoR2.CharacterMaster.OnBodyDamaged += BandaidFix;
+            // IL.RoR2.CharacterMaster.OnBodyDamaged += BandaidFix;
         }
 
         private void BandaidFix(ILContext il)

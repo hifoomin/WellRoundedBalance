@@ -1,3 +1,12 @@
+# 1.4.9 Patch Notes
+- no longer deletes the entire mithrix arena
+
+# 1.4.8 Patch Notes
+- Fixed for SOTS P2
+
+# 1.4.7 Patch Notes
+- Fixed camera lock bug actually this time
+
 # 1.4.6 Patch Notes
 - Attempt at fixing the camera lock bug (i cannot reproduce this so idk if it worked, ill see when i stop getting reports about it)
 

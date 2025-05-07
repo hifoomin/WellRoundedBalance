@@ -192,11 +192,11 @@ namespace WellRoundedBalance.Interactables
             roost1.categories[2].cards[1] = shrineBossDC;
             roost1.categories[2].cards[2] = shrineChanceDC;
 
-            var roost2 = Utils.Paths.DirectorCardCategorySelection.dccsBlackBeachInteractablesDLC1.Load<DirectorCardCategorySelection>();
-            Array.Resize(ref roost2.categories[2].cards, 3);
-            roost2.categories[2].cards[0] = shrineBloodDC;
-            roost2.categories[2].cards[1] = shrineBossDC;
-            roost2.categories[2].cards[2] = shrineChanceDC;
+            // var roost2 = Utils.Paths.DirectorCardCategorySelection.dccsBlackBeachInteractablesDLC1.Load<DirectorCardCategorySelection>();
+            // Array.Resize(ref roost2.categories[2].cards, 3);
+            // roost2.categories[2].cards[0] = shrineBloodDC;
+            // roost2.categories[2].cards[1] = shrineBossDC;
+            // roost2.categories[2].cards[2] = shrineChanceDC;
         }
     }
 }

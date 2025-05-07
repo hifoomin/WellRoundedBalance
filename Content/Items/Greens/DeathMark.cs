@@ -36,9 +36,7 @@ namespace WellRoundedBalance.Items.Greens
         private void Changes(ILContext il)
         {
             ILCursor c = new(il);
-            if (c.TryGotoNext(
-                    x => x.MatchBrfalse(out _),
-                    x => x.MatchLdloc(7),
+            if (c.TryGotoNext(MoveType.Before,
                     x => x.MatchLdcR4(1.5f),
                     x => x.MatchMul(),
                     x => x.MatchStloc(7),
@@ -48,12 +46,13 @@ namespace WellRoundedBalance.Items.Greens
                     x => x.MatchStfld<DamageInfo>("damageColorIndex")
                 ))
             {
-                c.Index += 3;
-                c.Emit(OpCodes.Pop);
+                c.Index++;
                 c.Emit(OpCodes.Ldarg_0);
-                c.Emit(OpCodes.Ldloc_1);
-                c.EmitDelegate<Func<HealthComponent, CharacterBody, float>>((self, attacker) =>
+                c.Emit(OpCodes.Ldarg_1);
+                c.EmitDelegate<Func<float, HealthComponent, DamageInfo, float>>((useless, self, dinfo) =>
                 {
+                    if (!dinfo.attacker) return 1.5f;
+                    CharacterBody attacker = dinfo.attacker.GetComponent<CharacterBody>();
                     if (self.body && attacker.master && attacker.master.inventory)
                     {
                         int DeathMarkCount = Util.GetItemCountForTeam(attacker.master.teamIndex, RoR2Content.Items.DeathMark.itemIndex, false);
