@@ -100,7 +100,7 @@ namespace WellRoundedBalance.Items.Lunars
         {
             if (sender && sender.inventory)
             {
-                var stack = sender.inventory.GetItemCount(RoR2Content.Items.LunarTrinket);
+                var stack = sender.inventory.GetItemCountEffective(RoR2Content.Items.LunarTrinket);
                 if (stack > 0)
                 {
                     var regenStack = baseRegenerationGain + (regenerationGainPerStack * (stack - 1));

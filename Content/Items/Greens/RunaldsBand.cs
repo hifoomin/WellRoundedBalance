@@ -116,7 +116,7 @@ namespace WellRoundedBalance.Items.Greens
                         var procChainMask = damageInfo.procChainMask;
                         procChainMask.AddProc(ProcType.Rings);
 
-                        var stack = inventory.GetItemCount(RoR2Content.Items.IceRing);
+                        var stack = inventory.GetItemCountEffective(RoR2Content.Items.IceRing);
                         if (stack > 0)
                         {
                             DamageInfo baseDamageProc = new()

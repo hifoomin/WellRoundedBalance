@@ -32,7 +32,7 @@ namespace WellRoundedBalance.Items.Reds
         {
             if (sender.inventory)
             {
-                var stack = sender.inventory.GetItemCount(RoR2Content.Items.AlienHead);
+                var stack = sender.inventory.GetItemCountEffective(RoR2Content.Items.AlienHead);
                 if (stack > 0)
                 {
                     args.cooldownReductionAdd += flatCooldownReduction;

@@ -31,7 +31,7 @@ namespace WellRoundedBalance.Items.Whites
 
             if (c.TryGotoNext(MoveType.Before,
                 x => x.MatchLdsfld("RoR2.RoR2Content/Items", "BossDamageBonus"),
-                x => x.MatchCallOrCallvirt(typeof(Inventory).GetMethod("GetItemCount", new Type[] { typeof(ItemDef) })),
+                x => x.MatchCallOrCallvirt(typeof(Inventory).GetMethod("GetItemCountEffective", new Type[] { typeof(ItemDef) })),
                 x => x.MatchStloc(out _),
                 x => x.MatchLdloc(out _),
                 x => x.MatchLdcI4(0)))
@@ -62,7 +62,7 @@ namespace WellRoundedBalance.Items.Whites
                         var inventory = attackerBody.inventory;
                         if (inventory)
                         {
-                            var stack = inventory.GetItemCount(RoR2Content.Items.BossDamageBonus);
+                            var stack = inventory.GetItemCountEffective(RoR2Content.Items.BossDamageBonus);
                             if ((victimBody.isChampion || victimBody.isBoss) && stack > 0)
                             {
                                 damageInfo.damage *= 1f + bossChampionDamageBonus * stack;

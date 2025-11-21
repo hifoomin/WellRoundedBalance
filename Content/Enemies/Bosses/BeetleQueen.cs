@@ -1,5 +1,7 @@
-﻿using EntityStates;
+﻿using BepInEx;
+using EntityStates;
 using RoR2.Skills;
+using RoR2BepInExPack;
 using System;
 
 namespace WellRoundedBalance.Enemies.Bosses
@@ -40,8 +42,6 @@ namespace WellRoundedBalance.Enemies.Bosses
                 }
             }
         }
-
-        public static CharacterMaster queen = Utils.Paths.GameObject.BeetleQueenMaster.Load<GameObject>().GetComponent<CharacterMaster>();
 
         private void SpawnWards_OnEnter(On.EntityStates.BeetleQueenMonster.SpawnWards.orig_OnEnter orig, EntityStates.BeetleQueenMonster.SpawnWards self)
         {
@@ -85,7 +85,7 @@ namespace WellRoundedBalance.Enemies.Bosses
         {
             ContentAddition.AddEntityState(typeof(Earthquake), out _);
 
-            var beetleQueen = Utils.Paths.GameObject.BeetleQueen2Body9.Load<GameObject>();
+            var beetleQueen = RoR2BepInExPack.GameAssetPaths.RoR2_Base_BeetleQueen.BeetleQueen2Body_prefab.Load<GameObject>();
 
             var esm = beetleQueen.AddComponent<EntityStateMachine>();
             esm.customName = "Earthquake";
@@ -128,7 +128,7 @@ namespace WellRoundedBalance.Enemies.Bosses
             var utility = beetleQueen.AddComponent<GenericSkill>();
             utility._skillFamily = utilityFamily;
 
-            var master = Utils.Paths.GameObject.BeetleQueenMaster.Load<GameObject>();
+            var master = RoR2BepInExPack.GameAssetPaths.RoR2_Base_BeetleQueen.BeetleQueenMaster_prefab.Load<GameObject>();
             var ed = master.AddComponent<AISkillDriver>();
             ed.customName = "SummonEarthquake";
             ed.skillSlot = SkillSlot.Utility;
@@ -161,14 +161,14 @@ namespace WellRoundedBalance.Enemies.Bosses
             var locator = beetleQueen.GetComponent<SkillLocator>();
             locator.utility = utility;
 
-            var summonBeetleGuards = Utils.Paths.SkillDef.BeetleQueen2BodySummonEggs.Load<SkillDef>();
+            var summonBeetleGuards = RoR2BepInExPack.GameAssetPaths.RoR2_Base_BeetleQueen.BeetleQueen2BodySummonEggs_asset.Load<SkillDef>();
             summonBeetleGuards.baseRechargeInterval = 60f;
 
-            var spitProjectile = Utils.Paths.GameObject.BeetleQueenSpit.Load<GameObject>();
+            var spitProjectile = RoR2BepInExPack.GameAssetPaths.RoR2_Base_BeetleQueen.BeetleQueenSpit_prefab.Load<GameObject>();
             var projectileImpactExplosion = spitProjectile.GetComponent<ProjectileImpactExplosion>();
             projectileImpactExplosion.falloffModel = BlastAttack.FalloffModel.None;
 
-            var spitDoT = Utils.Paths.GameObject.BeetleQueenAcid.Load<GameObject>();
+            var spitDoT = RoR2BepInExPack.GameAssetPaths.RoR2_Base_BeetleQueen.BeetleQueenAcid_prefab.Load<GameObject>();
             var projectileDotZone = spitDoT.GetComponent<ProjectileDotZone>();
             projectileDotZone.lifetime = 9f;
             projectileDotZone.damageCoefficient = 3f;
@@ -178,14 +178,14 @@ namespace WellRoundedBalance.Enemies.Bosses
             hitBox.localPosition = new Vector3(0f, 0f, -0.5f);
             hitBox.localScale = new Vector3(4f, 1.5f, 4f);
 
-            var beetleWard = Utils.Paths.GameObject.BeetleWard.Load<GameObject>();
+            var beetleWard = RoR2BepInExPack.GameAssetPaths.RoR2_Base_BeetleGroup_BeetleWard.BeetleWard_prefab.Load<GameObject>();
             var buffWard = beetleWard.GetComponent<BuffWard>();
             buffWard.radius = 7f;
             buffWard.interval = 1f;
             buffWard.buffDuration = 2.75f;
             buffWard.expireDuration = 8f;
 
-            var egg = Utils.Paths.SkillDef.BeetleQueen2BodySpawnWards.Load<SkillDef>();
+            var egg = RoR2BepInExPack.GameAssetPaths.RoR2_Base_BeetleQueen.BeetleQueen2BodySpawnWards_asset.Load<SkillDef>();
             egg.baseRechargeInterval = 12f;
         }
     }
@@ -213,6 +213,9 @@ namespace WellRoundedBalance.Enemies.Bosses
         {
             base.OnEnter();
             var modelTransform = GetModelTransform();
+            PlayCrossfade("Gesture", "SummonEggs", baseDuration);
+            AkSoundEngine.PostEvent(Events.Play_beetle_queen_spawn, base.gameObject);
+            AkSoundEngine.PostEvent(Events.Play_beetle_queen_death, base.gameObject);
             if (modelTransform)
             {
                 var temporaryOverlay = modelTransform.gameObject.AddComponent<TemporaryOverlay>();
@@ -253,18 +256,14 @@ namespace WellRoundedBalance.Enemies.Bosses
             tellTimer += Time.fixedDeltaTime;
             if (isAuthority)
             {
-                if (tellTimer >= durationBetweenWaves - 0.25f)
+                if (tellTimer >= baseDuration - 0.5f)
                 {
                     Util.PlaySound(tellString, gameObject);
                     tellTimer -= durationBetweenWaves - 0.25f;
                 }
-                if (timer >= durationBetweenWaves)
-                {
-                    FireWave();
-                    timer -= durationBetweenWaves;
-                }
                 if (fixedAge > baseDuration)
                 {
+                    FireWave();
                     outer.SetNextStateToMain();
                 }
             }

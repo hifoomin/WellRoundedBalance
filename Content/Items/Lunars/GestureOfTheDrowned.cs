@@ -36,8 +36,7 @@ namespace WellRoundedBalance.Items.Lunars
             On.RoR2.Inventory.UpdateEquipment += Destroy;
             IL.RoR2.EquipmentSlot.MyFixedUpdate += EnforceDelay;
             On.RoR2.EquipmentSlot.Execute += TriggerDelay;
-            On.RoR2.Inventory.SetEquipmentIndex += FullStockCharges;
-            On.RoR2.Inventory.SetEquipmentInternal += SetEquipment;
+            On.RoR2.Inventory.SetEquipment_EquipmentState_uint_uint += FullStockCharges;
             IL.RoR2.Inventory.UpdateEquipment += UpdateEquipment;
             IL.RoR2.UI.EquipmentIcon.SetDisplayData += UpdateUI;
         }
@@ -137,7 +136,7 @@ namespace WellRoundedBalance.Items.Lunars
 
             c.Emit(OpCodes.Ldarg_0);
             c.EmitDelegate<Func<byte, Inventory, byte>>((input, inv) => {
-                int c = inv.GetItemCount(RoR2Content.Items.AutoCastEquipment);
+                int c = inv.GetItemCountEffective(RoR2Content.Items.AutoCastEquipment);
 
                 if (c > 0) {
                     input += (byte)(baseCharges + ((c - 1) * stackCharges));
@@ -153,7 +152,7 @@ namespace WellRoundedBalance.Items.Lunars
 
             c.Emit(OpCodes.Ldarg_0);
             c.EmitDelegate<Func<int, Inventory, int>>((input, inv) => {
-                int c = inv.GetItemCount(RoR2Content.Items.AutoCastEquipment);
+                int c = inv.GetItemCountEffective(RoR2Content.Items.AutoCastEquipment);
 
                 if (c > 0) {
                     return 0;
@@ -163,17 +162,12 @@ namespace WellRoundedBalance.Items.Lunars
             });
         }
 
-        private bool SetEquipment(On.RoR2.Inventory.orig_SetEquipmentInternal orig, Inventory self, EquipmentState equipmentState, uint slot)
+        private void FullStockCharges(On.RoR2.Inventory.orig_SetEquipment_EquipmentState_uint_uint orig, Inventory self, EquipmentState newEquipmentIndex, uint s1, uint s2)
         {
-            return orig(self, equipmentState, slot);
-        }
+            orig(self, newEquipmentIndex, s1, s2);
 
-        private void FullStockCharges(On.RoR2.Inventory.orig_SetEquipmentIndex orig, Inventory self, EquipmentIndex newEquipmentIndex)
-        {
-            orig(self, newEquipmentIndex);
-
-            if (self.GetItemCount(RoR2Content.Items.AutoCastEquipment) > 0) {
-                int added = baseCharges + ((self.GetItemCount(RoR2Content.Items.AutoCastEquipment) - 1) * stackCharges);
+            if (self.GetItemCountEffective(RoR2Content.Items.AutoCastEquipment) > 0) {
+                int added = baseCharges + ((self.GetItemCountEffective(RoR2Content.Items.AutoCastEquipment) - 1) * stackCharges);
                 self.RestockEquipmentCharges(self.activeEquipmentSlot, 1 + added);
             }
         }
@@ -212,7 +206,7 @@ namespace WellRoundedBalance.Items.Lunars
         {
             orig(self);
 
-            if (self.GetItemCount(RoR2Content.Items.AutoCastEquipment) > 0) {
+            if (self.GetItemCountEffective(RoR2Content.Items.AutoCastEquipment) > 0) {
                 if (self.GetEquipment(self.activeEquipmentSlot).equipmentDef && self.GetEquipment(self.activeEquipmentSlot).charges <= 0) {
                     self.SetEquipmentIndex(EquipmentIndex.None);
                     if (!self.GetComponent<CharacterMaster>().bodyInstanceObject) {
@@ -224,12 +218,12 @@ namespace WellRoundedBalance.Items.Lunars
             }
         }
 
-        private int AddCharges(On.RoR2.Inventory.orig_GetEquipmentSlotMaxCharges orig, Inventory self, byte slot)
+        private int AddCharges(On.RoR2.Inventory.orig_GetEquipmentSlotMaxCharges orig, Inventory self)
         {
-            int c = orig(self, slot);
+            int c = orig(self);
 
-            if (self.GetItemCount(RoR2Content.Items.AutoCastEquipment) > 0) {
-                int added = baseCharges + ((self.GetItemCount(RoR2Content.Items.AutoCastEquipment) - 1) * stackCharges);
+            if (self.GetItemCountEffective(RoR2Content.Items.AutoCastEquipment) > 0) {
+                int added = baseCharges + ((self.GetItemCountEffective(RoR2Content.Items.AutoCastEquipment) - 1) * stackCharges);
 
                 return c + added;
             }
@@ -239,7 +233,7 @@ namespace WellRoundedBalance.Items.Lunars
 
         private float Inventory_CalculateEquipmentCooldownScale(On.RoR2.Inventory.orig_CalculateEquipmentCooldownScale orig, Inventory self)
         {
-            if (self.GetItemCount(RoR2Content.Items.AutoCastEquipment) > 0) {
+            if (self.GetItemCountEffective(RoR2Content.Items.AutoCastEquipment) > 0) {
                 return 0f;
             }
 
@@ -254,13 +248,13 @@ namespace WellRoundedBalance.Items.Lunars
                 return;
             }
 
-            int gestures = self.inventory.GetItemCount(RoR2Content.Items.AutoCastEquipment);
+            int gestures = self.inventory.GetItemCountEffective(RoR2Content.Items.AutoCastEquipment);
             
             GestureDelayTracker gestureDelayTracker = self.GetComponent<GestureDelayTracker>();
 
             if (gestures > 0 && !gestureDelayTracker) {
                 gestureDelayTracker = self.gameObject.AddComponent<GestureDelayTracker>();
-                int added = baseCharges + ((self.inventory.GetItemCount(RoR2Content.Items.AutoCastEquipment) - 1) * stackCharges);
+                int added = baseCharges + ((self.inventory.GetItemCountEffective(RoR2Content.Items.AutoCastEquipment) - 1) * stackCharges);
                 self.inventory.RestockEquipmentCharges(self.inventory.activeEquipmentSlot, 1 + added);
             }
 

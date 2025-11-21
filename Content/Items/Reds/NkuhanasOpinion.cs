@@ -227,7 +227,7 @@ namespace WellRoundedBalance.Items.Reds
                 var inventory = body.inventory;
                 if (inventory)
                 {
-                    var stack = inventory.GetItemCount(RoR2Content.Items.NovaOnHeal);
+                    var stack = inventory.GetItemCountEffective(RoR2Content.Items.NovaOnHeal);
                     if (stack > 0)
                     {
                         var controller = self.GetComponent<NkuhanasOpinionController>();
@@ -245,7 +245,7 @@ namespace WellRoundedBalance.Items.Reds
         {
             if (NetworkServer.active)
             {
-                var stack = body.inventory.GetItemCount(RoR2Content.Items.NovaOnHeal);
+                var stack = body.inventory.GetItemCountEffective(RoR2Content.Items.NovaOnHeal);
                 body.AddItemBehavior<NkuhanasOpinionController>(stack);
             }
         }

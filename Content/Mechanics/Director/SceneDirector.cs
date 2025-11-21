@@ -82,7 +82,7 @@ namespace WellRoundedBalance.Mechanics.Director
 
         private void SceneDirector_onPrePopulateMonstersSceneServer(RoR2.SceneDirector sd)
         {
-            var stageInLoop = Run.instance.stageClearCount % Run.stagesPerLoop;
+            var stageInLoop = Run.instance.stageClearCount % 5;
             var combatDirector = sd.GetComponent<RoR2.CombatDirector>();
             if (combatDirector)
             {

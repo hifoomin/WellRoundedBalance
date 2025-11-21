@@ -29,111 +29,80 @@ namespace WellRoundedBalance.Items.Greens
 
         public override void Hooks()
         {
-            IL.RoR2.GlobalEventManager.ProcessHitEnemy += ChangeDebuffsReq;
-            IL.RoR2.HealthComponent.TakeDamageProcess += Changes;
+            IL.RoR2.GlobalEventManager.ProcDeathMark += Changes;
+            IL.RoR2.HealthComponent.TakeDamageProcess += Rework;
+        }
+
+        private void Rework(ILContext il)
+        {
+            ILCursor c = new(il);
+
+            if (c.TryGotoNext(MoveType.After, x => x.MatchLdsfld(typeof(RoR2Content.Buffs), nameof(RoR2Content.Buffs.DeathMark)))) {
+                if (c.TryGotoNext(MoveType.After, x => x.MatchLdcR4(1.5f))) {
+                    c.Emit(OpCodes.Ldarg_0);
+                    c.Emit(OpCodes.Ldarg_1);
+                    c.EmitDelegate<Func<float, HealthComponent, DamageInfo, float>>((useless, hc, info) => {
+                        if (!info.attacker) return 1.5f;
+
+                        CharacterBody attacker = info.attacker.GetComponent<CharacterBody>();
+                        if (hc.body && attacker.master && attacker.master.inventory)
+                        {
+                            int DeathMarkCount = Util.GetItemCountForTeam(attacker.master.teamIndex, RoR2Content.Items.DeathMark.itemIndex, false);
+                            int debuffCount = 0;
+                            foreach (BuffIndex buffType in BuffCatalog.debuffBuffIndices)
+                            {
+                                if (hc.body.HasBuff(buffType))
+                                {
+                                    debuffCount++;
+                                }
+                            }
+                            DotController dotController = DotController.FindDotController(hc.gameObject);
+                            if (dotController)
+                            {
+                                for (DotController.DotIndex dotIndex = DotController.DotIndex.Bleed; dotIndex < DotController.DotIndex.Count; dotIndex++)
+                                {
+                                    if (dotController.HasDotActive(dotIndex))
+                                    {
+                                        debuffCount++;
+                                    }
+                                }
+                            }
+                            float damageBonus = debuffCount * baseDamageIncreasePerDebuff;
+                            if (DeathMarkCount > 0)
+                            {
+                                return 1f + damageBonus + (damageIncreasePerDebuffPerStack * damageBonus * ((float)DeathMarkCount - 1f));
+                            }
+                            return 1f + damageBonus;
+                        }
+                        return 1.5f;
+                    });
+                }
+            }
+            else {
+                Logger.LogError("Failed to apply Death Mark rework hook");
+            }
         }
 
         private void Changes(ILContext il)
         {
             ILCursor c = new(il);
-            if (c.TryGotoNext(MoveType.Before,
-                    x => x.MatchLdcR4(1.5f),
-                    x => x.MatchMul(),
-                    x => x.MatchStloc(7),
-                    x => x.MatchLdloc(0),
-                    x => x.MatchLdfld(out _),
-                    x => x.MatchLdcI4(7),
-                    x => x.MatchStfld<DamageInfo>("damageColorIndex")
-                ))
+            if (c.TryGotoNext(MoveType.Before, x => x.MatchLdcI4(4)))
             {
-                c.Index++;
-                c.Emit(OpCodes.Ldarg_0);
-                c.Emit(OpCodes.Ldarg_1);
-                c.EmitDelegate<Func<float, HealthComponent, DamageInfo, float>>((useless, self, dinfo) =>
-                {
-                    if (!dinfo.attacker) return 1.5f;
-                    CharacterBody attacker = dinfo.attacker.GetComponent<CharacterBody>();
-                    if (self.body && attacker.master && attacker.master.inventory)
-                    {
-                        int DeathMarkCount = Util.GetItemCountForTeam(attacker.master.teamIndex, RoR2Content.Items.DeathMark.itemIndex, false);
-                        int debuffCount = 0;
-                        foreach (BuffIndex buffType in BuffCatalog.debuffBuffIndices)
-                        {
-                            if (self.body.HasBuff(buffType))
-                            {
-                                debuffCount++;
-                            }
-                        }
-                        DotController dotController = DotController.FindDotController(self.gameObject);
-                        if (dotController)
-                        {
-                            for (DotController.DotIndex dotIndex = DotController.DotIndex.Bleed; dotIndex < DotController.DotIndex.Count; dotIndex++)
-                            {
-                                if (dotController.HasDotActive(dotIndex))
-                                {
-                                    debuffCount++;
-                                }
-                            }
-                        }
-                        float damageBonus = debuffCount * baseDamageIncreasePerDebuff;
-                        if (DeathMarkCount > 0)
-                        {
-                            return 1f + damageBonus + (damageIncreasePerDebuffPerStack * damageBonus * ((float)DeathMarkCount - 1f));
-                        }
-                        return 1f + damageBonus;
-                    }
-                    return 1.5f;
-                });
+                c.Next.Operand = minimumDebuffs;
             }
             else
             {
-                Logger.LogError("Failed to apply Death Mark Rework hook");
+                Logger.LogError("Failed to apply Death Mark debuff count hook");
             }
-        }
 
-        private void ChangeDebuffsReq(ILContext il)
-        {
-            ILCursor c = new(il);
-
-            c.FindLocal(LocalType.ItemCount, "DeathMark", out int dm);
-
-            /*
-            // if (num9 >= 4)
-	        IL_132e: ldloc.s 18
-	        IL_1330: ldc.i4.4
-	        IL_1331: blt.s IL_1347
-            */
-
-            if (c.TryGotoNext(
-                    x => x.MatchLdloc(18),
-                    x => x.MatchLdcI4(4),
-                    x => x.MatchBlt(out ILLabel IL_1180)))
+            if (c.TryGotoNext(MoveType.Before, x => x.MatchLdcR4(7f)))
             {
-                c.Index += 2;
-                c.Emit(OpCodes.Pop);
-                c.Emit(OpCodes.Ldc_I4, minimumDebuffs);
+                c.Remove();
+                c.Emit(OpCodes.Ldc_R4, 1f);
             }
             else
             {
-                Logger.LogError("Failed to apply Death Mark Minimum Debuffs hook");
-            }
-
-            c.Index = 0;
-
-            if (c.TryGotoNext(MoveType.Before,
-                x => x.MatchLdcR4(7f),
-                x => x.MatchLdloc(out _),
-                x => x.MatchConvR4()))
-            {
-                c.Index += 2;
-                c.EmitDelegate<Func<int, int>>((useless) =>
-                {
-                    return 1;
-                });
-            }
-            else
-            {
-                Logger.LogError("Failed to apply Death Mark Debuff Length hook");
+                Logger.LogError("Failed to apply Death Mark debuff duration hook");
             }
         }
     }

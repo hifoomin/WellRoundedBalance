@@ -45,7 +45,7 @@ namespace WellRoundedBalance.Items.Greens
 
             c.GotoNext(MoveType.After,
                 x => x.MatchLdsfld("RoR2.RoR2Content/Items", "Infusion"),
-                x => x.MatchCallOrCallvirt<Inventory>(nameof(Inventory.GetItemCount)),
+                x => x.MatchCallOrCallvirt<Inventory>(nameof(Inventory.GetItemCountEffective)),
                 x => x.MatchStloc(out countLoc)
                 );
             c.GotoNext(MoveType.Before,

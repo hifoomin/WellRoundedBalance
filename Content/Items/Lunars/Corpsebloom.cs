@@ -42,7 +42,7 @@ namespace WellRoundedBalance.Items.Lunars
             var inventory = body.inventory;
             if (!inventory) return;
 
-            var stack = inventory.GetItemCount(RoR2Content.Items.RepeatHeal);
+            var stack = inventory.GetItemCountEffective(RoR2Content.Items.RepeatHeal);
             var bruh = percentHealingCapPerSecond * whatTheFuck;
             repeatHealComponent.healthFractionToRestorePerSecond = Mathf.Max(0.001f, percentHealingCapPerSecond - ((stack - 1) * bruh / 100f));
         }
@@ -96,7 +96,7 @@ namespace WellRoundedBalance.Items.Lunars
                         var inventory = body.inventory;
                         if (inventory)
                         {
-                            var rejuvRacks = inventory.GetItemCount(RoR2Content.Items.IncreaseHealing);
+                            var rejuvRacks = inventory.GetItemCountEffective(RoR2Content.Items.IncreaseHealing);
                             if (rejuvRacks > 0)
                             {
                                 // Main.WRBLogger.LogError(rejuvRacks + " racks, returned " + orig / rejuvRacks);

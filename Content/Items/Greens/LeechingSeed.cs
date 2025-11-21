@@ -34,7 +34,7 @@
             var inventory = body.inventory;
             if (inventory)
             {
-                var stack = inventory.GetItemCount(RoR2Content.Items.Seed);
+                var stack = inventory.GetItemCountEffective(RoR2Content.Items.Seed);
                 if (stack > 0 && body.GetComponent<LeechingSeedCooldown>() == null)
                 {
                     body.gameObject.AddComponent<LeechingSeedCooldown>();
@@ -50,7 +50,7 @@
                 var HealMask = damageReport.damageInfo.procChainMask;
                 if (attackerBody.inventory)
                 {
-                    var stack = attackerBody.inventory.GetItemCount(RoR2Content.Items.Seed);
+                    var stack = attackerBody.inventory.GetItemCountEffective(RoR2Content.Items.Seed);
                     var leechSeedComp = attackerBody.GetComponent<LeechingSeedCooldown>();
                     if (stack > 0 && leechSeedComp && leechSeedComp.canHeal)
                     {

@@ -102,7 +102,7 @@ namespace WellRoundedBalance.Items.Lunars
             }
         }
 
-        private void Changes(On.RoR2.HoldoutZoneController.FocusConvergenceController.orig_Awake orig, MonoBehaviour self)
+        private void Changes(On.RoR2.HoldoutZoneController.FocusConvergenceController.orig_Awake orig, HoldoutZoneController.FocusConvergenceController self)
         {
             orig(self);
             HoldoutZoneController.FocusConvergenceController.convergenceRadiusDivisor = 1f;

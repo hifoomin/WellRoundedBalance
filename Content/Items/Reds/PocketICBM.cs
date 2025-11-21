@@ -105,7 +105,7 @@ namespace WellRoundedBalance.Items.Reds
                 var inventory = body.inventory;
                 if (inventory)
                 {
-                    var stack = inventory.GetItemCount(DLC1Content.Items.MoreMissile);
+                    var stack = inventory.GetItemCountEffective(DLC1Content.Items.MoreMissile);
                     if (stack > 0)
                     {
                         var direction = Util.QuaternionSafeLookRotation(self.GetAimRay().direction);
@@ -138,7 +138,7 @@ namespace WellRoundedBalance.Items.Reds
             }
             if (!report.damageInfo.procChainMask.HasProc(ProcType.Missile))
             {
-                var stack = inventory.GetItemCount(DLC1Content.Items.MoreMissile);
+                var stack = inventory.GetItemCountEffective(DLC1Content.Items.MoreMissile);
                 if (stack > 0)
                 {
                     if (Util.CheckRoll((baseMissileChance + missileChancePerStack * (stack - 1)) * report.damageInfo.procCoefficient, body.master))
@@ -172,47 +172,27 @@ namespace WellRoundedBalance.Items.Reds
         {
             ILCursor c = new(il);
 
-            if (c.TryGotoNext(MoveType.After, x => x.MatchCallOrCallvirt(typeof(int?).GetMethod("GetValueOrDefault", new Type[] { }))))
+            c.TryGotoNext(MoveType.After, x => x.MatchStloc(1));
+            c.Emit(OpCodes.Ldc_I4, 1);
+            c.Emit(OpCodes.Stloc, 1);
+
+            if (c.TryGotoNext(MoveType.After, x => x.MatchLdcR4(45f)))
             {
-                c.Index += 4;
-                c.EmitDelegate<Func<float, float>>((orig) => 0f);
-                for (int i = 0; c.TryGotoNext(x => x.MatchCallOrCallvirt(typeof(Quaternion).GetMethod("AngleAxis", (System.Reflection.BindingFlags)(-1)))); i++)
-                {
-                    c.Index--;
-                    c.EmitDelegate<Func<float, float>>((orig) => (i % 2 == 0) ? Run.instance.treasureRng.RangeFloat(-55f, 55f) : Run.instance.treasureRng.RangeFloat(15f, 45f) * (-1));
-                    c.Index += 2;
-                }
-                ILLabel label = c.DefineLabel();
-                if (c.TryGotoPrev(MoveType.After, x => x.MatchBle(out label)))
-                {
-                    c.EmitDelegate(() => 1 < 2);
-                    c.Emit(OpCodes.Brtrue, label);
-                    c.GotoLabel(label, MoveType.Before);
-                    c.MoveAfterLabels();
-                    c.Emit(OpCodes.Ldloc_0);
-                    c.Emit(OpCodes.Ldloc, 4);
-                    c.Emit(OpCodes.Ldarg_1);
-                    c.Emit(OpCodes.Ldarg, 8);
-                    c.EmitDelegate<Action<int, FireProjectileInfo, CharacterBody, Vector3>>((stacks, info, body, initDir) =>
-                    {
-                        if (stacks > 0)
-                        {
-                            InputBankTest bank = body.GetComponent<InputBankTest>();
-                            for (int i = 0; i < (stacks - 1) * 0 + ((1 == 1) ? 1 : (1 > 2) ? 1 - 2 : 0); i++)
-                            {
-                                info.rotation = Util.QuaternionSafeLookRotation(Quaternion.AngleAxis(Run.instance.treasureRng.RangeFloat(-55f, 55f) * ((i % 2 == 0) ? 1 : (-1)), bank ? bank.aimDirection : body.transform.position) * initDir);
-                                ProjectileManager.instance.FireProjectile(info);
-                            }
-                        }
-                    });
-                }
+                c.EmitDelegate<Func<float, float>>((x) => {
+                    return Run.instance.treasureRng.RangeFloat(-55f, 55f);
+                });
+
+                c.TryGotoNext(MoveType.After, x => x.MatchLdcR4(-45f));
+                c.TryGotoNext(MoveType.After, x => x.MatchLdloc(out _));
+                c.TryGotoNext(MoveType.After, x => x.MatchLdloc(out _));
+                c.Remove();
+                c.Emit(OpCodes.Pop);
+                c.Emit(OpCodes.Pop);
             }
             else
             {
                 Logger.LogError("Failed to apply Pocket I.C.B.M. Damage, Count, Stacking hook");
             }
-
-            // BIG thanks to RandomlyAwesome
         }
     }
 }

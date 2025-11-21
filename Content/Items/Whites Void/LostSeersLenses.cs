@@ -69,7 +69,7 @@ namespace WellRoundedBalance.Items.VoidWhites
                 return;
             }
 
-            var ch = StackAmount(chance, chanceStack, inventory.GetItemCount(DLC1Content.Items.CritGlassesVoid), chanceIsHyperbolic);
+            var ch = StackAmount(chance, chanceStack, inventory.GetItemCountEffective(DLC1Content.Items.CritGlassesVoid), chanceIsHyperbolic);
 
             ProcType mask = (ProcType)58129798;
             if (Util.CheckRoll(ch * 100f, attackerBody.master) && !report.damageInfo.procChainMask.HasProc(mask) && report.damageInfo.procCoefficient > 0)

@@ -108,7 +108,7 @@ namespace WellRoundedBalance.Items.VoidGreens
             else Logger.LogError("Failed to apply Polylute Proc Coefficient hook");
             c.Index = idx;
             int ch = -1;
-            if (c.TryGotoNext(x => x.MatchCallOrCallvirt(typeof(Util), nameof(Util.CheckRoll))) && c.TryGotoPrev(x => x.MatchMul()) && c.TryGotoPrev(x => x.MatchLdloc(out ch)) && c.TryGotoPrev(x => x.MatchStloc(ch)))
+            if (c.TryGotoNext(MoveType.After, x => x.MatchLdcR4(25f)))
             {
                 c.Emit(OpCodes.Pop);
                 c.Emit(OpCodes.Ldloc, stack);

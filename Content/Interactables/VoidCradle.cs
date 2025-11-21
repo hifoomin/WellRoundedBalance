@@ -59,7 +59,8 @@ namespace WellRoundedBalance.Interactables
                     return HasAtLeastOneItem(c.activator.GetComponent<CharacterBody>().inventory);
                 },
 
-                payCost = delegate (CostTypeDef def, CostTypeDef.PayCostContext c)
+
+                payCost = delegate (CostTypeDef.PayCostContext c, CostTypeDef.PayCostResults r)
                 {
                 }
             };
@@ -208,7 +209,7 @@ namespace WellRoundedBalance.Interactables
                 ItemIndex def = index.itemIndex;
                 Interactor interactor = interaction.lastActivator;
                 CharacterBody body = interactor.GetComponent<CharacterBody>();
-                int c = body.inventory.GetItemCount(def);
+                int c = body.inventory.GetItemCountEffective(def);
                 body.inventory.RemoveItem(def, c);
                 body.inventory.GiveItem(GetCorruption(def), c);
                 CharacterMasterNotificationQueue.PushItemTransformNotification(body.master, def, GetCorruption(def), CharacterMasterNotificationQueue.TransformationType.ContagiousVoid);
@@ -239,7 +240,7 @@ namespace WellRoundedBalance.Interactables
                     for (int i = 0; i < options.Count; i++)
                     {
                         PickupPickerController.Option opt = options[i];
-                        if (body.inventory.GetItemCount(opt.pickupIndex.itemIndex) <= 0)
+                        if (body.inventory.GetItemCountEffective(opt.pickupIndex.itemIndex) <= 0)
                         {
                             options.Remove(opt);
                         }

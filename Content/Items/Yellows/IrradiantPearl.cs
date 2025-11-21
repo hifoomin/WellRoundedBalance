@@ -23,7 +23,7 @@
         {
             if (sender.inventory)
             {
-                var stack = sender.inventory.GetItemCount(RoR2Content.Items.ShinyPearl);
+                var stack = sender.inventory.GetItemCountEffective(RoR2Content.Items.ShinyPearl);
                 if (stack > 0)
                 {
                     args.regenMultAdd += 0.1f * stack;

@@ -29,7 +29,7 @@
                 orig(self, body);
                 if (body.bodyIndex == BodyCatalog.FindBodyIndex("SquidTurretBody"))
                 {
-                    self.inventory.RemoveItem(RoR2Content.Items.HealthDecay, self.inventory.GetItemCount(RoR2Content.Items.HealthDecay));
+                    self.inventory.RemoveItem(RoR2Content.Items.HealthDecay, self.inventory.GetItemCountEffective(RoR2Content.Items.HealthDecay));
                     self.inventory.GiveItem(RoR2Content.Items.HealthDecay, lifetime);
                 }
             };

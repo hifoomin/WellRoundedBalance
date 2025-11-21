@@ -62,7 +62,7 @@ namespace WellRoundedBalance.Items.Greens
 
         private void CharacterBody_onBodyInventoryChangedGlobal(CharacterBody characterBody)
         {
-            if (NetworkServer.active) characterBody.AddItemBehavior<RazorwireController>(characterBody.inventory.GetItemCount(RoR2Content.Items.Thorns));
+            if (NetworkServer.active) characterBody.AddItemBehavior<RazorwireController>(characterBody.inventory.GetItemCountEffective(RoR2Content.Items.Thorns));
         }
 
         private void HealthComponent_TakeDamageProcess(ILContext il)

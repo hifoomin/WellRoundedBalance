@@ -34,7 +34,7 @@
             if (sender.inventory)
             {
                 args.secondaryCooldownMultAdd -= StackAmount(secondarySkillCooldownReduction, secondarySkillCooldownReductionStack,
-                    sender.inventory.GetItemCount(InternalPickup), secondarySkillCooldownReductionIsHyperbolic);
+                    sender.inventory.GetItemCountEffective(InternalPickup), secondarySkillCooldownReductionIsHyperbolic);
             }
         }
     }

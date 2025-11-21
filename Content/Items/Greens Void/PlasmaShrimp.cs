@@ -91,7 +91,7 @@ namespace WellRoundedBalance.Items.VoidGreens
                 return;
             }
 
-            var stack = inventory.GetItemCount(DLC1Content.Items.MissileVoid);
+            var stack = inventory.GetItemCountEffective(DLC1Content.Items.MissileVoid);
             if (stack <= 0)
             {
                 attackerBody.gameObject.RemoveComponent<PlasmaShrimpController>();

@@ -62,7 +62,7 @@
         {
             if (NetworkServer.active)
             {
-                characterBody.AddItemBehavior<HappiestMaskController>(characterBody.inventory.GetItemCount(RoR2Content.Items.GhostOnKill));
+                characterBody.AddItemBehavior<HappiestMaskController>(characterBody.inventory.GetItemCountEffective(RoR2Content.Items.GhostOnKill));
             }
         }
 
@@ -98,7 +98,7 @@
                 return;
             }
 
-            var stack = inventory.GetItemCount(RoR2Content.Items.GhostOnKill);
+            var stack = inventory.GetItemCountEffective(RoR2Content.Items.GhostOnKill);
             if (stack > 0)
             {
                 if (!victimBody.bodyFlags.HasFlag(CharacterBody.BodyFlags.Masterless) && attackerBody.HasBuff(happiestMaskReady.buffIndex) && !attackerBody.HasBuff(happiestMaskCooldown.buffIndex))
@@ -164,8 +164,8 @@
                 var inventory = characterMaster2.inventory;
                 if (inventory)
                 {
-                    if (inventory.GetItemCount(RoR2Content.Items.Ghost) <= 0) inventory.GiveItem(RoR2Content.Items.Ghost);
-                    if (inventory.GetItemCount(RoR2Content.Items.UseAmbientLevel) <= 0) inventory.GiveItem(RoR2Content.Items.UseAmbientLevel);
+                    if (inventory.GetItemCountEffective(RoR2Content.Items.Ghost) <= 0) inventory.GiveItem(RoR2Content.Items.Ghost);
+                    if (inventory.GetItemCountEffective(RoR2Content.Items.UseAmbientLevel) <= 0) inventory.GiveItem(RoR2Content.Items.UseAmbientLevel);
 
                     if (ownerBody && ownerBody.teamComponent && ownerBody.teamComponent.teamIndex == TeamIndex.Player)
                     {

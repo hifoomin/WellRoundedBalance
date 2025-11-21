@@ -74,7 +74,7 @@ namespace WellRoundedBalance.Items.Whites
             {
                 if (body.isPlayerControlled && body.inventory)
                 {
-                    var stack = body.inventory.GetItemCount(RoR2Content.Items.WardOnLevel);
+                    var stack = body.inventory.GetItemCountEffective(RoR2Content.Items.WardOnLevel);
                     if (stack > 0)
                     {
                         var warbanner = UnityEngine.Object.Instantiate(WardOnLevelManager.wardPrefab, body.transform.position, Quaternion.identity);

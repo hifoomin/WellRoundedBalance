@@ -97,7 +97,7 @@ namespace WellRoundedBalance.Items.Greens
             {
                 if (master.inventory)
                 {
-                    if (master.inventory.GetItemCount(DLC1Content.Items.RegeneratingScrap) > 0 || master.inventory.GetItemCount(DLC1Content.Items.RegeneratingScrapConsumed) > 0)
+                    if (master.inventory.GetItemCountEffective(DLC1Content.Items.RegeneratingScrap) > 0 || master.inventory.GetItemCountEffective(DLC1Content.Items.RegeneratingScrapConsumed) > 0)
                     {
                         anyRealers = true;
                         break;
@@ -115,7 +115,7 @@ namespace WellRoundedBalance.Items.Greens
             {
                 if (master.inventory)
                 {
-                    if (master.inventory.GetItemCount(DLC1Content.Items.RegeneratingScrap) > 0)
+                    if (master.inventory.GetItemCountEffective(DLC1Content.Items.RegeneratingScrap) > 0)
                     {
                         anyRealers = true;
                         break;

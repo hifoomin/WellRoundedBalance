@@ -24,7 +24,7 @@ namespace WellRoundedBalance.Items.Reds
 
         public override void Hooks()
         {
-            IL.RoR2.EquipmentSlot.OnEquipmentExecuted += EquipmentSlot_OnEquipmentExecuted;
+            IL.RoR2.EquipmentSlot.OnEquipmentExecuted_byte_byte_EquipmentIndex += EquipmentSlot_OnEquipmentExecuted;
         }
 
         private void EquipmentSlot_OnEquipmentExecuted(ILContext il)
@@ -33,7 +33,7 @@ namespace WellRoundedBalance.Items.Reds
 
             if (c.TryGotoNext(MoveType.Before,
                 x => x.MatchLdsfld("RoR2.DLC1Content/Items", "RandomEquipmentTrigger"),
-                x => x.MatchCallOrCallvirt<Inventory>("GetItemCount")))
+                x => x.MatchCallOrCallvirt<Inventory>("GetItemCountEffective")))
             {
                 c.Index += 2;
                 c.Emit(OpCodes.Ldc_I4, randomEquipmentActivations);

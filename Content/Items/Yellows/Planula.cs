@@ -49,7 +49,7 @@ namespace WellRoundedBalance.Items.Yellows
         {
             if (NetworkServer.active)
             {
-                body.AddItemBehavior<PlanulaController>(body.inventory.GetItemCount(RoR2Content.Items.ParentEgg));
+                body.AddItemBehavior<PlanulaController>(body.inventory.GetItemCountEffective(RoR2Content.Items.ParentEgg));
             }
         }
 
@@ -124,7 +124,6 @@ namespace WellRoundedBalance.Items.Yellows
                     grandParentSunController.burnDuration = burnInterval * stack;
                     grandParentSunController.nearBuffDuration = burnDuration;
                     grandParentSunController.maxDistance = burnDistanceBase;
-                    grandParentSunController.minimumStacksBeforeApplyingBurns = 0;
                     grandParentSunController.cycleInterval = burnInterval;
 
                     var areaIndicator = sunInstance.transform.Find("AreaIndicator");

@@ -94,7 +94,7 @@ namespace WellRoundedBalance.Interactables
             {
                 var inventory = body.inventory;
                 if (inventory)
-                    return inventory.GetItemCount(RoR2Content.Items.ScrapRed);
+                    return inventory.GetItemCountEffective(RoR2Content.Items.ScrapRed);
             }
             return 0;
         }

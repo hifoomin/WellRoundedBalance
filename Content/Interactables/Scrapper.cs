@@ -51,7 +51,7 @@ namespace WellRoundedBalance.Interactables
             Stage.onServerStageComplete += Stage_onServerStageComplete;
             On.EntityStates.Scrapper.ScrapperBaseState.OnEnter += ScrapperBaseState_OnEnter;
             On.EntityStates.Scrapper.Scrapping.OnEnter += Scrapping_OnEnter;
-            On.RoR2.ScrapperController.Start += ScrapperController_Start;
+            On.RoR2.ScrapperController.AssignPotentialInteractor += ScrapperController_Start;
             On.RoR2.ClassicStageInfo.Start += ClassicStageInfo_Start;
             On.RoR2.SceneDirector.Start += SceneDirector_Start;
             GlobalEventManager.OnInteractionsGlobal += GlobalEventManager_OnInteractionsGlobal;
@@ -111,11 +111,11 @@ namespace WellRoundedBalance.Interactables
             
         }
 
-        private void ScrapperController_Start(On.RoR2.ScrapperController.orig_Start orig, ScrapperController self)
+        private void ScrapperController_Start(On.RoR2.ScrapperController.orig_AssignPotentialInteractor orig, ScrapperController self, Interactor interactor)
         {
             self.maxItemsToScrapAtATime = maxScrapCountPerUse;
 
-            orig(self);
+            orig(self, interactor);
         }
 
         private void Scrapping_OnEnter(On.EntityStates.Scrapper.Scrapping.orig_OnEnter orig, Scrapping self)

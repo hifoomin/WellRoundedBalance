@@ -35,7 +35,7 @@ namespace WellRoundedBalance.Items.Whites
         {
             if (sender && sender.inventory)
             {
-                var stack = sender.inventory.GetItemCount(RoR2Content.Items.SprintBonus);
+                var stack = sender.inventory.GetItemCountEffective(RoR2Content.Items.SprintBonus);
                 args.sprintSpeedAdd += speedBonus * stack;
             }
         }

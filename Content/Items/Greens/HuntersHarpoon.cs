@@ -75,7 +75,7 @@
             var inventory = attackerBody.inventory;
             if (!inventory) return;
 
-            var stack = inventory.GetItemCount(DLC1Content.Items.MoveSpeedOnKill);
+            var stack = inventory.GetItemCountEffective(DLC1Content.Items.MoveSpeedOnKill);
             if (stack <= 0) return;
             var maxDuration = StackAmount(duration, durationStack, stack, durationIsHyperbolic);
             var cap = Mathf.Min((int)StackAmount(maxCount, maxCountStack, stack, maxCountIsHyperbolic), (attackerBody.HasBuff(speedBuff) ? attackerBody.GetBuffCount(speedBuff) : 0) + 1);

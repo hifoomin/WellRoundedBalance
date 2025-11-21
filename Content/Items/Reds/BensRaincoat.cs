@@ -101,7 +101,7 @@ namespace WellRoundedBalance.Items.Reds
             {
                 if (sender.inventory)
                 {
-                    var stack = sender.inventory.GetItemCount(DLC1Content.Items.ImmuneToDebuff);
+                    var stack = sender.inventory.GetItemCountEffective(DLC1Content.Items.ImmuneToDebuff);
                     if (stack > 0)
                     {
                         args.moveSpeedMultAdd += passiveMovementSpeedGain;

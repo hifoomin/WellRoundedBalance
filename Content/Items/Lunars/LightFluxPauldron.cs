@@ -57,7 +57,7 @@ namespace WellRoundedBalance.Items.Lunars
             if (body)
             {
                 var inventory = body.inventory;
-                if (inventory && inventory.GetItemCount(DLC1Content.Items.HalfAttackSpeedHalfCooldowns) > 0)
+                if (inventory && inventory.GetItemCountEffective(DLC1Content.Items.HalfAttackSpeedHalfCooldowns) > 0)
                 {
                     self.body.statsDirty = true;
                 }
@@ -71,7 +71,7 @@ namespace WellRoundedBalance.Items.Lunars
             if (body)
             {
                 var inventory = body.inventory;
-                if (inventory && inventory.GetItemCount(DLC1Content.Items.HalfAttackSpeedHalfCooldowns) > 0)
+                if (inventory && inventory.GetItemCountEffective(DLC1Content.Items.HalfAttackSpeedHalfCooldowns) > 0)
                 {
                     self.body.statsDirty = true;
                 }
@@ -84,7 +84,7 @@ namespace WellRoundedBalance.Items.Lunars
         {
             if (sender.inventory && sender.characterMotor)
             {
-                var stack = sender.inventory.GetItemCount(DLC1Content.Items.HalfAttackSpeedHalfCooldowns);
+                var stack = sender.inventory.GetItemCountEffective(DLC1Content.Items.HalfAttackSpeedHalfCooldowns);
                 if (!sender.characterMotor.isGrounded) args.moveSpeedMultAdd += baseMovementSpeedGain + movementSpeedGainPerStack * (stack - 1);
             }
         }
@@ -104,7 +104,7 @@ namespace WellRoundedBalance.Items.Lunars
                         if (inventory)
                         {
                             // enemies pulling player on hit
-                            var stack = inventory.GetItemCount(DLC1Content.Items.HalfAttackSpeedHalfCooldowns);
+                            var stack = inventory.GetItemCountEffective(DLC1Content.Items.HalfAttackSpeedHalfCooldowns);
                             var bodyMotor = body.characterMotor;
                             if (bodyMotor && stack > 0 && damageInfo.procCoefficient > 0)
                             {
@@ -182,7 +182,7 @@ namespace WellRoundedBalance.Items.Lunars
                 timer = 0f;
                 if (inventory)
                 {
-                    stack = inventory.GetItemCount(DLC1Content.Items.HalfAttackSpeedHalfCooldowns);
+                    stack = inventory.GetItemCountEffective(DLC1Content.Items.HalfAttackSpeedHalfCooldowns);
                     Refresh();
                 }
             }

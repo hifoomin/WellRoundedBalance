@@ -57,6 +57,9 @@
         {
             ILCursor c = new(il);
 
+            c.FindLocal(LocalType.ItemCount, "Knurl", out int dph);
+            c.StepLocal(dph);
+
             if (c.TryGotoNext(MoveType.Before,
                     x => x.MatchConvR4(),
                     x => x.MatchLdcR4(40f),
@@ -71,6 +74,9 @@
             }
 
             c.Index = 0;
+
+            c.FindLocal(LocalType.ItemCount, "Knurl", out int _);
+            c.StepLocal(dph);
 
             if (c.TryGotoNext(MoveType.Before,
                     x => x.MatchConvR4(),
@@ -90,7 +96,7 @@
         {
             if (sender && sender.inventory)
             {
-                var stack = sender.inventory.GetItemCount(RoR2Content.Items.Knurl);
+                var stack = sender.inventory.GetItemCountEffective(RoR2Content.Items.Knurl);
                 if (stack > 0)
                 {
                     args.armorAdd += armor;
@@ -110,7 +116,7 @@
                 var inventory = body.inventory;
                 if (inventory)
                 {
-                    var stack = inventory.GetItemCount(RoR2Content.Items.Knurl);
+                    var stack = inventory.GetItemCountEffective(RoR2Content.Items.Knurl);
                     if (stack > 0)
                     {
                         if (Util.CheckRoll((baseFistChance + fistChancePerStack * (stack - 1)) * damageReport.damageInfo.procCoefficient, master))
@@ -138,33 +144,10 @@
         {
             ILCursor c = new(il);
 
-            if (c.TryGotoNext(MoveType.Before,
-                    x => x.MatchConvR4(),
-                    x => x.MatchLdcR4(40f),
-                    x => x.MatchMul()))
-            {
-                c.Index += 1;
-                c.Next.Operand = 0f;
-            }
-            else
-            {
-                Logger.LogError("Failed to apply Titanic Knurl Health 2 hook");
-            }
+            c.FindLocal(LocalType.ItemCount, "Knurl", out int dph);
 
-            c.Index = 0;
-
-            if (c.TryGotoNext(MoveType.Before,
-                    x => x.MatchConvR4(),
-                    x => x.MatchLdcR4(1.6f),
-                    x => x.MatchMul()))
-            {
-                c.Index += 1;
-                c.Next.Operand = 0f;
-            }
-            else
-            {
-                Logger.LogError("Failed to apply Titanic Knurl Regen 2 hook");
-            }
+            c.Emit(OpCodes.Ldc_I4_0);
+            c.Emit(OpCodes.Stloc, dph);
         }
     }
 }

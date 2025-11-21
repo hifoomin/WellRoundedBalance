@@ -43,7 +43,7 @@ namespace WellRoundedBalance.Items.Greens
         {
             if (sender && sender.inventory)
             {
-                var stack = sender.inventory.GetItemCount(RoR2Content.Items.AttackSpeedOnCrit);
+                var stack = sender.inventory.GetItemCountEffective(RoR2Content.Items.AttackSpeedOnCrit);
                 if (stack > 0)
                 {
                     args.critAdd += StackAmount(critChance, critChancePerStack, stack) - 5f;
@@ -68,7 +68,7 @@ namespace WellRoundedBalance.Items.Greens
                     var inventory = body.inventory;
                     if (inventory)
                     {
-                        var stack = inventory.GetItemCount(RoR2Content.Items.AttackSpeedOnCrit);
+                        var stack = inventory.GetItemCountEffective(RoR2Content.Items.AttackSpeedOnCrit);
                         if (stack > 0)
                         {
                             return baseBuffCap - buffCapPerStack + stack * buffCapPerStack;

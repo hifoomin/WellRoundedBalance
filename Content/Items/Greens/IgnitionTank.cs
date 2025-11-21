@@ -36,7 +36,7 @@ namespace WellRoundedBalance.Items.Greens
             // sorry but WHY IS THERE AN INT AAAA
             if (dotInfo.dotIndex == DotController.DotIndex.Burn || dotInfo.dotIndex == DotController.DotIndex.Helfire)
             {
-                int itemCount = inventory.GetItemCount(DLC1Content.Items.StrengthenBurn);
+                int itemCount = inventory.GetItemCountEffective(DLC1Content.Items.StrengthenBurn);
                 if (itemCount > 0)
                 {
                     dotInfo.preUpgradeDotIndex = new DotController.DotIndex?(dotInfo.dotIndex);
@@ -66,7 +66,7 @@ namespace WellRoundedBalance.Items.Greens
             {
                 return;
             }
-            var stack = inventory.GetItemCount(DLC1Content.Items.StrengthenBurn);
+            var stack = inventory.GetItemCountEffective(DLC1Content.Items.StrengthenBurn);
             if (stack > 0)
             {
                 if (Util.CheckRoll(igniteChanceOnHit * report.damageInfo.procCoefficient, body.master.luck))

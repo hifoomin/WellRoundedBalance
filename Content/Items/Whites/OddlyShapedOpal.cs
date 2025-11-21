@@ -91,14 +91,14 @@ namespace WellRoundedBalance.Items.Whites
             var inventory = sender.inventory;
             if (inventory)
             {
-                var stack = inventory.GetItemCount(DLC1Content.Items.OutOfCombatArmor);
+                var stack = inventory.GetItemCountEffective(DLC1Content.Items.OutOfCombatArmor);
                 args.armorAdd += StackAmount(armorGain, armorGainStack, stack, armorGainIsHyperbolic) * sender.GetBuffCount(opalArmor);
             }
         }
 
         private void CharacterBody_onBodyInventoryChangedGlobal(CharacterBody characterBody)
         {
-            if (NetworkServer.active) characterBody.AddItemBehavior<OddlyShapedOpalController>(characterBody.inventory.GetItemCount(DLC1Content.Items.OutOfCombatArmor));
+            if (NetworkServer.active) characterBody.AddItemBehavior<OddlyShapedOpalController>(characterBody.inventory.GetItemCountEffective(DLC1Content.Items.OutOfCombatArmor));
         }
     }
 

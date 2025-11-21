@@ -38,7 +38,7 @@
                     if (itemDef.tier == ItemTier.Tier1 || itemDef.deprecatedTier == ItemTier.Tier1)
                     {
                         tier1Indices.Add(index);
-                        stacks.Add(self.GetItemCount(index));
+                        stacks.Add(self.GetItemCountEffective(index));
                     }
                 }
 
@@ -58,7 +58,7 @@
                 {
                     var index = tier1Indices[i];
                     var stackCount = stacks[i];
-                    self.RemoveItem(index, self.GetItemCount(index));
+                    self.RemoveItem(index, self.GetItemCountEffective(index));
                     self.GiveItem(index, stackCount);
                 }
 

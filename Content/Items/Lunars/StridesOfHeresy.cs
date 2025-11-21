@@ -74,7 +74,7 @@ namespace WellRoundedBalance.Items.Lunars
             inventory = characterBody.inventory;
             if (inventory)
             {
-                var stack = inventory.GetItemCount(RoR2Content.Items.LunarUtilityReplacement);
+                var stack = inventory.GetItemCountEffective(RoR2Content.Items.LunarUtilityReplacement);
                 duration = 1f + 0.5f * (stack - 1);
             }
 

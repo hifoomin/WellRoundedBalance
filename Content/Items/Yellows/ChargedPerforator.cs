@@ -66,19 +66,17 @@ namespace WellRoundedBalance.Items.Yellows
 
             c.Index = 0;
 
-            if (c.TryGotoNext(MoveType.Before,
-                x => x.MatchLdloc(1),
+            if (c.TryGotoNext(MoveType.After,
+                x => x.MatchLdloc(0),
                 x => x.MatchCallOrCallvirt<CharacterBody>("get_crit"),
                 x => x.MatchLdloc(out _),
-                x => x.MatchCallOrCallvirt(typeof(Util).GetMethod("CheckRoll", new Type[] { typeof(float), typeof(CharacterMaster) })),
-                x => x.MatchStfld<RoR2.Orbs.GenericDamageOrb>("isCrit")))
+                x => x.MatchLdloca(out _),
+                x => x.MatchCallOrCallvirt(out _)))
             {
-                for (int i = 0; i < 4; i++)
-                {
-                    c.Remove();
-                }
                 c.Emit(OpCodes.Ldarg_1);
-                c.Emit(OpCodes.Ldfld, typeof(DamageInfo).GetField("crit"));
+                c.EmitDelegate<Func<bool, DamageInfo, bool>>((junk, info) => {
+                    return info.crit;
+                });
             }
             else
             {
@@ -88,7 +86,9 @@ namespace WellRoundedBalance.Items.Yellows
 
         private void Changes()
         {
-            LanguageAPI.Add("ITEM_lightningStrikeOnHit_NAME".ToUpper(), "Charged Peripherator");
+            if (UnityEngine.Random.Range(0, 100) <= 5) {
+                LanguageAPI.Add("ITEM_lightningStrikeOnHit_NAME".ToUpper(), "Charged Peripherator");
+            }
         }
     }
 }

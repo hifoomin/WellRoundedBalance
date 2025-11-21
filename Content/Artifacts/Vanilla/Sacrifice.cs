@@ -14,7 +14,7 @@ namespace WellRoundedBalance.Artifacts.Vanilla
 
         public override void Hooks()
         {
-            IL.RoR2.Artifacts.SacrificeArtifactManager.OnServerCharacterDeath += SacrificeArtifactManager_OnServerCharacterDeath;
+            // IL.RoR2.Artifacts.SacrificeArtifactManager.OnServerCharacterDeath += SacrificeArtifactManager_OnServerCharacterDeath;
         }
 
         [ConfigField("Base Drop Chance", "", 4f)]

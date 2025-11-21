@@ -41,7 +41,7 @@ namespace WellRoundedBalance.Items.Greens
                     var inventory = self.inventory;
                     if (inventory)
                     {
-                        var stack = inventory.GetItemCount(RoR2Content.Items.SprintOutOfCombat);
+                        var stack = inventory.GetItemCountEffective(RoR2Content.Items.SprintOutOfCombat);
                         if (stack > 0)
                         {
                             return orig - oocReduction;

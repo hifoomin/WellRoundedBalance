@@ -1,4 +1,4 @@
-﻿namespace WellRoundedBalance.Mechanics.Teleporter
+﻿/*namespace WellRoundedBalance.Mechanics.Teleporter
 {
     internal class PassiveProjectiles : MechanicBase<PassiveProjectiles>
     {
@@ -91,4 +91,4 @@
             }
         }
     }
-}
+}*/

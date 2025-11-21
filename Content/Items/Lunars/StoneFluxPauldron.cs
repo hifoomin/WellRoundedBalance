@@ -30,7 +30,7 @@ namespace WellRoundedBalance.Items.Lunars
         {
             if (sender && sender.inventory)
             {
-                var stack = sender.inventory.GetItemCount(DLC1Content.Items.HalfSpeedDoubleHealth);
+                var stack = sender.inventory.GetItemCountEffective(DLC1Content.Items.HalfSpeedDoubleHealth);
                 if (stack > 0)
                 {
                     args.armorAdd += armorGain;
@@ -54,7 +54,7 @@ namespace WellRoundedBalance.Items.Lunars
                         if (inventory)
                         {
                             // enemies pulling player on hit
-                            var stack = inventory.GetItemCount(DLC1Content.Items.HalfSpeedDoubleHealth);
+                            var stack = inventory.GetItemCountEffective(DLC1Content.Items.HalfSpeedDoubleHealth);
                             float mass;
                             if (self.body.characterMotor) mass = self.body.characterMotor.mass;
                             else if (self.body.rigidbody) mass = self.body.rigidbody.mass;
@@ -66,7 +66,7 @@ namespace WellRoundedBalance.Items.Lunars
                         if (inventory2 && damageInfo.procCoefficient > 0)
                         {
                             // player pulling enemies on hit
-                            var stack = inventory2.GetItemCount(DLC1Content.Items.HalfSpeedDoubleHealth);
+                            var stack = inventory2.GetItemCountEffective(DLC1Content.Items.HalfSpeedDoubleHealth);
                             float mass;
                             if (self.body.characterMotor) mass = self.body.characterMotor.mass;
                             else if (self.body.rigidbody) mass = self.body.rigidbody.mass;

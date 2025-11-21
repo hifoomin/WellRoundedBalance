@@ -51,7 +51,7 @@ namespace WellRoundedBalance.Items.Reds
                         var inventory = attackerBody.inventory;
                         if (inventory)
                         {
-                            return inventory.GetItemCount(DLC1Content.Items.CritDamage) > 0 ? 1f : self;
+                            return inventory.GetItemCountEffective(DLC1Content.Items.CritDamage) > 0 ? 1f : self;
                         }
                         else
                         {
@@ -85,7 +85,7 @@ namespace WellRoundedBalance.Items.Reds
                         var inventory = attackerBody.inventory;
                         if (inventory)
                         {
-                            return inventory.GetItemCount(DLC1Content.Items.CritDamage) > 0 ? 1f : self;
+                            return inventory.GetItemCountEffective(DLC1Content.Items.CritDamage) > 0 ? 1f : self;
                         }
                         else
                         {
@@ -108,7 +108,7 @@ namespace WellRoundedBalance.Items.Reds
         {
             if (sender.inventory)
             {
-                var stack = sender.inventory.GetItemCount(DLC1Content.Items.CritDamage);
+                var stack = sender.inventory.GetItemCountEffective(DLC1Content.Items.CritDamage);
                 if (stack > 0)
                 {
                     args.critAdd += criticalChance;

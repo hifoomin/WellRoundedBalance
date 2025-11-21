@@ -90,7 +90,7 @@ namespace WellRoundedBalance.Items.Whites
                 {
                     if (cm.inventory)
                     {
-                        int brokenElixirCount = cm.inventory.GetItemCount(DLC1Content.Items.HealingPotionConsumed);
+                        int brokenElixirCount = cm.inventory.GetItemCountEffective(DLC1Content.Items.HealingPotionConsumed);
                         if (brokenElixirCount > 0)
                         {
                             cm.inventory.RemoveItem(DLC1Content.Items.HealingPotionConsumed, brokenElixirCount);

@@ -30,7 +30,7 @@
             {
                 return;
             }
-            var stack = inventory.GetItemCount(RoR2Content.Items.BoostDamage);
+            var stack = inventory.GetItemCountEffective(RoR2Content.Items.BoostDamage);
             {
                 switch (body.name)
                 {

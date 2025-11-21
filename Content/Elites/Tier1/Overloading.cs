@@ -1,5 +1,4 @@
-﻿using HG;
-using RoR2.Navigation;
+﻿using RoR2.Navigation;
 using System.Collections;
 using UnityEngine;
 using WellRoundedBalance.Buffs;

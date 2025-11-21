@@ -57,7 +57,7 @@ namespace WellRoundedBalance.Items.Yellows
         {
             if (sender && sender.inventory)
             {
-                var stack = sender.inventory.GetItemCount(DLC1Content.Items.MinorConstructOnKill);
+                var stack = sender.inventory.GetItemCountEffective(DLC1Content.Items.MinorConstructOnKill);
                 if (stack > 0)
                 {
                     args.armorAdd += armorGain;
@@ -72,7 +72,7 @@ namespace WellRoundedBalance.Items.Yellows
             {
                 return;
             }
-            body.AddItemBehavior<DefenseNucleusBehavior>(inventory.GetItemCount(DLC1Content.Items.MinorConstructOnKill));
+            body.AddItemBehavior<DefenseNucleusBehavior>(inventory.GetItemCountEffective(DLC1Content.Items.MinorConstructOnKill));
         }
 
         private void EquipmentSlot_onServerEquipmentActivated(EquipmentSlot equipmentSlot, EquipmentIndex equipmentIndex)

@@ -50,7 +50,7 @@ namespace WellRoundedBalance.Items.Greens
             ILCursor c = new(il);
 
             if (c.TryGotoNext(MoveType.Before,
-                x => x.MatchCallOrCallvirt<Inventory>("GetItemCount"),
+                x => x.MatchCallOrCallvirt<Inventory>("GetItemCountEffective"),
                 x => x.MatchAdd(),
                 x => x.MatchStloc(0)))
             {

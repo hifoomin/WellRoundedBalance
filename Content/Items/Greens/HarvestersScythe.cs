@@ -10,32 +10,23 @@ namespace WellRoundedBalance.Items.Greens
 
         public override string PickupText => "Activating your Secondary skill also swings a scythe. Recharges over time.";
 
-        public override string DescText => "Activating your <style=cIsUtility>Secondary skill</style> also swings a <style=cIsDamage>scythe</style> for <style=cIsDamage>" + d(baseDamage) + "</style>" +
+        public override string DescText => "Activating your <style=cIsUtility>Secondary skill</style> also swings a <style=cIsHealth>critical</style> <style=cIsDamage>scythe</style> for <style=cIsDamage>" + d(baseDamage) + "</style>" +
                                            (damagePerStack > 0 ? " <style=cStack>(+" + d(damagePerStack) + " per stack)</style>" : "") +
-                                           " damage, increasing <style=cIsDamage>crit chance</style> by <style=cIsDamage>+" + baseCritGain + "%</style>" +
-                                           (critGainPerStack > 0 ? " <style=cStack>(+" + critGainPerStack + "% per stack)</style>" : "") + " for <style=cIsDamage>" + baseBuffDuration + "s</style>" +
-                                           (buffDurationPerStack > 0 ? " <style=cStack>(+" + buffDurationPerStack + "s per stack)</style>" : "") + ". The <style=cIsDamage>scythe</style> renews over <style=cIsDamage>" + cooldown + "</style> seconds.";
+                                           $" damage, <style=cIsHealing>healing</style> for <style=cIsHealing>{d(baseHeal)}</style> <style=cStack>(+{d(stackHeal)} per stack) <style=cIsHealing>maximum health</style>" + ". The <style=cIsDamage>scythe</style> renews over <style=cIsDamage>" + cooldown + "</style> seconds.";
 
-        [ConfigField("Base Damage", 2f)]
+        [ConfigField("Base Damage", 3.5f)]
         public static float baseDamage;
 
-        [ConfigField("Damage Per Stack", 0f)]
+        [ConfigField("Damage Per Stack", 1f)]
         public static float damagePerStack;
 
-        [ConfigField("Cooldown", 3f)]
+        [ConfigField("Cooldown", 5f)]
         public static float cooldown;
 
-        [ConfigField("Base Crit Gain", 30f)]
-        public static float baseCritGain;
-
-        [ConfigField("Crit Gain Per Stack", 30f)]
-        public static float critGainPerStack;
-
-        [ConfigField("Base Buff Duration", 5f)]
-        public static float baseBuffDuration;
-
-        [ConfigField("Buff Duration Per Stack", 0f)]
-        public static float buffDurationPerStack;
+        [ConfigField("Base Heal Percentage", 0.225f)]
+        public static float baseHeal;
+        [ConfigField("Stack Heal Percentage", 0.08f)]
+        public static float stackHeal;
 
         public static BuffDef scytheCooldown;
         public static BuffDef scytheCrit;
@@ -106,26 +97,13 @@ namespace WellRoundedBalance.Items.Greens
             IL.RoR2.GlobalEventManager.OnCrit += GlobalEventManager_OnCrit;
             IL.RoR2.CharacterBody.RecalculateStats += CharacterBody_RecalculateStats;
             CharacterBody.onBodyInventoryChangedGlobal += CharacterBody_onBodyInventoryChangedGlobal;
-            RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
-        }
-
-        private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
-        {
-            if (sender && sender.inventory)
-            {
-                var stack = sender.inventory.GetItemCount(RoR2Content.Items.HealOnCrit);
-                if (sender.HasBuff(scytheCrit))
-                {
-                    args.critAdd += baseCritGain + critGainPerStack * (stack - 1);
-                }
-            }
         }
 
         private void CharacterBody_onBodyInventoryChangedGlobal(CharacterBody body)
         {
             if (NetworkServer.active)
             {
-                var stack = body.inventory.GetItemCount(RoR2Content.Items.HealOnCrit);
+                var stack = body.inventory.GetItemCountEffective(RoR2Content.Items.HealOnCrit);
                 body.AddItemBehavior<HarvestersScytheController>(stack);
             }
         }
@@ -170,7 +148,7 @@ namespace WellRoundedBalance.Items.Greens
     public class HarvestersScytheController : CharacterBody.ItemBehavior
     {
         public SkillLocator skillLocator;
-        public float damage = 2f;
+        public float damage = 3.5f;
         public float cooldown = 2f;
         public float buffDur = 0;
         public float critGain = 0;
@@ -204,8 +182,8 @@ namespace WellRoundedBalance.Items.Greens
             }
             damage = HarvestersScythe.baseDamage + HarvestersScythe.damagePerStack * (stack - 1);
             cooldown = HarvestersScythe.cooldown;
-            critGain = HarvestersScythe.baseCritGain + HarvestersScythe.critGainPerStack * (stack - 1);
-            buffDur = HarvestersScythe.baseBuffDuration + HarvestersScythe.buffDurationPerStack * (stack - 1);
+            // critGain = HarvestersScythe.baseCritGain + HarvestersScythe.critGainPerStack * (stack - 1);
+            // buffDur = HarvestersScythe.baseBuffDuration + HarvestersScythe.buffDurationPerStack * (stack - 1);
             skillLocator = GetComponent<SkillLocator>();
             body.onSkillActivatedServer += Body_onSkillActivatedServer;
         }
@@ -245,7 +223,7 @@ namespace WellRoundedBalance.Items.Greens
                 attackerFiltering = AttackerFiltering.NeverHitSelf,
                 impactSound = HarvestersScythe.scytheSound.index,
                 procCoefficient = 0f,
-                isCrit = body.RollCrit()
+                isCrit = true
             };
 
             if (scytheObject && body.inputBank)
@@ -265,12 +243,12 @@ namespace WellRoundedBalance.Items.Greens
                 {
                     if (hasCooldownCleaner)
                     {
-                        body.AddTimedBuffAuthority(HarvestersScythe.scytheCrit.buffIndex, buffDur);
+                        body.healthComponent.HealFraction(HarvestersScythe.baseHeal + ((stack - 1) * HarvestersScythe.stackHeal), default);
                     }
                     else
                     {
                         body.AddTimedBuffAuthority(HarvestersScythe.scytheCooldown.buffIndex, HarvestersScythe.cooldown);
-                        body.AddTimedBuffAuthority(HarvestersScythe.scytheCrit.buffIndex, buffDur);
+                        body.healthComponent.HealFraction(HarvestersScythe.baseHeal + ((stack - 1) * HarvestersScythe.stackHeal), default);
                     }
                 }
                 else

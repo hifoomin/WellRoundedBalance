@@ -147,7 +147,7 @@ namespace WellRoundedBalance.Interactables
                 var inventory = body.inventory;
                 if (inventory)
                 {
-                    if (inventory.GetItemCount(DLC1Content.Items.RegeneratingScrap) > 0)
+                    if (inventory.GetItemCountEffective(DLC1Content.Items.RegeneratingScrap) > 0)
                     {
                         return false;
                     }

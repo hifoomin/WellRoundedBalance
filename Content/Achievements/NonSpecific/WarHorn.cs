@@ -15,7 +15,7 @@ namespace WellRoundedBalance.Achievements.NonSpecific
             On.RoR2.Achievements.MultiCombatShrineAchievement.MultiCombatShrineServerAchievement.Check += MultiCombatShrineServerAchievement_Check;
         }
 
-        private void MultiCombatShrineServerAchievement_Check(On.RoR2.Achievements.MultiCombatShrineAchievement.MultiCombatShrineServerAchievement.orig_Check orig, BaseServerAchievement self)
+        private void MultiCombatShrineServerAchievement_Check(On.RoR2.Achievements.MultiCombatShrineAchievement.MultiCombatShrineServerAchievement.orig_Check orig, MultiCombatShrineAchievement.MultiCombatShrineServerAchievement self)
         {
             MultiCombatShrineAchievement.MultiCombatShrineServerAchievement.requirement = 2;
             orig(self);

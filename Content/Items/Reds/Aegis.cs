@@ -47,7 +47,7 @@ namespace WellRoundedBalance.Items.Reds
                         var inventory = body.inventory;
                         if (inventory)
                         {
-                            var stack = inventory.GetItemCount(RoR2Content.Items.BarrierOnOverHeal);
+                            var stack = inventory.GetItemCountEffective(RoR2Content.Items.BarrierOnOverHeal);
                             if (stack > 0)
                             {
                                 lowestBarrier = self.barrier;
@@ -88,7 +88,7 @@ namespace WellRoundedBalance.Items.Reds
                 return;
             }
 
-            var stack = body.inventory.GetItemCount(RoR2Content.Items.BarrierOnOverHeal);
+            var stack = body.inventory.GetItemCountEffective(RoR2Content.Items.BarrierOnOverHeal);
             if (stack <= 0)
             {
                 return;

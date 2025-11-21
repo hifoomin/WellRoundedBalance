@@ -20,8 +20,9 @@ namespace WellRoundedBalance.Items.Lunars
 
         public override void Hooks()
         {
-            IL.RoR2.Items.RandomlyLunarUtils.CheckForLunarReplacement += ChangeChance1;
-            IL.RoR2.Items.RandomlyLunarUtils.CheckForLunarReplacementUniqueArray += ChangeChance2;
+            IL.RoR2.Items.RandomlyLunarUtils.CheckForLunarReplacement_UniquePickup_Xoroshiro128Plus += ChangeChance1;
+            // IL.RoR2.Items.RandomlyLunarUtils.CheckForLunarReplacementUniqueArray += ChangeChance2;
+            // idfk the new method is generic and mmhook doesnt generate for it
         }
 
         private void ChangeChance2(ILContext il)

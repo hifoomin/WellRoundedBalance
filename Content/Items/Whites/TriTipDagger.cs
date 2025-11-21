@@ -50,7 +50,7 @@ namespace WellRoundedBalance.Items.Whites
                         var inventory = args.BleedCap.body.inventory;
                         if (inventory)
                         {
-                            var stack = inventory.GetItemCount(RoR2Content.Items.BleedOnHit);
+                            var stack = inventory.GetItemCountEffective(RoR2Content.Items.BleedOnHit);
                             if (stack > 0)
                             {
                                 args.BleedCap.bleedCapAdd += baseBleedCapPerTarget + bleedCapPerTargetPerStack * (stack - 1);
@@ -67,7 +67,7 @@ namespace WellRoundedBalance.Items.Whites
             var inventory = self.inventory;
             if (inventory)
             {
-                var stack = self.inventory.GetItemCount(RoR2Content.Items.BleedOnHit);
+                var stack = self.inventory.GetItemCountEffective(RoR2Content.Items.BleedOnHit);
                 if (self.inventory && stack > 0) self.bleedChance += StackAmount(bleedChance, bleedChanceStack, stack, bleedChanceIsHyperbolic) * 100f - 10f;
             }
         }

@@ -29,7 +29,7 @@ namespace WellRoundedBalance.Items.Lunars
         {
             if (sender && sender.inventory)
             {
-                var stack = sender.inventory.GetItemCount(RoR2Content.Items.LunarDagger);
+                var stack = sender.inventory.GetItemCountEffective(RoR2Content.Items.LunarDagger);
                 if (stack > 0)
                 {
                     args.damageMultAdd += damage * stack;

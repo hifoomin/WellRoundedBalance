@@ -94,7 +94,7 @@ namespace WellRoundedBalance.Items.VoidGreens
                         var procMask = damageReport.damageInfo.procChainMask;
                         procMask.AddProc(ProcType.Rings);
 
-                        var stack = inventory.GetItemCount(DLC1Content.Items.ElementalRingVoid);
+                        var stack = inventory.GetItemCountEffective(DLC1Content.Items.ElementalRingVoid);
                         if (stack > 0)
                         {
                             var singularity = LegacyResourcesAPI.Load<GameObject>("Prefabs/Projectiles/ElementalRingVoidBlackHole");

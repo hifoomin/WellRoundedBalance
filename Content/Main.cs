@@ -9,6 +9,8 @@ using HarmonyLib;
 using WellRoundedBalance.Items.ConsistentCategories;
 using Mono.Cecil;
 using System;
+using RoR2.UI.MainMenu;
+using System.Collections;
 
 [assembly: HG.Reflection.SearchableAttribute.OptIn]
 
@@ -36,7 +38,7 @@ namespace WellRoundedBalance
         public const string PluginGUID = PluginAuthor + "." + PluginName;
         public const string PluginAuthor = "BALLS";
         public const string PluginName = "WellRoundedBalance";
-        public const string PluginVersion = "1.4.9";
+        public const string PluginVersion = "1.5.0";
         public static ConfigFile WRBAchievementConfig;
         public static ConfigFile WRBAllyConfig;
         public static ConfigFile WRBArtifactAddConfig;
@@ -114,7 +116,7 @@ namespace WellRoundedBalance
             WRBModuleConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Modules.cfg", true);
             WRBSurvivorConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Survivors.cfg", true);
 
-            BetterItemCategories.enable = WRBItemConfig.Bind(":: Items : Changes :: Better Item Categories", "Enable item category changes?", true);
+            // BetterItemCategories.enable = WRBItemConfig.Bind(":: Items : Changes :: Better Item Categories", "Enable item category changes?", true);
 
             enableAchievements = WRBModuleConfig.Bind(":: Module Toggles ::", "Enable Achievement changes?", true, "Disabling this could cause achievements to get locked again, if the unlockable method changed or got more difficult.");
             enableAllies = WRBModuleConfig.Bind(":: Module Toggles ::", "Enable Ally changes?", true);
@@ -159,18 +161,11 @@ namespace WellRoundedBalance
             WildbookMultitudesLoaded = BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("dev.wildbook.multitudes");
 
             Initialize.Init();
-
-            string balls = WRBMiscConfig.Bind("Annoying Pop Up", "Set to Fuck Off to disable", "", "Disables the mf config changed message").Value;
-            bool shownConfigMessage = false;
             RoR2Application.onLoad += () => Dialogue.input = GameObject.Find("MPEventSystem Player0").GetComponent<RoR2.UI.MPInput>();
-            On.RoR2.UI.MainMenu.BaseMainMenuScreen.OnEnter += (orig, self, mainMenuController) =>
+
+            MainMenuController.OnMainMenuInitialised += () =>
             {
-                orig(self, mainMenuController);
-                if (!shownConfigMessage && ConfigManager.ConfigChanged && balls.ToLower() != "fuck off")
-                {
-                    shownConfigMessage = true;
-                    Dialogue.ShowPopup("Config changed?", "Thank you for enjoying Well Rounded Balance <3! Despite the extensive configuration, we want our default experience to be as enjoyable as possible. Please let us know your balanced takes at <style=cDeath>cutt.ly/ballscord</style>! any constructive feedback is welcome <3.\n\n<style=cStack>set Misc > Annoying Pop Up to \'Fuck Off\' to disable this message.</style>");
-                }
+                StartCoroutine(Dogshit());
             };
 
             On.RoR2.UI.MainMenu.BaseMainMenuScreen.OnEnter += BaseMainMenuScreen_OnEnter;
@@ -182,6 +177,18 @@ namespace WellRoundedBalance
             }
 
             // IL.RoR2.CharacterMaster.OnBodyDamaged += BandaidFix;
+        }
+
+        private IEnumerator Dogshit() {
+            yield return new WaitForSeconds(0f);
+            string balls = WRBMiscConfig.Bind("Annoying Pop Up", "Set to Fuck Off to disable", "", "Disables the mf config changed message").Value;
+            bool shownConfigMessage = false;
+
+            if (!shownConfigMessage && ConfigManager.ConfigChanged && balls.ToLower() != "fuck off")
+            {
+                shownConfigMessage = true;
+                Dialogue.ShowPopup("Config changed?", "Thank you for enjoying Well Rounded Balance <3! Despite the extensive configuration, we want our default experience to be as enjoyable as possible. Please let us know your balanced takes at <style=cDeath>cutt.ly/ballscord</style>! any constructive feedback is welcome <3.\n\n<style=cStack>set Misc > Annoying Pop Up to \'Fuck Off\' to disable this message.</style>");
+            }
         }
 
         private void BandaidFix(ILContext il)

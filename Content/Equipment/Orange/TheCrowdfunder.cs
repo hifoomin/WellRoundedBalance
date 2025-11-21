@@ -81,8 +81,8 @@ namespace WellRoundedBalance.Equipment.Orange
                 var inventory = body.inventory;
                 if (inventory)
                 {
-                    var fuelCells = inventory.GetItemCount(RoR2Content.Items.EquipmentMagazine);
-                    var hasGesture = inventory.GetItemCount(RoR2Content.Items.AutoCastEquipment) > 0;
+                    var fuelCells = inventory.GetItemCountEffective(RoR2Content.Items.EquipmentMagazine);
+                    var hasGesture = inventory.GetItemCountEffective(RoR2Content.Items.AutoCastEquipment) > 0;
                     // fuel cell hardcoded for now
                     var reduction = 1f - ((0.15f * fuelCells));
 

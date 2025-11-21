@@ -48,8 +48,8 @@ namespace WellRoundedBalance.Items.Greens
 
         public override void Hooks()
         {
-            IL.RoR2.EquipmentSlot.OnEquipmentExecuted += EquipmentSlot_OnEquipmentExecuted;
-            On.RoR2.EquipmentSlot.OnEquipmentExecuted += EquipmentSlot_OnEquipmentExecuted1;
+            IL.RoR2.EquipmentSlot.OnEquipmentExecuted_byte_byte_EquipmentIndex += EquipmentSlot_OnEquipmentExecuted;
+            On.RoR2.EquipmentSlot.OnEquipmentExecuted_byte_byte_EquipmentIndex += EquipmentSlot_OnEquipmentExecuted1;
             RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
         }
 
@@ -58,7 +58,7 @@ namespace WellRoundedBalance.Items.Greens
             var inventory = sender.inventory;
             if (inventory && sender.HasBuff(warHornBuff))
             {
-                var stack = inventory.GetItemCount(RoR2Content.Items.EnergizedOnEquipmentUse);
+                var stack = inventory.GetItemCountEffective(RoR2Content.Items.EnergizedOnEquipmentUse);
                 args.baseAttackSpeedAdd += baseAttackSpeedGain + attackSpeedGainPerStack * (stack - 1);
 
                 var regenStack = baseRegenerationGain + (regenerationGainPerStack * (stack - 1));
@@ -66,19 +66,19 @@ namespace WellRoundedBalance.Items.Greens
             }
         }
 
-        private void EquipmentSlot_OnEquipmentExecuted1(On.RoR2.EquipmentSlot.orig_OnEquipmentExecuted orig, EquipmentSlot self)
+        private void EquipmentSlot_OnEquipmentExecuted1(On.RoR2.EquipmentSlot.orig_OnEquipmentExecuted_byte_byte_EquipmentIndex orig, EquipmentSlot self, byte b1, byte b2, EquipmentIndex i)
         {
             if (NetworkServer.active)
             {
                 if (self.characterBody && self.inventory)
                 {
-                    var stack = self.inventory.GetItemCount(RoR2Content.Items.EnergizedOnEquipmentUse);
+                    var stack = self.inventory.GetItemCountEffective(RoR2Content.Items.EnergizedOnEquipmentUse);
                     if (stack > 0)
                     {
                         self.characterBody.AddTimedBuff(warHornBuff, buffDuration);
                     }
                 }
-                orig(self);
+                orig(self, b1, b2, i);
             }
         }
 

@@ -59,7 +59,7 @@ namespace WellRoundedBalance.Items.Whites
 
             if (c.TryGotoNext(MoveType.Before,
                 x => x.MatchLdsfld("RoR2.RoR2Content/Items", "Crowbar"),
-                        x => x.MatchCallOrCallvirt<Inventory>("GetItemCount"),
+                        x => x.MatchCallOrCallvirt<Inventory>("GetItemCountEffective"),
                         x => x.MatchStloc(out _), // out _ means you don't care what it matches, and since HealthComponent.TakeDamageProcess only has one crowbar thing, it's good enough, but I like to match a bit more to see what I'm doing
                         x => x.MatchLdloc(out _),
                         x => x.MatchLdcI4(out _)))
@@ -109,7 +109,7 @@ namespace WellRoundedBalance.Items.Whites
                             return 0;
                         }
                     }
-                    return self.fullCombinedHealth * StackAmount(healthThreshold, healthThresholdStack, master.inventory.GetItemCount(InternalPickup), healthThresholdIsHyperbolic);
+                    return self.fullCombinedHealth * StackAmount(healthThreshold, healthThresholdStack, master.inventory.GetItemCountEffective(InternalPickup), healthThresholdIsHyperbolic);
                 });
             }
             else Logger.LogError("Failed to apply Crowbar Threshold hook");

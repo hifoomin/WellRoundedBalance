@@ -1,4 +1,6 @@
-﻿namespace WellRoundedBalance.Projectiles
+﻿using WellRoundedBalance.Misc;
+
+namespace WellRoundedBalance.Projectiles
 {
     public static class EarthQuakeWave
     {
@@ -7,6 +9,7 @@
         public static void Init()
         {
             prefab = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.BrotherSunderWave.Load<GameObject>(), "EarthquakeWave", false);
+            prefab.AddComponent<DestroyStuckObject>();
             var projectileDamage = prefab.GetComponent<ProjectileDamage>();
             projectileDamage.damageType = DamageType.Generic;
 
@@ -23,15 +26,7 @@
             var newGhost = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.BrotherSunderWaveGhost.Load<GameObject>(), "EarthquakeWaveGhost", false);
             var @base = newGhost.transform.GetChild(0);
             var infection = @base.GetChild(0).GetComponent<ParticleSystemRenderer>();
-
             infection.gameObject.SetActive(false);
-
-            infection.gameObject.transform.localPosition = new Vector3(0.5f, -0.456f, 0.5f);
-            infection.material.SetTexture("_EmTex", Main.wellroundedbalance.LoadAsset<Texture2D>("Assets/WellRoundedBalance/texRampWave.png"));
-            infection.material.SetTexture("_MainTex", Main.wellroundedbalance.LoadAsset<Texture2D>("Assets/WellRoundedBalance/texRampWave.png"));
-
-            var water = @base.GetChild(3);
-            water.gameObject.SetActive(false);
 
             var hitboxReal = prefab.transform.GetChild(0);
             hitboxReal.transform.localScale = new Vector3(30f, 1.33f, 1.1f);

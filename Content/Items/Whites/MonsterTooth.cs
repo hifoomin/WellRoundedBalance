@@ -56,7 +56,7 @@ namespace WellRoundedBalance.Items.Whites
             var inventory = damageReport.attackerBody.inventory;
             if (!inventory) return;
 
-            var stack = inventory.GetItemCount(RoR2Content.Items.Tooth);
+            var stack = inventory.GetItemCountEffective(RoR2Content.Items.Tooth);
             if (stack <= 0) return;
             var vector = damageReport.victim.transform.position;
             float scale = Mathf.Pow(stack, 0.45f);

@@ -41,9 +41,9 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="BepInEx.Core" Version="5.4.19" />
+    <PackageReference Include="BepInEx.Core" Version="5.4.21" />
     <PackageReference Include="UnityEngine.Modules" Version="2021.3.33" IncludeAssets="compile" />
-	<PackageReference Include="RiskOfRain2.GameLibs" Version="1.3.6-r.0" />
+	<PackageReference Include="RiskOfRain2.GameLibs" Version="1.4.0-r.0" />
 	<PackageReference Include="MMHOOK.RoR2" Version="*-*" NoWarn="NU1701" />
 	<PackageReference Include="R2API.Language" Version="1.0.0" />
 	<PackageReference Include="R2API.RecalculateStats" Version="1.2.0" />
@@ -55,6 +55,7 @@
 	<PackageReference Include="R2API.DamageType" Version="1.0.2" />
 	<PackageReference Include="R2API.Elites" Version="1.0.1" />
 	<PackageReference Include="R2API.Dot" Version="1.0.0" />
+  <PackageReference Include="RoR2BepInExPack" Version="1.32.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -100,10 +101,11 @@
     </Reference>
     <Reference Include="RiskOfOptions">
       <HintPath>..\..\..\..\RiskOfOptions.dll</HintPath>
+      <Private>false</Private>
     </Reference>
     <Reference Include="Risky_Artifacts">
       <HintPath>./libs/Risky_Artifacts.dll</HintPath>
-      <Private>true</Private>
+      <Private>false</Private>
     </Reference>
     <Reference Include="SimpleJSON">
       <HintPath>libs\SimpleJSON.dll</HintPath>
@@ -111,13 +113,15 @@
     </Reference>
     <Reference Include="Unity.Postprocessing.Runtime">
       <HintPath>./libs/Unity.Postprocessing.Runtime.dll</HintPath>
-      <Private>true</Private>
+      <Private>false</Private>
     </Reference>
     <Reference Include="WolfoQualityOfLife">
       <HintPath>libs/WolfoQualityOfLife-nstrip.dll</HintPath>
+      <Private>false</Private>
     </Reference>
     <Reference Include="ZetArtifacts">
       <HintPath>libs\ZetArtifacts.dll</HintPath>
+      <Private>false</Private>
     </Reference>
     <Reference Include="Zio">
       <HintPath>libs\Zio.dll</HintPath>

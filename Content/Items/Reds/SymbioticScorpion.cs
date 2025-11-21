@@ -87,7 +87,7 @@ namespace WellRoundedBalance.Items.Reds
 
         private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
-            var stack = sender.inventory ? sender.inventory.GetItemCount(DLC1Content.Items.PermanentDebuffOnHit) : 0;
+            var stack = sender.inventory ? sender.inventory.GetItemCountEffective(DLC1Content.Items.PermanentDebuffOnHit) : 0;
             if (sender.HasBuff(armorReduction))
             {
                 if (sender.armor - (baseArmorStealAmount + armorStealAmountPerStack * (stack - 1)) >= 0)
@@ -131,7 +131,7 @@ namespace WellRoundedBalance.Items.Reds
             {
                 return;
             }
-            var stack = inventory.GetItemCount(DLC1Content.Items.PermanentDebuffOnHit);
+            var stack = inventory.GetItemCountEffective(DLC1Content.Items.PermanentDebuffOnHit);
             if (stack > 0 && damageReport.damageInfo.procCoefficient > 0)
             {
                 victimBody.AddTimedBuff(armorReduction, 5f);
@@ -148,18 +148,17 @@ namespace WellRoundedBalance.Items.Reds
         {
             ILCursor c = new(il);
 
-            if (c.TryGotoNext(MoveType.Before,
+            if (c.TryGotoNext(MoveType.After,
                     x => x.MatchLdsfld("RoR2.DLC1Content/Items", "PermanentDebuffOnHit"),
-                    x => x.MatchCallOrCallvirt<Inventory>("GetItemCount"),
+                    x => x.MatchCallOrCallvirt<Inventory>("GetItemCountEffective"),
                     x => x.MatchStloc(out _),
                     x => x.MatchLdcI4(0),
                     x => x.MatchStloc(out _),
                     x => x.MatchLdcI4(0),
                     x => x.MatchStloc(out _),
                     x => x.MatchBr(out _),
-                    x => x.MatchLdcR4(100f)))
+                    x => x.MatchLdarg(0)))
             {
-                c.Index += 8;
                 c.Next.Operand = 0f;
             }
             else
@@ -187,7 +186,7 @@ namespace WellRoundedBalance.Items.Reds
             var inventory = attackerBody.inventory;
             if (inventory)
             {
-                damageCoefficient = SymbioticScorpion.baseVenomDamagePerTick + SymbioticScorpion.venomDamagePerTickPerStack * (inventory.GetItemCount(DLC1Content.Items.PermanentDebuffOnHit) - 1);
+                damageCoefficient = SymbioticScorpion.baseVenomDamagePerTick + SymbioticScorpion.venomDamagePerTickPerStack * (inventory.GetItemCountEffective(DLC1Content.Items.PermanentDebuffOnHit) - 1);
             }
         }
 

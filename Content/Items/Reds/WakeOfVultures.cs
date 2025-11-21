@@ -63,7 +63,7 @@ namespace WellRoundedBalance.Items.Reds
                 if (damage.attacker && damage.attacker.GetComponent<CharacterBody>())
                 {
                     CharacterBody attacker = damage.attacker.GetComponent<CharacterBody>();
-                    if (attacker.isElite && self.body.inventory && self.body.inventory.GetItemCount(RoR2Content.Items.HeadHunter) > 0)
+                    if (attacker.isElite && self.body.inventory && self.body.inventory.GetItemCountEffective(RoR2Content.Items.HeadHunter) > 0)
                     {
                         List<BuffIndex> currentEliteBuffs = new();
                         foreach (BuffIndex buff in attacker.activeBuffsList)
@@ -94,7 +94,7 @@ namespace WellRoundedBalance.Items.Reds
                             }
                         }
 
-                        float mult = Mathf.Pow((1 - damageReduction), self.body.inventory.GetItemCount(RoR2Content.Items.HeadHunter));
+                        float mult = Mathf.Pow((1 - damageReduction), self.body.inventory.GetItemCountEffective(RoR2Content.Items.HeadHunter));
                         // Debug.Log(mult);
                         if (hasAtLeastOne)
                         {
@@ -129,7 +129,7 @@ namespace WellRoundedBalance.Items.Reds
                 if (report.victimIsElite && report.attackerBody)
                 {
                     // Debug.Log("killed elite");
-                    int stack = report.attackerBody.inventory.GetItemCount(RoR2Content.Items.HeadHunter);
+                    int stack = report.attackerBody.inventory.GetItemCountEffective(RoR2Content.Items.HeadHunter);
                     if (stack > 0)
                     {
                         List<BuffIndex> currentEliteBuffs = new();

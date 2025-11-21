@@ -109,7 +109,7 @@ namespace WellRoundedBalance.Equipment.Lunar
             }
         }
 
-        private void MeteorStormController_DetonateMeteor1(On.RoR2.MeteorStormController.orig_DetonateMeteor orig, MeteorStormController self, object meteor)
+        private void MeteorStormController_DetonateMeteor1(On.RoR2.MeteorStormController.orig_DetonateMeteor orig, MeteorStormController self, MeteorStormController.Meteor meteor)
         {
             self.blastDamageCoefficient = damage;
             self.blastRadius = radius;

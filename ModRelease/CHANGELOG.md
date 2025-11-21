@@ -1,3 +1,23 @@
+# 1.5.0 Patch Notes
+- Updated for Alloyed Collective.
+- Nerfed Harvester's Scythe cooldown 3s => **5s**
+- Buffed Harvester's Scythe swing damage 200% => **350%**
+- Buffed Harvester's Scythe stack damage 0% => **100%**
+- Harvester's Scythe no longer increases crit chance on swing.
+- Harvester's Scythe swing attack is now guaranteed to crit.
+- Harvester's Scythe now heals for **22.5%**, +8% per stack, maximum health if at least one hit is landed with the swing.
+- Beetle Queen Earthquake now has a proper telegraph.
+- Beetle Queen Earthquake visuals made much easier to see.
+- Temporarily disabled item category changes until R2API updates.
+- Removes the forced SOTS items from Halcyon Shrines and Aurelionite Blessing drop rolls.
+- No longer depends on BetterDrones.
+
+# 1.4.92 Patch Notes
+- mod works again
+
+# 1.4.91 Patch Notes
+- teleporter doesnt shoot reliquary projectiles anymore (unfinished content that slipped into sots update)
+
 # 1.4.9 Patch Notes
 - no longer deletes the entire mithrix arena
 

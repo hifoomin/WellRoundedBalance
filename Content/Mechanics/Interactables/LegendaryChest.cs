@@ -55,7 +55,7 @@
                 i++;
                 chestVelocity = rotation * chestVelocity;
             }
-            self.dropPickup = PickupIndex.none;
+            self.currentPickup = new UniquePickup(PickupIndex.none);
         }
     }
 }

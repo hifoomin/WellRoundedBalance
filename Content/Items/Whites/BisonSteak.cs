@@ -81,7 +81,7 @@
             if (sender.inventory)
             {
                 args.baseHealthAdd += StackAmount(maximumHealthGain - 25, maximumHealthGainStack - 25,
-                    sender.inventory.GetItemCount(InternalPickup), maximumHealthGainIsHyperbolic);
+                    sender.inventory.GetItemCountEffective(InternalPickup), maximumHealthGainIsHyperbolic);
             }
         }
     }

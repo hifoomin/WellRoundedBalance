@@ -1,6 +1,6 @@
 {
 	"name": "WellRoundedBalance",
-	"version_number": "1.4.9",
+	"version_number": "1.4.92",
 	"website_url": "https://github.com/hifoomin/WellRoundedBalance",
 	"description": "A complete balance overhaul for a much more fast-paced and challenging game with much less autoplay. Check out the mod page for more information. Extremely configurable.",
 	"dependencies": [
@@ -15,8 +15,7 @@
 		"RiskofThunder-R2API_Elites-1.0.1",
 		"RiskofThunder-R2API_Dot-1.0.0",
 		"RiskofThunder-HookGenPatcher-1.2.3",
-		"pseudopulse-BetterDrones-1.5.1",
-		"Zenithrium-VanillaVoid-1.4.11",
+		"Zenithrium-VanillaVoid-1.6.4",
 		"prodzpod-Ephemeral_Coins-2.3.5",
 		"HIFU-HIFUCommandoTweaks-1.2.0",
 		"SeekingUpdates-HIFULoaderTweaks-1.1.6",

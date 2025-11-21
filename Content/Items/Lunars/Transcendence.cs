@@ -40,7 +40,7 @@ namespace WellRoundedBalance.Items.Lunars
                 {
                     if (self.inventory)
                     {
-                        var stack = self.inventory.GetItemCount(RoR2Content.Items.ShieldOnly);
+                        var stack = self.inventory.GetItemCountEffective(RoR2Content.Items.ShieldOnly);
                         if (stack > 0)
                         {
                             outOfDangerDelay += baseShieldCooldownTimeIncrease + shieldCooldownTimeIncreasePerStack * (stack - 1);

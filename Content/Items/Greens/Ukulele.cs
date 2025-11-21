@@ -50,7 +50,7 @@ namespace WellRoundedBalance.Items.Greens
 
             if (c.TryGotoNext(MoveType.Before,
                     x => x.MatchLdsfld("RoR2.RoR2Content/Items", "ChainLightning"),
-                    x => x.MatchCallOrCallvirt<Inventory>("GetItemCount"),
+                    x => x.MatchCallOrCallvirt<Inventory>("GetItemCountEffective"),
                     x => x.MatchStloc(out _),
                     x => x.MatchLdcR4(25f)))
             {
@@ -64,12 +64,9 @@ namespace WellRoundedBalance.Items.Greens
 
             c.Index = 0;
 
-            if (c.TryGotoNext(MoveType.Before,
-                x => x.MatchCallOrCallvirt(typeof(Util).GetMethod("CheckRoll", new Type[] { typeof(float), typeof(CharacterMaster) })),
-                x => x.MatchBrfalse(out _),
-                x => x.MatchLdcR4(0.8f)))
+            if (c.TryGotoNext(MoveType.Before, x => x.MatchLdsfld("RoR2.RoR2Content/Items", "ChainLightning")))
             {
-                c.Index += 2;
+                c.TryGotoNext(MoveType.Before, x => x.MatchLdcR4(0.8f));
                 c.Next.Operand = totalDamage;
             }
             else
@@ -115,7 +112,7 @@ namespace WellRoundedBalance.Items.Greens
                             if (inventory)
                             {
                                 // Logger.LogError("inventory exists");
-                                var stack = inventory.GetItemCount(RoR2Content.Items.ChainLightning);
+                                var stack = inventory.GetItemCountEffective(RoR2Content.Items.ChainLightning);
                                 self.bouncesRemaining = baseMaxTargets + maxTargetsPerStack * (stack - 1);
                                 self.range = baseRange + rangePerStack * (stack - 1);
                             }

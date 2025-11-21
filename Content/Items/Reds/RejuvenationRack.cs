@@ -30,7 +30,7 @@
                 var inventory = body.inventory;
                 if (inventory)
                 {
-                    var stack = inventory.GetItemCount(RoR2Content.Items.IncreaseHealing);
+                    var stack = inventory.GetItemCountEffective(RoR2Content.Items.IncreaseHealing);
                     if (stack > 0)
                     {
                         return;
@@ -48,7 +48,7 @@
                 var inventory = body.inventory;
                 if (inventory)
                 {
-                    var stack = inventory.GetItemCount(RoR2Content.Items.IncreaseHealing);
+                    var stack = inventory.GetItemCountEffective(RoR2Content.Items.IncreaseHealing);
                     if (stack > 0)
                     {
                         return;

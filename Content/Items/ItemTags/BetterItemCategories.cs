@@ -28,8 +28,6 @@ namespace WellRoundedBalance.Items.ConsistentCategories
                 if (def.ContainsTag(ItemTag.Healing) || def.ContainsTag(ItemTag.Utility))
                 {
                     List<ItemTag> tags = def.tags.ToList();
-                    tags.Remove(ItemTag.Healing);
-                    tags.Remove(ItemTag.Utility);
                     def.tags = tags.ToArray();
 
                     ItemAPI.ApplyTagToItem("Defense", def);

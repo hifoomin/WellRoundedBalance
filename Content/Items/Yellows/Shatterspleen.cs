@@ -41,7 +41,7 @@ namespace WellRoundedBalance.Items.Yellows
                         var inventory = args.BleedCap.body.inventory;
                         if (inventory)
                         {
-                            var stack = inventory.GetItemCount(RoR2Content.Items.BleedOnHitAndExplode);
+                            var stack = inventory.GetItemCountEffective(RoR2Content.Items.BleedOnHitAndExplode);
                             if (stack > 0)
                             {
                                 args.BleedCap.bleedCapAdd += baseBleedCapPerTarget + bleedCapPerTargetPerStack * (stack - 1);

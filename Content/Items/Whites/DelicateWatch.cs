@@ -119,7 +119,7 @@ namespace WellRoundedBalance.Items.Whites
             if (sender.inventory && sender.HasBuff(watchDamage))
             {
                 args.damageMultAdd += StackAmount(damageIncrease, damageIncreaseStack,
-                    sender.inventory.GetItemCount(DLC1Content.Items.FragileDamageBonus), damageIncreaseIsHyperbolic);
+                    sender.inventory.GetItemCountEffective(DLC1Content.Items.FragileDamageBonus), damageIncreaseIsHyperbolic);
             }
         }
 
@@ -127,7 +127,7 @@ namespace WellRoundedBalance.Items.Whites
         {
             if (NetworkServer.active)
             {
-                var stack = body.inventory.GetItemCount(DLC1Content.Items.FragileDamageBonus);
+                var stack = body.inventory.GetItemCountEffective(DLC1Content.Items.FragileDamageBonus);
                 body.AddItemBehavior<DelicateWatchController>(stack);
             }
         }
