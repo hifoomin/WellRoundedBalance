@@ -377,7 +377,7 @@ namespace WellRoundedBalance
         {
             Main.WRBLogger.LogDebug("ItemAPI.AddItemTag(\"Defense\") returns " + ItemAPI.AddItemTag("Defense"));
             orig();
-            BetterItemCategories.Init();
+            // BetterItemCategories.Init();
             BetterItemCategories.BetterAIBlacklist();
         }
 
@@ -385,7 +385,6 @@ namespace WellRoundedBalance
         {
             if (obj.isEnabled)
             {
-                // Main.WRBLogger.LogError("validating T: " + obj);
                 bool enabledfr = GetConfigForType<T>().Bind(obj.Name, "Enable Changes?", true, "Vanilla is false").Value;
                 if (enabledfr) return true;
                 else ConfigManager.ConfigChanged = true;

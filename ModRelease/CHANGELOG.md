@@ -1,3 +1,6 @@
+# 1.5.1 Patch Notes
+- i forgor to include a fix
+
 # 1.5.0 Patch Notes
 - Updated for Alloyed Collective.
 - Nerfed Harvester's Scythe cooldown 3s => **5s**

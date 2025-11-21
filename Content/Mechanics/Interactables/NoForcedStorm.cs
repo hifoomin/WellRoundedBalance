@@ -29,6 +29,8 @@ namespace WellRoundedBalance.Mechanics.Interactables
                 });
             }
 
+            PickupPickerController.GrabNumbers = numOptions - 2;
+
             return options.ToArray();
         }
     }

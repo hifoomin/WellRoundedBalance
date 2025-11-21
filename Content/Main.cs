@@ -91,6 +91,7 @@ namespace WellRoundedBalance
 
         //
         public static AssemblyDefinition WRBAssembly; // used for IL stuff
+        public static bool shownConfigMessage = false;
 
         public void Awake()
         {
@@ -182,7 +183,6 @@ namespace WellRoundedBalance
         private IEnumerator Dogshit() {
             yield return new WaitForSeconds(0f);
             string balls = WRBMiscConfig.Bind("Annoying Pop Up", "Set to Fuck Off to disable", "", "Disables the mf config changed message").Value;
-            bool shownConfigMessage = false;
 
             if (!shownConfigMessage && ConfigManager.ConfigChanged && balls.ToLower() != "fuck off")
             {
