@@ -20,6 +20,7 @@ namespace WellRoundedBalance
     [BepInDependency("com.Moffein.RiskyArtifacts", BepInDependency.DependencyFlags.SoftDependency)]
     [BepInDependency("com.Moffein.AI_Blacklist", BepInDependency.DependencyFlags.SoftDependency)]
     [BepInDependency("com.Wolfo.WolfoQualityOfLife", BepInDependency.DependencyFlags.SoftDependency)]
+    [BepInDependency("com.Wolfo.WolfFixes", BepInDependency.DependencyFlags.SoftDependency)]
     [BepInDependency("com.Wolfo.LittleGameplayTweaks", BepInDependency.DependencyFlags.SoftDependency)]
     [BepInDependency("dev.wildbook.multitudes", BepInDependency.DependencyFlags.SoftDependency)]
     [BepInDependency("com.TPDespair.ZetArtifacts", BepInDependency.DependencyFlags.SoftDependency)]
@@ -38,7 +39,7 @@ namespace WellRoundedBalance
         public const string PluginGUID = PluginAuthor + "." + PluginName;
         public const string PluginAuthor = "BALLS";
         public const string PluginName = "WellRoundedBalance";
-        public const string PluginVersion = "1.5.0";
+        public const string PluginVersion = "1.5.5";
         public static ConfigFile WRBAchievementConfig;
         public static ConfigFile WRBAllyConfig;
         public static ConfigFile WRBArtifactAddConfig;
@@ -160,6 +161,29 @@ namespace WellRoundedBalance
             PieceOfShitLoaded = BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("com.Wolfo.WolfoQualityOfLife");
             ZetArtifactsLoaded = BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("com.TPDespair.ZetArtifacts");
             WildbookMultitudesLoaded = BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("dev.wildbook.multitudes");
+
+            if (BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("com.Wolfo.WolfFixes")) { // oh my fucking god wolfo
+                WRBLogger.LogInfo("WolfFixes detected. Applying stupid ass hook to fix void cradles.");
+                PluginInfo info = BepInEx.Bootstrap.Chainloader.PluginInfos["com.Wolfo.WolfFixes"];
+                Assembly asm = info.Instance.GetType().Assembly;
+                ILHook hook = new(AccessTools.Method(asm.GetType("WolfoFixes.OptionPickupStuff"), "OptionPickup_Fixes"), (il) => {
+                    ILCursor c = new(il);
+                    c.TryGotoNext(MoveType.After, x => x.MatchCallOrCallvirt(out _));
+                    c.Emit(OpCodes.Ldarg_0);
+                    c.Emit(OpCodes.Ldarg_1);
+                    c.Emit(OpCodes.Ldarg_2);
+                    c.EmitDelegate<Func<Action<PickupPickerController, PickupPickerController.Option[]>, PickupPickerController, PickupPickerController.Option[], bool>>((orig, self, options) => {
+                        if (self.GetComponent<Interactables.VoidCradle.CradleManager>()) {
+                            orig(self, options);
+                            return false;
+                        }
+                        
+                        return true;
+                    });
+                    c.FindNext(out ILCursor[] cursors, x => x.MatchRet());
+                    c.Emit(OpCodes.Brfalse, cursors[0].MarkLabel());
+                });
+            }
 
             Initialize.Init();
             RoR2Application.onLoad += () => Dialogue.input = GameObject.Find("MPEventSystem Player0").GetComponent<RoR2.UI.MPInput>();

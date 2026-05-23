@@ -9,7 +9,7 @@ namespace WellRoundedBalance.Items.Greens
         public override ItemDef InternalPickup => RoR2Content.Items.Thorns;
 
         public override string PickupText => "While out of danger, passively damage nearby enemies with thorns.";
-        public override string DescText => "Passively damage all enemies within <style=cIsDamage>" + radius + "m</style> for <style=cIsDamage>" + d(baseDamage) + "</style> <style=cStack>(+" + d(damagePerStack) + " per stack)</style> <style=cIsDamage>damage per second</style> while out of danger.";
+        public override string DescText => "Passively damage all enemies within <style=cIsDamage>" + radius + "m</style> for <style=cIsDamage>" + d(baseDamage) + "</style> <style=cStack>(+" + d(damagePerStack) + " per stack)</style> <style=cIsDamage>damage per second</style> while in danger.";
 
         [ConfigField("Base Damage", "Decimal.", 2.5f)]
         public static float baseDamage;
@@ -20,7 +20,7 @@ namespace WellRoundedBalance.Items.Greens
         [ConfigField("Proc Coefficient", 0f)]
         public static float procCoefficient;
 
-        [ConfigField("Radius", 13f)]
+        [ConfigField("Radius", 16f)]
         public static float radius;
 
         public static GameObject razorwireVFX;
@@ -116,7 +116,7 @@ namespace WellRoundedBalance.Items.Greens
                 return;
             }
 
-            if (!body.outOfDanger)
+            if (body.outOfDanger)
             {
                 // Main.WRBLogger.LogError("disabling razorwire indicator");
                 enableRadiusIndicator = false;

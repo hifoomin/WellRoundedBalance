@@ -10,6 +10,7 @@
 *.sln.docstates
 
 build.sh
+TODO.txt
 
 WRBBuild
 WRB.zip

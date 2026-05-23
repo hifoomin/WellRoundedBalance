@@ -55,6 +55,7 @@
 	<PackageReference Include="R2API.DamageType" Version="1.0.2" />
 	<PackageReference Include="R2API.Elites" Version="1.0.1" />
 	<PackageReference Include="R2API.Dot" Version="1.0.0" />
+  <PackageReference Include="R2API.Networking" Version="1.0.0" />
   <PackageReference Include="RoR2BepInExPack" Version="1.32.0" />
   </ItemGroup>
 

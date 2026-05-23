@@ -94,23 +94,19 @@ namespace WellRoundedBalance.Interactables
                 }
             }
         }
-
-        public override PickupIndex[] GenerateUniqueDropsPreReplacement(int maxDrops, Xoroshiro128Plus rng)
+        public override UniquePickup GeneratePickupPreReplacement(Xoroshiro128Plus rng)
         {
             GenerateWeightedSelection();
-            PickupIndex[] drops = GenerateUniqueDropsFromWeightedSelection(maxDrops, rng, weighted);
+            return new UniquePickup(GenerateDropFromWeightedSelection(rng, weighted));
+        }
+        public override void GenerateDistinctPickupsPreReplacement(List<UniquePickup> dest, int desiredCount, Xoroshiro128Plus rng)
+        {
+            GenerateWeightedSelection();
+            PickupIndex[] drops = GenerateUniqueDropsFromWeightedSelection(desiredCount, rng, weighted);
             foreach (PickupIndex index in drops)
             {
-                // Debug.Log(index);
+                dest.Add(new(index));
             }
-            return drops;
-        }
-
-        public override PickupIndex GenerateDropPreReplacement(Xoroshiro128Plus rng)
-        {
-            GenerateWeightedSelection();
-            // Debug.Log(GenerateDropFromWeightedSelection(rng, weighted));
-            return GenerateDropFromWeightedSelection(rng, weighted);
         }
     }
 }

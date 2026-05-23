@@ -39,7 +39,7 @@
         private void ClassicStageInfo_Start(On.RoR2.ClassicStageInfo.orig_Start orig, ClassicStageInfo self)
         {
             orig(self);
-            if (NetworkServer.active)
+            if (NetworkServer.active && self.interactableCategories)
             {
                 var categories = self.interactableCategories.categories;
                 var chest = Utils.Paths.InteractableSpawnCard.iscChest1.Load<InteractableSpawnCard>();

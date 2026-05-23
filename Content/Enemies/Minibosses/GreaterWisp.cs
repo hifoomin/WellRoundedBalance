@@ -52,6 +52,7 @@ namespace WellRoundedBalance.Enemies.Minibosses
                 foreach (var cat in self.categories) {
                     foreach (var card in cat.cards) {
                         if (card.spawnCard == cscGreaterWisp) {
+                            Debug.Log("set a greater wisp to a higher stage req!");
                             card.minimumStageCompletions = 1;
                         }
                     }

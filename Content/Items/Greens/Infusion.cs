@@ -42,18 +42,26 @@ namespace WellRoundedBalance.Items.Greens
             //int bodyLoc = 17;
             int countLoc = 43;
             int capLoc = 63;
+            int bodyLoc = -1;
+
+            c.GotoNext(MoveType.After,
+                x => x.MatchLdarg(1),
+                x => x.MatchLdfld(typeof(DamageReport), nameof(DamageReport.attackerBody)),
+                x => x.MatchStloc(out bodyLoc)
+            );
+
+            c.Index = 0;
 
             c.GotoNext(MoveType.After,
                 x => x.MatchLdsfld("RoR2.RoR2Content/Items", "Infusion"),
                 x => x.MatchCallOrCallvirt<Inventory>(nameof(Inventory.GetItemCountEffective)),
                 x => x.MatchStloc(out countLoc)
-                );
+            );
             c.GotoNext(MoveType.Before,
                 x => x.MatchStloc(out capLoc)
-                );
+            );
             c.Emit(OpCodes.Ldloc, countLoc);
-            c.Emit(OpCodes.Ldloc, 15);
-            // Ldloc here is infusionOrb.target = Util.FindBodyMainHurtBox(attackerBody);
+            c.Emit(OpCodes.Ldloc, bodyLoc);
             c.EmitDelegate<Func<int, int, CharacterBody, int>>((currentInfusionCap, infusionCount, body) =>
             {
                 float newInfusionCap = 100 * infusionCount;

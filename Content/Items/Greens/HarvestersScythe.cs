@@ -153,7 +153,6 @@ namespace WellRoundedBalance.Items.Greens
         public float buffDur = 0;
         public float critGain = 0;
 
-        // public BoxCollider boxCollider;
         public OverlapAttack overlapAttack;
 
         public ModelLocator modelLocator;
@@ -161,6 +160,11 @@ namespace WellRoundedBalance.Items.Greens
         public GameObject scytheObject;
         public HitBoxGroup hitBoxGroup;
         public HitBox hitBox;
+
+        public float delay = 1f / 5f;
+        public float slashTime = 0f;
+        public float stopwatch = 0f;
+        public bool alreadyHealed = false;
 
         public void Start()
         {
@@ -182,8 +186,6 @@ namespace WellRoundedBalance.Items.Greens
             }
             damage = HarvestersScythe.baseDamage + HarvestersScythe.damagePerStack * (stack - 1);
             cooldown = HarvestersScythe.cooldown;
-            // critGain = HarvestersScythe.baseCritGain + HarvestersScythe.critGainPerStack * (stack - 1);
-            // buffDur = HarvestersScythe.baseBuffDuration + HarvestersScythe.buffDurationPerStack * (stack - 1);
             skillLocator = GetComponent<SkillLocator>();
             body.onSkillActivatedServer += Body_onSkillActivatedServer;
         }
@@ -208,6 +210,22 @@ namespace WellRoundedBalance.Items.Greens
             }
 
             StartCoroutine(FireProjectile());
+        }
+
+        public void FixedUpdate() {
+            if (slashTime > 0f) {
+                slashTime -= Time.fixedDeltaTime;
+                stopwatch += Time.fixedDeltaTime;
+
+                if (stopwatch >= delay) {
+                    stopwatch = 0f;
+
+                    if (overlapAttack != null && overlapAttack.Fire() && !alreadyHealed) {
+                        alreadyHealed = true;
+                        body.healthComponent.HealFraction(HarvestersScythe.baseHeal + ((stack - 1) * HarvestersScythe.stackHeal), default);
+                    }
+                }
+            }
         }
 
         public IEnumerator FireProjectile()
@@ -239,20 +257,10 @@ namespace WellRoundedBalance.Items.Greens
 
                 var hasCooldownCleaner = AboutEqual(HarvestersScythe.cooldown, buffDur);
 
-                if (overlapAttack.Fire())
-                {
-                    if (hasCooldownCleaner)
-                    {
-                        body.healthComponent.HealFraction(HarvestersScythe.baseHeal + ((stack - 1) * HarvestersScythe.stackHeal), default);
-                    }
-                    else
-                    {
-                        body.AddTimedBuffAuthority(HarvestersScythe.scytheCooldown.buffIndex, HarvestersScythe.cooldown);
-                        body.healthComponent.HealFraction(HarvestersScythe.baseHeal + ((stack - 1) * HarvestersScythe.stackHeal), default);
-                    }
-                }
-                else
-                    body.AddTimedBuffAuthority(HarvestersScythe.scytheCooldown.buffIndex, HarvestersScythe.cooldown);
+                body.AddTimedBuffAuthority(HarvestersScythe.scytheCooldown.buffIndex, HarvestersScythe.cooldown);
+
+                alreadyHealed = false;
+                slashTime = 0.5f;
             }
 
             yield return null;

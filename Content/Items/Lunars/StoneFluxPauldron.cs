@@ -86,34 +86,8 @@ namespace WellRoundedBalance.Items.Lunars
             ILCursor c = new(il);
 
             c.FindLocal(LocalType.ItemCount, "HalfSpeedDoubleHealth", out int stone, "DLC1Content");
-
-            if (c.TryGotoNext(MoveType.Before,
-                    x => x.MatchLdloc(out _),
-                    x => x.MatchLdloc(stone),
-                    x => x.MatchConvR4(),
-                    x => x.MatchLdcR4(1f)))
-            {
-                c.Index += 3;
-                c.Next.Operand = 0f;
-            }
-            else
-            {
-                Logger.LogError("Failed to apply Stone Flux Pauldron Speed hook");
-            }
-
-            if (c.TryGotoNext(MoveType.Before,
-               x => x.MatchLdloc(out _),
-               x => x.MatchLdloc(stone),
-               x => x.MatchConvR4(),
-               x => x.MatchLdcR4(1f)))
-            {
-                c.Index += 3;
-                c.Next.Operand = 0f;
-            }
-            else
-            {
-                Logger.LogError("Failed to apply Stone Flux Pauldron Health hook");
-            }
+            c.Emit(OpCodes.Ldc_I4, 0);
+            c.Emit(OpCodes.Stloc, stone);
         }
     }
 }

@@ -19,7 +19,7 @@ namespace WellRoundedBalance.Items.Lunars
         [ConfigField("Base Regeneration Gain", 1.5f)]
         public static float baseRegenerationGain;
 
-        [ConfigField("Regeneration Gain Per Stack", 0f)]
+        [ConfigField("Regeneration Gain Per Stack", 1.5f)]
         public static float regenerationGainPerStack;
 
         [ConfigField("Base Combat Director Credit Multiplier Add", 0.2f)]

@@ -11,6 +11,8 @@ namespace WellRoundedBalance.Elites.Tier1
 
         [ConfigField("Death Pool Projectile Count", "", 4)]
         public static int deathPoolProjectileCount;
+        [ConfigField("Death Pool Radius", "", 4)]
+        public static int deathPoolRadius;
 
         [ConfigField("Death Pool Projectile Count E3+", "Only applies if you have Eclipse Changes enabled.", 6)]
         public static int deathPoolProjectileCountE3;

@@ -57,21 +57,17 @@ Here are some examples:
 The mod integrates some smaller mods to give players the intended, better experience, such as:
 | Name | Description |
 |---|---|
-| AugmentedVoidReaver | Tweaks Void Reaver primary to be more threatening. |
 | BetterMeteorite | Makes Glowing Meteorite Based and Redpilled. |
 | BetterSpite | Brings back Spite to its RoR1 glory days. Now with 500% more bombs, full of chaos! |
 | CurseCatcher | Provides options to prevent Eclipse curse from being applied on self-inflicted damage. |
 | ExchangeChanges | A mod to simply change the time exchange interactions happen, letting you have faster printers, faster scrappers, and faster shrines of chance! |
-| FathomlessVoidling | Improved Voidling fight with some extras. Configurable |
 | FixKjaroRunald | Makes Kjaro and Runald scale with the ambient level. One could say, it buffs gay marriage. Love is love. |
 | Fix Playercount | Fixes disconnected players counting towards run scaling. Server-Side and Vanilla-Compatible. |
 | GoldChestForAll | Makes Gold Chests drop one item PER player, instead of just one item. |
 | LunarConstruct | Spices up Commencement by adding a fodder enemy. Requires Survivors of The Void to function. |
 | LunarWispFalloff | Enables damage falloff on Lunar Wisp hitscan attacks. |
-| PingOrdering | Lets you give (simplistic) orders to your underlings via your pings. |
 | ShurikenFix | Allows channeled abilities like nailgun to fire shuriken normally. |
 | SnappierStalks | Makes the No Cooldown effect (the one provided by Brainstalks) feel better by changing how it refunds cooldown. |
-| VanillaVoid | Adds more void variants for vanilla items, and tweaks and expands upon some void content. |
 
 This means you don't need to have these installed with Well Rounded Balance enabled.
 

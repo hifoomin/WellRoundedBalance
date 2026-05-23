@@ -83,7 +83,9 @@ namespace WellRoundedBalance.Interactables
             if (bossPrinterLoopOnly) On.RoR2.ClassicStageInfo.RebuildCards += (orig, self, dccs1, dccs2) =>
             {
                 orig(self, dccs1, dccs2);
-                if (Run.instance.loopClearCount <= 0) self.interactableCategories.RemoveCardsThatFailFilter(x => x.spawnCard != yellowPrinter);
+                if (Run.instance.loopClearCount <= 0 && self.interactableCategories) {
+                    self.interactableCategories.RemoveCardsThatFailFilter(x => x.spawnCard != yellowPrinter);
+                }
             };
 
             On.RoR2.PurchaseInteraction.Awake += PurchaseInteraction_Awake;

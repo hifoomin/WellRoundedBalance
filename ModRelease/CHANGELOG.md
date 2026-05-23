@@ -1,3 +1,43 @@
+# 1.5.8
+- Fixed Hiker's Boots only giving 0.005% crit chance
+- Harvester's Scythe swing now travels with you for the duration of the VFX
+- Void Cradles now properly show you the resulting void item when hovering over an option again
+- Void Cradles no longer trigger on interact items every time they are opened, only doing so when an item is actually chosen
+- Power Elixir health threshold 50% => **35%**
+- Power Elixir heal over time 20% => **40%**
+- Fixed Infusion changes not applying
+
+# 1.5.6 Patch Notes
+- actually updated the fucking dll im so dumb
+
+# 1.5.5 Patch Notes
+- Made the Razorwire change from last patch actually work.
+- Fixed lunar coins carrying over into subsequent runs in the same session.
+- Fixed Stoneflux Pauldron vanilla speed penalty still applying.
+- Fixed incompatibility with Procedural Stages.
+- Beads of Fealty base regen per stack stack 0 => **1.5**
+- Nerfed Hiker's Boots crit chance per buff 1% => **0.5%**
+- Buffed Hiker's Boots crit damage per buff 1% => **2.2%**
+- Elusive Antlers max buff count 3 => **2**
+- Bolstering Lantern max buffs per stack 1 => **0**
+- Bolstering Lantern base attack speed per stack 10% => **7%**
+- Bolstering Lantern stacking attack speed per stack 3.5% => **7%**
+- Bolstering Lantern no longer increases radius with stacks.
+- Eclipse Lite barrier per stack 0.25% => **1%**
+
+# 1.5.4 Patch Notes
+- removed dependency on Ephemeral Coins (it was ALSO crashing on lunar pod lmfao)
+- implemented run-specific lunar coins
+- fixed issue where wolfofixes would break void cradles (oh my fucking goddddd)
+- Razorwire is now active when in danger instead of when out of danger.
+- Razorwire damage radius 13m => **16m**
+
+# 1.5.3 Patch Notes
+- fixed the game hard crashing when using a lunar pod
+
+# 1.5.2 Patch Notes
+- Removed soft dependencies from the "Smaller Features" section on the README.
+
 # 1.5.1 Patch Notes
 - i forgor to include a fix
 

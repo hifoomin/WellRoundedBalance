@@ -62,8 +62,9 @@
 
         private void Changes()
         {
-            var grove1 = Utils.Paths.DirectorCardCategorySelection.dccsRootJungleMonsters.Load<DirectorCardCategorySelection>();
-            grove1.categories[3].cards[0].minimumStageCompletions = 4;
+            // this breaks procedural stages ???
+            /*var grove1 = Utils.Paths.DirectorCardCategorySelection.dccsRootJungleMonsters.Load<DirectorCardCategorySelection>();
+            grove1.categories[3].cards[0].minimumStageCompletions = 4;*/
 
             // var grove2 = Utils.Paths.DirectorCardCategorySelection.dccsRootJungleMonstersDLC1.Load<DirectorCardCategorySelection>();
             // grove2.categories[3].cards[0].minimumStageCompletions = 4;
