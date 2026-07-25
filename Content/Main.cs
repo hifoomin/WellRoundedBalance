@@ -103,20 +103,20 @@ namespace WellRoundedBalance
 
             WRBAssembly = AssemblyDefinition.ReadAssembly(typeof(Main).Assembly.Location);
 
-            WRBAchievementConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Achievements.cfg", true);
-            WRBAllyConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Allies.cfg", true);
-            WRBArtifactAddConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.ArtifactsAdd.cfg", true);
-            WRBArtifactEditConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.ArtifactsEdit.cfg", true);
-            WRBDifficultyConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Difficulties.cfg", true);
-            WRBEliteConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Elites.cfg", true);
-            WRBEnemyConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Enemies.cfg", true);
-            WRBEquipmentConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Equipment.cfg", true);
-            WRBGamemodeConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Gamemodes.cfg", true);
-            WRBInteractableConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Interactables.cfg", true);
-            WRBItemConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Items.cfg", true);
-            WRBMechanicConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Mechanics.cfg", true);
-            WRBModuleConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Modules.cfg", true);
-            WRBSurvivorConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Survivors.cfg", true);
+            WRBAchievementConfig = new ConfigFile(BepInEx.Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Achievements.cfg", true);
+            WRBAllyConfig = new ConfigFile(BepInEx.Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Allies.cfg", true);
+            WRBArtifactAddConfig = new ConfigFile(BepInEx.Paths.ConfigPath + "\\BALLS.WellRoundedBalance.ArtifactsAdd.cfg", true);
+            WRBArtifactEditConfig = new ConfigFile(BepInEx.Paths.ConfigPath + "\\BALLS.WellRoundedBalance.ArtifactsEdit.cfg", true);
+            WRBDifficultyConfig = new ConfigFile(BepInEx.Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Difficulties.cfg", true);
+            WRBEliteConfig = new ConfigFile(BepInEx.Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Elites.cfg", true);
+            WRBEnemyConfig = new ConfigFile(BepInEx.Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Enemies.cfg", true);
+            WRBEquipmentConfig = new ConfigFile(BepInEx.Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Equipment.cfg", true);
+            WRBGamemodeConfig = new ConfigFile(BepInEx.Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Gamemodes.cfg", true);
+            WRBInteractableConfig = new ConfigFile(BepInEx.Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Interactables.cfg", true);
+            WRBItemConfig = new ConfigFile(BepInEx.Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Items.cfg", true);
+            WRBMechanicConfig = new ConfigFile(BepInEx.Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Mechanics.cfg", true);
+            WRBModuleConfig = new ConfigFile(BepInEx.Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Modules.cfg", true);
+            WRBSurvivorConfig = new ConfigFile(BepInEx.Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Survivors.cfg", true);
 
             // BetterItemCategories.enable = WRBItemConfig.Bind(":: Items : Changes :: Better Item Categories", "Enable item category changes?", true);
 
@@ -135,8 +135,8 @@ namespace WellRoundedBalance
             enableMechanics = WRBModuleConfig.Bind(":: Module Toggles ::", "Enable Mechanic changes?", true);
             enableSurvivors = WRBModuleConfig.Bind(":: Module Toggles ::", "Enable Survivor changes?", true, "These are not HIFUTweaks changes, as they all have separate configs.");
 
-            WRBMiscConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Misc.cfg", true);
-            WRBBackupConfig = new ConfigFile(Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Backup.cfg", true);
+            WRBMiscConfig = new ConfigFile(BepInEx.Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Misc.cfg", true);
+            WRBBackupConfig = new ConfigFile(BepInEx.Paths.ConfigPath + "\\BALLS.WellRoundedBalance.Backup.cfg", true);
             WRBBackupConfig.Bind(": DO NOT MODIFY THIS FILES CONTENTS :", ": DO NOT MODIFY THIS FILES CONTENTS :", ": DO NOT MODIFY THIS FILES CONTENTS :", ": DO NOT MODIFY THIS FILES CONTENTS :");
 
             enableLogging = WRBMiscConfig.Bind("Logging", "Enable Initialization logging?", false, "Enabling this slows down loading times, but can help with resolving mod compatibility issues in some cases.");

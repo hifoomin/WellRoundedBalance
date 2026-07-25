@@ -1,6 +1,6 @@
 {
 	"name": "WellRoundedBalance",
-	"version_number": "1.5.8",
+	"version_number": "1.7.0",
 	"website_url": "https://github.com/hifoomin/WellRoundedBalance",
 	"description": "A complete balance overhaul for a much more fast-paced and challenging game with much less autoplay. Check out the mod page for more information. Extremely configurable.",
 	"dependencies": [
@@ -21,6 +21,8 @@
 		"SeekingUpdates-HIFUCaptainTweaks-1.2.4",
 		"SeekingUpdates-HIFUEngineerTweaks-1.1.6",
 		"SeekingUpdates-HIFUAcridTweaks-1.2.3",
-		"SeekingUpdates-HIFUVoidFiendTweaks-1.0.3"
+		"SeekingUpdates-HIFUVoidFiendTweaks-1.0.3",
+		"Nuxlar-CoolerMeridianLightning-1.0.1",
+		"Jeffdev-ColossusMainStages-1.0.2"
 	]
 }

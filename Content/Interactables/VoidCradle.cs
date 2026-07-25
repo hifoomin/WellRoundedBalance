@@ -3,6 +3,7 @@ using System;
 using RoR2.UI;
 using UnityEngine.UI;
 using System.Collections;
+using System.Reflection;
 
 namespace WellRoundedBalance.Interactables
 {
@@ -94,22 +95,30 @@ namespace WellRoundedBalance.Interactables
                 }
             };
 
-            On.RoR2.UI.PickupPickerPanel.OnCreateButton += (orig, self, i, button) =>
+            On.RoR2.UI.PickupPickerPanel.SetPickupOptions += (orig, self, options) =>
             {
-                orig(self, i, button);
+                orig(self, options);
 
                 if (!self.gameObject.name.Contains("VoidCradle"))
                 {
                     return;
                 }
 
-                ItemDef def = ItemCatalog.GetItemDef(GetCorruption(self.pickerController.options[i].pickupIndex.itemIndex));
-                if (!def)
-                {
-                    return;
-                }
+                for (int i = 0; i < options.Length; i++) {
+                    var button = self.buttonAllocator.elements[i];
+                    ItemDef def = null;
+                    int index = i;
 
-                self.StartCoroutine(SetupTooltipUI(button.gameObject, def));
+                    def = ItemCatalog.GetItemDef(GetCorruption(options[index].pickupIndex.itemIndex));
+
+                    if (!def)
+                    {
+                        Debug.Log("no itemdef found, skipping");
+                        return;
+                    }
+
+                    self.StartCoroutine(SetupTooltipUI(button.gameObject, def));
+                }
             };
 
             On.RoR2.SceneDirector.SelectCard += SceneDirector_SelectCard;

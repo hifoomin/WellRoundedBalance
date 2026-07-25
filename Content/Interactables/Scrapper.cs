@@ -1,4 +1,7 @@
-﻿using EntityStates.Scrapper;
+﻿using System.Collections;
+using EntityStates.Scrapper;
+using R2API.Networking;
+using R2API.Networking.Interfaces;
 using RoR2.Hologram;
 using UnityEngine;
 
@@ -55,6 +58,8 @@ namespace WellRoundedBalance.Interactables
             On.RoR2.ClassicStageInfo.Start += ClassicStageInfo_Start;
             On.RoR2.SceneDirector.Start += SceneDirector_Start;
             GlobalEventManager.OnInteractionsGlobal += GlobalEventManager_OnInteractionsGlobal;
+
+            NetworkingAPI.RegisterMessageType<ScrapperUseSync>();
         }
 
         private void GlobalEventManager_OnInteractionsGlobal(Interactor interactor, IInteractable interactable, GameObject interactableObject)
@@ -80,11 +85,20 @@ namespace WellRoundedBalance.Interactables
         private void SceneDirector_Start(On.RoR2.SceneDirector.orig_Start orig, SceneDirector self)
         {
             orig(self);
+            if (!NetworkServer.active) {
+                return;
+            }
+
             ScrapperController[] scrappers = GameObject.FindObjectsOfType<ScrapperController>();
             foreach (ScrapperController controller in scrappers)
             {
                 var counter = controller.gameObject.GetComponent<ScrapperUseCounter>();
+                if (!counter) {
+                    return;
+                }
                 counter.useCount = maxUses * Run.instance.participatingPlayerCount;
+                counter.StartCoroutine(counter.WaitAndSync());
+                new ScrapperUseSync(counter.gameObject, counter.useCount).Send(NetworkDestination.Clients);
             }
         }
 
@@ -120,17 +134,18 @@ namespace WellRoundedBalance.Interactables
 
         private void Scrapping_OnEnter(On.EntityStates.Scrapper.Scrapping.orig_OnEnter orig, Scrapping self)
         {
+            orig(self);
             var scrapper = self.outer.gameObject;
-            if (scrapper != null && uses.ContainsKey(scrapper))
+            if (scrapper != null && NetworkServer.active)
             {
-                uses[scrapper]--;
                 var counter = self.outer.gameObject.GetComponent<ScrapperUseCounter>();
+
                 if (counter)
                 {
                     counter.useCount--;
+                    new ScrapperUseSync(counter.gameObject, counter.useCount).Send(NetworkDestination.Clients);
                 }
             }
-            orig(self);
         }
 
         private void Stage_onServerStageComplete(Stage stage)
@@ -140,15 +155,14 @@ namespace WellRoundedBalance.Interactables
 
         private void ScrapperBaseState_OnEnter(On.EntityStates.Scrapper.ScrapperBaseState.orig_OnEnter orig, ScrapperBaseState self)
         {
-            var scrapper = self.outer.gameObject;
-            if (!uses.ContainsKey(scrapper))
-            {
-                uses.Add(scrapper, maxUses * Run.instance.livingPlayerCount);
-            }
             orig(self);
-            if (uses[scrapper] <= 0)
+            var scrapper = self.outer.gameObject;
+            var counter = self.outer.GetComponent<ScrapperUseCounter>();
+
+            if (counter && counter.useCount <= 0)
             {
                 self.outer.GetComponent<PickupPickerController>().SetAvailable(false);
+                counter.shouldExplode = true;
             }
         }
     }
@@ -159,10 +173,11 @@ namespace WellRoundedBalance.Interactables
         public float timer;
         public float explosionInterval = 0.7f;
         public float deleteInterval = 0.8f;
-        /*
+        public bool shouldExplode = false;
+        
         private void FixedUpdate()
         {
-            if (useCount <= 0 && NetworkServer.active)
+            if (useCount <= 0 && NetworkServer.active && shouldExplode)
             {
                 timer += Time.fixedDeltaTime;
                 if (timer >= explosionInterval)
@@ -179,7 +194,41 @@ namespace WellRoundedBalance.Interactables
                 }
             }
         }
-        */
+
+        public IEnumerator WaitAndSync() {
+            yield return new WaitForSeconds(5f);
+            new ScrapperUseSync(this.gameObject, this.useCount).Send(NetworkDestination.Clients);
+        }
+        
+    }
+
+    public class ScrapperUseSync : INetMessage
+    {
+        public ScrapperUseCounter counter;
+        public GameObject obj;
+        public int uses;
+        public void Deserialize(NetworkReader reader)
+        {
+            obj = reader.ReadGameObject();
+            uses = reader.ReadInt32();
+        }
+
+        public void OnReceived()
+        {
+            obj.GetComponent<ScrapperUseCounter>().useCount = uses;
+        }
+
+        public void Serialize(NetworkWriter writer)
+        {
+            writer.Write(obj);
+            writer.Write(uses);
+        }
+
+        public ScrapperUseSync() {}
+        public ScrapperUseSync(GameObject source, int newUses) {
+            obj = source;
+            uses = newUses;
+        }
     }
 
     public class ScrapperHologram : MonoBehaviour, IHologramContentProvider
@@ -206,7 +255,7 @@ namespace WellRoundedBalance.Interactables
             return false;
         }
 
-        public void UpdateHologramContent(GameObject self)
+        public void UpdateHologramContent(GameObject self, Transform viewerBody)
         {
             var hologram = self.GetComponent<PlainHologram.PlainHologramContent>();
             if (hologram)
@@ -214,11 +263,6 @@ namespace WellRoundedBalance.Interactables
                 hologram.text = counter.useCount + (counter.useCount == 1 ? " use left" : " uses left");
                 hologram.color = Color.white;
             }
-        }
-
-        public void UpdateHologramContent(GameObject hologramContentObject, Transform viewerBody)
-        {
-            return;
         }
     }
 }

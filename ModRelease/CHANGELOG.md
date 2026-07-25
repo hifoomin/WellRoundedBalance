@@ -1,3 +1,27 @@
+# 1.7.0
+- Halcyon Shrine now spawns exclusively on stage 3 (and every stage 3 while looping)
+- Halcyon Shrine is now a guaranteed spawn and takes up no credits
+- Halcyon Shrine is no longer a holdout zone. It now costs $150 to interact with immediately.
+- Interacting with the Halcyon Shrine now adds a green orb to the teleporter and 1 Mountain Shrine stack (no rewards)
+- During the teleporter event after a Halcyon Shrine has been used, a storm falls outside of the teleporter radius, carpeting the area in lightning (all players within the TP zone are safe from lightning)
+- Halcyonites now spawn during the teleporter event after a Halcyon Shrine has been used, seperately from regular enemies (they use their own credit flow and dont take away from the main director)
+- Completing the teleporter after using a Halcyon Shrine drops an Aurelionite Fragment for all players (is always 5 choices, pick 3)
+
+# 1.6.1
+- Power Elixir heal duration 4s => **12s**
+- Power Elixir heal over time 40% => **100%**
+
+# 1.6.0
+- Harvester's Scythe swing VFX now actually follows you (the hitbox did, the vfx did not)
+- Fixed Hiker's Boots incorrectly displaying 50% crit chance (it still only gave the intended 5%)
+- Spare Drone Parts chaingun no longer fires off automatically on nearby enemies
+- Spare Drone Parts now makes skill hits mark enemies for 5s; one enemy can be marked at a time, and drones will aggressively target the marked enemy
+- Spare Drone Parts chaingun now fires off at the currently marked enemy
+- Fixed Wake of Vultures giving +1 max buff compared to what it should at any given stack count
+- Fixed Scrappers not showing their remaining uses before breaking
+- Fixed Scrappers being completely unusable in multiplayer
+- Fixed incompat with MirroredStageVariants that caused Void Cradles to show the wrong item name and description when hovering over a potential corruption sometimes
+
 # 1.5.8
 - Fixed Hiker's Boots only giving 0.005% crit chance
 - Harvester's Scythe swing now travels with you for the duration of the VFX

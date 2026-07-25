@@ -66,6 +66,7 @@ namespace WellRoundedBalance.Items.Greens
 
             var effectComponent = effect.GetComponent<EffectComponent>();
             effectComponent.applyScale = true;
+            effectComponent.parentToReferencedTransform = true;
 
             var swingTrail = effect.transform.GetChild(0);
             var swingTrailPS = swingTrail.GetComponent<ParticleSystem>();
@@ -253,6 +254,11 @@ namespace WellRoundedBalance.Items.Greens
                 Util.PlaySound("Play_bandit2_m2_slash", gameObject);
 
                 EffectData data = new() { scale = 1.66f, origin = body.corePosition, rotation = Util.QuaternionSafeLookRotation(new Vector3(body.inputBank.aimDirection.x, 0f, body.inputBank.aimDirection.z)) };
+                if (body.modelLocator && body.modelLocator.modelChildLocator && body.modelLocator.modelChildLocator.FindChild("Base"))
+                {
+                    data.SetChildLocatorTransformReference(body.gameObject, body.modelLocator.modelChildLocator.FindChildIndex("Base"));
+                };
+
                 EffectManager.SpawnEffect(HarvestersScythe.effect, data, true);
 
                 var hasCooldownCleaner = AboutEqual(HarvestersScythe.cooldown, buffDur);

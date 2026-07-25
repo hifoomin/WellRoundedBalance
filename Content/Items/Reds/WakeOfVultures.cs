@@ -128,7 +128,6 @@ namespace WellRoundedBalance.Items.Reds
             {
                 if (report.victimIsElite && report.attackerBody)
                 {
-                    // Debug.Log("killed elite");
                     int stack = report.attackerBody.inventory.GetItemCountEffective(RoR2Content.Items.HeadHunter);
                     if (stack > 0)
                     {
@@ -157,13 +156,11 @@ namespace WellRoundedBalance.Items.Reds
                             report.attackerBody.AddBuff(eliteIndex);
                         }
 
-                        if (currentEliteBuffs.Count > stack)
+                        if (currentEliteBuffs.Count >= stack)
                         {
-                            // Debug.Log("has too many elite buffs");
-                            for (int i = 0; i < currentEliteBuffs.Count - stack; i++)
+                            for (int i = 0; i <= currentEliteBuffs.Count - stack; i++)
                             {
                                 report.attackerBody.RemoveBuff(currentEliteBuffs[i]);
-                                // Debug.Log("removing buff");
                             }
                         }
                     }

@@ -9,7 +9,7 @@ namespace WellRoundedBalance.Items.Whites
 
         public override string PickupText => "Striking enemies from a higher elevation grants critical strike chance and damage.";
 
-        public override string DescText => $"Striking enemies from a higher elevation grants <style=cIsDamage>+{d(critUp)}</style> <style=cStack>(+{d(critUp)} per stack)</style> <style=cIsDamage>critical strike chance</style> and <style=cIsDamage>+{d(damageUp)}</style> <style=cStack>(+{d(damageUp)} per stack)</style> critical strike damage</style>, up to <style=cIsUtility>10 times</style>. Lasts 10 seconds.";
+        public override string DescText => $"Striking enemies from a higher elevation grants <style=cIsDamage>+{critUp}</style> <style=cStack>(+{critUp} per stack)</style> <style=cIsDamage>critical strike chance</style> and <style=cIsDamage>+{d(damageUp)}</style> <style=cStack>(+{d(damageUp)} per stack)</style> critical strike damage</style>, up to <style=cIsUtility>10 times</style>. Lasts 10 seconds.";
 
         [ConfigField("Crit Damage Increase", 0.022f)]
         public static float damageUp;

@@ -13,3 +13,4 @@ global using MonoMod.Cil;
 global using Mono.Cecil.Cil;
 global using RoR2.Skills;
 global using EntityStates;
+global using Paths = WellRoundedBalance.Utils.Assets;
