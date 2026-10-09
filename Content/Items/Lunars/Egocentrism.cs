@@ -30,9 +30,10 @@ namespace WellRoundedBalance.Items.Lunars
             ILCursor c = new(il);
 
             if (c.TryGotoNext(MoveType.Before,
-                x => x.MatchLdcR4(3.6f)))
+                x => x.MatchMul()))
             {
-                c.Next.Operand = baseDamage;
+                c.Emit(OpCodes.Pop);
+                c.Emit(OpCodes.Ldc_R4, baseDamage);
             }
             else
             {

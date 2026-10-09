@@ -24,7 +24,7 @@
             wind.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
 
             var projectileController = wind.GetComponent<ProjectileController>();
-            projectileController.ghostPrefab.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+            Paths.GameObject.WindbladeProjectileGhost.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
 
             var projectileSingleTargetImpact = wind.GetComponent<ProjectileSingleTargetImpact>();
             projectileSingleTargetImpact.destroyOnWorld = false;

@@ -1,3 +1,15 @@
+# 1.7.3
+- Updated for Hallowed Concepts
+
+# 1.7.2
+- Reduced cost of Halcyon Shrine to $100
+- Wandering Vagrant's Nova attack is no longer affected by attack speed
+- Fixed incompat issue with Glowing Meteorite changes and BrynzaAPI
+
+# 1.7.1
+- Fixed breakage if the Halcyon Shrine was used multiple times in the same run.
+- Fixed Lunar Ruin being applied for 4999s instead of 5s
+
 # 1.7.0
 - Halcyon Shrine now spawns exclusively on stage 3 (and every stage 3 while looping)
 - Halcyon Shrine is now a guaranteed spawn and takes up no credits

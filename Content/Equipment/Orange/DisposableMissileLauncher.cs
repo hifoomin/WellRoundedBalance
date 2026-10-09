@@ -93,6 +93,7 @@ namespace WellRoundedBalance.Equipment.Orange
             meshRenderer.sharedMaterial = dmlMat;
 
             missileProjectileController.ghostPrefab = ghost;
+            missileProjectileController.ghostPrefabAddress = null;
 
             PrefabAPI.RegisterNetworkPrefab(dmlMissilePrefab);
         }

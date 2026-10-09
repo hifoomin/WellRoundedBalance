@@ -22,7 +22,7 @@ namespace WellRoundedBalance.Enemies.Standard
         private void SporeGrenade_OnEnter(On.EntityStates.MiniMushroom.SporeGrenade.orig_OnEnter orig, EntityStates.MiniMushroom.SporeGrenade self)
         {
             if (!Main.IsInfernoDef())
-                EntityStates.MiniMushroom.SporeGrenade.baseDuration = 2f;
+                self.baseDuration = 2f;
             orig(self);
         }
 
@@ -30,10 +30,10 @@ namespace WellRoundedBalance.Enemies.Standard
         {
             if (!Main.IsInfernoDef())
             {
-                EntityStates.MiniMushroom.Plant.baseMaxDuration = 5f;
-                EntityStates.MiniMushroom.Plant.baseMinDuration = 2f;
-                EntityStates.MiniMushroom.Plant.mushroomRadius = 13f;
-                EntityStates.MiniMushroom.Plant.healFraction = 0.06f;
+                self.baseMaxDuration = 5f;
+                self.baseMinDuration = 2f;
+                self.mushroomRadius = 13f;
+                self.healFraction = 0.06f;
             }
 
             orig(self);

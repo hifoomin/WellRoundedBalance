@@ -24767,11 +24767,6 @@ namespace WellRoundedBalance.Utils.Assets {
     public static class DroneScrapperDefTable {
        public static RoR2.DroneScrapperDefTable _DroneScrapperDefTable => Addressables.LoadAssetAsync<RoR2.DroneScrapperDefTable>("553be4580fcf95a44962087656b1c6be").WaitForCompletion();
     }
-    public static class ExplicitPickupDropTableWithCost {
-       public static RoR2.ExplicitPickupDropTableWithCost GreenScrapDroneVendorTable => Addressables.LoadAssetAsync<RoR2.ExplicitPickupDropTableWithCost>("6a1d0602a1d074a44a1206125116fa37").WaitForCompletion();
-       public static RoR2.ExplicitPickupDropTableWithCost RedScrapDroneVendorTable => Addressables.LoadAssetAsync<RoR2.ExplicitPickupDropTableWithCost>("0709ab2af7ed687468e604b067176d84").WaitForCompletion();
-       public static RoR2.ExplicitPickupDropTableWithCost WhiteScrapDroneVendorTable => Addressables.LoadAssetAsync<RoR2.ExplicitPickupDropTableWithCost>("2b76e81af23a38e4ea797a85bef298dc").WaitForCompletion();
-    }
     public static class DronePickupDef {
        public static RoR2.DronePickupDef Drone2Pickup => Addressables.LoadAssetAsync<RoR2.DronePickupDef>("a7954dcdabca51745abbd73739357cf4").WaitForCompletion();
        public static RoR2.DronePickupDef DroneBackupPickup => Addressables.LoadAssetAsync<RoR2.DronePickupDef>("2bb4869f206d3124c829e5aa9f595eec").WaitForCompletion();

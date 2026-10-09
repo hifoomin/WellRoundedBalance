@@ -27,10 +27,10 @@ namespace WellRoundedBalance.Items.Reds
             IL.RoR2.GlobalEventManager.OnCharacterDeath += DisableVanilla;
             GlobalEventManager.onCharacterDeathGlobal += Killed;
             On.RoR2.HealthComponent.TakeDamageProcess += ReduceDamage;
-            On.RoR2.Inventory.RemoveItem_ItemIndex_int += Inventory_RemoveItem_ItemIndex_int;
+            On.RoR2.Inventory.RemoveItem += Inventory_RemoveItem_ItemIndex_int;
         }
 
-        private void Inventory_RemoveItem_ItemIndex_int(On.RoR2.Inventory.orig_RemoveItem_ItemIndex_int orig, Inventory self, ItemIndex itemIndex, int count)
+        private void Inventory_RemoveItem_ItemIndex_int(On.RoR2.Inventory.orig_RemoveItem orig, Inventory self, ItemIndex itemIndex, int count)
         {
             orig(self, itemIndex, count);
             if (itemIndex == RoR2Content.Items.HeadHunter.itemIndex)

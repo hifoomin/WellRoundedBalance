@@ -79,6 +79,7 @@ namespace WellRoundedBalance.Items.Reds
             meshRenderer.sharedMaterial = icbmMat;
 
             projectileController.ghostPrefab = bigFuckingMissileGhost;
+            projectileController.ghostPrefabAddress = null;
 
             PrefabAPI.RegisterNetworkPrefab(bigFuckingMissile);
 

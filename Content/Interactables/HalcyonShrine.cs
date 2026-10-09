@@ -50,15 +50,11 @@ namespace WellRoundedBalance.Interactables
             };
             Paths.DirectorCardCategorySelection.dccsHalcyoniteShrineHalcyonite.categories[0].cards[0].spawnCard = Paths.CharacterSpawnCard.cscHalcyonite;
 
-            /*On.EntityStates.ShrineHalcyonite.ShrineHalcyoniteActivatedState.OnEnter += (orig, self) => {
-                Util.PlaySound("Play_obj_shrineHalcyonite_activate", self.gameObject);
-            };*/
             On.EntityStates.ShrineHalcyonite.ShrineHalcyoniteNoQuality.OnEnter += (orig, self) => {};
             On.EntityStates.ShrineHalcyonite.ShrineHalcyoniteNoQuality.OnExit += (orig, self) => {};
             On.EntityStates.ShrineHalcyonite.ShrineHalcyoniteBaseState.FixedUpdate += (orig, self) => {};
-            // On.EntityStates.ShrineHalcyonite.ShrineHalcyoniteActivatedState.FixedUpdate += (orig, self) => {};
             On.RoR2.LightningStormController.FireLightningBolt_Vector3 += DontAllowLightningInTP;
-            On.RoR2.GlobalEventManager.HandleDamageWithNoAttacker += ForceLunarRuin;
+            On.RoR2.GlobalEventManager.ProcessHitEnemy += ForceLunarRuin;
             SceneManager.activeSceneChanged += (o, n) => {
                 HalcyonShrineController.isActive = false;
             };
@@ -101,9 +97,9 @@ namespace WellRoundedBalance.Interactables
             }
         }
 
-        private void ForceLunarRuin(On.RoR2.GlobalEventManager.orig_HandleDamageWithNoAttacker orig, GlobalEventManager self, DamageInfo damageInfo, GameObject victim)
+        private void ForceLunarRuin(On.RoR2.GlobalEventManager.orig_ProcessHitEnemy orig, GlobalEventManager self, DamageInfo damageInfo, GameObject victim)
         {
-            if (HalcyonShrineController.isActive && damageInfo.damageType.damageTypeExtended.HasFlag(DamageTypeExtended.LunarRuin) && damageInfo.damageType.damageTypeExtended.HasFlag(DamageTypeExtended.ApplyBuffPermanently)) {
+            if (HalcyonShrineController.isActive && (damageInfo.damageType.damageTypeExtended.HasFlag(DamageType.LunarRuin) || damageInfo.damageType.damageType.HasFlag(DamageType.LunarRuin)) && damageInfo.damageType.damageTypeExtended.HasFlag(DamageTypeExtended.ApplyBuffPermanently)) {
                 damageInfo.damageType.damageTypeExtended &= ~DamageTypeExtended.ApplyBuffPermanently;
             }
 
@@ -136,7 +132,7 @@ namespace WellRoundedBalance.Interactables
             private Vector3[] positions = [];
             private bool doLightning = false;
             public static HalcyonShrineController instance;
-            public void OnEnable() {
+            public void Start() {
                 director = base.GetComponent<CombatDirector>();
                 purchaseInteraction = base.GetComponent<PurchaseInteraction>();
                 purchaseInteraction.onDetailedPurchaseServer.RemoveAllListeners();
@@ -152,6 +148,11 @@ namespace WellRoundedBalance.Interactables
                 }
 
                 instance = this;
+            }
+
+            public void OnDestroy() {
+                TeleporterInteraction.onTeleporterBeginChargingGlobal -= OnChargeStart;
+                TeleporterInteraction.onTeleporterChargedGlobal -= OnTPFinish;
             }
 
             private void FixedUpdate() {
@@ -190,7 +191,9 @@ namespace WellRoundedBalance.Interactables
             private void OnTPFinish(TeleporterInteraction interaction)
             {
                 if (isActive) {
-                    director.enabled = false;
+                    if (director) {
+                        director.enabled = false;
+                    }
 
                     if (storm && NetworkServer.active) {
                         storm.GetComponent<LightningStormController>().ServerSetStormActive(false);
@@ -216,9 +219,11 @@ namespace WellRoundedBalance.Interactables
                             doLightning = true;
                         }
                         
-                        director.enabled = true;
-                        director.SetMonsterCredit(400 * (1 + (0.5f * (Run.instance.participatingPlayerCount - 1))));
-                        director.currentSpawnTarget = interaction.gameObject;
+                        if (director) {
+                            director.enabled = true;
+                            director.SetMonsterCredit(400 * (1 + (0.5f * (Run.instance.participatingPlayerCount - 1))));
+                            director.currentSpawnTarget = interaction.gameObject;
+                        }
                     }
 
                     var fx = base.transform.Find("meshHalcyoniteShrineStorm");

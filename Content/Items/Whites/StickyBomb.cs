@@ -104,7 +104,7 @@ namespace WellRoundedBalance.Items.Whites
             StickyBombImpact.blastRadius = radius;
 
             var projectileController = StickyBombImpact.GetComponent<ProjectileController>();
-            var ghostPrefab = projectileController.ghostPrefab;
+            var ghostPrefab = Paths.GameObject.StickyBombGhost;
             ghostPrefab.transform.localScale = new Vector3(radius / 8f, radius / 8f, radius / 8f);
 
             var coolerExplosion = PrefabAPI.InstantiateClone(Utils.Paths.GameObject.OmniExplosionVFXQuick.Load<GameObject>(), "Sticky Bomb Explosion", false);

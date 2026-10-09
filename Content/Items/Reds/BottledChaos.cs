@@ -24,7 +24,7 @@ namespace WellRoundedBalance.Items.Reds
 
         public override void Hooks()
         {
-            IL.RoR2.EquipmentSlot.OnEquipmentExecuted_byte_byte_EquipmentIndex += EquipmentSlot_OnEquipmentExecuted;
+            IL.RoR2.EquipmentSlot.OnEquipmentExecuted_refEquipmentLocation_EquipmentIndex += EquipmentSlot_OnEquipmentExecuted;
         }
 
         private void EquipmentSlot_OnEquipmentExecuted(ILContext il)

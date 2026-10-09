@@ -25,27 +25,7 @@ namespace WellRoundedBalance.Items.VoidWhites
 
         public override void Hooks()
         {
-            IL.RoR2.MushroomVoidBehavior.FixedUpdate += ChangeHealing;
-        }
-
-        private void ChangeHealing(ILContext il)
-        {
-            ILCursor c = new(il);
-
-            if (c.TryGotoNext(MoveType.Before,
-                x => x.MatchLdcR4(0.01f)))
-            {
-                c.Index += 1;
-                c.Emit(OpCodes.Ldarg_0);
-                c.EmitDelegate<Func<float, MushroomVoidBehavior, float>>((useless, self) =>
-                {
-                    return (basePercentHealing + percentHealingPerStack * (self.stack - 1)) * 0.5f;
-                });
-            }
-            else
-            {
-                Logger.LogError("Failed to apply Weeping Fungus Healing hook");
-            }
+            MushroomVoidBehavior.healPercentagePerStack = percentHealingPerStack * 0.5f;
         }
     }
 }

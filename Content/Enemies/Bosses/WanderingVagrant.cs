@@ -65,7 +65,7 @@ namespace WellRoundedBalance.Enemies.Bosses
 
         private void ChargeMegaNova_OnEnter(On.EntityStates.VagrantMonster.ChargeMegaNova.orig_OnEnter orig, EntityStates.VagrantMonster.ChargeMegaNova self)
         {
-            self.duration = Mathf.Max(3.5f, EntityStates.VagrantMonster.ChargeMegaNova.baseDuration / self.attackSpeedStat);
+            self.duration = EntityStates.VagrantMonster.ChargeMegaNova.baseDuration;
             var childLocator = self.GetComponent<ChildLocator>();
             if (childLocator)
             {

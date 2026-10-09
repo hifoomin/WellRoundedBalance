@@ -63,7 +63,7 @@ namespace WellRoundedBalance.Items.Whites
                 float healthFraction = self.health / self.fullHealth;
                 if (healthFraction < healthThreshold)
                 {
-                    self.body.inventory.RemoveItem(DLC1Content.Items.HealingPotion, 1);
+                    self.body.inventory.RemoveItem(DLC1Content.Items.HealingPotion.itemIndex, 1);
                     self.body.inventory.GiveItem(DLC1Content.Items.HealingPotionConsumed, 1);
                     CharacterMasterNotificationQueue.SendTransformNotification(self.body.master, DLC1Content.Items.HealingPotion.itemIndex, DLC1Content.Items.HealingPotionConsumed.itemIndex, CharacterMasterNotificationQueue.TransformationType.Default);
 
@@ -93,7 +93,7 @@ namespace WellRoundedBalance.Items.Whites
                         int brokenElixirCount = cm.inventory.GetItemCountEffective(DLC1Content.Items.HealingPotionConsumed);
                         if (brokenElixirCount > 0)
                         {
-                            cm.inventory.RemoveItem(DLC1Content.Items.HealingPotionConsumed, brokenElixirCount);
+                            cm.inventory.RemoveItem(DLC1Content.Items.HealingPotionConsumed.itemIndex, brokenElixirCount);
                             cm.inventory.GiveItem(DLC1Content.Items.HealingPotion, brokenElixirCount);
                             CharacterMasterNotificationQueue.SendTransformNotification(cm, DLC1Content.Items.HealingPotionConsumed.itemIndex, DLC1Content.Items.HealingPotion.itemIndex, CharacterMasterNotificationQueue.TransformationType.Default);
                         }

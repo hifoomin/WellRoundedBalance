@@ -50,7 +50,9 @@ namespace WellRoundedBalance.Equipment.Lunar
         {
             IL.RoR2.MeteorStormController.DetonateMeteor += MeteorStormController_DetonateMeteor;
             On.RoR2.MeteorStormController.DetonateMeteor += MeteorStormController_DetonateMeteor1;
-            IL.RoR2.BlastAttack.CollectHits += BlastAttack_CollectHits;
+            if (!BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("com.brynzananas.brynzaapi")) {
+                IL.RoR2.BlastAttack.CollectHits += BlastAttack_CollectHits;
+            }
             IL.RoR2.MeteorStormController.FixedUpdate += MeteorStormController_FixedUpdate;
             Changes();
 

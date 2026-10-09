@@ -40,6 +40,7 @@ namespace WellRoundedBalance.Projectiles
             var projectileController = prefab.GetComponent<ProjectileController>();
             projectileController.flightSoundLoop = null;
             projectileController.ghostPrefab = newGhost;
+            projectileController.ghostPrefabAddress = null;
 
             PrefabAPI.RegisterNetworkPrefab(prefab);
         }

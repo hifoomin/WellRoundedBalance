@@ -14,6 +14,7 @@
             var projectileSimpleChild = molotovChild.GetComponent<ProjectileSimple>();
 
             projectileControllerChild.ghostPrefab = ghostPrefab;
+            projectileControllerChild.ghostPrefabAddress = null;
             projectileControllerChild.startSound = "Play_fireballsOnHit_shoot";
 
             projectileSimpleChild.lifetime = 35f;

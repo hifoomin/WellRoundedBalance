@@ -57,6 +57,7 @@ namespace WellRoundedBalance.Elites {
             ProjectileController controller = MortarSmallPrefab.GetComponent<ProjectileController>();
             controller.allowPrediction = false;
             controller.ghostPrefab = MortarGhost;
+            controller.ghostPrefabAddress = null;
 
             ProjectileImpactExplosion impact = MortarSmallPrefab.GetComponent<ProjectileImpactExplosion>();
             impact.blastDamageCoefficient = 1f;

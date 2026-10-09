@@ -69,25 +69,14 @@ namespace WellRoundedBalance.Items.Greens
         public override void Hooks()
         {
             Changes();
-            On.RoR2.PrimarySkillShurikenBehavior.FixedUpdate += PrimarySkillShurikenBehavior_FixedUpdate;
-            IL.RoR2.PrimarySkillShurikenBehavior.FixedUpdate += PrimarySkillShurikenBehavior_FixedUpdate1;
-            IL.RoR2.PrimarySkillShurikenBehavior.FireShuriken += PrimarySkillShurikenBehavior_FireShuriken;
-            On.RoR2.PrimarySkillShurikenBehavior.FireShuriken += PrimarySkillShurikenBehavior_FireShuriken1;
-            On.RoR2.PrimarySkillShurikenBehavior.Start += PrimarySkillShurikenBehavior_Start;
             On.RoR2.PrimarySkillShurikenBehavior.GetRandomRollPitch += PrimarySkillShurikenBehavior_GetRandomRollPitch;
             On.RoR2.Projectile.ProjectileSimple.Start += ProjectileSimple_Start;
-        }
 
-        private void PrimarySkillShurikenBehavior_Start(On.RoR2.PrimarySkillShurikenBehavior.orig_Start orig, PrimarySkillShurikenBehavior self)
-        {
-            orig(self);
-            self.body.AddTimedBuff(countdown, cooldown - 2f / 60f);
-        }
-
-        private void PrimarySkillShurikenBehavior_FireShuriken1(On.RoR2.PrimarySkillShurikenBehavior.orig_FireShuriken orig, PrimarySkillShurikenBehavior self)
-        {
-            orig(self);
-            self.body.AddTimedBuff(countdown, cooldown - 2f / 60f);
+            PrimarySkillShurikenBehavior.damageCoefficientBase = baseDamage;
+            PrimarySkillShurikenBehavior.damageCoefficientPerStack = damagePerStack;
+            PrimarySkillShurikenBehavior.totalReloadTime = cooldown;
+            PrimarySkillShurikenBehavior.numShurikensPerStack = 0;
+            PrimarySkillShurikenBehavior.numShurikensBase = 1;
         }
 
         private void ProjectileSimple_Start(On.RoR2.Projectile.ProjectileSimple.orig_Start orig, ProjectileSimple self)
@@ -119,78 +108,6 @@ namespace WellRoundedBalance.Items.Greens
         private Quaternion PrimarySkillShurikenBehavior_GetRandomRollPitch(On.RoR2.PrimarySkillShurikenBehavior.orig_GetRandomRollPitch orig, PrimarySkillShurikenBehavior self)
         {
             return Quaternion.identity;
-        }
-
-        private void PrimarySkillShurikenBehavior_FireShuriken(ILContext il)
-        {
-            ILCursor c = new(il);
-
-            if (c.TryGotoNext(MoveType.Before,
-                x => x.MatchLdcR4(3f),
-                x => x.MatchLdcR4(1f)))
-            {
-                c.Next.Operand = baseDamage;
-                c.Index += 1;
-                c.Next.Operand = damagePerStack;
-            }
-            else
-            {
-                Logger.LogError("Failed to apply Shuriken Damage hook");
-            }
-        }
-
-        private void PrimarySkillShurikenBehavior_FixedUpdate1(ILContext il)
-        {
-            ILCursor c = new(il);
-
-            if (c.TryGotoNext(MoveType.Before,
-                x => x.MatchLdfld(typeof(CharacterBody.ItemBehavior), "stack"),
-                x => x.MatchLdcI4(2)))
-            {
-                c.Index += 1;
-                c.EmitDelegate<Func<int, int>>((useless) =>
-                {
-                    return 1;
-                });
-                // stack => 1
-                c.Index += 1;
-                c.EmitDelegate<Func<int, int>>((useless) =>
-                {
-                    return 0;
-                });
-                // 2 => 0
-            }
-            else
-            {
-                Logger.LogError("Failed to apply Shuriken Count and Cooldown hook");
-            }
-
-            c.Index = 0;
-
-            if (c.TryGotoNext(MoveType.Before,
-                x => x.MatchLdcR4(10f)))
-            {
-                c.Next.Operand = cooldown;
-            }
-            else
-            {
-                Main.WRBLogger.LogError("Failed to apply Shuriken Cooldown hook");
-            }
-        }
-
-        private void PrimarySkillShurikenBehavior_FixedUpdate(On.RoR2.PrimarySkillShurikenBehavior.orig_FixedUpdate orig, PrimarySkillShurikenBehavior self)
-        {
-            orig(self);
-            timer += Time.fixedDeltaTime;
-            if (self.inputBank.skill1.down && timer >= 1f)
-            {
-                if (self.body.GetBuffCount(DLC1Content.Buffs.PrimarySkillShurikenBuff) > 0)
-                {
-                    self.body.RemoveBuff(DLC1Content.Buffs.PrimarySkillShurikenBuff);
-                    self.FireShuriken();
-                    timer = 0f;
-                }
-            }
         }
 
         public static BoomerangProjectile boomerangProjectile;

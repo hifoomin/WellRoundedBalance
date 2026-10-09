@@ -70,7 +70,7 @@ namespace WellRoundedBalance.Items.Whites
 
             var projectileController = firework.GetComponent<ProjectileController>();
             var ghostPrefab = projectileController.ghostPrefab;
-            ghostPrefab.transform.localScale = new Vector3(blastRadius / 4f, blastRadius / 4f, blastRadius / 4f);
+            Paths.GameObject.FireworkGhost.transform.localScale = new Vector3(blastRadius / 4f, blastRadius / 4f, blastRadius / 4f);
 
             if (improveTargeting)
             {

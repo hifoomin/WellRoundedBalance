@@ -35,7 +35,7 @@ namespace WellRoundedBalance.Items.Greens
         public override void Hooks()
         {
             IL.RoR2.CharacterBody.RecalculateStats += CharacterBody_RecalculateStats;
-            IL.RoR2.CharacterBody.AddTimedBuff_BuffDef_float += CharacterBody_AddTimedBuff_BuffDef_float;
+            IL.RoR2.CharacterBody.AddTimedBuffInternal += CharacterBody_AddTimedBuff_BuffDef_float;
             RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
         }
 
@@ -56,12 +56,11 @@ namespace WellRoundedBalance.Items.Greens
             ILCursor c = new(il);
 
             if (c.TryGotoNext(MoveType.Before,
-                x => x.MatchLdloc(out _),
-                x => x.MatchLdloc(out _),
-                x => x.MatchBge(out _),
-                x => x.MatchLdarg(0)))
+                x => x.MatchLdsfld(typeof(RoR2Content.Buffs), nameof(RoR2Content.Buffs.AttackSpeedOnCrit))
+            ))
             {
-                c.Index += 2;
+                c.GotoNext(MoveType.After,
+                x => x.MatchMul(), x => x.MatchAdd());
                 c.Emit(OpCodes.Ldarg_0);
                 c.EmitDelegate<Func<int, CharacterBody, int>>((orig, body) =>
                 {
@@ -81,6 +80,8 @@ namespace WellRoundedBalance.Items.Greens
             {
                 Logger.LogError("Failed to apply Predatory Instincts Buff Count hook");
             }
+
+            Debug.LogError(il.ToString());
         }
 
         private void CharacterBody_RecalculateStats(ILContext il)

@@ -36,8 +36,10 @@ namespace WellRoundedBalance.Items.Whites
         public static void HealthCompoment_TakeDamageProcess(ILContext il)
         {
             ILCursor c = new(il);
-            if (c.TryGotoNext(x => x.MatchLdfld<HealthComponent.ItemCounts>(nameof(HealthComponent.ItemCounts.bear))) && c.TryGotoNext(x => x.MatchLdcR4(0), x => x.MatchLdnull(), x => x.MatchCallOrCallvirt(typeof(Util), nameof(Util.CheckRoll))))
+            if (c.TryGotoNext(x => x.MatchLdfld<HealthComponent.ItemCounts>(nameof(HealthComponent.ItemCounts.bear))) && 
+            c.TryGotoNext(x => x.MatchLdcR4(0)))
             {
+                c.Index++;
                 c.Emit(OpCodes.Pop);
                 c.Emit(OpCodes.Ldarg_0);
                 c.EmitDelegate<Func<HealthComponent, float>>(self => StackAmount(blockChance, blockChanceStack, self.itemCounts.bear, blockChanceIsHyperbolic) * 100);

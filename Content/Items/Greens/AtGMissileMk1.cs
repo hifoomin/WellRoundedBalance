@@ -64,7 +64,7 @@ namespace WellRoundedBalance.Items.Greens
             missileProjectile.name = "Generic Missile";
             var missileProjectileController = missileProjectile.GetComponent<ProjectileController>();
             missileProjectileController.procCoefficient = procCoefficient * Items.Greens._ProcCoefficients.globalProc;
-            var ghost = missileProjectileController.ghostPrefab;
+            var ghost = Paths.GameObject.MissileGhost;
             ghost.transform.localScale = new Vector3(2f, 2f, 2f);
             ghost.transform.GetChild(1).gameObject.SetActive(false);
 

@@ -1,4 +1,5 @@
-﻿using Mono.Cecil.Cil;
+﻿using System;
+using Mono.Cecil.Cil;
 using MonoMod.Cil;
 
 namespace WellRoundedBalance.Items.Greens
@@ -48,9 +49,25 @@ namespace WellRoundedBalance.Items.Greens
 
         public override void Hooks()
         {
-            IL.RoR2.EquipmentSlot.OnEquipmentExecuted_byte_byte_EquipmentIndex += EquipmentSlot_OnEquipmentExecuted;
-            On.RoR2.EquipmentSlot.OnEquipmentExecuted_byte_byte_EquipmentIndex += EquipmentSlot_OnEquipmentExecuted1;
+            IL.RoR2.EquipmentSlot.OnEquipmentExecuted_refEquipmentLocation_EquipmentIndex += EquipmentSlot_OnEquipmentExecuted;
+            On.RoR2.EquipmentSlot.OnEquipmentExecuted_refEquipmentLocation_EquipmentIndex += EquipmentSlot_OnEquipmentExecuted1;
             RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
+        }
+
+        private void EquipmentSlot_OnEquipmentExecuted1(On.RoR2.EquipmentSlot.orig_OnEquipmentExecuted_refEquipmentLocation_EquipmentIndex orig, EquipmentSlot self, ref EquipmentLocation location, EquipmentIndex index)
+        {
+            if (NetworkServer.active)
+            {
+                if (self.characterBody && self.inventory)
+                {
+                    var stack = self.inventory.GetItemCountEffective(RoR2Content.Items.EnergizedOnEquipmentUse);
+                    if (stack > 0)
+                    {
+                        self.characterBody.AddTimedBuff(warHornBuff, buffDuration);
+                    }
+                }
+                orig(self, ref location, index);
+            }
         }
 
         private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
@@ -63,22 +80,6 @@ namespace WellRoundedBalance.Items.Greens
 
                 var regenStack = baseRegenerationGain + (regenerationGainPerStack * (stack - 1));
                 args.baseRegenAdd += regenStack + 0.2f * regenStack * (sender.level - 1);
-            }
-        }
-
-        private void EquipmentSlot_OnEquipmentExecuted1(On.RoR2.EquipmentSlot.orig_OnEquipmentExecuted_byte_byte_EquipmentIndex orig, EquipmentSlot self, byte b1, byte b2, EquipmentIndex i)
-        {
-            if (NetworkServer.active)
-            {
-                if (self.characterBody && self.inventory)
-                {
-                    var stack = self.inventory.GetItemCountEffective(RoR2Content.Items.EnergizedOnEquipmentUse);
-                    if (stack > 0)
-                    {
-                        self.characterBody.AddTimedBuff(warHornBuff, buffDuration);
-                    }
-                }
-                orig(self, b1, b2, i);
             }
         }
 

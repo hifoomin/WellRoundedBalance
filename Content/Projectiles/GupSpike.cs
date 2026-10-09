@@ -64,6 +64,7 @@ namespace WellRoundedBalance.Projectiles
             prefab.transform.localScale = new Vector3(0.15f, 0.15f, 3f);
 
             projectileController.ghostPrefab = newGhost;
+            projectileController.ghostPrefabAddress = null;
 
             PrefabAPI.RegisterNetworkPrefab(prefab);
         }

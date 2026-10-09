@@ -63,25 +63,6 @@ namespace WellRoundedBalance.Items.Yellows
             {
                 Logger.LogError("Failed to apply Charged Perforator Damage and Proc Coefficient hook");
             }
-
-            c.Index = 0;
-
-            if (c.TryGotoNext(MoveType.After,
-                x => x.MatchLdloc(0),
-                x => x.MatchCallOrCallvirt<CharacterBody>("get_crit"),
-                x => x.MatchLdloc(out _),
-                x => x.MatchLdloca(out _),
-                x => x.MatchCallOrCallvirt(out _)))
-            {
-                c.Emit(OpCodes.Ldarg_1);
-                c.EmitDelegate<Func<bool, DamageInfo, bool>>((junk, info) => {
-                    return info.crit;
-                });
-            }
-            else
-            {
-                Logger.LogError("Failed to apply Charged Perforator Crit hook");
-            }
         }
 
         private void Changes()

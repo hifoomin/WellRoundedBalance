@@ -41,7 +41,7 @@ namespace WellRoundedBalance.Items.Yellows
             var stack = Util.GetItemCountForTeam(body.teamComponent.teamIndex, RoR2Content.Items.BeetleGland.itemIndex, false);
             if (self.name == "BeetleGuardAllyMaster(Clone)")
             {
-                self.inventory.RemoveItem(RoR2Content.Items.BoostDamage, 30);
+                self.inventory.RemoveItem(RoR2Content.Items.BoostDamage.itemIndex, 30);
                 self.inventory.GiveItem(RoR2Content.Items.BoostDamage, beetleGuardBaseDamage + beetleGuardDamagePerStack * (stack - 1));
                 // this works I checked :smirk_cat:
             }
